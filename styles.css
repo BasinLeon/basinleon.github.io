@@ -172,6 +172,156 @@ body {
 }
 
 /* ========================================
+   Career Timeline
+   ======================================== */
+.timeline {
+    max-width: 800px;
+    position: relative;
+    padding-left: var(--spacing-xl);
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: calc(-1 * var(--spacing-xl));
+    top: 0.25rem;
+    width: 12px;
+    height: 12px;
+    background: var(--color-text-primary);
+    border-radius: 50%;
+    transform: translateX(-5px);
+}
+
+.timeline-content {
+    padding-left: var(--spacing-md);
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+.timeline-company {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.timeline-year {
+    font-size: 0.938rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.timeline-role {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+}
+
+.timeline-achievements {
+    list-style: none;
+    padding: 0;
+}
+
+.timeline-achievements li {
+    position: relative;
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.timeline-achievements li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-primary);
+}
+
+/* ========================================
+   Case Studies
+   ======================================== */
+.case-studies-section {
+    background: var(--color-bg-secondary);
+}
+
+.case-studies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-2xl);
+}
+
+.case-study {
+    background: var(--color-bg-tertiary);
+    padding: var(--spacing-xl);
+    border-left: 2px solid var(--color-border);
+    transition: border-color var(--transition);
+}
+
+.case-study:hover {
+    border-left-color: var(--color-text-primary);
+}
+
+.case-study-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.01em;
+}
+
+.case-study-company {
+    font-size: 0.938rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+    font-weight: 600;
+}
+
+.case-study-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.case-study-block h4 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 700;
+}
+
+.case-study-block p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    font-size: 0.938rem;
+}
+
+/* ========================================
    Footer
    ======================================== */
 .footer {
@@ -220,6 +370,19 @@ body {
     .experience-grid {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+
+    .timeline {
+        padding-left: var(--spacing-lg);
+    }
+
+    .timeline-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .case-studies-grid {
+        grid-template-columns: 1fr;
     }
 }
 
