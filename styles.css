@@ -2,17 +2,28 @@
    CSS Variables & Design Tokens
    ======================================== */
 :root {
-    /* Dark Mode Colors */
-    --color-bg-primary: #0A0A0A;
-    --color-bg-secondary: #141414;
-    --color-bg-tertiary: #1E1E1E;
-    --color-text-primary: #FFFFFF;
-    --color-text-secondary: #B0B0B0;
-    --color-border: #2A2A2A;
-    --color-accent: #FFFFFF;
+    /* Basin OS Color Palette - Cyber / Terminal Theme */
+    --color-bg-primary: #050505;
+    --color-bg-secondary: #0A0F0D;
+    --color-bg-tertiary: #111413;
+
+    --color-text-primary: #E0E0E0;
+    --color-text-secondary: #889290;
+    --color-text-dim: #445550;
+
+    --color-accent-green: #00FF9D;
+    /* Cyber Green */
+    --color-accent-green-dim: rgba(0, 255, 157, 0.1);
+    --color-accent-blue: #00A3FF;
+    /* Electric Blue */
+    --color-error: #FF3366;
+
+    --color-border: #1F2926;
+    --color-border-glow: #00FF9D;
 
     /* Typography */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-primary: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -24,11 +35,17 @@
     --spacing-3xl: 6rem;
     --spacing-4xl: 8rem;
 
-    /* Border Radius */
-    --radius: 2px;
+    /* Effects */
+    --glow-text: 0 0 10px rgba(0, 255, 157, 0.5);
+    --glow-border: 0 0 15px rgba(0, 255, 157, 0.2);
+    --scanline: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
 
-    /* Transitions */
-    --transition: 200ms ease;
+    --transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::selection {
+    background: var(--color-accent-green);
+    color: #000;
 }
 
 /* ========================================
@@ -51,6 +68,9 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* CRT Scanline Effect */
+    background-image: var(--scanline);
+    background-size: 100% 4px;
 }
 
 /* ========================================
@@ -76,6 +96,20 @@ body {
     align-items: center;
     justify-content: center;
     padding: var(--spacing-4xl) 0;
+}
+
+.terminal-window {
+    background: rgba(10, 15, 13, 0.95) !important;
+    /* Override inline styles */
+    border: 1px solid var(--color-border) !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), var(--glow-border) !important;
+    backdrop-filter: blur(10px);
+    transition: box-shadow var(--transition);
+}
+
+.terminal-window:hover {
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.8), var(--glow-border) !important;
+    border-color: var(--color-accent-green) !important;
 }
 
 .hero-content {
@@ -104,30 +138,40 @@ body {
 .btn {
     display: inline-block;
     padding: var(--spacing-md) var(--spacing-xl);
-    background: var(--color-text-primary);
-    color: var(--color-bg-primary);
+    background: transparent;
+    color: var(--color-accent-green);
     text-decoration: none;
+    font-family: var(--font-mono);
     font-weight: 600;
-    font-size: 1rem;
-    border: 1px solid var(--color-text-primary);
+    font-size: 0.938rem;
+    border: 1px solid var(--color-accent-green);
     transition: all var(--transition);
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.1);
 }
 
 .btn:hover {
-    background: transparent;
-    color: var(--color-text-primary);
+    background: var(--color-accent-green-dim);
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+    text-shadow: 0 0 8px rgba(0, 255, 157, 0.8);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
     margin-left: var(--spacing-md);
+    box-shadow: none;
 }
 
 .btn-secondary:hover {
-    background: var(--color-text-primary);
-    color: var(--color-bg-primary);
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
 }
 
 /* ========================================
