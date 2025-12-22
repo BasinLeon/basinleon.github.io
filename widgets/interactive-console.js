@@ -24,39 +24,49 @@
 
     const DATA = {
         skills: {
-            ai: ['Python', 'LangChain', 'Gemini', 'GPT-4', 'Claude', 'Whisper', 'Llama'],
-            gtm: ['Revenue Operations', 'Pipeline Strategy', 'Forecasting', 'Territory Planning'],
-            tech: ['Salesforce', 'HubSpot', 'SQL', 'Streamlit', 'N8N', 'Git'],
-            soft: ['Executive Presence', 'Stakeholder Management', 'Cross-functional Leadership']
+            ai: ['Python', 'Streamlit', 'LLM APIs (Claude/Gemini)', 'n8n', 'AI Agent Workflows', 'LangChain'],
+            gtm: ['GTM Strategy', 'Pipeline Architecture', 'Partner Ecosystems (US/LATAM)', 'Sales Enablement', 'MEDDICC', 'Sandler'],
+            revops: ['CRM Design (HubSpot/Salesforce)', 'Forecasting', 'KPI Tracking', 'Automated Prospecting'],
+            domain: ['Cybersecurity (PAM/Zero Trust/IAM)', 'Identity Security', 'AI & SaaS', 'Developer-First GTM']
         },
 
         career: [
-            { company: 'Fudo Security', role: 'Sr. Manager, BD & GTM', years: '2024-2025', metric: '160% Pipeline' },
-            { company: 'Basin & Associates', role: 'Principal Consultant', years: '2023-Present', metric: 'BASIN::NEXUS' },
-            { company: 'Sense', role: 'Group Manager, Global BD', years: '2022-2023', metric: '$11M Pipeline' },
-            { company: 'SurveyMonkey', role: 'Enterprise BD', years: '2019-2021', metric: '$300M Portfolio' },
-            { company: 'Google', role: 'Operations Specialist', years: '2014-2015', metric: 'Wallet & Compliance' }
+            { company: 'Fudo Security', role: 'Sr. Manager, GTM Strategy (Americas)', years: 'Feb 2024 – Nov 2025', metric: '160% Pipeline Increase YoY' },
+            { company: 'Sense', role: 'Group Manager, Global BD', years: '2021 – 2023', metric: '$10M+ Pipeline, 105% Quota' },
+            { company: 'SurveyMonkey (Momentive)', role: 'Enterprise Account Manager', years: '2019 – 2021', metric: '$300M+ Portfolio, 700+ Accounts' },
+            { company: 'Google', role: 'Operations Specialist (Shopping)', years: '2014 – 2015', metric: '15% Efficiency Increase' },
+            { company: 'NetApp', role: 'Operations Analyst', years: '2013 – 2014', metric: 'Process Adherence' },
+            { company: 'Hewlett-Packard', role: 'Field Sales Representative', years: '2010 – 2011', metric: 'Early Career' }
         ],
 
         projects: [
-            { name: 'BASIN::NEXUS', desc: 'AI Career Intelligence Platform', lines: '10,500+', tech: 'Python/Streamlit' },
-            { name: 'Market Signal Factory', desc: 'JD Analyzer & Match Scorer', lines: '500+', tech: 'Python/SQLite' },
-            { name: 'BS Detector', desc: 'Outreach Credibility Scorer', tech: 'JavaScript/Node' },
-            { name: 'Lead Script Gen', desc: 'LLM-Powered Outbound', tech: 'Python/LLM' }
+            { name: 'BASIN::NEXUS', desc: 'GTM Operating System — AI-augmented internal tools to automate revenue workflows', lines: '10,500+', tech: 'Python/Streamlit/LLMs' },
+            { name: 'Lead Script Generator', desc: 'LLM-powered "Engineer-to-Engineer" outreach scripts based on technical friction signals', tech: 'Python/Claude/Gemini' },
+            { name: 'Signal Architect', desc: 'Scoring engine to filter market noise and prioritize high-intent technical founders', tech: 'Python/SQLite' },
+            { name: 'Market Signal Factory', desc: 'JD Analyzer & Match Scorer for pipeline prioritization', lines: '500+', tech: 'Python/SQLite' }
         ],
 
         signals: {
             scanned: 47,
-            avgMatch: 72,
+            avgMatch: 85,
             sTier: 3,
             aTier: 8,
             lastUpdate: new Date().toISOString()
         },
 
         education: [
-            { school: 'Santa Clara University', degree: 'Executive MBA', year: '2023' },
-            { school: 'University of Phoenix', degree: 'B.S. Psychology' }
-        ]
+            { school: 'Santa Clara University', degree: 'MBA, Business Strategy & Technology Leadership', year: '2023' },
+            { school: 'University of Phoenix', degree: 'B.S. Psychology & Business Administration', year: '2012' }
+        ],
+
+        certifications: ['MEDDICC (AE Accelerator)', 'Sandler Selling System', 'HubSpot Advanced', 'Salesforce', 'Gong'],
+
+        summary: {
+            title: 'Senior Manager, GTM Strategy & Partnerships',
+            headline: 'Technical Revenue Architect with 15+ years of experience',
+            focus: 'Bridging Product innovation and Commercial scale',
+            differentiator: 'Unlike traditional sales leaders, I build the tooling I use.'
+        }
     };
 
     // ═══════════════════════════════════════════════════════════════
@@ -75,13 +85,33 @@
 ║  BASIN::NEXUS QUERY INTERFACE                            ║
 ╠══════════════════════════════════════════════════════════╣
 ║  COMMANDS:                                               ║
-║    SELECT skills WHERE category = 'ai|gtm|tech|soft'    ║
-║    SHOW career                                           ║
-║    DESCRIBE projects                                     ║
-║    QUERY signals                                         ║
-║    LIST education                                        ║
-║    HELP                                                  ║
+║    ABOUT                 → Professional summary          ║
+║    SELECT skills         → All skills by category        ║
+║    SHOW career           → Career timeline               ║
+║    DESCRIBE projects     → Technical projects            ║
+║    LIST certifications   → Certs & training              ║
+║    LIST education        → Degrees                       ║
+║    QUERY signals         → Market signal status          ║
+║    HELP                  → This menu                     ║
 ╚══════════════════════════════════════════════════════════╝`
+            };
+        }
+
+        // ABOUT
+        if (cmd === 'about' || cmd === 'whoami' || cmd === 'summary') {
+            const s = DATA.summary;
+            return {
+                type: 'result',
+                output: `
+┌──────────────────────────────────────────────────────────┐
+│  ${s.title.padEnd(56)}│
+├──────────────────────────────────────────────────────────┤
+│  ${s.headline.padEnd(56)}│
+│                                                          │
+│  Focus: ${s.focus.padEnd(50)}│
+│                                                          │
+│  "${s.differentiator}"                                   │
+└──────────────────────────────────────────────────────────┘`
             };
         }
 
@@ -103,7 +133,7 @@
                 }
                 return { type: 'result', output };
             } else {
-                return { type: 'error', output: `Category "${category}" not found. Try: ai, gtm, tech, soft` };
+                return { type: 'error', output: `Category "${category}" not found. Try: ai, gtm, revops, domain` };
             }
         }
 
@@ -111,8 +141,10 @@
         if (cmd.startsWith('show career')) {
             let output = '\n';
             for (const job of DATA.career) {
-                output += `${job.years.padEnd(12)} ${job.company.padEnd(18)} ${job.role}\n`;
-                if (job.metric) output += `             └── ${job.metric}\n`;
+                output += `${job.years.padEnd(20)} ${job.company}\n`;
+                output += `${' '.repeat(20)} └ ${job.role}\n`;
+                if (job.metric) output += `${' '.repeat(20)}   → ${job.metric}\n`;
+                output += '\n';
             }
             return { type: 'result', output };
         }
@@ -142,6 +174,14 @@
 │ S-Tier Matches:   ${String(s.sTier).padEnd(13)}│
 │ A-Tier Matches:   ${String(s.aTier).padEnd(13)}│
 └─────────────────────────────────┘`
+            };
+        }
+
+        // LIST certifications
+        if (cmd.startsWith('list cert')) {
+            return {
+                type: 'result',
+                output: `\n→ ${DATA.certifications.join('\n→ ')}`
             };
         }
 
