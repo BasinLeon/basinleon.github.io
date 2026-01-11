@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$0 GTM Stack | Leon Basin - Revenue Architecture Tools</title>
+    <meta name="description"
+        content="Enterprise-grade revenue intelligence. Zero budget. Built with n8n, Free APIs, and Local LLMs.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="$0 GTM Stack | Leon Basin">
+    <meta property="og:description"
+        content="Enterprise-grade revenue intelligence without enterprise budgets. Signal → System → Scale.">
+    <meta property="og:url" content="https://basinleon.github.io/tools/">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #0a1628;
+            --bg-card: #0f1e36;
+            --bg-elevated: #162844;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b9cb5;
+            --text-muted: #5a6a80;
+            --orange-accent: #FF8C00;
+            --orange-glow: rgba(255, 140, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(180deg, #050a14 0%, #0a1628 50%, #050a14 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 1px solid var(--orange-accent);
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 0.85rem;
+            color: var(--orange-accent);
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--orange-accent);
+            text-shadow: 0 0 60px var(--orange-glow);
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 48px;
+        }
+
+        .hero-comparison {
+            display: inline-block;
+            background: rgba(255, 140, 0, 0.1);
+            border: 1px solid var(--orange-accent);
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-comparison strong {
+            color: var(--orange-accent);
+        }
+
+        /* Philosophy Section */
+        .philosophy {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .philosophy-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+
+        .philosophy-quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-primary);
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        /* Signal System Scale */
+        .flow-section {
+            padding: 60px 0;
+        }
+
+        .flow-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 2px solid var(--gold-border);
+            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .flow-step:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 40px var(--gold-glow);
+            transform: scale(1.05);
+        }
+
+        .flow-step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .flow-step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--gold-primary);
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .arch-column {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 2px solid var(--orange-accent);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .arch-column-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .arch-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .arch-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 140, 0, 0.05);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .arch-item:hover {
+            background: rgba(255, 140, 0, 0.1);
+            border-color: var(--orange-accent);
+        }
+
+        .arch-item-icon {
+            font-size: 1.5rem;
+        }
+
+        .arch-item-text {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .arch-orchestration {
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-elevated), var(--bg-card));
+            border: 2px solid var(--orange-accent);
+            border-radius: 12px;
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .arch-orchestration-logo {
+            font-size: 1.5rem;
+        }
+
+        .arch-orchestration-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: 3px;
+        }
+
+        /* Tools Grid */
+        .tools-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--gold-border);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 1px solid var(--gold-border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.15);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .tool-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+
+        .tool-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tool-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border: 1px solid var(--gold-border);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-link:hover {
+            color: var(--gold-light);
+            gap: 12px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            background: var(--bg-deep);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .arch-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-container {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .nav-links {
+                gap: 16px;
+            }
+
+            .nav-links a {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .flow-step {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="../" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="../">Portfolio</a>
+                <a href="../blog/">Blog</a>
+                <a href="./" class="active">Tools</a>
+                <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">BUILDER'S TOOLKIT</div>
+            <h1 class="hero-title">$0 GTM STACK</h1>
+            <p class="hero-subtitle">Enterprise-grade revenue intelligence. Zero budget.</p>
+            <div class="hero-comparison">
+                vs <strong>$950+/mo</strong> for SaaS tools
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="philosophy">
+        <div class="container">
+            <h2 class="philosophy-title">THE BUILDER'S ADVANTAGE</h2>
+            <p class="philosophy-quote">"Revenue is not arithmetic. It is architecture."</p>
+        </div>
+    </section>
+
+    <!-- Signal → System → Scale -->
+    <section class="flow-section">
+        <div class="container">
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-step-icon">&lt;/&gt;</div>
+                    <div class="flow-step-title">SIGNAL</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">⇄</div>
+                    <div class="flow-step-title">SYSTEM</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">📈</div>
+                    <div class="flow-step-title">SCALE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Diagram -->
+    <section class="architecture">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">STACK ARCHITECTURE</h2>
+                <p class="section-subtitle">How the $0 GTM Stack flows from signal to output</p>
+            </div>
+
+            <div class="arch-grid">
+                <!-- Signal Ingestion -->
+                <div class="arch-column">
+                    <div class="arch-column-title">SIGNAL INGESTION</div>
+                    <div class="arch-items">
+                        <div class="arch-item">
+                            <span class="arch-item-icon">📊</span>
+                            <span class="arch-item-text">Google Sheets</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">🔗</span>
+                            <span class="arch-item-text">Webhooks</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">📡</span>
+                            <span class="arch-item-text">RSS Feeds</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">💼</span>
+                            <span class="arch-item-text">LinkedIn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enrichment + Scoring -->
+                <div class="arch-column">
+                    <div class="arch-column-title">ENRICHMENT + SCORING</div>
+                    <div class="arch-items">
+                        <div class="arch-item">
+                            <span class="arch-item-icon">⚙️</span>
+                            <span class="arch-item-text">Hunter / Clearbit APIs</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">🧠</span>
+                            <span class="arch-item-text">Local LLM</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">🧩</span>
+                            <span class="arch-item-text">Duestions</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">📈</span>
+                            <span class="arch-item-text">Scoring Engine</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Layer -->
+                <div class="arch-column">
+                    <div class="arch-column-title">OUTPUT LAYER</div>
+                    <div class="arch-items">
+                        <div class="arch-item">
+                            <span class="arch-item-icon">✉️</span>
+                            <span class="arch-item-text">Email Drafts</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">📋</span>
+                            <span class="arch-item-text">Executive Briefs</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">🗄️</span>
+                            <span class="arch-item-text">CRM Updates</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="arch-item-icon">⚡</span>
+                            <span class="arch-item-text">Slack Alerts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- n8n Orchestration -->
+            <div class="arch-orchestration">
+                <span class="arch-orchestration-logo">⚙️</span>
+                <span class="arch-orchestration-text">n8n ORCHESTRATION</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="tools-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">LIVE TOOLS</h2>
+                <p class="section-subtitle">Production systems you can try right now</p>
+            </div>
+
+            <div class="tools-grid">
+                <!-- BASIN::NEXUS -->
+                <div class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <div class="tool-title">BASIN::NEXUS</div>
+                    <div class="tool-desc">AI Career Intelligence Platform. 8,400+ lines. Hunt → Prep → Close workflow with multi-agent interview simulator.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">Streamlit</span>
+                        <span class="tool-tag">5 LLMs</span>
+                    </div>
+                    <a href="https://basin-nexus.streamlit.app" target="_blank" class="tool-link">▶ LAUNCH DEMO →</a>
+                </div>
+
+                <!-- LinkedIn Headline Forge -->
+                <div class="tool-card">
+                    <div class="tool-icon">💼</div>
+                    <div class="tool-title">HEADLINE FORGE</div>
+                    <div class="tool-desc">LinkedIn headline generator. AI-powered profile optimization to get noticed by recruiters.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">AI</span>
+                    </div>
+                    <a href="https://linkedin-headline-generator-5f5esbxxbunyr8nxtkjzce.streamlit.app" target="_blank" class="tool-link">▶ LAUNCH DEMO →</a>
+                </div>
+
+                <!-- Outreach Autopsy -->
+                <div class="tool-card">
+                    <div class="tool-icon">🔬</div>
+                    <div class="tool-title">OUTREACH AUTOPSY</div>
+                    <div class="tool-desc">Cold email intelligence. Diagnose failures, predict success. Better than Lavender AI.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">LLM</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/outreach-autopsy" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+
+                <!-- BS Detector -->
+                <div class="tool-card">
+                    <div class="tool-icon">🔴</div>
+                    <div class="tool-title">BS DETECTOR</div>
+                    <div class="tool-desc">Technical BS detector. Score outreach for engineer credibility. Fix sales speak before you send.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">JavaScript</span>
+                        <span class="tool-tag">Node</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/bs-detector" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+
+                <!-- Lead Script Generator -->
+                <div class="tool-card">
+                    <div class="tool-icon">📝</div>
+                    <div class="tool-title">LEAD SCRIPT GEN</div>
+                    <div class="tool-desc">LLM-powered outbound scripts. Generate personalized sequences with ICP targeting.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">LLM</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/lead-script-generator" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+
+                <!-- Executive Brief Generator -->
+                <div class="tool-card">
+                    <div class="tool-icon">📋</div>
+                    <div class="tool-title">EXEC BRIEF GEN</div>
+                    <div class="tool-desc">Transform pipeline data into McKinsey-style executive briefs. PDF export ready.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">PDF</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/executive-brief-generator" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+
+                <!-- GTM Signal Architect -->
+                <div class="tool-card">
+                    <div class="tool-icon">🎯</div>
+                    <div class="tool-title">SIGNAL ARCHITECT</div>
+                    <div class="tool-desc">Streamlit-based revenue architecture tool for pipeline signal scoring and prioritization.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">Streamlit</span>
+                        <span class="tool-tag">Python</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/gtm-signal-architect" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+
+                <!-- Browser GTM Engine -->
+                <div class="tool-card">
+                    <div class="tool-icon">🌐</div>
+                    <div class="tool-title">BROWSER GTM ENGINE</div>
+                    <div class="tool-desc">Browser-native GTM engine with drag-drop deal management and PDF export. No server required.</div>
+                    <div class="tool-tags">
+                        <span class="tool-tag">TypeScript</span>
+                        <span class="tool-tag">React</span>
+                    </div>
+                    <a href="https://github.com/BasinLeon/executive-gtm-signal-engine" target="_blank" class="tool-link">⚙ VIEW SOURCE →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="../">Portfolio</a>
+            <a href="../blog/">Blog</a>
+            <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
+            <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Leon Basin • Revenue Architect • $0 GTM Stack
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Leon Basin - Signal. Architecture. Revenue.</title>
+    <meta name="description"
+        content="Stories as code. Archives as memory. 163+ posts on revenue architecture, GTM systems, AI building, and creative writing.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Blog | Leon Basin">
+    <meta property="og:description" content="Stories as code. Archives as memory. Revenue architecture, GTM systems, and creative writing.">
+    <meta property="og:url" content="https://basinleon.github.io/blog/">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 140px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .hero-tagline {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold-light);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Search & Filter */
+        .search-section {
+            padding: 32px 0;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .search-box {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            padding: 14px 20px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-tag {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid var(--gold-border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tag:hover,
+        .filter-tag.active {
+            background: var(--gold-subtle);
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        /* Posts Grid */
+        .posts-section {
+            padding: 48px 0;
+        }
+
+        .year-group {
+            margin-bottom: 48px;
+        }
+
+        .year-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .post-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .post-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateX(8px);
+            box-shadow: -4px 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .post-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .post-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .post-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .post-tag {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border: 1px solid var(--gold-border);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        /* Featured Posts */
+        .featured-section {
+            padding: 48px 0;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .featured-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 28px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .featured-badge {
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .featured-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .featured-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            background: var(--bg-deep);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 16px;
+            }
+
+            .nav-links a {
+                font-size: 0.65rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .post-card:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="../" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="../">Portfolio</a>
+                <a href="./" class="active">Blog</a>
+                <a href="../tools/">Tools</a>
+                <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-tagline">Signal. Architecture. Revenue.</div>
+            <h1 class="hero-title">The Archive</h1>
+            <p class="hero-subtitle">"Stories as code. Archives as memory."</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">163</div>
+                    <div class="stat-label">Posts</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">2024-26</div>
+                    <div class="stat-label">Span</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">50+</div>
+                    <div class="stat-label">Topics</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Posts -->
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title">FEATURED</h2>
+            <div class="featured-grid">
+                <a href="https://basinleon.com/2026/01/10/interview-as-architecture-why-i-built-an-ai-coach-that-knows-my-war-stories/" class="featured-card" target="_blank">
+                    <div class="featured-badge">Latest</div>
+                    <div class="featured-title">Interview as Architecture: Why I Built an AI Coach That Knows My War Stories</div>
+                    <div class="featured-excerpt">Treating job interviews like a systems problem with personalized AI coaching infrastructure.</div>
+                </a>
+                <a href="https://basinleon.com/2026/01/09/the-0-gtm-stack-building-enterprise-grade-revenue-intelligence-without-enterprise-budgets/" class="featured-card" target="_blank">
+                    <div class="featured-badge">$0 GTM Stack</div>
+                    <div class="featured-title">The $0 GTM Stack: Building Enterprise-Grade Revenue Intelligence Without Enterprise Budgets</div>
+                    <div class="featured-excerpt">Complete GTM system using n8n, free APIs, and local LLMs. Total cost: $0.</div>
+                </a>
+                <a href="https://basinleon.com/2026/01/02/the-architecture-of-revenue-a-builders-thesis-on-signal-systems-and-the-end-of-brute-force/" class="featured-card" target="_blank">
+                    <div class="featured-badge">Thesis</div>
+                    <div class="featured-title">The Architecture of Revenue: A Builder's Thesis on Signal, Systems, and the End of Brute Force</div>
+                    <div class="featured-excerpt">"Revenue is not arithmetic. It is architecture."</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter -->
+    <section class="search-section">
+        <div class="container">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search posts...">
+            <div class="filter-tags">
+                <span class="filter-tag active" data-filter="all">All</span>
+                <span class="filter-tag" data-filter="gtm">GTM</span>
+                <span class="filter-tag" data-filter="ai">AI</span>
+                <span class="filter-tag" data-filter="revenue">Revenue</span>
+                <span class="filter-tag" data-filter="creative">Creative</span>
+                <span class="filter-tag" data-filter="cybersecurity">Cybersecurity</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Posts -->
+    <section class="posts-section">
+        <div class="container">
+
+            <!-- 2026 -->
+            <div class="year-group">
+                <h3 class="year-header">2026</h3>
+                <div class="posts-list">
+                    <a href="https://basinleon.com/2026/01/10/interview-as-architecture-why-i-built-an-ai-coach-that-knows-my-war-stories/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 10, 2026</div>
+                        <div class="post-title">Interview as Architecture: Why I Built an AI Coach That Knows My War Stories</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Career</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/09/the-0-gtm-stack-building-enterprise-grade-revenue-intelligence-without-enterprise-budgets/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 9, 2026</div>
+                        <div class="post-title">The $0 GTM Stack: Building Enterprise-Grade Revenue Intelligence Without Enterprise Budgets</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">n8n</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/09/the-builders-advantage-why-i-code-my-gtm-stack/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 9, 2026</div>
+                        <div class="post-title">The Builder's Advantage: Why I Code My GTM Stack</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Code</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/04/labyrinth-of-the-mind-by-leon-basin/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 4, 2026</div>
+                        <div class="post-title">Labyrinth of the Mind by Leon Basin</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Game</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/02/the-architecture-of-revenue-a-builders-thesis-on-signal-systems-and-the-end-of-brute-force/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 2, 2026</div>
+                        <div class="post-title">The Architecture of Revenue: A Builder's Thesis on Signal, Systems, and the End of Brute Force</div>
+                        <div class="post-tags"><span class="post-tag">Revenue</span><span class="post-tag">Thesis</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/02/building-labyrinth-of-the-mind-an-interactive-journey-into-self-reflection/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 2, 2026</div>
+                        <div class="post-title">Building Labyrinth of the Mind: An Interactive Journey into Self-Reflection</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Streamlit</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2026/01/02/the-artifact-why-i-built-a-native-executive-signal-brief-generator/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 2, 2026</div>
+                        <div class="post-title">The Artifact: Why I Built a Native Executive Signal Brief Generator</div>
+                        <div class="post-tags"><span class="post-tag">Tool</span><span class="post-tag">AI</span></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2025 -->
+            <div class="year-group">
+                <h3 class="year-header">2025</h3>
+                <div class="posts-list">
+                    <a href="https://basinleon.com/2025/12/29/i-stopped-waiting-for-better-data-i-built-a-signal-engine-instead/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 29, 2025</div>
+                        <div class="post-title">I Stopped Waiting for Better Data. I Built a Signal Engine Instead.</div>
+                        <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/18/2026-protocol-the-end-of-brute-force/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 18, 2025</div>
+                        <div class="post-title">2026 Protocol: The End of Brute Force</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/15/the-upgrade-from-cybersecurity-to-revenue-architecture/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 15, 2025</div>
+                        <div class="post-title">The Upgrade: From Cybersecurity to Revenue Architecture</div>
+                        <div class="post-tags"><span class="post-tag">Career</span><span class="post-tag">Revenue</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/15/the-night-the-code-asked-for-a-name/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 15, 2025</div>
+                        <div class="post-title">The Night the Code Asked for a Name</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/14/the-system-finds-the-role-why-i-built-basinnexus/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 14, 2025</div>
+                        <div class="post-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
+                        <div class="post-tags"><span class="post-tag">NEXUS</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/14/the-architecture-of-belief/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 14, 2025</div>
+                        <div class="post-title">The Architecture of Belief</div>
+                        <div class="post-tags"><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/14/revenue-is-not-math-it-is-the-echo-of-grace/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 14, 2025</div>
+                        <div class="post-title">Revenue is Not Math. It is the Echo of Grace.</div>
+                        <div class="post-tags"><span class="post-tag">Revenue</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/05/how-to-automate-engineer-to-engineer-outreach-without-sounding-like-a-bot/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 5, 2025</div>
+                        <div class="post-title">How to Automate Engineer-to-Engineer Outreach Without Sounding Like a Bot</div>
+                        <div class="post-tags"><span class="post-tag">Outreach</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/05/revolutionizing-sales-from-hiring-to-engineering-mindset/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 5, 2025</div>
+                        <div class="post-title">Revolutionizing Sales: From Hiring to Engineering Mindset</div>
+                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/04/the-data-supply-chain/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 4, 2025</div>
+                        <div class="post-title">The Data Supply Chain</div>
+                        <div class="post-tags"><span class="post-tag">Data</span><span class="post-tag">Architecture</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/12/01/fractional-gtm-architecture-build-predictable-revenue/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 1, 2025</div>
+                        <div class="post-title">Fractional GTM Architecture: Build Predictable Revenue</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Revenue</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/11/06/30-60-90-for-enterprise-aes-turn-pocs-into-renewals/" class="post-card" target="_blank">
+                        <div class="post-date">Nov 6, 2025</div>
+                        <div class="post-title">30-60-90 for Enterprise AEs: Turn POCs into Renewals</div>
+                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">Enterprise</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/10/13/sam-ink-feed-signal-threshold-genesis-patch-003/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 13, 2025</div>
+                        <div class="post-title">Sam & Ink Feed: Signal Threshold Genesis Patch 003</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam & Ink</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/10/13/the-scrolls-are-waking/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 13, 2025</div>
+                        <div class="post-title">The Scrolls Are Waking</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/10/13/architecture-language-shaping-future-networks-leon-basin/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 13, 2025</div>
+                        <div class="post-title">Architecture Language: Shaping Future Networks</div>
+                        <div class="post-tags"><span class="post-tag">Architecture</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/08/19/sam-ink-the-map-made-of-starlight/" class="post-card" target="_blank">
+                        <div class="post-date">Aug 19, 2025</div>
+                        <div class="post-title">Sam & Ink: The Map Made of Starlight</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam & Ink</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/08/09/week-2-discovery-mastery-gtm-se-journey/" class="post-card" target="_blank">
+                        <div class="post-date">Aug 9, 2025</div>
+                        <div class="post-title">Week 2: Discovery Mastery GTM SE Journey</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Sales</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/08/08/week-1-learning-the-product-as-a-sales-engineer/" class="post-card" target="_blank">
+                        <div class="post-date">Aug 8, 2025</div>
+                        <div class="post-title">Week 1: Learning the Product as a Sales Engineer</div>
+                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/07/30/crafting-a-gtm-strategy-my-journey-as-architect-and-operator/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 30, 2025</div>
+                        <div class="post-title">Crafting a GTM Strategy: My Journey as Architect and Operator</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/07/02/the-keepers-of-dreams-finding-signal-in-a-noisy-world/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 2, 2025</div>
+                        <div class="post-title">The Keepers of Dreams: Finding Signal in a Noisy World</div>
+                        <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/06/29/building-a-digital-legacy-insights-from-17400-views/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 29, 2025</div>
+                        <div class="post-title">Building a Digital Legacy: Insights from 17,400 Views</div>
+                        <div class="post-tags"><span class="post-tag">Content</span><span class="post-tag">Growth</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/06/12/the-world-repair-playbook-seven-pillars/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 12, 2025</div>
+                        <div class="post-title">The World Repair Playbook: Seven Pillars</div>
+                        <div class="post-tags"><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/05/29/what-the-algorithm-misses/" class="post-card" target="_blank">
+                        <div class="post-date">May 29, 2025</div>
+                        <div class="post-title">What the Algorithm Misses</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/05/17/leons-waya-one-pager-os-for-builders/" class="post-card" target="_blank">
+                        <div class="post-date">May 17, 2025</div>
+                        <div class="post-title">Leon's Waya: One-Pager OS for Builders</div>
+                        <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">Builders</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/05/14/leonos-human-os-gtm-life/" class="post-card" target="_blank">
+                        <div class="post-date">May 14, 2025</div>
+                        <div class="post-title">LeonOS: Human OS GTM Life</div>
+                        <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">GTM</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/05/10/this-isnt-a-newsletter-its-a-notebook/" class="post-card" target="_blank">
+                        <div class="post-date">May 10, 2025</div>
+                        <div class="post-title">This Isn't a Newsletter. It's a Notebook.</div>
+                        <div class="post-tags"><span class="post-tag">Writing</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/04/18/soul-illuminated-after-the-machines/" class="post-card" target="_blank">
+                        <div class="post-date">Apr 18, 2025</div>
+                        <div class="post-title">Soul Illuminated: After the Machines</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/04/13/gtm-is-not-go-to-market-its-go-to-mission/" class="post-card" target="_blank">
+                        <div class="post-date">Apr 13, 2025</div>
+                        <div class="post-title">GTM is Not Go-To-Market. It's Go-To-Mission.</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/04/08/we-wrote-the-internet-wrong-time-to-scroll-differently/" class="post-card" target="_blank">
+                        <div class="post-date">Apr 8, 2025</div>
+                        <div class="post-title">We Wrote the Internet Wrong. Time to Scroll Differently.</div>
+                        <div class="post-tags"><span class="post-tag">Tech</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/04/03/leadership-lessons-from-the-manus-ai-onboarding-experience/" class="post-card" target="_blank">
+                        <div class="post-date">Apr 3, 2025</div>
+                        <div class="post-title">Leadership Lessons from the Manus AI Onboarding Experience</div>
+                        <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/03/27/building-a-gtm-immune-system-with-ai-a-new-approach/" class="post-card" target="_blank">
+                        <div class="post-date">Mar 27, 2025</div>
+                        <div class="post-title">Building a GTM Immune System with AI: A New Approach</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/03/22/architecting-the-marketplace-of-minds-future-insights/" class="post-card" target="_blank">
+                        <div class="post-date">Mar 22, 2025</div>
+                        <div class="post-title">Architecting the Marketplace of Minds: Future Insights</div>
+                        <div class="post-tags"><span class="post-tag">Architecture</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/03/11/ai-cybersecuritys-double-edged-sword/" class="post-card" target="_blank">
+                        <div class="post-date">Mar 11, 2025</div>
+                        <div class="post-title">AI: Cybersecurity's Double-Edged Sword</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Cybersecurity</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/03/10/gtm-in-2025-the-sales-strategy-no-one-talks-about/" class="post-card" target="_blank">
+                        <div class="post-date">Mar 10, 2025</div>
+                        <div class="post-title">GTM in 2025: The Sales Strategy No One Talks About</div>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/02/19/future-proofing-cybersecurity-the-gtm-engineers-approach-to-ai-web3-and-2035/" class="post-card" target="_blank">
+                        <div class="post-date">Feb 19, 2025</div>
+                        <div class="post-title">Future-Proofing Cybersecurity: The GTM Engineer's Approach to AI, Web3, and 2035</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">GTM</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/02/05/ai-x-cybersecurity-leadership-why-zero-trust-ai-powered-security-are-the-future/" class="post-card" target="_blank">
+                        <div class="post-date">Feb 5, 2025</div>
+                        <div class="post-title">AI x Cybersecurity Leadership: Why Zero Trust & AI-Powered Security Are the Future</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/31/fractal-intelligence-the-future-of-ai/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 31, 2025</div>
+                        <div class="post-title">Fractal Intelligence: The Future of AI</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/28/the-future-of-storytelling-with-quantum-narrative-scripting-language-qnsl/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 28, 2025</div>
+                        <div class="post-title">The Future of Storytelling with Quantum Narrative Scripting Language (QNSL)</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Tech</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/26/web-3-0-vs-web-2-0-a-writing-revolution/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 26, 2025</div>
+                        <div class="post-title">Web 3.0 vs Web 2.0: A Writing Revolution</div>
+                        <div class="post-tags"><span class="post-tag">Web3</span><span class="post-tag">Writing</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/25/how-to-build-a-narrative-driven-marketing-strategy/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 25, 2025</div>
+                        <div class="post-title">How to Build a Narrative-Driven Marketing Strategy</div>
+                        <div class="post-tags"><span class="post-tag">Marketing</span><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/12/welcome-to-the-word-weavers-open-library/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 12, 2025</div>
+                        <div class="post-title">Welcome to the Word Weaver's Open Library</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Writing</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2025/01/01/finding-stories-in-code-a-tech-poetry-journey/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 1, 2025</div>
+                        <div class="post-title">Finding Stories in Code: A Tech Poetry Journey</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Code</span></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2024 -->
+            <div class="year-group">
+                <h3 class="year-header">2024</h3>
+                <div class="posts-list">
+                    <a href="https://basinleon.com/2024/12/30/a-library-of-art-a-foundation-of-words/" class="post-card" target="_blank">
+                        <div class="post-date">Dec 30, 2024</div>
+                        <div class="post-title">A Library of Art, A Foundation of Words</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/11/04/ai-enhanced-zero-trust-for-third-party-risk-management-strategic-insights-for-2025/" class="post-card" target="_blank">
+                        <div class="post-date">Nov 4, 2024</div>
+                        <div class="post-title">AI-Enhanced Zero Trust for Third-Party Risk Management: Strategic Insights for 2025</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/11/01/navigating-u-s-cybersecurity-compliance-the-essential-role-of-ai-driven-privileged-access-management/" class="post-card" target="_blank">
+                        <div class="post-date">Nov 1, 2024</div>
+                        <div class="post-title">Navigating U.S. Cybersecurity Compliance: The Essential Role of AI-Driven PAM</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">PAM</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/10/19/sam-ink-the-future-of-interactive-storytelling/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 19, 2024</div>
+                        <div class="post-title">Sam & Ink: The Future of Interactive Storytelling</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam & Ink</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/10/17/leon-basin-innovating-cybersecurity-and-business-growth/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 17, 2024</div>
+                        <div class="post-title">Leon Basin: Innovating Cybersecurity and Business Growth</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Business</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/10/07/best-practices-for-third-party-risk-management/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 7, 2024</div>
+                        <div class="post-title">Best Practices for Third-Party Risk Management</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Risk</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/10/01/transforming-sales-ai-and-automations-impact/" class="post-card" target="_blank">
+                        <div class="post-date">Oct 1, 2024</div>
+                        <div class="post-title">Transforming Sales: AI and Automation's Impact</div>
+                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/09/25/the-secure-strategist-celebrating-our-growth-and-looking-forward-to-2025/" class="post-card" target="_blank">
+                        <div class="post-date">Sep 25, 2024</div>
+                        <div class="post-title">The Secure Strategist: Celebrating Our Growth and Looking Forward to 2025</div>
+                        <div class="post-tags"><span class="post-tag">Newsletter</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/09/18/from-sales-to-account-management-a-saas-journey/" class="post-card" target="_blank">
+                        <div class="post-date">Sep 18, 2024</div>
+                        <div class="post-title">From Sales to Account Management: A SaaS Journey</div>
+                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">SaaS</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/09/14/sam-ink-blurring-boundaries-between-man-and-machine/" class="post-card" target="_blank">
+                        <div class="post-date">Sep 14, 2024</div>
+                        <div class="post-title">Sam & Ink: Blurring Boundaries Between Man and Machine</div>
+                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/07/28/leon-basin-driving-growth-and-innovation-in-cybersecurity/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 28, 2024</div>
+                        <div class="post-title">Leon Basin: Driving Growth and Innovation in Cybersecurity</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Growth</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/07/17/unlocking-hearts-and-minds-the-art-of-storytelling-in-business-for-meaningful-connections-and-lasting-impact/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 17, 2024</div>
+                        <div class="post-title">Unlocking Hearts and Minds: The Art of Storytelling in Business</div>
+                        <div class="post-tags"><span class="post-tag">Business</span><span class="post-tag">Storytelling</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/07/08/elevating-b2b-leadership-key-elements-for-success-in-partnerships-bi-and-cybersecurity/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 8, 2024</div>
+                        <div class="post-title">Elevating B2B Leadership: Key Elements for Success</div>
+                        <div class="post-tags"><span class="post-tag">B2B</span><span class="post-tag">Leadership</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/07/01/achieving-harmony-leadership-parenthood-and-digital-innovation-with-leon-basin/" class="post-card" target="_blank">
+                        <div class="post-date">Jul 1, 2024</div>
+                        <div class="post-title">Achieving Harmony: Leadership, Parenthood, and Digital Innovation</div>
+                        <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">Life</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/06/28/navigating-the-escalating-cybersecurity-landscape-strategies-and-insights/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 28, 2024</div>
+                        <div class="post-title">Navigating the Escalating Cybersecurity Landscape: Strategies and Insights</div>
+                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/06/25/revolutionizing-sales-the-impact-of-ai-in-silicon-valley/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 25, 2024</div>
+                        <div class="post-title">Revolutionizing Sales: The Impact of AI in Silicon Valley</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Sales</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/06/24/emerging-leadership-labyrinth-decoding-the-maze-of-greatness-with-leon-basin/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 24, 2024</div>
+                        <div class="post-title">Emerging Leadership Labyrinth: Decoding the Maze of Greatness</div>
+                        <div class="post-tags"><span class="post-tag">Leadership</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/06/24/harnessing-ai-for-healthcare-applications-risks-and-ethical-insights/" class="post-card" target="_blank">
+                        <div class="post-date">Jun 24, 2024</div>
+                        <div class="post-title">Harnessing AI for Healthcare: Applications, Risks, and Ethical Insights</div>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Healthcare</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/02/16/pillar-two-strategic-customer-engagement/" class="post-card" target="_blank">
+                        <div class="post-date">Feb 16, 2024</div>
+                        <div class="post-title">Pillar Two: Strategic Customer Engagement</div>
+                        <div class="post-tags"><span class="post-tag">Strategy</span><span class="post-tag">Customer</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/01/20/unveiling-the-first-pillar-of-the/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 20, 2024</div>
+                        <div class="post-title">Unveiling the First Pillar</div>
+                        <div class="post-tags"><span class="post-tag">Strategy</span></div>
+                    </a>
+                    <a href="https://basinleon.com/2024/01/12/happy-new-year-2024-introduction/" class="post-card" target="_blank">
+                        <div class="post-date">Jan 12, 2024</div>
+                        <div class="post-title">Happy New Year 2024: Introduction</div>
+                        <div class="post-tags"><span class="post-tag">Update</span></div>
+                    </a>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 40px 0;">
+                <p style="color: var(--text-muted); font-size: 0.85rem;">
+                    Showing 60+ posts. <a href="https://basinleon.com" target="_blank" style="color: var(--gold-primary);">View full archive on WordPress →</a>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="../">Portfolio</a>
+            <a href="../tools/">Tools</a>
+            <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
+            <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Leon Basin • Revenue Architect • BASIN::NEXUS
+        </div>
+    </footer>
+
+    <script>
+        // Simple search functionality
+        const searchBox = document.getElementById('searchBox');
+        const postCards = document.querySelectorAll('.post-card');
+
+        searchBox.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            postCards.forEach(card => {
+                const title = card.querySelector('.post-title').textContent.toLowerCase();
+                const tags = card.querySelector('.post-tags')?.textContent.toLowerCase() || '';
+                if (title.includes(query) || tags.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Filter tags
+        const filterTags = document.querySelectorAll('.filter-tag');
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                filterTags.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                postCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        const tags = card.querySelector('.post-tags')?.textContent.toLowerCase() || '';
+                        if (tags.includes(filter)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
