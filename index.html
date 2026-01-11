@@ -880,17 +880,97 @@
 <body>
 
     <!-- Navigation -->
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 8, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gold-border); padding: 16px 24px;">
+    <nav id="main-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 8, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gold-border); padding: 16px 24px;">
         <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
             <a href="./" style="font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; color: var(--gold-primary); text-decoration: none; letter-spacing: 2px;">BASIN::NEXUS</a>
-            <div style="display: flex; gap: 32px;">
+
+            <!-- Desktop Nav -->
+            <div id="nav-links" style="display: flex; gap: 32px; align-items: center;">
                 <a href="./" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--gold-primary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">Portfolio</a>
                 <a href="./blog/" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">Blog</a>
                 <a href="./tools/" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">Tools</a>
                 <a href="https://github.com/BasinLeon" target="_blank" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">GitHub</a>
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" onclick="toggleTheme()" style="background: transparent; border: 1px solid var(--gold-border); color: var(--gold-primary); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.7rem;">LIGHT</button>
             </div>
+
+            <!-- Mobile Hamburger -->
+            <button id="hamburger" onclick="toggleMobileMenu()" style="display: none; background: transparent; border: none; color: var(--gold-primary); font-size: 1.5rem; cursor: pointer;">&#9776;</button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" style="display: none; padding: 20px 0; border-top: 1px solid var(--gold-border); margin-top: 16px;">
+            <a href="./" style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--gold-primary); text-decoration: none; letter-spacing: 1px;">Portfolio</a>
+            <a href="./blog/" style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px;">Blog</a>
+            <a href="./tools/" style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px;">Tools</a>
+            <a href="https://github.com/BasinLeon" target="_blank" style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px;">GitHub</a>
+            <button onclick="toggleTheme()" style="margin-top: 12px; background: transparent; border: 1px solid var(--gold-border); color: var(--gold-primary); padding: 10px 20px; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; width: 100%;">Toggle Theme</button>
         </div>
     </nav>
+
+    <style>
+        @media (max-width: 768px) {
+            #nav-links { display: none !important; }
+            #hamburger { display: block !important; }
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background: #f5f3ef !important;
+            color: #1a1a1a !important;
+        }
+        body.light-theme::before {
+            background-image: linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px) !important;
+        }
+        body.light-theme .hero-title,
+        body.light-theme .triad-desc,
+        body.light-theme .timeline-desc,
+        body.light-theme .feature-desc,
+        body.light-theme .publication-desc {
+            color: #333 !important;
+        }
+        body.light-theme .nexus-showcase,
+        body.light-theme .triad-card,
+        body.light-theme .feature-card,
+        body.light-theme .education-card,
+        body.light-theme .publication-card {
+            background: #fff !important;
+            border-color: #ddd !important;
+        }
+        body.light-theme #main-nav {
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+        body.light-theme .system-widget {
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+        body.light-theme footer {
+            background: #f0ebe3 !important;
+        }
+    </style>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const btn = document.getElementById('theme-toggle');
+            if (btn) {
+                btn.textContent = document.body.classList.contains('light-theme') ? 'DARK' : 'LIGHT';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
+            const btn = document.getElementById('theme-toggle');
+            if (btn) btn.textContent = 'DARK';
+        }
+    </script>
 
     <!-- SYSTEM WIDGET -->
     <div class="system-widget fade-in-up">
@@ -1181,9 +1261,17 @@
                 </div>
 
                 <div class="timeline-item">
+                    <div class="timeline-company">Basin & Associates</div>
+                    <div class="timeline-role">Principal Consultant (GTM & Pipeline Architecture)</div>
+                    <div class="timeline-date">Aug 2023 – Present</div>
+                    <div class="timeline-desc">Zero-to-One GTM architecture for AI-native clients. Built Basin::Nexus—8,400+ line Python/Streamlit career OS with multi-agent LLM orchestration.</div>
+                    <div class="timeline-metric">8,400+ Lines Python | 18 Modules</div>
+                </div>
+
+                <div class="timeline-item">
                     <div class="timeline-company">Sense</div>
                     <div class="timeline-role">Group Manager, Global Business Development</div>
-                    <div class="timeline-date">Jan 2021 – Apr 2023</div>
+                    <div class="timeline-date">July 2022 – April 2023</div>
                     <div class="timeline-desc">Managed high-performing BDR team to 105% of quota. Built "Social Selling"
                         playbook that increased response rates by 125%. Personally closed first $250K outbound deal.
                     </div>

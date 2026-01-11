@@ -734,6 +734,131 @@
         </div>
     </section>
 
+    <!-- Live Demo Embed Section -->
+    <section style="padding: 80px 0; border-top: 1px solid var(--gold-border);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">LIVE DEMO</h2>
+                <p class="section-subtitle">Try BASIN::NEXUS directly in your browser</p>
+            </div>
+
+            <div style="background: var(--bg-card); border: 2px solid var(--gold-primary); border-radius: 16px; overflow: hidden; position: relative;">
+                <div style="padding: 12px 20px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-dark)); display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #000; font-weight: 700;">BASIN::NEXUS v9.0</span>
+                    <a href="https://basin-nexus.streamlit.app" target="_blank" style="font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #000; text-decoration: none;">OPEN IN NEW TAB ↗</a>
+                </div>
+                <iframe
+                    src="https://basin-nexus.streamlit.app/?embed=true"
+                    style="width: 100%; height: 600px; border: none; background: #0e1117;"
+                    loading="lazy"
+                    title="BASIN::NEXUS Demo"
+                ></iframe>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px; font-size: 0.75rem; color: var(--text-muted);">
+                Full career intelligence platform. Hunt jobs, practice interviews, track pipeline.
+            </p>
+        </div>
+    </section>
+
+    <!-- AI Chat Widget -->
+    <section id="ai-chat" style="padding: 80px 0; border-top: 1px solid var(--gold-border);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ASK BASIN::NEXUS</h2>
+                <p class="section-subtitle">AI-powered assistant for GTM architecture questions</p>
+            </div>
+
+            <div id="chat-container" style="max-width: 700px; margin: 0 auto; background: linear-gradient(145deg, var(--bg-card), var(--bg-deep)); border: 1px solid var(--gold-border); border-radius: 16px; overflow: hidden;">
+                <!-- Chat Messages -->
+                <div id="chat-messages" style="height: 300px; overflow-y: auto; padding: 20px;">
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">AI</div>
+                        <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary);">
+                            Hi! I'm the BASIN::NEXUS assistant. Ask me about GTM architecture, the $0 stack, revenue systems, or Leon's projects. Try: "What is signal-to-system-to-scale?" or "How does the $0 GTM stack work?"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div style="border-top: 1px solid var(--gold-border); padding: 16px; display: flex; gap: 12px;">
+                    <input
+                        type="text"
+                        id="chat-input"
+                        placeholder="Ask about GTM architecture, tools, or revenue systems..."
+                        style="flex: 1; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 12px 16px; border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;"
+                        onkeypress="if(event.key === 'Enter') sendMessage()"
+                    >
+                    <button
+                        onclick="sendMessage()"
+                        style="background: linear-gradient(145deg, var(--gold-dark), var(--gold-primary)); border: none; padding: 12px 24px; border-radius: 8px; color: #000; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer;"
+                    >SEND</button>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 16px; font-size: 0.7rem; color: var(--text-muted);">
+                Powered by pre-trained responses. For full AI capabilities, connect your API key.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Simple chat responses (expandable with real LLM API)
+        const responses = {
+            "signal": "SIGNAL is the first pillar: raw data from Google Sheets, webhooks, RSS feeds, LinkedIn. It's the 'input layer' - where information enters your GTM system before processing.",
+            "system": "SYSTEM is the second pillar: enrichment, scoring, and orchestration via n8n workflows. This is where raw signals become actionable intelligence.",
+            "scale": "SCALE is the third pillar: the output layer generating email drafts, executive briefs, CRM updates, and Slack alerts. It's where system outputs multiply your human effort.",
+            "0 gtm": "The $0 GTM Stack replaces $950+/mo SaaS tools with: n8n (free orchestration), free APIs (Hunter, Clearbit), local LLMs (Ollama), and custom Python scripts. Enterprise capability, zero cost.",
+            "gtm": "GTM = Go-To-Market. But in my philosophy, it's 'Go-To-Mission' - building systems that align signal, action, and outcome. Revenue is architecture, not arithmetic.",
+            "nexus": "BASIN::NEXUS is an 8,400+ line Python/Streamlit career intelligence platform with 18 modules: job hunting, interview simulation, voice coaching, pipeline CRM, and more.",
+            "n8n": "n8n is the orchestration backbone - a self-hosted workflow automation tool that connects all the pieces. Think Zapier, but free and infinitely more powerful.",
+            "default": "I can answer questions about GTM architecture, the $0 stack, signal-system-scale philosophy, BASIN::NEXUS, or Leon's projects. What would you like to know?"
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            const query = input.value.trim().toLowerCase();
+
+            if (!query) return;
+
+            // Add user message
+            messages.innerHTML += `
+                <div style="display: flex; gap: 12px; margin-bottom: 16px; justify-content: flex-end;">
+                    <div style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary); max-width: 80%;">
+                        ${input.value}
+                    </div>
+                    <div style="width: 32px; height: 32px; background: var(--text-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">U</div>
+                </div>
+            `;
+
+            // Find response
+            let response = responses.default;
+            for (let key in responses) {
+                if (query.includes(key)) {
+                    response = responses[key];
+                    break;
+                }
+            }
+
+            // Add AI response
+            setTimeout(() => {
+                messages.innerHTML += `
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">AI</div>
+                        <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary);">
+                            ${response}
+                        </div>
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+
     <!-- Footer -->
     <footer>
         <div class="footer-links">
