@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Labyrinth of the Mind: An Interactive Journey into Self-Reflection | Leon Basin</title>
+    <meta name="description" content="How I built a text-based adventure game designed as a tool for introspection using Python, Streamlit, and classical literature.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AF37; --gold-light: #FFD700;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508; --bg-card: #0a0a0f;
+            --text-primary: #f0e6d3; --text-secondary: #8b8573; --text-muted: #5a584f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, #050508 0%, #0a0a0f 100%); color: var(--text-primary); line-height: 1.8; min-height: 100vh; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 8, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gold-border); padding: 16px 24px; }
+        .nav-container { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--gold-primary); text-decoration: none; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--gold-primary); }
+        article { max-width: 720px; margin: 0 auto; padding: 120px 24px 80px; }
+        .post-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--gold-primary); margin-bottom: 24px; line-height: 1.3; }
+        .post-tags { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; padding: 4px 12px; border: 1px solid var(--gold-border); border-radius: 4px; color: var(--text-muted); }
+        .lead { font-size: 1.15rem; color: var(--text-primary); border-left: 3px solid var(--gold-primary); padding-left: 20px; margin-bottom: 40px; font-style: italic; }
+        h2 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--gold-primary); margin: 48px 0 16px; letter-spacing: 1px; }
+        h3 { font-size: 1rem; color: var(--text-primary); margin: 32px 0 12px; font-weight: 600; }
+        p { margin-bottom: 20px; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        blockquote { border-left: 3px solid var(--gold-primary); padding-left: 20px; margin: 32px 0; font-style: italic; color: var(--text-primary); }
+        ul, ol { margin: 20px 0 20px 24px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .highlight-box { background: linear-gradient(145deg, var(--bg-card), var(--bg-deep)); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px; margin: 32px 0; }
+        .highlight-box h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--gold-primary); margin-bottom: 12px; }
+        .back-link { display: inline-block; margin-top: 48px; padding: 12px 24px; border: 1px solid var(--gold-border); border-radius: 8px; color: var(--gold-primary); text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 1px; }
+        .back-link:hover { background: rgba(212, 175, 55, 0.1); }
+        footer { border-top: 1px solid var(--gold-border); padding: 40px 24px; text-align: center; background: var(--bg-deep); }
+        .footer-links { display: flex; justify-content: center; gap: 32px; margin-bottom: 24px; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; }
+        .footer-copyright { font-size: 0.75rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="../../" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="../../">Portfolio</a>
+                <a href="../">Blog</a>
+                <a href="../../tools/">Tools</a>
+            </div>
+        </div>
+    </nav>
+
+    <article>
+        <div class="post-meta">January 2, 2026</div>
+        <h1>Building Labyrinth of the Mind: An Interactive Journey into Self-Reflection</h1>
+
+        <div class="post-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">Interactive Fiction</span>
+            <span class="tag">Psychology</span>
+        </div>
+
+        <p class="lead">"Unlike mazes, labyrinths represent a singular winding path toward inner understanding."</p>
+
+        <h2>The Vision</h2>
+
+        <p>I built "Labyrinth of the Mind" as a text-based adventure game designed as a tool for introspection. The game guides players through symbolic rooms while they collect three keys—Shadow, Light, and Truth—to facilitate self-discovery.</p>
+
+        <h2>The Labyrinth Symbolism</h2>
+
+        <p>The game features rooms including the <strong>Hall of Mirrors</strong>, <strong>Shadow Chamber</strong>, and <strong>Library of Unlived Lives</strong>. Each space represents a different aspect of the inner journey.</p>
+
+        <div class="highlight-box">
+            <h4>The Three Keys</h4>
+            <ul>
+                <li><strong>Shadow Key:</strong> Acknowledging the parts of yourself you hide</li>
+                <li><strong>Light Key:</strong> Embracing your potential and worthiness</li>
+                <li><strong>Truth Key:</strong> Accepting your authentic narrative</li>
+            </ul>
+        </div>
+
+        <h2>Literary Integration</h2>
+
+        <p>The experience incorporates quotes from thinkers like <strong>Carl Jung</strong>, <strong>T.S. Eliot</strong>, and <strong>Rumi</strong>. These passages function as guides rather than decoration, establishing emotional context for player choices.</p>
+
+        <blockquote>"One does not become enlightened by imagining figures of light, but by making the darkness conscious." — Carl Jung</blockquote>
+
+        <h2>Game Mechanics</h2>
+
+        <ul>
+            <li><strong>Three collectible keys</strong> represent different aspects of self-awareness</li>
+            <li><strong>Reflection prompts</strong> pause gameplay for journaling</li>
+            <li><strong>Five distinct endings</strong> based on player choices</li>
+            <li><strong>Multiple unlockable archetypes</strong> and 18 achievements</li>
+        </ul>
+
+        <h2>Technical Details</h2>
+
+        <div class="highlight-box">
+            <h4>Stack</h4>
+            <ul>
+                <li><strong>Language:</strong> Python</li>
+                <li><strong>Framework:</strong> Streamlit</li>
+                <li><strong>Visualization:</strong> Custom SVG generation</li>
+                <li><strong>Features:</strong> Save/load systems, accessibility options, shareable result cards</li>
+            </ul>
+        </div>
+
+        <h2>Core Message</h2>
+
+        <p>The project demonstrates how interactivity deepens meaning in storytelling and how constraints foster creative problem-solving.</p>
+
+        <blockquote>"The path through the labyrinth is never straight. But it always leads somewhere true."</blockquote>
+
+        <a href="../" class="back-link">← Back to Blog</a>
+    </article>
+
+    <footer>
+        <div class="footer-links">
+            <a href="../../">Portfolio</a>
+            <a href="../../tools/">Tools</a>
+            <a href="https://github.com/BasinLeon">GitHub</a>
+        </div>
+        <div class="footer-copyright">© 2026 Leon Basin • Revenue Architect</div>
+    </footer>
+</body>
+</html>
