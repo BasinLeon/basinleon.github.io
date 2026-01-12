@@ -667,3 +667,92 @@ body {
         text-align: center;
     }
 }
+
+/* ========================================
+   Status Badges for Live Demos
+   ======================================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: var(--transition);
+}
+
+.status-badge.status-live {
+    background: rgba(0, 255, 157, 0.1);
+    color: var(--color-accent-green);
+    border: 1px solid rgba(0, 255, 157, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+}
+
+.status-badge.status-offline {
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--color-error);
+    border: 1px solid rgba(255, 51, 102, 0.3);
+}
+
+.status-badge.status-checking {
+    background: rgba(0, 163, 255, 0.1);
+    color: var(--color-accent-blue);
+    border: 1px solid rgba(0, 163, 255, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.status-badge.status-unknown {
+    background: rgba(136, 146, 144, 0.1);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+/* Project Metrics */
+.project-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+}
+
+.metric:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-accent-green);
+    color: var(--color-text-primary);
+}
+
+/* Loading skeleton for metrics */
+.metric.loading {
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
