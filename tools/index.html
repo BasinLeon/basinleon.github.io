@@ -801,6 +801,9 @@
             </p>
             <div id="api-key-input" style="max-width: 500px; margin: 16px auto; display: none; padding: 16px; background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px;">
                 <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-secondary);">Enter your Claude or OpenAI API key for enhanced responses:</p>
+                <p style="font-size: 0.7rem; margin-bottom: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 1rem;">⚠️</span> Keys are stored locally in your browser (not recommended for shared devices)
+                </p>
                 <input type="password" id="api-key" placeholder="sk-..." style="width: 100%; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--text-primary); font-family: monospace; font-size: 0.8rem; margin-bottom: 8px;">
                 <select id="api-provider" style="width: 100%; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--text-primary); font-size: 0.8rem; margin-bottom: 12px;">
                     <option value="huggingface">Hugging Face (Free)</option>
@@ -1014,6 +1017,28 @@ Answer questions about Leon's background, projects, GTM philosophy, or the $0 st
             © 2025 Leon Basin • Revenue Architect • $0 GTM Stack
         </div>
     </footer>
+
+    <!-- Streamlit Iframe Error Handler -->
+    <script>
+        // Add graceful error handling for Streamlit embed
+        document.addEventListener('DOMContentLoaded', function() {
+            const streamlitIframe = document.querySelector('iframe[src*="streamlit"]');
+            if (streamlitIframe) {
+                // Set a timeout to check if iframe loaded
+                setTimeout(function() {
+                    try {
+                        // If iframe is still empty or errored, it won't load properly
+                        // This is expected behavior on Streamlit free tier
+                        streamlitIframe.addEventListener('error', function() {
+                            console.log('Streamlit embed not available - use "OPEN IN NEW TAB" link');
+                        });
+                    } catch (e) {
+                        // Silently handle cross-origin errors
+                    }
+                }, 3000);
+            }
+        });
+    </script>
 
 </body>
 
