@@ -66,6 +66,62 @@
             headline: 'Technical Revenue Architect with 15+ years of experience',
             focus: 'Bridging Product innovation and Commercial scale',
             differentiator: 'Unlike traditional sales leaders, I build the tooling I use.'
+        },
+
+        // Company Fit Analysis
+        companies: {
+            ambient: {
+                name: 'Ambient.ai',
+                role: 'GTM Engineering Lead',
+                culture: ['Technical founder', 'Builder-first', 'AI-native', 'Small team autonomy'],
+                skills_match: { 'Python': 95, 'AI/LLMs': 90, 'GTM Strategy': 95, 'Signal Processing': 100, 'Automation': 95 },
+                proof_points: [
+                    'Built pro bono case study: $424K savings model',
+                    '27,000+ lines of Python production code',
+                    'Signal Engine matches their video→security architecture',
+                    'Ex-Google, Fudo (security), SurveyMonkey (SaaS scale)'
+                ],
+                why_fit: 'You already built what they\'re hiring for. The case study IS the interview.'
+            },
+            brm: {
+                name: 'BRM Labs',
+                role: 'Founding GTM Engineer',
+                culture: ['Series A', 'Systems thinker', 'Hybrid marketer+builder', 'Infrastructure-first'],
+                skills_match: { 'Python': 95, 'Messaging→Signals': 100, 'GTM Infrastructure': 95, 'Clear Communication': 90, 'Systems Design': 95 },
+                proof_points: [
+                    'JD says "infrastructure that turns messaging into signals" - built Signal Engine',
+                    'BASIN::NEXUS is 27,000+ lines of messaging→action automation',
+                    'LiveRamp case study shows bifurcated system design thinking',
+                    'MBA + 15 years GTM = perfect "hybrid marketer + builder"'
+                ],
+                why_fit: 'Your JD reads like a description of BASIN::NEXUS. You ARE the spec.'
+            },
+            sendbird: {
+                name: 'Sendbird',
+                role: 'Manager, Global SDR',
+                culture: ['CMO-led', 'Efficiency-focused', 'Scale without bloat', 'Data-driven'],
+                skills_match: { 'SDR Management': 85, 'Automation': 95, 'Python for Sales Ops': 100, 'Pipeline Architecture': 95, 'CAC Optimization': 90 },
+                proof_points: [
+                    '160% pipeline increase YoY at Fudo (zero additional headcount)',
+                    'Built $0 GTM Stack (replaces $950/mo in SaaS tools)',
+                    'Lead Script Generator automates list-building & personalization',
+                    'Managed $10M+ pipeline at Sense (105% quota attainment)'
+                ],
+                why_fit: 'You don\'t just manage SDRs - you build the Python scripts that 10x their output.'
+            },
+            liveramp: {
+                name: 'LiveRamp',
+                role: 'Lead PMM / GTM Strategy',
+                culture: ['Dual-product complexity', 'Enterprise + SMB mix', 'Data-first', 'Bifurcated systems'],
+                skills_match: { 'Dual-GTM Architecture': 100, 'Identity/Data Marketplace': 95, 'Enterprise Sales': 90, 'PMM Strategy': 85, 'Systems Thinking': 95 },
+                proof_points: [
+                    'Built entire LiveRamp case study unprompted (shows initiative)',
+                    'Bifurcated dashboard design (Identity vs Marketplace personas)',
+                    'Managed $300M+ portfolio at SurveyMonkey (enterprise scale)',
+                    'Partner ecosystems (US/LATAM) at Fudo (channel experience)'
+                ],
+                why_fit: 'Your case study shows you understand their dual-product architecture better than most employees.'
+            }
         }
     };
 
@@ -92,6 +148,8 @@
 ║    LIST certifications   → Certs & training              ║
 ║    LIST education        → Degrees                       ║
 ║    QUERY signals         → Market signal status          ║
+║    FIT <company>         → Company fit analysis          ║
+║       → fit ambient, fit brm, fit sendbird, fit liveramp ║
 ║    HELP                  → This menu                     ║
 ╚══════════════════════════════════════════════════════════╝`
             };
@@ -174,6 +232,59 @@
 │ S-Tier Matches:   ${String(s.sTier).padEnd(13)}│
 │ A-Tier Matches:   ${String(s.aTier).padEnd(13)}│
 └─────────────────────────────────┘`
+            };
+        }
+
+        // FIT <company> - Company fit analysis
+        if (cmd.startsWith('fit ')) {
+            const company = cmd.split(' ')[1];
+            const data = DATA.companies[company];
+
+            if (!data) {
+                return {
+                    type: 'error',
+                    output: `Company not found. Try: fit ambient, fit brm, fit sendbird, fit liveramp`
+                };
+            }
+
+            // Generate ASCII bar chart for skills
+            let skillsChart = '';
+            for (const [skill, pct] of Object.entries(data.skills_match)) {
+                const bars = '█'.repeat(Math.floor(pct / 5));
+                const spaces = '░'.repeat(20 - Math.floor(pct / 5));
+                skillsChart += `\n║  ${skill.padEnd(23)} ${bars}${spaces} ${pct}%     ║`;
+            }
+
+            // Calculate overall match (average of skills)
+            const overall = Math.round(Object.values(data.skills_match).reduce((a, b) => a + b, 0) / Object.values(data.skills_match).length);
+            const overallBars = '█'.repeat(Math.floor(overall / 5));
+            const overallSpaces = '░'.repeat(20 - Math.floor(overall / 5));
+
+            return {
+                type: 'result',
+                output: `
+╔══════════════════════════════════════════════════════════╗
+║  COMPANY FIT ANALYSIS: ${data.name.toUpperCase().padEnd(27)}║
+╠══════════════════════════════════════════════════════════╣
+║  ROLE: ${data.role.padEnd(48)}║
+╠══════════════════════════════════════════════════════════╣
+║  CULTURE INDICATORS:                                     ║
+${data.culture.map(c => `║    ✓ ${c.padEnd(50)}║`).join('\n')}
+╠══════════════════════════════════════════════════════════╣
+║  SKILLS MATCH:                                           ║
+${skillsChart}
+╠══════════════════════════════════════════════════════════╣
+║  PROOF POINTS:                                           ║
+${data.proof_points.map((p, i) => `║  ${String(i + 1)}. ${p.substring(0, 52).padEnd(52)}║${p.length > 52 ? `\n║     ${p.substring(52).padEnd(52)}║` : ''}`).join('\n')}
+╠══════════════════════════════════════════════════════════╣
+║  WHY YOU FIT:                                            ║
+║  ${data.why_fit.substring(0, 54).padEnd(54)}║
+${data.why_fit.length > 54 ? `║  ${data.why_fit.substring(54).padEnd(54)}║` : ''}
+╠══════════════════════════════════════════════════════════╣
+║  OVERALL MATCH: ${overallBars}${overallSpaces} ${overall}%                ║
+╚══════════════════════════════════════════════════════════╝
+
+TIP: Type "DESCRIBE projects" to see your portfolio, or "SHOW career" for experience.`
             };
         }
 
