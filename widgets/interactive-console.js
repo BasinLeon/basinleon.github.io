@@ -31,7 +31,6 @@
         },
 
         career: [
-            { company: 'Ambient.ai', role: 'GTM Engineering Lead (Final Round)', years: 'Jan 2026 – In Progress', metric: '🎯 Pro Bono Case Study: $424K Savings' },
             { company: 'Fudo Security', role: 'Sr. Manager, GTM Strategy (Americas)', years: 'Feb 2024 – Nov 2024', metric: '160% Pipeline Increase YoY' },
             { company: 'Sense', role: 'Group Manager, Global BD', years: '2021 – 2023', metric: '$10M+ Pipeline, 105% Quota' },
             { company: 'SurveyMonkey (Momentive)', role: 'Enterprise Account Manager', years: '2019 – 2021', metric: '$300M+ Portfolio, 700+ Accounts' },
