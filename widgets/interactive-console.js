@@ -31,7 +31,8 @@
         },
 
         career: [
-            { company: 'Fudo Security', role: 'Sr. Manager, GTM Strategy (Americas)', years: 'Feb 2024 – Nov 2025', metric: '160% Pipeline Increase YoY' },
+            { company: 'Ambient.ai', role: 'GTM Engineering Lead (Final Round)', years: 'Jan 2026 – In Progress', metric: '🎯 Pro Bono Case Study: $424K Savings' },
+            { company: 'Fudo Security', role: 'Sr. Manager, GTM Strategy (Americas)', years: 'Feb 2024 – Nov 2024', metric: '160% Pipeline Increase YoY' },
             { company: 'Sense', role: 'Group Manager, Global BD', years: '2021 – 2023', metric: '$10M+ Pipeline, 105% Quota' },
             { company: 'SurveyMonkey (Momentive)', role: 'Enterprise Account Manager', years: '2019 – 2021', metric: '$300M+ Portfolio, 700+ Accounts' },
             { company: 'Google', role: 'Operations Specialist (Shopping)', years: '2014 – 2015', metric: '15% Efficiency Increase' },
@@ -40,10 +41,10 @@
         ],
 
         projects: [
-            { name: 'BASIN::NEXUS', desc: 'GTM Operating System — AI-augmented internal tools to automate revenue workflows', lines: '10,500+', tech: 'Python/Streamlit/LLMs' },
+            { name: 'BASIN::NEXUS v10.0', desc: 'GTM Operating System — 5 AI agents, multi-agent orchestration, voice lab, interview simulator', lines: '27,000+', tech: 'Python/Streamlit/LLMs' },
+            { name: 'Ambient.ai Signal Refinery', desc: 'Pro bono case study: AI-powered lead scoring replacing manual SDR workflows', tech: 'Python/LLMs/n8n' },
             { name: 'Lead Script Generator', desc: 'LLM-powered "Engineer-to-Engineer" outreach scripts based on technical friction signals', tech: 'Python/Claude/Gemini' },
-            { name: 'Signal Architect', desc: 'Scoring engine to filter market noise and prioritize high-intent technical founders', tech: 'Python/SQLite' },
-            { name: 'Market Signal Factory', desc: 'JD Analyzer & Match Scorer for pipeline prioritization', lines: '500+', tech: 'Python/SQLite' }
+            { name: 'Signal Architect', desc: 'Scoring engine to filter market noise and prioritize high-intent technical founders', tech: 'Python/SQLite' }
         ],
 
         signals: {
