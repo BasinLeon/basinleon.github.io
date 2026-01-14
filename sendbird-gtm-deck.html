@@ -29,6 +29,12 @@
             --border-color: #2a2a2a;
         }
 
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
@@ -36,14 +42,27 @@
         }
 
         .slide {
-            width: 100%;
-            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             padding: 60px 80px;
             display: flex;
             flex-direction: column;
             page-break-after: always;
-            position: relative;
             overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .slide.active,
+        .slide:first-of-type {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
         }
 
         .slide::before {
