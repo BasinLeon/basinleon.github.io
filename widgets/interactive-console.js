@@ -1,6 +1,6 @@
 /**
  * BASIN::NEXUS Interactive Console
- * Self-contained console widget with REDACTED SITREP protocol
+ * Self-contained widget with AUTH system and REDACTED protocol
  * 
  * "The signal exists on multiple planes. Those who seek, find."
  */
@@ -8,9 +8,10 @@
 (function () {
     'use strict';
 
-    // HISTORY SYSTEM
+    // STATE MANAGEMENT
     let commandHistory = [];
     let historyIndex = -1;
+    let isAuthenticated = false; // Default: Locked
 
     // Console Styles
     const STYLES = `
@@ -59,6 +60,9 @@
         }
         .output-line .prompt {
             color: #D4AF37;
+        }
+        .output-line .prompt.admin {
+            color: #27c93f;
         }
         .output-line .cmd {
             color: #4fc3f7;
@@ -130,7 +134,7 @@
                         <div class="output-line">&nbsp;</div>
                     </div>
                     <div class="console-input-line">
-                        <span class="prompt">guest@basin-nexus:~$</span>
+                        <span class="prompt" id="console-prompt">guest@basin-nexus:~$</span>
                         <input type="text" id="console-input" placeholder="type a command..." autocomplete="off" spellcheck="false">
                     </div>
                 </div>
@@ -141,6 +145,7 @@
         const input = document.getElementById('console-input');
         const output = document.getElementById('console-output');
         const terminalBody = document.getElementById('console-body');
+        const promptEl = document.getElementById('console-prompt');
 
         // Focus management
         terminalBody.addEventListener('click', () => input.focus());
@@ -171,17 +176,17 @@
                 }
             } else if (e.key === 'Tab') {
                 e.preventDefault();
-                const validCmds = ['help', 'about', 'stack', 'projects', 'contact', 'sitrep', 'gravity', 'clear'];
+                const validCmds = ['help', 'about', 'stack', 'projects', 'contact', 'sitrep', 'gravity', 'clear', 'auth'];
                 const current = input.value.toLowerCase();
                 const match = validCmds.find(c => c.startsWith(current));
                 if (match) input.value = match;
             } else if (e.key === 'Enter') {
-                executeCommand(input.value.trim());
+                executeCommand(input.value.trim(), promptEl);
             }
         });
     }
 
-    function executeCommand(command) {
+    function executeCommand(command, promptEl) {
         const input = document.getElementById('console-input');
         const output = document.getElementById('console-output');
         const terminalBody = document.getElementById('console-body');
@@ -192,14 +197,16 @@
         }
         input.value = '';
 
-        // Show command
+        // Show command with current auth state
         const cmdLine = document.createElement('div');
         cmdLine.className = 'output-line';
-        cmdLine.innerHTML = `<span class="prompt">guest@basin-nexus:~$</span> ${command}`;
+        const promptClass = isAuthenticated ? 'prompt admin' : 'prompt';
+        const promptText = isAuthenticated ? 'admin@basin-nexus:~$' : 'guest@basin-nexus:~$';
+        cmdLine.innerHTML = `<span class="${promptClass}">${promptText}</span> ${command}`;
         output.appendChild(cmdLine);
 
         // Process command
-        processCommand(command, output);
+        processCommand(command, output, promptEl);
 
         // Scroll
         terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -234,8 +241,32 @@
         }, 1200);
     }
 
-    function processCommand(rawCmd, output) {
+    function processCommand(rawCmd, output, promptEl) {
         const lowerCmd = rawCmd.toLowerCase().trim();
+        const parts = lowerCmd.split(' ');
+        const cmd = parts[0];
+        const arg = parts[1] || '';
+
+        // AUTH SYSTEM - Secret unlock code
+        if (cmd === 'auth') {
+            if (arg === 'nexus') {
+                isAuthenticated = true;
+                promptEl.textContent = 'admin@basin-nexus:~$';
+                promptEl.classList.add('admin');
+                printLine(output, "🔓 ACCESS GRANTED. LEVEL 5 CLEARANCE CONFIRMED.", "text-green");
+                printLine(output, "Type <span class='cmd'>sitrep</span> to view declassified intel.", "text-green");
+                return;
+            } else if (arg === 'logout') {
+                isAuthenticated = false;
+                promptEl.textContent = 'guest@basin-nexus:~$';
+                promptEl.classList.remove('admin');
+                printLine(output, "Session terminated. Guest mode active.", "text-yellow");
+                return;
+            } else {
+                printLine(output, "❌ ACCESS DENIED. Invalid clearance code.", "text-red");
+                return;
+            }
+        }
 
         // Easter egg: gravity effect
         if (lowerCmd === 'gravity') {
@@ -243,10 +274,11 @@
             return;
         }
 
-        // Handle commands with arguments
-        if (lowerCmd === 'sitrep alpha') {
-            // DECLASSIFIED VIEW (PRIVATE KEY)
-            printLine(output, `
+        // SITREP with auth check
+        if (lowerCmd === 'sitrep' || lowerCmd === 'status') {
+            if (isAuthenticated) {
+                // DECLASSIFIED VIEW (ADMIN)
+                printLine(output, `
 ╔══════════════════════════════════════════════════════════════════╗
 ║  MISSION SITREP: DECLASSIFIED ACCESS                             ║
 ╠══════════════════════════════════════════════════════════════════╣
@@ -266,10 +298,34 @@
 ╠══════════════════════════════════════════════════════════════════╣
 ║  SYSTEM STATUS: ALL GREEN. READY TO DEPLOY.                      ║
 ╚══════════════════════════════════════════════════════════════════╝
-            `, 'text-green');
+                `, 'text-green');
+            } else {
+                // REDACTED VIEW (PUBLIC)
+                printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  MISSION SITREP: ACTIVE PIPELINE OPERATIONS                      ║
+╠══════════════════════════════════════════════════════════════════╣
+║  DATE: JAN 14 2026  │  STATUS: HIGH VELOCITY                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  TARGET           │  ROLE                 │  STATUS              ║
+╠═══════════════════╪═══════════════════════╪══════════════════════╣
+║  [REDACTED]       │  Founding GTM Eng     │  FINAL STAGE         ║
+║  [REDACTED]       │  Mgr, Global SDR      │  ACTIVE ROUNDS       ║
+║  [REDACTED]       │  Founding GTM Eng     │  ACTIVE ROUNDS       ║
+║  [REDACTED]       │  Identity Strategy    │  IN PROGRESS         ║
+╠══════════════════════════════════════════════════════════════════╣
+║  SECURITY PROTOCOL:                                              ║
+║  > Target names classified to protect ongoing negotiations.      ║
+║  > "Revenue Architect" framework deployed across all vectors.    ║
+╠══════════════════════════════════════════════════════════════════╣
+║  SYSTEM STATUS: ALL GREEN.                                       ║
+╚══════════════════════════════════════════════════════════════════╝
+                `, 'text-yellow');
+            }
             return;
         }
 
+        // FIT commands (always available - these are your portfolio pieces)
         if (lowerCmd === 'fit brm') {
             printLine(output, `
 ╔══════════════════════════════════════════════════════════════════╗
@@ -380,7 +436,9 @@ Available Commands:
   <span class="cmd">stack</span>        - Technical stack & tools
   <span class="cmd">projects</span>     - Key architectural wins
   <span class="cmd">contact</span>      - Communication channels
-  <span class="cmd">sitrep</span>       - [RESTRICTED] Mission Status
+  <span class="cmd">sitrep</span>       - Mission Status (${isAuthenticated ? 'UNLOCKED' : 'REDACTED'})
+  <span class="cmd">fit [company]</span> - Run fit analysis (brm, sendbird, ambient, liveramp)
+  <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
                 `);
@@ -428,31 +486,6 @@ Secure Channels:
                 `);
                 break;
 
-            case 'sitrep':
-            case 'status':
-                // REDACTED VIEW (DEFAULT - PUBLIC SAFE)
-                printLine(output, `
-╔══════════════════════════════════════════════════════════════════╗
-║  MISSION SITREP: ACTIVE PIPELINE OPERATIONS                      ║
-╠══════════════════════════════════════════════════════════════════╣
-║  DATE: JAN 14 2026  │  STATUS: HIGH VELOCITY                     ║
-╠══════════════════════════════════════════════════════════════════╣
-║  TARGET           │  ROLE                 │  STATUS              ║
-╠═══════════════════╪═══════════════════════╪══════════════════════╣
-║  [REDACTED]       │  Founding GTM Eng     │  ON-SITE (LOCKED)    ║
-║  [REDACTED]       │  Mgr, Global SDR      │  INTERVIEW (THU)     ║
-║  [REDACTED]       │  Founding GTM Eng     │  INTERVIEW (WED)     ║
-║  [REDACTED]       │  Identity Strategy    │  ACTIVE              ║
-╠══════════════════════════════════════════════════════════════════╣
-║  SECURITY PROTOCOL:                                              ║
-║  > Target names classified to protect ongoing negotiations.      ║
-║  > "Revenue Architect" framework deployed across all vectors.    ║
-╠══════════════════════════════════════════════════════════════════╣
-║  SYSTEM STATUS: ALL GREEN.                                       ║
-╚══════════════════════════════════════════════════════════════════╝
-                `, 'text-yellow');
-                break;
-
             case 'clear':
                 output.innerHTML = '';
                 break;
@@ -467,9 +500,10 @@ Secure Channels:
     // Expose global function for clickable commands
     window.runConsoleCommand = function (cmd) {
         const input = document.getElementById('console-input');
+        const promptEl = document.getElementById('console-prompt');
         if (input) {
             input.focus();
-            executeCommand(cmd);
+            executeCommand(cmd, promptEl);
         }
     };
 
