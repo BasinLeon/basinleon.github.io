@@ -19,7 +19,7 @@
         { time: '20:45', action: 'Created interactive-console.js', category: 'BUILD', agent: 'Antigravity' },
         { time: '20:40', action: 'Built neural-core-widget.js', category: 'BUILD', agent: 'Antigravity' },
         { time: '20:35', action: 'Analyzed 3 JDs via Market Signal Factory', category: 'SIGNAL', agent: 'MarketSignal' },
-        { time: '20:30', action: 'Reviewed basinleon.com architecture', category: 'PLAN', agent: 'Antigravity' },
+        { time: '20:30', action: 'Reviewed basinleon.github.io architecture', category: 'PLAN', agent: 'Antigravity' },
         { time: '20:15', action: 'Market Signal Factory tested at 80% match', category: 'VERIFY', agent: 'Antigravity' },
         { time: '20:00', action: 'Created market_signal_factory.py (500+ lines)', category: 'BUILD', agent: 'Antigravity' },
         { time: '19:45', action: 'Initialized planning for Director RevOps search', category: 'PLAN', agent: 'Antigravity' },
