@@ -286,13 +286,13 @@
 ╠══════════════════════════════════════════════════════════════════╣
 ║  TARGET           │  ROLE                 │  STATUS              ║
 ╠═══════════════════╪═══════════════════════╪══════════════════════╣
-║  AMBIENT.AI       │  Founding GTM Eng     │  ON-SITE (FRI)       ║
+║  PROJECT::SENTINEL│  Founding GTM Eng     │  ON-SITE (FRI)       ║
 ║  SENDBIRD         │  Mgr, Global SDR      │  INTERVIEW (THU)     ║
 ║  BRM LABS         │  Founding GTM Eng     │  INTERVIEW (WED)     ║
 ║  LIVERAMP         │  Identity Strategy    │  ACTIVE ROUNDS       ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  OPERATIONAL NOTES:                                              ║
-║  > Ambient: "Refinery" Architecture Deployed. Artifacts Sent.    ║
+║  > Sentinel: "Refinery" Architecture Deployed. Artifacts Sent.   ║
 ║  > Sendbird: Portfolio implanted in calendar invites.            ║
 ║  > BRM Labs: JD is a 95% match for Basin::Nexus.                 ║
 ╠══════════════════════════════════════════════════════════════════╣
@@ -355,7 +355,7 @@
                 `, 'text-cyan');
                 break;
 
-            case 'fit ambient':
+            case 'fit sentinel':
                 if (!isAuthenticated) {
                     printLine(output, "🔒 ACCESS DENIED. LEVEL 5 CLEARANCE REQUIRED.", "text-red");
                     printLine(output, "Run <span class='cmd'>auth [code]</span> to unlock.", "text-muted");
@@ -363,12 +363,11 @@
                 }
                 printLine(output, `
 ╔══════════════════════════════════════════════════════════╗
-║  COMPANY FIT ANALYSIS: AMBIENT.AI                        ║
+║  COMPANY FIT ANALYSIS: PROJECT::SENTINEL                 ║
 ╠══════════════════════════════════════════════════════════╣
 ║  ARCHITECTURE MATCH:                                     ║
-║  Ambient: Video → AI Filter → Security Alert             ║
-║  Basin:   Market Data → AI Filter → Revenue Alert        ║
-╠══════════════════════════════════════════════════════════╣
+║  Sentinel: Video → AI Filter → Security Alert            ║
+║  Basin:    Market Data → AI Filter → Revenue Alert       ║
 ║  MATCH SCORE: ████████████████████ 100%                  ║
 ╚══════════════════════════════════════════════════════════╝
                 `, 'text-cyan');
@@ -416,7 +415,7 @@ Available Commands:
   <span class="cmd">projects</span>     - Key architectural wins
   <span class="cmd">contact</span>      - Communication channels
   <span class="cmd">sitrep</span>       - Mission Status (${isAuthenticated ? 'UNLOCKED' : 'REDACTED'})
-  <span class="cmd">fit [company]</span> - Run fit analysis (brm, sendbird, ambient, liveramp)
+  <span class="cmd">fit [company]</span> - Run fit analysis (brm, sendbird, sentinel, liveramp)
   <span class="cmd">metrics</span>      - Director-level performance stats
   <span class="cmd">case [name]</span>  - War stories (horizon, reddit, mantech)
   <span class="cmd">viz</span>          - ASCII pipeline visualizations
