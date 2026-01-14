@@ -100,7 +100,7 @@
             border: none;
             color: #f0e6d3;
             font-family: inherit;
-            font-size: 13px;
+            font-size: 16px; /* Prevents iOS zoom */
             outline: none;
             caret-color: #D4AF37;
         }
@@ -411,6 +411,7 @@
                 printLine(output, `
 Available Commands:
   <span class="cmd">about</span>        - Professional summary
+  <span class="cmd">whoami</span>       - Personal biometric scan
   <span class="cmd">stack</span>        - Technical stack & tools
   <span class="cmd">projects</span>     - Key architectural wins
   <span class="cmd">contact</span>      - Communication channels
@@ -429,6 +430,15 @@ Available Commands:
   <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
+                `);
+                break;
+
+            case 'whoami':
+                printLine(output, `
+Leon Basin. Based in Mountain View, CA.
+Obsessed with efficiency.
+When not coding GTM stacks, I write poetry and study cyber-psychology.
+Believes that "Sales is just Debugging Human Behavior."
                 `);
                 break;
 
