@@ -424,6 +424,7 @@ Available Commands:
   <span class="cmd">stack audit</span> - Tech Stack Governance Matrix
   <span class="cmd">model</span>        - GTM Architecture Diagram
   <span class="cmd">governance</span>   - System Health Audit Protocol
+  <span class="cmd">wins</span>         - War Stories from Weekly Roll-Ups
   <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
@@ -638,19 +639,63 @@ Bifurcated:  \$211/meeting  (1 Eng + 3 SDRs)
             case 'governance':
             case 'audit':
                 printLine(output, `
->>> AUDITING SYSTEM HEALTH...
+>>> AUDITING GTM GOVERNANCE PROTOCOL...
 
 ╔══════════════════════════════════════════════════════════╗
-║  GOVERNANCE PROTOCOL: BASIN::NEXUS                       ║
+║  GTM GOVERNANCE PROTOCOL (WEEKLY CADENCE)                ║
 ╠══════════════════════════════════════════════════════════╣
-║  [OK] Data Schema: Unified SFDC/HubSpot Identity         ║
-║  [OK] Audit Trail: All signal→action logged              ║
-║  [OK] Scoring Logic: Fit (Slow) vs Intent (Fast)         ║
-║  [OK] SLA Monitor: <5 min Response Enforced              ║
-║  [OK] False Positive Rate: <5%                           ║
-║  [OK] Decay Logic: High Intent Half-Life = 7 Days        ║
+║  1. BLUF (Bottom Line Up Front)                          ║
+║     Executive summary of P0 deal movements & risks.      ║
 ╠══════════════════════════════════════════════════════════╣
-║  STATUS: SYSTEM CLEAN. READY FOR SCALE.                  ║
+║  2. KPI SCORECARD                                        ║
+║     > Meetings Booked (Source: Signal vs Outbound)       ║
+║     > Pipeline Velocity (Stage conversion rates)         ║
+║     > SDR Touches (Goal: 150/day | Actual: 172/day)      ║
+╠══════════════════════════════════════════════════════════╣
+║  3. P0 DEAL TRIAGE                                       ║
+║     > "ManTech": Locked via FedRAMP pivot.               ║
+║     > "Horizon": Unblocked via "Parallel Path" strategy. ║
+╠══════════════════════════════════════════════════════════╣
+║  4. SYSTEM HEALTH                                        ║
+║     [OK] Data Schema: Unified SFDC/HubSpot Identity      ║
+║     [OK] SLA Monitor: <5 min Response Enforced           ║
+║     [OK] False Positive Rate: <5%                        ║
+╚══════════════════════════════════════════════════════════╝
+                `, 'text-yellow');
+                break;
+
+            case 'view wins':
+            case 'wins':
+            case 'stories':
+                printLine(output, `
+>>> DECLASSIFYING "WAR STORIES" FROM WEEKLY ROLL-UPS...
+
+╔══════════════════════════════════════════════════════════╗
+║  [1] OPERATION: WHITE HOUSE EOP                          ║
+╠══════════════════════════════════════════════════════════╣
+║  CONTEXT: Inbound demo request from Executive Office     ║
+║           of the President.                              ║
+║  ACTION:  Pivoted from standard demo to "Supply Chain    ║
+║           Security" consult for federal positioning.     ║
+║  RESULT:  Moving to High-Level Nurture (P0 Status).      ║
+╚══════════════════════════════════════════════════════════╝
+
+╔══════════════════════════════════════════════════════════╗
+║  [2] OPERATION: O'REILLY RESCUE ($60k)                   ║
+╠══════════════════════════════════════════════════════════╣
+║  CONTEXT: Deal stalled at Legal/NDA for 3 weeks.         ║
+║  ACTION:  Identified tool error, bypassed gatekeeper,    ║
+║           moved directly to DocuSign.                    ║
+║  RESULT:  NDA Signed, Technical Validation Unblocked.    ║
+╚══════════════════════════════════════════════════════════╝
+
+╔══════════════════════════════════════════════════════════╗
+║  [3] OPERATION: REDDIT AIR STRIKE                        ║
+╠══════════════════════════════════════════════════════════╣
+║  CONTEXT: Cold email dying (0.3% reply rate).            ║
+║  ACTION:  Deployed "Secret Shopper" play on              ║
+║           r/cybersecurity to identify problem-aware ICP. ║
+║  RESULT:  3 High-Value Leads ($0 CAC) + 15 convos.       ║
 ╚══════════════════════════════════════════════════════════╝
                 `, 'text-green');
                 break;
