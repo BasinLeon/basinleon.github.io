@@ -801,6 +801,203 @@
             <span class="footer-brand">BASIN::GTM</span>
         </div>
     </section>
+
+    <!-- SLIDE NAVIGATION -->
+    <div class="slide-nav">
+        <span class="slide-dot active" data-slide="0"></span>
+        <span class="slide-dot" data-slide="1"></span>
+        <span class="slide-dot" data-slide="2"></span>
+        <span class="slide-dot" data-slide="3"></span>
+    </div>
+
+    <div class="nav-hint">
+        <span>← →</span> Navigate &nbsp;|&nbsp; <span>ESC</span> Overview
+    </div>
+
+    <style>
+        /* Slideshow Mode */
+        body.slideshow-mode {
+            overflow: hidden;
+        }
+
+        body.slideshow-mode .slide {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 1;
+        }
+
+        body.slideshow-mode .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Slide Navigation Dots */
+        .slide-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body.slideshow-mode .slide-nav {
+            opacity: 1;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .slide-dot.active {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Navigation Hint */
+        .nav-hint {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body.slideshow-mode .nav-hint {
+            opacity: 1;
+        }
+
+        .nav-hint span {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Overview Mode (ESC) */
+        body.overview-mode {
+            overflow: auto;
+        }
+
+        body.overview-mode .slide {
+            position: relative !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            min-height: 100vh;
+        }
+
+        body.overview-mode .slide-nav,
+        body.overview-mode .nav-hint {
+            display: none;
+        }
+    </style>
+
+    <script>
+        // Slideshow Controller
+        (function () {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slide-dot');
+            let currentSlide = 0;
+            let isOverview = false;
+
+            // Initialize slideshow mode
+            document.body.classList.add('slideshow-mode');
+            slides[0].classList.add('active');
+
+            function goToSlide(index) {
+                if (index < 0) index = slides.length - 1;
+                if (index >= slides.length) index = 0;
+
+                slides[currentSlide].classList.remove('active');
+                dots[currentSlide].classList.remove('active');
+
+                currentSlide = index;
+
+                slides[currentSlide].classList.add('active');
+                dots[currentSlide].classList.add('active');
+            }
+
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                goToSlide(currentSlide - 1);
+            }
+
+            function toggleOverview() {
+                isOverview = !isOverview;
+                document.body.classList.toggle('slideshow-mode', !isOverview);
+                document.body.classList.toggle('overview-mode', isOverview);
+            }
+
+            // Keyboard Navigation
+            document.addEventListener('keydown', (e) => {
+                switch (e.key) {
+                    case 'ArrowRight':
+                    case ' ':
+                        if (!isOverview) nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                        if (!isOverview) prevSlide();
+                        break;
+                    case 'Escape':
+                        toggleOverview();
+                        break;
+                    case 'Home':
+                        if (!isOverview) goToSlide(0);
+                        break;
+                    case 'End':
+                        if (!isOverview) goToSlide(slides.length - 1);
+                        break;
+                }
+            });
+
+            // Dot Navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => goToSlide(index));
+            });
+
+            // Swipe Support (touch devices)
+            let touchStartX = 0;
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+            document.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
