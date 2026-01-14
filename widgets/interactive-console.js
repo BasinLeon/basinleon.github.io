@@ -132,6 +132,7 @@
                         <div class="output-line">Welcome to BASIN::NEXUS v10.0</div>
                         <div class="output-line">Type <span class="cmd">help</span> for commands, or try <span class="cmd">sitrep</span></div>
                         <div class="output-line">&nbsp;</div>
+                        <div class="output-line text-yellow">🔄 Auto-running system check...</div>
                     </div>
                     <div class="console-input-line">
                         <span class="prompt" id="console-prompt">guest@basin-nexus:~$</span>
@@ -184,6 +185,11 @@
                 executeCommand(input.value.trim(), promptEl);
             }
         });
+
+        // Auto-run sitrep demo after 1.5 seconds
+        setTimeout(() => {
+            executeCommand('sitrep', promptEl);
+        }, 1500);
     }
 
     function executeCommand(command, promptEl) {
