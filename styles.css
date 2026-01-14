@@ -756,3 +756,139 @@ body {
         background-position: 200% 0;
     }
 }
+/* ========================================
+   Unit Economics Billboard
+   ======================================== */
+.billboard-section {
+    background: var(--color-bg-tertiary);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-xl) 0;
+}
+
+.billboard-container {
+    background: rgba(10, 15, 13, 0.6);
+    border: 1px solid var(--color-accent-blue);
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 0 30px rgba(0, 163, 255, 0.1);
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.billboard-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-blue), transparent);
+    animation: scan-horizontal 3s linear infinite;
+}
+
+@keyframes scan-horizontal {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.billboard-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.billboard-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: var(--color-accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 0 10px rgba(0, 163, 255, 0.5);
+}
+
+.billboard-subtitle {
+    font-family: var(--font-mono);
+    color: #445550;
+    font-size: 0.9rem;
+    background: rgba(0, 163, 255, 0.1);
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 4px;
+}
+
+.economics-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.economics-table th {
+    text-align: left;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    padding: var(--spacing-sm);
+    text-transform: uppercase;
+}
+
+.economics-table td {
+    background: rgba(255, 255, 255, 0.02);
+    padding: var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    border: 1px solid transparent;
+}
+
+.economics-table tr td:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    font-weight: 600;
+    color: var(--color-accent-blue);
+}
+
+.economics-table tr td:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/* Highlight Columns */
+.col-nexus {
+    color: var(--color-accent-green) !important;
+    background: rgba(0, 255, 157, 0.05) !important;
+    border: 1px solid rgba(0, 255, 157, 0.2) !important;
+}
+
+.col-delta {
+    font-weight: 700;
+    color: #FFD700 !important;
+    text-align: right;
+}
+
+.billboard-quote {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--spacing-md);
+}
+
+.billboard-quote span {
+    color: var(--color-text-primary);
+    font-style: italic;
+    display: block;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .economics-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
