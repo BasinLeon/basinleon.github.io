@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Stopped Waiting for Better Data. I Built a Signal Engine Instead | Leon Basin</title>
+    <meta name="description"
+        content="For 15 years, I fought the 'bad data' battle with more tools and more SDRs. Last weekend, I stopped waiting. Here is how I used Python and AI to build a custom signal engine.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-left: 24px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--gold-primary);
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .post-content {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .post-content p {
+            margin-bottom: 24px;
+        }
+
+        .post-content h2,
+        .post-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            margin: 48px 0 24px;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 24px 0;
+            padding-left: 24px;
+        }
+
+        .post-content li {
+            margin-bottom: 12px;
+        }
+
+        .tier-box {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 48px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            background: var(--bg-deep);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="https://basinleon.github.io" class="nav-logo">LEON BASIN</a>
+            <div class="nav-links">
+                <a href="https://basinleon.github.io">Home</a>
+                <a href="../index.html">Blog</a>
+                <a href="https://basinleon.github.io/tools.html">Tools</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="post-meta">December 29, 2025 • Signal • AI</div>
+        <h1>I Stopped Waiting for "Better Data." I Built a Signal Engine Instead</h1>
+
+        <div class="post-content">
+            <p>For 15 years, I fought the "bad data" battle with more tools and more SDRs. Last weekend, I stopped
+                waiting. Here is how I used Python and AI to build a custom signal engine that fixes the problem at the
+                source.</p>
+
+            <h3>The Logic: Ruthless Prioritization</h3>
+            <p>The algorithm is simple but strict. It scores leads on a 0-100 scale based on four "Signal Pillars":</p>
+
+            <ol>
+                <li><strong>Industry Match (0-25 points):</strong> Cybersecurity/AI/ML gets +25. SaaS gets +15.
+                    Everything else has to earn its way in.</li>
+                <li><strong>Funding Stage (0-25 points):</strong> Series B companies get +25 (they have budget and
+                    urgency). Seed gets +5 (too early).</li>
+                <li><strong>Tech Stack Match (0-35 points):</strong> High compatibility = +35. No match? Kill the lead.
+                </li>
+                <li><strong>Market Fit Bonus (0-15 points):</strong> Variance to account for timing, momentum, and
+                    outliers.</li>
+            </ol>
+
+            <div class="tier-box">
+                <p>Then, the system sorts leads into actionable tiers:</p>
+                <ul>
+                    <li>🔥 <strong>HOT (75+):</strong> Priority outreach today.</li>
+                    <li>⚡ <strong>WARM (50-74):</strong> Nurture sequence.</li>
+                    <li>❄️ <strong>COLD (&lt;50):</strong> Do not touch.</li>
+                </ul>
+            </div>
+
+            <h3>The Output: Signal over Noise</h3>
+            <p>The result isn't pretty. It's not an enterprise SaaS product. But it works. It takes a list of 100
+                "maybe" leads and turns them into 5 "must calls."</p>
+
+            <h3>What This Changed</h3>
+            <p>This little project shifted how I view my own career. For years, I thought my job was to "manage the
+                process." Now I realize my job is to architect the system.</p>
+
+            <p>If you're a GTM leader heading into 2026, you can't just demand better data. You have to be willing to
+                get your hands dirty and build the filter yourself. The future of GTM isn't about having better tools.
+                It's about becoming the kind of leader who can prototype solutions when the market hasn't caught up yet.
+            </p>
+
+            <p>That's the shift from Operator to Architect. It's not a title. It's a refusal to accept the noise.</p>
+
+            <p>Let's get back to work.<br>– Leon</p>
+
+            <h3>🔗 Builder Resources</h3>
+            <ul>
+                <li>The Code: <a href="https://github.com/BasinLeon"
+                        style="color: var(--gold-primary);">github.com/BasinLeon</a></li>
+                <li>The Portfolio: <a href="https://basinleon.github.io/"
+                        style="color: var(--gold-primary);">basinleon.github.io</a></li>
+                <li>The Architect: <a href="https://www.linkedin.com/in/leonbasin/"
+                        style="color: var(--gold-primary);">Connect on LinkedIn</a></li>
+            </ul>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to Archive</a>
+    </main>
+
+    <footer>
+        <div class="footer-copyright">© 2025 Leon Basin. Signal. Architecture. Revenue.</div>
+    </footer>
+</body>
+
+</html>
