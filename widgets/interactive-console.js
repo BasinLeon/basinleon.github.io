@@ -417,6 +417,12 @@ Available Commands:
   <span class="cmd">contact</span>      - Communication channels
   <span class="cmd">sitrep</span>       - Mission Status (${isAuthenticated ? 'UNLOCKED' : 'REDACTED'})
   <span class="cmd">fit [company]</span> - Run fit analysis (brm, sendbird, ambient, liveramp)
+  <span class="cmd">metrics</span>      - Director-level performance stats
+  <span class="cmd">case [name]</span>  - War stories (horizon, reddit, mantech)
+  <span class="cmd">viz</span>          - ASCII pipeline visualizations
+  <span class="cmd">protocol 90</span>  - 30/60/90 Day Onboarding Plan
+  <span class="cmd">stack audit</span> - Tech Stack Governance Matrix
+  <span class="cmd">model</span>        - GTM Architecture Diagram
   <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
@@ -548,6 +554,83 @@ Traditional: \$670/meeting  (10 SDRs)
 Bifurcated:  \$211/meeting  (1 Eng + 3 SDRs)
                             -68% CAC ↓
                 `, 'text-yellow');
+                break;
+
+            // === STRATEGIC MODULES (Commercial Grade) ===
+            case 'protocol 90':
+            case '90':
+                printLine(output, `
+>>> LOADING ONBOARDING_PROTOCOL.exe...
+
+[DAYS 0-30]: AUDIT & STABILIZE
+─────────────────────────────────────────
+• Audit HubSpot/SFDC schema for data rot
+• Interview top 5 Sales Reps: map "Real Funnel" vs "Spreadsheet"
+• Ship ONE "Quick Win" automation (e.g., auto-enrichment)
+• Deliverable: Infrastructure Health Report
+
+[DAYS 31-60]: ARCHITECT & BUILD
+─────────────────────────────────────────
+• Deploy Basin::Signal v1 (Ingest > Score > Action)
+• Train BDRs on Signal-Based workflow (100 calls → 20 high-intent)
+• Establish weekly "Revenue Ops" sync with Finance
+• Deliverable: Signal Engine MVP + BDR Training Deck
+
+[DAYS 61-90]: SCALE & OPTIMIZE
+─────────────────────────────────────────
+• Bifurcate funnel: High-intent → AEs, Low-intent → Nurture
+• Present "Cost Avoidance" report to Execs
+• Hand off "Manual Toil" tasks to the machine
+• Deliverable: ROI Report + Automation Handoff
+                `, 'text-green');
+                break;
+
+            case 'stack audit':
+                printLine(output, `
+╔═══════════════════════════════════════════════════════════╗
+║  TECH STACK GOVERNANCE MATRIX                             ║
+╠════════════╦══════╦═════════════╦═════════════════════════╣
+║  TOOL      ║ COST ║ UTILIZATION ║  ROI STATUS             ║
+╠════════════╬══════╬═════════════╬═════════════════════════╣
+║  HubSpot   ║ $$$  ║  High       ║  CORE INFRA             ║
+║  Salesforce║ $$$$ ║  Med        ║  DATA LAKE              ║
+║  Clay      ║ $$   ║  Max        ║  HIGH LEVERAGE (Keep)   ║
+║  ZoomInfo  ║ $$$$ ║  Low        ║  AT RISK (Replace?)     ║
+║  n8n       ║ $    ║  Max        ║  THE GLUE               ║
+╠════════════╩══════╩═════════════╩═════════════════════════╣
+║  STACK EFFICIENCY: 82%                                    ║
+║  ACTION: Cut ZoomInfo, reinvest in Signal Data            ║
+╚═══════════════════════════════════════════════════════════╝
+                `, 'text-yellow');
+                break;
+
+            case 'model architecture':
+            case 'model':
+            case 'arch':
+                printLine(output, `
+       MARKET NOISE (The Ocean)
+                 │
+                 ▼
+    ╔════════════════════════════╗
+    ║    LAYER 1: INGEST         ║
+    ║ (Python / Intent Scrapers) ║
+    ╚════════════╦═══════════════╝
+                 │
+                 ▼
+    ╔════════════════════════════╗
+    ║    LAYER 2: REFINE    ◄────║──── YOU ARE HERE
+    ║  (LLM Scoring / ICP Match) ║
+    ╚════════════╦═══════════════╝
+                 │
+                 ▼
+    ╔════════════════════════════╗
+    ║    LAYER 3: ACT            ║
+    ║ (Slack Alerts / Auto-Draft)║
+    ╚════════════╦═══════════════╝
+                 │
+                 ▼
+       REVENUE SIGNAL (The Gold)
+                `, 'text-cyan');
                 break;
 
             case 'clear':
