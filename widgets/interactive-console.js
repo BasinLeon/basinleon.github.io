@@ -423,6 +423,7 @@ Available Commands:
   <span class="cmd">protocol 90</span>  - 30/60/90 Day Onboarding Plan
   <span class="cmd">stack audit</span> - Tech Stack Governance Matrix
   <span class="cmd">model</span>        - GTM Architecture Diagram
+  <span class="cmd">governance</span>   - System Health Audit Protocol
   <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
@@ -631,6 +632,27 @@ Bifurcated:  \$211/meeting  (1 Eng + 3 SDRs)
                  ▼
        REVENUE SIGNAL (The Gold)
                 `, 'text-cyan');
+                break;
+
+            case 'governance_protocol':
+            case 'governance':
+            case 'audit':
+                printLine(output, `
+>>> AUDITING SYSTEM HEALTH...
+
+╔══════════════════════════════════════════════════════════╗
+║  GOVERNANCE PROTOCOL: BASIN::NEXUS                       ║
+╠══════════════════════════════════════════════════════════╣
+║  [OK] Data Schema: Unified SFDC/HubSpot Identity         ║
+║  [OK] Audit Trail: All signal→action logged              ║
+║  [OK] Scoring Logic: Fit (Slow) vs Intent (Fast)         ║
+║  [OK] SLA Monitor: <5 min Response Enforced              ║
+║  [OK] False Positive Rate: <5%                           ║
+║  [OK] Decay Logic: High Intent Half-Life = 7 Days        ║
+╠══════════════════════════════════════════════════════════╣
+║  STATUS: SYSTEM CLEAN. READY FOR SCALE.                  ║
+╚══════════════════════════════════════════════════════════╝
+                `, 'text-green');
                 break;
 
             case 'clear':
