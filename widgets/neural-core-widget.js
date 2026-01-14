@@ -2,7 +2,7 @@
  * BASIN::NEXUS — Neural Core Widget
  * ═══════════════════════════════════════════════════════════════
  * 
- * A floating status widget for basinleon.com that shows real-time
+ * A floating status widget for basinleon.github.io that shows real-time
  * data from the BASIN::NEXUS system.
  * 
  * Built with Google Antigravity | December 2025
