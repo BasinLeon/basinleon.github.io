@@ -325,7 +325,14 @@
             return;
         }
 
-        // FIT commands (always available - these are your portfolio pieces)
+        // FIT commands - PROTECTED (require auth)
+        if (lowerCmd.startsWith('fit ')) {
+            if (!isAuthenticated) {
+                printLine(output, "❌ ACCESS DENIED. Type <span class='cmd'>auth [code]</span> to unlock classified data.", "text-red");
+                return;
+            }
+        }
+
         if (lowerCmd === 'fit brm') {
             printLine(output, `
 ╔══════════════════════════════════════════════════════════════════╗
