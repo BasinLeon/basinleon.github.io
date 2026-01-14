@@ -92,6 +92,17 @@ def main():
             # print(f"Processing: {metadata['title']}")
         except Exception as e:
             print(f"Error processing {filename}: {e}")
+
+    # Merge Legacy Data
+    LEGACY_FILE = os.path.join(BASE_DIR, 'data', 'legacy_posts.json')
+    if os.path.exists(LEGACY_FILE):
+        try:
+            with open(LEGACY_FILE, 'r', encoding='utf-8') as f:
+                legacy_posts = json.load(f)
+                posts.extend(legacy_posts)
+                print(f"Merged {len(legacy_posts)} legacy posts.")
+        except Exception as e:
+            print(f"Error merging legacy data: {e}")
             
     # Sort by Date (Newest First)
     posts.sort(key=lambda x: x['date'] if x['date'] else '0000-00-00', reverse=True)
