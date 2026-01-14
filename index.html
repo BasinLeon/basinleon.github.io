@@ -1753,6 +1753,54 @@
         }
     </script>
 
+    <!-- NEWSLETTER SIGNUP -->
+    <section id="newsletter"
+        style="padding: 80px 24px; background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%); border-top: 1px solid var(--gold-border);">
+        <div class="container" style="text-align: center; max-width: 600px;">
+            <h2
+                style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 12px;">
+                📡 THE SIGNAL FEED
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">
+                Weekly insights on revenue architecture, GTM engineering, and building systems that scale.<br>
+                <span style="color: var(--text-muted); font-size: 0.75rem;">No spam. Just signal.</span>
+            </p>
+            <form id="newsletter-form"
+                style="display: flex; gap: 12px; max-width: 450px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
+                <input type="email" id="newsletter-email" placeholder="your@email.com" required
+                    style="flex: 1; min-width: 200px; padding: 14px 18px; background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                <button type="submit"
+                    style="padding: 14px 28px; background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); border: none; border-radius: 8px; color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease;">
+                    SUBSCRIBE
+                </button>
+            </form>
+            <p id="newsletter-message" style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);"></p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('newsletter-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletter-email').value;
+            const messageEl = document.getElementById('newsletter-message');
+
+            // Send to your email via mailto (simple approach)
+            // For production, use Buttondown, ConvertKit, or a backend service
+            const subject = encodeURIComponent('New Newsletter Subscriber: ' + email);
+            const body = encodeURIComponent('New subscriber email: ' + email + '\n\nFrom: BASIN::NEXUS Signal Feed');
+
+            // Store locally (you can see this in browser console)
+            console.log('Newsletter signup:', email);
+
+            // Show success message
+            messageEl.innerHTML = '✅ <span style="color: var(--gold-primary);">Welcome to the Signal Feed!</span> Check your inbox.';
+            document.getElementById('newsletter-email').value = '';
+
+            // Open mailto to notify you (temporary solution)
+            window.open('mailto:lbasin23@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+        });
+    </script>
+
     <!-- FOOTER / GATE -->
     <section id="gate" class="contact-cta">
         <div class="container">
