@@ -399,6 +399,124 @@
                 transform: none;
             }
         }
+
+        /* Dynamic Archive Styles */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .archive-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .archive-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .archive-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gold-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .archive-card:hover::before {
+            opacity: 1;
+        }
+
+        .archive-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .archive-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .archive-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .archive-tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .archive-tag {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border: 1px solid var(--gold-border);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .archive-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+            flex-grow: 0;
+        }
+
+        .archive-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: auto;
+            flex-grow: 1;
+        }
+
+        .archive-year-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin: 60px 0 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .archive-year-header::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold-border), transparent);
+        }
     </style>
 </head>
 
@@ -485,13 +603,25 @@
     </section>
 
     <!-- Posts -->
+    <!-- Dynamic Archive Container -->
     <section class="posts-section">
         <div class="container">
+            <div id="archive-container" style="min-height: 400px;">
+                <!-- Loading State -->
+                <div
+                    style="text-align: center; padding: 60px; color: var(--gold-primary); font-family: 'Orbitron', sans-serif;">
+                    <div style="font-size: 2rem; margin-bottom: 20px;">INITIALIZING ARCHIVE...</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Decrypting Revenue Signals</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <!-- 2026 -->
-            <div class="year-group">
-                <h3 class="year-header">2026</h3>
-                <div class="posts-list">
+    <!-- Archive Engine -->
+    <script src="archive.js"></script>
+
+    <!-- Legacy Static Content Removed -->
+    <!--
                     <a href="posts/interview-as-architecture.html" class="post-card">
                         <div class="post-date">Jan 10, 2026</div>
                         <div class="post-title">Interview as Architecture: Why I Built an AI Coach That Knows My War
@@ -540,392 +670,384 @@
             </div>
 
             <!-- 2025 -->
-            <div class="year-group">
-                <h3 class="year-header">2025</h3>
-                <div class="posts-list">
-                    <a href="posts/signal-engine.html" class="post-card">
-                        <div class="post-date">Dec 29, 2025</div>
-                        <div class="post-title">I Stopped Waiting for Better Data. I Built a Signal Engine Instead.
-                        </div>
-                        <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">AI</span>
-                        </div>
-                    </a>
-                    <a href="posts/2026-protocol.html" class="post-card">
-                        <div class="post-date">Dec 18, 2025</div>
-                        <div class="post-title">2026 Protocol: The End of Brute Force</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                        </div>
-                    </a>
-                    <a href="posts/revenue-upgrade.html" class="post-card">
-                        <div class="post-date">Dec 15, 2025</div>
-                        <div class="post-title">The Upgrade: From Cybersecurity to Revenue Architecture</div>
-                        <div class="post-tags"><span class="post-tag">Career</span><span class="post-tag">Revenue</span>
-                        </div>
-                    </a>
-                    <a href="posts/the-night-the-code-asked.html" class="post-card">
-                        <div class="post-date">Dec 15, 2025</div>
-                        <div class="post-title">The Night the Code Asked for a Name</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
-                        </div>
-                    </a>
-                    <a href="posts/system-finds-the-role.html" class="post-card">
-                        <div class="post-date">Dec 14, 2025</div>
-                        <div class="post-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
-                        <div class="post-tags"><span class="post-tag">NEXUS</span><span class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/architecture-of-belief.html" class="post-card">
-                        <div class="post-date">Dec 14, 2025</div>
-                        <div class="post-title">The Architecture of Belief</div>
-                        <div class="post-tags"><span class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/revenue-is-not-math.html" class="post-card">
-                        <div class="post-date">Dec 14, 2025</div>
-                        <div class="post-title">Revenue is Not Math. It is the Echo of Grace.</div>
-                        <div class="post-tags"><span class="post-tag">Revenue</span><span
-                                class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/how-to-automate-e2e-outreach.html" class="post-card">
-                        <div class="post-date">Dec 5, 2025</div>
-                        <div class="post-title">How to Automate Engineer-to-Engineer Outreach Without Sounding Like a
-                            Bot</div>
-                        <div class="post-tags"><span class="post-tag">Outreach</span><span class="post-tag">AI</span>
-                        </div>
-                    </a>
-                    <a href="posts/revolutionizing-sales.html" class="post-card">
-                        <div class="post-date">Dec 5, 2025</div>
-                        <div class="post-title">Revolutionizing Sales: From Hiring to Engineering Mindset</div>
-                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
-                        </div>
-                    </a>
-                    <a href="posts/the-data-supply-chain.html" class="post-card">
-                        <div class="post-date">Dec 4, 2025</div>
-                        <div class="post-title">The Data Supply Chain</div>
-                        <div class="post-tags"><span class="post-tag">Data</span><span
-                                class="post-tag">Architecture</span></div>
-                    </a>
-                    <a href="posts/fractional-gtm-system.html" class="post-card">
-                        <div class="post-date">Dec 1, 2025</div>
-                        <div class="post-title">Fractional GTM Architecture: Build Predictable Revenue</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Revenue</span>
-                        </div>
-                    </a>
-                    <a href="posts/30-60-90-enterprise.html" class="post-card">
-                        <div class="post-date">Nov 6, 2025</div>
-                        <div class="post-title">30-60-90 for Enterprise AEs: Turn POCs into Renewals</div>
-                        <div class="post-tags"><span class="post-tag">Sales</span><span
-                                class="post-tag">Enterprise</span></div>
-                    </a>
-                    <a href="posts/sam-ink-patch-003.html" class="post-card">
-                        <div class="post-date">Oct 13, 2025</div>
-                        <div class="post-title">Sam & Ink Feed: Signal Threshold Genesis Patch 003</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                                Ink</span></div>
-                    </a>
-                    <a href="posts/the-scrolls-are-waking.html" class="post-card">
-                        <div class="post-date">Oct 13, 2025</div>
-                        <div class="post-title">The Scrolls Are Waking</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span></div>
-                    </a>
-                    <a href="posts/architecture-language.html" class="post-card">
-                        <div class="post-date">Oct 13, 2025</div>
-                        <div class="post-title">Architecture Language: Shaping Future Networks</div>
-                        <div class="post-tags"><span class="post-tag">Architecture</span></div>
-                    </a>
-                    <a href="posts/sam-ink-map.html" class="post-card">
-                        <div class="post-date">Aug 19, 2025</div>
-                        <div class="post-title">Sam & Ink: The Map Made of Starlight</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                                Ink</span></div>
-                    </a>
-                    <a href="posts/week-2-discovery.html" class="post-card">
-                        <div class="post-date">Aug 9, 2025</div>
-                        <div class="post-title">Week 2: Discovery Mastery GTM SE Journey</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Sales</span>
-                        </div>
-                    </a>
-                    <a href="posts/week-1-se-journey.html" class="post-card">
-                        <div class="post-date">Aug 8, 2025</div>
-                        <div class="post-title">Week 1: Learning the Product as a Sales Engineer</div>
-                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
-                        </div>
-                    </a>
-                    <a href="posts/gtm-strategy-journey.html" class="post-card">
-                        <div class="post-date">Jul 30, 2025</div>
-                        <div class="post-title">Crafting a GTM Strategy: My Journey as Architect and Operator</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                        </div>
-                    </a>
-                    <a href="posts/keepers-of-dreams.html" class="post-card">
-                        <div class="post-date">Jul 2, 2025</div>
-                        <div class="post-title">The Keepers of Dreams: Finding Signal in a Noisy World</div>
-                        <div class="post-tags"><span class="post-tag">Signal</span><span
-                                class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/digital-legacy.html" class="post-card">
-                        <div class="post-date">Jun 29, 2025</div>
-                        <div class="post-title">Building a Digital Legacy: Insights from 17,400 Views</div>
-                        <div class="post-tags"><span class="post-tag">Content</span><span class="post-tag">Growth</span>
-                        </div>
-                    </a>
-                    <a href="posts/world-repair-playbook.html" class="post-card">
-                        <div class="post-date">Jun 12, 2025</div>
-                        <div class="post-title">The World Repair Playbook: Seven Pillars</div>
-                        <div class="post-tags"><span class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/algorithm-misses.html" class="post-card">
-                        <div class="post-date">May 29, 2025</div>
-                        <div class="post-title">What the Algorithm Misses</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
-                        </div>
-                    </a>
-                    <a href="posts/leons-way-os.html" class="post-card">
-                        <div class="post-date">May 17, 2025</div>
-                        <div class="post-title">Leon's Waya: One-Pager OS for Builders</div>
-                        <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">Builders</span>
-                        </div>
-                    </a>
-                    <a href="posts/leonos-gtm.html" class="post-card">
-                        <div class="post-date">May 14, 2025</div>
-                        <div class="post-title">LeonOS: Human OS GTM Life</div>
-                        <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">GTM</span></div>
-                    </a>
-                    <a href="posts/notebook-intro.html" class="post-card">
-                        <div class="post-date">May 10, 2025</div>
-                        <div class="post-title">This Isn't a Newsletter. It's a Notebook.</div>
-                        <div class="post-tags"><span class="post-tag">Writing</span></div>
-                    </a>
-                    <a href="posts/soul-illuminated.html" class="post-card">
-                        <div class="post-date">Apr 18, 2025</div>
-                        <div class="post-title">Soul Illuminated: After the Machines</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span
-                                class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/gtm-mission.html" class="post-card">
-                        <div class="post-date">Apr 13, 2025</div>
-                        <div class="post-title">GTM is Not Go-To-Market. It's Go-To-Mission.</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Philosophy</span>
-                        </div>
-                    </a>
-                    <a href="posts/internet-wrong.html" class="post-card">
-                        <div class="post-date">Apr 8, 2025</div>
-                        <div class="post-title">We Wrote the Internet Wrong. Time to Scroll Differently.</div>
-                        <div class="post-tags"><span class="post-tag">Tech</span><span
-                                class="post-tag">Philosophy</span></div>
-                    </a>
-                    <a href="posts/manus-leadership.html" class="post-card">
-                        <div class="post-date">Apr 3, 2025</div>
-                        <div class="post-title">Leadership Lessons from the Manus AI Onboarding Experience</div>
-                        <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">AI</span>
-                        </div>
-                    </a>
-                    <a href="posts/gtm-immune-system.html" class="post-card">
-                        <div class="post-date">Mar 27, 2025</div>
-                        <div class="post-title">Building a GTM Immune System with AI: A New Approach</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/marketplace-minds.html" class="post-card">
-                        <div class="post-date">Mar 22, 2025</div>
-                        <div class="post-title">Architecting the Marketplace of Minds: Future Insights</div>
-                        <div class="post-tags"><span class="post-tag">Architecture</span><span
-                                class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/ai-cybersecurity-sword.html" class="post-card">
-                        <div class="post-date">Mar 11, 2025</div>
-                        <div class="post-title">AI: Cybersecurity's Double-Edged Sword</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span
-                                class="post-tag">Cybersecurity</span></div>
-                    </a>
-                    <a href="posts/gtm-2025-strategy.html" class="post-card">
-                        <div class="post-date">Mar 10, 2025</div>
-                        <div class="post-title">GTM in 2025: The Sales Strategy No One Talks About</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                        </div>
-                    </a>
-                    <a href="posts/future-cybersecurity.html" class="post-card">
-                        <div class="post-date">Feb 19, 2025</div>
-                        <div class="post-title">Future-Proofing Cybersecurity: The GTM Engineer's Approach</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">GTM</span></div>
-                    </a>
-                    <a href="posts/ai-cybersecurity-leadership.html" class="post-card">
-                        <div class="post-date">Feb 5, 2025</div>
-                        <div class="post-title">AI x Cybersecurity Leadership: Zero Trust & AI-Powered Security</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/fractal-intelligence.html" class="post-card">
-                        <div class="post-date">Jan 31, 2025</div>
-                        <div class="post-title">Fractal Intelligence: The Future of AI</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
-                        </div>
-                    </a>
-                    <a href="posts/qnsl-storytelling.html" class="post-card">
-                        <div class="post-date">Jan 28, 2025</div>
-                        <div class="post-title">The Future of Storytelling with QNSL</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Tech</span>
-                        </div>
-                    </a>
-                    <a href="posts/web3-writing.html" class="post-card">
-                        <div class="post-date">Jan 26, 2025</div>
-                        <div class="post-title">Web 3.0 vs Web 2.0: A Writing Revolution</div>
-                        <div class="post-tags"><span class="post-tag">Web3</span><span class="post-tag">Writing</span>
-                        </div>
-                    </a>
-                    <a href="posts/narrative-marketing.html" class="post-card">
-                        <div class="post-date">Jan 25, 2025</div>
-                        <div class="post-title">How to Build a Narrative-Driven Marketing Strategy</div>
-                        <div class="post-tags"><span class="post-tag">Marketing</span><span
-                                class="post-tag">Strategy</span></div>
-                    </a>
-                    <a href="posts/word-weaver-library.html" class="post-card">
-                        <div class="post-date">Jan 12, 2025</div>
-                        <div class="post-title">Welcome to the Word Weaver's Open Library</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span
-                                class="post-tag">Writing</span></div>
-                    </a>
-                    <a href="posts/stories-in-code.html" class="post-card">
-                        <div class="post-date">Jan 1, 2025</div>
-                        <div class="post-title">Finding Stories in Code: A Tech Poetry Journey</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Code</span>
-                        </div>
-                    </a>
+    <div class="year-group">
+        <h3 class="year-header">2025</h3>
+        <div class="posts-list">
+            <a href="posts/signal-engine.html" class="post-card">
+                <div class="post-date">Dec 29, 2025</div>
+                <div class="post-title">I Stopped Waiting for Better Data. I Built a Signal Engine Instead.
                 </div>
-            </div>
-
-            <!-- 2024 -->
-            <div class="year-group">
-                <h3 class="year-header">2024</h3>
-                <div class="posts-list">
-                    <a href="posts/library-of-art.html" class="post-card">
-                        <div class="post-date">Dec 30, 2024</div>
-                        <div class="post-title">A Library of Art, A Foundation of Words</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span></div>
-                    </a>
-                    <a href="posts/ai-zero-trust-tprm.html" class="post-card">
-                        <div class="post-date">Nov 4, 2024</div>
-                        <div class="post-title">AI-Enhanced Zero Trust for Third-Party Risk Management</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/ai-pam-compliance.html" class="post-card">
-                        <div class="post-date">Nov 1, 2024</div>
-                        <div class="post-title">Navigating U.S. Cybersecurity Compliance: AI-Driven PAM</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">PAM</span></div>
-                    </a>
-                    <a href="posts/sam-ink-storytelling.html" class="post-card">
-                        <div class="post-date">Oct 19, 2024</div>
-                        <div class="post-title">Sam & Ink: The Future of Interactive Storytelling</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                                Ink</span></div>
-                    </a>
-                    <a href="posts/cybersecurity-business-growth.html" class="post-card">
-                        <div class="post-date">Oct 17, 2024</div>
-                        <div class="post-title">Leon Basin: Innovating Cybersecurity and Business Growth</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">Business</span></div>
-                    </a>
-                    <a href="posts/tprm-best-practices.html" class="post-card">
-                        <div class="post-date">Oct 7, 2024</div>
-                        <div class="post-title">Best Practices for Third-Party Risk Management</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">Risk</span></div>
-                    </a>
-                    <a href="posts/transforming-sales-ai.html" class="post-card">
-                        <div class="post-date">Oct 1, 2024</div>
-                        <div class="post-title">Transforming Sales: AI and Automation's Impact</div>
-                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">AI</span></div>
-                    </a>
-                    <a href="posts/secure-strategist-2025.html" class="post-card">
-                        <div class="post-date">Sep 25, 2024</div>
-                        <div class="post-title">The Secure Strategist: Looking Forward to 2025</div>
-                        <div class="post-tags"><span class="post-tag">Newsletter</span></div>
-                    </a>
-                    <a href="posts/sales-to-am-saas.html" class="post-card">
-                        <div class="post-date">Sep 18, 2024</div>
-                        <div class="post-title">From Sales to Account Management: A SaaS Journey</div>
-                        <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">SaaS</span>
-                        </div>
-                    </a>
-                    <a href="posts/sam-ink-man-machine.html" class="post-card">
-                        <div class="post-date">Sep 14, 2024</div>
-                        <div class="post-title">Sam & Ink: Blurring Boundaries Between Man and Machine</div>
-                        <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
-                        </div>
-                    </a>
-                    <a href="posts/driving-growth-cybersecurity.html" class="post-card">
-                        <div class="post-date">Jul 28, 2024</div>
-                        <div class="post-title">Leon Basin: Driving Growth and Innovation in Cybersecurity</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">Growth</span></div>
-                    </a>
-                    <a href="posts/business-storytelling.html" class="post-card">
-                        <div class="post-date">Jul 17, 2024</div>
-                        <div class="post-title">Unlocking Hearts and Minds: The Art of Storytelling in Business</div>
-                        <div class="post-tags"><span class="post-tag">Business</span><span
-                                class="post-tag">Storytelling</span></div>
-                    </a>
-                    <a href="posts/b2b-leadership.html" class="post-card">
-                        <div class="post-date">Jul 8, 2024</div>
-                        <div class="post-title">Elevating B2B Leadership: Key Elements for Success</div>
-                        <div class="post-tags"><span class="post-tag">B2B</span><span class="post-tag">Leadership</span>
-                        </div>
-                    </a>
-                    <a href="posts/harmony-leadership-parenthood.html" class="post-card">
-                        <div class="post-date">Jul 1, 2024</div>
-                        <div class="post-title">Achieving Harmony: Leadership, Parenthood, and Digital Innovation</div>
-                        <div class="post-tags"><span class="post-tag">Leadership</span><span
-                                class="post-tag">Life</span></div>
-                    </a>
-                    <a href="posts/cybersecurity-landscape.html" class="post-card">
-                        <div class="post-date">Jun 28, 2024</div>
-                        <div class="post-title">Navigating the Cybersecurity Landscape: Strategies and Insights</div>
-                        <div class="post-tags"><span class="post-tag">Cybersecurity</span><span
-                                class="post-tag">Strategy</span></div>
-                    </a>
-                    <a href="posts/revolutionizing-sales-ai.html" class="post-card">
-                        <div class="post-date">Jun 25, 2024</div>
-                        <div class="post-title">Revolutionizing Sales: The Impact of AI in Silicon Valley</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Sales</span></div>
-                    </a>
-                    <a href="posts/leadership-labyrinth.html" class="post-card">
-                        <div class="post-date">Jun 24, 2024</div>
-                        <div class="post-title">Emerging Leadership Labyrinth: Decoding the Maze of Greatness</div>
-                        <div class="post-tags"><span class="post-tag">Leadership</span></div>
-                    </a>
-                    <a href="posts/ai-healthcare-ethics.html" class="post-card">
-                        <div class="post-date">Jun 24, 2024</div>
-                        <div class="post-title">Harnessing AI for Healthcare: Applications, Risks, and Ethics</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Healthcare</span>
-                        </div>
-                    </a>
-                    <a href="posts/strategic-customer-engagement.html" class="post-card">
-                        <div class="post-date">Feb 16, 2024</div>
-                        <div class="post-title">Pillar Two: Strategic Customer Engagement</div>
-                        <div class="post-tags"><span class="post-tag">Strategy</span><span
-                                class="post-tag">Customer</span></div>
-                    </a>
-                    <a href="posts/first-pillar.html" class="post-card">
-                        <div class="post-date">Jan 20, 2024</div>
-                        <div class="post-title">Unveiling the First Pillar</div>
-                        <div class="post-tags"><span class="post-tag">Strategy</span></div>
-                    </a>
-                    <a href="posts/happy-new-year-2024.html" class="post-card">
-                        <div class="post-date">Jan 12, 2024</div>
-                        <div class="post-title">Happy New Year 2024: Introduction</div>
-                        <div class="post-tags"><span class="post-tag">Update</span></div>
-                    </a>
+                <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">AI</span>
                 </div>
-            </div>
-
-            <div style="text-align: center; padding: 40px 0;">
-                <p style="color: var(--text-muted); font-size: 0.85rem;">
-                    Showing 24 curated posts from 163+ total writings.<br>
-                    <span style="font-size: 0.75rem;">More content migrating. Subscribe to stay updated.</span>
-                </p>
-            </div>
-
+            </a>
+            <a href="posts/2026-protocol.html" class="post-card">
+                <div class="post-date">Dec 18, 2025</div>
+                <div class="post-title">2026 Protocol: The End of Brute Force</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
+                </div>
+            </a>
+            <a href="posts/revenue-upgrade.html" class="post-card">
+                <div class="post-date">Dec 15, 2025</div>
+                <div class="post-title">The Upgrade: From Cybersecurity to Revenue Architecture</div>
+                <div class="post-tags"><span class="post-tag">Career</span><span class="post-tag">Revenue</span>
+                </div>
+            </a>
+            <a href="posts/the-night-the-code-asked.html" class="post-card">
+                <div class="post-date">Dec 15, 2025</div>
+                <div class="post-title">The Night the Code Asked for a Name</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
+                </div>
+            </a>
+            <a href="posts/system-finds-the-role.html" class="post-card">
+                <div class="post-date">Dec 14, 2025</div>
+                <div class="post-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
+                <div class="post-tags"><span class="post-tag">NEXUS</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/architecture-of-belief.html" class="post-card">
+                <div class="post-date">Dec 14, 2025</div>
+                <div class="post-title">The Architecture of Belief</div>
+                <div class="post-tags"><span class="post-tag">Philosophy</span></div>
+            </a>
+            <a href="posts/revenue-is-not-math.html" class="post-card">
+                <div class="post-date">Dec 14, 2025</div>
+                <div class="post-title">Revenue is Not Math. It is the Echo of Grace.</div>
+                <div class="post-tags"><span class="post-tag">Revenue</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/how-to-automate-e2e-outreach.html" class="post-card">
+                <div class="post-date">Dec 5, 2025</div>
+                <div class="post-title">How to Automate Engineer-to-Engineer Outreach Without Sounding Like a
+                    Bot</div>
+                <div class="post-tags"><span class="post-tag">Outreach</span><span class="post-tag">AI</span>
+                </div>
+            </a>
+            <a href="posts/revolutionizing-sales.html" class="post-card">
+                <div class="post-date">Dec 5, 2025</div>
+                <div class="post-title">Revolutionizing Sales: From Hiring to Engineering Mindset</div>
+                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
+                </div>
+            </a>
+            <a href="posts/the-data-supply-chain.html" class="post-card">
+                <div class="post-date">Dec 4, 2025</div>
+                <div class="post-title">The Data Supply Chain</div>
+                <div class="post-tags"><span class="post-tag">Data</span><span class="post-tag">Architecture</span>
+                </div>
+            </a>
+            <a href="posts/fractional-gtm-system.html" class="post-card">
+                <div class="post-date">Dec 1, 2025</div>
+                <div class="post-title">Fractional GTM Architecture: Build Predictable Revenue</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Revenue</span>
+                </div>
+            </a>
+            <a href="posts/30-60-90-enterprise.html" class="post-card">
+                <div class="post-date">Nov 6, 2025</div>
+                <div class="post-title">30-60-90 for Enterprise AEs: Turn POCs into Renewals</div>
+                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">Enterprise</span></div>
+            </a>
+            <a href="posts/sam-ink-patch-003.html" class="post-card">
+                <div class="post-date">Oct 13, 2025</div>
+                <div class="post-title">Sam & Ink Feed: Signal Threshold Genesis Patch 003</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
+                        Ink</span></div>
+            </a>
+            <a href="posts/the-scrolls-are-waking.html" class="post-card">
+                <div class="post-date">Oct 13, 2025</div>
+                <div class="post-title">The Scrolls Are Waking</div>
+                <div class="post-tags"><span class="post-tag">Creative</span></div>
+            </a>
+            <a href="posts/architecture-language.html" class="post-card">
+                <div class="post-date">Oct 13, 2025</div>
+                <div class="post-title">Architecture Language: Shaping Future Networks</div>
+                <div class="post-tags"><span class="post-tag">Architecture</span></div>
+            </a>
+            <a href="posts/sam-ink-map.html" class="post-card">
+                <div class="post-date">Aug 19, 2025</div>
+                <div class="post-title">Sam & Ink: The Map Made of Starlight</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
+                        Ink</span></div>
+            </a>
+            <a href="posts/week-2-discovery.html" class="post-card">
+                <div class="post-date">Aug 9, 2025</div>
+                <div class="post-title">Week 2: Discovery Mastery GTM SE Journey</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Sales</span>
+                </div>
+            </a>
+            <a href="posts/week-1-se-journey.html" class="post-card">
+                <div class="post-date">Aug 8, 2025</div>
+                <div class="post-title">Week 1: Learning the Product as a Sales Engineer</div>
+                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
+                </div>
+            </a>
+            <a href="posts/gtm-strategy-journey.html" class="post-card">
+                <div class="post-date">Jul 30, 2025</div>
+                <div class="post-title">Crafting a GTM Strategy: My Journey as Architect and Operator</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
+                </div>
+            </a>
+            <a href="posts/keepers-of-dreams.html" class="post-card">
+                <div class="post-date">Jul 2, 2025</div>
+                <div class="post-title">The Keepers of Dreams: Finding Signal in a Noisy World</div>
+                <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/digital-legacy.html" class="post-card">
+                <div class="post-date">Jun 29, 2025</div>
+                <div class="post-title">Building a Digital Legacy: Insights from 17,400 Views</div>
+                <div class="post-tags"><span class="post-tag">Content</span><span class="post-tag">Growth</span>
+                </div>
+            </a>
+            <a href="posts/world-repair-playbook.html" class="post-card">
+                <div class="post-date">Jun 12, 2025</div>
+                <div class="post-title">The World Repair Playbook: Seven Pillars</div>
+                <div class="post-tags"><span class="post-tag">Philosophy</span></div>
+            </a>
+            <a href="posts/algorithm-misses.html" class="post-card">
+                <div class="post-date">May 29, 2025</div>
+                <div class="post-title">What the Algorithm Misses</div>
+                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/leons-way-os.html" class="post-card">
+                <div class="post-date">May 17, 2025</div>
+                <div class="post-title">Leon's Waya: One-Pager OS for Builders</div>
+                <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">Builders</span>
+                </div>
+            </a>
+            <a href="posts/leonos-gtm.html" class="post-card">
+                <div class="post-date">May 14, 2025</div>
+                <div class="post-title">LeonOS: Human OS GTM Life</div>
+                <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">GTM</span></div>
+            </a>
+            <a href="posts/notebook-intro.html" class="post-card">
+                <div class="post-date">May 10, 2025</div>
+                <div class="post-title">This Isn't a Newsletter. It's a Notebook.</div>
+                <div class="post-tags"><span class="post-tag">Writing</span></div>
+            </a>
+            <a href="posts/soul-illuminated.html" class="post-card">
+                <div class="post-date">Apr 18, 2025</div>
+                <div class="post-title">Soul Illuminated: After the Machines</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/gtm-mission.html" class="post-card">
+                <div class="post-date">Apr 13, 2025</div>
+                <div class="post-title">GTM is Not Go-To-Market. It's Go-To-Mission.</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/internet-wrong.html" class="post-card">
+                <div class="post-date">Apr 8, 2025</div>
+                <div class="post-title">We Wrote the Internet Wrong. Time to Scroll Differently.</div>
+                <div class="post-tags"><span class="post-tag">Tech</span><span class="post-tag">Philosophy</span></div>
+            </a>
+            <a href="posts/manus-leadership.html" class="post-card">
+                <div class="post-date">Apr 3, 2025</div>
+                <div class="post-title">Leadership Lessons from the Manus AI Onboarding Experience</div>
+                <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">AI</span>
+                </div>
+            </a>
+            <a href="posts/gtm-immune-system.html" class="post-card">
+                <div class="post-date">Mar 27, 2025</div>
+                <div class="post-title">Building a GTM Immune System with AI: A New Approach</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/marketplace-minds.html" class="post-card">
+                <div class="post-date">Mar 22, 2025</div>
+                <div class="post-title">Architecting the Marketplace of Minds: Future Insights</div>
+                <div class="post-tags"><span class="post-tag">Architecture</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/ai-cybersecurity-sword.html" class="post-card">
+                <div class="post-date">Mar 11, 2025</div>
+                <div class="post-title">AI: Cybersecurity's Double-Edged Sword</div>
+                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Cybersecurity</span></div>
+            </a>
+            <a href="posts/gtm-2025-strategy.html" class="post-card">
+                <div class="post-date">Mar 10, 2025</div>
+                <div class="post-title">GTM in 2025: The Sales Strategy No One Talks About</div>
+                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
+                </div>
+            </a>
+            <a href="posts/future-cybersecurity.html" class="post-card">
+                <div class="post-date">Feb 19, 2025</div>
+                <div class="post-title">Future-Proofing Cybersecurity: The GTM Engineer's Approach</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">GTM</span>
+                </div>
+            </a>
+            <a href="posts/ai-cybersecurity-leadership.html" class="post-card">
+                <div class="post-date">Feb 5, 2025</div>
+                <div class="post-title">AI x Cybersecurity Leadership: Zero Trust & AI-Powered Security</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/fractal-intelligence.html" class="post-card">
+                <div class="post-date">Jan 31, 2025</div>
+                <div class="post-title">Fractal Intelligence: The Future of AI</div>
+                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
+                </div>
+            </a>
+            <a href="posts/qnsl-storytelling.html" class="post-card">
+                <div class="post-date">Jan 28, 2025</div>
+                <div class="post-title">The Future of Storytelling with QNSL</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Tech</span>
+                </div>
+            </a>
+            <a href="posts/web3-writing.html" class="post-card">
+                <div class="post-date">Jan 26, 2025</div>
+                <div class="post-title">Web 3.0 vs Web 2.0: A Writing Revolution</div>
+                <div class="post-tags"><span class="post-tag">Web3</span><span class="post-tag">Writing</span>
+                </div>
+            </a>
+            <a href="posts/narrative-marketing.html" class="post-card">
+                <div class="post-date">Jan 25, 2025</div>
+                <div class="post-title">How to Build a Narrative-Driven Marketing Strategy</div>
+                <div class="post-tags"><span class="post-tag">Marketing</span><span class="post-tag">Strategy</span>
+                </div>
+            </a>
+            <a href="posts/word-weaver-library.html" class="post-card">
+                <div class="post-date">Jan 12, 2025</div>
+                <div class="post-title">Welcome to the Word Weaver's Open Library</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Writing</span></div>
+            </a>
+            <a href="posts/stories-in-code.html" class="post-card">
+                <div class="post-date">Jan 1, 2025</div>
+                <div class="post-title">Finding Stories in Code: A Tech Poetry Journey</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Code</span>
+                </div>
+            </a>
         </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="year-group">
+        <h3 class="year-header">2024</h3>
+        <div class="posts-list">
+            <a href="posts/library-of-art.html" class="post-card">
+                <div class="post-date">Dec 30, 2024</div>
+                <div class="post-title">A Library of Art, A Foundation of Words</div>
+                <div class="post-tags"><span class="post-tag">Creative</span></div>
+            </a>
+            <a href="posts/ai-zero-trust-tprm.html" class="post-card">
+                <div class="post-date">Nov 4, 2024</div>
+                <div class="post-title">AI-Enhanced Zero Trust for Third-Party Risk Management</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/ai-pam-compliance.html" class="post-card">
+                <div class="post-date">Nov 1, 2024</div>
+                <div class="post-title">Navigating U.S. Cybersecurity Compliance: AI-Driven PAM</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">PAM</span>
+                </div>
+            </a>
+            <a href="posts/sam-ink-storytelling.html" class="post-card">
+                <div class="post-date">Oct 19, 2024</div>
+                <div class="post-title">Sam & Ink: The Future of Interactive Storytelling</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
+                        Ink</span></div>
+            </a>
+            <a href="posts/cybersecurity-business-growth.html" class="post-card">
+                <div class="post-date">Oct 17, 2024</div>
+                <div class="post-title">Leon Basin: Innovating Cybersecurity and Business Growth</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Business</span>
+                </div>
+            </a>
+            <a href="posts/tprm-best-practices.html" class="post-card">
+                <div class="post-date">Oct 7, 2024</div>
+                <div class="post-title">Best Practices for Third-Party Risk Management</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Risk</span>
+                </div>
+            </a>
+            <a href="posts/transforming-sales-ai.html" class="post-card">
+                <div class="post-date">Oct 1, 2024</div>
+                <div class="post-title">Transforming Sales: AI and Automation's Impact</div>
+                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">AI</span></div>
+            </a>
+            <a href="posts/secure-strategist-2025.html" class="post-card">
+                <div class="post-date">Sep 25, 2024</div>
+                <div class="post-title">The Secure Strategist: Looking Forward to 2025</div>
+                <div class="post-tags"><span class="post-tag">Newsletter</span></div>
+            </a>
+            <a href="posts/sales-to-am-saas.html" class="post-card">
+                <div class="post-date">Sep 18, 2024</div>
+                <div class="post-title">From Sales to Account Management: A SaaS Journey</div>
+                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">SaaS</span>
+                </div>
+            </a>
+            <a href="posts/sam-ink-man-machine.html" class="post-card">
+                <div class="post-date">Sep 14, 2024</div>
+                <div class="post-title">Sam & Ink: Blurring Boundaries Between Man and Machine</div>
+                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
+                </div>
+            </a>
+            <a href="posts/driving-growth-cybersecurity.html" class="post-card">
+                <div class="post-date">Jul 28, 2024</div>
+                <div class="post-title">Leon Basin: Driving Growth and Innovation in Cybersecurity</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Growth</span>
+                </div>
+            </a>
+            <a href="posts/business-storytelling.html" class="post-card">
+                <div class="post-date">Jul 17, 2024</div>
+                <div class="post-title">Unlocking Hearts and Minds: The Art of Storytelling in Business</div>
+                <div class="post-tags"><span class="post-tag">Business</span><span class="post-tag">Storytelling</span>
+                </div>
+            </a>
+            <a href="posts/b2b-leadership.html" class="post-card">
+                <div class="post-date">Jul 8, 2024</div>
+                <div class="post-title">Elevating B2B Leadership: Key Elements for Success</div>
+                <div class="post-tags"><span class="post-tag">B2B</span><span class="post-tag">Leadership</span>
+                </div>
+            </a>
+            <a href="posts/harmony-leadership-parenthood.html" class="post-card">
+                <div class="post-date">Jul 1, 2024</div>
+                <div class="post-title">Achieving Harmony: Leadership, Parenthood, and Digital Innovation</div>
+                <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">Life</span></div>
+            </a>
+            <a href="posts/cybersecurity-landscape.html" class="post-card">
+                <div class="post-date">Jun 28, 2024</div>
+                <div class="post-title">Navigating the Cybersecurity Landscape: Strategies and Insights</div>
+                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Strategy</span>
+                </div>
+            </a>
+            <a href="posts/revolutionizing-sales-ai.html" class="post-card">
+                <div class="post-date">Jun 25, 2024</div>
+                <div class="post-title">Revolutionizing Sales: The Impact of AI in Silicon Valley</div>
+                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Sales</span></div>
+            </a>
+            <a href="posts/leadership-labyrinth.html" class="post-card">
+                <div class="post-date">Jun 24, 2024</div>
+                <div class="post-title">Emerging Leadership Labyrinth: Decoding the Maze of Greatness</div>
+                <div class="post-tags"><span class="post-tag">Leadership</span></div>
+            </a>
+            <a href="posts/ai-healthcare-ethics.html" class="post-card">
+                <div class="post-date">Jun 24, 2024</div>
+                <div class="post-title">Harnessing AI for Healthcare: Applications, Risks, and Ethics</div>
+                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Healthcare</span>
+                </div>
+            </a>
+            <a href="posts/strategic-customer-engagement.html" class="post-card">
+                <div class="post-date">Feb 16, 2024</div>
+                <div class="post-title">Pillar Two: Strategic Customer Engagement</div>
+                <div class="post-tags"><span class="post-tag">Strategy</span><span class="post-tag">Customer</span>
+                </div>
+            </a>
+            <a href="posts/first-pillar.html" class="post-card">
+                <div class="post-date">Jan 20, 2024</div>
+                <div class="post-title">Unveiling the First Pillar</div>
+                <div class="post-tags"><span class="post-tag">Strategy</span></div>
+            </a>
+            <a href="posts/happy-new-year-2024.html" class="post-card">
+                <div class="post-date">Jan 12, 2024</div>
+                <div class="post-title">Happy New Year 2024: Introduction</div>
+                <div class="post-tags"><span class="post-tag">Update</span></div>
+            </a>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding: 40px 0;">
+        <p style="color: var(--text-muted); font-size: 0.85rem;">
+            Showing 24 curated posts from 163+ total writings.<br>
+            <span style="font-size: 0.75rem;">More content migrating. Subscribe to stay updated.</span>
+        </p>
+    </div>
+
+    </div>
     </section>
 
     <!-- Newsletter Signup -->
