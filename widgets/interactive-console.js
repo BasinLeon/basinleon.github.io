@@ -465,6 +465,91 @@ Secure Channels:
                 `);
                 break;
 
+            // === DIRECTOR-LEVEL METRICS ===
+            case 'metrics':
+                printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  DIRECTOR-LEVEL METRICS: BASIN::NEXUS                            ║
+╠══════════════════════════════════════════════════════════════════╣
+║  PIPELINE VELOCITY     │  160% YoY Growth                        ║
+║  COST AVOIDANCE        │  \$424K/year (7 SDRs → 1 Eng + Auto)     ║
+║  SPEED TO VALUE        │  5 Days to "Call Ready" (Avg: 3 mo)     ║
+║  RETENTION             │  12% Churn Reduction (Multi-\$M ARR)     ║
+║  DEAL RESCUE           │  \$30K Horizon Opp Revived               ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Type: case_study [horizon|reddit|mantech] for war stories       ║
+╚══════════════════════════════════════════════════════════════════╝
+                `, 'text-green');
+                break;
+
+            // === CASE STUDIES (WAR STORIES) ===
+            case 'case_study horizon':
+            case 'case horizon':
+                printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  CASE STUDY: HORIZON MEDIA — THE VALUE-ADD PIVOT                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║  PROBLEM:  Partner canceled, deal stalled at evaluation.         ║
+║  ACTION:   Executed "Value-Add Pivot" with a Success Checklist   ║
+║            to reframe the technical evaluation.                  ║
+║  RESULT:   Deal moved to Legal. \$30K opportunity preserved.      ║
+╚══════════════════════════════════════════════════════════════════╝
+                `, 'text-cyan');
+                break;
+
+            case 'case_study reddit':
+            case 'case reddit':
+                printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  CASE STUDY: REDDIT AIR STRIKE — ZERO-COST LEAD GEN              ║
+╠══════════════════════════════════════════════════════════════════╣
+║  PROBLEM:  Cold email dying (0.3% reply rate).                   ║
+║  ACTION:   Built "Reddit Air Strike" script to identify          ║
+║            problem-aware leads asking buying questions.          ║
+║  RESULT:   3 High-Value SQLs with \$0 ad spend.                   ║
+╚══════════════════════════════════════════════════════════════════╝
+                `, 'text-cyan');
+                break;
+
+            case 'case_study mantech':
+            case 'case mantech':
+                printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  CASE STUDY: MANTECH — THE FEDRAMP PLAYBOOK                      ║
+╠══════════════════════════════════════════════════════════════════╣
+║  PROBLEM:  Scheduling conflicts on P0 federal deal.              ║
+║  ACTION:   Systemized "FedRAMP Playbook" and aligned execs       ║
+║            for a single high-leverage call.                      ║
+║  RESULT:   Meeting locked, deal advanced to tech validation.     ║
+╚══════════════════════════════════════════════════════════════════╝
+                `, 'text-cyan');
+                break;
+
+            // === ASCII VISUALIZATIONS ===
+            case 'visualize':
+            case 'visualize growth':
+            case 'viz':
+                printLine(output, `
+PIPELINE VELOCITY (Millions \$)
+────────────────────────────────────────
+2023: [██░░░░░░░░] \$1.2M
+2024: [██████░░░░] \$2.5M
+2025: [██████████] \$4.0M (Fudo Scale)
+              160% YoY Growth ↑
+
+EFFICIENCY INDEX (Manual Toil vs Automation)
+────────────────────────────────────────
+Manual:     [██████████] 100% (Industry)
+Basin Arch: [█░░░░░░░░░]   8% (-92% Toil)
+
+UNIT ECONOMICS
+────────────────────────────────────────
+Traditional: \$670/meeting  (10 SDRs)
+Bifurcated:  \$211/meeting  (1 Eng + 3 SDRs)
+                            -68% CAC ↓
+                `, 'text-yellow');
+                break;
+
             case 'clear':
                 output.innerHTML = '';
                 break;
