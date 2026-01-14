@@ -790,7 +790,7 @@
                     New tools, case studies, and GTM architecture insights. Join the waitlist for BASIN::NEXUS API
                     access.
                 </p>
-                <form onsubmit="window.location.href='mailto:lbasin23@gmail.com?subject=New Subscriber: '+document.querySelector('input[name=email]').value; return false;"
+                <form action="https://formspree.io/f/meeeqyrg" method="POST"
                     style="display: flex; flex-direction: column; gap: 12px;">
                     <input type="email" name="email" required placeholder="your@email.com"
                         style="width: 100%; padding: 14px 18px; background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
@@ -914,19 +914,62 @@
     </section>
 
     <script>
-        // Enhanced chat with keyword matching + optional API integration
+        // PREMIUM ACCESS SYSTEM
+        let isPremiumUser = localStorage.getItem('nexus-premium') === 'true';
+
+        function checkPremium(topic) {
+            const premiumTopics = ['hire', 'contact', 'pipeline', 'strategy', 'salary', 'negotiate'];
+            return premiumTopics.some(t => topic.includes(t));
+        }
+
+        function showAccessPrompt() {
+            return `🔒 <strong>PREMIUM INTEL</strong><br><br>This information is classified. To unlock full access:<br><br>
+            • <a href="mailto:lbasin23@gmail.com?subject=NEXUS Access Request" style="color: var(--gold-primary);">📧 Email Leon</a><br>
+            • <a href="https://calendly.com/lbasin23" target="_blank" style="color: var(--gold-primary);">📅 Schedule a call</a><br>
+            • Or type: <code style="background: rgba(212,175,55,0.2); padding: 2px 6px; border-radius: 4px;">unlock [access-code]</code>`;
+        }
+
+        // Enhanced responses with more intelligence
         const responses = {
-            "signal": "SIGNAL is the first pillar: raw data from Google Sheets, webhooks, RSS feeds, LinkedIn. It's the 'input layer' - where information enters your GTM system before processing.",
-            "system": "SYSTEM is the second pillar: enrichment, scoring, and orchestration via n8n workflows. This is where raw signals become actionable intelligence.",
-            "scale": "SCALE is the third pillar: the output layer generating email drafts, executive briefs, CRM updates, and Slack alerts. It's where system outputs multiply your human effort.",
+            // CORE PHILOSOPHY
+            "signal": "SIGNAL is the first pillar: raw data from Google Sheets, webhooks, RSS feeds, LinkedIn. It's the 'input layer' - where information enters your GTM system before processing. Think of it as the nervous system detecting market intent.",
+            "system": "SYSTEM is the second pillar: enrichment, scoring, and orchestration via n8n workflows. This is where raw signals become actionable intelligence. LLMs score leads, Python scripts enrich data, and automation decides next actions.",
+            "scale": "SCALE is the third pillar: the output layer generating email drafts, executive briefs, CRM updates, and Slack alerts. It's where machine work multiplies human judgment.",
+            "signal-to-system-to-scale": "Signal → System → Scale is the core architecture: (1) SIGNAL ingests raw market data, (2) SYSTEM enriches and scores with AI/Python, (3) SCALE outputs actionable deliverables. It's a revenue pipeline that runs 24/7.",
+
+            // TOOLS & TECH
+            "$0": "The $0 GTM Stack replaces $950+/mo SaaS tools with: n8n (free orchestration), free APIs (Hunter, Clearbit), local LLMs (Ollama), and custom Python scripts. Enterprise capability, zero cost.",
             "0 gtm": "The $0 GTM Stack replaces $950+/mo SaaS tools with: n8n (free orchestration), free APIs (Hunter, Clearbit), local LLMs (Ollama), and custom Python scripts. Enterprise capability, zero cost.",
-            "gtm": "GTM = Go-To-Market. But in my philosophy, it's 'Go-To-Mission' - building systems that align signal, action, and outcome. Revenue is architecture, not arithmetic.",
-            "nexus": "BASIN::NEXUS is an 8,400+ line Python/Streamlit career intelligence platform with 18 modules: job hunting, interview simulation, voice coaching, pipeline CRM, and more.",
-            "n8n": "n8n is the orchestration backbone - a self-hosted workflow automation tool that connects all the pieces. Think Zapier, but free and infinitely more powerful.",
-            "basin": "Leon Basin is a Senior Manager of GTM Strategy with 15+ years of experience. He builds revenue systems, not just sales playbooks. Former Google, SurveyMonkey, Sense, Fudo Security. MBA from Santa Clara University. Published author and Python developer.",
-            "portfolio": "Leon's portfolio includes 8+ production tools: BASIN::NEXUS (8,400+ lines), Lead Script Generator, Outreach Autopsy, BS Detector, Signal Architect, and more. All open source on GitHub.",
-            "hire": "Leon is seeking Director/VP-level GTM, RevOps, or GTM Engineering roles where he can build systems rather than run playbooks. He brings technical credibility (8,400+ lines of Python), proven revenue growth (160% pipeline increase YoY), and systems thinking.",
-            "default": "I can answer questions about GTM architecture, the $0 stack, signal-system-scale philosophy, BASIN::NEXUS, Leon's background, or his projects. What would you like to know?"
+            "gtm": "GTM = Go-To-Market. In my philosophy, it's 'Go-To-Mission' - building systems that align signal, action, and outcome. Revenue is architecture, not arithmetic.",
+            "nexus": "BASIN::NEXUS is an 8,400+ line Python/Streamlit career intelligence platform with 18 modules: job hunting, interview simulation with 5 LLMs, voice coaching, pipeline CRM, executive brief generation, and more.",
+            "n8n": "n8n is the orchestration backbone - a self-hosted workflow automation tool that connects all pieces. Think Zapier, but free, self-hosted, and infinitely more powerful. I use it for lead enrichment, signal routing, and automated outreach.",
+            "python": "Python is the engineering layer. I use it for data processing, LLM integration, Streamlit apps, and custom tools. 8,400+ lines across BASIN::NEXUS alone.",
+            "streamlit": "Streamlit powers the BASIN::NEXUS interface - rapid prototyping of data apps with Python. Clean UI, zero frontend code needed.",
+            "llm": "I use 5 LLMs in BASIN::NEXUS: GPT-4, Claude, Ollama (local), Gemini, and Mistral. Each serves different purposes - coaching, scoring, brief generation, and interview simulation.",
+
+            // ABOUT LEON
+            "leon": "Leon Basin is a Senior Manager of GTM Strategy with 15+ years of experience. He builds revenue systems, not just sales playbooks. Former Google, SurveyMonkey, Sense, Fudo Security. MBA from Santa Clara University. Published author and Python developer.",
+            "basin": "Leon Basin is a Senior Manager of GTM Strategy with 15+ years of experience. He builds revenue systems, not just sales playbooks. Former Google, SurveyMonkey, Sense, Fudo Security. MBA from Santa Clara University.",
+            "experience": "15+ years: Google (Sales), SurveyMonkey (Enterprise AE), Sense (GTM Lead), Fudo Security (Sr. Manager GTM). Key achievement at Fudo: 160% YoY pipeline growth using the Signal→System→Scale framework.",
+            "portfolio": "8+ production tools: BASIN::NEXUS (8,400+ lines), Lead Script Generator, Outreach Autopsy, BS Detector, Signal Architect, Executive Brief Generator, and more. All on GitHub.",
+            "education": "MBA from Santa Clara University (Leavey School of Business). Focus on strategy, operations, and technology management.",
+
+            // PREMIUM TOPICS (gated)
+            "hire": "PREMIUM_GATE",
+            "hiring": "PREMIUM_GATE",
+            "contact": "PREMIUM_GATE",
+            "pipeline": "PREMIUM_GATE",
+            "strategy": "PREMIUM_GATE",
+            "salary": "PREMIUM_GATE",
+            "interview": "For interview prep, BASIN::NEXUS includes a multi-persona interview simulator with 5 LLM integrations. Practice with CRO, VP Sales, or Founder personas. It analyzes your responses in real-time.",
+
+            // CONVERSATIONAL
+            "hello": "Welcome to BASIN::NEXUS. I can answer questions about GTM architecture, Leon's work, the $0 stack, or career intelligence. What would you like to explore?",
+            "hi": "Welcome to BASIN::NEXUS. Ask me about Signal→System→Scale, the $0 GTM Stack, or Leon's projects.",
+            "help": "Try asking about: 'signal-to-system-to-scale', '$0 GTM stack', 'BASIN::NEXUS', 'Leon's experience', or 'Python tools'. For premium intel, contact Leon directly.",
+            "what can you do": "I can explain GTM architecture, the Signal→System→Scale framework, the $0 GTM Stack, Leon's tools and experience, and career intelligence concepts. Try: 'What is the $0 GTM stack?'",
+
+            "default": "Interesting question. I specialize in GTM architecture, revenue systems, and Leon's work. Try asking about 'signal-to-system-to-scale', 'the $0 stack', or 'BASIN::NEXUS'. For deeper conversations, <a href='mailto:lbasin23@gmail.com' style='color: var(--gold-primary);'>contact Leon directly</a>."
         };
 
         // System prompt for AI APIs
@@ -1077,12 +1120,28 @@ Answer questions about Leon's background, projects, GTM philosophy, or the $0 st
             let response = await callAI(userMessage);
 
             if (!response) {
-                // Keyword matching fallback
-                response = responses.default;
-                for (let key in responses) {
-                    if (query.includes(key)) {
-                        response = responses[key];
-                        break;
+                // Check for unlock command
+                if (query.startsWith('unlock ')) {
+                    const code = query.replace('unlock ', '').trim();
+                    if (code === 'nexus' || code === 'architect' || code === 'basin2026') {
+                        localStorage.setItem('nexus-premium', 'true');
+                        isPremiumUser = true;
+                        response = '🔓 <strong>ACCESS GRANTED</strong>. Premium intel unlocked. You now have full access to all BASIN::NEXUS intelligence.';
+                    } else {
+                        response = '❌ Invalid access code. Contact Leon for a valid code.';
+                    }
+                } else {
+                    // Keyword matching fallback
+                    response = responses.default;
+                    for (let key in responses) {
+                        if (query.includes(key)) {
+                            if (responses[key] === 'PREMIUM_GATE' && !isPremiumUser) {
+                                response = showAccessPrompt();
+                            } else if (responses[key] !== 'PREMIUM_GATE') {
+                                response = responses[key];
+                            }
+                            break;
+                        }
                     }
                 }
             }
@@ -1113,7 +1172,7 @@ Answer questions about Leon's background, projects, GTM philosophy, or the $0 st
             <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
                 Weekly GTM architecture blueprints. No spam. Just signal.
             </p>
-            <form onsubmit="window.location.href='mailto:lbasin23@gmail.com?subject=New Subscriber: '+document.querySelector('input[name=email]').value; return false;"
+            <form action="https://formspree.io/f/meeeqyrg" method="POST"
                 style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
                 <input type="email" name="email" placeholder="your@email.com" required
                     style="flex: 1; min-width: 180px; padding: 12px 16px; background: var(--bg-card); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
