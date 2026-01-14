@@ -865,6 +865,166 @@
             }
         }
 
+        /* ═══════════════════════════════════════════════════════════════
+           BILLBOARD / TEAR SHEET
+        ═══════════════════════════════════════════════════════════════ */
+        .billboard-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 50%, var(--bg-deep) 100%);
+            border-top: 1px solid var(--gold-border);
+            border-bottom: 1px solid var(--gold-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .billboard-container {
+            background: rgba(10, 15, 13, 0.8);
+            border: 1px solid var(--cyan);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .billboard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            animation: scan-horizontal 3s linear infinite;
+        }
+
+        @keyframes scan-horizontal {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .billboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .billboard-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .billboard-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--cyan);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .economics-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .economics-table th {
+            text-align: left;
+            padding: 16px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .economics-table td {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .economics-table tr:hover td {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .economics-table tr td:first-child {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .economics-table tr td:last-child {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .col-nexus {
+            color: var(--gold-light) !important;
+            background: rgba(212, 175, 55, 0.05) !important;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .col-delta {
+            color: var(--cyan) !important;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .billboard-quote {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px dashed rgba(6, 182, 212, 0.3);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .billboard-quote span {
+            display: block;
+            color: var(--cyan);
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        /* 📋 Governance Callout within Billboard */
+        .governance-terminal {
+            margin-top: 32px;
+            background: #000;
+            border: 1px solid var(--text-muted);
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .governance-terminal strong {
+            color: var(--gold-primary);
+        }
+
+        .prompt {
+            color: var(--success);
+        }
+
         /* Decorative Tech Lines */
         .tech-line {
             height: 1px;
@@ -1087,102 +1247,87 @@
         </div>
     </section>
 
-    <!-- UNIT ECONOMICS -->
-    <section style="background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 50%, var(--bg-deep) 100%);">
+    <!-- UNIT ECONOMICS BILLBOARD -->
+    <section class="billboard-section">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Unit Economics: Traditional vs Bifurcated Model</h2>
-                <p class="section-subtitle">How I replaced $800K in headcount with architecture</p>
-            </div>
+            <div class="billboard-container fade-in-up">
+                <div class="billboard-header">
+                    <div class="billboard-title">Unit Economics: Traditional vs Bifurcated Model</div>
+                    <div class="billboard-subtitle">How I replaced $800K in headcount with architecture</div>
+                </div>
 
-            <div style="overflow-x: auto; margin: 40px 0;">
-                <table
-                    style="width: 100%; border-collapse: collapse; font-size: 0.85rem; font-family: var(--font-mono);">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--gold-border); background: var(--bg-elevated);">
-                            <th style="padding: 15px; text-align: left; color: var(--gold-primary);">METRIC</th>
-                            <th style="padding: 15px; text-align: center; color: var(--text-secondary);">TRADITIONAL SDR
-                            </th>
-                            <th style="padding: 15px; text-align: center; color: var(--gold-primary);">BIFURCATED
-                                (NEXUS)</th>
-                            <th style="padding: 15px; text-align: center; color: var(--gold-light);">DELTA</th>
-                        </tr>
-                    </thead>
-                    <tbody style="color: var(--text-primary);">
-                        <tr style="border-bottom: 1px solid var(--gold-border);">
-                            <td style="padding: 15px;"><strong>Team Size</strong></td>
-                            <td style="padding: 15px; text-align: center;">10 SDRs ($800k OTE)</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">1 GTM Eng + 3
-                                SDRs ($380k)</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light);"><strong>-70%
-                                    headcount</strong></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid var(--gold-border); background: rgba(212, 175, 55, 0.03);">
-                            <td style="padding: 15px;"><strong>Manual Work (weekly)</strong></td>
-                            <td style="padding: 15px; text-align: center;">400 hrs (40 × 10)</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">30 hrs (10 × 3)
-                            </td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light);"><strong>-92%
-                                    toil</strong></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid var(--gold-border);">
-                            <td style="padding: 15px;"><strong>Signal→Outreach</strong></td>
-                            <td style="padding: 15px; text-align: center;">24-48 hours</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">&lt;5 minutes
-                            </td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light);"><strong>-99.7%
-                                    latency</strong></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid var(--gold-border); background: rgba(212, 175, 55, 0.03);">
-                            <td style="padding: 15px;"><strong>Qualified Meetings/Mo</strong></td>
-                            <td style="padding: 15px; text-align: center;">100 (10/SDR)</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">150 (50/SDR)</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light);"><strong>+50%
-                                    output</strong></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid var(--gold-border);">
-                            <td style="padding: 15px;"><strong>Cost Per Meeting</strong></td>
-                            <td style="padding: 15px; text-align: center;">$670</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">$211</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light);"><strong>-68%
-                                    CAC</strong></td>
-                        </tr>
-                        <tr style="background: rgba(212, 175, 55, 0.08); border-bottom: 2px solid var(--gold-primary);">
-                            <td style="padding: 15px;"><strong>Annual Cost</strong></td>
-                            <td style="padding: 15px; text-align: center;">$804k baseline</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-primary);">$380k total</td>
-                            <td style="padding: 15px; text-align: center; color: var(--gold-light); font-size: 1.1rem;">
-                                <strong>$424K SAVED</strong>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div style="overflow-x: auto;">
+                    <table class="economics-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th style="text-align: center;">Traditional SDR</th>
+                                <th style="text-align: center;" class="col-nexus">Bifurcated (NEXUS)</th>
+                                <th style="text-align: center;" class="col-delta">Delta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Team Size</td>
+                                <td style="text-align: center;">10 SDRs ($800k OTE)</td>
+                                <td style="text-align: center;" class="col-nexus">1 GTM Eng + 3 SDRs ($380k)</td>
+                                <td style="text-align: center;" class="col-delta">-70% headcount</td>
+                            </tr>
+                            <tr>
+                                <td>Manual Work (weekly)</td>
+                                <td style="text-align: center;">400 hrs (40 × 10)</td>
+                                <td style="text-align: center;" class="col-nexus">30 hrs (10 × 3)</td>
+                                <td style="text-align: center;" class="col-delta">-92% toil</td>
+                            </tr>
+                            <tr>
+                                <td>Signal→Outreach</td>
+                                <td style="text-align: center;">24-48 hours</td>
+                                <td style="text-align: center;" class="col-nexus">&lt;5 minutes</td>
+                                <td style="text-align: center;" class="col-delta">-99.7% latency</td>
+                            </tr>
+                            <tr>
+                                <td>Qualified Meetings/Mo</td>
+                                <td style="text-align: center;">100 (10/SDR)</td>
+                                <td style="text-align: center;" class="col-nexus">150 (50/SDR)</td>
+                                <td style="text-align: center;" class="col-delta"
+                                    style="color: var(--success) !important;">+50% output</td>
+                            </tr>
+                            <tr>
+                                <td>Cost Per Meeting</td>
+                                <td style="text-align: center;">$670</td>
+                                <td style="text-align: center;" class="col-nexus">$211</td>
+                                <td style="text-align: center;" class="col-delta">-68% CAC</td>
+                            </tr>
+                            <tr>
+                                <td>Annual Cost</td>
+                                <td style="text-align: center;">$804k baseline</td>
+                                <td style="text-align: center;" class="col-nexus">$380k total</td>
+                                <td style="text-align: center;" class="col-delta">$424K SAVED</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <p
-                style="text-align: center; color: var(--text-secondary); font-size: 0.8rem; font-style: italic; margin-top: 20px;">
-                "Code is the new revenue capacity. Headcount is no longer a proxy for growth."<br>
-                <span style="color: var(--gold-primary);">— Series A Cybersecurity Vendor: 160% Pipeline Growth, Zero
-                    Additional Headcount</span>
-            </p>
+                <div class="billboard-quote">
+                    <span>"Code is the new revenue capacity. Headcount is no longer a proxy for growth."</span>
+                    — Series A Cybersecurity Vendor: 160% Pipeline Growth, Zero Additional Headcount
+                </div>
 
-            <!-- GOVERNANCE FRAMEWORK CALLOUT -->
-            <div
-                style="margin-top: 40px; padding: 24px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 8px;">
-                <h3
-                    style="font-family: var(--font-display); font-size: 1rem; color: var(--gold-primary); margin-bottom: 12px; letter-spacing: 2px;">
-                    📋 GOVERNANCE FRAMEWORK
-                </h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px;">
-                    I don't just generate leads. I run a <strong style="color: var(--gold-light);">Weekly GTM
-                        Roll-Up</strong> cadence that tracks P0 Deal Velocity, SDR Efficiency, and Pipeline Integrity.
-                    Every signal-to-action is logged, audited, and SLA-enforced.
-                </p>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">
-                    <span style="color: var(--gold-primary);">→</span> Type <code
-                        style="background: var(--bg-elevated); padding: 2px 8px; border-radius: 4px; color: var(--gold-light);">governance</code>
-                    in the console to see the framework.
-                </p>
+                <!-- GOVERNANCE TERMINAL -->
+                <div class="governance-terminal">
+                    <div style="margin-bottom: 8px;">
+                        <span class="prompt">➜</span> <strong>GOVERNANCE FRAMEWORK:</strong>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        I don't just generate leads. I run a <strong>Weekly GTM Roll-Up</strong> cadence that tracks P0
+                        Deal Velocity, SDR Efficiency, and Pipeline Integrity.
+                        Every signal-to-action is logged, audited, and SLA-enforced.
+                    </p>
+                    <div style="margin-top: 12px; color: var(--text-muted);">
+                        <span class="prompt">➜</span> Type <code style="color: var(--cyan);">governance</code> in
+                        console to view logic.
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1232,8 +1377,7 @@
                 <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;"
                     data-demo-id="basin-nexus">
                     <h3 class="feature-title" style="font-size: 1rem;">⚡ basin-signal-engine
-                        <span class="status-badge status-restricted"
-                            style="border-color: var(--danger); color: var(--danger);">● RESTRICTED</span>
+                        <span class="status-badge status-offline" style="float: right;">● OFFLINE</span>
                     </h3>
                     <p class="feature-desc">AI Career Intelligence Platform. 20,000+ lines of Python. Hunt → Prep →
                         Close.</p>
@@ -1255,11 +1399,10 @@
                     </div>
                 </div>
 
-                <!-- Project 2: LinkedIn Headline Forge -->
-                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;"
-                    data-demo-id="headline-forge">
+                <!-- Project 2: Headline Forge -->
+                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;">
                     <h3 class="feature-title" style="font-size: 1rem;">💼 headline-forge
-                        <span class="status-badge status-checking">● CHECKING...</span>
+                        <span class="status-badge status-offline" style="float: right;">● OFFLINE</span>
                     </h3>
                     <p class="feature-desc">LinkedIn Headline Generator. AI-powered profile optimization. Get noticed by
                         recruiters.</p>
@@ -1272,8 +1415,7 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <a href="https://linkedin-headline-generator-5f5esbxxbunyr8nxtkjzce.streamlit.app"
-                            target="_blank" class="publication-link">▶ LIVE
-                            DEMO</a>
+                            target="_blank" class="publication-link">▶ LIVE DEMO</a>
                     </div>
                 </div>
 
@@ -1291,8 +1433,7 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <a href="https://github.com/BasinLeon/outreach-autopsy" target="_blank"
-                            class="publication-link">⚙
-                            SOURCE</a>
+                            class="publication-link">⚙ SOURCE</a>
                     </div>
                 </div>
 
@@ -1314,7 +1455,7 @@
                     </div>
                 </div>
 
-                <!-- Project 3: Lead Script Gen -->
+                <!-- Project 5: Lead Script Gen -->
                 <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;">
                     <h3 class="feature-title" style="font-size: 1rem;">📝 lead-script-gen</h3>
                     <p class="feature-desc">LLM-Powered Outbound Scripts. Generate personalized sequences with ICP
@@ -1326,28 +1467,8 @@
                         <span
                             style="font-size: 0.7rem; border: 1px solid var(--gold-border); padding: 2px 8px; border-radius: 4px;">Python</span>
                     </div>
-                    <div style="margin-top: 20px; display: flex; gap: 12px;">
-                        <a href="/projects/lead-script-gen/" class="publication-link">📖 Full Details</a>
-                        <a href="https://github.com/BasinLeon/lead-script-generator" target="_blank"
-                            class="publication-link">⚙ SOURCE</a>
-                    </div>
-                </div>
-
-                <!-- Project 4: Portfolio -->
-                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;">
-                    <h3 class="feature-title" style="font-size: 1rem;">🌐 basinleon.github.io</h3>
-                    <p class="feature-desc">This Portfolio. Golden Executive OS aesthetic. Career Intelligence
-                        Dashboard.</p>
-                    <div class="nexus-meta"
-                        style="margin-top: 15px; padding-top: 15px; justify-content: start; gap: 10px;">
-                        <span
-                            style="font-size: 0.7rem; border: 1px solid var(--gold-border); padding: 2px 8px; border-radius: 4px;">HTML/CSS</span>
-                        <span
-                            style="font-size: 0.7rem; border: 1px solid var(--gold-border); padding: 2px 8px; border-radius: 4px;">GitHub</span>
-                    </div>
                     <div style="margin-top: 20px;">
-                        <a href="https://github.com/BasinLeon/basinleon.github.io" target="_blank"
-                            class="publication-link">⚙ SOURCE</a>
+                        <a href="/projects/lead-script-gen/" class="publication-link">📖 Full Details</a>
                     </div>
                 </div>
             </div>
