@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN_SENDBIRD_GTM_ARCH</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #181818;
+            --accent-green: #00ff88;
+            --accent-blue: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-red: #ff4444;
+            --accent-orange: #ff8800;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+            --border-color: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-purple));
+        }
+
+        /* Monospace accent class */
+        .mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        .slide-header {
+            margin-bottom: 50px;
+        }
+
+        .slide-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .headline {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .headline .accent {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheadline {
+            font-size: 18px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-quote {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--accent-green);
+            font-style: italic;
+        }
+
+        .footer-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* SLIDE 1: Split Screen Styles */
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            flex: 1;
+        }
+
+        .split-panel {
+            padding: 40px;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .old-world {
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.1) 0%, rgba(255, 68, 68, 0.02) 100%);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .new-world {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.02) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .old-world .panel-label {
+            color: var(--accent-red);
+        }
+
+        .new-world .panel-label {
+            color: var(--accent-green);
+        }
+
+        .panel-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+
+        .old-world .panel-title {
+            color: var(--accent-red);
+        }
+
+        .new-world .panel-title {
+            color: var(--accent-green);
+        }
+
+        .bullet-list {
+            list-style: none;
+        }
+
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .bullet-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .old-world .bullet-icon {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .new-world .bullet-icon {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        .bullet-title {
+            font-weight: 600;
+            display: block;
+        }
+
+        .bullet-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* SLIDE 2: Architecture Flowchart */
+        .architecture-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex: 1;
+            padding: 40px 0;
+        }
+
+        .arch-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            width: 280px;
+            position: relative;
+        }
+
+        .arch-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .arch-step.step-1::before {
+            background: var(--accent-blue);
+        }
+
+        .arch-step.step-2::before {
+            background: var(--accent-purple);
+        }
+
+        .arch-step.step-3::before {
+            background: var(--accent-green);
+        }
+
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step-1 .step-title {
+            color: var(--accent-blue);
+        }
+
+        .step-2 .step-title {
+            color: var(--accent-purple);
+        }
+
+        .step-3 .step-title {
+            color: var(--accent-green);
+        }
+
+        .step-tech {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .step-action,
+        .step-goal {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .step-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .step-content {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .arrow-connector {
+            font-size: 32px;
+            color: var(--text-muted);
+        }
+
+        .talking-point {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-green);
+            padding: 20px 24px;
+            margin-top: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .talking-point-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .talking-point-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* SLIDE 3: Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            flex: 1;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 48px 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--accent-green);
+            line-height: 1;
+            margin-bottom: 16px;
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .metric-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .why-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .why-text {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .why-text .highlight {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        /* SLIDE 4: Terminal */
+        .terminal-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .terminal-window {
+            background: #0d0d0d;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 700px;
+        }
+
+        .terminal-header {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red {
+            background: #ff5f56;
+        }
+
+        .terminal-dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .terminal-dot.green {
+            background: #27ca40;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+        }
+
+        .terminal-prompt {
+            color: var(--accent-green);
+        }
+
+        .terminal-command {
+            color: var(--text-primary);
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: var(--accent-green);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .promise-section {
+            max-width: 700px;
+        }
+
+        .promise-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .promise-list {
+            list-style: none;
+        }
+
+        .promise-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .promise-day {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-blue);
+            background: rgba(0, 212, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .promise-text {
+            font-size: 16px;
+        }
+
+        .promise-action {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .promise-desc {
+            color: var(--text-secondary);
+        }
+
+        .contact-line {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            color: var(--accent-blue);
+            margin-top: 10px;
+        }
+
+        /* Print Styles */
+        @media print {
+            .slide {
+                height: 100vh;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @page {
+            size: landscape;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SLIDE 1: THE IDENTITY SHIFT -->
+    <section class="slide">
+        <div class="slide-header">
+            <div class="slide-number">01 / 04</div>
+            <h1 class="headline">From <span class="accent">"SDR Manager"</span> to <span class="accent">"GTM
+                    Architect"</span></h1>
+            <p class="subheadline">The Identity Shift</p>
+        </div>
+
+        <div class="split-container">
+            <div class="split-panel old-world">
+                <div class="panel-label">
+                    <span>✕</span> OLD WORLD
+                </div>
+                <h3 class="panel-title">Brute Force</h3>
+                <ul class="bullet-list">
+                    <li>
+                        <span class="bullet-icon">✕</span>
+                        <div>
+                            <span class="bullet-title">More Headcount = More Leads</span>
+                            <span class="bullet-desc">Linear scaling that bleeds budget</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="bullet-icon">✕</span>
+                        <div>
+                            <span class="bullet-title">"Spray & Pray" Sequencing</span>
+                            <span class="bullet-desc">Generic outreach to unqualified lists</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="bullet-icon">✕</span>
+                        <div>
+                            <span class="bullet-title">High CAC, Low Morale, Brand Risk</span>
+                            <span class="bullet-desc">The triple threat of traditional SDR ops</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="split-panel new-world">
+                <div class="panel-label">
+                    <span>✓</span> THE SENDBIRD WAY
+                </div>
+                <h3 class="panel-title">Your Vision</h3>
+                <ul class="bullet-list">
+                    <li>
+                        <span class="bullet-icon">✓</span>
+                        <div>
+                            <span class="bullet-title">AI-Augmented Workforce</span>
+                            <span class="bullet-desc mono">1 Human + 3 AI Agents</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="bullet-icon">✓</span>
+                        <div>
+                            <span class="bullet-title">Signal-First</span>
+                            <span class="bullet-desc">We only contact accounts showing intent</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="bullet-icon">✓</span>
+                        <div>
+                            <span class="bullet-title">Code-Governed</span>
+                            <span class="bullet-desc mono">Python scripts filter the noise before the SDR dials</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span class="footer-quote">"I don't hire 'List Dialers.' I build 'Signal Hunters.'"</span>
+            <span class="footer-brand">BASIN::GTM</span>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: THE INFRASTRUCTURE -->
+    <section class="slide">
+        <div class="slide-header">
+            <div class="slide-number">02 / 04</div>
+            <h1 class="headline">The <span class="accent">"Signal Engine"</span> Architecture</h1>
+            <p class="subheadline">The Infrastructure</p>
+        </div>
+
+        <div class="architecture-flow">
+            <div class="arch-step step-1">
+                <div class="step-number">STEP 01</div>
+                <h3 class="step-title">Ingestion</h3>
+                <div class="step-tech">Python / Clay</div>
+                <div class="step-action">
+                    <div class="step-label">ACTION</div>
+                    <div class="step-content">Scrape Developer Forums, API Documentation views, & Hiring Signals</div>
+                </div>
+                <div class="step-goal">
+                    <div class="step-label">GOAL</div>
+                    <div class="step-content">Find companies building Chat/Social features <em>today</em></div>
+                </div>
+            </div>
+
+            <div class="arrow-connector">→</div>
+
+            <div class="arch-step step-2">
+                <div class="step-number">STEP 02</div>
+                <h3 class="step-title">Scoring</h3>
+                <div class="step-tech">The "Brain"</div>
+                <div class="step-action">
+                    <div class="step-label">ACTION</div>
+                    <div class="step-content">LLM Analysis of their Tech Stack</div>
+                </div>
+                <div class="step-goal">
+                    <div class="step-label">FILTER</div>
+                    <div class="step-content">"Are they using Twilio? Are they scaling Engineering?"</div>
+                </div>
+            </div>
+
+            <div class="arrow-connector">→</div>
+
+            <div class="arch-step step-3">
+                <div class="step-number">STEP 03</div>
+                <h3 class="step-title">Deployment</h3>
+                <div class="step-tech">The SDR</div>
+                <div class="step-action">
+                    <div class="step-label">ACTION</div>
+                    <div class="step-content">AI drafts the "Engineer-to-Engineer" hook</div>
+                </div>
+                <div class="step-goal">
+                    <div class="step-label">HUMAN</div>
+                    <div class="step-content">Reviews and clicks "Send"</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="talking-point">
+            <div class="talking-point-label">💬 Talking Point</div>
+            <div class="talking-point-text">"Charles, this ensures we never spam a developer. We only reach out when the
+                code tells us they have a problem."</div>
+        </div>
+
+        <div class="footer">
+            <span class="footer-quote"></span>
+            <span class="footer-brand">BASIN::GTM</span>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: THE PROOF -->
+    <section class="slide">
+        <div class="slide-header">
+            <div class="slide-number">03 / 04</div>
+            <h1 class="headline"><span class="accent">Efficiency</span> Over Volume</h1>
+            <p class="subheadline">The Proof</p>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">$23M+</div>
+                <div class="metric-label">Lifetime Pipeline<br>Architected</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">$424K</div>
+                <div class="metric-label">Annual OpEx Savings<br><span class="mono"
+                        style="font-size: 12px; color: var(--text-muted);">Manual Research → Agents</span></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">5 Days</div>
+                <div class="metric-label">SDR Ramp Time<br><span class="mono"
+                        style="font-size: 12px; color: var(--text-muted);">vs. 3-Month Industry Avg</span></div>
+            </div>
+        </div>
+
+        <div class="why-block">
+            <p class="why-text">Why? Because <span class="highlight">the AI does the research</span>. The SDR just
+                sells.</p>
+        </div>
+
+        <div class="footer">
+            <span class="footer-quote"></span>
+            <span class="footer-brand">BASIN::GTM</span>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: THE CLOSING ARGUMENT -->
+    <section class="slide">
+        <div class="slide-header">
+            <div class="slide-number">04 / 04</div>
+            <h1 class="headline"><span class="accent">Ready</span> to Deploy.</h1>
+            <p class="subheadline">The Closing Argument</p>
+        </div>
+
+        <div class="terminal-container">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                </div>
+                <div class="terminal-body">
+                    <span class="terminal-prompt">root@sendbird:~# </span>
+                    <span class="terminal-command">init_revenue_engine</span>
+                    <span class="terminal-cursor"></span>
+                </div>
+            </div>
+
+            <div class="promise-section">
+                <div class="promise-title">MY 90-DAY PROMISE</div>
+                <ul class="promise-list">
+                    <li>
+                        <span class="promise-day">DAY 1-30</span>
+                        <div class="promise-text">
+                            <span class="promise-action">Audit:</span>
+                            <span class="promise-desc"> Map the current "Leaky Bucket"</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="promise-day">DAY 31-60</span>
+                        <div class="promise-text">
+                            <span class="promise-action">Build:</span>
+                            <span class="promise-desc"> Deploy the Python Signal Scrapers</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="promise-day">DAY 61-90</span>
+                        <div class="promise-text">
+                            <span class="promise-action">Scale:</span>
+                            <span class="promise-desc"> Train the team to sell like Architects, not telemarketers</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="contact-line">→ <a href="https://basinleon.github.io/"
+                        style="color: var(--accent-blue); text-decoration: none;">basinleon.github.io</a></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span class="footer-quote"></span>
+            <span class="footer-brand">BASIN::GTM</span>
+        </div>
+    </section>
+</body>
+
+</html>
