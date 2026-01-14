@@ -425,6 +425,8 @@ Available Commands:
   <span class="cmd">model</span>        - GTM Architecture Diagram
   <span class="cmd">governance</span>   - System Health Audit Protocol
   <span class="cmd">wins</span>         - War Stories from Weekly Roll-Ups
+  <span class="cmd">sdr</span>          - SDR Transition Playbook Demo
+  <span class="cmd">engineer</span>     - Engineer-to-Engineer Sequence
   <span class="cmd">auth [code]</span>  - Unlock classified data
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
@@ -696,6 +698,70 @@ Bifurcated:  \$211/meeting  (1 Eng + 3 SDRs)
 ║  ACTION:  Deployed "Secret Shopper" play on              ║
 ║           r/cybersecurity to identify problem-aware ICP. ║
 ║  RESULT:  3 High-Value Leads ($0 CAC) + 15 convos.       ║
+╚══════════════════════════════════════════════════════════╝
+                `, 'text-green');
+                break;
+
+            case 'view playbook sdr':
+            case 'playbook sdr':
+            case 'sdr':
+                printLine(output, `
+>>> LOADING PROJECT::PHOENIX SDR TRANSITION PLAYBOOK...
+
+╔══════════════════════════════════════════════════════════╗
+║  SDR TRANSITION PLAYBOOK: INBOUND -> OUTBOUND            ║
+╠══════════════════════════════════════════════════════════╣
+║  MISSION: You are not "making calls."                    ║
+║           You are a GTM INTELLIGENCE OPERATOR.           ║
+╠══════════════════════════════════════════════════════════╣
+║  THE 30-DAY RAMP (BOOT CAMP)                             ║
+║  [Week 1]: Systems Check, Tech Dive, Mock Gauntlet.      ║
+║            >> EXIT CRITERIA: Certification by Day 5.     ║
+║  [Week 2]: Live Fire (100 Touches/Day).                  ║
+║  [Week 4]: 3 SQLs Generated.                             ║
+╠══════════════════════════════════════════════════════════╣
+║  DAILY ROUTINE (SKELETON)                                ║
+║  08:00 :: Enrichment Queue (Data -> Intel)               ║
+║  09:00 :: Power Block 1 (Tier 1 Calls / Displacements)   ║
+║  13:00 :: Power Block 2 (Tier 2 Calls / Email)           ║
+║  16:45 :: "Insight of the Day" Slack Report              ║
+╠══════════════════════════════════════════════════════════╣
+║  SUCCESS METRICS: 3 SQLs/Month | 100 Daily Touches       ║
+║  RAMP TIME: 5 Days (Industry Avg: 3 Months)              ║
+╚══════════════════════════════════════════════════════════╝
+                `, 'text-cyan');
+                break;
+
+            case 'view sequence engineer':
+            case 'sequence engineer':
+            case 'engineer':
+                printLine(output, `
+>>> LOADING "ENGINEER-TO-ENGINEER" SEQUENCE...
+
+╔══════════════════════════════════════════════════════════╗
+║  TARGET PERSONA: Technical Founders (CTO/PhD)            ║
+║  STRATEGY: Bypass "sales resistance" via Systems Logic   ║
+╠══════════════════════════════════════════════════════════╣
+║  [EMAIL 1]: THE "BUG REPORT"                             ║
+║  Subject: Sales is an engineering problem                ║
+║                                                          ║
+║  "I see you're an engineer building a sales team.        ║
+║  The biggest mistake technical founders make is hiring   ║
+║  an 'Operator' to build an 'Architecture.'               ║
+║                                                          ║
+║  You wouldn't hire a developer without a tech stack.     ║
+║  Why hire a salesperson without a GTM stack?             ║
+║  We don't 'dial for dollars'—we engineer for signal."    ║
+╠══════════════════════════════════════════════════════════╣
+║  [EMAIL 2]: THE "SOURCE CODE"                            ║
+║                                                          ║
+║  "You can't scale intuition. Until you have a path       ║
+║  from 'cold lead' to 'closed won', YOU are the VP Sales. ║
+║  We use a 6-Step Architecture:                           ║
+║  ICP > Messaging > Signal > Pipeline > Close > Expand"   ║
+╠══════════════════════════════════════════════════════════╣
+║  PROJECTED: 48% Open Rate | Zero Fluff                   ║
+║  STATUS: READY FOR DEPLOYMENT VIA CLAY + LLM             ║
 ╚══════════════════════════════════════════════════════════╝
                 `, 'text-green');
                 break;
