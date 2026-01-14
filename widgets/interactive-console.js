@@ -1,18 +1,59 @@
-// /widgets/interactive-console.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('console-input');
     const output = document.getElementById('console-output');
     const terminalBody = document.getElementById('console-body');
 
-    // Focus input when clicking anywhere in the terminal
+    // HISTORY SYSTEM (Commercial Grade Requirement)
+    let commandHistory = [];
+    let historyIndex = -1;
+
+    // Focus management
     terminalBody.addEventListener('click', () => {
         input.focus();
     });
 
+    // Mobile Viewport Fix (Keep input visible above keyboard)
+    input.addEventListener('focus', () => {
+        setTimeout(() => {
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }, 300);
+    });
+
     input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+        // ARROW UP: Previous Command
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (historyIndex < commandHistory.length - 1) {
+                historyIndex++;
+                input.value = commandHistory[commandHistory.length - 1 - historyIndex];
+            }
+        }
+        // ARROW DOWN: Next Command
+        else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIndex > 0) {
+                historyIndex--;
+                input.value = commandHistory[commandHistory.length - 1 - historyIndex];
+            } else {
+                historyIndex = -1;
+                input.value = '';
+            }
+        }
+        // TAB: Auto-Completion
+        else if (e.key === 'Tab') {
+            e.preventDefault();
+            const validCmds = ['help', 'about', 'stack', 'projects', 'contact', 'sitrep', 'fit brm', 'fit sendbird', 'fit ambient', 'fit liveramp', 'gravity', 'clear'];
+            const current = input.value.toLowerCase();
+            const match = validCmds.find(c => c.startsWith(current));
+            if (match) input.value = match;
+        }
+        // ENTER: Execute
+        else if (e.key === 'Enter') {
             const command = input.value.trim();
+            if (command) {
+                commandHistory.push(command);
+                historyIndex = -1;
+            }
             input.value = '';
 
             // Create command line
@@ -32,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function printLine(text, className = 'output-line') {
         const line = document.createElement('div');
         line.className = className;
-        // Handle ASCII art whitespace preservation
+        // Handle ASCII art alignment
         if (text.includes('╔') || text.includes('█')) {
             line.style.whiteSpace = 'pre';
             line.style.fontFamily = "'JetBrains Mono', monospace";
@@ -42,8 +83,29 @@ document.addEventListener('DOMContentLoaded', () => {
         output.appendChild(line);
     }
 
+    function triggerGravity() {
+        const lines = document.querySelectorAll('.output-line');
+        lines.forEach(line => {
+            line.style.transition = 'transform 1s ease-in, opacity 1s';
+            // Random rotation and drop
+            const randomRot = Math.random() * 90 - 45;
+            const randomY = Math.random() * 500 + 100;
+            line.style.transform = `translateY(${randomY}px) rotate(${randomRot}deg)`;
+            line.style.opacity = '0';
+        });
+        setTimeout(() => {
+            output.innerHTML = ''; // Clean up after crash
+            printLine("SYSTEM REBOOT INITIATED...", "text-green");
+        }, 1200);
+    }
+
     function processCommand(cmd) {
-        const lowerCmd = cmd.toLowerCase();
+        const lowerCmd = cmd.toLowerCase().trim();
+
+        if (lowerCmd === 'gravity') {
+            triggerGravity();
+            return;
+        }
 
         switch (lowerCmd) {
             case 'help':
@@ -53,9 +115,10 @@ Available Commands:
   <span class="cmd">stack</span>        - Technical stack & tools
   <span class="cmd">projects</span>     - Key architectural wins
   <span class="cmd">contact</span>      - Communication channels
+  <span class="cmd">sitrep</span>       - [RESTRICTED] Mission Status
+  <span class="cmd">fit [company]</span> - Run fit analysis (brm, sendbird, ambient, liveramp)
+  <span class="cmd">gravity</span>      - ⚠️ System Crash Test
   <span class="cmd">clear</span>        - Clear terminal
-  <span class="cmd">sitrep</span>       - [RESTRICTED] Current Mission Status
-  <span class="cmd">fit [company]</span> - Run fit analysis (e.g., fit ambient)
                 `);
                 break;
 
@@ -126,26 +189,16 @@ Phone: (408) 933-8269
 ║  ROLE: Founding GTM Engineer                                     ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  CULTURE INDICATORS:                                             ║
-║    ✓ Series A                                                    ║
-║    ✓ Systems thinker                                             ║
-║    ✓ Hybrid marketer+builder                                     ║
-║    ✓ Infrastructure-first                                        ║
+║    ✓ Series A  ✓ Systems thinker  ✓ Hybrid marketer+builder      ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  SKILLS MATCH:                                                   ║
-║  Python                  ███████████████████░ 95%                ║
 ║  Messaging→Signals       ████████████████████ 100%               ║
 ║  GTM Infrastructure      ███████████████████░ 95%                ║
-║  Clear Communication     ██████████████████░░ 90%                ║
 ║  Systems Design          ███████████████████░ 95%                ║
 ╠══════════════════════════════════════════════════════════════════╣
-║  PROOF POINTS:                                                   ║
-║  1. JD says "infrastructure that turns messaging..."             ║
-║  2. BASIN::NEXUS is 27,000+ lines of messaging...                ║
-║  3. LiveRamp case study shows bifurcated system...               ║
-║  4. MBA + 15 years GTM = perfect "hybrid marketer..."            ║
-╠══════════════════════════════════════════════════════════════════╣
 ║  WHY YOU FIT:                                                    ║
-║  Your JD reads like a description of BASIN::NEXUS...             ║
+║  Your JD reads like a description of BASIN::NEXUS.               ║
+║  I didn't write a resume. I built your infrastructure.           ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  OVERALL MATCH: ██████████████████░░ 95%                         ║
 ╚══════════════════════════════════════════════════════════════════╝
@@ -160,19 +213,16 @@ Phone: (408) 933-8269
 ║  ROLE: Mgr, Global SDR                                           ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  PAIN POINTS DETECTED:                                           ║
-║    ! CAC Efficiency                                              ║
-║    ! Rep Burnout / Toil                                          ║
-║    ! "Spray and Pray" noise                                      ║
+║    ! CAC Efficiency  ! Rep Burnout  ! "Spray and Pray" noise     ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  THE BASIN SOLUTION:                                             ║
-║  Manual Coaching         ░░░░░░░░░░░░░░░░░░░░ 0%                 ║
 ║  Python List Building    ████████████████████ 100%               ║
 ║  Signal-Based Targeting  ███████████████████░ 95%                ║
 ║  Automated Sequences     ████████████████████ 100%               ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  WHY YOU FIT:                                                    ║
-║  I don't manage reps to make calls. I engineer the               ║
-║  lists so they only call buyers who are ready.                   ║
+║  I don't manage reps to make calls. I engineer the lists so      ║
+║  they only call buyers who are ready.                            ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  EFFICIENCY GAIN: ████████████████████ +50%                      ║
 ╚══════════════════════════════════════════════════════════════════╝
