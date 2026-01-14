@@ -1,6 +1,6 @@
 /**
  * BASIN::NEXUS Interactive Console
- * Self-contained console widget with SITREP and FIT commands
+ * Self-contained console widget with REDACTED SITREP protocol
  * 
  * "The signal exists on multiple planes. Those who seek, find."
  */
@@ -11,12 +11,6 @@
     // HISTORY SYSTEM
     let commandHistory = [];
     let historyIndex = -1;
-
-    // QUANTUM STATE - hidden layer
-    let quantumState = {
-        unlocked: false,
-        depth: 0
-    };
 
     // Console Styles
     const STYLES = `
@@ -72,8 +66,14 @@
         .output-line.text-green {
             color: #27c93f;
         }
+        .output-line.text-yellow {
+            color: #ffbd2e;
+        }
         .output-line.text-cyan {
             color: #4fc3f7;
+        }
+        .output-line.text-red {
+            color: #ff5f56;
         }
         .output-line.text-purple {
             color: #a855f7;
@@ -171,7 +171,7 @@
                 }
             } else if (e.key === 'Tab') {
                 e.preventDefault();
-                const validCmds = ['help', 'about', 'stack', 'projects', 'contact', 'sitrep', 'status', 'gravity', 'clear'];
+                const validCmds = ['help', 'about', 'stack', 'projects', 'contact', 'sitrep', 'gravity', 'clear'];
                 const current = input.value.toLowerCase();
                 const match = validCmds.find(c => c.startsWith(current));
                 if (match) input.value = match;
@@ -228,17 +228,147 @@
         });
         setTimeout(() => {
             output.innerHTML = '';
-            printLine(output, "SYSTEM REBOOT INITIATED...", "text-green");
-            printLine(output, "\"What falls, rises again.\"", "text-purple");
+            printLine(output, "⚠️ SYSTEM CRASH DETECTED.", "text-red");
+            setTimeout(() => printLine(output, "REBOOTING KERNEL...", "text-yellow"), 800);
+            setTimeout(() => printLine(output, "SYSTEM ONLINE. WELCOME BACK, ARCHITECT.", "text-green"), 1800);
         }, 1200);
     }
 
-    function processCommand(cmd, output) {
-        const lowerCmd = cmd.toLowerCase().trim();
+    function processCommand(rawCmd, output) {
+        const lowerCmd = rawCmd.toLowerCase().trim();
 
         // Easter egg: gravity effect
         if (lowerCmd === 'gravity') {
             triggerGravity(output);
+            return;
+        }
+
+        // Handle commands with arguments
+        if (lowerCmd === 'sitrep alpha') {
+            // DECLASSIFIED VIEW (PRIVATE KEY)
+            printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  MISSION SITREP: DECLASSIFIED ACCESS                             ║
+╠══════════════════════════════════════════════════════════════════╣
+║  DATE: JAN 14 2026  │  STATUS: HIGH VELOCITY                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  TARGET           │  ROLE                 │  STATUS              ║
+╠═══════════════════╪═══════════════════════╪══════════════════════╣
+║  AMBIENT.AI       │  Founding GTM Eng     │  ON-SITE (FRI)       ║
+║  SENDBIRD         │  Mgr, Global SDR      │  INTERVIEW (THU)     ║
+║  BRM LABS         │  Founding GTM Eng     │  INTERVIEW (WED)     ║
+║  LIVERAMP         │  Identity Strategy    │  ACTIVE ROUNDS       ║
+╠══════════════════════════════════════════════════════════════════╣
+║  OPERATIONAL NOTES:                                              ║
+║  > Ambient: "Refinery" Architecture Deployed. Artifacts Sent.    ║
+║  > Sendbird: Portfolio implanted in calendar invites.            ║
+║  > BRM Labs: JD is a 95% match for Basin::Nexus.                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║  SYSTEM STATUS: ALL GREEN. READY TO DEPLOY.                      ║
+╚══════════════════════════════════════════════════════════════════╝
+            `, 'text-green');
+            return;
+        }
+
+        if (lowerCmd === 'fit brm') {
+            printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  COMPANY FIT ANALYSIS: BRM LABS                                  ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ROLE: Founding GTM Engineer                                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  CULTURE INDICATORS:                                             ║
+║    ✓ Series A  ✓ Systems thinker  ✓ Hybrid marketer+builder      ║
+╠══════════════════════════════════════════════════════════════════╣
+║  SKILLS MATCH:                                                   ║
+║  Messaging→Signals       ████████████████████ 100%               ║
+║  GTM Infrastructure      ███████████████████░ 95%                ║
+║  Systems Design          ███████████████████░ 95%                ║
+╠══════════════════════════════════════════════════════════════════╣
+║  WHY YOU FIT:                                                    ║
+║  Your JD reads like a description of BASIN::NEXUS.               ║
+║  I didn't write a resume. I built your infrastructure.           ║
+╠══════════════════════════════════════════════════════════════════╣
+║  OVERALL MATCH: ██████████████████░░ 95%                         ║
+╚══════════════════════════════════════════════════════════════════╝
+            `, 'text-cyan');
+            return;
+        }
+
+        if (lowerCmd === 'fit sendbird') {
+            printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  COMPANY FIT ANALYSIS: SENDBIRD                                  ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ROLE: Mgr, Global SDR                                           ║
+╠══════════════════════════════════════════════════════════════════╣
+║  PAIN POINTS DETECTED:                                           ║
+║    ! CAC Efficiency  ! Rep Burnout  ! "Spray and Pray" noise     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  THE BASIN SOLUTION:                                             ║
+║  Python List Building    ████████████████████ 100%               ║
+║  Signal-Based Targeting  ███████████████████░ 95%                ║
+║  Automated Sequences     ████████████████████ 100%               ║
+╠══════════════════════════════════════════════════════════════════╣
+║  WHY YOU FIT:                                                    ║
+║  I don't manage reps to make calls. I engineer the lists so      ║
+║  they only call buyers who are ready.                            ║
+╠══════════════════════════════════════════════════════════════════╣
+║  EFFICIENCY GAIN: ████████████████████ +50%                      ║
+╚══════════════════════════════════════════════════════════════════╝
+            `, 'text-cyan');
+            return;
+        }
+
+        if (lowerCmd === 'fit ambient') {
+            printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  COMPANY FIT ANALYSIS: AMBIENT.AI                                ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ROLE: Founding GTM Engineer                                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ARCHITECTURE MATCH:                                             ║
+║  Ambient Product:  Video In  → AI Filter → Security Out          ║
+║  Basin Strategy:   Market In → AI Filter → Revenue Out           ║
+╠══════════════════════════════════════════════════════════════════╣
+║  SKILLS MATCH:                                                   ║
+║  Signal vs Noise         ████████████████████ 100%               ║
+║  Systems Architecture    ████████████████████ 100%               ║
+║  Python/Automation       ███████████████████░ 95%                ║
+║  Cultural Alignment      ████████████████████ 100%               ║
+╠══════════════════════════════════════════════════════════════════╣
+║  WHY YOU FIT:                                                    ║
+║  We are building the exact same system.                          ║
+║  You build it for Security. I build it for Sales.                ║
+╠══════════════════════════════════════════════════════════════════╣
+║  OVERALL MATCH: ████████████████████ 100%                        ║
+╚══════════════════════════════════════════════════════════════════╝
+            `, 'text-cyan');
+            return;
+        }
+
+        if (lowerCmd === 'fit liveramp') {
+            printLine(output, `
+╔══════════════════════════════════════════════════════════════════╗
+║  COMPANY FIT ANALYSIS: LIVERAMP                                  ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ROLE: Strategy / PMM Lead                                       ║
+╠══════════════════════════════════════════════════════════════════╣
+║  THE CHALLENGE:                                                  ║
+║    1. Identity (Enterprise / Slow / High Value)                  ║
+║    2. Marketplace (Transactional / Fast / Volume)                ║
+╠══════════════════════════════════════════════════════════════════╣
+║  THE BASIN STRATEGY:                                             ║
+║  Bifurcated GTM          ████████████████████ 100%               ║
+║  Persona Mapping         ███████████████████░ 95%                ║
+║  Technical Storytelling  ████████████████████ 100%               ║
+╠══════════════════════════════════════════════════════════════════╣
+║  WHY YOU FIT:                                                    ║
+║  See Case Study: "The Bifurcation Architecture"                  ║
+╠══════════════════════════════════════════════════════════════════╣
+║  OVERALL MATCH: ██████████████████░░ 90%                         ║
+╚══════════════════════════════════════════════════════════════════╝
+            `, 'text-cyan');
             return;
         }
 
@@ -250,8 +380,7 @@ Available Commands:
   <span class="cmd">stack</span>        - Technical stack & tools
   <span class="cmd">projects</span>     - Key architectural wins
   <span class="cmd">contact</span>      - Communication channels
-  <span class="cmd">sitrep</span>       - Mission Status Board
-  <span class="cmd">status</span>       - Current operational metrics
+  <span class="cmd">sitrep</span>       - [RESTRICTED] Mission Status
   <span class="cmd">gravity</span>      - ⚠️ System Stress Test
   <span class="cmd">clear</span>        - Clear terminal
                 `);
@@ -284,7 +413,7 @@ Core Architecture Stack:
 Active Deployments:
 1. BASIN::NEXUS — Proprietary GTM Intelligence OS
 2. Signal Refinery — AI-powered revenue filtering
-3. Pipeline Engine — +160% YoY growth (Fudo Security)
+3. Pipeline Engine — +160% YoY growth
 
 "The architecture speaks for itself."
                 `);
@@ -301,72 +430,36 @@ Secure Channels:
 
             case 'sitrep':
             case 'status':
+                // REDACTED VIEW (DEFAULT - PUBLIC SAFE)
                 printLine(output, `
 ╔══════════════════════════════════════════════════════════════════╗
-║  MISSION SITREP: ACTIVE OPERATIONS                               ║
+║  MISSION SITREP: ACTIVE PIPELINE OPERATIONS                      ║
 ╠══════════════════════════════════════════════════════════════════╣
-║  DATE: JAN 2026  │  STATUS: HIGH VELOCITY                        ║
+║  DATE: JAN 14 2026  │  STATUS: HIGH VELOCITY                     ║
 ╠══════════════════════════════════════════════════════════════════╣
-║  SIGNAL          │  CLASSIFICATION       │  PHASE                ║
+║  TARGET           │  ROLE                 │  STATUS              ║
 ╠═══════════════════╪═══════════════════════╪══════════════════════╣
-║  PHOENIX         │  Vision Systems       │  FINAL STAGE          ║
-║  MERCURY         │  Communication Grid   │  ACTIVE               ║
-║  ARCHITECT       │  Infrastructure       │  ENGAGED              ║
-║  CIPHER          │  Identity Protocol    │  IN PROGRESS          ║
+║  [REDACTED]       │  Founding GTM Eng     │  ON-SITE (LOCKED)    ║
+║  [REDACTED]       │  Mgr, Global SDR      │  INTERVIEW (THU)     ║
+║  [REDACTED]       │  Founding GTM Eng     │  INTERVIEW (WED)     ║
+║  [REDACTED]       │  Identity Strategy    │  ACTIVE              ║
 ╠══════════════════════════════════════════════════════════════════╣
-║  OPERATIONAL NOTES:                                              ║
-║  > 4 concurrent signal streams                                   ║
-║  > Architecture deployed across all vectors                      ║
-║  > Artifacts transmitted. Awaiting response frequencies.         ║
+║  SECURITY PROTOCOL:                                              ║
+║  > Target names classified to protect ongoing negotiations.      ║
+║  > "Revenue Architect" framework deployed across all vectors.    ║
 ╠══════════════════════════════════════════════════════════════════╣
-║  SYSTEM STATUS: ALL GREEN. READY FOR DEPLOYMENT.                 ║
+║  SYSTEM STATUS: ALL GREEN.                                       ║
 ╚══════════════════════════════════════════════════════════════════╝
-                `, 'text-green');
+                `, 'text-yellow');
                 break;
 
             case 'clear':
                 output.innerHTML = '';
                 break;
 
-            // Hidden philosophical easter eggs
-            case 'signal':
-                printLine(output, `
-"The signal is not the noise.
- The signal is what remains when the noise is removed.
- Most never filter. That's why they stay lost."
-                `, 'text-purple');
-                break;
-
-            case 'labyrinth':
-                printLine(output, `
-"Every choice reveals the chooser.
- The maze is not the obstacle—
- it is the mirror."
-
- → basinleon.com/labyrinth-of-the-mind
-                `, 'text-purple');
-                break;
-
-            case 'architect':
-                printLine(output, `
-"I don't build products.
- I build systems that build outcomes.
- The architecture is the strategy."
-                `, 'text-purple');
-                break;
-
-            case 'quantum':
-                printLine(output, `
-"The signal exists on multiple planes:
- Monetary. Spiritual. Temporal.
- What you measure, you multiply.
- Choose your instruments wisely."
-                `, 'text-purple');
-                break;
-
             default:
-                if (cmd) {
-                    printLine(output, `Command not found: ${cmd}. Type <span class="cmd">help</span> for options.`, 'error');
+                if (rawCmd) {
+                    printLine(output, `Command not found: ${rawCmd}. Type <span class="cmd">help</span> for options.`, 'error');
                 }
         }
     }
