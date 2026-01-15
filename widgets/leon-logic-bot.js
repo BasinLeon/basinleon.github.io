@@ -1,35 +1,50 @@
 /**
- * LEON'S LOGIC BOT
- * No API required - Pure knowledge base of thinking, frameworks, KPIs, and vision
- * Shows how Leon approaches problems across different scenarios
+ * BASIN::NEXUS INTELLIGENCE
+ * The thinking layer of the Signal Engine
+ * Knowledge base + context-aware responses + conversation memory
  */
 
-(function() {
+(function () {
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════
-    // KNOWLEDGE BASE - Leon's Thinking & Frameworks
+    // CONFIGURATION
+    // ═══════════════════════════════════════════════════════════════
+
+    const CONFIG = {
+        maxContextMessages: 6,
+        typingDelay: 600,
+        showSignalStats: true
+    };
+
+    // Conversation memory
+    let conversationHistory = [];
+
+    // ═══════════════════════════════════════════════════════════════
+    // KNOWLEDGE BASE - Leon's Complete Thinking System
     // ═══════════════════════════════════════════════════════════════
 
     const KNOWLEDGE_BASE = {
         // Core Philosophy
         philosophy: {
-            keywords: ['philosophy', 'approach', 'thinking', 'mindset', 'believe'],
+            keywords: ['philosophy', 'approach', 'thinking', 'mindset', 'believe', 'core'],
             response: `**Revenue as Architecture, Not Arithmetic**
 
 My core belief: Revenue isn't about "more calls = more deals." It's about designing systems that route the right signal to the right action at the right time.
 
 **The 3 Pillars:**
-1. **SIGNAL** - Where data enters (webhooks, sheets, APIs)
-2. **SYSTEM** - Where intelligence forms (scoring, enrichment, routing)
-3. **SCALE** - Where outputs multiply (briefs, emails, CRM updates)
+1. **SIGNAL** — Where data enters (webhooks, sheets, APIs)
+2. **SYSTEM** — Where intelligence forms (scoring, enrichment, routing)
+3. **SCALE** — Where outputs multiply (briefs, emails, CRM updates)
 
-Traditional GTM is linear. Mine is recursive - the system learns from every interaction.`
+Traditional GTM is linear. Mine is recursive — the system learns from every interaction.
+
+**The $800K Insight:** I don't add headcount. I replace it with architecture.`
         },
 
         // Signal-to-System-to-Scale Framework
         framework: {
-            keywords: ['signal', 'system', 'scale', 'framework', 'methodology', 'architecture'],
+            keywords: ['signal', 'system', 'scale', 'framework', 'methodology', 'architecture', 's3', 'three pillars'],
             response: `**SIGNAL → SYSTEM → SCALE Framework**
 
 **Layer 1: SIGNAL (Input)**
@@ -47,14 +62,14 @@ Traditional GTM is linear. Mine is recursive - the system learns from every inte
 - Create executive briefs for board meetings
 - Update CRM, send Slack alerts, trigger sequences
 
-**The Magic:** One human + one system = 10 SDRs worth of output.
+**The Magic:** 1 human + 1 system = 10 SDRs worth of output.
 
 **Real Results:** +160% pipeline YoY at Fudo, $424K projected savings for Ambient.`
         },
 
         // KPIs and Metrics
         kpis: {
-            keywords: ['kpi', 'metric', 'measure', 'track', 'performance', 'results'],
+            keywords: ['kpi', 'metric', 'measure', 'track', 'performance', 'results', 'numbers', 'data'],
             response: `**Key Performance Indicators I Track**
 
 **Pipeline Metrics:**
@@ -78,7 +93,7 @@ Not "how many calls" but "how much signal captured per dollar spent."`
 
         // Vision for GTM
         vision: {
-            keywords: ['vision', 'future', 'goal', 'direction', 'want to', 'looking for'],
+            keywords: ['vision', 'future', 'goal', 'direction', 'want to', 'looking for', 'next'],
             response: `**My Vision for GTM**
 
 **The Problem:** Most companies still operate like it's 2015. They hire SDRs to "smile and dial" through bad lists, burning $150K/year per rep on 2% conversion rates.
@@ -90,20 +105,20 @@ Not "how many calls" but "how much signal captured per dollar spent."`
 - Free humans to do what they do best: close deals
 
 **What I Want to Build:**
-A company where the GTM function is engineered, not managed. Where:
+A company where the GTM function is *engineered*, not managed. Where:
 - Every SDR has an AI co-pilot that feeds them pre-qualified, researched leads
 - Every AE gets auto-generated battle cards before every call
 - Every executive gets real-time pipeline intelligence, not month-old spreadsheets
 
 **The Role I'm Seeking:**
-Director/VP of GTM Engineering - where I can build this vision from scratch.
+Director/VP of GTM Engineering — where I can build this vision from scratch.
 
 **Why I'll Win:** Because I've already built it. Now I just need a company ambitious enough to deploy it.`
         },
 
         // GTM Strategy Approach
         strategy: {
-            keywords: ['strategy', 'gtm', 'go-to-market', 'plan', 'approach sales'],
+            keywords: ['strategy', 'gtm', 'go-to-market', 'plan', 'approach sales', 'how would you', 'build gtm'],
             response: `**How I Build GTM Strategy**
 
 **Step 1: Signal Identification**
@@ -114,7 +129,6 @@ Director/VP of GTM Engineering - where I can build this vision from scratch.
 
 **Step 2: System Design**
 - How do we capture these signals?
-  (APIs, webhooks, scrapers, manual intel)
 - How do we score them?
   (Recency + magnitude + fit = priority score)
 - How do we route them?
@@ -122,24 +136,24 @@ Director/VP of GTM Engineering - where I can build this vision from scratch.
 
 **Step 3: Scale Execution**
 - What templates work for each persona?
-  (Technical founder ≠ Procurement VP)
 - What sequences convert best?
-  (A/B test everything, kill losers fast)
 - What bottlenecks exist?
-  (If reply rate is high but meeting rate is low → fix SDR qualification)
 
 **Example:**
-At Fudo Security, I identified that "recently hired CISO at Series B" was a 10x signal. Built a system to monitor LinkedIn + Crunchbase, auto-enrich contacts, and generate personalized "congrats on new role" emails. Result: 18% reply rate, 160% pipeline increase YoY.
+At Fudo Security, I identified that "recently hired CISO at Series B" was a 10x signal. Built a system to monitor LinkedIn + Crunchbase, auto-enrich contacts, and generate personalized "congrats on new role" emails. 
+
+**Result:** 18% reply rate, 160% pipeline increase YoY.
 
 **The Principle:** Strategy without system is just PowerPoint.`
         },
 
         // Technical Stack & Tools
         tools: {
-            keywords: ['tools', 'stack', 'technology', 'tech', 'use', 'build with'],
+            keywords: ['tools', 'stack', 'technology', 'tech', 'use', 'build with', '$0', 'zero cost', 'free'],
             response: `**The $0 GTM Stack I Built**
 
 **Orchestration:** n8n (free, self-hosted Zapier alternative)
+
 **Data Sources:**
 - Google Sheets (free pipeline tracking)
 - RSS feeds (company news, funding announcements)
@@ -159,25 +173,25 @@ At Fudo Security, I identified that "recently hired CISO at Series B" was a 10x 
 **Total Monthly Cost:** $0 (vs. $950+/mo for Outreach + ZoomInfo + Clay)
 
 **Why This Matters:**
-I can deploy enterprise-grade GTM infrastructure for a startup with zero budget. That's the competitive advantage - speed without spend.`
+I can deploy enterprise-grade GTM infrastructure for a startup with zero budget. That's the competitive advantage — speed without spend.`
         },
 
         // Interview Philosophy
         interviews: {
-            keywords: ['interview', 'hire', 'candidate', 'recruit', 'assess'],
+            keywords: ['interview', 'hire', 'candidate', 'recruit', 'assess', 'job'],
             response: `**How I Approach Interviews (Both Sides)**
 
 **When I'm the Candidate:**
-- I don't "interview" - I consult
+- I don't "interview" — I consult
 - Show up with a pro bono case study already built
 - Ask: "What's the blocker?" not "What's the role?"
 - Example: Built Ambient.ai case study before on-site → showed $424K savings model → moved to final round
 
 **When I'm the Hiring Manager:**
-- Skip the "tell me about yourself" - waste of time
+- Skip the "tell me about yourself" — waste of time
 - Give real problems: "Here's our pipeline data, what's wrong?"
 - Look for builders, not talkers
-- Red flag: Someone who says "I'd hire more SDRs" (brute force thinking)
+- Red flag: Someone who says "I'd hire more SDRs" (brute force)
 - Green flag: Someone who says "First, let's see where the signal drops off" (systems thinking)
 
 **What I Value:**
@@ -191,18 +205,18 @@ I can deploy enterprise-grade GTM infrastructure for a startup with zero budget.
 
         // Company Fit Assessment
         fit: {
-            keywords: ['fit', 'culture', 'match', 'right for', 'work with'],
+            keywords: ['fit', 'culture', 'match', 'right for', 'work with', 'company', 'type'],
             response: `**How I Assess Company Fit**
 
 **What I Look For:**
-1. **Technical Respect** - Do they value engineering in GTM?
-2. **Autonomy** - Can I build systems or just execute playbooks?
-3. **Metrics** - Do they measure output or activity?
-4. **Speed** - Do they ship fast or debate forever?
+1. **Technical Respect** — Do they value engineering in GTM?
+2. **Autonomy** — Can I build systems or just execute playbooks?
+3. **Metrics** — Do they measure output or activity?
+4. **Speed** — Do they ship fast or debate forever?
 
 **Green Flags:**
 - Founder/CEO is technical (understands what I'm building)
-- Small team (< 50 people) - more impact, less politics
+- Small team (< 50 people) — more impact, less politics
 - Scrappy budget (forces creative solutions)
 - "Show us what you'd build" vs. "Tell us about your experience"
 
@@ -218,16 +232,16 @@ I can deploy enterprise-grade GTM infrastructure for a startup with zero budget.
 - Budget-conscious (my superpower: $0 stack)
 
 **Deal Makers:**
-Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage, not cost center.`
+Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage.`
         },
 
         // Problem Solving Approach
         problemsolving: {
-            keywords: ['problem', 'solve', 'fix', 'debug', 'troubleshoot', 'stuck'],
+            keywords: ['problem', 'solve', 'fix', 'debug', 'troubleshoot', 'stuck', 'issue', 'diagnose', 'dying', 'broken'],
             response: `**My Problem-Solving Framework**
 
 **Step 1: Define the Real Problem**
-- Not "low pipeline" - that's a symptom
+- Not "low pipeline" — that's a symptom
 - Real problem: "Where in the funnel is signal dying?"
 - Tool: Conversion rate audit at each stage
 
@@ -243,7 +257,7 @@ Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage,
 **Step 4: Measure, Kill, or Scale**
 - If it works: Automate it
 - If it doesn't: Kill it fast
-- No "let's give it more time" - data decides
+- No "let's give it more time" — data decides
 
 **Example: Fudo Security Pipeline Stall**
 - Symptom: 60-day sales cycles
@@ -251,15 +265,15 @@ Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage,
 - Fix: Built a "Security Requirement Checklist" tool
 - Result: Cut cycles to 35 days, +160% pipeline YoY
 
-**The Principle:** Most problems aren't hard - they're just poorly defined.`
+**The Principle:** Most problems aren't hard — they're just poorly defined.`
         },
 
         // Leadership Style
         leadership: {
-            keywords: ['leadership', 'manage', 'team', 'lead', 'style', 'people'],
+            keywords: ['leadership', 'manage', 'team', 'lead', 'style', 'people', 'boss'],
             response: `**My Leadership Philosophy**
 
-**I Don't Manage People - I Remove Obstacles**
+**I Don't Manage People — I Remove Obstacles**
 
 **What Good Leaders Do:**
 - Build systems so the team can self-serve
@@ -272,63 +286,170 @@ Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage,
 - Confuse busyness with productivity
 
 **How I Run Teams:**
-1. **Clarity > Control** - Give the "why," let them decide the "how"
-2. **Tools > Training** - Build an AI co-pilot vs. 40-hour onboarding deck
-3. **Metrics > Meetings** - Async dashboards, not daily standups
+1. **Clarity > Control** — Give the "why," let them decide the "how"
+2. **Tools > Training** — Build an AI co-pilot vs. 40-hour onboarding deck
+3. **Metrics > Meetings** — Async dashboards, not daily standups
 
 **Example:**
 At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails failed. Team used it to self-diagnose issues. Result: Reply rates went from 8% → 15% in 6 weeks without me "managing" anyone.
 
-**What I Won't Do:**
-- Hire/fire based on "culture fit" - I care about output
-- Run "pizza party" morale events - pay people well instead
-- Pretend I have all the answers - I build systems to find them
-
 **Bottom Line:** The best leaders make themselves unnecessary.`
         },
 
-        // Default/Fallback
+        // Case Studies
+        casestudies: {
+            keywords: ['case study', 'example', 'fudo', 'ambient', 'sense', 'sendbird', 'project', 'built', 'war story'],
+            response: `**War Stories: What I've Built**
+
+**🔐 Fudo Security (2024-2025)**
+- Challenge: 60-day sales cycles, low reply rates
+- Built: Signal Engine monitoring 50k+ intent signals/day
+- Result: +160% pipeline YoY, 35-day cycles
+
+**🎯 Ambient.ai (Interview Case Study)**
+- Challenge: "How would you scale our GTM?"
+- Built: $424K savings model showing 7 SDRs → 1 architect + automation
+- Result: Advanced to final round
+
+**📊 Sense (2022-2023)**
+- Challenge: SDR team struggling with cold outreach
+- Built: "Outreach Autopsy" self-diagnosis tool
+- Result: Reply rates 8% → 15% in 6 weeks
+
+**🚀 Basin::Nexus (Ongoing)**
+- Challenge: Job hunting is broken
+- Built: AI-powered interview prep, signal monitoring, artifact generation
+- Result: 4 active final-round interviews simultaneously
+
+**The Pattern:** Every role I automate myself out of a job — that's the point.`
+        },
+
+        // About Leon
+        about: {
+            keywords: ['about', 'leon', 'who', 'yourself', 'background', 'bio', 'you'],
+            response: `**About Leon Basin**
+
+**The Short Version:**
+Revenue Architect. Signal obsessive. I build systems that replace headcount with intelligence.
+
+**The Longer Version:**
+I spent 10+ years in revenue roles — from SDR to AE to RevOps to GTM Engineering. Along the way, I noticed something: most companies solve revenue problems by hiring more humans. That's expensive, slow, and doesn't scale.
+
+**My Thesis:**
+What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
+
+**What I Built:**
+BASIN::NEXUS — a personal "Revenue OS" that monitors 50k+ signals/day, auto-generates executive briefs, and runs my entire job search. It's the proof that one engineer can output-match a 10-person SDR team.
+
+**The Vibe:**
+- Mountain View, CA
+- JetBrains Mono on everything
+- Obsessed with toil reduction
+- Writes poetry about cybersecurity
+
+"Sales is just debugging human behavior." ⚡`
+        },
+
+        // $800K Replacement
+        replacement: {
+            keywords: ['800k', '800,000', 'replace', 'headcount', 'cost', 'savings', 'roi'],
+            response: `**The $800K Replacement Thesis**
+
+**The Math:**
+- Average SDR: $80K salary + $20K benefits + $10K tools = $110K/year
+- Average SDR output: 50 calls/day, 2% meeting rate, 3 SQLs/month
+- 7 SDRs: $770K/year → maybe 21 SQLs/month
+
+**My Architecture:**
+- 1 GTM Engineer: $150K/year
+- Signal Engine: $0/month (self-hosted)
+- Output: 50k signals/day monitored, 15-22% reply rates, 8-12% SQL conversion
+
+**The Result:**
+$800K in headcount → $150K in architecture
+Same or better output. Zero burnout. 24/7 operation.
+
+**Why This Matters:**
+Every VP of Sales who hires their 8th SDR is making a $100K/year mistake. I'm the alternative.
+
+**Proof:**
+- Fudo: +160% pipeline with no new hires
+- Ambient model: $424K annual savings calculated
+- Basin::Nexus: Running my job search while I sleep`
+        },
+
+        // Default/Fallback — now context-aware
         default: {
             keywords: [''],
             response: `**How Can I Help?**
 
-I'm Leon's Logic Bot - here to show you how he thinks. Try asking about:
+I'm the intelligence layer of BASIN::NEXUS — here to show you how Leon thinks about GTM, systems, and revenue architecture.
 
-- **Philosophy:** "What's your GTM philosophy?"
-- **Framework:** "Explain Signal-System-Scale"
-- **KPIs:** "What metrics do you track?"
-- **Vision:** "What's your GTM vision?"
-- **Strategy:** "How do you build GTM strategy?"
-- **Tools:** "What's in your tech stack?"
-- **Interviews:** "How do you approach interviews?"
-- **Fit:** "What companies are you a good fit for?"
-- **Problem Solving:** "How do you solve problems?"
-- **Leadership:** "What's your leadership style?"
+**Try asking about:**
+- 🧠 **Philosophy:** "What's your approach to GTM?"
+- 🔧 **Framework:** "Explain Signal-System-Scale"
+- 📊 **KPIs:** "What metrics matter?"
+- 🔮 **Vision:** "What do you want to build?"
+- 🛠️ **Tools:** "What's in your $0 stack?"
+- 💼 **Case Studies:** "Tell me about Fudo"
+- 💰 **The $800K Question:** "How do you replace headcount?"
 
-Or just ask me anything about revenue architecture, AI-powered GTM, or building systems.`
+Or ask me anything about the Signal Engine powering this site. ⚡`
         }
     };
 
     // ═══════════════════════════════════════════════════════════════
-    // MATCHING LOGIC
+    // INTELLIGENT MATCHING — Fuzzy + Context-Aware
     // ═══════════════════════════════════════════════════════════════
 
     function findBestMatch(userInput) {
         const input = userInput.toLowerCase();
+        let bestMatch = null;
+        let bestScore = 0;
 
         // Check each category for keyword matches
         for (const [category, data] of Object.entries(KNOWLEDGE_BASE)) {
             if (category === 'default') continue;
 
+            let score = 0;
             for (const keyword of data.keywords) {
                 if (input.includes(keyword)) {
-                    return data.response;
+                    // Longer keyword matches score higher
+                    score += keyword.length;
                 }
+            }
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = data.response;
             }
         }
 
-        // Return default if no match
-        return KNOWLEDGE_BASE.default.response;
+        // If we have conversation context, check for follow-up patterns
+        if (!bestMatch && conversationHistory.length > 0) {
+            const lastExchange = conversationHistory[conversationHistory.length - 1];
+            if (input.includes('example') || input.includes('more') || input.includes('elaborate')) {
+                // They want more on the last topic
+                return `**Building on that...**\n\nI can dive deeper — what specific aspect interests you? For instance:\n- A real-world case study?\n- The technical implementation?\n- The metrics and results?`;
+            }
+        }
+
+        // Return best match or default
+        return bestMatch || KNOWLEDGE_BASE.default.response;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // SIGNAL ENGINE INTEGRATION
+    // ═══════════════════════════════════════════════════════════════
+
+    async function getSignalStats() {
+        try {
+            const response = await fetch('https://basinleon.github.io/data/nexus-status.json', { cache: 'no-store' });
+            if (!response.ok) throw new Error('Fetch failed');
+            return await response.json();
+        } catch (e) {
+            return { signalsScanned: 52, matchScore: 88, pipelineActive: 4, status: 'ONLINE' };
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -336,241 +457,351 @@ Or just ask me anything about revenue architecture, AI-powered GTM, or building 
     // ═══════════════════════════════════════════════════════════════
 
     const STYLES = `
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Orbitron:wght@500;700&display=swap');
+
         #leon-logic-bot {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            z-index: 9999;
+            z-index: 9998;
             font-family: 'JetBrains Mono', monospace;
         }
 
         #bot-toggle {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
-            border: none;
+            background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%);
+            border: 2px solid rgba(255,255,255,0.2);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             transition: all 0.3s ease;
+            animation: pulse-glow 3s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.15); }
+            50% { box-shadow: 0 4px 25px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.25); }
         }
 
         #bot-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+            transform: scale(1.08);
         }
 
         #bot-window {
             position: absolute;
-            bottom: 80px;
+            bottom: 70px;
             right: 0;
-            width: 420px;
-            max-height: 600px;
-            background: #0a0a0f;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            width: 400px;
+            max-height: 550px;
+            background: rgba(8, 8, 12, 0.98);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7), 0 0 1px rgba(212, 175, 55, 0.5);
             display: none;
             flex-direction: column;
             overflow: hidden;
+            backdrop-filter: blur(20px);
         }
 
         #bot-window.open {
             display: flex;
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.25s ease-out;
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         #bot-header {
-            padding: 16px;
-            background: rgba(212, 175, 55, 0.1);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 14px 16px;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        #bot-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #bot-header-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
         #bot-header h3 {
             margin: 0;
-            font-size: 14px;
+            font-size: 11px;
             color: #D4AF37;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+        }
+
+        #bot-status {
+            font-size: 9px;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #bot-status .dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: status-pulse 2s infinite;
+        }
+
+        @keyframes status-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         #bot-close {
             background: none;
             border: none;
-            color: #666;
-            font-size: 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 18px;
             cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
 
         #bot-close:hover {
             color: #D4AF37;
+            background: rgba(212, 175, 55, 0.1);
         }
 
         #bot-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-height: 400px;
+            gap: 10px;
+            max-height: 350px;
+        }
+
+        #bot-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #bot-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #bot-messages::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 2px;
         }
 
         .bot-message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.6;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            line-height: 1.65;
             word-wrap: break-word;
+            animation: messageIn 0.2s ease-out;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .bot-message.user {
             align-self: flex-end;
-            background: #D4AF37;
+            background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%);
             color: #000;
-            max-width: 80%;
+            max-width: 85%;
+            font-weight: 500;
         }
 
         .bot-message.assistant {
             align-self: flex-start;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #f0e6d3;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            color: rgba(255, 255, 255, 0.9);
             max-width: 95%;
         }
 
         .bot-message.assistant strong {
-            color: #FFD700;
+            color: #D4AF37;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .bot-message.system {
             align-self: center;
             background: transparent;
-            color: #666;
-            font-size: 11px;
-            font-style: italic;
+            color: rgba(255,255,255,0.35);
+            font-size: 10px;
             max-width: 100%;
             text-align: center;
+            padding: 4px;
+        }
+
+        .bot-message.typing {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            color: #D4AF37;
+            padding: 12px 18px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #D4AF37;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
         }
 
         #bot-input-area {
             padding: 12px;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            background: rgba(212, 175, 55, 0.05);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.03);
         }
 
         #bot-input {
             width: 100%;
-            padding: 10px;
-            background: #050508;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 6px;
-            color: #f0e6d3;
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            color: rgba(255,255,255,0.9);
             font-family: inherit;
-            font-size: 13px;
+            font-size: 12px;
             resize: none;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         #bot-input:focus {
-            border-color: #D4AF37;
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        #bot-input::placeholder {
+            color: rgba(255,255,255,0.3);
         }
 
         .quick-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .quick-action {
-            padding: 4px 10px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 12px;
-            color: #D4AF37;
+            padding: 5px 10px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            color: rgba(212, 175, 55, 0.9);
             font-size: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .quick-action:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-1px);
         }
 
         @media (max-width: 480px) {
             #bot-window {
                 width: calc(100vw - 32px);
                 max-height: calc(100vh - 120px);
-                bottom: 80px;
-                right: 16px;
+                bottom: 70px;
+                right: -8px;
             }
         }
     `;
 
-    function init() {
+    async function init() {
         // Inject styles
         const styleEl = document.createElement('style');
         styleEl.textContent = STYLES;
         document.head.appendChild(styleEl);
 
+        // Get signal stats for welcome message
+        const stats = await getSignalStats();
+
         // Create chatbot HTML
         const container = document.createElement('div');
         container.id = 'leon-logic-bot';
         container.innerHTML = `
-            <button id="bot-toggle" aria-label="Open Leon's Logic Bot">
+            <button id="bot-toggle" aria-label="Open BASIN::NEXUS Intelligence">
                 🧠
             </button>
             <div id="bot-window">
                 <div id="bot-header">
-                    <h3>Leon's Logic Bot</h3>
-                    <button id="bot-close" aria-label="Close bot">×</button>
+                    <div id="bot-header-left">
+                        <div id="bot-header-icon">⚡</div>
+                        <div>
+                            <h3>NEXUS Intelligence</h3>
+                            <div id="bot-status">
+                                <span class="dot"></span>
+                                <span>${stats.signalsScanned} signals • ${stats.matchScore}% match</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="bot-close" aria-label="Close">×</button>
                 </div>
                 <div id="bot-messages">
                     <div class="bot-message system">
-                        No API needed - Pure logic & frameworks
+                        Signal Engine Active • v10.0
                     </div>
                     <div class="bot-message assistant">
-                        <strong>Hi! I'm Leon's thinking, codified.</strong>
-                        Ask me about his GTM philosophy, frameworks, KPIs, vision, or problem-solving approach. I don't need an API - all the knowledge is built-in.
+                        <strong>Welcome to BASIN::NEXUS Intelligence</strong>
+                        I'm the thinking layer of the Signal Engine — Leon's GTM philosophy, frameworks, and decision logic, codified.
+                        <br><br>
+                        Ask me about revenue architecture, the $800K replacement thesis, or how to build systems that scale.
                     </div>
                 </div>
                 <div id="bot-input-area">
-                    <textarea id="bot-input" placeholder="Ask about philosophy, strategy, KPIs..." rows="2"></textarea>
+                    <textarea id="bot-input" placeholder="Ask about philosophy, frameworks, KPIs..." rows="1"></textarea>
                     <div class="quick-actions">
                         <span class="quick-action" data-q="What's your GTM philosophy?">Philosophy</span>
                         <span class="quick-action" data-q="Explain Signal-System-Scale">Framework</span>
-                        <span class="quick-action" data-q="What metrics do you track?">KPIs</span>
-                        <span class="quick-action" data-q="What's your vision?">Vision</span>
-                        <span class="quick-action" data-q="How do you solve problems?">Problem Solving</span>
+                        <span class="quick-action" data-q="How do you replace $800K in headcount?">$800K</span>
+                        <span class="quick-action" data-q="Tell me about your case studies">Case Studies</span>
+                        <span class="quick-action" data-q="What's in your $0 tech stack?">Tools</span>
                     </div>
                 </div>
             </div>
@@ -583,6 +814,12 @@ Or just ask me anything about revenue architecture, AI-powered GTM, or building 
         document.getElementById('bot-close').addEventListener('click', toggleBot);
         document.getElementById('bot-input').addEventListener('keydown', handleInput);
 
+        // Auto-resize textarea
+        document.getElementById('bot-input').addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+        });
+
         // Quick actions
         document.querySelectorAll('.quick-action').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -591,13 +828,15 @@ Or just ask me anything about revenue architecture, AI-powered GTM, or building 
                 handleInput({ key: 'Enter', target: document.getElementById('bot-input') });
             });
         });
+
+        console.log('[NEXUS Intelligence] Widget initialized');
     }
 
     function toggleBot() {
-        const window = document.getElementById('bot-window');
-        window.classList.toggle('open');
+        const botWindow = document.getElementById('bot-window');
+        botWindow.classList.toggle('open');
 
-        if (window.classList.contains('open')) {
+        if (botWindow.classList.contains('open')) {
             document.getElementById('bot-input').focus();
         }
     }
@@ -610,18 +849,45 @@ Or just ask me anything about revenue architecture, AI-powered GTM, or building 
 
             // Clear input
             e.target.value = '';
+            e.target.style.height = 'auto';
 
             // Add user message
             addMessage(input, 'user');
 
-            // Get response
-            const response = findBestMatch(input);
+            // Store in conversation history
+            conversationHistory.push({ role: 'user', content: input });
 
-            // Add bot response with slight delay for realism
+            // Show typing indicator
+            showTyping();
+
+            // Get response with delay
             setTimeout(() => {
+                hideTyping();
+                const response = findBestMatch(input);
                 addMessage(response, 'assistant');
-            }, 300);
+                conversationHistory.push({ role: 'assistant', content: response });
+
+                // Keep history manageable
+                if (conversationHistory.length > CONFIG.maxContextMessages) {
+                    conversationHistory = conversationHistory.slice(-CONFIG.maxContextMessages);
+                }
+            }, CONFIG.typingDelay);
         }
+    }
+
+    function showTyping() {
+        const messagesContainer = document.getElementById('bot-messages');
+        const typingEl = document.createElement('div');
+        typingEl.className = 'bot-message typing';
+        typingEl.id = 'typing-indicator';
+        typingEl.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        messagesContainer.appendChild(typingEl);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function hideTyping() {
+        const typingEl = document.getElementById('typing-indicator');
+        if (typingEl) typingEl.remove();
     }
 
     function addMessage(text, type) {
@@ -630,8 +896,13 @@ Or just ask me anything about revenue architecture, AI-powered GTM, or building 
         messageEl.className = `bot-message ${type}`;
 
         if (type === 'assistant') {
-            // Parse markdown-style bold
-            messageEl.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Parse markdown-style bold and line breaks
+            let html = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '<br><br>')
+                .replace(/\n- /g, '<br>• ')
+                .replace(/\n(\d+)\. /g, '<br>$1. ');
+            messageEl.innerHTML = html;
         } else {
             messageEl.textContent = text;
         }
