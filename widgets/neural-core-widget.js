@@ -37,7 +37,7 @@
         updateInterval: 60000, // 1 minute
 
         // Position: 'bottom-right', 'bottom-left', 'top-right', 'top-left'
-        position: 'bottom-right'
+        position: 'bottom-left'
     };
 
     // ═══════════════════════════════════════════════════════════════
