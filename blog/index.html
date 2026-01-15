@@ -293,6 +293,48 @@
             border: 1px solid var(--gold-border);
             border-radius: 4px;
             color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        /* Category-based tag colors */
+        .post-tag:contains("GTM"),
+        span.post-tag[class*="GTM"] {
+            border-color: rgba(212, 175, 55, 0.5);
+            color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .post-tag:contains("Revenue"),
+        span.post-tag[class*="Revenue"] {
+            border-color: rgba(74, 222, 128, 0.5);
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .post-tag:contains("AI"),
+        span.post-tag[class*="AI"] {
+            border-color: rgba(139, 92, 246, 0.5);
+            color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .post-tag:contains("Career"),
+        span.post-tag[class*="Career"] {
+            border-color: rgba(6, 182, 212, 0.5);
+            color: #06b6d4;
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .post-tag:contains("Creative"),
+        span.post-tag[class*="Creative"] {
+            border-color: rgba(236, 72, 153, 0.5);
+            color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .post-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         /* Featured Posts */
@@ -1166,6 +1208,35 @@
 
     <!-- Leon's Logic Bot - No API Required -->
     <script src="../widgets/leon-logic-bot.js"></script>
+
+    <!-- Category Tag Colorization Script -->
+    <script>
+        (function() {
+            // Apply category colors to tags
+            const categoryColors = {
+                'GTM': { border: 'rgba(212, 175, 55, 0.5)', color: '#D4AF37', bg: 'rgba(212, 175, 55, 0.1)' },
+                'Revenue': { border: 'rgba(74, 222, 128, 0.5)', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)' },
+                'AI': { border: 'rgba(139, 92, 246, 0.5)', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
+                'Career': { border: 'rgba(6, 182, 212, 0.5)', color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.1)' },
+                'Creative': { border: 'rgba(236, 72, 153, 0.5)', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.1)' },
+                'Strategy': { border: 'rgba(251, 146, 60, 0.5)', color: '#fb923c', bg: 'rgba(251, 146, 60, 0.1)' },
+                'Code': { border: 'rgba(52, 211, 153, 0.5)', color: '#34d399', bg: 'rgba(52, 211, 153, 0.1)' },
+                'Tool': { border: 'rgba(96, 165, 250, 0.5)', color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)' }
+            };
+
+            document.querySelectorAll('.post-tag').forEach(tag => {
+                const text = tag.textContent.trim();
+                if (categoryColors[text]) {
+                    const colors = categoryColors[text];
+                    tag.style.borderColor = colors.border;
+                    tag.style.color = colors.color;
+                    tag.style.background = colors.bg;
+                }
+            });
+
+            console.log('🎨 Category tag colors applied');
+        })();
+    </script>
 
 </body>
 
