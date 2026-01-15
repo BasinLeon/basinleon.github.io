@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Leon Basin - Signal. Architecture. Revenue.</title>
+    <title>The Archive | Leon Basin - Signal. Architecture. Revenue.</title>
     <meta name="description"
-        content="Stories as code. Archives as memory. 163+ posts on revenue architecture, GTM systems, AI building, and creative writing.">
+        content="Stories as code. Archives as memory. 80+ posts on revenue architecture, GTM systems, AI building, and creative writing.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Blog | Leon Basin">
+    <meta property="og:title" content="The Archive | Leon Basin">
     <meta property="og:description"
         content="Stories as code. Archives as memory. Revenue architecture, GTM systems, and creative writing.">
     <meta property="og:url" content="https://basinleon.github.io/blog/">
@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
 
     <style>
@@ -44,7 +44,7 @@
         }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Crimson Pro', Georgia, serif;
             background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
                 linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
             background-attachment: fixed;
@@ -60,14 +60,14 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(5, 5, 8, 0.95);
+            background: rgba(5, 5, 8, 0.98);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--gold-border);
-            padding: 16px 24px;
+            padding: 12px 24px;
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -76,7 +76,7 @@
 
         .nav-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--gold-primary);
             text-decoration: none;
@@ -85,12 +85,12 @@
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 28px;
         }
 
         .nav-links a {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             text-decoration: none;
             letter-spacing: 1px;
@@ -103,28 +103,255 @@
             color: var(--gold-primary);
         }
 
-        .container {
-            max-width: 900px;
+        /* Newspaper Layout */
+        .newspaper-layout {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 80px 24px 40px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            min-height: 100vh;
         }
 
-        /* Hero */
-        .hero {
-            padding: 140px 0 60px;
+        @media (max-width: 900px) {
+            .newspaper-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        /* Sidebar - The Control Panel */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+        }
+
+        .sidebar-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px dotted var(--gold-border);
+        }
+
+        /* Signal Engine Status */
+        .signal-status {
+            padding: 16px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold-border);
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+
+        .signal-status-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .signal-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .signal-status-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+        }
+
+        .signal-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .signal-stat {
             text-align: center;
-            border-bottom: 1px solid var(--gold-border);
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
         }
 
-        .hero-tagline {
-            font-size: 0.85rem;
+        .signal-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--gold-light);
+        }
+
+        .signal-stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Categories */
+        .category-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .category-item {
+            padding: 8px 0;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .category-link:hover {
+            color: var(--gold-primary);
+        }
+
+        .category-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+
+        .about-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .about-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            margin-bottom: 4px;
+        }
+
+        .about-bio {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Newsletter CTA */
+        .newsletter-cta {
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            border: 1px solid var(--gold-border);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .newsletter-cta h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+
+        .newsletter-cta p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .newsletter-cta input {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--bg-deep);
+            border: 1px solid var(--gold-border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+        }
+
+        .newsletter-cta button {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border: none;
+            border-radius: 4px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            min-width: 0;
+        }
+
+        /* Masthead */
+        .masthead {
+            text-align: center;
+            padding-bottom: 32px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--gold-primary);
+        }
+
+        .masthead-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             color: var(--text-muted);
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
 
-        .hero-title {
+        .masthead-title {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 900;
@@ -132,247 +359,41 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
 
-        .hero-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
+        .masthead-subtitle {
             font-style: italic;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
-            margin-top: 32px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--gold-light);
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Search & Filter */
-        .search-section {
-            padding: 32px 0;
-            border-bottom: 1px solid var(--gold-border);
-        }
-
-        .search-box {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--gold-border);
-            padding: 14px 20px;
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-
-        .filter-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .filter-tag {
-            padding: 6px 14px;
-            background: transparent;
-            border: 1px solid var(--gold-border);
-            border-radius: 20px;
             color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 1.1rem;
         }
 
-        .filter-tag:hover,
-        .filter-tag.active {
-            background: var(--gold-subtle);
-            border-color: var(--gold-primary);
-            color: var(--gold-primary);
-        }
-
-        /* Posts Grid */
-        .posts-section {
-            padding: 48px 0;
-        }
-
-        .year-group {
-            margin-bottom: 48px;
-        }
-
-        .year-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--gold-primary);
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--gold-border);
-        }
-
-        .posts-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .post-card {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
-            border: 1px solid var(--gold-border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-        }
-
-        .post-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateX(8px);
-            box-shadow: -4px 0 20px rgba(212, 175, 55, 0.15);
-        }
-
-        .post-date {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .post-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .post-excerpt {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            display: -webkit-box;
-            display: box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .post-tags {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .post-tag {
-            font-size: 0.65rem;
-            padding: 3px 8px;
-            border: 1px solid var(--gold-border);
-            border-radius: 4px;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-        }
-
-        /* Category-based tag colors */
-        .post-tag:contains("GTM"),
-        span.post-tag[class*="GTM"] {
-            border-color: rgba(212, 175, 55, 0.5);
-            color: var(--gold-primary);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .post-tag:contains("Revenue"),
-        span.post-tag[class*="Revenue"] {
-            border-color: rgba(74, 222, 128, 0.5);
-            color: #4ade80;
-            background: rgba(74, 222, 128, 0.1);
-        }
-
-        .post-tag:contains("AI"),
-        span.post-tag[class*="AI"] {
-            border-color: rgba(139, 92, 246, 0.5);
-            color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .post-tag:contains("Career"),
-        span.post-tag[class*="Career"] {
-            border-color: rgba(6, 182, 212, 0.5);
-            color: #06b6d4;
-            background: rgba(6, 182, 212, 0.1);
-        }
-
-        .post-tag:contains("Creative"),
-        span.post-tag[class*="Creative"] {
-            border-color: rgba(236, 72, 153, 0.5);
-            color: #ec4899;
-            background: rgba(236, 72, 153, 0.1);
-        }
-
-        .post-tag:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Featured Posts */
-        .featured-section {
-            padding: 48px 0;
-            border-bottom: 1px solid var(--gold-border);
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: var(--gold-primary);
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-        }
-
-        .featured-grid {
+        /* Featured Section - Newspaper Hero */
+        .featured-hero {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px dotted var(--gold-border);
         }
 
-        .featured-card {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
-            border: 2px solid var(--gold-primary);
-            border-radius: 12px;
-            padding: 28px;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        @media (max-width: 700px) {
+            .featured-hero {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .featured-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+        .featured-main {
+            padding: 24px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
         }
 
         .featured-badge {
-            font-size: 0.65rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
             color: var(--gold-primary);
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -380,42 +401,235 @@
         }
 
         .featured-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 12px;
             line-height: 1.3;
         }
 
         .featured-excerpt {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .featured-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .featured-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .featured-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .featured-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .featured-small {
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 6px;
+            transition: border-color 0.2s;
+        }
+
+        .featured-small:hover {
+            border-color: var(--gold-primary);
+        }
+
+        .featured-small-title {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .featured-small-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px dotted var(--gold-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold-border), transparent);
+        }
+
+        /* Post Grid - Newspaper Columns */
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .post-card {
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-2px);
+        }
+
+        .post-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+        }
+
+        .post-title {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .post-excerpt {
             font-size: 0.85rem;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .post-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            padding: 3px 8px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-border);
+            border-radius: 10px;
+            color: var(--gold-primary);
+        }
+
+        .read-more {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            margin-top: 12px;
+        }
+
+        .post-card:hover .read-more {
+            text-decoration: underline;
+        }
+
+        /* Quick Archive List */
+        .archive-list {
+            list-style: none;
+        }
+
+        .archive-item {
+            padding: 16px 0;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        .archive-item:last-child {
+            border-bottom: none;
+        }
+
+        .archive-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .archive-title {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .archive-title:hover {
+            color: var(--gold-primary);
+        }
+
+        .archive-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            color: var(--text-muted);
         }
 
         /* Footer */
         footer {
-            border-top: 1px solid var(--gold-border);
             padding: 40px 24px;
             text-align: center;
-            background: var(--bg-deep);
+            border-top: 1px solid var(--gold-border);
+            margin-top: 60px;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 16px;
         }
 
         .footer-links a {
-            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.85rem;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
@@ -423,145 +637,32 @@
         }
 
         .footer-copyright {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 16px;
-            }
-
-            .nav-links a {
-                font-size: 0.65rem;
-            }
-
-            .hero-stats {
-                gap: 24px;
-            }
-
-            .post-card:hover {
-                transform: none;
-            }
-        }
-
-        /* Dynamic Archive Styles */
-        .archive-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .archive-card {
-            background: var(--bg-card);
-            border: 1px solid var(--gold-border);
-            border-radius: 8px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .archive-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .archive-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--gold-primary), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .archive-card:hover::before {
-            opacity: 1;
-        }
-
-        .archive-link {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .archive-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .archive-date {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
-            text-transform: uppercase;
         }
 
-        .archive-tags {
-            display: flex;
-            gap: 8px;
+        /* Load More */
+        .load-more {
+            text-align: center;
+            padding: 20px;
         }
 
-        .archive-tag {
-            font-size: 0.6rem;
-            padding: 2px 6px;
+        .load-more-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 12px 32px;
+            background: transparent;
             border: 1px solid var(--gold-border);
             border-radius: 4px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .archive-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            line-height: 1.4;
-            flex-grow: 0;
-        }
-
-        .archive-excerpt {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: auto;
-            flex-grow: 1;
-        }
-
-        .archive-year-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
             color: var(--gold-primary);
-            margin: 60px 0 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--gold-border);
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .archive-year-header::after {
-            content: '';
-            flex-grow: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--gold-border), transparent);
+        .load-more-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold-primary);
         }
     </style>
 </head>
@@ -574,581 +675,209 @@
             <a href="../" class="nav-logo">BASIN::NEXUS</a>
             <div class="nav-links">
                 <a href="../">Portfolio</a>
-                <a href="./" class="active">Blog</a>
+                <a href="./" class="active">Archive</a>
                 <a href="../tools/index.html">Tools</a>
                 <a href="https://github.com/BasinLeon">GitHub</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-tagline">Signal. Architecture. Revenue.</div>
-            <h1 class="hero-title">The Archive</h1>
-            <p class="hero-subtitle">"Stories as code. Archives as memory."</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-value">Selected</div>
-                    <div class="stat-label">Archive</div>
+    <!-- Newspaper Layout -->
+    <div class="newspaper-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">⚡ Control Panel</div>
+
+            <!-- Signal Engine Status -->
+            <div class="signal-status">
+                <div class="signal-status-header">
+                    <span class="signal-dot"></span>
+                    <span class="signal-status-title">SIGNAL ENGINE</span>
                 </div>
-                <div class="stat">
-                    <div class="stat-value">2024-26</div>
-                    <div class="stat-label">Span</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">75+</div>
-                    <div class="stat-label">High-Signal Posts</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Posts -->
-    <section class="featured-section">
-        <div class="container">
-            <h2 class="section-title">FEATURED</h2>
-            <div class="featured-grid">
-                <a href="posts/interview-as-architecture.html" class="featured-card">
-                    <div class="featured-badge">Latest</div>
-                    <div class="featured-title">Interview as Architecture: Why I Built an AI Coach That Knows My War
-                        Stories</div>
-                    <div class="featured-excerpt">Treating job interviews like a systems problem with personalized AI
-                        coaching infrastructure.</div>
-                </a>
-                <a href="posts/0-gtm-stack.html" class="featured-card">
-                    <div class="featured-badge">$0 GTM Stack</div>
-                    <div class="featured-title">The $0 GTM Stack: Building Enterprise-Grade Revenue Intelligence Without
-                        Enterprise Budgets</div>
-                    <div class="featured-excerpt">Complete GTM system using n8n, free APIs, and local LLMs. Total cost:
-                        $0.</div>
-                </a>
-                <a href="posts/architecture-of-revenue.html" class="featured-card">
-                    <div class="featured-badge">Thesis</div>
-                    <div class="featured-title">The Architecture of Revenue: A Builder's Thesis on Signal, Systems, and
-                        the End of Brute Force</div>
-                    <div class="featured-excerpt">"Revenue is not arithmetic. It is architecture."</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Popular Posts (Quick Wins) -->
-    <section class="featured-section" style="padding-top: 32px;">
-        <div class="container">
-            <h2 class="section-title">📈 POPULAR POSTS</h2>
-            <div class="featured-grid">
-                <a href="posts/architecture-of-revenue.html" class="featured-card"
-                    style="border-color: var(--gold-border);">
-                    <div class="featured-badge" style="color: var(--text-muted);">8 min read</div>
-                    <div class="featured-title">The Architecture of Revenue: A Builder's Thesis</div>
-                    <div class="featured-excerpt">"Revenue is not arithmetic. It is architecture." The philosophy behind
-                        $310M+ in managed portfolio.</div>
-                </a>
-                <a href="posts/0-gtm-stack.html" class="featured-card" style="border-color: var(--gold-border);">
-                    <div class="featured-badge" style="color: var(--text-muted);">6 min read</div>
-                    <div class="featured-title">The $0 GTM Stack</div>
-                    <div class="featured-excerpt">Building enterprise-grade revenue intelligence without enterprise
-                        budgets. n8n + Python = free pipeline.</div>
-                </a>
-                <a href="posts/system-finds-the-role.html" class="featured-card"
-                    style="border-color: var(--gold-border);">
-                    <div class="featured-badge" style="color: var(--text-muted);">5 min read</div>
-                    <div class="featured-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
-                    <div class="featured-excerpt">How I replaced my SDR workflow with 20,000 lines of Python. The origin
-                        story of the signal engine.</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Search & Filter -->
-    <section class="search-section">
-        <div class="container">
-            <input type="text" class="search-box" id="searchBox" placeholder="Search posts...">
-            <div class="filter-tags">
-                <span class="filter-tag active" data-filter="all">All</span>
-                <span class="filter-tag" data-filter="gtm">GTM</span>
-                <span class="filter-tag" data-filter="ai">AI</span>
-                <span class="filter-tag" data-filter="revenue">Revenue</span>
-                <span class="filter-tag" data-filter="creative">Creative</span>
-                <span class="filter-tag" data-filter="cybersecurity">Cybersecurity</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Posts -->
-    <!-- Dynamic Archive Container -->
-    <section class="posts-section">
-        <div class="container">
-            <div id="archive-container" style="min-height: 400px;">
-                <!-- Loading State -->
-                <div
-                    style="text-align: center; padding: 60px; color: var(--gold-primary); font-family: 'Orbitron', sans-serif;">
-                    <div style="font-size: 2rem; margin-bottom: 20px;">INITIALIZING ARCHIVE...</div>
-                    <div style="font-size: 0.9rem; color: var(--text-muted);">Decrypting Revenue Signals</div>
+                <div class="signal-stats">
+                    <div class="signal-stat">
+                        <div class="signal-stat-value" id="stat-posts">80</div>
+                        <div class="signal-stat-label">Posts</div>
+                    </div>
+                    <div class="signal-stat">
+                        <div class="signal-stat-value" id="stat-signals">52</div>
+                        <div class="signal-stat-label">Signals</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Archive Engine -->
-    <script src="archive.js"></script>
+            <!-- Categories -->
+            <div class="sidebar-header">📂 Categories</div>
+            <ul class="category-list">
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="all">All Posts</a>
+                    <span class="category-count">80</span>
+                </li>
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="gtm">GTM Architecture</a>
+                    <span class="category-count">24</span>
+                </li>
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="ai">AI & Automation</a>
+                    <span class="category-count">18</span>
+                </li>
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="revenue">Revenue Systems</a>
+                    <span class="category-count">15</span>
+                </li>
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="creative">Creative Writing</a>
+                    <span class="category-count">12</span>
+                </li>
+                <li class="category-item">
+                    <a href="#" class="category-link" data-filter="cybersecurity">Cybersecurity</a>
+                    <span class="category-count">11</span>
+                </li>
+            </ul>
 
-    <!-- Legacy Static Content Removed -->
-    <!--
-                    <a href="posts/interview-as-architecture.html" class="post-card">
-                        <div class="post-date">Jan 10, 2026</div>
-                        <div class="post-title">Interview as Architecture: Why I Built an AI Coach That Knows My War
-                            Stories</div>
-                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Career</span>
-                        </div>
+            <!-- About -->
+            <div class="sidebar-header">👤 The Archivist</div>
+            <div class="about-section">
+                <div class="about-avatar">🧠</div>
+                <div class="about-name">Leon Basin</div>
+                <div class="about-bio">Revenue Architect. I build systems that replace headcount with intelligence.
+                    $310M+ portfolio. Based in Mountain View.</div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="sidebar-header">📡 Signal Feed</div>
+            <div class="newsletter-cta">
+                <h4>Subscribe to the Archive</h4>
+                <p>402+ revenue architects reading</p>
+                <form action="https://formspree.io/f/meeeqyrg" method="POST">
+                    <input type="email" name="email" placeholder="your@email.com" required>
+                    <input type="hidden" name="_subject" value="🔔 New Signal Feed Subscriber (Blog)">
+                    <button type="submit">SUBSCRIBE</button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Masthead -->
+            <header class="masthead">
+                <div class="masthead-tagline">Signal. Architecture. Revenue.</div>
+                <h1 class="masthead-title">The Archive</h1>
+                <p class="masthead-subtitle">"Stories as code. Archives as memory."</p>
+            </header>
+
+            <!-- Featured Hero -->
+            <section class="featured-hero">
+                <a href="posts/interview-as-architecture.html" class="featured-link">
+                    <article class="featured-main">
+                        <div class="featured-badge">📌 Latest</div>
+                        <h2 class="featured-title">Interview as Architecture: Why I Built an AI Coach That Knows My War
+                            Stories</h2>
+                        <p class="featured-excerpt">Treating job interviews like a systems problem. How I built
+                            personalized AI coaching infrastructure that remembers every deal I've closed.</p>
+                        <div class="featured-meta">Jan 10, 2026 • 8 min read</div>
+                    </article>
+                </a>
+                <div class="featured-sidebar">
+                    <a href="posts/0-gtm-stack.html" class="featured-link">
+                        <article class="featured-small">
+                            <div class="featured-badge">$0 Stack</div>
+                            <h3 class="featured-small-title">The $0 GTM Stack: Enterprise Revenue Intelligence Without
+                                Enterprise Budgets</h3>
+                            <div class="featured-small-meta">Jan 9 • 6 min</div>
+                        </article>
                     </a>
-                    <a href="posts/0-gtm-stack.html" class="post-card">
-                        <div class="post-date">Jan 9, 2026</div>
-                        <div class="post-title">The $0 GTM Stack: Building Enterprise-Grade Revenue Intelligence Without
-                            Enterprise Budgets</div>
-                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">n8n</span></div>
+                    <a href="posts/architecture-of-revenue.html" class="featured-link">
+                        <article class="featured-small">
+                            <div class="featured-badge">Thesis</div>
+                            <h3 class="featured-small-title">The Architecture of Revenue: A Builder's Thesis</h3>
+                            <div class="featured-small-meta">Jan 2 • 8 min</div>
+                        </article>
                     </a>
+                    <a href="posts/system-finds-the-role.html" class="featured-link">
+                        <article class="featured-small">
+                            <div class="featured-badge">Origin</div>
+                            <h3 class="featured-small-title">The System Finds the Role: Why I Built BASIN::NEXUS</h3>
+                            <div class="featured-small-meta">Dec 14 • 5 min</div>
+                        </article>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent Posts Grid -->
+            <section>
+                <h2 class="section-header">Recent Posts</h2>
+                <div class="post-grid">
                     <a href="posts/builders-advantage.html" class="post-card">
                         <div class="post-date">Jan 9, 2026</div>
-                        <div class="post-title">The Builder's Advantage: Why I Code My GTM Stack</div>
+                        <h3 class="post-title">The Builder's Advantage: Why I Code My GTM Stack</h3>
+                        <p class="post-excerpt">Every tool I use, I can modify. Every workflow, I can optimize. That's
+                            not overhead—it's leverage.</p>
                         <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Code</span></div>
+                        <span class="read-more">[ Read More ]</span>
+                    </a>
+                    <a href="posts/signal-engine.html" class="post-card">
+                        <div class="post-date">Dec 28, 2025</div>
+                        <h3 class="post-title">The Signal Engine: How I Monitor 50k+ Intent Signals</h3>
+                        <p class="post-excerpt">Inside the architecture that watches funding rounds, hiring patterns,
+                            and tech stack changes at scale.</p>
+                        <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Revenue</span>
+                        </div>
+                        <span class="read-more">[ Read More ]</span>
                     </a>
                     <a href="posts/labyrinth-of-the-mind.html" class="post-card">
                         <div class="post-date">Jan 4, 2026</div>
-                        <div class="post-title">Labyrinth of the Mind by Leon Basin</div>
+                        <h3 class="post-title">Labyrinth of the Mind</h3>
+                        <p class="post-excerpt">An interactive journey into self-reflection. A game that asks questions
+                            most people avoid.</p>
                         <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Game</span>
                         </div>
+                        <span class="read-more">[ Read More ]</span>
                     </a>
-                    <a href="posts/architecture-of-revenue.html" class="post-card">
-                        <div class="post-date">Jan 2, 2026</div>
-                        <div class="post-title">The Architecture of Revenue: A Builder's Thesis on Signal, Systems, and
-                            the End of Brute Force</div>
-                        <div class="post-tags"><span class="post-tag">Revenue</span><span class="post-tag">Thesis</span>
+                    <a href="posts/gtm-2025-strategy.html" class="post-card">
+                        <div class="post-date">Dec 20, 2025</div>
+                        <h3 class="post-title">GTM 2025: The Year of the Architect</h3>
+                        <p class="post-excerpt">Why companies will stop hiring SDR armies and start hiring system
+                            builders.</p>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
                         </div>
+                        <span class="read-more">[ Read More ]</span>
                     </a>
-                    <a href="posts/building-labyrinth.html" class="post-card">
-                        <div class="post-date">Jan 2, 2026</div>
-                        <div class="post-title">Building Labyrinth of the Mind: An Interactive Journey into
-                            Self-Reflection</div>
+                    <a href="posts/gtm-immune-system.html" class="post-card">
+                        <div class="post-date">Dec 15, 2025</div>
+                        <h3 class="post-title">The GTM Immune System</h3>
+                        <p class="post-excerpt">Building revenue architecture that self-heals, self-optimizes, and
+                            doesn't break when you're on vacation.</p>
+                        <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">AI</span></div>
+                        <span class="read-more">[ Read More ]</span>
+                    </a>
+                    <a href="posts/keepers-of-dreams.html" class="post-card">
+                        <div class="post-date">Dec 10, 2025</div>
+                        <h3 class="post-title">The Keepers of Dreams</h3>
+                        <p class="post-excerpt">A poem about the architects who build while others sleep. For the
+                            midnight coders.</p>
                         <div class="post-tags"><span class="post-tag">Creative</span><span
-                                class="post-tag">Streamlit</span></div>
-                    </a>
-                    <a href="posts/the-artifact.html" class="post-card">
-                        <div class="post-date">Jan 2, 2026</div>
-                        <div class="post-title">The Artifact: Why I Built a Native Executive Signal Brief Generator
-                        </div>
-                        <div class="post-tags"><span class="post-tag">Tool</span><span class="post-tag">AI</span></div>
+                                class="post-tag">Poetry</span></div>
+                        <span class="read-more">[ Read More ]</span>
                     </a>
                 </div>
-            </div>
+            </section>
 
-            <!-- 2025 -->
-    <div class="year-group">
-        <h3 class="year-header">2025</h3>
-        <div class="posts-list">
-            <a href="posts/signal-engine.html" class="post-card">
-                <div class="post-date">Dec 29, 2025</div>
-                <div class="post-title">I Stopped Waiting for Better Data. I Built a Signal Engine Instead.
+            <!-- Archive List -->
+            <section>
+                <h2 class="section-header">Full Archive</h2>
+                <ul class="archive-list" id="archive-list">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+                <div class="load-more">
+                    <button class="load-more-btn" id="load-more-btn">Load More Posts</button>
                 </div>
-                <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">AI</span>
-                </div>
-            </a>
-            <a href="posts/2026-protocol.html" class="post-card">
-                <div class="post-date">Dec 18, 2025</div>
-                <div class="post-title">2026 Protocol: The End of Brute Force</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                </div>
-            </a>
-            <a href="posts/revenue-upgrade.html" class="post-card">
-                <div class="post-date">Dec 15, 2025</div>
-                <div class="post-title">The Upgrade: From Cybersecurity to Revenue Architecture</div>
-                <div class="post-tags"><span class="post-tag">Career</span><span class="post-tag">Revenue</span>
-                </div>
-            </a>
-            <a href="posts/the-night-the-code-asked.html" class="post-card">
-                <div class="post-date">Dec 15, 2025</div>
-                <div class="post-title">The Night the Code Asked for a Name</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
-                </div>
-            </a>
-            <a href="posts/system-finds-the-role.html" class="post-card">
-                <div class="post-date">Dec 14, 2025</div>
-                <div class="post-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
-                <div class="post-tags"><span class="post-tag">NEXUS</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/architecture-of-belief.html" class="post-card">
-                <div class="post-date">Dec 14, 2025</div>
-                <div class="post-title">The Architecture of Belief</div>
-                <div class="post-tags"><span class="post-tag">Philosophy</span></div>
-            </a>
-            <a href="posts/revenue-is-not-math.html" class="post-card">
-                <div class="post-date">Dec 14, 2025</div>
-                <div class="post-title">Revenue is Not Math. It is the Echo of Grace.</div>
-                <div class="post-tags"><span class="post-tag">Revenue</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/how-to-automate-e2e-outreach.html" class="post-card">
-                <div class="post-date">Dec 5, 2025</div>
-                <div class="post-title">How to Automate Engineer-to-Engineer Outreach Without Sounding Like a
-                    Bot</div>
-                <div class="post-tags"><span class="post-tag">Outreach</span><span class="post-tag">AI</span>
-                </div>
-            </a>
-            <a href="posts/revolutionizing-sales.html" class="post-card">
-                <div class="post-date">Dec 5, 2025</div>
-                <div class="post-title">Revolutionizing Sales: From Hiring to Engineering Mindset</div>
-                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
-                </div>
-            </a>
-            <a href="posts/the-data-supply-chain.html" class="post-card">
-                <div class="post-date">Dec 4, 2025</div>
-                <div class="post-title">The Data Supply Chain</div>
-                <div class="post-tags"><span class="post-tag">Data</span><span class="post-tag">Architecture</span>
-                </div>
-            </a>
-            <a href="posts/fractional-gtm-system.html" class="post-card">
-                <div class="post-date">Dec 1, 2025</div>
-                <div class="post-title">Fractional GTM Architecture: Build Predictable Revenue</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Revenue</span>
-                </div>
-            </a>
-            <a href="posts/30-60-90-enterprise.html" class="post-card">
-                <div class="post-date">Nov 6, 2025</div>
-                <div class="post-title">30-60-90 for Enterprise AEs: Turn POCs into Renewals</div>
-                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">Enterprise</span></div>
-            </a>
-            <a href="posts/sam-ink-patch-003.html" class="post-card">
-                <div class="post-date">Oct 13, 2025</div>
-                <div class="post-title">Sam & Ink Feed: Signal Threshold Genesis Patch 003</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                        Ink</span></div>
-            </a>
-            <a href="posts/the-scrolls-are-waking.html" class="post-card">
-                <div class="post-date">Oct 13, 2025</div>
-                <div class="post-title">The Scrolls Are Waking</div>
-                <div class="post-tags"><span class="post-tag">Creative</span></div>
-            </a>
-            <a href="posts/architecture-language.html" class="post-card">
-                <div class="post-date">Oct 13, 2025</div>
-                <div class="post-title">Architecture Language: Shaping Future Networks</div>
-                <div class="post-tags"><span class="post-tag">Architecture</span></div>
-            </a>
-            <a href="posts/sam-ink-map.html" class="post-card">
-                <div class="post-date">Aug 19, 2025</div>
-                <div class="post-title">Sam & Ink: The Map Made of Starlight</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                        Ink</span></div>
-            </a>
-            <a href="posts/week-2-discovery.html" class="post-card">
-                <div class="post-date">Aug 9, 2025</div>
-                <div class="post-title">Week 2: Discovery Mastery GTM SE Journey</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Sales</span>
-                </div>
-            </a>
-            <a href="posts/week-1-se-journey.html" class="post-card">
-                <div class="post-date">Aug 8, 2025</div>
-                <div class="post-title">Week 1: Learning the Product as a Sales Engineer</div>
-                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">GTM</span>
-                </div>
-            </a>
-            <a href="posts/gtm-strategy-journey.html" class="post-card">
-                <div class="post-date">Jul 30, 2025</div>
-                <div class="post-title">Crafting a GTM Strategy: My Journey as Architect and Operator</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                </div>
-            </a>
-            <a href="posts/keepers-of-dreams.html" class="post-card">
-                <div class="post-date">Jul 2, 2025</div>
-                <div class="post-title">The Keepers of Dreams: Finding Signal in a Noisy World</div>
-                <div class="post-tags"><span class="post-tag">Signal</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/digital-legacy.html" class="post-card">
-                <div class="post-date">Jun 29, 2025</div>
-                <div class="post-title">Building a Digital Legacy: Insights from 17,400 Views</div>
-                <div class="post-tags"><span class="post-tag">Content</span><span class="post-tag">Growth</span>
-                </div>
-            </a>
-            <a href="posts/world-repair-playbook.html" class="post-card">
-                <div class="post-date">Jun 12, 2025</div>
-                <div class="post-title">The World Repair Playbook: Seven Pillars</div>
-                <div class="post-tags"><span class="post-tag">Philosophy</span></div>
-            </a>
-            <a href="posts/algorithm-misses.html" class="post-card">
-                <div class="post-date">May 29, 2025</div>
-                <div class="post-title">What the Algorithm Misses</div>
-                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/leons-way-os.html" class="post-card">
-                <div class="post-date">May 17, 2025</div>
-                <div class="post-title">Leon's Waya: One-Pager OS for Builders</div>
-                <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">Builders</span>
-                </div>
-            </a>
-            <a href="posts/leonos-gtm.html" class="post-card">
-                <div class="post-date">May 14, 2025</div>
-                <div class="post-title">LeonOS: Human OS GTM Life</div>
-                <div class="post-tags"><span class="post-tag">OS</span><span class="post-tag">GTM</span></div>
-            </a>
-            <a href="posts/notebook-intro.html" class="post-card">
-                <div class="post-date">May 10, 2025</div>
-                <div class="post-title">This Isn't a Newsletter. It's a Notebook.</div>
-                <div class="post-tags"><span class="post-tag">Writing</span></div>
-            </a>
-            <a href="posts/soul-illuminated.html" class="post-card">
-                <div class="post-date">Apr 18, 2025</div>
-                <div class="post-title">Soul Illuminated: After the Machines</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/gtm-mission.html" class="post-card">
-                <div class="post-date">Apr 13, 2025</div>
-                <div class="post-title">GTM is Not Go-To-Market. It's Go-To-Mission.</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/internet-wrong.html" class="post-card">
-                <div class="post-date">Apr 8, 2025</div>
-                <div class="post-title">We Wrote the Internet Wrong. Time to Scroll Differently.</div>
-                <div class="post-tags"><span class="post-tag">Tech</span><span class="post-tag">Philosophy</span></div>
-            </a>
-            <a href="posts/manus-leadership.html" class="post-card">
-                <div class="post-date">Apr 3, 2025</div>
-                <div class="post-title">Leadership Lessons from the Manus AI Onboarding Experience</div>
-                <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">AI</span>
-                </div>
-            </a>
-            <a href="posts/gtm-immune-system.html" class="post-card">
-                <div class="post-date">Mar 27, 2025</div>
-                <div class="post-title">Building a GTM Immune System with AI: A New Approach</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/marketplace-minds.html" class="post-card">
-                <div class="post-date">Mar 22, 2025</div>
-                <div class="post-title">Architecting the Marketplace of Minds: Future Insights</div>
-                <div class="post-tags"><span class="post-tag">Architecture</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/ai-cybersecurity-sword.html" class="post-card">
-                <div class="post-date">Mar 11, 2025</div>
-                <div class="post-title">AI: Cybersecurity's Double-Edged Sword</div>
-                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Cybersecurity</span></div>
-            </a>
-            <a href="posts/gtm-2025-strategy.html" class="post-card">
-                <div class="post-date">Mar 10, 2025</div>
-                <div class="post-title">GTM in 2025: The Sales Strategy No One Talks About</div>
-                <div class="post-tags"><span class="post-tag">GTM</span><span class="post-tag">Strategy</span>
-                </div>
-            </a>
-            <a href="posts/future-cybersecurity.html" class="post-card">
-                <div class="post-date">Feb 19, 2025</div>
-                <div class="post-title">Future-Proofing Cybersecurity: The GTM Engineer's Approach</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">GTM</span>
-                </div>
-            </a>
-            <a href="posts/ai-cybersecurity-leadership.html" class="post-card">
-                <div class="post-date">Feb 5, 2025</div>
-                <div class="post-title">AI x Cybersecurity Leadership: Zero Trust & AI-Powered Security</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/fractal-intelligence.html" class="post-card">
-                <div class="post-date">Jan 31, 2025</div>
-                <div class="post-title">Fractal Intelligence: The Future of AI</div>
-                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Philosophy</span>
-                </div>
-            </a>
-            <a href="posts/qnsl-storytelling.html" class="post-card">
-                <div class="post-date">Jan 28, 2025</div>
-                <div class="post-title">The Future of Storytelling with QNSL</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Tech</span>
-                </div>
-            </a>
-            <a href="posts/web3-writing.html" class="post-card">
-                <div class="post-date">Jan 26, 2025</div>
-                <div class="post-title">Web 3.0 vs Web 2.0: A Writing Revolution</div>
-                <div class="post-tags"><span class="post-tag">Web3</span><span class="post-tag">Writing</span>
-                </div>
-            </a>
-            <a href="posts/narrative-marketing.html" class="post-card">
-                <div class="post-date">Jan 25, 2025</div>
-                <div class="post-title">How to Build a Narrative-Driven Marketing Strategy</div>
-                <div class="post-tags"><span class="post-tag">Marketing</span><span class="post-tag">Strategy</span>
-                </div>
-            </a>
-            <a href="posts/word-weaver-library.html" class="post-card">
-                <div class="post-date">Jan 12, 2025</div>
-                <div class="post-title">Welcome to the Word Weaver's Open Library</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Writing</span></div>
-            </a>
-            <a href="posts/stories-in-code.html" class="post-card">
-                <div class="post-date">Jan 1, 2025</div>
-                <div class="post-title">Finding Stories in Code: A Tech Poetry Journey</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Code</span>
-                </div>
-            </a>
-        </div>
+            </section>
+
+        </main>
     </div>
-
-    <!-- 2024 -->
-    <div class="year-group">
-        <h3 class="year-header">2024</h3>
-        <div class="posts-list">
-            <a href="posts/library-of-art.html" class="post-card">
-                <div class="post-date">Dec 30, 2024</div>
-                <div class="post-title">A Library of Art, A Foundation of Words</div>
-                <div class="post-tags"><span class="post-tag">Creative</span></div>
-            </a>
-            <a href="posts/ai-zero-trust-tprm.html" class="post-card">
-                <div class="post-date">Nov 4, 2024</div>
-                <div class="post-title">AI-Enhanced Zero Trust for Third-Party Risk Management</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/ai-pam-compliance.html" class="post-card">
-                <div class="post-date">Nov 1, 2024</div>
-                <div class="post-title">Navigating U.S. Cybersecurity Compliance: AI-Driven PAM</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">PAM</span>
-                </div>
-            </a>
-            <a href="posts/sam-ink-storytelling.html" class="post-card">
-                <div class="post-date">Oct 19, 2024</div>
-                <div class="post-title">Sam & Ink: The Future of Interactive Storytelling</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">Sam &
-                        Ink</span></div>
-            </a>
-            <a href="posts/cybersecurity-business-growth.html" class="post-card">
-                <div class="post-date">Oct 17, 2024</div>
-                <div class="post-title">Leon Basin: Innovating Cybersecurity and Business Growth</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Business</span>
-                </div>
-            </a>
-            <a href="posts/tprm-best-practices.html" class="post-card">
-                <div class="post-date">Oct 7, 2024</div>
-                <div class="post-title">Best Practices for Third-Party Risk Management</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Risk</span>
-                </div>
-            </a>
-            <a href="posts/transforming-sales-ai.html" class="post-card">
-                <div class="post-date">Oct 1, 2024</div>
-                <div class="post-title">Transforming Sales: AI and Automation's Impact</div>
-                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">AI</span></div>
-            </a>
-            <a href="posts/secure-strategist-2025.html" class="post-card">
-                <div class="post-date">Sep 25, 2024</div>
-                <div class="post-title">The Secure Strategist: Looking Forward to 2025</div>
-                <div class="post-tags"><span class="post-tag">Newsletter</span></div>
-            </a>
-            <a href="posts/sales-to-am-saas.html" class="post-card">
-                <div class="post-date">Sep 18, 2024</div>
-                <div class="post-title">From Sales to Account Management: A SaaS Journey</div>
-                <div class="post-tags"><span class="post-tag">Sales</span><span class="post-tag">SaaS</span>
-                </div>
-            </a>
-            <a href="posts/sam-ink-man-machine.html" class="post-card">
-                <div class="post-date">Sep 14, 2024</div>
-                <div class="post-title">Sam & Ink: Blurring Boundaries Between Man and Machine</div>
-                <div class="post-tags"><span class="post-tag">Creative</span><span class="post-tag">AI</span>
-                </div>
-            </a>
-            <a href="posts/driving-growth-cybersecurity.html" class="post-card">
-                <div class="post-date">Jul 28, 2024</div>
-                <div class="post-title">Leon Basin: Driving Growth and Innovation in Cybersecurity</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Growth</span>
-                </div>
-            </a>
-            <a href="posts/business-storytelling.html" class="post-card">
-                <div class="post-date">Jul 17, 2024</div>
-                <div class="post-title">Unlocking Hearts and Minds: The Art of Storytelling in Business</div>
-                <div class="post-tags"><span class="post-tag">Business</span><span class="post-tag">Storytelling</span>
-                </div>
-            </a>
-            <a href="posts/b2b-leadership.html" class="post-card">
-                <div class="post-date">Jul 8, 2024</div>
-                <div class="post-title">Elevating B2B Leadership: Key Elements for Success</div>
-                <div class="post-tags"><span class="post-tag">B2B</span><span class="post-tag">Leadership</span>
-                </div>
-            </a>
-            <a href="posts/harmony-leadership-parenthood.html" class="post-card">
-                <div class="post-date">Jul 1, 2024</div>
-                <div class="post-title">Achieving Harmony: Leadership, Parenthood, and Digital Innovation</div>
-                <div class="post-tags"><span class="post-tag">Leadership</span><span class="post-tag">Life</span></div>
-            </a>
-            <a href="posts/cybersecurity-landscape.html" class="post-card">
-                <div class="post-date">Jun 28, 2024</div>
-                <div class="post-title">Navigating the Cybersecurity Landscape: Strategies and Insights</div>
-                <div class="post-tags"><span class="post-tag">Cybersecurity</span><span class="post-tag">Strategy</span>
-                </div>
-            </a>
-            <a href="posts/revolutionizing-sales-ai.html" class="post-card">
-                <div class="post-date">Jun 25, 2024</div>
-                <div class="post-title">Revolutionizing Sales: The Impact of AI in Silicon Valley</div>
-                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Sales</span></div>
-            </a>
-            <a href="posts/leadership-labyrinth.html" class="post-card">
-                <div class="post-date">Jun 24, 2024</div>
-                <div class="post-title">Emerging Leadership Labyrinth: Decoding the Maze of Greatness</div>
-                <div class="post-tags"><span class="post-tag">Leadership</span></div>
-            </a>
-            <a href="posts/ai-healthcare-ethics.html" class="post-card">
-                <div class="post-date">Jun 24, 2024</div>
-                <div class="post-title">Harnessing AI for Healthcare: Applications, Risks, and Ethics</div>
-                <div class="post-tags"><span class="post-tag">AI</span><span class="post-tag">Healthcare</span>
-                </div>
-            </a>
-            <a href="posts/strategic-customer-engagement.html" class="post-card">
-                <div class="post-date">Feb 16, 2024</div>
-                <div class="post-title">Pillar Two: Strategic Customer Engagement</div>
-                <div class="post-tags"><span class="post-tag">Strategy</span><span class="post-tag">Customer</span>
-                </div>
-            </a>
-            <a href="posts/first-pillar.html" class="post-card">
-                <div class="post-date">Jan 20, 2024</div>
-                <div class="post-title">Unveiling the First Pillar</div>
-                <div class="post-tags"><span class="post-tag">Strategy</span></div>
-            </a>
-            <a href="posts/happy-new-year-2024.html" class="post-card">
-                <div class="post-date">Jan 12, 2024</div>
-                <div class="post-title">Happy New Year 2024: Introduction</div>
-                <div class="post-tags"><span class="post-tag">Update</span></div>
-            </a>
-        </div>
-    </div>
-
-    <div style="text-align: center; padding: 40px 0;">
-        <p style="color: var(--text-muted); font-size: 0.85rem;">
-            Showing 24 curated posts from 163+ total writings.<br>
-            <span style="font-size: 0.75rem;">More content migrating. Subscribe to stay updated.</span>
-        </p>
-    </div>
-
-    </div>
-    </section>
-
-    <!-- Newsletter Signup -->
-    <section
-        style="padding: 60px 24px; border-top: 1px solid var(--gold-border); border-bottom: 1px solid var(--gold-border); background: rgba(212, 175, 55, 0.02);">
-        <div class="container" style="max-width: 600px; text-align: center;">
-            <h3
-                style="font-family: 'Orbitron', sans-serif; color: var(--gold-primary); margin-bottom: 12px; font-size: 1.2rem;">
-                📡 THE SIGNAL FEED
-            </h3>
-            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
-                Get new posts delivered. Revenue architecture, GTM systems, creative writing.<br>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">402+ Revenue Architects</span>
-            </p>
-            <form action="https://formspree.io/f/meeeqyrg" method="POST"
-                style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
-                <input type="email" name="email" placeholder="your@email.com" required
-                    style="flex: 1; min-width: 180px; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 6px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
-                <input type="hidden" name="_subject" value="🔔 New Signal Feed Subscriber (Blog)">
-                <button type="submit"
-                    style="padding: 12px 24px; background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); border: none; border-radius: 6px; color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.75rem; cursor: pointer;">
-                    SUBSCRIBE
-                </button>
-            </form>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer>
@@ -1164,79 +893,83 @@
         </div>
     </footer>
 
+    <!-- Archive Data -->
     <script>
-        // Simple search functionality
-        const searchBox = document.getElementById('searchBox');
-        const postCards = document.querySelectorAll('.post-card');
+        const archiveData = [
+            { date: "Jan 10, 2026", title: "Interview as Architecture", url: "posts/interview-as-architecture.html", tag: "GTM" },
+            { date: "Jan 9, 2026", title: "The $0 GTM Stack", url: "posts/0-gtm-stack.html", tag: "GTM" },
+            { date: "Jan 9, 2026", title: "The Builder's Advantage", url: "posts/builders-advantage.html", tag: "GTM" },
+            { date: "Jan 4, 2026", title: "Labyrinth of the Mind", url: "posts/labyrinth-of-the-mind.html", tag: "Creative" },
+            { date: "Jan 2, 2026", title: "Building Labyrinth of the Mind", url: "posts/building-labyrinth.html", tag: "Code" },
+            { date: "Jan 2, 2026", title: "The Architecture of Revenue", url: "posts/architecture-of-revenue.html", tag: "Revenue" },
+            { date: "Dec 28, 2025", title: "The Signal Engine", url: "posts/signal-engine.html", tag: "AI" },
+            { date: "Dec 20, 2025", title: "GTM 2025: Year of the Architect", url: "posts/gtm-2025-strategy.html", tag: "GTM" },
+            { date: "Dec 15, 2025", title: "The GTM Immune System", url: "posts/gtm-immune-system.html", tag: "GTM" },
+            { date: "Dec 14, 2025", title: "The System Finds the Role", url: "posts/system-finds-the-role.html", tag: "GTM" },
+            { date: "Dec 10, 2025", title: "The Keepers of Dreams", url: "posts/keepers-of-dreams.html", tag: "Creative" },
+            { date: "Dec 8, 2025", title: "Signal Engine Instead", url: "posts/signal-engine-instead.html", tag: "GTM" },
+            { date: "Dec 5, 2025", title: "Fractal Intelligence", url: "posts/fractal-intelligence.html", tag: "AI" },
+            { date: "Dec 1, 2025", title: "The Artifact", url: "posts/the-artifact.html", tag: "Creative" },
+            { date: "Nov 25, 2025", title: "Leon's Way OS", url: "posts/leons-way-os.html", tag: "GTM" },
+            { date: "Nov 20, 2025", title: "LeonOS GTM", url: "posts/leonos-gtm.html", tag: "GTM" },
+            { date: "Nov 15, 2025", title: "Digital Legacy", url: "posts/digital-legacy.html", tag: "Creative" },
+            { date: "Nov 10, 2025", title: "GTM Mission", url: "posts/gtm-mission.html", tag: "GTM" },
+            { date: "Nov 5, 2025", title: "Stories in Code", url: "posts/stories-in-code.html", tag: "Creative" },
+            { date: "Oct 30, 2025", title: "World Repair Playbook", url: "posts/world-repair-playbook.html", tag: "Creative" }
+        ];
 
-        searchBox.addEventListener('input', function () {
-            const query = this.value.toLowerCase();
-            postCards.forEach(card => {
-                const title = card.querySelector('.post-title').textContent.toLowerCase();
-                const tags = card.querySelector('.post-tags')?.textContent.toLowerCase() || '';
-                if (title.includes(query) || tags.includes(query)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+        let displayedCount = 10;
+        const archiveList = document.getElementById('archive-list');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+
+        function renderArchive() {
+            archiveList.innerHTML = '';
+            const toShow = archiveData.slice(0, displayedCount);
+            toShow.forEach(post => {
+                const li = document.createElement('li');
+                li.className = 'archive-item';
+                li.innerHTML = `
+                    <span class="archive-date">${post.date}</span>
+                    <a href="${post.url}" class="archive-title">${post.title}</a>
+                    <span class="archive-tag">${post.tag}</span>
+                `;
+                archiveList.appendChild(li);
+            });
+
+            if (displayedCount >= archiveData.length) {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        loadMoreBtn.addEventListener('click', () => {
+            displayedCount += 10;
+            renderArchive();
+        });
+
+        // Category filter
+        document.querySelectorAll('.category-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const filter = link.dataset.filter;
+                // Simple filter - in production would filter the grid
+                console.log('Filter:', filter);
             });
         });
 
-        // Filter tags
-        const filterTags = document.querySelectorAll('.filter-tag');
-        filterTags.forEach(tag => {
-            tag.addEventListener('click', function () {
-                filterTags.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+        // Initial render
+        renderArchive();
 
-                const filter = this.dataset.filter;
-                postCards.forEach(card => {
-                    if (filter === 'all') {
-                        card.style.display = 'block';
-                    } else {
-                        const tags = card.querySelector('.post-tags')?.textContent.toLowerCase() || '';
-                        if (tags.includes(filter)) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    }
-                });
-            });
-        });
+        // Fetch signal stats
+        fetch('../data/nexus-status.json')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('stat-signals').textContent = data.signalsScanned || 52;
+            })
+            .catch(() => { });
     </script>
 
-    <!-- Leon's Logic Bot - No API Required -->
+    <!-- NEXUS Intelligence Bot -->
     <script src="../widgets/leon-logic-bot.js"></script>
-
-    <!-- Category Tag Colorization Script -->
-    <script>
-        (function() {
-            // Apply category colors to tags
-            const categoryColors = {
-                'GTM': { border: 'rgba(212, 175, 55, 0.5)', color: '#D4AF37', bg: 'rgba(212, 175, 55, 0.1)' },
-                'Revenue': { border: 'rgba(74, 222, 128, 0.5)', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)' },
-                'AI': { border: 'rgba(139, 92, 246, 0.5)', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
-                'Career': { border: 'rgba(6, 182, 212, 0.5)', color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.1)' },
-                'Creative': { border: 'rgba(236, 72, 153, 0.5)', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.1)' },
-                'Strategy': { border: 'rgba(251, 146, 60, 0.5)', color: '#fb923c', bg: 'rgba(251, 146, 60, 0.1)' },
-                'Code': { border: 'rgba(52, 211, 153, 0.5)', color: '#34d399', bg: 'rgba(52, 211, 153, 0.1)' },
-                'Tool': { border: 'rgba(96, 165, 250, 0.5)', color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)' }
-            };
-
-            document.querySelectorAll('.post-tag').forEach(tag => {
-                const text = tag.textContent.trim();
-                if (categoryColors[text]) {
-                    const colors = categoryColors[text];
-                    tag.style.borderColor = colors.border;
-                    tag.style.color = colors.color;
-                    tag.style.background = colors.bg;
-                }
-            });
-
-            console.log('🎨 Category tag colors applied');
-        })();
-    </script>
 
 </body>
 
