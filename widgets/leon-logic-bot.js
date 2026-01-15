@@ -399,13 +399,92 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
     };
 
     // ═══════════════════════════════════════════════════════════════
-    // INTELLIGENT MATCHING — Fuzzy + Context-Aware
+    // BLOG POSTS INTEGRATION — Search & Recommend
+    // ═══════════════════════════════════════════════════════════════
+
+    let blogPosts = [];
+
+    // Load blog posts on init
+    async function loadBlogPosts() {
+        try {
+            const response = await fetch('https://basinleon.github.io/data/posts.json');
+            if (response.ok) {
+                const data = await response.json();
+                blogPosts = data.filter(p => p.url && p.url !== '#');
+                console.log(`📚 NEXUS: Loaded ${blogPosts.length} blog posts for search`);
+            }
+        } catch (e) {
+            console.warn('Could not load blog posts for NEXUS search');
+        }
+    }
+
+    // Search blog posts by query
+    function searchBlogPosts(query, limit = 3) {
+        if (!blogPosts.length) return [];
+
+        const terms = query.toLowerCase().split(/\s+/);
+
+        const scored = blogPosts.map(post => {
+            let score = 0;
+            const title = (post.title || '').toLowerCase();
+            const tags = (post.tags || []).map(t => t.toLowerCase());
+            const excerpt = (post.excerpt || '').toLowerCase();
+
+            for (const term of terms) {
+                if (term.length < 3) continue;
+                if (title.includes(term)) score += 10;
+                if (tags.some(t => t.includes(term))) score += 8;
+                if (excerpt.includes(term)) score += 3;
+            }
+            return { post, score };
+        });
+
+        return scored
+            .filter(s => s.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, limit)
+            .map(s => s.post);
+    }
+
+    // Format blog recommendations for chat
+    function formatBlogRecommendations(posts) {
+        if (!posts.length) return '';
+
+        let html = '\n\n**📚 From the Archive:**\n';
+        posts.forEach(p => {
+            const tag = (p.tags && p.tags[0]) ? `[${p.tags[0]}]` : '';
+            html += `- [${p.title}](https://basinleon.github.io/blog/${p.url}) ${tag}\n`;
+        });
+        return html;
+    }
+
+    // Topic to blog post mapping for direct recommendations
+    const TOPIC_POST_MAP = {
+        'revenue': ['architecture-of-revenue', 'revenue-is-not-math', 'expansion-revenue-engine'],
+        'gtm': ['0-gtm-stack', 'gtm-mission', 'interview-as-architecture'],
+        'signal': ['signal-engine', 'signal-engine-instead', 'the-artifact'],
+        'architecture': ['architecture-of-revenue', 'architecture-of-belief', 'architecture-language'],
+        'ai': ['ai-cybersecurity-sword', 'labyrinth-of-the-mind', 'fractal-intelligence'],
+        'automation': ['how-to-automate-e2e-outreach', '0-gtm-stack', 'signal-engine'],
+        'interview': ['interview-as-architecture', 'system-finds-the-role'],
+        'case study': ['video-security-signal-architecture', 'the-artifact'],
+        'cybersecurity': ['ai-cybersecurity-leadership', 'tprm-best-practices', 'future-cybersecurity'],
+        'creative': ['keepers-of-dreams', 'labyrinth-of-the-mind', 'stories-in-code']
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // INTELLIGENT MATCHING — Fuzzy + Context-Aware + Blog Search
     // ═══════════════════════════════════════════════════════════════
 
     function findBestMatch(userInput) {
         const input = userInput.toLowerCase();
         let bestMatch = null;
         let bestScore = 0;
+
+        // Check if user is explicitly searching for blog posts
+        const isSearchQuery = input.includes('wrote') || input.includes('blog') ||
+            input.includes('post') || input.includes('article') ||
+            input.includes('read') || input.includes('archive');
 
         // Check each category for keyword matches
         for (const [category, data] of Object.entries(KNOWLEDGE_BASE)) {
@@ -434,8 +513,17 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
             }
         }
 
-        // Return best match or default
-        return bestMatch || KNOWLEDGE_BASE.default.response;
+        // Search blog posts and add recommendations
+        let response = bestMatch || KNOWLEDGE_BASE.default.response;
+
+        if (isSearchQuery || bestScore > 0) {
+            const relevantPosts = searchBlogPosts(input);
+            if (relevantPosts.length > 0) {
+                response += formatBlogRecommendations(relevantPosts);
+            }
+        }
+
+        return response;
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -801,7 +889,7 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                         <span class="quick-action" data-q="Explain Signal-System-Scale">Framework</span>
                         <span class="quick-action" data-q="How do you replace $800K in headcount?">$800K</span>
                         <span class="quick-action" data-q="Tell me about your case studies">Case Studies</span>
-                        <span class="quick-action" data-q="What's in your $0 tech stack?">Tools</span>
+                        <span class="quick-action" data-q="What did you write about AI?">📚 Search Archive</span>
                     </div>
                 </div>
             </div>
@@ -829,7 +917,10 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
             });
         });
 
-        console.log('[NEXUS Intelligence] Widget initialized');
+        // Load blog posts for search
+        loadBlogPosts();
+
+        console.log('[NEXUS Intelligence] Widget initialized with blog search');
     }
 
     function toggleBot() {
@@ -896,9 +987,10 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
         messageEl.className = `bot-message ${type}`;
 
         if (type === 'assistant') {
-            // Parse markdown-style bold and line breaks
+            // Parse markdown-style bold, line breaks, and links
             let html = text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #D4AF37;">$1</a>')
                 .replace(/\n\n/g, '<br><br>')
                 .replace(/\n- /g, '<br>• ')
                 .replace(/\n(\d+)\. /g, '<br>$1. ');
