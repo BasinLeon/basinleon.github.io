@@ -30,7 +30,7 @@
             lastTransmission: 'moments ago',
             status: 'ONLINE',
             pipelineActive: 3,
-            version: 'v5.0'
+            version: 'v10.0'
         },
 
         // Update interval (ms)
@@ -198,7 +198,7 @@
                 
                 <div class="ncw-header">
                     <div class="ncw-status-dot ${statusClass}"></div>
-                    <span class="ncw-title">Neural Core ${data.status}</span>
+                    <span class="ncw-title">Signal Engine ${data.status}</span>
                 </div>
                 
                 <div class="ncw-body">
@@ -221,8 +221,8 @@
                 </div>
                 
                 <div class="ncw-footer">
-                    <a href="https://github.com/BasinLeon/basin-signal-engine" target="_blank">
-                        BASIN::NEXUS ${data.version} • Built with Antigravity
+                    <a href="https://basinleon.github.io/nexus" target="_blank">
+                        BASIN::NEXUS ${data.version}
                     </a>
                 </div>
             </div>
