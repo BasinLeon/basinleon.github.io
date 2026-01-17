@@ -839,6 +839,90 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                 right: -8px;
             }
         }
+
+        /* ============================================= */
+        /* Light Theme Overrides                         */
+        /* ============================================= */
+        body.light-theme #bot-window {
+            background: rgba(245, 243, 239, 0.99) !important;
+            border-color: #d4af37 !important;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15), 0 0 1px rgba(212, 175, 55, 0.5);
+        }
+
+        body.light-theme #bot-header {
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%) !important;
+            border-bottom-color: #d4af37 !important;
+        }
+
+        body.light-theme #bot-header h3 {
+            color: #8b6914 !important;
+        }
+
+        body.light-theme #bot-status {
+            color: #666 !important;
+        }
+
+        body.light-theme #bot-close {
+            color: #888 !important;
+        }
+
+        body.light-theme #bot-close:hover {
+            color: #8b6914 !important;
+            background: rgba(212, 175, 55, 0.15) !important;
+        }
+
+        body.light-theme #bot-messages {
+            background: #fff !important;
+        }
+
+        body.light-theme .bot-message.assistant {
+            background: rgba(245, 243, 239, 0.9) !important;
+            border-color: #d4af37 !important;
+            color: #333 !important;
+        }
+
+        body.light-theme .bot-message.assistant strong {
+            color: #8b6914 !important;
+        }
+
+        body.light-theme .bot-message.system {
+            color: #888 !important;
+        }
+
+        body.light-theme .bot-message.typing {
+            background: rgba(245, 243, 239, 0.9) !important;
+            border-color: #d4af37 !important;
+            color: #8b6914 !important;
+        }
+
+        body.light-theme #bot-input-area {
+            background: rgba(245, 243, 239, 0.8) !important;
+            border-top-color: #d4af37 !important;
+        }
+
+        body.light-theme #bot-input {
+            background: #fff !important;
+            border-color: #d4af37 !important;
+            color: #333 !important;
+        }
+
+        body.light-theme #bot-input::placeholder {
+            color: #999 !important;
+        }
+
+        body.light-theme .quick-action {
+            background: rgba(212, 175, 55, 0.1) !important;
+            border-color: #d4af37 !important;
+            color: #8b6914 !important;
+        }
+
+        body.light-theme .quick-action:hover {
+            background: rgba(212, 175, 55, 0.2) !important;
+        }
+
+        body.light-theme .typing-dots span {
+            background: #8b6914 !important;
+        }
     `;
 
     async function init() {

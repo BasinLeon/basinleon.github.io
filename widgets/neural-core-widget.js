@@ -183,6 +183,44 @@
             padding-bottom: 0;
             border-bottom: none;
         }
+
+        /* Light Theme Overrides */
+        body.light-theme #neural-core-widget .ncw-container {
+            background: rgba(245, 243, 239, 0.98) !important;
+            border-color: #d4af37 !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.light-theme #neural-core-widget .ncw-container:hover {
+            box-shadow: 0 4px 30px rgba(212, 175, 55, 0.2);
+        }
+        
+        body.light-theme #neural-core-widget .ncw-header {
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        body.light-theme #neural-core-widget .ncw-label {
+            color: #666 !important;
+        }
+        
+        body.light-theme #neural-core-widget .ncw-value {
+            color: #333 !important;
+        }
+        
+        body.light-theme #neural-core-widget .ncw-footer {
+            border-top-color: rgba(0, 0, 0, 0.1);
+            color: #888;
+        }
+        
+        body.light-theme #neural-core-widget .ncw-footer a {
+            color: #666 !important;
+        }
+        
+        body.light-theme #neural-core-widget .ncw-toggle {
+            background: #e8e4dc !important;
+            border-color: #d4af37 !important;
+            color: #666 !important;
+        }
     `;
 
     // ═══════════════════════════════════════════════════════════════

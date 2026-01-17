@@ -107,6 +107,46 @@
         #console-input::placeholder {
             color: #555;
         }
+
+        /* Light Theme Overrides */
+        body.light-theme .console-widget {
+            background: #f5f3ef !important;
+            border-color: #d4af37 !important;
+        }
+        body.light-theme .console-header {
+            background: linear-gradient(90deg, #e8e4dc 0%, #f5f3ef 100%) !important;
+            border-bottom-color: #d4af37 !important;
+        }
+        body.light-theme #console-body {
+            background: #fff !important;
+        }
+        body.light-theme .output-line {
+            color: #333 !important;
+        }
+        body.light-theme .output-line .prompt {
+            color: #b45309 !important;
+        }
+        body.light-theme .output-line .cmd {
+            color: #0891b2 !important;
+        }
+        body.light-theme .output-line.text-green {
+            color: #059669 !important;
+        }
+        body.light-theme .output-line.text-yellow {
+            color: #b45309 !important;
+        }
+        body.light-theme .output-line.text-cyan {
+            color: #0891b2 !important;
+        }
+        body.light-theme .output-line.text-red {
+            color: #dc2626 !important;
+        }
+        body.light-theme #console-input {
+            color: #333 !important;
+        }
+        body.light-theme .console-header-title {
+            color: #666 !important;
+        }
     `;
 
     function createConsoleUI() {

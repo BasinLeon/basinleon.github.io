@@ -722,6 +722,14 @@
             color: var(--gold-primary);
         }
 
+        .view-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            margin-left: 8px;
+            opacity: 0.8;
+        }
+
         /* Archive List */
         .archive-list {
             list-style: none;
@@ -1066,13 +1074,16 @@
 
             const toShow = filtered.slice(0, displayedCount);
 
-            postGrid.innerHTML = toShow.map(post => `
+            postGrid.innerHTML = toShow.map(post => {
+                const views = window.BlogAnalytics ? window.BlogAnalytics.getViewCount(post.url) : 0;
+                const viewBadge = views > 0 ? `<span class="view-badge">👁 ${views}</span>` : '';
+                return `
                 <a href="${post.url}" class="post-card">
-                    <div class="post-date">${formatDate(post.date)}</div>
+                    <div class="post-date">${formatDate(post.date)}${viewBadge}</div>
                     <h3 class="post-title">${post.title}</h3>
                     <div class="post-tags"><span class="post-tag">${getPrimaryTag(post.tags)}</span></div>
                 </a>
-            `).join('');
+            `}).join('');
 
             loadMoreBtn.style.display = displayedCount >= filtered.length ? 'none' : 'inline-block';
 
