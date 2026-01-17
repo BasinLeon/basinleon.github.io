@@ -56,6 +56,17 @@
             font-size: 11px;
             line-height: 1.5;
             user-select: none;
+            transition: bottom 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            #neural-core-widget {
+                bottom: 80px !important; /* Avoid floating CTA */
+                left: 10px !important;
+                right: auto !important;
+                transform: scale(0.9);
+                transform-origin: bottom left;
+            }
         }
         
         #neural-core-widget .ncw-container {
