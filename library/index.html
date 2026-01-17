@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Library | Leon Basin</title>
+    <meta name="description" content="Receive. Refine. Serve. — The work of a Revenue Architect.">
+
+    <!-- Editorial Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           THE LIBRARY — Digital Alchemist's Archive
+           Aesthetic: Magazine × Ancient Library × Hidden Depth
+        ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            --parchment: #f4f1ea;
+            --parchment-dark: #e8e4db;
+            --ink: #1a1a1a;
+            --ink-light: #3d3d3d;
+            --sepia: #8b7355;
+            --burgundy: #722f37;
+            --gold-muted: #b8956b;
+            --charcoal: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* Subtle paper texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           HEADER — The Masthead
+        ═══════════════════════════════════════════════════════════════ */
+
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--sepia);
+        }
+
+        .masthead-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .masthead-epithet {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--sepia);
+            letter-spacing: 2px;
+        }
+
+        /* Subtle Kabbalistic symbol */
+        .symbol {
+            margin: 30px auto 0;
+            width: 60px;
+            height: 60px;
+            opacity: 0.3;
+        }
+
+        .symbol svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           NAVIGATION — Subtle, Editorial
+        ═══════════════════════════════════════════════════════════════ */
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        nav a {
+            color: var(--ink-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--burgundy);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           THE MISSION — Pull Quote Hero
+        ═══════════════════════════════════════════════════════════════ */
+
+        .mission {
+            padding: 80px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        .mission-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--ink);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+        }
+
+        .mission-path {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .path-step {
+            text-align: center;
+        }
+
+        .path-step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--sepia);
+        }
+
+        .path-step-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink-light);
+        }
+
+        .path-connector {
+            display: flex;
+            align-items: center;
+            color: var(--sepia);
+            opacity: 0.5;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           THE CODEX — Case Study Cards (Book Covers)
+        ═══════════════════════════════════════════════════════════════ */
+
+        .codex {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            color: var(--sepia);
+        }
+
+        .codex-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .manuscript {
+            background: linear-gradient(145deg, var(--charcoal) 0%, #1a1a1a 100%);
+            border-radius: 4px;
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--parchment);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 4px 4px 20px var(--shadow);
+        }
+
+        .manuscript::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold-muted);
+        }
+
+        .manuscript:hover {
+            transform: translateY(-8px) rotate(-1deg);
+            box-shadow: 8px 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .manuscript-volume {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--gold-muted);
+            margin-bottom: 16px;
+        }
+
+        .manuscript-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .manuscript-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: rgba(244, 241, 234, 0.6);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           THE CHRONICLE — Blog/Writings (Newspaper Columns)
+        ═══════════════════════════════════════════════════════════════ */
+
+        .chronicle {
+            padding: 60px 0;
+            border-top: 1px solid var(--parchment-dark);
+        }
+
+        .chronicle-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .featured-article {
+            border-right: 1px solid var(--parchment-dark);
+            padding-right: 40px;
+        }
+
+        .featured-article h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+
+        .featured-article p {
+            color: var(--ink-light);
+            font-size: 0.95rem;
+        }
+
+        .article-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--sepia);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-articles h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-articles article {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        .sidebar-articles .article-meta {
+            margin-top: 8px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           THE GATE — CTA / Pipeline Entry
+        ═══════════════════════════════════════════════════════════════ */
+
+        .gate {
+            padding: 80px 0;
+            text-align: center;
+            background: var(--charcoal);
+            color: var(--parchment);
+            margin-top: 60px;
+        }
+
+        .gate h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        .gate p {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(244, 241, 234, 0.7);
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .gate-cta {
+            display: inline-block;
+            background: var(--gold-muted);
+            color: var(--charcoal);
+            padding: 14px 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .gate-cta:hover {
+            background: var(--parchment);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           FOOTER — The Colophon
+        ═══════════════════════════════════════════════════════════════ */
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--sepia);
+            letter-spacing: 1px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════════════════════════ */
+
+        @media (max-width: 768px) {
+            .codex-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chronicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-article {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 1px solid var(--parchment-dark);
+                padding-bottom: 30px;
+            }
+
+            .mission-path {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .path-connector {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="masthead-name">Leon Basin</h1>
+        <p class="masthead-epithet">Revenue Architect · System Builder · Signal Alchemist</p>
+
+        <!-- Tree of Life symbol (simplified) -->
+        <div class="symbol">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
+                <!-- Simplified Tree of Life: circles representing Sephirot -->
+                <circle cx="50" cy="10" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="30" cy="30" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="70" cy="30" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="50" cy="40" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="30" cy="55" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="70" cy="55" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="50" cy="65" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="30" cy="80" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="70" cy="80" r="6" fill="none" stroke="#8b7355" />
+                <circle cx="50" cy="95" r="6" fill="none" stroke="#8b7355" />
+                <!-- Connecting lines -->
+                <line x1="50" y1="16" x2="30" y2="24" stroke="#8b7355" opacity="0.5" />
+                <line x1="50" y1="16" x2="70" y2="24" stroke="#8b7355" opacity="0.5" />
+                <line x1="50" y1="16" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
+                <line x1="30" y1="36" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
+                <line x1="70" y1="36" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
+                <line x1="50" y1="46" x2="30" y2="49" stroke="#8b7355" opacity="0.5" />
+                <line x1="50" y1="46" x2="70" y2="49" stroke="#8b7355" opacity="0.5" />
+                <line x1="50" y1="71" x2="50" y2="89" stroke="#8b7355" opacity="0.5" />
+            </svg>
+        </div>
+    </header>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Laboratory</a>
+        <a href="/blog">Chronicle</a>
+    </nav>
+
+    <!-- THE MISSION -->
+    <section class="mission">
+        <blockquote class="mission-quote">
+            "The alchemist does not announce the gold.<br>He transmutes in silence."
+        </blockquote>
+
+        <div class="mission-path">
+            <div class="path-step">
+                <div class="path-step-icon">◇</div>
+                <div class="path-step-label">Receive</div>
+            </div>
+            <div class="path-connector">→</div>
+            <div class="path-step">
+                <div class="path-step-icon">⬡</div>
+                <div class="path-step-label">Refine</div>
+            </div>
+            <div class="path-connector">→</div>
+            <div class="path-step">
+                <div class="path-step-icon">✦</div>
+                <div class="path-step-label">Serve</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE CODEX -->
+    <section class="codex container">
+        <h2 class="section-title">The Codex</h2>
+
+        <div class="codex-grid">
+            <article class="manuscript" onclick="location.href='/services/sentinel-case.html'">
+                <div class="manuscript-volume">Volume I</div>
+                <h3 class="manuscript-title">Project Sentinel</h3>
+                <p class="manuscript-subtitle">On Identity & The Gate</p>
+            </article>
+
+            <article class="manuscript" onclick="location.href='/services/aurora-case.html'">
+                <div class="manuscript-volume">Volume II</div>
+                <h3 class="manuscript-title">Project Aurora</h3>
+                <p class="manuscript-subtitle">On Vision & Replacement</p>
+            </article>
+
+            <article class="manuscript" onclick="location.href='/tools/'">
+                <div class="manuscript-volume">Volume III</div>
+                <h3 class="manuscript-title">The Arsenal</h3>
+                <p class="manuscript-subtitle">On Tools & Transmutation</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- THE CHRONICLE -->
+    <section class="chronicle container">
+        <h2 class="section-title">The Chronicle</h2>
+
+        <div class="chronicle-grid">
+            <article class="featured-article">
+                <div class="article-meta">Featured Dispatch · Jan 2026</div>
+                <h3>I Stopped Waiting for Better Data</h3>
+                <p>The market doesn't reward patience. It rewards velocity with direction. Here's how I built a signal
+                    engine that turns noise into pipeline...</p>
+            </article>
+
+            <aside class="sidebar-articles">
+                <article>
+                    <h4>The Fractional GTM Architecture</h4>
+                    <div class="article-meta">Dec 2025</div>
+                </article>
+                <article>
+                    <h4>On Ethical Speed</h4>
+                    <div class="article-meta">Nov 2025</div>
+                </article>
+                <article>
+                    <h4>Zero Trust, Zero Waste</h4>
+                    <div class="article-meta">Oct 2025</div>
+                </article>
+            </aside>
+        </div>
+    </section>
+
+    <!-- THE GATE -->
+    <section class="gate">
+        <div class="container">
+            <h2>Enter The System</h2>
+            <p>If you've read this far, you're not looking for a resume.<br>You're looking for proof of work.</p>
+            <a href="https://calendly.com/lbasin23" class="gate-cta" target="_blank">Request Access</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Basin & Associates · Mountain View, CA · System Shown, Operations Hidden</p>
+    </footer>
+
+</body>
+
+</html>

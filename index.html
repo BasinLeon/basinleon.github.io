@@ -308,6 +308,13 @@
             margin-bottom: 48px;
         }
 
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* WIDGET INJECTION */
+        /* ═══════════════════════════════════════════════════════════════ */
+        #system-audit-widget {
+            margin-bottom: 60px;
+        }
+
         .stat {
             text-align: center;
         }
@@ -772,6 +779,176 @@
         .publication-link:hover {
             color: var(--gold-light);
             text-decoration: underline;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SYSTEM AUDIT WIDGET
+        ═══════════════════════════════════════════════════════════════ */
+        .audit-section {
+            background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 100%);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .audit-interface {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(10, 10, 15, 0.9);
+            border: 1px solid var(--gold-border);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .audit-interface::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+        }
+
+        .audit-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+
+        .audit-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .scan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .scan-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .scan-item.scanned {
+            background: rgba(74, 222, 128, 0.1);
+            border-color: rgba(74, 222, 128, 0.3);
+        }
+
+        .scan-item .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            flex-grow: 1;
+        }
+
+        .scan-item .status {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .scan-item .status.status-success {
+            color: var(--success);
+        }
+
+        .audit-visual {
+            margin: 30px 0;
+            position: relative;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .score-circle svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .score-circle circle {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+        }
+
+        .score-circle .bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .score-circle .progress {
+            stroke: var(--gold-primary);
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .score-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .audit-result {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .audit-result.hidden {
+            display: none;
+        }
+
+        .audit-result:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .audit-result h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+
+        .audit-result p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .audit-cta {
+            display: inline-block;
+            background: var(--gold-primary);
+            color: #000;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -1658,6 +1835,9 @@
                     <div class="stat-label">SDR Ramp Time</div>
                 </div>
             </div>
+
+            <!-- System Audit Widget -->
+            <div id="system-audit-widget" class="audit-section" style="background: transparent;"></div>
 
             <!-- Testimonial -->
             <div
@@ -3073,6 +3253,10 @@
         })();
     </script>
 
+    <!-- System Audit Widget -->
+    <script src="widgets/system-audit.js"></script>
+    <!-- System Audit Widget -->
+    <script src="widgets/system-audit.js"></script>
 </body>
 
 </html>
