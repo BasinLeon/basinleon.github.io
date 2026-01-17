@@ -29,14 +29,14 @@
             --gold-glow: rgba(212, 175, 55, 0.6);
             --gold-subtle: rgba(212, 175, 55, 0.15);
             --gold-border: rgba(212, 175, 55, 0.3);
-            --bg-deep: #0a1628;
-            --bg-card: #0f1e36;
-            --bg-elevated: #162844;
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f14;
             --text-primary: #f0e6d3;
-            --text-secondary: #8b9cb5;
-            --text-muted: #5a6a80;
-            --orange-accent: #FF8C00;
-            --orange-glow: rgba(255, 140, 0, 0.4);
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+            --green-accent: #22c55e;
+            --red-accent: #ef4444;
         }
 
         * {
@@ -47,7 +47,8 @@
 
         body {
             font-family: 'JetBrains Mono', monospace;
-            background: linear-gradient(180deg, #050a14 0%, #0a1628 50%, #050a14 100%);
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
             background-attachment: fixed;
             color: var(--text-primary);
             line-height: 1.7;
@@ -61,10 +62,10 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(5, 10, 20, 0.95);
+            background: rgba(5, 5, 8, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--gold-border);
-            padding: 16px 24px;
+            padding: 14px 24px;
         }
 
         .nav-container {
@@ -77,7 +78,7 @@
 
         .nav-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--gold-primary);
             text-decoration: none;
@@ -86,12 +87,12 @@
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 28px;
         }
 
         .nav-links a {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             text-decoration: none;
             letter-spacing: 1px;
@@ -105,14 +106,16 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* Hero */
+        /* ═══════════════════════════════════════════════════════════════
+           HERO SECTION - Condensed
+           ═══════════════════════════════════════════════════════════════ */
         .hero {
-            padding: 140px 0 80px;
+            padding: 120px 0 40px;
             text-align: center;
         }
 
@@ -120,275 +123,365 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, rgba(255, 140, 0, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
-            border: 1px solid var(--orange-accent);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-border);
             border-radius: 50px;
-            padding: 10px 24px;
-            font-size: 0.85rem;
-            color: var(--orange-accent);
-            letter-spacing: 1px;
-            margin-bottom: 32px;
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
             font-family: 'Orbitron', sans-serif;
         }
 
         .hero-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 900;
-            color: var(--orange-accent);
-            text-shadow: 0 0 60px var(--orange-glow);
-            margin-bottom: 16px;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            margin-bottom: 48px;
-        }
-
-        .hero-comparison {
-            display: inline-block;
-            background: rgba(255, 140, 0, 0.1);
-            border: 1px solid var(--orange-accent);
-            border-radius: 8px;
-            padding: 12px 24px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-secondary);
+            margin-bottom: 32px;
         }
 
-        .hero-comparison strong {
-            color: var(--orange-accent);
+        .hero-subtitle .strike {
+            color: var(--red-accent);
+            text-decoration: line-through;
+            opacity: 0.8;
         }
 
-        /* Philosophy Section */
-        .philosophy {
-            padding: 80px 0;
+        /* Proof Bar */
+        .proof-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .proof-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 20px 16px;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .philosophy-title {
+        .proof-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        .proof-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--gold-primary);
-            margin-bottom: 16px;
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            margin-bottom: 4px;
         }
 
-        .philosophy-quote {
-            font-size: 1.3rem;
-            font-style: italic;
-            color: var(--text-primary);
-            max-width: 700px;
-            margin: 0 auto 48px;
+        .proof-value.savings {
+            color: var(--green-accent);
         }
 
-        /* Signal System Scale */
-        .flow-section {
-            padding: 60px 0;
+        .proof-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .flow-container {
+        /* CTA Buttons */
+        .hero-ctas {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 24px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
-        .flow-step {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
-            border: 2px solid var(--gold-border);
-            border-radius: 50%;
-            width: 180px;
-            height: 180px;
-            display: flex;
-            flex-direction: column;
+        .cta-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .flow-step:hover {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 40px var(--gold-glow);
-            transform: scale(1.05);
-        }
-
-        .flow-step-icon {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-        }
-
-        .flow-step-title {
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--gold-primary);
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
         }
 
-        .flow-arrow {
-            font-size: 2rem;
+        .cta-btn.primary {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+        }
+
+        .cta-btn.primary:hover {
+            box-shadow: 0 0 30px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--gold-border);
             color: var(--gold-primary);
         }
 
-        /* Architecture Diagram */
+        .cta-btn.secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold-primary);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           INTERACTIVE ARCHITECTURE
+           ═══════════════════════════════════════════════════════════════ */
         .architecture {
-            padding: 80px 0;
+            padding: 60px 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 40px;
+        }
+
+        .section-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .section-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--gold-primary);
             letter-spacing: 2px;
-            margin-bottom: 8px;
         }
 
-        .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .arch-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .arch-column {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
-            border: 2px solid var(--orange-accent);
-            border-radius: 16px;
-            padding: 32px 24px;
-            text-align: center;
-        }
-
-        .arch-column-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--text-primary);
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--gold-border);
-        }
-
-        .arch-items {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .arch-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: rgba(255, 140, 0, 0.05);
-            border: 1px solid var(--gold-border);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .arch-item:hover {
-            background: rgba(255, 140, 0, 0.1);
-            border-color: var(--orange-accent);
-        }
-
-        .arch-item-icon {
-            font-size: 1.5rem;
-        }
-
-        .arch-item-text {
-            font-size: 0.85rem;
-            color: var(--text-primary);
-        }
-
-        .arch-orchestration {
-            background: linear-gradient(90deg, var(--bg-card), var(--bg-elevated), var(--bg-card));
-            border: 2px solid var(--orange-accent);
-            border-radius: 12px;
-            padding: 20px 32px;
+        /* Signal Flow Diagram */
+        .signal-flow {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 0;
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .arch-orchestration-logo {
-            font-size: 1.5rem;
+        .signal-flow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-border), var(--gold-primary), var(--gold-border), transparent);
+            transform: translateY(-50%);
+            z-index: 0;
         }
 
-        .arch-orchestration-text {
+        .flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .flow-node:hover {
+            transform: scale(1.05);
+        }
+
+        .flow-node:hover .node-circle {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .node-circle {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--gold-border);
+            border-radius: 50%;
+            background: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .flow-node.active .node-circle {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .node-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: 0.7rem;
             color: var(--text-primary);
-            letter-spacing: 3px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
 
-        /* Tools Grid */
-        .tools-section {
-            padding: 80px 0;
-            border-top: 1px solid var(--gold-border);
+        .node-sublabel {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            max-width: 120px;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            padding: 0 8px;
+            z-index: 1;
+        }
+
+        .you-are-here {
+            position: absolute;
+            top: -8px;
+            background: var(--gold-primary);
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TABBED ARSENAL
+           ═══════════════════════════════════════════════════════════════ */
+        .arsenal {
+            padding: 60px 0;
+        }
+
+        .arsenal-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .arsenal-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .arsenal-tab:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .arsenal-tab.active {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .arsenal-content {
+            display: none;
+        }
+
+        .arsenal-content.active {
+            display: block;
         }
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .tool-card {
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            background: var(--bg-card);
             border: 1px solid var(--gold-border);
-            border-radius: 16px;
-            padding: 32px;
+            border-radius: 12px;
+            padding: 24px;
             transition: all 0.3s ease;
         }
 
         .tool-card:hover {
             border-color: var(--gold-primary);
             transform: translateY(-4px);
-            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
         }
 
         .tool-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
+            font-size: 2rem;
+            flex-shrink: 0;
         }
 
         .tool-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: var(--gold-primary);
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .tool-desc {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.7;
+            line-height: 1.6;
+            margin-bottom: 16px;
         }
 
         .tool-tags {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .tool-tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
+            font-size: 0.6rem;
+            padding: 3px 8px;
             border: 1px solid var(--gold-border);
             border-radius: 4px;
             color: var(--text-muted);
@@ -397,21 +490,78 @@
         .tool-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: gap 0.3s ease;
+        }
+
+        .tool-link:hover {
+            gap: 10px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DEMO ZONE
+           ═══════════════════════════════════════════════════════════════ */
+        .demo-zone {
+            padding: 60px 0;
+            border-top: 1px solid var(--gold-border);
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .demo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .demo-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+
+        .demo-card-desc {
             font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .demo-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
             color: var(--gold-primary);
             text-decoration: none;
             letter-spacing: 1px;
             transition: all 0.3s ease;
         }
 
-        .tool-link:hover {
-            color: var(--gold-light);
-            gap: 12px;
+        .demo-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold-primary);
         }
 
-        /* Footer */
+        /* ═══════════════════════════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════════════════════════ */
         footer {
             border-top: 1px solid var(--gold-border);
             padding: 40px 24px;
@@ -423,16 +573,14 @@
             display: flex;
             justify-content: center;
             gap: 32px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
         .footer-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.85rem;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
             transition: color 0.3s ease;
         }
 
@@ -441,22 +589,33 @@
         }
 
         .footer-copyright {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .arch-grid {
-                grid-template-columns: 1fr;
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .proof-bar {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .flow-container {
+            .signal-flow {
                 flex-direction: column;
+                gap: 16px;
+            }
+
+            .signal-flow::before {
+                display: none;
             }
 
             .flow-arrow {
                 transform: rotate(90deg);
+            }
+
+            .demo-container {
+                grid-template-columns: 1fr;
             }
 
             .nav-links {
@@ -464,18 +623,22 @@
             }
 
             .nav-links a {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
             }
         }
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
 
-            .flow-step {
-                width: 140px;
-                height: 140px;
+            .proof-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .proof-value {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -489,719 +652,282 @@
             <a href="../" class="nav-logo">BASIN::NEXUS</a>
             <div class="nav-links">
                 <a href="../">Portfolio</a>
-                <a href="../blog/index.html">Blog</a>
+                <a href="../blog/">Blog</a>
                 <a href="./" class="active">Tools</a>
                 <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">BUILDER'S ARSENAL</div>
+            <div class="hero-badge">🛠️ BUILDER'S ARSENAL</div>
             <h1 class="hero-title">$0 REVENUE ENGINE</h1>
-            <p class="hero-subtitle">How I replaced a <span
-                    style="color: #ff4d4d; text-decoration: line-through;">$950/mo</span> SaaS stack with Python, n8n,
-                and local LLMs.</p>
-            <div class="hero-comparison"
-                style="border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); color: #ff4d4d;">
-                <strong>-$424k</strong> Annual OpEx Savings
-            </div>
-        </div>
-    </section>
+            <p class="hero-subtitle">
+                Replaced a <span class="strike">$950/mo</span> SaaS stack with Python, n8n, and Local LLMs
+            </p>
 
-    <!-- Console Access Block -->
-    <section style="padding: 40px 24px;">
-        <div class="container">
-            <div
-                style="background: linear-gradient(135deg, #0a0a0f 0%, #0f1a0f 100%); border: 2px solid rgba(39, 201, 63, 0.5); padding: 32px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-                <div>
-                    <h3
-                        style="color: #27c93f; font-family: 'JetBrains Mono', monospace; margin: 0 0 8px 0; font-size: 1.1rem;">
-                        <span style="opacity: 0.6;">$</span> ACCESS_TERMINAL
-                    </h3>
-                    <p style="color: #a8a8b0; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; margin: 0;">
-                        Run <code
-                            style="background: rgba(39, 201, 63, 0.2); padding: 2px 6px; border-radius: 4px;">sitrep</code>,
-                        <code
-                            style="background: rgba(39, 201, 63, 0.2); padding: 2px 6px; border-radius: 4px;">fit brm</code>,
-                        or
-                        <code
-                            style="background: rgba(39, 201, 63, 0.2); padding: 2px 6px; border-radius: 4px;">auth nexus</code>
-                        in the live terminal.
-                    </p>
+            <!-- Proof Bar -->
+            <div class="proof-bar">
+                <div class="proof-card">
+                    <div class="proof-value savings">-$424k</div>
+                    <div class="proof-label">Annual Savings</div>
                 </div>
-                <a href="../#console"
-                    style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #27c93f 0%, #1a8f2d 100%); color: #000; padding: 14px 28px; text-decoration: none; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; border-radius: 8px; letter-spacing: 1px; transition: all 0.3s ease;">
-                    LAUNCH CONSOLE →
+                <div class="proof-card">
+                    <div class="proof-value">8,400+</div>
+                    <div class="proof-label">Lines of Code</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-value">5</div>
+                    <div class="proof-label">LLMs Integrated</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-value">100%</div>
+                    <div class="proof-label">Local / Private</div>
+                </div>
+            </div>
+
+            <!-- CTAs -->
+            <div class="hero-ctas">
+                <a href="https://github.com/BasinLeon" target="_blank" class="cta-btn primary">
+                    🚀 CLONE REPO
+                </a>
+                <a href="https://basin-nexus.streamlit.app" target="_blank" class="cta-btn secondary">
+                    ▶ LIVE DEMO
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Philosophy -->
-    <section class="philosophy">
-        <div class="container">
-            <h2 class="philosophy-title">THE BUILDER'S ADVANTAGE</h2>
-            <p class="philosophy-quote">"Revenue is not arithmetic. It is architecture."</p>
-        </div>
-    </section>
-
-    <!-- Signal → System → Scale -->
-    <!-- ASCII Architecture Diagram -->
-    <section class="flow-section" style="padding: 40px 0;">
-        <div class="container" style="text-align: center;">
-            <pre
-                style="font-family: 'JetBrains Mono', monospace; font-size: clamp(0.6rem, 2vw, 0.9rem); line-height: 1.2; color: var(--gold-primary); background: #000; padding: 24px; border: 1px solid var(--gold-border); border-radius: 12px; display: inline-block; text-align: left; overflow-x: auto;">
-      [ MARKET NOISE ] 
-             │
-      (Python Scrapers)
-             ▼
-      [ SIGNAL LAYER ] ◄── YOU ARE HERE
-      (Normalization & Deduplication)
-             │
-             ▼
-      [ INTEL LAYER ] 
-      (Local LLM Scoring + Enrichment)
-             │
-             ▼
-      [ ACTION LAYER ]
-      (Auto-Drafts in Gmail / Slack Alerts)</pre>
-        </div>
-    </section>
-
-    <!-- Architecture Diagram -->
+    <!-- Interactive Architecture -->
     <section class="architecture">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">STACK ARCHITECTURE</h2>
-                <p class="section-subtitle">How the $0 GTM Stack flows from signal to output</p>
+                <div class="section-tag">System Architecture</div>
+                <h2 class="section-title">SIGNAL → REFINERY → OUTPUT</h2>
             </div>
 
-            <div class="arch-grid">
-                <!-- Signal Ingestion -->
-                <div class="arch-column">
-                    <div class="arch-column-title">SIGNAL INGESTION</div>
-                    <div class="arch-items">
-                        <div class="arch-item">
-                            <span class="arch-item-icon">📊</span>
-                            <span class="arch-item-text">Google Sheets</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">🔗</span>
-                            <span class="arch-item-text">Webhooks</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">📡</span>
-                            <span class="arch-item-text">RSS Feeds</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">💼</span>
-                            <span class="arch-item-text">LinkedIn</span>
-                        </div>
-                    </div>
+            <div class="signal-flow">
+                <div class="flow-node" data-layer="signal">
+                    <div class="node-circle">📡</div>
+                    <div class="node-label">SIGNAL</div>
+                    <div class="node-sublabel">Raw market noise, LinkedIn, news, job postings</div>
                 </div>
 
-                <!-- Enrichment + Scoring -->
-                <div class="arch-column">
-                    <div class="arch-column-title">ENRICHMENT + SCORING</div>
-                    <div class="arch-items">
-                        <div class="arch-item">
-                            <span class="arch-item-icon">⚙️</span>
-                            <span class="arch-item-text">Hunter / Clearbit APIs</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">🧠</span>
-                            <span class="arch-item-text">Local LLM</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">🧩</span>
-                            <span class="arch-item-text">Questions</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">📈</span>
-                            <span class="arch-item-text">Scoring Engine</span>
-                        </div>
-                    </div>
+                <div class="flow-arrow">→</div>
+
+                <div class="flow-node active" data-layer="refinery">
+                    <span class="you-are-here">YOU ARE HERE</span>
+                    <div class="node-circle">⚙️</div>
+                    <div class="node-label">REFINERY</div>
+                    <div class="node-sublabel">Python + Local LLM scoring & enrichment</div>
                 </div>
 
-                <!-- Output Layer -->
-                <div class="arch-column">
-                    <div class="arch-column-title">OUTPUT LAYER</div>
-                    <div class="arch-items">
-                        <div class="arch-item">
-                            <span class="arch-item-icon">✉️</span>
-                            <span class="arch-item-text">Email Drafts</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">📋</span>
-                            <span class="arch-item-text">Executive Briefs</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">🗄️</span>
-                            <span class="arch-item-text">CRM Updates</span>
-                        </div>
-                        <div class="arch-item">
-                            <span class="arch-item-icon">⚡</span>
-                            <span class="arch-item-text">Slack Alerts</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="flow-arrow">→</div>
 
-            <!-- n8n Orchestration -->
-            <div class="arch-orchestration">
-                <span class="arch-orchestration-logo">⚙️</span>
-                <span class="arch-orchestration-text">n8n ORCHESTRATION</span>
+                <div class="flow-node" data-layer="output">
+                    <div class="node-circle">📋</div>
+                    <div class="node-label">OUTPUT</div>
+                    <div class="node-sublabel">Executive briefs, CRM, Slack alerts</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Tools Grid -->
-    <section class="tools-section">
+    <!-- Tabbed Arsenal -->
+    <section class="arsenal">
         <div class="container">
             <div class="section-header">
+                <div class="section-tag">Operational Modules</div>
                 <h2 class="section-title">THE ARSENAL</h2>
-                <p class="section-subtitle">Operational modules sorted by funnel stage</p>
             </div>
 
-            <!-- GROUP 1: INTELLIGENCE -->
-            <h3
-                style="font-family: 'Orbitron'; color: var(--text-muted); margin: 40px 0 20px; border-bottom: 1px solid var(--gold-border); padding-bottom: 10px;">
-                01 // INTELLIGENCE (THE BRAIN)</h3>
-            <div class="tools-grid">
-                <!-- BASIN::NEXUS -->
-                <div class="tool-card">
-                    <div class="tool-icon">⚡</div>
-                    <div class="tool-title">BASIN::NEXUS</div>
-                    <div class="tool-desc">Flagship Operating System. 8,400+ lines. Hunt → Prep → Close workflow with
-                        multi-agent interview simulator.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Python</span>
-                        <span class="tool-tag">Streamlit</span>
-                        <span class="tool-tag">5 LLMs</span>
-                    </div>
-                    <a href="https://basin-nexus.streamlit.app" target="_blank" class="tool-link">▶ LAUNCH DEMO →</a>
-                </div>
-
-                <!-- SIGNAL ARCHITECT -->
-                <div class="tool-card">
-                    <div class="tool-icon">🎯</div>
-                    <div class="tool-title">PIPELINE SCORER</div>
-                    <div class="tool-desc">Formerly "Signal Architect". Prioritizes leads based on intent signals, not
-                        just firmographics.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Streamlit</span>
-                        <span class="tool-tag">Python</span>
-                    </div>
-                    <a href="https://github.com/BasinLeon/gtm-signal-architect" target="_blank" class="tool-link">⚙ VIEW
-                        SOURCE →</a>
-                </div>
-
-                <!-- OUTREACH AUTOPSY -->
-                <div class="tool-card">
-                    <div class="tool-icon">🔬</div>
-                    <div class="tool-title">COLD EMAIL FORENSIC UNIT</div>
-                    <div class="tool-desc">Diagnose failures. Why did your email actually bounce? Was it spam filter or
-                        bad copy?</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Python</span>
-                        <span class="tool-tag">LLM</span>
-                    </div>
-                    <a href="https://github.com/BasinLeon/outreach-autopsy" target="_blank" class="tool-link">⚙ VIEW
-                        SOURCE →</a>
-                </div>
+            <!-- Tabs -->
+            <div class="arsenal-tabs">
+                <button class="arsenal-tab active" data-tab="intelligence">🧠 Intelligence</button>
+                <button class="arsenal-tab" data-tab="execution">💪 Execution</button>
+                <button class="arsenal-tab" data-tab="governance">🛡️ Governance</button>
             </div>
 
-            <!-- GROUP 2: EXECUTION -->
-            <h3
-                style="font-family: 'Orbitron'; color: var(--text-muted); margin: 60px 0 20px; border-bottom: 1px solid var(--gold-border); padding-bottom: 10px;">
-                02 // EXECUTION (THE MUSCLE)</h3>
-            <div class="tools-grid">
-                <!-- HEADLINE FORGE -->
-                <div class="tool-card">
-                    <div class="tool-icon">💼</div>
-                    <div class="tool-title">PERSONAL BRAND GENERATOR</div>
-                    <div class="tool-desc">AI-powered profile optimization. Position yourself as the signal in the
-                        noise.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Python</span>
-                        <span class="tool-tag">AI</span>
+            <!-- Intelligence Tab -->
+            <div class="arsenal-content active" id="intelligence">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">⚡</div>
+                            <div>
+                                <div class="tool-title">BASIN::NEXUS</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Flagship Operating System. 8,400+ lines. Hunt → Prep → Close workflow
+                            with multi-agent interview simulator.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Python</span>
+                            <span class="tool-tag">Streamlit</span>
+                            <span class="tool-tag">5 LLMs</span>
+                        </div>
+                        <a href="https://basin-nexus.streamlit.app" target="_blank" class="tool-link">▶ LAUNCH DEMO
+                            →</a>
                     </div>
-                    <a href="https://linkedin-headline-generator-5f5esbxxbunyr8nxtkjzce.streamlit.app" target="_blank"
-                        class="tool-link">▶ LAUNCH DEMO →</a>
-                </div>
 
-                <!-- LEAD SCRIPT GEN -->
-                <div class="tool-card">
-                    <div class="tool-icon">📝</div>
-                    <div class="tool-title">OUTBOUND SEQUENCE ARCHITECT</div>
-                    <div class="tool-desc">LLM-powered scripts. Generate personalized sequences that look like they took
-                        20 minutes to write.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Python</span>
-                        <span class="tool-tag">LLM</span>
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">🎯</div>
+                            <div>
+                                <div class="tool-title">PIPELINE SCORER</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Prioritizes leads based on intent signals, not just firmographics.
+                            Formerly "Signal Architect".</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Streamlit</span>
+                            <span class="tool-tag">Python</span>
+                        </div>
+                        <a href="https://github.com/BasinLeon/gtm-signal-architect" target="_blank" class="tool-link">⚙
+                            VIEW SOURCE →</a>
                     </div>
-                    <a href="https://github.com/BasinLeon/lead-script-generator" target="_blank" class="tool-link">⚙
-                        VIEW SOURCE →</a>
-                </div>
 
-                <!-- EXEC BRIEF GEN -->
-                <div class="tool-card">
-                    <div class="tool-icon">📋</div>
-                    <div class="tool-title">QBR AUTO-PILOT</div>
-                    <div class="tool-desc">Transform pipeline data into McKinsey-style executive briefs. Stop wasting
-                        Sunday nights on slides.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Python</span>
-                        <span class="tool-tag">PDF</span>
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">🔬</div>
+                            <div>
+                                <div class="tool-title">COLD EMAIL FORENSIC</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Diagnose failures. Why did your email bounce? Spam filter or bad copy?
+                        </div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Python</span>
+                            <span class="tool-tag">LLM</span>
+                        </div>
+                        <a href="https://github.com/BasinLeon/outreach-autopsy" target="_blank" class="tool-link">⚙ VIEW
+                            SOURCE →</a>
                     </div>
-                    <a href="https://github.com/BasinLeon/executive-brief-generator" target="_blank" class="tool-link">⚙
-                        VIEW SOURCE →</a>
                 </div>
             </div>
 
-            <!-- GROUP 3: GOVERNANCE -->
-            <h3
-                style="font-family: 'Orbitron'; color: var(--text-muted); margin: 60px 0 20px; border-bottom: 1px solid var(--gold-border); padding-bottom: 10px;">
-                03 // GOVERNANCE (THE SHIELD)</h3>
-            <div class="tools-grid">
-                <!-- BS DETECTOR -->
-                <div class="tool-card">
-                    <div class="tool-icon">🔴</div>
-                    <div class="tool-title">BS DETECTOR</div>
-                    <div class="tool-desc">Technical BS detector. Score outreach for engineer credibility. Fix sales
-                        speak before you send.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">JavaScript</span>
-                        <span class="tool-tag">Node</span>
+            <!-- Execution Tab -->
+            <div class="arsenal-content" id="execution">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">💼</div>
+                            <div>
+                                <div class="tool-title">PERSONAL BRAND GEN</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">AI-powered profile optimization. Position yourself as the signal in the
+                            noise.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Python</span>
+                            <span class="tool-tag">AI</span>
+                        </div>
+                        <a href="https://linkedin-headline-generator-5f5esbxxbunyr8nxtkjzce.streamlit.app"
+                            target="_blank" class="tool-link">▶ LAUNCH DEMO →</a>
                     </div>
-                    <a href="https://github.com/BasinLeon/bs-detector" target="_blank" class="tool-link">⚙ VIEW SOURCE
-                        →</a>
-                </div>
 
-                <!-- GOVERNANCE MATRIX -->
-                <div class="tool-card" style="border: 1px dashed var(--gold-primary);">
-                    <div class="tool-icon">🛡️</div>
-                    <div class="tool-title">STACK GOVERNANCE MATRIX</div>
-                    <div class="tool-desc">Audit tool to identify ROI drift in SaaS licenses. Kill/Promote decisions for
-                        software spend.</div>
-                    <div class="tool-tags">
-                        <span class="tool-tag">Bash</span>
-                        <span class="tool-tag">Audit</span>
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">📝</div>
+                            <div>
+                                <div class="tool-title">OUTBOUND ARCHITECT</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">LLM-powered sequences that look like they took 20 minutes to write.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Python</span>
+                            <span class="tool-tag">LLM</span>
+                        </div>
+                        <a href="https://github.com/BasinLeon/lead-script-generator" target="_blank" class="tool-link">⚙
+                            VIEW SOURCE →</a>
                     </div>
-                    <a href="#" class="tool-link" style="color: var(--text-muted); pointer-events: none;">🔒 INTERNAL
-                        ONLY</a>
+
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">📋</div>
+                            <div>
+                                <div class="tool-title">QBR AUTO-PILOT</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Transform pipeline data into McKinsey-style executive briefs. No more
+                            Sunday slides.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Python</span>
+                            <span class="tool-tag">PDF</span>
+                        </div>
+                        <a href="https://github.com/BasinLeon/executive-brief-generator" target="_blank"
+                            class="tool-link">⚙ VIEW SOURCE →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Governance Tab -->
+            <div class="arsenal-content" id="governance">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">🔴</div>
+                            <div>
+                                <div class="tool-title">BS DETECTOR</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Technical BS detector. Score outreach for engineer credibility before you
+                            send.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">JavaScript</span>
+                            <span class="tool-tag">Node</span>
+                        </div>
+                        <a href="https://github.com/BasinLeon/bs-detector" target="_blank" class="tool-link">⚙ VIEW
+                            SOURCE →</a>
+                    </div>
+
+                    <div class="tool-card" style="border-style: dashed;">
+                        <div class="tool-header">
+                            <div class="tool-icon">🛡️</div>
+                            <div>
+                                <div class="tool-title">STACK GOVERNANCE</div>
+                            </div>
+                        </div>
+                        <div class="tool-desc">Audit tool to identify ROI drift in SaaS licenses. Kill/Promote
+                            decisions.</div>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Bash</span>
+                            <span class="tool-tag">Audit</span>
+                        </div>
+                        <span class="tool-link" style="color: var(--text-muted);">🔒 INTERNAL ONLY</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Email Capture Section -->
-    <section
-        style="padding: 60px 0; border-top: 1px solid var(--gold-border); background: linear-gradient(180deg, rgba(212, 175, 55, 0.03) 0%, transparent 100%);">
+    <!-- Demo Zone -->
+    <section class="demo-zone">
         <div class="container">
-            <div style="max-width: 600px; margin: 0 auto; text-align: center;">
-                <h2
-                    style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 12px;">
-                    DEPLOY THIS ARCHITECTURE</h2>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">
-                    Don't wait for waitlists. Clone the repo and run the engine locally today.
-                </p>
-                <div style="display: flex; justify-content: center; gap: 16px;">
-                    <a href="https://github.com/BasinLeon" target="_blank"
-                        style="padding: 14px 28px; background: linear-gradient(145deg, var(--gold-dark), var(--gold-primary)); border-radius: 8px; color: #000; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);">
-                        CLONE REPO (GITHUB)
+            <div class="section-header">
+                <div class="section-tag">Try It Now</div>
+                <h2 class="section-title">LIVE DEMOS</h2>
+            </div>
+
+            <div class="demo-container">
+                <div class="demo-card">
+                    <div class="demo-card-title">BASIN::NEXUS v10</div>
+                    <div class="demo-card-desc">Full career intelligence platform. Hunt → Prep → Close. Runs 100% in
+                        your browser.</div>
+                    <a href="https://basin-nexus.streamlit.app" target="_blank" class="demo-btn">
+                        ▶ OPEN DEMO ↗
+                    </a>
+                </div>
+
+                <div class="demo-card">
+                    <div class="demo-card-title">INTERACTIVE CONSOLE</div>
+                    <div class="demo-card-desc">Run sitrep, fit brm, or auth nexus in the live terminal.</div>
+                    <a href="../#console" class="demo-btn">
+                        $ LAUNCH TERMINAL →
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Live Demo Embed Section -->
-    <section style="padding: 80px 0; border-top: 1px solid var(--gold-border);">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">LIVE DEMO</h2>
-                <p class="section-subtitle">Try BASIN::NEXUS directly in your browser</p>
-            </div>
-
-            <div
-                style="background: var(--bg-card); border: 2px solid var(--gold-primary); border-radius: 16px; overflow: hidden; position: relative;">
-                <div
-                    style="padding: 12px 20px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-dark)); display: flex; justify-content: space-between; align-items: center;">
-                    <span
-                        style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #000; font-weight: 700;">BASIN::NEXUS
-                        v10.0</span>
-                    <a href="../nexus/" target="_blank"
-                        style="font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #000; text-decoration: none;">OPEN
-                        IN NEW TAB ↗</a>
-                </div>
-                <iframe src="../nexus/" style="width: 100%; height: 600px; border: none; background: #0a0f1a;"
-                    loading="lazy" title="BASIN::NEXUS Demo"></iframe>
-            </div>
-
-            <p style="text-align: center; margin-top: 20px; font-size: 0.75rem; color: var(--text-muted);">
-                Full career intelligence platform. Hunt jobs, practice interviews, track pipeline.<br>
-                <strong style="color: var(--gold-primary);">Runs 100% in your browser.</strong> No server required.
-            </p>
-        </div>
-    </section>
-
-    <!-- AI Chat Widget -->
-    <section id="ai-chat" style="padding: 80px 0; border-top: 1px solid var(--gold-border);">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">QUERY THE ARCHITECT</h2>
-                <p class="section-subtitle">AI-powered assistant for GTM architecture questions</p>
-            </div>
-
-            <div id="chat-container"
-                style="max-width: 700px; margin: 0 auto; background: linear-gradient(145deg, var(--bg-card), var(--bg-deep)); border: 1px solid var(--gold-border); border-radius: 16px; overflow: hidden;">
-                <!-- Chat Messages -->
-                <div id="chat-messages" style="height: 300px; overflow-y: auto; padding: 20px;">
-                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                        <div
-                            style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">
-                            AI</div>
-                        <div
-                            style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary);">
-                            Hi! I'm the BASIN::NEXUS assistant. I can help you model your revenue architecture.<br><br>
-                            Select a protocol to deploy:<br>
-                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-                                <button
-                                    onclick="document.getElementById('chat-input').value='How do I save $424k?'; sendMessage()"
-                                    style="text-align: left; background: rgba(255,255,255,0.05); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--gold-primary); cursor: pointer; font-size: 0.8rem;">
-                                    💰 <strong>PROTOCOL 1:</strong> How do I save $424k?
-                                </button>
-                                <button
-                                    onclick="document.getElementById('chat-input').value='Show me the 5-Day Ramp protocol'; sendMessage()"
-                                    style="text-align: left; background: rgba(255,255,255,0.05); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--gold-primary); cursor: pointer; font-size: 0.8rem;">
-                                    🚀 <strong>PROTOCOL 2:</strong> Show me the 5-Day Ramp
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chat Input -->
-                <div style="border-top: 1px solid var(--gold-border); padding: 16px; display: flex; gap: 12px;">
-                    <input type="text" id="chat-input"
-                        placeholder="Ask about GTM architecture, tools, or revenue systems..."
-                        style="flex: 1; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 12px 16px; border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;"
-                        onkeypress="if(event.key === 'Enter') sendMessage()">
-                    <button onclick="sendMessage()"
-                        style="background: linear-gradient(145deg, var(--gold-dark), var(--gold-primary)); border: none; padding: 12px 24px; border-radius: 8px; color: #000; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer;">SEND</button>
-                </div>
-            </div>
-
-            <p style="text-align: center; margin-top: 16px; font-size: 0.7rem; color: var(--text-muted);">
-                Powered by intelligent keyword matching + AI fallback. <a href="javascript:void(0)"
-                    onclick="toggleApiKey()" style="color: var(--gold-primary);">Add API key</a> for full Claude/GPT
-                integration.
-            </p>
-            <div id="api-key-input"
-                style="max-width: 500px; margin: 16px auto; display: none; padding: 16px; background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px;">
-                <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-secondary);">Enter your Claude or
-                    OpenAI API key for enhanced responses:</p>
-                <p
-                    style="font-size: 0.7rem; margin-bottom: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 1rem;">⚠️</span> Keys are stored locally in your browser (not recommended
-                    for shared devices)
-                </p>
-                <input type="password" id="api-key" placeholder="sk-..."
-                    style="width: 100%; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--text-primary); font-family: monospace; font-size: 0.8rem; margin-bottom: 8px;">
-                <select id="api-provider"
-                    style="width: 100%; background: var(--bg-deep); border: 1px solid var(--gold-border); padding: 8px 12px; border-radius: 6px; color: var(--text-primary); font-size: 0.8rem; margin-bottom: 12px;">
-                    <option value="huggingface">Hugging Face (Free)</option>
-                    <option value="claude">Claude (Anthropic)</option>
-                    <option value="openai">OpenAI (GPT-4)</option>
-                </select>
-                <button onclick="saveApiKey()"
-                    style="width: 100%; background: var(--gold-primary); border: none; padding: 10px; border-radius: 6px; color: #000; font-weight: 600; cursor: pointer;">Save
-                    API Key</button>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // PREMIUM ACCESS SYSTEM
-        let isPremiumUser = localStorage.getItem('nexus-premium') === 'true';
-
-        function checkPremium(topic) {
-            const premiumTopics = ['hire', 'contact', 'pipeline', 'strategy', 'salary', 'negotiate'];
-            return premiumTopics.some(t => topic.includes(t));
-        }
-
-        function showAccessPrompt() {
-            return `🔒 <strong>PREMIUM INTEL</strong><br><br>This information is classified. To unlock full access:<br><br>
-            • <a href="mailto:lbasin23@gmail.com?subject=NEXUS Access Request" style="color: var(--gold-primary);">📧 Email Leon</a><br>
-            • <a href="https://calendly.com/lbasin23" target="_blank" style="color: var(--gold-primary);">📅 Schedule a call</a><br>
-            • Or type: <code style="background: rgba(212,175,55,0.2); padding: 2px 6px; border-radius: 4px;">unlock [access-code]</code>`;
-        }
-
-        // Enhanced responses with more intelligence
-        const responses = {
-            // CORE PHILOSOPHY
-            "signal": "SIGNAL is the first pillar: raw data from Google Sheets, webhooks, RSS feeds, LinkedIn. It's the 'input layer' - where information enters your GTM system before processing. Think of it as the nervous system detecting market intent.",
-            "system": "SYSTEM is the second pillar: enrichment, scoring, and orchestration via n8n workflows. This is where raw signals become actionable intelligence. LLMs score leads, Python scripts enrich data, and automation decides next actions.",
-            "scale": "SCALE is the third pillar: the output layer generating email drafts, executive briefs, CRM updates, and Slack alerts. It's where machine work multiplies human judgment.",
-            "signal-to-system-to-scale": "Signal → System → Scale is the core architecture: (1) SIGNAL ingests raw market data, (2) SYSTEM enriches and scores with AI/Python, (3) SCALE outputs actionable deliverables. It's a revenue pipeline that runs 24/7.",
-
-            // TOOLS & TECH
-            "$0": "The $0 GTM Stack replaces $950+/mo SaaS tools with: n8n (free orchestration), free APIs (Hunter, Clearbit), local LLMs (Ollama), and custom Python scripts. Enterprise capability, zero cost.",
-            "0 gtm": "The $0 GTM Stack replaces $950+/mo SaaS tools with: n8n (free orchestration), free APIs (Hunter, Clearbit), local LLMs (Ollama), and custom Python scripts. Enterprise capability, zero cost.",
-            "gtm": "GTM = Go-To-Market. In my philosophy, it's 'Go-To-Mission' - building systems that align signal, action, and outcome. Revenue is architecture, not arithmetic.",
-            "nexus": "BASIN::NEXUS is an 8,400+ line Python/Streamlit career intelligence platform with 18 modules: job hunting, interview simulation with 5 LLMs, voice coaching, pipeline CRM, executive brief generation, and more.",
-            "n8n": "n8n is the orchestration backbone - a self-hosted workflow automation tool that connects all pieces. Think Zapier, but free, self-hosted, and infinitely more powerful. I use it for lead enrichment, signal routing, and automated outreach.",
-            "python": "Python is the engineering layer. I use it for data processing, LLM integration, Streamlit apps, and custom tools. 8,400+ lines across BASIN::NEXUS alone.",
-            "streamlit": "Streamlit powers the BASIN::NEXUS interface - rapid prototyping of data apps with Python. Clean UI, zero frontend code needed.",
-            "llm": "I use 5 LLMs in BASIN::NEXUS: GPT-4, Claude, Ollama (local), Gemini, and Mistral. Each serves different purposes - coaching, scoring, brief generation, and interview simulation.",
-
-            // FUNNEL & METRICS
-            "424k": "The $424k savings comes from replacing a traditional 10-SDR team ($800k total cost) with a bifurcated model: 1 GTM Engineer + 3 SDRs + Automation ($380k total). Result: -70% headcount, +50% output.",
-            "save": "The $424k savings comes from replacing a traditional 10-SDR team ($800k total cost) with a bifurcated model: 1 GTM Engineer + 3 SDRs + Automation ($380k total). Result: -70% headcount, +50% output.",
-            "ramp": "The 5-Day Ramp Protocol replaces the industry standard 3-month ramp. Day 1: Systems Check. Day 2: Tech Dive. Day 3: Mock Gauntlet. Day 4: Live Fire. Day 5: Certification. We engineer the ramp, we don't just 'hope' for it.",
-            "5-day": "The 5-Day Ramp Protocol replaces the industry standard 3-month ramp. Day 1: Systems Check. Day 2: Tech Dive. Day 3: Mock Gauntlet. Day 4: Live Fire. Day 5: Certification. We engineer the ramp, we don't just 'hope' for it.",
-            "funnel": "My funnel architecture isn't linear. It's: Market Noise (Ingest) -> Signal (Refine) -> Intel (Score) -> Action (Revenue). We don't 'spray and pray'; we filter for signal first.",
-
-            // ABOUT LEON
-            "leon": "Leon Basin is a Senior Manager of GTM Strategy with 15+ years of experience. He builds revenue systems, not just sales playbooks. Former Google, SurveyMonkey, Sense, Fudo Security. MBA from Santa Clara University. Published author and Python developer.",
-            "basin": "Leon Basin is a Senior Manager of GTM Strategy with 15+ years of experience. He builds revenue systems, not just sales playbooks. Former Google, SurveyMonkey, Sense, Fudo Security. MBA from Santa Clara University.",
-            "experience": "15+ years: Google (Sales), SurveyMonkey (Enterprise AE), Sense (GTM Lead), Fudo Security (Sr. Manager GTM). Key achievement at Fudo: 160% YoY pipeline growth using the Signal→System→Scale framework.",
-            "portfolio": "8+ production tools: BASIN::NEXUS (8,400+ lines), Lead Script Generator, Outreach Autopsy, BS Detector, Signal Architect, Executive Brief Generator, and more. All on GitHub.",
-            "education": "MBA from Santa Clara University (Leavey School of Business). Focus on strategy, operations, and technology management.",
-
-            // PREMIUM TOPICS (gated)
-            "hire": "PREMIUM_GATE",
-            "hiring": "PREMIUM_GATE",
-            "contact": "PREMIUM_GATE",
-            "pipeline": "PREMIUM_GATE",
-            "strategy": "PREMIUM_GATE",
-            "salary": "PREMIUM_GATE",
-            "interview": "For interview prep, BASIN::NEXUS includes a multi-persona interview simulator with 5 LLM integrations. Practice with CRO, VP Sales, or Founder personas. It analyzes your responses in real-time.",
-
-            // CONVERSATIONAL
-            "hello": "Welcome to BASIN::NEXUS. I can answer questions about GTM architecture, Leon's work, the $0 stack, or career intelligence. What would you like to explore?",
-            "hi": "Welcome to BASIN::NEXUS. Ask me about Signal→System→Scale, the $0 GTM Stack, or Leon's projects.",
-            "help": "Try asking about: 'signal-to-system-to-scale', '$0 GTM stack', 'BASIN::NEXUS', 'Leon's experience', or 'Python tools'. For premium intel, contact Leon directly.",
-            "what can you do": "I can explain GTM architecture, the Signal→System→Scale framework, the $0 GTM Stack, Leon's tools and experience, and career intelligence concepts. Try: 'What is the $0 GTM stack?'",
-
-            "default": "Interesting question. I specialize in GTM architecture, revenue systems, and Leon's work. Try asking about 'signal-to-system-to-scale', 'the $0 stack', or 'BASIN::NEXUS'. For deeper conversations, <a href='mailto:lbasin23@gmail.com' style='color: var(--gold-primary);'>contact Leon directly</a>."
-        };
-
-        // System prompt for AI APIs
-        const SYSTEM_PROMPT = `You are BASIN::NEXUS, an AI assistant representing Leon Basin, a Senior Manager of GTM Strategy and Revenue Architect. Your responses should be:
-- Technical and specific (use metrics, frameworks, tools)
-- Direct and concise (2-3 sentences max)
-- Focused on GTM architecture, revenue systems, and Leon's work
-
-Key facts about Leon:
-- 15+ years GTM leadership (Google, SurveyMonkey, Sense, Fudo Security)
-- Built BASIN::NEXUS: 8,400+ line Python/Streamlit career intelligence platform
-- $0 GTM Stack philosophy: enterprise capability without enterprise budget
-- Signal → System → Scale framework for revenue architecture
-- 160% pipeline increase YoY at Fudo Security
-- Open to Director/VP GTM, RevOps, GTM Engineering roles
-
-Answer questions about Leon's background, projects, GTM philosophy, or the $0 stack.`;
-
-        function toggleApiKey() {
-            const input = document.getElementById('api-key-input');
-            input.style.display = input.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function saveApiKey() {
-            const key = document.getElementById('api-key').value.trim();
-            const provider = document.getElementById('api-provider').value;
-
-            if (!key) {
-                alert('Please enter an API key');
-                return;
-            }
-
-            localStorage.setItem('chat-api-key', key);
-            localStorage.setItem('chat-api-provider', provider);
-            alert('API key saved! Your next messages will use enhanced AI.');
-            toggleApiKey();
-        }
-
-        async function callAI(userMessage) {
-            const apiKey = localStorage.getItem('chat-api-key');
-            const provider = localStorage.getItem('chat-api-provider') || 'huggingface';
-
-            if (!apiKey && provider !== 'huggingface') {
-                return null; // Fall back to keyword matching
-            }
-
-            try {
-                if (provider === 'claude') {
-                    const response = await fetch('https://api.anthropic.com/v1/messages', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': apiKey,
-                            'anthropic-version': '2023-06-01'
-                        },
-                        body: JSON.stringify({
-                            model: 'claude-3-5-sonnet-20241022',
-                            max_tokens: 150,
-                            system: SYSTEM_PROMPT,
-                            messages: [{ role: 'user', content: userMessage }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    return data.content[0].text;
-
-                } else if (provider === 'openai') {
-                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: 'gpt-4',
-                            max_tokens: 150,
-                            messages: [
-                                { role: 'system', content: SYSTEM_PROMPT },
-                                { role: 'user', content: userMessage }
-                            ]
-                        })
-                    });
-
-                    const data = await response.json();
-                    return data.choices[0].message.content;
-
-                } else if (provider === 'huggingface') {
-                    // Free Hugging Face Inference API (no key required for basic models)
-                    const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...(apiKey && { 'Authorization': `Bearer ${apiKey}` })
-                        },
-                        body: JSON.stringify({
-                            inputs: `${SYSTEM_PROMPT}\n\nUser: ${userMessage}\nAssistant:`,
-                            parameters: {
-                                max_new_tokens: 150,
-                                temperature: 0.7,
-                                return_full_text: false
-                            }
-                        })
-                    });
-
-                    const data = await response.json();
-                    return data[0]?.generated_text || null;
-                }
-            } catch (error) {
-                console.error('[Chat] API error:', error);
-                return null; // Fall back to keyword matching
-            }
-
-            return null;
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
-            const userMessage = input.value.trim();
-            const query = userMessage.toLowerCase();
-
-            if (!userMessage) return;
-
-            // Add user message
-            messages.innerHTML += `
-                <div style="display: flex; gap: 12px; margin-bottom: 16px; justify-content: flex-end;">
-                    <div style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary); max-width: 80%;">
-                        ${userMessage}
-                    </div>
-                    <div style="width: 32px; height: 32px; background: var(--text-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">U</div>
-                </div>
-            `;
-
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
-
-            // Show loading
-            messages.innerHTML += `
-                <div id="loading-msg" style="display: flex; gap: 12px; margin-bottom: 16px;">
-                    <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">AI</div>
-                    <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary);">
-                        <span style="animation: pulse 1.5s ease-in-out infinite;">Thinking...</span>
-                    </div>
-                </div>
-            `;
-
-            // Try AI first, fall back to keyword matching
-            let response = await callAI(userMessage);
-
-            if (!response) {
-                // Check for unlock command
-                if (query.startsWith('unlock ')) {
-                    const code = query.replace('unlock ', '').trim();
-                    if (code === 'nexus' || code === 'architect' || code === 'basin2026') {
-                        localStorage.setItem('nexus-premium', 'true');
-                        isPremiumUser = true;
-                        response = '🔓 <strong>ACCESS GRANTED</strong>. Premium intel unlocked. You now have full access to all BASIN::NEXUS intelligence.';
-                    } else {
-                        response = '❌ Invalid access code. Contact Leon for a valid code.';
-                    }
-                } else {
-                    // Keyword matching fallback
-                    response = responses.default;
-                    for (let key in responses) {
-                        if (query.includes(key)) {
-                            if (responses[key] === 'PREMIUM_GATE' && !isPremiumUser) {
-                                response = showAccessPrompt();
-                            } else if (responses[key] !== 'PREMIUM_GATE') {
-                                response = responses[key];
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // Remove loading, add response
-            setTimeout(() => {
-                document.getElementById('loading-msg').remove();
-                messages.innerHTML += `
-                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                        <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;">AI</div>
-                        <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-border); border-radius: 12px; padding: 12px 16px; font-size: 0.85rem; color: var(--text-primary);">
-                            ${response}
-                        </div>
-                    </div>
-                `;
-                messages.scrollTop = messages.scrollHeight;
-            }, 800);
-        }
-    </script>
-
-    <!-- Newsletter Signup -->
-    <section style="padding: 60px 24px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-        <div class="container" style="max-width: 600px; text-align: center;">
-            <h3
-                style="font-family: 'Orbitron', sans-serif; color: var(--gold-primary); margin-bottom: 12px; font-size: 1.2rem;">
-                📡 THE SIGNAL FEED
-            </h3>
-            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
-                Weekly GTM architecture blueprints. <span style="color: var(--text-muted); font-size: 0.75rem;">402+
-                    Revenue Architects</span>
-            </p>
-            <form action="https://formspree.io/f/meeeqyrg" method="POST"
-                style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
-                <input type="email" name="email" placeholder="your@email.com" required
-                    style="flex: 1; min-width: 180px; padding: 12px 16px; background: var(--bg-card); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
-                <input type="hidden" name="_subject" value="🔔 New Signal Feed Subscriber (Tools Page)">
-                <button type="submit"
-                    style="padding: 12px 24px; background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); border: none; border-radius: 6px; color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.75rem; cursor: pointer;">
-                    SUBSCRIBE
-                </button>
-            </form>
         </div>
     </section>
 
@@ -1212,34 +938,40 @@ Answer questions about Leon's background, projects, GTM philosophy, or the $0 st
             <a href="../blog/">Blog</a>
             <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
             <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
-            <a href="../Leon_Basin_Resume.pdf" target="_blank">Resume</a>
         </div>
-        <div class="footer-copyright">
-            © 2026 Leon Basin • Revenue Architect • $0 GTM Stack
-        </div>
+        <div class="footer-copyright">© 2026 Leon Basin • Revenue Architect • $0 GTM Stack</div>
     </footer>
 
-    <!-- Streamlit Iframe Error Handler -->
+    <!-- Tab Switching Script -->
     <script>
-        // Add graceful error handling for Streamlit embed
-        document.addEventListener('DOMContentLoaded', function () {
-            const streamlitIframe = document.querySelector('iframe[src*="streamlit"]');
-            if (streamlitIframe) {
-                // Set a timeout to check if iframe loaded
-                setTimeout(function () {
-                    try {
-                        // If iframe is still empty or errored, it won't load properly
-                        // This is expected behavior on Streamlit free tier
-                        streamlitIframe.addEventListener('error', function () {
-                            console.log('Streamlit embed not available - use "OPEN IN NEW TAB" link');
-                        });
-                    } catch (e) {
-                        // Silently handle cross-origin errors
-                    }
-                }, 3000);
-            }
+        // Arsenal tab switching
+        document.querySelectorAll('.arsenal-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active from all tabs
+                document.querySelectorAll('.arsenal-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.arsenal-content').forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked tab
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Flow node hover effects
+        document.querySelectorAll('.flow-node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                node.querySelector('.node-circle').style.boxShadow = '0 0 30px rgba(212, 175, 55, 0.6)';
+            });
+            node.addEventListener('mouseleave', () => {
+                if (!node.classList.contains('active')) {
+                    node.querySelector('.node-circle').style.boxShadow = 'none';
+                }
+            });
         });
     </script>
+
+    <!-- NEXUS Intelligence Bot -->
+    <script src="../widgets/leon-logic-bot.js"></script>
 
 </body>
 
