@@ -7,6 +7,13 @@
     <title>The Library | Leon Basin</title>
     <meta name="description" content="Receive. Refine. Serve. — The work of a Revenue Architect.">
 
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basinleon.github.io/library/">
+    <meta property="og:title" content="The Library | Leon Basin">
+    <meta property="og:description"
+        content="Frameworks, case studies, and architectural thinking from a Revenue Architect.">
+
     <!-- Editorial Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +37,7 @@
             --gold-muted: #b8956b;
             --charcoal: #2d2d2d;
             --shadow: rgba(0, 0, 0, 0.08);
+            --matrix-green: #22c55e;
         }
 
         * {
@@ -58,7 +66,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -91,12 +99,12 @@
             letter-spacing: 2px;
         }
 
-        /* Subtle Kabbalistic symbol */
+        /* Geometric symbol */
         .symbol {
             margin: 30px auto 0;
-            width: 60px;
-            height: 60px;
-            opacity: 0.3;
+            width: 50px;
+            height: 50px;
+            opacity: 0.4;
         }
 
         .symbol svg {
@@ -105,7 +113,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           NAVIGATION — Subtle, Editorial
+           NAVIGATION
         ═══════════════════════════════════════════════════════════════ */
 
         nav {
@@ -135,41 +143,46 @@
         ═══════════════════════════════════════════════════════════════ */
 
         .mission {
-            padding: 80px 0;
+            padding: 60px 0;
             text-align: center;
             border-bottom: 1px solid var(--parchment-dark);
         }
 
         .mission-quote {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-style: italic;
             color: var(--ink);
-            max-width: 700px;
-            margin: 0 auto 30px;
+            max-width: 650px;
+            margin: 0 auto 20px;
             line-height: 1.5;
         }
 
         .mission-path {
             display: flex;
             justify-content: center;
-            gap: 60px;
-            margin-top: 40px;
+            gap: 50px;
+            margin-top: 30px;
         }
 
         .path-step {
             text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .path-step:hover {
+            transform: translateY(-4px);
         }
 
         .path-step-icon {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
             color: var(--sepia);
         }
 
         .path-step-label {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--ink-light);
@@ -183,6 +196,59 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
+           THE FRAMEWORKS — Operating System Principles
+        ═══════════════════════════════════════════════════════════════ */
+
+        .frameworks {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .framework-card {
+            padding: 28px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+            border: 1px solid var(--parchment-dark);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .framework-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--sepia);
+        }
+
+        .framework-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--sepia);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .framework-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .framework-desc {
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
            THE CODEX — Case Study Cards (Book Covers)
         ═══════════════════════════════════════════════════════════════ */
 
@@ -192,7 +258,7 @@
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 400;
             text-align: center;
             letter-spacing: 4px;
@@ -203,14 +269,14 @@
 
         .codex-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
 
         .manuscript {
             background: linear-gradient(145deg, var(--charcoal) 0%, #1a1a1a 100%);
             border-radius: 4px;
-            padding: 40px 24px;
+            padding: 32px 20px;
             text-align: center;
             color: var(--parchment);
             transition: all 0.4s ease;
@@ -218,6 +284,8 @@
             position: relative;
             overflow: hidden;
             box-shadow: 4px 4px 20px var(--shadow);
+            text-decoration: none;
+            display: block;
         }
 
         .manuscript::before {
@@ -228,6 +296,12 @@
             right: 0;
             height: 3px;
             background: var(--gold-muted);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .manuscript:hover::before {
+            transform: scaleX(1);
         }
 
         .manuscript:hover {
@@ -237,28 +311,42 @@
 
         .manuscript-volume {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             letter-spacing: 2px;
             color: var(--gold-muted);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .manuscript-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .manuscript-subtitle {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: rgba(244, 241, 234, 0.6);
         }
 
+        .manuscript-new {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--matrix-green);
+            color: var(--charcoal);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 2px;
+            letter-spacing: 1px;
+        }
+
         /* ═══════════════════════════════════════════════════════════════
-           THE CHRONICLE — Blog/Writings (Newspaper Columns)
+           THE CHRONICLE — Dynamic Blog Posts
         ═══════════════════════════════════════════════════════════════ */
 
         .chronicle {
@@ -268,7 +356,7 @@
 
         .chronicle-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 280px;
             gap: 40px;
         }
 
@@ -277,12 +365,28 @@
             padding-right: 40px;
         }
 
+        .featured-article a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .featured-article a:hover {
+            transform: translateX(4px);
+        }
+
         .featured-article h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 600;
             line-height: 1.3;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .featured-article h3:hover {
+            color: var(--burgundy);
         }
 
         .featured-article p {
@@ -294,23 +398,55 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--sepia);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: 1px;
+        }
+
+        .sidebar-articles article {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        .sidebar-articles article a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-articles article a:hover {
+            transform: translateX(4px);
         }
 
         .sidebar-articles h4 {
             font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            margin-bottom: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            color: var(--ink);
         }
 
-        .sidebar-articles article {
-            padding: 16px 0;
-            border-bottom: 1px solid var(--parchment-dark);
+        .sidebar-articles h4:hover {
+            color: var(--burgundy);
         }
 
         .sidebar-articles .article-meta {
-            margin-top: 8px;
+            margin-top: 4px;
+            margin-bottom: 0;
+        }
+
+        .view-all-link {
+            display: inline-block;
+            margin-top: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--sepia);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .view-all-link:hover {
+            color: var(--burgundy);
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -318,7 +454,7 @@
         ═══════════════════════════════════════════════════════════════ */
 
         .gate {
-            padding: 80px 0;
+            padding: 70px 0;
             text-align: center;
             background: var(--charcoal);
             color: var(--parchment);
@@ -327,27 +463,27 @@
 
         .gate h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 400;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .gate p {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: rgba(244, 241, 234, 0.7);
-            max-width: 500px;
-            margin: 0 auto 30px;
+            max-width: 450px;
+            margin: 0 auto 24px;
         }
 
         .gate-cta {
             display: inline-block;
             background: var(--gold-muted);
             color: var(--charcoal);
-            padding: 14px 32px;
+            padding: 12px 28px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             text-decoration: none;
@@ -360,7 +496,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           FOOTER — The Colophon
+           FOOTER
         ═══════════════════════════════════════════════════════════════ */
 
         footer {
@@ -372,9 +508,25 @@
             letter-spacing: 1px;
         }
 
+        .footer-soul {
+            margin-top: 8px;
+            font-style: italic;
+            opacity: 0.5;
+        }
+
         /* ═══════════════════════════════════════════════════════════════
            RESPONSIVE
         ═══════════════════════════════════════════════════════════════ */
+
+        @media (max-width: 900px) {
+            .codex-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         @media (max-width: 768px) {
             .codex-grid {
@@ -389,17 +541,78 @@
                 border-right: none;
                 padding-right: 0;
                 border-bottom: 1px solid var(--parchment-dark);
-                padding-bottom: 30px;
+                padding-bottom: 24px;
             }
 
             .mission-path {
                 flex-direction: column;
-                gap: 30px;
+                gap: 20px;
             }
 
             .path-connector {
                 transform: rotate(90deg);
             }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           ANIMATIONS
+        ═══════════════════════════════════════════════════════════════ */
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mission,
+        .frameworks,
+        .codex,
+        .chronicle {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .framework-card,
+        .manuscript {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .framework-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .framework-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .framework-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .manuscript:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .manuscript:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .manuscript:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .manuscript:nth-child(4) {
+            animation-delay: 0.25s;
         }
     </style>
 </head>
@@ -410,37 +623,21 @@
         <h1 class="masthead-name">Leon Basin</h1>
         <p class="masthead-epithet">Revenue Architect · System Builder · Signal Alchemist</p>
 
-        <!-- Tree of Life symbol (simplified) -->
+        <!-- Geometric Symbol -->
         <div class="symbol">
-            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
-                <!-- Simplified Tree of Life: circles representing Sephirot -->
-                <circle cx="50" cy="10" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="30" cy="30" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="70" cy="30" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="50" cy="40" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="30" cy="55" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="70" cy="55" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="50" cy="65" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="30" cy="80" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="70" cy="80" r="6" fill="none" stroke="#8b7355" />
-                <circle cx="50" cy="95" r="6" fill="none" stroke="#8b7355" />
-                <!-- Connecting lines -->
-                <line x1="50" y1="16" x2="30" y2="24" stroke="#8b7355" opacity="0.5" />
-                <line x1="50" y1="16" x2="70" y2="24" stroke="#8b7355" opacity="0.5" />
-                <line x1="50" y1="16" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
-                <line x1="30" y1="36" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
-                <line x1="70" y1="36" x2="50" y2="34" stroke="#8b7355" opacity="0.5" />
-                <line x1="50" y1="46" x2="30" y2="49" stroke="#8b7355" opacity="0.5" />
-                <line x1="50" y1="46" x2="70" y2="49" stroke="#8b7355" opacity="0.5" />
-                <line x1="50" y1="71" x2="50" y2="89" stroke="#8b7355" opacity="0.5" />
+            <svg viewBox="0 0 100 100" fill="none" stroke="#8b7355" stroke-width="1.5">
+                <!-- Nested hexagons with center dot -->
+                <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" />
+                <polygon points="50,25 70,37 70,63 50,75 30,63 30,37" fill="none" />
+                <circle cx="50" cy="50" r="5" fill="#8b7355" />
             </svg>
         </div>
     </header>
 
     <nav>
         <a href="/">Home</a>
-        <a href="/services">Services</a>
-        <a href="/tools">Laboratory</a>
+        <a href="/services/">Services</a>
+        <a href="/tools/">Laboratory</a>
         <a href="/blog/">Chronicle</a>
     </nav>
 
@@ -468,67 +665,79 @@
         </div>
     </section>
 
+    <!-- THE FRAMEWORKS -->
+    <section class="frameworks container">
+        <h2 class="section-title">The Operating System</h2>
+
+        <div class="framework-grid">
+            <div class="framework-card">
+                <div class="framework-number">01</div>
+                <h3 class="framework-title">Signal Over Noise</h3>
+                <p class="framework-desc">Every market screams data. The architect listens for signal. Build systems
+                    that filter, not collect.</p>
+            </div>
+            <div class="framework-card">
+                <div class="framework-number">02</div>
+                <h3 class="framework-title">Structure Before Scale</h3>
+                <p class="framework-desc">Premature optimization is the enemy. First, make it work. Then, make it
+                    elegant. Finally, make it scale.</p>
+            </div>
+            <div class="framework-card">
+                <div class="framework-number">03</div>
+                <h3 class="framework-title">Systems Over Sprints</h3>
+                <p class="framework-desc">Heroics are unsustainable. Build the machine that builds the machine. Compound
+                    daily.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- THE CODEX -->
     <section class="codex container">
         <h2 class="section-title">The Codex</h2>
 
         <div class="codex-grid">
-            <article class="manuscript" onclick="location.href='/services/sentinel-case.html'">
+            <a href="/services/sentinel-case.html" class="manuscript">
                 <div class="manuscript-volume">Volume I</div>
                 <h3 class="manuscript-title">Project Sentinel</h3>
                 <p class="manuscript-subtitle">On Identity & The Gate</p>
-            </article>
+            </a>
 
-            <article class="manuscript" onclick="location.href='/services/aurora-case.html'">
+            <a href="/services/aurora-case.html" class="manuscript">
                 <div class="manuscript-volume">Volume II</div>
                 <h3 class="manuscript-title">Project Aurora</h3>
                 <p class="manuscript-subtitle">On Vision & Replacement</p>
-            </article>
+            </a>
 
-            <article class="manuscript" onclick="location.href='/tools/'">
+            <a href="/tools/" class="manuscript">
                 <div class="manuscript-volume">Volume III</div>
                 <h3 class="manuscript-title">The Arsenal</h3>
                 <p class="manuscript-subtitle">On Tools & Transmutation</p>
-            </article>
+            </a>
+
+            <a href="/blog/posts/signal-engine-instead.html" class="manuscript">
+                <span class="manuscript-new">NEW</span>
+                <div class="manuscript-volume">Volume IV</div>
+                <h3 class="manuscript-title">The Signal Engine</h3>
+                <p class="manuscript-subtitle">On Data & Direction</p>
+            </a>
         </div>
     </section>
 
-    <!-- THE CHRONICLE -->
+    <!-- THE CHRONICLE (Dynamic) -->
     <section class="chronicle container">
         <h2 class="section-title">The Chronicle</h2>
 
         <div class="chronicle-grid">
-            <article class="featured-article">
-                <a href="/blog/posts/signal-engine-instead.html" style="text-decoration: none; color: inherit;">
-                    <div class="article-meta">Featured Dispatch · Jan 2026</div>
-                    <h3>I Stopped Waiting for Better Data</h3>
-                    <p>The market doesn't reward patience. It rewards velocity with direction. Here's how I built a
-                        signal
-                        engine that turns noise into pipeline...</p>
-                </a>
+            <article class="featured-article" id="featured-post">
+                <!-- Populated by JavaScript -->
             </article>
 
-            <aside class="sidebar-articles">
-                <article>
-                    <a href="/blog/posts/fractional-gtm-system.html" style="text-decoration: none; color: inherit;">
-                        <h4>The Fractional GTM Architecture</h4>
-                        <div class="article-meta">Dec 2025</div>
-                    </a>
-                </article>
-                <article>
-                    <a href="/blog/" style="text-decoration: none; color: inherit;">
-                        <h4>On Ethical Speed</h4>
-                        <div class="article-meta">Nov 2025</div>
-                    </a>
-                </article>
-                <article>
-                    <a href="/blog/posts/ai-zero-trust-tprm.html" style="text-decoration: none; color: inherit;">
-                        <h4>Zero Trust, Zero Waste</h4>
-                        <div class="article-meta">Oct 2025</div>
-                    </a>
-                </article>
+            <aside class="sidebar-articles" id="recent-posts">
+                <!-- Populated by JavaScript -->
             </aside>
         </div>
+
+        <a href="/blog/" class="view-all-link">View All Posts →</a>
     </section>
 
     <!-- THE GATE -->
@@ -541,8 +750,62 @@
     </section>
 
     <footer>
-        <p>© 2026 Basin & Associates · Mountain View, CA · System Shown, Operations Hidden</p>
+        <p>© 2026 Basin & Associates · Mountain View, CA</p>
+        <p class="footer-soul">As above, so below.</p>
     </footer>
+
+    <!-- Dynamic Chronicle Loading -->
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('/data/posts.json');
+                const posts = await response.json();
+
+                // Filter to only Blog posts with valid URLs
+                const validPosts = posts.filter(p =>
+                    p.url &&
+                    p.url !== '#' &&
+                    p.category === 'Blog'
+                ).slice(0, 5);
+
+                if (validPosts.length === 0) return;
+
+                // Featured post
+                const featured = validPosts[0];
+                const featuredEl = document.getElementById('featured-post');
+                featuredEl.innerHTML = `
+                <a href="/blog/${featured.url}">
+                    <div class="article-meta">Featured Dispatch · ${featured.date || 'Jan 2026'}</div>
+                    <h3>${featured.title}</h3>
+                    <p>${featured.excerpt ? featured.excerpt.substring(0, 180) + '...' : ''}</p>
+                </a>
+            `;
+
+                // Recent posts
+                const recentPosts = validPosts.slice(1, 5);
+                const recentEl = document.getElementById('recent-posts');
+                recentEl.innerHTML = recentPosts.map(post => `
+                <article>
+                    <a href="/blog/${post.url}">
+                        <h4>${post.title}</h4>
+                        <div class="article-meta">${post.date || ''}</div>
+                    </a>
+                </article>
+            `).join('');
+
+            } catch (e) {
+                console.error('Failed to load posts:', e);
+                // Fallback content
+                document.getElementById('featured-post').innerHTML = `
+                <a href="/blog/posts/signal-engine-instead.html">
+                    <div class="article-meta">Featured Dispatch · Jan 2026</div>
+                    <h3>I Stopped Waiting for Better Data</h3>
+                    <p>The market doesn't reward patience. It rewards velocity with direction...</p>
+                </a>
+            `;
+            }
+        })();
+    </script>
 
 </body>
 
