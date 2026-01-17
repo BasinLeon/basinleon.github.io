@@ -55,7 +55,7 @@ footer{border-top:1px solid var(--gold-border);padding:40px 24px;text-align:cent
 <main>
 <div class="post-meta">${fmtDate(post.date)} • ${tags}</div>
 <h1>${post.title}</h1>
-<div class="archive-notice"><h3>📜 Archived Content</h3><p>Originally published on <a href="https://basinleon.com" style="color:var(--gold)">basinleon.com</a>. Full migration in progress.</p></div>
+<div class="archive-notice"><h3>📜 Archived Content</h3><p>Originally published on <a href="https://basinleon.github.io" style="color:var(--gold)">basinleon.github.io</a>. Full migration in progress.</p></div>
 <div class="post-content"><p>${post.excerpt || 'Content from the archive.'}</p></div>
 <a href="../index.html" class="back-link">← Back to Archive</a>
 </main>

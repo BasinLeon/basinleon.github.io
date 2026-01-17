@@ -227,8 +227,25 @@
     // WIDGET HTML
     // ═══════════════════════════════════════════════════════════════
 
+    function formatDisplayDate(dateStr) {
+        if (!dateStr || dateStr.includes('ago')) return dateStr;
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        } catch (e) {
+            return dateStr;
+        }
+    }
+
     function createWidget(data) {
         const statusClass = data.status === 'ONLINE' ? '' : 'offline';
+        const formattedDate = formatDisplayDate(data.lastTransmission);
 
         return `
             <div class="ncw-container">
@@ -254,7 +271,7 @@
                     </div>
                     <div class="ncw-row">
                         <span class="ncw-label">Last Transmission</span>
-                        <span class="ncw-value">${data.lastTransmission}</span>
+                        <span class="ncw-value" style="font-size: 10px;">${formattedDate}</span>
                     </div>
                 </div>
                 

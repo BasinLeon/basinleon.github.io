@@ -70,7 +70,7 @@ stubs.forEach(post => {
         <h1>${post.title}</h1>
         <div class="archive-notice">
             <h3>📜 Archived Content</h3>
-            <p>This post was originally published on <a href="https://basinleon.com" style="color: var(--gold-primary);">basinleon.com</a>. Full content migration in progress.</p>
+            <p>This post was originally published on <a href="https://basinleon.github.io" style="color: var(--gold-primary);">basinleon.github.io</a>. Full content migration in progress.</p>
         </div>
         <div class="post-content">
             <p>${post.excerpt}</p>

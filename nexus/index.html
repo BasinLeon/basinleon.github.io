@@ -166,9 +166,78 @@
   <link rel="modulepreload" crossorigin href="/nexus/assets/vendor-react-B--z-fyW.js">
   <link rel="modulepreload" crossorigin href="/nexus/assets/vendor-icons-yTOH22tT.js">
   <link rel="stylesheet" crossorigin href="/nexus/assets/index-DWci0091.css">
-<link rel="manifest" href="/nexus/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/nexus/registerSW.js"></script></head>
+  <link rel="manifest" href="/nexus/manifest.webmanifest">
+  <script id="vite-plugin-pwa:register-sw" src="/nexus/registerSW.js"></script>
+</head>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
 
 <body>
+  <!-- 5-World Navigation System -->
+  <nav id="main-nav"
+    style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 16px 24px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+      <a href="/"
+        style="font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; color: #D4AF37; text-decoration: none; letter-spacing: 2px;">BASIN::NEXUS</a>
+
+      <!-- Desktop Nav -->
+      <div id="nav-links" style="display: flex; gap: 32px; align-items: center;">
+        <a href="/"
+          style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s;">Portfolio</a>
+        <a href="/blog/"
+          style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s;">Blog</a>
+        <a href="/tools/"
+          style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s;">Tools</a>
+        <a href="/nexus/"
+          style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #D4AF37; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #D4AF37;">Nexus</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="hamburger" onclick="toggleMobileMenu()"
+        style="display: none; background: transparent; border: none; color: #D4AF37; font-size: 1.5rem; cursor: pointer;">&#9776;</button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+      style="display: none; padding: 20px 0; border-top: 1px solid rgba(212, 175, 55, 0.2); margin-top: 16px; background: rgba(2, 6, 23, 0.95);">
+      <a href="/"
+        style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px;">Portfolio</a>
+      <a href="/blog/"
+        style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px;">Blog</a>
+      <a href="/tools/"
+        style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #94a3b8; text-decoration: none; letter-spacing: 1px;">Tools</a>
+      <a href="/nexus/"
+        style="display: block; padding: 12px 0; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #D4AF37; text-decoration: none; letter-spacing: 1px;">Nexus</a>
+    </div>
+  </nav>
+
+  <style>
+    @media (max-width: 768px) {
+      #nav-links {
+        display: none !important;
+      }
+
+      #hamburger {
+        display: block !important;
+      }
+    }
+
+    /* Adjust root padding so content doesn't hide behind nav */
+    #root {
+      padding-top: 80px;
+      height: 100vh;
+      overflow-y: auto;
+      /* Enable scroll within root if needed */
+    }
+  </style>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
   <div class="bg-nexus"></div>
   <div class="bg-noise"></div>
   <div id="root"></div>
