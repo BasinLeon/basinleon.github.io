@@ -1,4 +1,135 @@
 /* ═══════════════════════════════════════════════════════════════
+   SEARCH BOX
+═══════════════════════════════════════════════════════════════ */
+
+.search-section {
+    margin-bottom: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 36px 10px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--gold-border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--gold-primary);
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+}
+
+.search-results.visible {
+    display: block;
+}
+
+.search-result-item {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-border);
+    transition: background 0.2s;
+}
+
+.search-result-item:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.result-title {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.result-title mark {
+    background: var(--gold-primary);
+    color: var(--bg-deep);
+    padding: 0 2px;
+}
+
+.result-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+.no-results {
+    padding: 12px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Category Filters */
+.category-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.cat-filter {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--gold-border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cat-filter:hover {
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
+.cat-filter.active {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--bg-deep);
+}
+
+/* ═══════════════════════════════════════════════════════════════
    BLOG STYLES — Leon Basin
    Consolidated CSS for all blog posts
 ═══════════════════════════════════════════════════════════════ */

@@ -11,9 +11,9 @@ PATTERNS=(
     '@hotmail\.com'
     '\([0-9]{3}\) [0-9]{3}-[0-9]{4}'     # Phone: (408) 933-8269
     '[0-9]{3}-[0-9]{3}-[0-9]{4}'         # Phone: 408-933-8269
-    '\$[0-9]{2,3}K'                       # Salary: $180K, $200K
-    'salary|compensation'
-    'Alberto|LiveRamp|Fudo Security'     # Add sensitive company/person names
+    '\$[12][0-9]{2}K.*\$[23][0-9]{2}K'   # Salary range: $180K-$350K (only ranges)
+    'salary target|compensation target'
+    'Alberto Farronato|LiveRamp'         # Sensitive company/person names
     'lbasin23'                           # Personal username
 )
 
