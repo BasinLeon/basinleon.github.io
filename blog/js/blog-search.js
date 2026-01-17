@@ -27,7 +27,7 @@
     // ═══════════════════════════════════════════════════════════════
     async function loadPosts() {
         try {
-            const response = await fetch('../data/posts.json');
+            const response = await fetch('/data/posts.json');
             allPosts = await response.json();
         } catch (e) {
             console.error('Failed to load posts:', e);
