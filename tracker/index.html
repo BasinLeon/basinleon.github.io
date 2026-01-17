@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deal Tracker | Basin & Associates</title>
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="/tracker/manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BA::CRM">
+    <link rel="apple-touch-icon" href="/tracker/icon-192.png">
+
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Orbitron:wght@500;600;700&display=swap"
         rel="stylesheet">
@@ -681,6 +690,7 @@
         // Sample data if empty
         if (deals.length === 0) {
             deals = [
+                // === CLIENTS (Fractional) ===
                 {
                     id: Date.now(),
                     category: 'client',
@@ -695,6 +705,31 @@
                 },
                 {
                     id: Date.now() + 1,
+                    category: 'client',
+                    status: 'lead',
+                    name: 'Fractional GTM - US Expansion',
+                    company: 'Spray.io',
+                    value: 5000,
+                    commission: 100,
+                    nextAction: 'Define deliverables scope',
+                    notes: '$5K/month retainer. US market expansion focus. Need to finalize scope.',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 2,
+                    category: 'client',
+                    status: 'lead',
+                    name: 'Portfolio GTM Systems',
+                    company: 'FYM Partners',
+                    value: 5000,
+                    commission: 100,
+                    nextAction: 'Revenue operations audit call',
+                    notes: '$5K/month. High-probability momentum. Tiered portfolio systems.',
+                    createdAt: new Date().toISOString()
+                },
+                // === REFERRAL PARTNERSHIPS ===
+                {
+                    id: Date.now() + 3,
                     category: 'referral',
                     status: 'meeting',
                     name: 'Recruiting Referral Partnership',
@@ -705,8 +740,9 @@
                     notes: '5-10% referral fee on placements. Need to align on client criteria.',
                     createdAt: new Date().toISOString()
                 },
+                // === JOB OPPORTUNITIES ===
                 {
-                    id: Date.now() + 2,
+                    id: Date.now() + 4,
                     category: 'job',
                     status: 'proposal',
                     name: 'Senior GTM Engineer (Founding)',
@@ -715,6 +751,30 @@
                     commission: 0,
                     nextAction: 'On-site interview preparation',
                     notes: 'Alberto fast-tracked. Build case study + demo. Focus on $800K replacement thesis.',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 5,
+                    category: 'job',
+                    status: 'meeting',
+                    name: 'GTM Strategy Director',
+                    company: 'Sendbird',
+                    value: 200000,
+                    commission: 0,
+                    nextAction: 'CMO meeting prep',
+                    notes: 'Charles Studt (CMO). Focus on AI-augmented SDR motion, lower CAC.',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 6,
+                    category: 'job',
+                    status: 'lead',
+                    name: 'Lead Product Marketing Manager',
+                    company: 'LiveRamp',
+                    value: 175000,
+                    commission: 0,
+                    nextAction: 'Submit application + one-pager',
+                    notes: 'Identity & Data Marketplace. GTM Architect positioning.',
                     createdAt: new Date().toISOString()
                 }
             ];
@@ -965,6 +1025,15 @@
         document.getElementById('modal').addEventListener('click', (e) => {
             if (e.target.id === 'modal') closeModal();
         });
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/tracker/sw.js')
+                    .then(reg => console.log('🚀 BA::CRM Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
     </script>
 </body>
 
