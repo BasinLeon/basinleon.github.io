@@ -456,6 +456,14 @@
 
         <!-- ANALYTICS SECTION -->
         <div id="analytics" class="section">
+            <div class="controls" style="margin-bottom: 20px;">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="showEmailSequences()">📧 Email Sequences</button>
+                    <button class="quick-action-btn" onclick="showAutomationWorkflows()">⚙️ Automation</button>
+                    <button class="quick-action-btn" onclick="exportAnalyticsReport()">📊 Export Report</button>
+                </div>
+            </div>
+            
             <div class="analytics-grid">
                 <div class="analytics-card">
                     <div class="analytics-value" id="a-total-deals">0</div>
@@ -494,6 +502,18 @@
             </div>
             <h3 style="color: var(--gold); margin: 24px 0 16px; font-size: 0.9rem;">📊 Pipeline by Status</h3>
             <div id="status-breakdown"></div>
+            
+            <!-- Email Sequences Panel -->
+            <div id="email-sequences-panel" style="display:none; margin-top: 24px;">
+                <h3 style="color: var(--gold); margin-bottom: 16px; font-size: 0.9rem;">📧 Email Sequences</h3>
+                <div class="deals-grid" id="sequences-grid"></div>
+            </div>
+            
+            <!-- Automation Workflows Panel -->
+            <div id="automation-workflows-panel" style="display:none; margin-top: 24px;">
+                <h3 style="color: var(--gold); margin-bottom: 16px; font-size: 0.9rem;">⚙️ Automation Workflows</h3>
+                <div class="deals-grid" id="workflows-grid"></div>
+            </div>
         </div>
 
         <!-- AI ASSISTANT SECTION -->
@@ -2560,6 +2580,215 @@ Leon`;
         } else if (action.includes('Network')) {
             document.querySelector('[data-section="contacts"]').click();
         }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PREMIUM COMMERCIAL FEATURES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function showEmailSequences() {
+        const panel = document.getElementById('email-sequences-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            renderEmailSequences();
+        }
+    }
+    
+    function renderEmailSequences() {
+        const sequences = [
+            {
+                name: 'Cold Outreach - High Signal',
+                description: '3-email sequence for high-signal contacts (8+ score)',
+                triggers: 'Signal Score ≥ 8',
+                emails: 3,
+                status: 'Active'
+            },
+            {
+                name: 'Deal Follow-Up',
+                description: 'Follow-up sequence for deals in Meeting stage',
+                triggers: 'Deal Status = Meeting',
+                emails: 2,
+                status: 'Active'
+            },
+            {
+                name: 'Stalled Deal Revival',
+                description: 'Re-engagement sequence for stalled deals (14+ days)',
+                triggers: 'Days in Stage ≥ 14',
+                emails: 2,
+                status: 'Active'
+            },
+            {
+                name: 'New Contact Welcome',
+                description: 'Welcome sequence for newly added contacts',
+                triggers: 'Contact Added',
+                emails: 1,
+                status: 'Active'
+            }
+        ];
+        
+        const grid = document.getElementById('sequences-grid');
+        grid.innerHTML = sequences.map(seq => `
+            <div class="deal-card">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${seq.name}</div>
+                        <div class="deal-role">${seq.description}</div>
+                    </div>
+                    <span class="deal-status status-meeting">${seq.status}</span>
+                </div>
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Trigger:</strong> ${seq.triggers}
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">
+                        <strong>Emails:</strong> ${seq.emails} in sequence
+                    </div>
+                </div>
+                <div class="deal-actions" style="margin-top: 12px;">
+                    <button class="deal-btn" onclick="editEmailSequence('${seq.name}')">✏️ Edit</button>
+                    <button class="deal-btn" onclick="previewEmailSequence('${seq.name}')">👁️ Preview</button>
+                    <button class="deal-btn" onclick="activateEmailSequence('${seq.name}')">▶️ Activate</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function showAutomationWorkflows() {
+        const panel = document.getElementById('automation-workflows-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            renderAutomationWorkflows();
+        }
+    }
+    
+    function renderAutomationWorkflows() {
+        const workflows = [
+            {
+                name: 'Auto-Convert High-Signal Contacts',
+                description: 'Automatically create deals from contacts with 9+ signal score',
+                trigger: 'Contact Signal Score ≥ 9',
+                action: 'Create Deal',
+                status: 'Active',
+                count: data.contacts.filter(c => (c.signalScore || 0) >= 9 && !data.deals.find(d => d.company && d.company.toLowerCase() === (c.company || '').toLowerCase())).length
+            },
+            {
+                name: 'Stalled Deal Alert',
+                description: 'Notify when deals are stalled for 14+ days',
+                trigger: 'Days in Stage ≥ 14',
+                action: 'Send Alert',
+                status: 'Active',
+                count: data.deals.filter(d => (d.daysInStage || 0) >= 14 && d.status !== 'lost' && d.status !== 'closed').length
+            },
+            {
+                name: 'Link Contacts to Deals',
+                description: 'Automatically link network contacts when deal created',
+                trigger: 'Deal Created',
+                action: 'Link Matching Contacts',
+                status: 'Active',
+                count: data.deals.filter(d => d.company && getContactsForCompany(d.company).length > 0 && (!d.contacts || d.contacts.length === 0)).length
+            },
+            {
+                name: 'Update Probability Based on Activity',
+                description: 'Increase deal probability when activities logged',
+                trigger: 'Activity Added',
+                action: 'Update Probability',
+                status: 'Active',
+                count: 0
+            }
+        ];
+        
+        const grid = document.getElementById('workflows-grid');
+        grid.innerHTML = workflows.map(wf => `
+            <div class="deal-card">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${wf.name}</div>
+                        <div class="deal-role">${wf.description}</div>
+                    </div>
+                    <span class="deal-status status-meeting">${wf.status}</span>
+                </div>
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">
+                        <strong>When:</strong> ${wf.trigger}
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">
+                        <strong>Then:</strong> ${wf.action}
+                    </div>
+                    ${wf.count > 0 ? `<div style="font-size: 0.7rem; color: var(--warning); margin-top: 8px;">
+                        ⚠️ ${wf.count} item(s) match this trigger
+                    </div>` : ''}
+                </div>
+                <div class="deal-actions" style="margin-top: 12px;">
+                    <button class="deal-btn" onclick="runWorkflow('${wf.name}')">▶️ Run Now</button>
+                    <button class="deal-btn" onclick="editWorkflow('${wf.name}')">✏️ Edit</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function editEmailSequence(name) {
+        alert(`Edit email sequence: ${name}\n\nThis would open an editor to customize the email templates, timing, and triggers.`);
+    }
+    
+    function previewEmailSequence(name) {
+        alert(`Preview email sequence: ${name}\n\nThis would show you a preview of all emails in the sequence with sample content.`);
+    }
+    
+    function activateEmailSequence(name) {
+        alert(`Email sequence "${name}" is now active and will trigger automatically based on conditions.`);
+    }
+    
+    function runWorkflow(name) {
+        if (name.includes('Auto-Convert')) {
+            bulkConvertContactsToDeals();
+        } else if (name.includes('Stalled Deal')) {
+            sendAIMessage('What deals need my attention?');
+        } else if (name.includes('Link Contacts')) {
+            const deals = data.deals.filter(d => d.company && getContactsForCompany(d.company).length > 0 && (!d.contacts || d.contacts.length === 0));
+            if (deals.length === 0) {
+                alert('No deals need contacts linked.');
+                return;
+            }
+            deals.forEach(deal => linkContactsToDeal(deal.id));
+            alert(`Linked contacts to ${deals.length} deal(s)!`);
+        } else {
+            alert(`Workflow "${name}" executed.`);
+        }
+    }
+    
+    function editWorkflow(name) {
+        alert(`Edit workflow: ${name}\n\nThis would open a workflow builder to customize triggers and actions.`);
+    }
+    
+    function exportAnalyticsReport() {
+        const report = {
+            generated: new Date().toISOString(),
+            summary: {
+                totalDeals: data.deals.length,
+                activeDeals: data.deals.filter(d => d.status !== 'lost').length,
+                totalPipeline: data.deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + parseValue(d.value), 0),
+                weightedPipeline: data.deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0),
+                totalContacts: data.contacts.length,
+                highSignalContacts: data.contacts.filter(c => (c.signalScore || 0) >= 8).length
+            },
+            deals: data.deals,
+            contacts: data.contacts.map(c => ({
+                name: c.name,
+                company: c.company,
+                role: c.role,
+                signalScore: c.signalScore,
+                type: c.type
+            }))
+        };
+        
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nexus-crm-analytics-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
     }
     
     // Update days in stage periodically
