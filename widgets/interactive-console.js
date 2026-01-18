@@ -622,10 +622,7 @@ Active Deployments:
 
             case 'contact':
                 printLine(output, `
-Secure Channels:
-> Email: lbasin23@gmail.com
-> Phone: (408) 933-8269
-> LinkedIn: /in/leonbasin
+Contact information has been removed for privacy.
                 `);
                 break;
 
