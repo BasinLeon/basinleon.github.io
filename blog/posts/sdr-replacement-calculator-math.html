@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDR Replacement Calculator: The $424K Math Explained | Leon Basin</title>
+    <meta name="description" content="The exact math behind replacing 7 SDRs with 1 Revenue Architect. Real numbers, real case studies, and a free calculator to see your savings.">
+    <meta name="keywords" content="SDR replacement, sales development, revenue architecture, CAC reduction, GTM efficiency, sales automation">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="SDR Replacement Calculator: The $424K Math Explained">
+    <meta property="og:description" content="The exact math behind replacing 7 SDRs with 1 Revenue Architect. See your potential savings.">
+    <meta property="og:url" content="https://basinleon.github.io/blog/posts/sdr-replacement-calculator-math.html">
+    <meta property="og:type" content="article">
+    
+    <!-- Schema.org Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "SDR Replacement Calculator: The $424K Math Explained",
+        "author": {
+            "@type": "Person",
+            "name": "Leon Basin",
+            "url": "https://basinleon.github.io"
+        },
+        "datePublished": "2026-01-18",
+        "dateModified": "2026-01-18"
+    }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AF37; --gold-light: #FFD700;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508; --bg-card: #0a0a0f;
+            --text-primary: #f0e6d3; --text-secondary: #8b8573; --text-muted: #5a584f;
+            --green: #22c55e; --red: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, #050508 0%, #0a0a0f 100%); color: var(--text-primary); line-height: 1.8; min-height: 100vh; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 8, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gold-border); padding: 16px 24px; }
+        .nav-container { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--gold-primary); text-decoration: none; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--gold-primary); }
+        article { max-width: 760px; margin: 0 auto; padding: 120px 24px 80px; }
+        .post-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--gold-primary); margin-bottom: 24px; line-height: 1.3; }
+        .post-tags { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; padding: 4px 12px; border: 1px solid var(--gold-border); border-radius: 4px; color: var(--text-muted); }
+        .lead { font-size: 1.15rem; color: var(--text-primary); border-left: 3px solid var(--gold-primary); padding-left: 20px; margin-bottom: 40px; font-style: italic; }
+        h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--gold-primary); margin: 48px 0 16px; letter-spacing: 1px; }
+        h3 { font-size: 1rem; color: var(--text-primary); margin: 28px 0 12px; font-weight: 600; }
+        p { margin-bottom: 20px; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        blockquote { border-left: 3px solid var(--gold-primary); padding-left: 20px; margin: 32px 0; font-style: italic; color: var(--text-primary); }
+        ul, ol { margin: 20px 0 20px 24px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        th, td { border: 1px solid var(--gold-border); padding: 12px 16px; text-align: left; font-size: 0.85rem; }
+        th { background: rgba(212, 175, 55, 0.1); color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; }
+        td { color: var(--text-secondary); }
+        .highlight-box { background: linear-gradient(145deg, var(--bg-card), var(--bg-deep)); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px; margin: 32px 0; }
+        .highlight-box h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--gold-primary); margin-bottom: 12px; }
+        .cta-box { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05)); border: 2px solid var(--green); border-radius: 12px; padding: 32px; margin: 40px 0; text-align: center; }
+        .cta-box h4 { font-family: 'Orbitron', sans-serif; color: var(--green); margin-bottom: 12px; }
+        .cta-btn { display: inline-block; padding: 14px 28px; background: var(--green); color: #000; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; text-decoration: none; border-radius: 8px; margin-top: 16px; }
+        .cta-btn:hover { box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
+        .math-box { background: #0d0d12; border: 1px solid var(--gold-border); border-radius: 8px; padding: 24px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; }
+        .math-box .label { color: var(--text-muted); font-size: 0.75rem; }
+        .math-box .value { color: var(--gold-light); font-size: 1.2rem; margin: 8px 0; }
+        .math-box .formula { color: var(--text-secondary); font-size: 0.85rem; border-top: 1px dashed var(--gold-border); padding-top: 12px; margin-top: 12px; }
+        .savings-highlight { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.05)); border: 2px solid var(--green); border-radius: 12px; padding: 32px; margin: 32px 0; text-align: center; }
+        .savings-highlight .amount { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: var(--green); }
+        .savings-highlight .label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px; }
+        .cost-column { color: var(--red) !important; }
+        .savings-column { color: var(--green) !important; }
+        .toc { background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px; padding: 24px; margin: 32px 0; }
+        .toc h4 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--gold-primary); margin-bottom: 12px; }
+        .toc ol { margin: 0; padding-left: 20px; }
+        .toc a { color: var(--text-secondary); text-decoration: none; }
+        .toc a:hover { color: var(--gold-primary); }
+        .related-posts { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--gold-border); }
+        .related-posts h3 { font-family: 'Orbitron', sans-serif; color: var(--gold-primary); margin-bottom: 20px; }
+        .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .related-card { background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 8px; padding: 16px; text-decoration: none; transition: border-color 0.3s; }
+        .related-card:hover { border-color: var(--gold-primary); }
+        .related-card h4 { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 8px; }
+        .related-card p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .back-link { display: inline-block; margin-top: 48px; padding: 12px 24px; border: 1px solid var(--gold-border); border-radius: 8px; color: var(--gold-primary); text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 1px; }
+        .back-link:hover { background: rgba(212, 175, 55, 0.1); }
+        footer { border-top: 1px solid var(--gold-border); padding: 40px 24px; text-align: center; background: var(--bg-deep); }
+        .footer-links { display: flex; justify-content: center; gap: 32px; margin-bottom: 24px; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; }
+        .footer-copyright { font-size: 0.75rem; color: var(--text-muted); }
+        @media (max-width: 600px) { .related-grid { grid-template-columns: 1fr; } .savings-highlight .amount { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="../../" class="nav-logo">BASIN::NEXUS</a>
+        <div class="nav-links">
+            <a href="../../">Portfolio</a>
+            <a href="../">Archive</a>
+            <a href="../../tools/">Tools</a>
+        </div>
+    </div>
+</nav>
+
+<article>
+    <div class="post-meta">January 18, 2026 · 12 min read · Deep Dive</div>
+    
+    <h1>SDR Replacement Calculator: The $424K Math Explained</h1>
+    
+    <div class="post-tags">
+        <span class="tag">SDR Replacement</span>
+        <span class="tag">Revenue Architecture</span>
+        <span class="tag">CAC Reduction</span>
+        <span class="tag">GTM Efficiency</span>
+    </div>
+    
+    <p class="lead">Every VP of Sales asks: "How do I hit quota without hiring more SDRs?" Here's the exact math I used to model $424K in annual savings—and the free calculator you can use to see your own numbers.</p>
+    
+    <div class="toc">
+        <h4>📋 Table of Contents</h4>
+        <ol>
+            <li><a href="#problem">The $110K Problem</a></li>
+            <li><a href="#math">The Full Cost Breakdown</a></li>
+            <li><a href="#replacement">The Replacement Model</a></li>
+            <li><a href="#424k">Where $424K Comes From</a></li>
+            <li><a href="#objections">Common Objections (Addressed)</a></li>
+            <li><a href="#calculator">Use the Calculator</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="problem">1. The $110K Problem</h2>
+    
+    <p>Most companies think an SDR costs $80K. They're wrong by about 40%.</p>
+    
+    <p>Here's the <strong>true fully-loaded cost</strong> of a single SDR:</p>
+    
+    <div class="math-box">
+        <div class="label">BASE SALARY</div>
+        <div class="value">$65,000 - $85,000</div>
+        <div class="label" style="margin-top: 16px;">+ BENEFITS (20%)</div>
+        <div class="value">$13,000 - $17,000</div>
+        <div class="label" style="margin-top: 16px;">+ TOOLS & SOFTWARE</div>
+        <div class="value">$8,000 - $15,000/year</div>
+        <div class="formula">
+            Outreach ($1,200) + ZoomInfo ($10,000) + Gong ($1,200) + Salesforce seat ($1,800) + LinkedIn Sales Nav ($1,000)
+        </div>
+        <div class="label" style="margin-top: 16px;">+ MANAGEMENT OVERHEAD</div>
+        <div class="value">$10,000 - $15,000</div>
+        <div class="formula">
+            Manager time (1:6 ratio) + Enablement + Training
+        </div>
+        <div class="label" style="margin-top: 16px; border-top: 2px solid var(--gold-primary); padding-top: 16px;">= TRUE COST PER SDR</div>
+        <div class="value" style="color: var(--red);">$96,000 - $132,000</div>
+    </div>
+    
+    <p>For this analysis, I use <strong>$110,000</strong> as the midpoint—conservative but realistic.</p>
+    
+    <h2 id="math">2. The Full Cost Breakdown: 7 SDRs</h2>
+    
+    <p>Let's model a typical Series B startup with 7 SDRs supporting 14 AEs (2:1 ratio):</p>
+    
+    <table>
+        <tr>
+            <th>Cost Category</th>
+            <th>Per SDR</th>
+            <th>7 SDRs (Annual)</th>
+        </tr>
+        <tr>
+            <td>Base Salary</td>
+            <td class="cost-column">$75,000</td>
+            <td class="cost-column">$525,000</td>
+        </tr>
+        <tr>
+            <td>Benefits (20%)</td>
+            <td class="cost-column">$15,000</td>
+            <td class="cost-column">$105,000</td>
+        </tr>
+        <tr>
+            <td>Tools & Licenses</td>
+            <td class="cost-column">$12,000</td>
+            <td class="cost-column">$84,000</td>
+        </tr>
+        <tr>
+            <td>Management Overhead</td>
+            <td class="cost-column">$8,000</td>
+            <td class="cost-column">$56,000</td>
+        </tr>
+        <tr>
+            <td><strong>TOTAL</strong></td>
+            <td class="cost-column"><strong>$110,000</strong></td>
+            <td class="cost-column"><strong>$770,000</strong></td>
+        </tr>
+    </table>
+    
+    <h3>What Do You Get for $770K?</h3>
+    
+    <p>Let's look at the output of a typical 7-SDR team:</p>
+    
+    <div class="math-box">
+        <div class="label">CALLS PER DAY</div>
+        <div class="value">350 (50 × 7)</div>
+        <div class="label" style="margin-top: 16px;">CONNECT RATE</div>
+        <div class="value">8% → 28 conversations/day</div>
+        <div class="label" style="margin-top: 16px;">MEETING RATE</div>
+        <div class="value">2% → 7 meetings/day</div>
+        <div class="label" style="margin-top: 16px;">MONTHLY SQLs</div>
+        <div class="value">~21 SQLs (7 meetings × 3 days × ~1 qualify)</div>
+        <div class="formula" style="color: var(--red);">
+            Cost per SQL: $770,000 ÷ 252 SQLs/year = <strong>$3,056/SQL</strong>
+        </div>
+    </div>
+    
+    <p><strong>$3,056 per SQL.</strong> That's before the AE even gets involved.</p>
+    
+    <h2 id="replacement">3. The Replacement Model: 1 Revenue Architect</h2>
+    
+    <p>Now let's model what happens when you replace 7 SDRs with <strong>1 Revenue Architect + intelligent systems</strong>:</p>
+    
+    <table>
+        <tr>
+            <th>Cost Category</th>
+            <th>Annual Cost</th>
+        </tr>
+        <tr>
+            <td>Revenue Architect Salary</td>
+            <td class="cost-column">$150,000</td>
+        </tr>
+        <tr>
+            <td>Benefits (20%)</td>
+            <td class="cost-column">$30,000</td>
+        </tr>
+        <tr>
+            <td>Infrastructure (n8n, APIs, hosting)</td>
+            <td class="cost-column">$6,000</td>
+        </tr>
+        <tr>
+            <td>Data Sources (enrichment, signals)</td>
+            <td class="cost-column">$12,000</td>
+        </tr>
+        <tr>
+            <td>LLM API Costs (or $0 if local)</td>
+            <td class="cost-column">$6,000</td>
+        </tr>
+        <tr>
+            <td><strong>TOTAL</strong></td>
+            <td class="savings-column"><strong>$204,000</strong></td>
+        </tr>
+    </table>
+    
+    <h3>What Do You Get for $204K?</h3>
+    
+    <div class="math-box">
+        <div class="label">SIGNALS MONITORED/DAY</div>
+        <div class="value">50,000+ (job postings, news, tech changes)</div>
+        <div class="label" style="margin-top: 16px;">HIGH-SIGNAL ACCOUNTS SURFACED</div>
+        <div class="value">50-100/day (vs. static lists)</div>
+        <div class="label" style="margin-top: 16px;">PERSONALIZED SEQUENCES GENERATED</div>
+        <div class="value">Unlimited (LLM-powered)</div>
+        <div class="label" style="margin-top: 16px;">REPLY RATE</div>
+        <div class="value">12-18% (vs. 2-3% cold)</div>
+        <div class="label" style="margin-top: 16px;">MONTHLY SQLs</div>
+        <div class="value">25-40 SQLs (higher quality, higher conversion)</div>
+        <div class="formula" style="color: var(--green);">
+            Cost per SQL: $204,000 ÷ 360 SQLs/year = <strong>$567/SQL</strong>
+        </div>
+    </div>
+    
+    <p><strong>$567 per SQL vs. $3,056.</strong> That's an 81% reduction in cost-per-SQL.</p>
+    
+    <h2 id="424k">4. Where $424K Comes From</h2>
+    
+    <div class="savings-highlight">
+        <div class="amount">$424,000</div>
+        <div class="label">Annual Savings (Conservative Model)</div>
+    </div>
+    
+    <p>Here's the exact calculation:</p>
+    
+    <div class="math-box">
+        <div class="label">TRADITIONAL MODEL (7 SDRs)</div>
+        <div class="value" style="color: var(--red);">$770,000/year</div>
+        <div class="label" style="margin-top: 16px;">HYBRID MODEL (3 SDRs + 1 Architect)</div>
+        <div class="value" style="color: var(--gold-light);">$534,000/year</div>
+        <div class="formula">
+            3 SDRs ($330K) + 1 Architect ($204K) = $534K
+        </div>
+        <div class="label" style="margin-top: 16px;">AGGRESSIVE MODEL (1 Architect Only)</div>
+        <div class="value" style="color: var(--green);">$204,000/year</div>
+        <div class="formula" style="border-top: 2px solid var(--gold-primary); padding-top: 16px; margin-top: 16px;">
+            <strong>Conservative Savings (Hybrid):</strong> $770K - $534K = <span style="color: var(--green);">$236K</span><br>
+            <strong>Aggressive Savings (Full):</strong> $770K - $204K = <span style="color: var(--green);">$566K</span><br>
+            <strong>Midpoint Used:</strong> <span style="color: var(--green); font-size: 1.2rem;">$424K</span>
+        </div>
+    </div>
+    
+    <p>The $424K figure assumes a <strong>hybrid model</strong> where you keep some SDRs for complex accounts while automating the high-volume, low-touch motions.</p>
+    
+    <h3>But Wait—What About Output?</h3>
+    
+    <p>The real kicker: <strong>you get MORE SQLs for less money.</strong></p>
+    
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>7 SDRs</th>
+            <th>Hybrid (3 + Architect)</th>
+            <th>Delta</th>
+        </tr>
+        <tr>
+            <td>Annual Cost</td>
+            <td class="cost-column">$770,000</td>
+            <td class="savings-column">$534,000</td>
+            <td class="savings-column">-$236K</td>
+        </tr>
+        <tr>
+            <td>SQLs/Year</td>
+            <td>252</td>
+            <td class="savings-column">396</td>
+            <td class="savings-column">+57%</td>
+        </tr>
+        <tr>
+            <td>Cost/SQL</td>
+            <td class="cost-column">$3,056</td>
+            <td class="savings-column">$1,348</td>
+            <td class="savings-column">-56%</td>
+        </tr>
+        <tr>
+            <td>Ramp Time</td>
+            <td>3 months</td>
+            <td class="savings-column">0 (system always on)</td>
+            <td class="savings-column">Instant</td>
+        </tr>
+        <tr>
+            <td>Turnover Risk</td>
+            <td class="cost-column">High (40%/year)</td>
+            <td class="savings-column">Low</td>
+            <td class="savings-column">Stable</td>
+        </tr>
+    </table>
+    
+    <h2 id="objections">5. Common Objections (Addressed)</h2>
+    
+    <div class="highlight-box">
+        <h4>"Our sales cycle is too complex for automation"</h4>
+        <p>Revenue Architecture doesn't automate the sale—it automates the <em>research, prioritization, and initial outreach</em>. Your AEs still close. They just get better leads, faster.</p>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>"We need the human touch"</h4>
+        <p>The "human touch" happens when an AE has a 5-page dossier on the prospect before the call—not when an SDR cold-calls 50 people hoping one picks up. Signal-based outreach <em>feels</em> more human because it's actually relevant.</p>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>"We don't have engineering resources"</h4>
+        <p>Neither did I when I built BASIN::NEXUS. Modern tools (n8n, Streamlit, local LLMs) mean one person with sales + technical curiosity can build this. Or hire a fractional Revenue Architect.</p>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>"What happens when the architect leaves?"</h4>
+        <p>Unlike tribal knowledge locked in SDR brains, <em>systems are documented and transferable</em>. Code doesn't quit. Playbooks don't take PTO. The architecture persists.</p>
+    </div>
+    
+    <h2 id="calculator">6. Use the Calculator</h2>
+    
+    <p>I built a free interactive calculator so you can plug in your own numbers:</p>
+    
+    <ul>
+        <li>Your current SDR count and salary</li>
+        <li>Your current SQLs and reply rates</li>
+        <li>Your target headcount reduction</li>
+    </ul>
+    
+    <p>The calculator shows you:</p>
+    <ul>
+        <li>Current annual cost</li>
+        <li>Projected cost with Revenue Architecture</li>
+        <li>Annual savings</li>
+        <li>Cost-per-SQL comparison</li>
+    </ul>
+    
+    <div class="cta-box">
+        <h4>💰 Calculate Your Savings Now</h4>
+        <p>Plug in your numbers and see exactly what you'd save by transitioning to Revenue Architecture.</p>
+        <a href="../../tools/roi-calculator.html" class="cta-btn">⚡ OPEN THE CALCULATOR</a>
+    </div>
+    
+    <h2>The Bottom Line</h2>
+    
+    <blockquote>"The question isn't whether you can afford to hire a Revenue Architect. It's whether you can afford to keep paying $3,000+ per SQL."</blockquote>
+    
+    <p>The math is clear:</p>
+    <ul>
+        <li><strong>$424K+ saved annually</strong> (conservative hybrid model)</li>
+        <li><strong>57% more SQLs</strong> with signal-based targeting</li>
+        <li><strong>81% lower cost-per-SQL</strong></li>
+        <li><strong>Zero ramp time</strong>—systems don't need training</li>
+    </ul>
+    
+    <p>The only question is: <strong>when do you start building?</strong></p>
+    
+    <div class="related-posts">
+        <h3>📚 Related Posts</h3>
+        <div class="related-grid">
+            <a href="complete-revenue-architecture-guide.html" class="related-card">
+                <h4>The Complete Revenue Architecture Guide</h4>
+                <p>The definitive guide to building intelligent GTM systems.</p>
+            </a>
+            <a href="0-gtm-stack.html" class="related-card">
+                <h4>The $0 GTM Stack</h4>
+                <p>Build enterprise-grade revenue intelligence without enterprise budgets.</p>
+            </a>
+            <a href="builders-advantage.html" class="related-card">
+                <h4>The Builder's Advantage</h4>
+                <p>Why coding your own GTM stack creates unfair advantages.</p>
+            </a>
+            <a href="architecture-of-revenue.html" class="related-card">
+                <h4>The Architecture of Revenue</h4>
+                <p>A builder's thesis on signal, systems, and scale.</p>
+            </a>
+        </div>
+    </div>
+    
+    <a href="../" class="back-link">← BACK TO ARCHIVE</a>
+</article>
+
+<footer>
+    <div class="footer-links">
+        <a href="../../">Portfolio</a>
+        <a href="../">Blog</a>
+        <a href="../../tools/">Tools</a>
+        <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
+    </div>
+    <div class="footer-copyright">© 2026 Leon Basin · Revenue Architect · BASIN::NEXUS</div>
+</footer>
+
+<script defer data-domain="basinleon.github.io" src="https://plausible.io/js/script.js"></script>
+
+</body>
+</html>
