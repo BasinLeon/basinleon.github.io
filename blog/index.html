@@ -7,6 +7,10 @@
     <title>The Archive | Leon Basin - Signal. Architecture. Revenue.</title>
     <meta name="description"
         content="Stories as code. Archives as memory. 80+ posts on revenue architecture, GTM systems, AI building, and creative writing.">
+    <!-- Cache-Busting -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
     <!-- Open Graph -->
     <meta property="og:title" content="The Archive | Leon Basin">
@@ -20,6 +24,35 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
+    
+    <!-- Script to clear service workers if any -->
+    <script>
+        // Clear any old service workers that might be caching
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                registrations.forEach(registration => {
+                    if (registration.scope.includes('basinleon.github.io')) {
+                        registration.unregister().then(() => {
+                            console.log('🧹 Cleared old service worker:', registration.scope);
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Clear caches if any
+        if ('caches' in window) {
+            caches.keys().then(names => {
+                names.forEach(name => {
+                    if (name.includes('blog') || name.includes('basinleon')) {
+                        caches.delete(name).then(() => {
+                            console.log('🧹 Cleared cache:', name);
+                        });
+                    }
+                });
+            });
+        }
+    </script>
 
     <style>
         :root {
@@ -1151,9 +1184,13 @@
             }
         });
 
-        // Load posts from JSON
-        fetch('../data/posts.json')
-            .then(r => r.json())
+        // Load posts from JSON (with cache-busting)
+        const postsUrl = '../data/posts.json?v=' + Date.now();
+        fetch(postsUrl, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } })
+            .then(r => {
+                if (!r.ok) throw new Error('Failed to fetch posts');
+                return r.json();
+            })
             .then(data => {
                 allPosts = data.sort((a, b) => {
                     if (!a.date) return 1;
@@ -1165,23 +1202,42 @@
             })
             .catch(err => {
                 console.error('Failed to load posts:', err);
-                postGrid.innerHTML = '<p style="color: var(--text-muted);">Loading archive...</p>';
+                postGrid.innerHTML = '<p style="color: var(--text-muted);">Loading archive... (Try refreshing if this persists)</p>';
+                // Try alternative path
+                fetch('/data/posts.json?v=' + Date.now(), { cache: 'no-store' })
+                    .then(r => r.json())
+                    .then(data => {
+                        allPosts = data.sort((a, b) => {
+                            if (!a.date) return 1;
+                            if (!b.date) return -1;
+                            return new Date(b.date) - new Date(a.date);
+                        });
+                        renderPosts();
+                    })
+                    .catch(e => console.error('Alternative fetch also failed:', e));
             });
 
-        // Fetch signal stats
-        fetch('../data/nexus-status.json')
-            .then(r => r.json())
+        // Fetch signal stats (with cache-busting)
+        const statsUrl = '../data/nexus-status.json?v=' + Date.now();
+        fetch(statsUrl, { cache: 'no-store' })
+            .then(r => {
+                if (!r.ok) return;
+                return r.json();
+            })
             .then(data => {
-                document.getElementById('stat-signals').textContent = data.signalsScanned || 52;
+                if (data) {
+                    const statEl = document.getElementById('stat-signals');
+                    if (statEl) statEl.textContent = data.signalsScanned || 52;
+                }
             })
             .catch(() => { });
     </script>
 
     <!-- Blog Analytics -->
-    <script src="js/blog-analytics.js"></script>
+    <script src="js/blog-analytics.js?v=2.0"></script>
 
     <!-- NEXUS Intelligence Bot -->
-    <script src="../widgets/leon-logic-bot.js"></script>
+    <script src="../widgets/leon-logic-bot.js?v=2.0"></script>
 
 </body>
 

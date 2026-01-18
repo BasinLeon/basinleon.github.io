@@ -27,10 +27,33 @@
     // ═══════════════════════════════════════════════════════════════
     async function loadPosts() {
         try {
-            const response = await fetch('/data/posts.json');
-            allPosts = await response.json();
+            // Try multiple paths with cache-busting
+            const paths = [
+                '/data/posts.json',
+                '../data/posts.json',
+                '../../data/posts.json'
+            ];
+            
+            for (const path of paths) {
+                try {
+                    const url = `${path}?v=${Date.now()}`;
+                    const response = await fetch(url, { 
+                        cache: 'no-store',
+                        headers: { 'Cache-Control': 'no-cache' }
+                    });
+                    if (response.ok) {
+                        allPosts = await response.json();
+                        console.log(`✅ Loaded ${allPosts.length} posts from ${path}`);
+                        return;
+                    }
+                } catch (e) {
+                    continue;
+                }
+            }
+            throw new Error('All fetch paths failed');
         } catch (e) {
             console.error('Failed to load posts:', e);
+            allPosts = [];
         }
     }
 

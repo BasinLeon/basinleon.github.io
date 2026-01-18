@@ -70,25 +70,37 @@
 
     let allPosts = [];
 
-    // Load posts data
+    // Load posts data (with cache-busting)
     async function loadPostsData() {
         if (allPosts.length) return allPosts;
 
         try {
-            // Try relative path first (works from post pages)
-            let response = await fetch('../../data/posts.json');
-            if (!response.ok) {
-                response = await fetch('../data/posts.json');
-            }
-            if (!response.ok) {
-                response = await fetch('/data/posts.json');
-            }
-            if (response.ok) {
-                allPosts = await response.json();
-                return allPosts.filter(p => p.url && p.url !== '#');
+            const timestamp = Date.now();
+            const paths = [
+                '../../data/posts.json',
+                '../data/posts.json',
+                '/data/posts.json'
+            ];
+            
+            for (const path of paths) {
+                try {
+                    const url = `${path}?v=${timestamp}`;
+                    const response = await fetch(url, { 
+                        cache: 'no-store',
+                        headers: { 'Cache-Control': 'no-cache' }
+                    });
+                    if (response.ok) {
+                        allPosts = await response.json();
+                        const filtered = allPosts.filter(p => p.url && p.url !== '#');
+                        console.log(`✅ Loaded ${filtered.length} posts for analytics`);
+                        return filtered;
+                    }
+                } catch (e) {
+                    continue;
+                }
             }
         } catch (e) {
-            console.warn('Could not load posts for related posts');
+            console.warn('Could not load posts for related posts:', e);
         }
         return [];
     }
