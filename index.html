@@ -1921,9 +1921,12 @@
                     style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">Tools</a>
                 <a href="https://github.com/BasinLeon" target="_blank"
                     style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">GitHub</a>
-                <!-- Theme Toggle -->
+                <!-- Theme Toggle - Cathedral Aesthetic -->
                 <button id="theme-toggle" onclick="toggleTheme()"
-                    style="background: transparent; border: 1px solid var(--gold-border); color: var(--gold-primary); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.7rem;">LIGHT</button>
+                    style="background: var(--bg-elevated); border: 1px solid var(--gold-border); color: var(--gold-primary); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <span id="theme-text">⚫ BLACK</span>
+                    <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--gold-primary); color: #000; transform: translateY(100%); transition: transform 0.3s ease;" id="theme-text-alt">⚪ WHITE</span>
+                </button>
             </div>
 
             <!-- Mobile Hamburger -->
@@ -1961,8 +1964,169 @@
 
         /* Light Theme */
         body.light-theme {
-            background: #f5f3ef !important;
-            color: #1a1a1a !important;
+            background: #ffffff !important;
+            color: #000000 !important;
+        }
+        
+        /* Cathedral/Museum Room Aesthetic - Enhanced Theme Toggle */
+        #theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Cathedral Room Sections - Each with unique atmosphere */
+        .cathedral-room {
+            position: relative;
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        
+        .cathedral-room::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .cathedral-room:hover::before {
+            opacity: 1;
+        }
+        
+        /* Hidden Metrics System - Never fully revealing */
+        .hidden-metrics {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        
+        .cathedral-room:hover .hidden-metrics,
+        .nexus-showcase:hover .hidden-metrics,
+        [style*="position: relative"]:hover .hidden-metrics {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+        
+        /* Hero hidden metrics positioning */
+        .hero .hidden-metrics {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+        }
+        
+        .hero:hover .hidden-metrics {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .metric-pill {
+            padding: 4px 10px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 0.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold-primary);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        /* Light theme metric pills */
+        body.light-theme .metric-pill {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.3);
+            color: #8b6914;
+        }
+        
+        /* Basin::Nexus Source Connection - Subtle but always present */
+        .nexus-source-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 8px;
+            height: 8px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+            animation: pulse-nexus 3s infinite;
+        }
+        
+        @keyframes pulse-nexus {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        
+        .cathedral-room:hover .nexus-source-indicator {
+            opacity: 0.8;
+            animation-duration: 1.5s;
+        }
+        
+        /* Room-specific atmospheres - Each room has unique feel */
+        .room-triad {
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.02) 0%, transparent 100%);
+        }
+        
+        .room-proof {
+            background: linear-gradient(180deg, transparent 0%, rgba(34, 197, 94, 0.02) 50%, transparent 100%);
+        }
+        
+        .room-hiring {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.01) 100%);
+        }
+        
+        .room-projects {
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.02) 0%, transparent 100%);
+        }
+        
+        .room-case-studies {
+            background: linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.02) 50%, transparent 100%);
+        }
+        
+        /* Navigation Connection Links - Subtle but present */
+        .nav-connections {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0.4;
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: opacity 0.3s ease;
+        }
+        
+        .cathedral-room:hover .nav-connections {
+            opacity: 0.7;
+        }
+        
+        .nav-connections a {
+            color: var(--gold-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-connections a:hover {
+            color: var(--gold-light);
+            opacity: 1;
+        }
+        
+        .nav-connections span {
+            color: var(--text-muted);
         }
 
         body.light-theme::before {
@@ -2326,8 +2490,17 @@
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
             const btn = document.getElementById('theme-toggle');
-            if (btn) {
-                btn.textContent = document.body.classList.contains('light-theme') ? 'DARK' : 'LIGHT';
+            const textEl = document.getElementById('theme-text');
+            const textAltEl = document.getElementById('theme-text-alt');
+            
+            if (btn && textEl && textAltEl) {
+                if (document.body.classList.contains('light-theme')) {
+                    textEl.style.transform = 'translateY(-100%)';
+                    textAltEl.style.transform = 'translateY(0)';
+                } else {
+                    textEl.style.transform = 'translateY(0)';
+                    textAltEl.style.transform = 'translateY(100%)';
+                }
             }
             localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
         }
@@ -2335,8 +2508,12 @@
         // Load saved theme
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-theme');
-            const btn = document.getElementById('theme-toggle');
-            if (btn) btn.textContent = 'DARK';
+            const textEl = document.getElementById('theme-text');
+            const textAltEl = document.getElementById('theme-text-alt');
+            if (textEl && textAltEl) {
+                textEl.style.transform = 'translateY(-100%)';
+                textAltEl.style.transform = 'translateY(0)';
+            }
         }
     </script>
 
@@ -2346,8 +2523,9 @@
         <span>SYSTEM ONLINE // v10.0</span>
     </div>
 
-    <!-- HERO -->
-    <section class="hero fade-in-up parallax-section">
+    <!-- HERO - CATHEDRAL ROOM 0: THE MAIN HALL -->
+    <section class="hero fade-in-up parallax-section cathedral-room" style="position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="parallax-bg"></div>
         <div class="container">
             <!-- LIVE METRICS DASHBOARD -->
@@ -2414,71 +2592,139 @@
                     📄 View Resume
                 </a>
             </div>
+            
+            <!-- Hidden Metrics - Main Hall -->
+            <div class="hidden-metrics" style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);">
+                <span class="metric-pill">Portfolio</span>
+                <span class="metric-pill">Blog</span>
+                <span class="metric-pill">Tools</span>
+                <span class="metric-pill">GitHub</span>
+            </div>
+            
+            <!-- Navigation Connections (Subtle) -->
+            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; opacity: 0.3; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                <a href="./" style="color: var(--gold-primary); text-decoration: none;">PORTFOLIO</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="./blog/" style="color: var(--text-muted); text-decoration: none;">BLOG</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="./tools/" style="color: var(--text-muted); text-decoration: none;">TOOLS</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="https://github.com/BasinLeon" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB</a>
+            </div>
         </div>
     </section>
 
-    <!-- THE ARCHITECT TRIAD -->
-    <section id="triad" style="padding: 60px 0;">
+    <!-- THE ARCHITECT TRIAD - CATHEDRAL ROOM 1 -->
+    <section id="triad" class="cathedral-room room-triad">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">The Architect Triad</h2>
                 <p class="section-subtitle">The three pillars of my Revenue Architecture philosophy</p>
+                <!-- Navigation Connections -->
+                <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./blog/?tag=philosophy" style="color: var(--gold-primary); text-decoration: none;">BLOG: Philosophy</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./tools/?category=frameworks" style="color: var(--text-muted); text-decoration: none;">TOOLS: Frameworks</a>
+                </div>
             </div>
 
             <div class="triad-grid">
-                <div class="triad-card">
+                <div class="triad-card" style="position: relative;">
                     <div class="triad-icon">🧠</div>
                     <div class="triad-title">The Operator's Mind</div>
                     <div class="triad-desc">15 years of process rigor (Google, NetApp, HP) applied to CRM/Sales systems
                         that reduce friction.</div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">15 Years</span>
+                        <span class="metric-pill">3 Fortune 500</span>
+                        <span class="metric-pill">Process Rigor</span>
+                    </div>
                 </div>
-                <div class="triad-card">
+                <div class="triad-card" style="position: relative;">
                     <div class="triad-icon">🌐</div>
                     <div class="triad-title">The Ecosystem Builder</div>
                     <div class="triad-desc">I operationalize partner channels (US & LATAM) and turn "paper partners"
                         into active revenue streams.</div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">NA + LATAM</span>
+                        <span class="metric-pill">Partner Channels</span>
+                        <span class="metric-pill">Revenue Streams</span>
+                    </div>
                 </div>
-                <div class="triad-card">
+                <div class="triad-card" style="position: relative;">
                     <div class="triad-icon">🎯</div>
                     <div class="triad-title">The Strategist's Eye</div>
                     <div class="triad-desc">MBA-trained to create GTM narratives and pipeline architecture that delivers
                         predictable growth.</div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">Executive MBA</span>
+                        <span class="metric-pill">GTM Strategy</span>
+                        <span class="metric-pill">Predictable</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROOF SECTION (Condensed) -->
-    <section style="padding: 60px 0; background: var(--bg-deep);">
+    <!-- PROOF SECTION - CATHEDRAL ROOM 2 -->
+    <section class="cathedral-room room-proof" style="padding: 60px 0; background: var(--bg-deep);">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
-            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-                <h2 class="section-title" style="margin-bottom: 40px;">Proven Results</h2>
+            <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative;">
+                <h2 class="section-title" style="margin-bottom: 20px;">Proven Results</h2>
+                <!-- Navigation Connections -->
+                <div style="margin-bottom: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./blog/?tag=case-studies" style="color: var(--gold-primary); text-decoration: none;">BLOG: Case Studies</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./tools/roi-calculator.html" style="color: var(--text-muted); text-decoration: none;">TOOLS: ROI Calculator</a>
+                </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px;">
-                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px; position: relative;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px; position: relative;">
                         <div style="font-size: 2rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 8px;">160%</div>
                         <div style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 4px; font-weight: 600;">Pipeline Growth</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">Fudo Security (Series A → Series B)</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">Series A→B</span>
+                            <span class="metric-pill">Zero Headcount</span>
+                            <span class="metric-pill">Partner Channel</span>
+                        </div>
                     </div>
-                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px; position: relative;">
                         <div style="font-size: 2rem; color: var(--success); font-weight: 700; margin-bottom: 8px;">$424K</div>
                         <div style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 4px; font-weight: 600;">Annual Savings</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">Replaced 10 SDRs with 1 architect + automation</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">10→1 SDRs</span>
+                            <span class="metric-pill">-70% Headcount</span>
+                            <span class="metric-pill">Architecture</span>
+                        </div>
                     </div>
-                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 24px; position: relative;">
                         <div style="font-size: 2rem; color: var(--cyan); font-weight: 700; margin-bottom: 8px;">5 Days</div>
                         <div style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 4px; font-weight: 600;">SDR Ramp Time</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">vs 3-month industry average</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">12x Faster</span>
+                            <span class="metric-pill">Certification</span>
+                            <span class="metric-pill">Just-in-Time</span>
+                        </div>
                     </div>
                 </div>
 
-                <div style="background: rgba(212, 175, 55, 0.05); border-left: 3px solid var(--gold-primary); padding: 20px 30px; max-width: 700px; margin: 0 auto 30px; text-align: left;">
+                <div style="background: rgba(212, 175, 55, 0.05); border-left: 3px solid var(--gold-primary); padding: 20px 30px; max-width: 700px; margin: 0 auto 30px; text-align: left; position: relative;">
                     <p style="font-size: 0.95rem; font-style: italic; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.7;">
                         "Leon's signal architecture replaced our 10-person SDR team with 2 SDRs + automation. We're doing 77 meetings/month vs. 45 before."
                     </p>
                     <p style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
                         — VP Sales, Series B Cybersecurity
                     </p>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">77 Meetings</span>
+                        <span class="metric-pill">+71% Output</span>
+                        <span class="metric-pill">System Pays</span>
+                    </div>
                 </div>
 
                 <a href="/case-studies/" class="btn btn-secondary" style="text-decoration: none;">
@@ -2488,9 +2734,10 @@
         </div>
     </section>
 
-    <!-- HIRING MANAGERS: START HERE (MOVED UP) -->
-    <section id="hiring-managers"
-        style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.02) 100%); border: 2px solid var(--gold-border); border-radius: 12px; padding: 60px 0; margin: 60px 0;">
+    <!-- HIRING MANAGERS - CATHEDRAL ROOM 3 -->
+    <section id="hiring-managers" class="cathedral-room room-hiring"
+        style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.02) 100%); border: 2px solid var(--gold-border); border-radius: 12px; padding: 60px 0; margin: 60px 0; position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
             <div style="max-width: 900px; margin: 0 auto; text-align: center;">
                 <div
@@ -2504,51 +2751,78 @@
                     style="font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 800; color: var(--gold-light); margin-bottom: 16px;">
                     Hiring Managers: Start Here
                 </h2>
-
-                <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 40px; line-height: 1.8;">
+                <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.8;">
                     Looking for a Revenue Architect who can build, not just strategize? In 90 days, I'll deliver:
                 </p>
+                <!-- Navigation Connections -->
+                <div style="margin-bottom: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./tools/?category=demos" style="color: var(--gold-primary); text-decoration: none;">TOOLS: Live Demos</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./blog/?tag=methodology" style="color: var(--text-muted); text-decoration: none;">BLOG: Methodology</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="https://github.com/BasinLeon" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB: Code</a>
+                </div>
 
                 <div
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; text-align: left;">
                     <div
-                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px;">
+                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">🎯</div>
                         <div
                             style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--gold-primary); margin-bottom: 8px;">
                             Signal-Based Lead Scoring</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Python-powered
                             intent detection. Replace spray-and-pray with surgical targeting.</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">Python</span>
+                            <span class="metric-pill">Intent Signals</span>
+                            <span class="metric-pill">Surgical</span>
+                        </div>
                     </div>
 
                     <div
-                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px;">
+                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">⚡</div>
                         <div
                             style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--gold-primary); margin-bottom: 8px;">
                             Automated Enrichment</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Clay + n8n
                             workflows. Eliminate manual research. 5-min signal-to-action latency.</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">Clay + n8n</span>
+                            <span class="metric-pill">5-Min Latency</span>
+                            <span class="metric-pill">Zero Manual</span>
+                        </div>
                     </div>
 
                     <div
-                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px;">
+                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">🛡️</div>
                         <div
                             style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--gold-primary); margin-bottom: 8px;">
                             Governance Workflows</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">"Zombie Deal"
                             detection. Stage entry criteria enforcement. Data hygiene automation.</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">Zombie Deals</span>
+                            <span class="metric-pill">100% Integrity</span>
+                            <span class="metric-pill">n8n</span>
+                        </div>
                     </div>
 
                     <div
-                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px;">
+                        style="background: var(--bg-elevated); border: 1px solid var(--gold-border); border-radius: 8px; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">🚀</div>
                         <div
                             style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--gold-primary); margin-bottom: 8px;">
                             SDR Training System</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">5-day ramp vs
                             3-month industry avg. Playbooks, certification, daily routines.</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">5-Day Ramp</span>
+                            <span class="metric-pill">12x Faster</span>
+                            <span class="metric-pill">Playbooks</span>
+                        </div>
                     </div>
                 </div>
 
@@ -2582,48 +2856,87 @@
         </div>
     </section>
 
-    <!-- QUICK LINKS TO DETAILED PAGES -->
-    <section style="padding: 60px 0; background: var(--bg-card);">
+    <!-- QUICK LINKS - CATHEDRAL ROOM 4 (The Nexus Connection Hub) -->
+    <section class="cathedral-room" style="padding: 60px 0; background: var(--bg-card); position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
-            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-                <h2 class="section-title" style="margin-bottom: 40px;">Explore More</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
-                    <a href="/tools/" class="btn btn-secondary" style="text-decoration: none; padding: 20px;">
+            <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative;">
+                <h2 class="section-title" style="margin-bottom: 20px;">The Nexus Hub</h2>
+                <p class="section-subtitle" style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted); font-style: italic;">
+                    Each room connects to the source. All paths lead to Basin::Nexus.
+                </p>
+                <!-- Navigation Connections - All Categories -->
+                <div style="margin-bottom: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.5; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; font-weight: 600;">
+                    <a href="./" style="color: var(--gold-primary); text-decoration: none;">PORTFOLIO</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./blog/" style="color: var(--gold-primary); text-decoration: none;">BLOG</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./tools/" style="color: var(--gold-primary); text-decoration: none;">TOOLS</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="https://github.com/BasinLeon" target="_blank" style="color: var(--gold-primary); text-decoration: none;">GITHUB</a>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; position: relative;">
+                    <a href="/tools/" class="btn btn-secondary" style="text-decoration: none; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">🔬</div>
                         <div style="font-weight: 600;">View All Tools</div>
                         <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 4px;">8 Interactive Tools</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">8 Tools</span>
+                            <span class="metric-pill">Interactive</span>
+                        </div>
                     </a>
-                    <a href="/case-studies/" class="btn btn-secondary" style="text-decoration: none; padding: 20px;">
+                    <a href="/case-studies/" class="btn btn-secondary" style="text-decoration: none; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">📊</div>
                         <div style="font-weight: 600;">View Case Studies</div>
                         <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 4px;">5 Deployment Strategies</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">5 Studies</span>
+                            <span class="metric-pill">Pro Bono</span>
+                        </div>
                     </a>
-                    <a href="/career/" class="btn btn-secondary" style="text-decoration: none; padding: 20px;">
+                    <a href="/career/" class="btn btn-secondary" style="text-decoration: none; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">💼</div>
                         <div style="font-weight: 600;">Career Journey</div>
                         <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 4px;">15+ Years Experience</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">15+ Years</span>
+                            <span class="metric-pill">Enterprise</span>
+                        </div>
                     </a>
-                    <a href="/nexus/" class="btn btn-secondary" style="text-decoration: none; padding: 20px;">
+                    <a href="/nexus/" class="btn btn-secondary" style="text-decoration: none; padding: 20px; position: relative;">
                         <div style="font-size: 1.5rem; margin-bottom: 8px;">⚡</div>
                         <div style="font-weight: 600;">BASIN::NEXUS</div>
                         <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 4px;">83K+ Lines of Code</div>
+                        <div class="hidden-metrics">
+                            <span class="metric-pill">83K+ Lines</span>
+                            <span class="metric-pill">The Source</span>
+                        </div>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FEATURED PROJECTS (Condensed - Top 3 Only) -->
-    <section id="projects" style="padding: 60px 0;">
+    <!-- FEATURED PROJECTS - CATHEDRAL ROOM 5 -->
+    <section id="projects" class="cathedral-room room-projects" style="padding: 60px 0;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Featured Projects</h2>
                 <p class="section-subtitle">Top 3 systems. <a href="/tools/" style="color: var(--gold-primary);">View all 8 tools →</a></p>
+                <!-- Navigation Connections -->
+                <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./tools/" style="color: var(--gold-primary); text-decoration: none;">TOOLS: Full Laboratory</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="https://github.com/BasinLeon" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB: Source Code</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./blog/?tag=tools" style="color: var(--text-muted); text-decoration: none;">BLOG: Tool Releases</a>
+                </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; position: relative;">
                 <!-- Project 1: BASIN::NEXUS -->
-                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;"
+                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px; position: relative;"
                     data-demo-id="basin-nexus">
                     <h3 class="feature-title" style="font-size: 1rem;">BASIN::NEXUS
                         <span class="status-badge status-active" style="float: right; border-color: var(--success); color: var(--success);">● ACTIVE</span>
@@ -2643,10 +2956,15 @@
                         <a href="/nexus/" class="publication-link" style="background: rgba(34, 197, 94, 0.1); border-color: var(--success);">▶ LAUNCH APP</a>
                         <a href="https://github.com/BasinLeon/basin-signal-engine" target="_blank" class="publication-link">⚙ SOURCE</a>
                     </div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">The Source</span>
+                        <span class="metric-pill">5 LLMs</span>
+                        <span class="metric-pill">Hunt→Prep→Close</span>
+                    </div>
                 </div>
 
                 <!-- Project 2: ROI Calculator (NEW) -->
-                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;">
+                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px; position: relative;">
                     <h3 class="feature-title" style="font-size: 1rem;">roi-calculator
                         <span class="status-badge status-active" style="float: right; border-color: var(--success); color: var(--success);">● ACTIVE</span>
                     </h3>
@@ -2662,10 +2980,14 @@
                     <div style="margin-top: 20px; display: flex; gap: 12px;">
                         <a href="/tools/roi-calculator.html" class="publication-link" style="background: rgba(34, 197, 94, 0.1); border-color: var(--success);">⚡ CALCULATE</a>
                     </div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">$424K Savings</span>
+                        <span class="metric-pill">Interactive</span>
+                    </div>
                 </div>
 
                 <!-- Project 3: Case Study Generator (NEW) -->
-                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px;">
+                <div class="nexus-showcase netflix-card" style="margin-top: 0; min-height: 250px; position: relative;">
                     <h3 class="feature-title" style="font-size: 1rem;">case-study-gen
                         <span class="status-badge status-active" style="float: right; border-color: var(--success); color: var(--success);">● ACTIVE</span>
                     </h3>
@@ -2681,6 +3003,10 @@
                     <div style="margin-top: 20px; display: flex; gap: 12px;">
                         <a href="/tools/case-study-generator.html" class="publication-link" style="background: rgba(34, 197, 94, 0.1); border-color: var(--success);">📝 GENERATE</a>
                     </div>
+                    <div class="hidden-metrics">
+                        <span class="metric-pill">4 Frameworks</span>
+                        <span class="metric-pill">Templates</span>
+                    </div>
                 </div>
 
             </div>
@@ -2692,12 +3018,21 @@
         </div>
     </section>
 
-    <!-- CASE STUDIES (Condensed) -->
-    <section style="padding: 60px 0; background: var(--bg-deep);">
+    <!-- CASE STUDIES - CATHEDRAL ROOM 6: THE CHRONICLES PREVIEW -->
+    <section class="cathedral-room room-case-studies" style="padding: 60px 0; background: var(--bg-deep); position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
-            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative;">
                 <h2 class="section-title" style="margin-bottom: 20px;">Case Studies</h2>
-                <p class="section-subtitle" style="margin-bottom: 40px;">Pro Bono Deployment Strategies • Built in Public</p>
+                <p class="section-subtitle" style="margin-bottom: 20px;">Pro Bono Deployment Strategies • Built in Public</p>
+                <!-- Navigation Connections -->
+                <div style="margin-bottom: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./blog/?tag=case-studies" style="color: var(--gold-primary); text-decoration: none;">BLOG: Full Chronicles</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./tools/?category=methodology" style="color: var(--text-muted); text-decoration: none;">TOOLS: Methodology</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="https://github.com/BasinLeon?tab=repositories" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB: Source</a>
+                </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; text-align: left;">
 
@@ -2722,8 +3057,59 @@
     </section>
 
 
-    <!-- FOOTER / GATE -->
-    <section id="gate" class="contact-cta">
+    <!-- THE ULTIMATE GOAL - CATHEDRAL ROOM 7: THE VISION -->
+    <section class="cathedral-room" style="padding: 80px 0; background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 100%); position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus" style="opacity: 0.6;"></div>
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto; text-align: center; position: relative;">
+                <h2 class="section-title" style="margin-bottom: 20px; font-size: 2.5rem;">What Is The Ultimate Goal Here?</h2>
+                <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 16px; padding: 40px; margin: 40px 0; text-align: left;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-primary); margin-bottom: 24px;">
+                        <strong style="color: var(--gold-primary);">Basin::Nexus is the source.</strong> Everything you see—every room, every metric, every tool—connects back to one unified system.
+                    </p>
+                    <p style="font-size: 1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 24px;">
+                        This isn't just a portfolio. It's a <strong>Revenue Operating System</strong> that learns, forecasts, measures, and grows. Each section is a different room in the cathedral, but they all share the same foundation.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px;">
+                        <div style="border-left: 3px solid var(--gold-primary); padding-left: 16px;">
+                            <div style="font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">The System</div>
+                            <div style="font-size: 0.9rem; color: var(--text-primary);">83K+ lines of code. 5 LLMs. One source.</div>
+                        </div>
+                        <div style="border-left: 3px solid var(--success); padding-left: 16px;">
+                            <div style="font-size: 0.75rem; color: var(--success); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">The Goal</div>
+                            <div style="font-size: 0.9rem; color: var(--text-primary);">Replace manual toil with autonomous systems.</div>
+                        </div>
+                        <div style="border-left: 3px solid var(--cyan); padding-left: 16px;">
+                            <div style="font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">The Method</div>
+                            <div style="font-size: 0.9rem; color: var(--text-primary);">Code + GTM = scalable revenue.</div>
+                        </div>
+                        <div style="border-left: 3px solid #a855f7; padding-left: 16px;">
+                            <div style="font-size: 0.75rem; color: #a855f7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">The Vision</div>
+                            <div style="font-size: 0.9rem; color: var(--text-primary);">One system. Infinite possibilities.</div>
+                        </div>
+                    </div>
+                    <div class="hidden-metrics" style="margin-top: 30px;">
+                        <span class="metric-pill">Learning</span>
+                        <span class="metric-pill">Forecasting</span>
+                        <span class="metric-pill">Measuring</span>
+                        <span class="metric-pill">Growing</span>
+                    </div>
+                </div>
+                <!-- Navigation Connections -->
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                    <a href="./nexus/" style="color: var(--gold-primary); text-decoration: none;">TOOLS: BASIN::NEXUS</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="./blog/?tag=philosophy" style="color: var(--text-muted); text-decoration: none;">BLOG: Philosophy</a>
+                    <span style="color: var(--text-muted);">•</span>
+                    <a href="https://github.com/BasinLeon/basin-signal-engine" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB: Source</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / GATE - CATHEDRAL ROOM 8: THE EXIT -->
+    <section id="gate" class="contact-cta cathedral-room" style="position: relative;">
+        <div class="nexus-source-indicator" title="Connected to Basin::Nexus"></div>
         <div class="container">
             <h2 class="contact-title">Let's Build Something</h2>
             <p class="contact-desc">Seeking Founding Engineer / Revenue Architect roles where I can build
@@ -2781,6 +3167,17 @@
             <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 20px; text-align: center;">
                 All contact methods are secure and direct.
             </p>
+            
+            <!-- Navigation Connections - Final Room -->
+            <div style="margin-top: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0.4; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                <a href="./" style="color: var(--gold-primary); text-decoration: none;">PORTFOLIO</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="./blog/" style="color: var(--text-muted); text-decoration: none;">BLOG</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="./tools/" style="color: var(--text-muted); text-decoration: none;">TOOLS</a>
+                <span style="color: var(--text-muted);">•</span>
+                <a href="https://github.com/BasinLeon" target="_blank" style="color: var(--text-muted); text-decoration: none;">GITHUB</a>
+            </div>
         </div>
     </section>
 
