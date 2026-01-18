@@ -39,7 +39,7 @@ My core belief: Revenue isn't about "more calls = more deals." It's about design
 
 Traditional GTM is linear. Mine is recursive — the system learns from every interaction.
 
-**The $800K Insight:** I don't add headcount. I replace it with architecture.`
+**The $424K Insight:** I don't add headcount. I replace $770K in costs with $150K in architecture. That's $424K saved.`
         },
 
         // Signal-to-System-to-Scale Framework
@@ -340,7 +340,7 @@ At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails faile
             response: `**About Leon Basin**
 
 **The Short Version:**
-Revenue Architect. 15+ years GTM. I build systems that replace $800K in headcount with code.
+Revenue Architect. 15+ years GTM. I build systems that replace $770K in headcount costs with $150K in architecture ($424K saved).
 
 **Career Highlights:**
 - **Google** — Operations Specialist (Google Shopping)
@@ -370,10 +370,10 @@ BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monito
 "Sales is just debugging human behavior." ⚡`
         },
 
-        // $800K Replacement
+        // $424K Savings / Replacement
         replacement: {
-            keywords: ['800k', '800,000', 'replace', 'headcount', 'cost', 'savings', 'roi'],
-            response: `**The $800K Replacement Thesis**
+            keywords: ['424k', '424,000', '800k', '800,000', 'replace', 'headcount', 'cost', 'savings', 'roi', '$424k'],
+            response: `**The $424K Savings Thesis**
 
 **The Math:**
 - Average SDR: $80K salary + $20K benefits + $10K tools = $110K/year
@@ -470,7 +470,7 @@ I'm the intelligence layer of BASIN::NEXUS — here to show you how Leon thinks 
 - 🔮 **Vision:** "What do you want to build?"
 - 🛠️ **Tools:** "What's in your $0 stack?"
 - 💼 **Case Studies:** "Tell me about Fudo"
-- 💰 **The $800K Question:** "How do you replace headcount?"
+- 💰 **The $424K Question:** "How do you replace headcount with architecture?"
 
 Or ask me anything about the Signal Engine powering this site. ⚡`
         }
@@ -1039,9 +1039,10 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                     </div>
                     <div class="bot-message assistant">
                         <strong>Welcome to BASIN::NEXUS Intelligence</strong>
+                        <br><br>
                         I'm the thinking layer of the Signal Engine — Leon's GTM philosophy, frameworks, and decision logic, codified.
                         <br><br>
-                        Ask me about revenue architecture, the $800K replacement thesis, or how to build systems that scale.
+                        Ask me about revenue architecture, the $424K savings thesis ($770K headcount → $150K architecture), or how to build systems that scale.
                     </div>
                 </div>
                 <div id="bot-input-area">
@@ -1049,7 +1050,8 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                     <div class="quick-actions">
                         <span class="quick-action" data-q="What's your GTM philosophy?">Philosophy</span>
                         <span class="quick-action" data-q="Explain Signal-System-Scale">Framework</span>
-                        <span class="quick-action" data-q="How do you replace $800K in headcount?">$800K</span>
+                        <span class="quick-action" data-q="How do you replace $424K in headcount costs?">$424K Savings</span>
+                        <span class="quick-action" data-q="Show me your KPIs and metrics">KPIs</span>
                         <span class="quick-action" data-q="Tell me about your case studies">Case Studies</span>
                         <span class="quick-action" data-q="What did you write about AI?">📚 Search Archive</span>
                     </div>
