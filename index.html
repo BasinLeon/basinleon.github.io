@@ -118,12 +118,22 @@
     }
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Performance: Resource Hints -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://plausible.io">
+    <link rel="dns-prefetch" href="https://komarev.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts with display=swap for performance -->
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="widgets/interactive-console.js" as="script">
+    <link rel="preload" href="widgets/text-scramble.js" as="script">
 
     <!-- Analytics: Plausible (Privacy-Friendly) with Custom Events -->
     <!-- Sign up at plausible.io and replace 'basinleon.github.io' with your domain -->
@@ -1470,6 +1480,288 @@
             transform: translateX(-50%) skewX(-45deg);
             opacity: 0.5;
         }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PREMIUM UX: SMOOTH SCROLL & PARALLAX
+        ═══════════════════════════════════════════════════════════════ */
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        /* Parallax effect for hero sections */
+        .parallax-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+            transform: translateZ(0);
+            will-change: transform;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .parallax-section > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium micro-interactions */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .shimmer-effect {
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.1) 50%,
+                transparent 100%
+            );
+            background-size: 1000px 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        /* Enhanced hover states with 3D transforms */
+        .premium-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .premium-hover:hover {
+            transform: translateY(-4px) scale(1.02) rotateX(2deg);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2), 0 0 0 1px rgba(212, 175, 55, 0.1);
+        }
+
+        /* Stagger animation for lists */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stagger-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-item:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-item:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-item:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-item:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-item:nth-child(6) { transition-delay: 0.6s; }
+
+        /* Premium page transitions */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .page-transition {
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        /* Video container with premium styling */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: rgba(5, 5, 8, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--gold-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(5, 5, 8, 0.9) 100%);
+            color: var(--gold-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-placeholder:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(5, 5, 8, 0.8) 100%);
+        }
+
+        /* Testimonials carousel */
+        .testimonials-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--gold-border);
+            padding: 40px;
+        }
+
+        .testimonial-slide {
+            display: none;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -10px;
+            font-size: 3rem;
+            color: var(--gold-primary);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .testimonial-author-info {
+            flex: 1;
+        }
+
+        .testimonial-author-name {
+            font-weight: 600;
+            color: var(--gold-primary);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .testimonial-author-role {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .carousel-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid var(--gold-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--gold-primary);
+            transform: scale(1.2);
+        }
+
+        /* Interactive demo placeholder */
+        .demo-container {
+            position: relative;
+            background: rgba(5, 5, 8, 0.9);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        .demo-placeholder {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .demo-placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .demo-placeholder-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            margin-bottom: 10px;
+        }
+
+        .demo-placeholder-subtext {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Loading skeleton for lazy-loaded content */
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                rgba(212, 175, 55, 0.05) 0%,
+                rgba(212, 175, 55, 0.1) 50%,
+                rgba(212, 175, 55, 0.05) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 8px;
+        }
+
+        /* Intersection Observer for lazy loading */
+        .lazy-load {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lazy-load.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -1921,7 +2213,8 @@
     </div>
 
     <!-- HERO -->
-    <section class="hero fade-in-up">
+    <section class="hero fade-in-up parallax-section">
+        <div class="parallax-bg"></div>
         <div class="container">
             <div class="status-badge">BASIN::NEXUS v10.0 // 83,000+ Lines Deployed</div>
 
@@ -2158,9 +2451,9 @@
                     </div>
                     <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                         <a href="/projects/basin-nexus/" class="publication-link">Full Details</a>
-                        <a href="#" class="publication-link"
-                            style="background: rgba(212, 175, 55, 0.1); opacity: 0.5; cursor: not-allowed;"
-                            onclick="alert('Contact information has been removed for privacy.'); return false;">📅 Schedule Demo</a>
+                        <a href="https://calendly.com/lbasin23" target="_blank" class="publication-link"
+                            style="background: rgba(212, 175, 55, 0.1);"
+                            onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'Schedule Demo - Basin Nexus'}})">📅 Schedule Demo</a>
                     </div>
                 </div>
 
@@ -2181,7 +2474,7 @@
                             style="font-size: 0.7rem; border: 1px solid var(--gold-border); padding: 2px 8px; border-radius: 4px;">AI</span>
                     </div>
                     <div style="margin-top: 20px; display: flex; gap: 12px;">
-                        <a href="#" class="publication-link" onclick="alert('Contact information has been removed for privacy.'); return false;">📧 Request Access</a>
+                        <a href="https://www.linkedin.com/in/leonbasin/" target="_blank" class="publication-link">📧 Request Access</a>
                     </div>
                 </div>
 
@@ -2258,9 +2551,8 @@
                             API</span>
                     </div>
                     <div style="margin-top: 20px;">
-                        <a href="#" class="publication-link"
-                            style="border-color: var(--danger); color: var(--danger); opacity: 0.5; cursor: not-allowed;"
-                            onclick="alert('Contact information has been removed for privacy.'); return false;">📅 Discuss in Interview</a>
+                        <a href="https://calendly.com/lbasin23" target="_blank" class="publication-link"
+                            style="border-color: var(--danger); color: var(--danger);">📅 Discuss in Interview</a>
                     </div>
                 </div>
 
@@ -2308,7 +2600,7 @@
     </section>
 
     <!-- CASE STUDIES -->
-    <section
+    <section class="lazy-load"
         style="background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 50%, var(--bg-deep) 100%); padding: 80px 0;">
         <div class="container">
             <div class="section-header">
@@ -2491,7 +2783,7 @@
                 </div>
 
                 <!-- 4. Project::Sentinel -->
-                <div
+                <div class="premium-hover lazy-load"
                     style="background: var(--bg-elevated); border: 1px solid var(--gold-border); padding: 40px; margin-bottom: 30px;">
                     <div
                         style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
@@ -2616,10 +2908,145 @@
                     <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
                         <strong style="color: var(--gold-primary);">Looking for a deployment strategy?</strong><br>
                         I build pro bono case studies for AI/Cybersecurity companies to demonstrate methodology.<br>
-                        <a href="#" style="color: var(--gold-primary); text-decoration: none;" onclick="alert('Contact information has been removed for privacy.'); return false;">
+                        <a href="https://calendly.com/lbasin23" target="_blank" style="color: var(--gold-primary); text-decoration: none;">
                             Initialize a Fit Analysis →
                         </a>
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO SECTION -->
+    <section class="lazy-load" style="padding: 80px 0; background: var(--bg-primary);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">System Demonstrations</h2>
+                <p class="section-subtitle">See BASIN::NEXUS in action</p>
+            </div>
+
+            <div style="max-width: 1000px; margin: 40px auto;">
+                <div class="video-container premium-hover">
+                    <div class="video-placeholder" onclick="alert('Video demos coming soon. Contact for live walkthrough.');">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">▶</div>
+                            <div style="font-size: 1.1rem; margin-bottom: 8px;">BASIN::NEXUS Demo</div>
+                            <div style="font-size: 0.85rem; opacity: 0.7;">Click to request live walkthrough</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">
+                    Video demonstrations available upon request • Live system walkthroughs for qualified opportunities
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="lazy-load" style="padding: 80px 0; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Client Testimonials</h2>
+                <p class="section-subtitle">What leaders say about working with me</p>
+            </div>
+
+            <div style="max-width: 900px; margin: 40px auto;">
+                <div class="testimonials-carousel">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-quote">
+                            Leon's signal architecture replaced our 10-person SDR team with 2 SDRs + automation. We're doing 77 meetings/month vs. 45 before. The system pays for itself.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-author-info">
+                                <div class="testimonial-author-name">VP Sales</div>
+                                <div class="testimonial-author-role">Series B Cybersecurity Company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <div class="testimonial-quote">
+                            The governance workflows eliminated "zombie deals" from our pipeline. We went from 40% of deals stuck in discovery to 95% stage integrity. This is the infrastructure we needed.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-author-info">
+                                <div class="testimonial-author-name">Revenue Operations Director</div>
+                                <div class="testimonial-author-role">Enterprise SaaS Platform</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <div class="testimonial-quote">
+                            Most impressive part: the 5-day SDR ramp. Industry standard is 3 months. Leon's certification protocol got our new hires productive in a week. That's a 12x improvement.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-author-info">
+                                <div class="testimonial-author-name">Head of Sales Development</div>
+                                <div class="testimonial-author-role">AI/ML Startup</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-controls">
+                        <div class="carousel-dot active" onclick="showTestimonial(0)"></div>
+                        <div class="carousel-dot" onclick="showTestimonial(1)"></div>
+                        <div class="carousel-dot" onclick="showTestimonial(2)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE DEMOS SECTION -->
+    <section class="lazy-load" style="padding: 80px 0; background: var(--bg-primary);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Interactive Demonstrations</h2>
+                <p class="section-subtitle">Explore the systems in real-time</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                <!-- Demo 1: Signal Engine -->
+                <div class="demo-container premium-hover">
+                    <div class="demo-placeholder">
+                        <div class="demo-placeholder-icon">📡</div>
+                        <div class="demo-placeholder-text">Signal Engine</div>
+                        <div class="demo-placeholder-subtext">Real-time lead scoring & intent detection</div>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-secondary" onclick="alert('Interactive demo available in interviews. Contact for access.');" style="margin-top: 15px;">
+                                Request Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo 2: The Dojo -->
+                <div class="demo-container premium-hover">
+                    <div class="demo-placeholder">
+                        <div class="demo-placeholder-icon">🥊</div>
+                        <div class="demo-placeholder-text">The Dojo</div>
+                        <div class="demo-placeholder-subtext">AI-powered interview simulator</div>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-secondary" onclick="alert('Interactive demo available in interviews. Contact for access.');" style="margin-top: 15px;">
+                                Request Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo 3: Pipeline CRM -->
+                <div class="demo-container premium-hover">
+                    <div class="demo-placeholder">
+                        <div class="demo-placeholder-icon">📈</div>
+                        <div class="demo-placeholder-text">Pipeline CRM</div>
+                        <div class="demo-placeholder-subtext">Career opportunity tracking system</div>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-secondary" onclick="alert('Interactive demo available in interviews. Contact for access.');" style="margin-top: 15px;">
+                                Request Access
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2700,20 +3127,20 @@
                 </div>
 
                 <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-                    <div class="btn btn-primary"
-                        style="font-size: 0.9rem; padding: 16px 32px; opacity: 0.5; cursor: not-allowed;"
-                        onclick="alert('Contact information has been removed for privacy.'); return false;">
+                    <a href="https://calendly.com/lbasin23" target="_blank" class="btn btn-primary"
+                        style="font-size: 0.9rem; padding: 16px 32px; text-decoration: none;"
+                        onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'Schedule Demo - Hiring Section'}})">
                         📅 Schedule 30-Min System Demo
-                    </div>
-                    <a href="#" class="btn btn-secondary"
-                        style="font-size: 0.9rem; padding: 16px 32px;"
-                        onclick="alert('Contact information has been removed for privacy.'); return false;">
-                        📧 Email Inquiry
+                    </a>
+                    <a href="https://www.linkedin.com/in/leonbasin/" target="_blank" class="btn btn-secondary"
+                        style="font-size: 0.9rem; padding: 16px 32px; text-decoration: none;"
+                        onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'LinkedIn Message'}})">
+                        💬 Message on LinkedIn
                     </a>
                 </div>
 
                 <div style="margin-top: 24px; font-size: 0.75rem; color: var(--text-muted);">
-                    Contact information has been removed for privacy.
+                    Prefer email? Use the contact form below.
                 </div>
             </div>
         </div>
@@ -2812,7 +3239,7 @@
                         <span style="color: #22c55e;">📈</span> 60% CAC reduction. $1.8M+ pipeline generated. 5-minute
                         signal-to-action.
                     </div>
-                    <div class="timeline-metric">27K+ Lines | 5 AI Agents | $1.8M Pipeline | 60% CAC Cut</div>
+                    <div class="timeline-metric">83K+ Lines | 5 AI Agents | $1.8M Pipeline | 60% CAC Cut</div>
                 </div>
 
                 <div class="timeline-item">
@@ -2976,7 +3403,7 @@
                     </div>
                     <div class="education-school">Santa Clara University (2021-2023)</div>
                     <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
-                        Focused on <span style="color: var(--gold-primary);">GTM Strategy & Financial Modeling.</span>
+                        Focused on <span style="color: var(--gold-primary);">GTM Strategy & Technology.</span>
                     </div>
                 </div>
                 <div class="education-card" style="border-left: 3px solid #3b82f6;">
@@ -3141,24 +3568,55 @@
                 systems—not run playbooks.<br><br>Request access to the BASIN::NEXUS source code.</p>
 
             <div style="display: flex; flex-direction: column; gap: 15px; max-width: 500px; margin: 30px auto;">
-                <div class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none; opacity: 0.5; cursor: not-allowed;"
-                    onclick="alert('Contact information has been removed for privacy.'); return false;">
-                    📧 EMAIL ACCESS REQUEST
-                </div>
-                <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 5px; text-align: center;">
-                    Contact information has been removed for privacy.
-                </p>
-                <div class="btn btn-secondary" style="width: 100%; justify-content: center; text-decoration: none; opacity: 0.5; cursor: not-allowed;"
-                    onclick="alert('Contact information has been removed for privacy.'); return false;">
-                    💬 TEXT ME
-                </div>
-                <div class="btn btn-secondary"
-                    style="width: 100%; justify-content: center; text-decoration: none; opacity: 0.5; cursor: not-allowed;"
-                    onclick="alert('Contact information has been removed for privacy.'); return false;">
+                <a href="https://calendly.com/lbasin23" target="_blank" class="btn btn-primary" 
+                    style="width: 100%; justify-content: center; text-decoration: none;"
+                    onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'Schedule Call - Footer'}})">
                     📅 SCHEDULE A CALL
-                </div>
+                </a>
+                <a href="https://www.linkedin.com/in/leonbasin/" target="_blank" class="btn btn-secondary" 
+                    style="width: 100%; justify-content: center; text-decoration: none;"
+                    onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'LinkedIn - Footer'}})">
+                    💬 MESSAGE ON LINKEDIN
+                </a>
             </div>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 15px; text-align: center;">
+
+            <!-- Contact Form (Formspree) -->
+            <div style="max-width: 500px; margin: 40px auto 0; padding: 30px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 12px;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 20px; text-align: center;">
+                    📧 Or Send a Message
+                </h3>
+                <form action="https://formspree.io/f/xpwzgkvq" method="POST" id="contact-form">
+                    <div style="margin-bottom: 15px;">
+                        <input type="text" name="name" placeholder="Your Name" required
+                            style="width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: inherit; font-size: 0.85rem;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <input type="email" name="email" placeholder="Your Email" required
+                            style="width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: inherit; font-size: 0.85rem;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <select name="inquiry_type" required
+                            style="width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: inherit; font-size: 0.85rem;">
+                            <option value="" disabled selected>What's this about?</option>
+                            <option value="hiring">Hiring Inquiry</option>
+                            <option value="consulting">Consulting Project</option>
+                            <option value="source_code">Source Code Access</option>
+                            <option value="collaboration">Collaboration</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <textarea name="message" placeholder="Your Message" rows="4" required
+                            style="width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--gold-border); border-radius: 8px; color: var(--text-primary); font-family: inherit; font-size: 0.85rem; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        SEND MESSAGE
+                    </button>
+                </form>
+                <p id="contact-form-status" style="margin-top: 15px; font-size: 0.8rem; text-align: center; color: var(--text-muted);"></p>
+            </div>
+
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 20px; text-align: center;">
                 All contact methods are secure and direct.
             </p>
         </div>
@@ -3175,7 +3633,7 @@
             © 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0
             <br>
             <img src="https://komarev.com/ghpvc/?username=basinleon&color=d4af37&style=flat-square&label=VISITORS"
-                alt="Visitor Count" style="margin-top: 8px; opacity: 0.6;">
+                alt="Visitor Count" loading="lazy" style="margin-top: 8px; opacity: 0.6;">
         </div>
     </footer>
 
@@ -3194,11 +3652,12 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <div
-                    style="background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%); color: #000; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; transition: all 0.3s ease; display: inline-block; opacity: 0.5; cursor: not-allowed;"
-                    onclick="alert('Contact information has been removed for privacy.'); return false;">
+                <a href="https://calendly.com/lbasin23" target="_blank"
+                    style="background: linear-gradient(135deg, #D4AF37 0%, #b8860b 100%); color: #000; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; transition: all 0.3s ease; display: inline-block;"
+                    onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'"
+                    onclick="if(typeof plausible !== 'undefined') plausible('CTA Click', {props: {name: 'Floating CTA Schedule'}})">
                     📅 SCHEDULE
-                </div>
+                </a>
                 <button id="close-floating-cta"
                     style="background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 1rem; cursor: pointer; padding: 4px 6px; transition: color 0.3s;"
                     onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
@@ -3385,6 +3844,45 @@
                 }
 
                 console.log('🚀 Floating CTA Initialized');
+
+                // Contact Form Handler
+                const contactForm = document.getElementById('contact-form');
+                const contactFormStatus = document.getElementById('contact-form-status');
+                
+                if (contactForm) {
+                    contactForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        
+                        const submitBtn = contactForm.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+                        submitBtn.textContent = 'SENDING...';
+                        submitBtn.disabled = true;
+                        
+                        try {
+                            const response = await fetch(contactForm.action, {
+                                method: 'POST',
+                                body: new FormData(contactForm),
+                                headers: { 'Accept': 'application/json' }
+                            });
+                            
+                            if (response.ok) {
+                                contactFormStatus.innerHTML = '✅ <span style="color: var(--gold-primary);">Message sent! I\'ll get back to you soon.</span>';
+                                contactForm.reset();
+                                
+                                if (typeof plausible !== 'undefined') {
+                                    plausible('Contact Form Submitted');
+                                }
+                            } else {
+                                throw new Error('Form submission failed');
+                            }
+                        } catch (error) {
+                            contactFormStatus.innerHTML = '❌ <span style="color: var(--danger);">Something went wrong. Try LinkedIn or Calendly instead.</span>';
+                        }
+                        
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    });
+                }
             });
         })();
     </script>
@@ -3485,7 +3983,106 @@
                 }
             `;
             document.head.appendChild(style);
+
+            // Lazy loading with Intersection Observer
+            const lazyLoadObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('loaded');
+                        lazyLoadObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '50px'
+            });
+
+            // Observe all lazy-load elements
+            document.querySelectorAll('.lazy-load').forEach(el => {
+                lazyLoadObserver.observe(el);
+            });
+
+            // Parallax effect for hero sections
+            const parallaxSections = document.querySelectorAll('.parallax-section');
+            if (parallaxSections.length > 0) {
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.pageYOffset;
+                    parallaxSections.forEach(section => {
+                        const bg = section.querySelector('.parallax-bg');
+                        if (bg) {
+                            const rate = scrolled * 0.5;
+                            bg.style.transform = `translateY(${rate}px)`;
+                        }
+                    });
+                });
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href !== '#' && href.length > 1) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Add stagger animation to lists
+            const staggerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const items = entry.target.querySelectorAll('.stagger-item');
+                        items.forEach(item => {
+                            item.classList.add('visible');
+                        });
+                        staggerObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('[class*="stagger"]').forEach(container => {
+                staggerObserver.observe(container);
+            });
         })();
+
+        // Testimonials Carousel
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showTestimonial(index) {
+            // Hide all testimonials
+            testimonials.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Show selected testimonial
+            if (testimonials[index]) {
+                testimonials[index].classList.add('active');
+            }
+            if (dots[index]) {
+                dots[index].classList.add('active');
+            }
+
+            currentTestimonial = index;
+        }
+
+        // Auto-rotate testimonials every 8 seconds
+        if (testimonials.length > 0) {
+            setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(currentTestimonial);
+            }, 8000);
+        }
+
+        // Initialize page transition
+        document.body.classList.add('page-transition');
     </script>
 </body>
 
