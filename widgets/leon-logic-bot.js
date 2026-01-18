@@ -298,27 +298,37 @@ At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails faile
 
         // Case Studies
         casestudies: {
-            keywords: ['case study', 'example', 'fudo', 'ambient', 'sense', 'sendbird', 'project', 'built', 'war story'],
+            keywords: ['case study', 'example', 'fudo', 'ambient', 'sense', 'sendbird', 'project', 'built', 'war story', 'sanho', 'hyperdrive', 'kickstarter', 'braintrust', 'slingshot', 'netapp'],
             response: `**War Stories: What I've Built**
 
 **🔐 Fudo Security (2024-2025)**
-- Challenge: 60-day sales cycles, low reply rates
-- Built: Signal Engine monitoring 50k+ intent signals/day
-- Result: +160% pipeline YoY, 35-day cycles
+- Challenge: Zero US presence, dormant partners, stalled PoCs
+- Built: Americas GTM from scratch, activated NA & LATAM channels
+- Result: +160% pipeline YoY, partner channel → active revenue
 
 **🎯 Ambient.ai (Interview Case Study)**
 - Challenge: "How would you scale our GTM?"
 - Built: $424K savings model showing 7 SDRs → 1 architect + automation
 - Result: Advanced to final round
 
-**📊 Sense (2022-2023)**
-- Challenge: SDR team struggling with cold outreach
-- Built: "Outreach Autopsy" self-diagnosis tool
-- Result: Reply rates 8% → 15% in 6 weeks
+**📊 Sense (2021-2023)**
+- Challenge: 5-person BDR team struggling — 8% reply rates, high churn
+- Built: "Outreach Autopsy" diagnostic tool + Social Selling playbook
+- Result: Reply rates 8% → 18%, $10M pipeline, $250K deal closed personally
+
+**🚀 Sanho/HyperDrive (2015-2019)**
+- Challenge: Launch world's first USB-C Hub for iPad Pro via crowdfunding
+- Built: Kickstarter/Indiegogo strategy across 16+ campaigns
+- Result: $7M+ raised total, $3.1M single campaign (most crowdfunded MacBook accessory)
+
+**🏢 NetApp (2013-2014)**
+- Challenge: Security operations across 16-building campus
+- Built: Led 3-person team, managed global backup operations
+- Result: Zero security incidents under tenure
 
 **🚀 Basin::Nexus (Ongoing)**
 - Challenge: Job hunting is broken
-- Built: AI-powered interview prep, signal monitoring, artifact generation
+- Built: 83K+ lines of code, 5 LLMs, React app, 3 interactive tools
 - Result: 4 active final-round interviews simultaneously
 
 **The Pattern:** Every role I automate myself out of a job — that's the point.`
@@ -330,22 +340,32 @@ At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails faile
             response: `**About Leon Basin**
 
 **The Short Version:**
-Revenue Architect. Signal obsessive. I build systems that replace headcount with intelligence.
+Revenue Architect. 15+ years GTM. I build systems that replace $800K in headcount with code.
 
-**The Longer Version:**
-I spent 10+ years in revenue roles — from SDR to AE to RevOps to GTM Engineering. Along the way, I noticed something: most companies solve revenue problems by hiring more humans. That's expensive, slow, and doesn't scale.
+**Career Highlights:**
+- **Google** — Operations Specialist (Google Shopping)
+- **NetApp** — Led 3-person security team, 16 buildings, zero incidents
+- **Sanho/HyperDrive** — $7M+ crowdfunded across 16 campaigns
+- **SurveyMonkey** — $300M portfolio, 700+ accounts
+- **Sense** — $10M pipeline, 8%→18% reply rates, $250K closed
+- **Fudo Security** — 160% pipeline growth, Americas GTM from scratch
+- **Basin::Nexus** — 83K+ lines, 5 LLMs, $1.8M pipeline generated
+
+**Education:**
+- MBA, Santa Clara University (GTM Strategy & Technology)
+- BS Psychology (Buyer Psychology & Neuro-Marketing)
 
 **My Thesis:**
 What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
 
 **What I Built:**
-BASIN::NEXUS — a personal "Revenue OS" that monitors 50k+ signals/day, auto-generates executive briefs, and runs my entire job search. It's the proof that one engineer can output-match a 10-person SDR team.
+BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs my job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
 
 **The Vibe:**
 - Mountain View, CA
-- JetBrains Mono on everything
-- Obsessed with toil reduction
-- Writes poetry about cybersecurity
+- JetBrains Mono on everything  
+- Author: "Unlock the Power of Storytelling" (Amazon 2024)
+- 1,884+ LinkedIn newsletter subscribers
 
 "Sales is just debugging human behavior." ⚡`
         },
@@ -369,13 +389,71 @@ BASIN::NEXUS — a personal "Revenue OS" that monitors 50k+ signals/day, auto-ge
 $800K in headcount → $150K in architecture
 Same or better output. Zero burnout. 24/7 operation.
 
-**Why This Matters:**
-Every VP of Sales who hires their 8th SDR is making a $100K/year mistake. I'm the alternative.
+**Try the math yourself:**
+Use my ROI Calculator at /tools/roi-calculator.html — plug in your numbers and see the savings.
 
 **Proof:**
 - Fudo: +160% pipeline with no new hires
+- Sense: 5-person team → 105% quota, $10M pipeline
 - Ambient model: $424K annual savings calculated
 - Basin::Nexus: Running my job search while I sleep`
+        },
+
+        // Interactive Tools
+        tools_interactive: {
+            keywords: ['calculator', 'roi', 'headline', 'case study', 'generator', 'interactive', 'try', 'demo', 'use'],
+            response: `**Interactive Tools I Built**
+
+**💰 ROI Calculator** (/tools/roi-calculator.html)
+Calculate your savings from Revenue Architecture vs traditional SDR model. Input your team size, costs, and see the $424K math in action.
+
+**📋 Case Study Generator** (/tools/case-study-generator.html)
+Generate GTM deployment strategies instantly. 4 templates:
+- Signal Architecture
+- Bifurcated Model  
+- SDR Transformation
+- Partner Activation
+
+**💼 Headline Generator** (/tools/headline-generator.html)
+Create LinkedIn headlines that get noticed. 6 styles:
+- Results-Driven (metrics-focused)
+- Authority (expert positioning)
+- Value Prop (what you deliver)
+- Builder (systems & scale)
+- Storyteller (narrative hook)
+- Contrarian (stand out bold)
+
+**All free. No API costs. No sign-up required.**
+
+Try them at basinleon.github.io/tools/`
+        },
+
+        // Metrics & Lines of Code
+        metrics: {
+            keywords: ['lines', 'code', 'hours', 'metric', '83k', '83000', 'stats', 'numbers'],
+            response: `**By The Numbers**
+
+**Code Stats:**
+- 83,000+ lines deployed across all projects
+- BASIN::NEXUS React app: 8,400+ lines
+- Python signal engine: 20,000+ lines
+- This portfolio: 4,000+ lines HTML/CSS/JS
+
+**Career Impact:**
+- $310M+ portfolio managed (SurveyMonkey)
+- $23M+ career pipeline generated
+- $7M+ crowdfunded (Sanho/HyperDrive)
+- $10M+ pipeline at Sense
+- 160% YoY pipeline growth (Fudo)
+- $424K projected annual savings model
+
+**Efficiency Gains:**
+- -92% manual toil
+- -70% headcount reduction possible
+- 5-day SDR ramp (vs 3-month industry avg)
+- 8%→18% reply rate improvement (Sense)
+
+**The System Never Sleeps:** 50k+ signals/day monitored, 24/7 operation.`
         },
 
         // Default/Fallback — now context-aware
