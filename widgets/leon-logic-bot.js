@@ -381,12 +381,12 @@ BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monito
 - 7 SDRs: $770K/year → maybe 21 SQLs/month
 
 **My Architecture:**
-- 1 GTM Engineer: $150K/year
-- Signal Engine: $0/month (self-hosted)
-- Output: 50k signals/day monitored, 15-22% reply rates, 8-12% SQL conversion
+- 1 Revenue Architect: $150K/year
+- Signal Engine: $0/month (self-hosted, local LLMs)
+- Output: 50k+ signals/day monitored, 15-22% reply rates, 8-12% SQL conversion
 
 **The Result:**
-$800K in headcount → $150K in architecture
+$770K in headcount costs → $150K in architecture = **$424K annual savings**
 Same or better output. Zero burnout. 24/7 operation.
 
 **Try the math yourself:**
