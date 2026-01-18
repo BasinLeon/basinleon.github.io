@@ -570,6 +570,128 @@
         .hidden {
             display: none;
         }
+
+        /* Chronicles Section */
+        .chronicle-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-top: 32px;
+        }
+
+        .featured-chronicle {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .featured-chronicle a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .featured-chronicle a:hover {
+            transform: translateX(4px);
+        }
+
+        .chronicle-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .chronicle-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.2;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .chronicle-title:hover {
+            color: var(--gold);
+        }
+
+        .chronicle-excerpt {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .chronicle-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .chronicle-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chronicle-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chronicle-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+
+        .chronicle-item:hover {
+            border-color: var(--gold-glow);
+            transform: translateX(4px);
+        }
+
+        .chronicle-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .chronicle-item-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .chronicle-item-title:hover {
+            color: var(--gold);
+        }
+
+        .chronicle-item-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .chronicle-container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -584,7 +706,7 @@
                 <a href="../services/">Services</a>
                 <a href="../tools/">Laboratory</a>
                 <a href="../library/" class="active">Library</a>
-                <a href="../blog/">Chronicle</a>
+                <a href="../blog/">Chronicles</a>
             </div>
         </div>
     </nav>
@@ -655,6 +777,29 @@
 
         <div class="resources-grid" id="resources-grid">
             <!-- Resources will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- The Chronicles Section -->
+    <section class="resources-section container" style="border-top: 0.5px solid rgba(255, 255, 255, 0.1); padding-top: 80px; margin-top: 60px;">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">The Chronicles</h2>
+                <p class="section-subtitle">Featured dispatches and insights from the field</p>
+            </div>
+            <a href="../blog/" class="btn btn-secondary">View All Posts →</a>
+        </div>
+
+        <div class="chronicle-container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 32px;">
+            <!-- Featured Article -->
+            <article class="featured-chronicle" id="featured-article" style="background: var(--bg-card); border-radius: 16px; padding: 32px; border: 0.5px solid rgba(255, 255, 255, 0.1);">
+                <!-- Populated by JavaScript -->
+            </article>
+
+            <!-- Recent Articles Sidebar -->
+            <aside class="chronicle-sidebar" id="recent-articles" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Populated by JavaScript -->
+            </aside>
         </div>
     </section>
 
@@ -985,6 +1130,96 @@
                 closePremiumModal();
             }
         });
+
+        // Load Chronicles (Blog Posts)
+        (async function loadChronicles() {
+            try {
+                const response = await fetch('../data/posts.json');
+                const posts = await response.json();
+
+                // Filter to only Blog posts with valid URLs
+                const validPosts = posts.filter(p =>
+                    p.url &&
+                    p.url !== '#' &&
+                    p.category === 'Blog'
+                ).slice(0, 6); // Get 6 most recent
+
+                if (validPosts.length === 0) {
+                    // Fallback content
+                    document.getElementById('featured-article').innerHTML = `
+                        <div class="chronicle-meta">Featured Dispatch · ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        <h3 class="chronicle-title">Revenue Architecture: The Complete Framework</h3>
+                        <p class="chronicle-excerpt">The definitive guide to building revenue systems that scale. Signal → System → Scale methodology for modern GTM teams.</p>
+                        <div class="chronicle-tags">
+                            <span class="chronicle-tag">Revenue Architecture</span>
+                            <span class="chronicle-tag">GTM Strategy</span>
+                            <span class="chronicle-tag">Framework</span>
+                        </div>
+                        <a href="../blog/" style="display: inline-block; margin-top: 20px; color: var(--gold);">Read Full Article →</a>
+                    `;
+                    return;
+                }
+
+                // Featured article (most recent)
+                const featured = validPosts[0];
+                const featuredEl = document.getElementById('featured-article');
+                const featuredTags = (featured.tags || []).slice(0, 3).map(t => 
+                    `<span class="chronicle-tag">${t}</span>`
+                ).join('');
+                
+                featuredEl.innerHTML = `
+                    <a href="../blog/${featured.url}">
+                        <div class="chronicle-meta">Featured Dispatch · ${featured.date || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        <h3 class="chronicle-title">${featured.title}</h3>
+                        <p class="chronicle-excerpt">${featured.excerpt || 'Insights from the field of Revenue Architecture...'}</p>
+                        ${featuredTags ? `<div class="chronicle-tags">${featuredTags}</div>` : ''}
+                        <div style="margin-top: 20px; color: var(--gold); font-size: 0.85rem;">Read Full Article →</div>
+                    </a>
+                `;
+
+                // Recent articles sidebar
+                const recentPosts = validPosts.slice(1, 6);
+                const recentEl = document.getElementById('recent-articles');
+                
+                if (recentPosts.length > 0) {
+                    recentEl.innerHTML = `
+                        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; font-weight: 600;">Recent Dispatches</div>
+                        ${recentPosts.map(post => `
+                            <div class="chronicle-item">
+                                <a href="../blog/${post.url}">
+                                    <div class="chronicle-item-title">${post.title}</div>
+                                    <div class="chronicle-item-meta">${post.date || ''}</div>
+                                </a>
+                            </div>
+                        `).join('')}
+                        <a href="../blog/" style="text-align: center; padding: 12px; background: var(--bg-elevated); border-radius: 12px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; margin-top: 8px;">
+                            View All Chronicles →
+                        </a>
+                    `;
+                }
+
+            } catch (e) {
+                console.error('Failed to load chronicles:', e);
+                // Fallback content
+                document.getElementById('featured-article').innerHTML = `
+                    <div class="chronicle-meta">Featured Dispatch · ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    <h3 class="chronicle-title">The Chronicles</h3>
+                    <p class="chronicle-excerpt">Thoughts, frameworks, and dispatches from the field of Revenue Architecture. Real insights from real deployments.</p>
+                    <div class="chronicle-tags">
+                        <span class="chronicle-tag">Revenue Architecture</span>
+                        <span class="chronicle-tag">GTM</span>
+                        <span class="chronicle-tag">Insights</span>
+                    </div>
+                    <a href="../blog/" style="display: inline-block; margin-top: 20px; color: var(--gold);">Read All Articles →</a>
+                `;
+                document.getElementById('recent-articles').innerHTML = `
+                    <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; font-weight: 600;">Recent Dispatches</div>
+                    <a href="../blog/" style="text-align: center; padding: 12px; background: var(--bg-elevated); border-radius: 12px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">
+                        Visit The Chronicle →
+                    </a>
+                `;
+            }
+        })();
     </script>
 
     <!-- NEXUS Intelligence Bot -->
