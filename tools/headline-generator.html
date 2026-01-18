@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Headline Generator | Stand Out to Recruiters | Leon Basin</title>
+    <meta name="description"
+        content="Generate compelling LinkedIn headlines that get noticed by recruiters. Free tool for job seekers and professionals.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="LinkedIn Headline Generator | Get Noticed">
+    <meta property="og:description"
+        content="Generate compelling LinkedIn headlines that stand out to recruiters and hiring managers.">
+    <meta property="og:url" content="https://basinleon.github.io/tools/headline-generator.html">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+            --green: #22c55e;
+            --blue: #0077b5;
+            --cyan: #06b6d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 14px 24px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-primary);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 40px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 119, 181, 0.1);
+            border: 1px solid rgba(0, 119, 181, 0.3);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            color: var(--blue);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Generator */
+        .generator {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        /* Style Selection */
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .style-option {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            padding: 16px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .style-option:hover {
+            border-color: var(--gold-primary);
+        }
+
+        .style-option.active {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .style-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .style-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+        }
+
+        .style-desc {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Generate Button */
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-btn:hover {
+            box-shadow: 0 0 30px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Results */
+        .results {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .headline-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .headline-card:hover {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .headline-text {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .headline-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .headline-chars {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .headline-chars.warning {
+            color: var(--gold-primary);
+        }
+
+        .headline-chars.danger {
+            color: #ef4444;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-border);
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: var(--gold-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        /* Tips */
+        .tips {
+            margin-top: 40px;
+            padding: 24px;
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+        }
+
+        .tips-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--green);
+            margin-bottom: 16px;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tips-list li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .style-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="../" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="../">Portfolio</a>
+                <a href="../blog/">Blog</a>
+                <a href="./" class="active">Tools</a>
+                <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">💼 FREE TOOL</div>
+            <h1 class="hero-title">HEADLINE GENERATOR</h1>
+            <p class="hero-subtitle">
+                Create LinkedIn headlines that get you noticed by recruiters and hiring managers
+            </p>
+        </div>
+    </section>
+
+    <!-- Generator -->
+    <section class="container">
+        <div class="generator">
+            <div class="input-group">
+                <label class="input-label">Your Current Role / Title</label>
+                <input type="text" id="currentRole" class="input-field" placeholder="e.g., Senior Account Executive">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Your Target Role (what you want to be found for)</label>
+                <input type="text" id="targetRole" class="input-field"
+                    placeholder="e.g., VP of Sales, Revenue Leader">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Your Key Achievement / Differentiator</label>
+                <input type="text" id="achievement" class="input-field"
+                    placeholder="e.g., $10M+ closed, 150% quota, Built team from 0-20">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Industry / Specialty</label>
+                <input type="text" id="industry" class="input-field"
+                    placeholder="e.g., SaaS, Cybersecurity, Enterprise">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Headline Style</label>
+                <div class="style-grid">
+                    <div class="style-option active" data-style="results">
+                        <div class="style-icon">📊</div>
+                        <div class="style-name">Results-Driven</div>
+                        <div class="style-desc">Lead with metrics</div>
+                    </div>
+                    <div class="style-option" data-style="authority">
+                        <div class="style-icon">🎯</div>
+                        <div class="style-name">Authority</div>
+                        <div class="style-desc">Position as expert</div>
+                    </div>
+                    <div class="style-option" data-style="value">
+                        <div class="style-icon">💡</div>
+                        <div class="style-name">Value Prop</div>
+                        <div class="style-desc">What you deliver</div>
+                    </div>
+                    <div class="style-option" data-style="builder">
+                        <div class="style-icon">🔧</div>
+                        <div class="style-name">Builder</div>
+                        <div class="style-desc">Systems & scale</div>
+                    </div>
+                    <div class="style-option" data-style="storyteller">
+                        <div class="style-icon">📖</div>
+                        <div class="style-name">Storyteller</div>
+                        <div class="style-desc">Narrative hook</div>
+                    </div>
+                    <div class="style-option" data-style="contrarian">
+                        <div class="style-icon">🔥</div>
+                        <div class="style-name">Contrarian</div>
+                        <div class="style-desc">Stand out bold</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="generate-btn" onclick="generateHeadlines()">
+                ⚡ GENERATE HEADLINES
+            </button>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2 class="results-title">📋 YOUR HEADLINES</h2>
+                <div id="headlines-container"></div>
+            </div>
+
+            <!-- Tips -->
+            <div class="tips">
+                <h3 class="tips-title">💡 HEADLINE BEST PRACTICES</h3>
+                <ul class="tips-list">
+                    <li>Keep it under 120 characters (LinkedIn truncates at ~120)</li>
+                    <li>Lead with your target role, not current title</li>
+                    <li>Include quantifiable achievements when possible</li>
+                    <li>Use keywords recruiters search for</li>
+                    <li>Avoid buzzwords like "passionate" or "ninja"</li>
+                    <li>Update your headline when job searching</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="../">Portfolio</a>
+            <a href="../blog/">Blog</a>
+            <a href="./">Tools</a>
+            <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
+        </div>
+        <div class="footer-copyright">© 2026 Leon Basin • Revenue Architect</div>
+    </footer>
+
+    <!-- Generator Script -->
+    <script>
+        let selectedStyle = 'results';
+
+        // Style selection
+        document.querySelectorAll('.style-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.style-option').forEach(o => o.classList.remove('active'));
+                option.classList.add('active');
+                selectedStyle = option.dataset.style;
+            });
+        });
+
+        function generateHeadlines() {
+            const currentRole = document.getElementById('currentRole').value || 'Sales Professional';
+            const targetRole = document.getElementById('targetRole').value || 'Revenue Leader';
+            const achievement = document.getElementById('achievement').value || 'Proven track record';
+            const industry = document.getElementById('industry').value || 'B2B SaaS';
+
+            const headlines = [];
+
+            // Generate based on style
+            if (selectedStyle === 'results') {
+                headlines.push(`${targetRole} | ${achievement} | ${industry}`);
+                headlines.push(`${achievement} → Now helping ${industry} companies scale revenue`);
+                headlines.push(`${currentRole} → ${targetRole} | ${achievement} in ${industry}`);
+                headlines.push(`From ${currentRole} to ${achievement} | ${industry} Revenue Expert`);
+                headlines.push(`${industry} ${targetRole} | ${achievement} | Open to opportunities`);
+            } else if (selectedStyle === 'authority') {
+                headlines.push(`${industry} ${targetRole} | Teaching teams how to ${achievement.toLowerCase()}`);
+                headlines.push(`The ${industry} ${targetRole} who ${achievement.toLowerCase()}`);
+                headlines.push(`${targetRole} | ${industry} Expert | ${achievement}`);
+                headlines.push(`Helping ${industry} companies achieve ${achievement.toLowerCase()}`);
+                headlines.push(`${industry} Revenue Authority | ${achievement} | ${targetRole}`);
+            } else if (selectedStyle === 'value') {
+                headlines.push(`I help ${industry} companies ${achievement.toLowerCase()}`);
+                headlines.push(`${targetRole} | Turning ${industry} challenges into ${achievement.toLowerCase()}`);
+                headlines.push(`Making ${achievement.toLowerCase()} possible for ${industry} teams`);
+                headlines.push(`${industry} ${targetRole} | Your path to ${achievement.toLowerCase()}`);
+                headlines.push(`${achievement} for ${industry} companies | ${targetRole}`);
+            } else if (selectedStyle === 'builder') {
+                headlines.push(`Building revenue systems that deliver ${achievement.toLowerCase()} | ${industry}`);
+                headlines.push(`${targetRole} | Building ${industry} machines that scale`);
+                headlines.push(`From 0 → ${achievement} | ${industry} ${targetRole} & Builder`);
+                headlines.push(`${industry} ${targetRole} | Systems > Hustle | ${achievement}`);
+                headlines.push(`Architect of ${industry} revenue engines | ${achievement}`);
+            } else if (selectedStyle === 'storyteller') {
+                headlines.push(`${currentRole} by day, ${targetRole} by design | ${achievement}`);
+                headlines.push(`The ${currentRole} who became a ${targetRole} | ${achievement}`);
+                headlines.push(`Chapter: ${targetRole} | Plot: ${achievement} | Setting: ${industry}`);
+                headlines.push(`My ${industry} story: ${achievement} and counting`);
+                headlines.push(`${achievement} wasn't luck—it was ${industry} strategy | ${targetRole}`);
+            } else if (selectedStyle === 'contrarian') {
+                headlines.push(`${industry} ${targetRole} | ${achievement} without the hustle culture`);
+                headlines.push(`I don't do "always be closing" | ${achievement} | ${industry}`);
+                headlines.push(`${targetRole} who thinks most ${industry} advice is wrong | ${achievement}`);
+                headlines.push(`${achievement} by doing what ${industry} "experts" said wouldn't work`);
+                headlines.push(`Unpopular opinion: ${industry} needs fewer SDRs, more systems | ${achievement}`);
+            }
+
+            // Display results
+            const container = document.getElementById('headlines-container');
+            container.innerHTML = headlines.map((headline, i) => {
+                const charCount = headline.length;
+                let charClass = '';
+                if (charCount > 120) charClass = 'danger';
+                else if (charCount > 100) charClass = 'warning';
+
+                return `
+                    <div class="headline-card" onclick="copyHeadline(${i})">
+                        <div class="headline-text">${headline}</div>
+                        <div class="headline-meta">
+                            <span class="headline-chars ${charClass}">${charCount}/120 characters</span>
+                            <button class="copy-btn">📋 COPY</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('results').classList.add('show');
+
+            // Store headlines for copying
+            window.generatedHeadlines = headlines;
+        }
+
+        function copyHeadline(index) {
+            const headline = window.generatedHeadlines[index];
+            navigator.clipboard.writeText(headline).then(() => {
+                const cards = document.querySelectorAll('.headline-card');
+                const btn = cards[index].querySelector('.copy-btn');
+                btn.textContent = '✓ COPIED';
+                setTimeout(() => {
+                    btn.textContent = '📋 COPY';
+                }, 2000);
+            });
+        }
+    </script>
+
+    <!-- NEXUS Intelligence Bot -->
+    <script src="../widgets/leon-logic-bot.js"></script>
+
+</body>
+
+</html>
