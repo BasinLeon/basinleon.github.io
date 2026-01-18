@@ -144,15 +144,150 @@
             min-height: 100vh;
         }
 
-        @media (max-width: 900px) {
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE DESIGN — MOBILE FIRST
+        ═══════════════════════════════════════════════════════════════ */
+
+        /* Touch-friendly interactions */
+        button, a, input, textarea, select, .post-card, .mini-post {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+        }
+
+        /* Minimum tap target size: 44x44px */
+        .btn, button, a[role="button"], .mini-post {
+            min-height: 44px;
+        }
+
+        /* Ensure readable font sizes (prevents auto-zoom on iOS) */
+        input, textarea, select {
+            font-size: 16px;
+        }
+
+        /* Mobile Small (< 480px) */
+        @media (max-width: 479px) {
+            .container {
+                padding: 0 16px;
+            }
+
             .newspaper-layout {
                 grid-template-columns: 1fr;
+                gap: 24px;
             }
 
             .sidebar {
                 order: -1;
                 position: relative;
                 top: 0;
+            }
+
+            .featured-hero {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .dual-section {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .post-card {
+                padding: 16px;
+            }
+
+            .mini-post {
+                padding: 12px;
+            }
+
+            .search-box input {
+                font-size: 16px;
+                padding: 12px 36px 12px 12px;
+            }
+        }
+
+        /* Mobile Large / Small Tablet (480px - 767px) */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .newspaper-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .sidebar {
+                order: -1;
+                position: relative;
+                top: 0;
+            }
+
+            .featured-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .dual-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tablet / iPad (768px - 900px) */
+        @media (min-width: 768px) and (max-width: 900px) {
+            .newspaper-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .sidebar {
+                order: -1;
+                position: relative;
+                top: 0;
+            }
+
+            .featured-hero {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dual-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Desktop (900px+) */
+        @media (min-width: 900px) {
+            .newspaper-layout {
+                grid-template-columns: 2fr 1fr;
+            }
+
+            .sidebar {
+                position: sticky;
+                top: 70px;
+            }
+        }
+
+        /* Desktop Large (1024px+) */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+            }
+
+            .featured-hero {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        /* Landscape Orientation */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .hero-section {
+                padding: 40px 0;
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
         }
 
@@ -566,11 +701,6 @@
             margin-bottom: 32px;
         }
 
-        @media (max-width: 700px) {
-            .featured-hero {
-                grid-template-columns: 1fr;
-            }
-        }
 
         .featured-main {
             padding: 20px;
@@ -662,11 +792,6 @@
             margin-bottom: 32px;
         }
 
-        @media (max-width: 700px) {
-            .dual-section {
-                grid-template-columns: 1fr;
-            }
-        }
 
         .mini-post {
             padding: 12px;
