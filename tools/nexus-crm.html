@@ -527,7 +527,27 @@ Hiring • New York"></textarea>
     
     function loadData() {
         const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) data = JSON.parse(saved);
+        if (saved) {
+            data = JSON.parse(saved);
+        } else {
+            // Initialize with pre-loaded contacts on first run
+            initializeWithPreloadedContacts();
+        }
+    }
+    
+    function initializeWithPreloadedContacts() {
+        // Pre-loaded contacts from your network (134 contacts)
+        fetch('../data/preloaded-contacts.json')
+            .then(res => res.json())
+            .then(contacts => {
+                data.contacts = contacts;
+                saveData();
+            })
+            .catch(() => {
+                // Fallback: initialize empty if fetch fails
+                data.contacts = [];
+                saveData();
+            });
     }
     
     function saveData() {
