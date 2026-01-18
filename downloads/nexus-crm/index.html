@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS::CRM | Unified Revenue Command Center</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        :root {
+            --bg: #050508; --bg-card: #0a0a0f; --bg-elevated: #12121a;
+            --gold: #D4AF37; --gold-glow: rgba(212,175,55,0.3);
+            --text: #f0e6d3; --text-muted: #8b8573; --text-dim: #5a584f;
+            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
+            --info: #3b82f6; --purple: #a855f7; --cyan: #06b6d4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
+        
+        /* Header */
+        .header { background: linear-gradient(90deg, var(--gold), #b8860b); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1rem; color: #000; letter-spacing: 2px; font-weight: 700; }
+        .header-stats { display: flex; gap: 20px; }
+        .header-stat { text-align: center; }
+        .header-stat-value { font-size: 1.2rem; font-weight: 700; color: #000; }
+        .header-stat-label { font-size: 0.6rem; color: rgba(0,0,0,0.7); text-transform: uppercase; }
+        
+        /* Nav Tabs */
+        .nav-tabs { display: flex; background: var(--bg-card); border-bottom: 1px solid var(--gold-glow); overflow-x: auto; }
+        .nav-tab { padding: 12px 20px; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; }
+        .nav-tab:hover { color: var(--gold); }
+        .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(212,175,55,0.05); }
+        .nav-tab .count { background: var(--bg); padding: 2px 6px; border-radius: 10px; font-size: 0.6rem; margin-left: 6px; }
+        
+        /* Main Container */
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* War Room Tabs */
+        .war-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .war-tab { padding: 8px 16px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .war-tab.war-room { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.3); }
+        .war-tab.command { background: rgba(212,175,55,0.1); color: var(--gold); border-color: var(--gold-glow); }
+        .war-tab.fractional { background: rgba(168,85,247,0.1); color: #a855f7; border-color: rgba(168,85,247,0.3); }
+        .war-tab.freezer { background: rgba(6,182,212,0.1); color: #06b6d4; border-color: rgba(6,182,212,0.3); }
+        .war-tab.depot { background: rgba(100,116,139,0.1); color: #64748b; border-color: rgba(100,116,139,0.3); }
+        .war-tab.active { transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+        
+        /* Controls */
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 200px; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 8px; color: var(--text); font-size: 0.85rem; }
+        .search-box:focus { outline: none; border-color: var(--gold); }
+        .btn { padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; }
+        .btn-primary:hover { box-shadow: 0 0 20px var(--gold-glow); transform: translateY(-2px); }
+        .btn-secondary { background: var(--bg-card); border: 1px solid var(--gold-glow); color: var(--text-muted); }
+        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* Deal Cards Grid */
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .deal-card { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 20px; transition: all 0.2s; }
+        .deal-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .deal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .deal-company { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+        .deal-role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .deal-status { padding: 4px 10px; border-radius: 12px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+        .status-lead { background: var(--info); color: #fff; }
+        .status-meeting { background: var(--warning); color: #000; }
+        .status-proposal { background: var(--purple); color: #fff; }
+        .status-negotiation { background: #ec4899; color: #fff; }
+        .status-closed { background: var(--success); color: #fff; }
+        .status-lost { background: var(--danger); color: #fff; }
+        
+        .deal-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+        .metric { background: var(--bg); padding: 8px; border-radius: 6px; text-align: center; }
+        .metric-value { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+        .metric-label { font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; }
+        
+        .deal-next { background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); padding: 10px; border-radius: 0 6px 6px 0; font-size: 0.75rem; color: var(--warning); margin: 12px 0; }
+        
+        .deal-actions { display: flex; gap: 8px; }
+        .deal-btn { flex: 1; padding: 8px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; color: var(--text-muted); font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .deal-btn:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--gold-glow); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.2rem; color: var(--gold); font-weight: 700; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 20px; }
+        
+        /* Form */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; color: var(--text); font-size: 0.85rem; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--gold); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        
+        /* Tabs inside modal */
+        .modal-tabs { display: flex; border-bottom: 1px solid var(--gold-glow); margin-bottom: 20px; }
+        .modal-tab { padding: 10px 20px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+        .modal-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+        
+        /* STAR Framework */
+        .star-section { margin-top: 20px; padding: 16px; background: var(--bg); border-radius: 8px; border: 1px solid var(--gold-glow); }
+        .star-title { font-size: 0.8rem; color: var(--gold); font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .star-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .star-item label { font-size: 0.65rem; color: var(--text-dim); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .star-item label span { font-size: 0.8rem; }
+        
+        /* Contacts */
+        .contacts-list { margin-top: 16px; }
+        .contact-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; }
+        .contact-info h4 { font-size: 0.9rem; color: var(--text); }
+        .contact-info p { font-size: 0.7rem; color: var(--text-muted); }
+        .contact-score { padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+        .score-high { background: rgba(34,197,94,0.2); color: var(--success); }
+        .score-med { background: rgba(245,158,11,0.2); color: var(--warning); }
+        .score-low { background: rgba(100,116,139,0.2); color: #64748b; }
+        
+        /* Analytics Dashboard */
+        .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .analytics-card { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 20px; text-align: center; }
+        .analytics-value { font-size: 2rem; font-weight: 700; color: var(--gold); }
+        .analytics-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        .analytics-delta { font-size: 0.75rem; margin-top: 8px; }
+        .delta-up { color: var(--success); }
+        .delta-down { color: var(--danger); }
+        
+        /* LinkedIn Ingest */
+        .ingest-area { background: var(--bg); border: 2px dashed var(--gold-glow); border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 20px; }
+        .ingest-area:hover { border-color: var(--gold); }
+        .ingest-textarea { width: 100%; min-height: 150px; background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 8px; padding: 16px; color: var(--text); font-family: monospace; font-size: 0.8rem; resize: vertical; }
+        
+        /* View Toggle */
+        .view-toggle { display: flex; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--gold-glow); }
+        .view-btn { padding: 8px 16px; font-size: 0.7rem; color: var(--text-muted); cursor: pointer; border: none; background: none; }
+        .view-btn.active { background: var(--gold); color: #000; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .analytics-grid { grid-template-columns: repeat(2, 1fr); }
+            .deals-grid { grid-template-columns: 1fr; }
+            .header-stats { display: none; }
+        }
+        
+        /* Hidden sections */
+        .section { display: none; }
+        .section.active { display: block; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>⚡ NEXUS::CRM</h1>
+        <div class="header-stats">
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-deals">0</div>
+                <div class="header-stat-label">Active Deals</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-pipeline">$0</div>
+                <div class="header-stat-label">Pipeline</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-weighted">$0</div>
+                <div class="header-stat-label">Weighted</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-contacts">0</div>
+                <div class="header-stat-label">Contacts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <div class="nav-tab active" data-section="pipeline">📊 Pipeline</div>
+        <div class="nav-tab" data-section="contacts">👥 Network</div>
+        <div class="nav-tab" data-section="analytics">📈 Analytics</div>
+        <div class="nav-tab" data-section="ingest">🔗 LinkedIn Ingest</div>
+    </div>
+
+    <div class="container">
+        <!-- PIPELINE SECTION -->
+        <div id="pipeline" class="section active">
+            <!-- War Room Tabs -->
+            <div class="war-tabs">
+                <div class="war-tab war-room" data-tab="WAR_ROOM">🔴 War Room <span class="count" id="count-war">0</span></div>
+                <div class="war-tab command active" data-tab="COMMAND">⚡ Command Center <span class="count" id="count-command">0</span></div>
+                <div class="war-tab fractional" data-tab="FRACTIONAL">💼 Fractional <span class="count" id="count-fractional">0</span></div>
+                <div class="war-tab freezer" data-tab="FREEZER">❄️ Freezer <span class="count" id="count-freezer">0</span></div>
+                <div class="war-tab depot" data-tab="DEPOT">📦 Depot <span class="count" id="count-depot">0</span></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <input type="text" class="search-box" id="search" placeholder="Search deals...">
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">Grid</button>
+                    <button class="view-btn" data-view="table">Table</button>
+                </div>
+                <button class="btn btn-secondary" onclick="exportData()">📥 Export</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📤 Import</button>
+                <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
+                <button class="btn btn-primary" onclick="openDealModal()">+ Add Deal</button>
+            </div>
+
+            <!-- Deals Grid -->
+            <div class="deals-grid" id="deals-grid"></div>
+        </div>
+
+        <!-- CONTACTS/NETWORK SECTION -->
+        <div id="contacts" class="section">
+            <div class="controls">
+                <input type="text" class="search-box" id="contact-search" placeholder="Search contacts...">
+                <button class="btn btn-primary" onclick="openContactModal()">+ Add Contact</button>
+            </div>
+            <div class="deals-grid" id="contacts-grid"></div>
+        </div>
+
+        <!-- ANALYTICS SECTION -->
+        <div id="analytics" class="section">
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-total-deals">0</div>
+                    <div class="analytics-label">Total Deals</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-pipeline">$0</div>
+                    <div class="analytics-label">Total Pipeline</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-weighted">$0</div>
+                    <div class="analytics-label">Weighted Value</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-avg-days">0</div>
+                    <div class="analytics-label">Avg Days in Stage</div>
+                </div>
+            </div>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-win-rate">0%</div>
+                    <div class="analytics-label">Win Rate</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-hot">0</div>
+                    <div class="analytics-label">Hot Leads (8+)</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-stalled">0</div>
+                    <div class="analytics-label">Stalled (14+ days)</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-network">0</div>
+                    <div class="analytics-label">Network Size</div>
+                </div>
+            </div>
+            <h3 style="color: var(--gold); margin: 24px 0 16px; font-size: 0.9rem;">📊 Pipeline by Status</h3>
+            <div id="status-breakdown"></div>
+        </div>
+
+        <!-- LINKEDIN INGEST SECTION -->
+        <div id="ingest" class="section">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">🔗 LinkedIn Smart Ingest</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                Paste raw LinkedIn text (e.g., search results, connection lists). AI will parse names, roles, companies and score signal strength.
+            </p>
+            <div class="ingest-area">
+                <textarea class="ingest-textarea" id="ingest-text" placeholder="Paste LinkedIn data here...
+
+Example:
+John Smith • 1st
+VP of Sales at Acme Corp
+San Francisco Bay Area
+
+Jane Doe • 2nd  
+Director of Revenue Operations at TechCo
+Hiring • New York"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="processLinkedInIngest()" style="width: 100%;">⚡ Process & Score Contacts</button>
+            <div id="ingest-results" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Deal Modal -->
+    <div class="modal" id="deal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Add New Deal</div>
+                <button class="modal-close" onclick="closeDealModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <div class="modal-tab active" data-modal-tab="overview">Overview</div>
+                    <div class="modal-tab" data-modal-tab="star">STAR Framework</div>
+                    <div class="modal-tab" data-modal-tab="contacts">Contacts</div>
+                    <div class="modal-tab" data-modal-tab="timeline">Timeline</div>
+                </div>
+                
+                <form id="deal-form">
+                    <input type="hidden" id="deal-id">
+                    
+                    <!-- Overview Tab -->
+                    <div id="tab-overview" class="modal-tab-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Company *</label>
+                                <input type="text" class="form-input" id="deal-company" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role *</label>
+                                <input type="text" class="form-input" id="deal-role" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">War Room Tab</label>
+                                <select class="form-select" id="deal-tab">
+                                    <option value="DEPOT">📦 Depot</option>
+                                    <option value="COMMAND">⚡ Command Center</option>
+                                    <option value="WAR_ROOM">🔴 War Room</option>
+                                    <option value="FRACTIONAL">💼 Fractional</option>
+                                    <option value="FREEZER">❄️ Freezer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="deal-status">
+                                    <option value="lead">Lead</option>
+                                    <option value="meeting">Meeting Set</option>
+                                    <option value="proposal">Proposal</option>
+                                    <option value="negotiation">Negotiation</option>
+                                    <option value="closed">Closed Won</option>
+                                    <option value="lost">Lost</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Deal Value / Salary</label>
+                                <input type="text" class="form-input" id="deal-value" placeholder="$150,000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Probability %</label>
+                                <input type="number" class="form-input" id="deal-probability" min="0" max="100" value="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">⚡ Next Move (Action Item)</label>
+                            <input type="text" class="form-input" id="deal-next" placeholder="Follow up with hiring manager on Monday">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Notes / Intel</label>
+                            <textarea class="form-textarea" id="deal-notes" placeholder="Key insights, context, strategy..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Job URL</label>
+                            <input type="url" class="form-input" id="deal-url" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <!-- STAR Tab -->
+                    <div id="tab-star" class="modal-tab-content" style="display:none;">
+                        <div class="star-section">
+                            <div class="star-title">⭐ STAR Framework for Interview Prep</div>
+                            <div class="star-grid">
+                                <div class="star-item">
+                                    <label><span>🎯</span> Situation</label>
+                                    <textarea class="form-textarea" id="star-situation" placeholder="What was the context/challenge?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>📋</span> Task</label>
+                                    <textarea class="form-textarea" id="star-task" placeholder="What was your responsibility?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>⚙️</span> Action</label>
+                                    <textarea class="form-textarea" id="star-action" placeholder="What did you do specifically?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>📈</span> Result</label>
+                                    <textarea class="form-textarea" id="star-result" placeholder="What was the measurable outcome?"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contacts Tab -->
+                    <div id="tab-contacts" class="modal-tab-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Contact Name</label>
+                                <input type="text" class="form-input" id="contact-name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role/Title</label>
+                                <input type="text" class="form-input" id="contact-role">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" id="contact-email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select class="form-select" id="contact-type">
+                                    <option value="HM">Hiring Manager</option>
+                                    <option value="RECRUITER">Recruiter</option>
+                                    <option value="CRO">CRO/VP</option>
+                                    <option value="PEER">Peer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addContactToDeal()" style="margin-bottom: 16px;">+ Add Contact</button>
+                        <div class="contacts-list" id="deal-contacts-list"></div>
+                    </div>
+                    
+                    <!-- Timeline Tab -->
+                    <div id="tab-timeline" class="modal-tab-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label class="form-label">Log Activity</label>
+                                <input type="text" class="form-input" id="activity-text" placeholder="Had call with VP Sales...">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Type</label>
+                                <select class="form-select" id="activity-type">
+                                    <option value="NOTE">📝 Note</option>
+                                    <option value="CALL">📞 Call</option>
+                                    <option value="EMAIL">✉️ Email</option>
+                                    <option value="MEETING">📅 Meeting</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addActivity()" style="margin-bottom: 16px;">+ Log Activity</button>
+                        <div id="activity-timeline"></div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--gold-glow);">
+                        <button type="button" class="btn btn-secondary" onclick="closeDealModal()">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="openCalendar()" style="flex: 1;">📅 Schedule</button>
+                        <button type="button" class="btn btn-secondary" onclick="generateEmail()" style="flex: 1;">✉️ Draft Email</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 2;">💾 Save Deal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">Add Network Contact</div>
+                <button class="modal-close" onclick="closeContactModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="network-contact-form">
+                    <input type="hidden" id="nc-id">
+                    <div class="form-group">
+                        <label class="form-label">Name *</label>
+                        <input type="text" class="form-input" id="nc-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Role</label>
+                            <input type="text" class="form-input" id="nc-role">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company</label>
+                            <input type="text" class="form-input" id="nc-company">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <select class="form-select" id="nc-type">
+                                <option value="Hiring Manager">Hiring Manager</option>
+                                <option value="Recruiter">Recruiter</option>
+                                <option value="Executive">Executive</option>
+                                <option value="Peer">Peer</option>
+                                <option value="VC">VC</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Signal Score (1-10)</label>
+                            <input type="number" class="form-input" id="nc-score" min="1" max="10" value="5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn URL</label>
+                        <input type="url" class="form-input" id="nc-linkedin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes / Reasoning</label>
+                        <textarea class="form-textarea" id="nc-notes" placeholder="Why is this contact valuable?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">💾 Save Contact</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════════
+    // NEXUS::CRM - Unified Revenue Command Center
+    // ═══════════════════════════════════════════════════════════════
+    
+    const STORAGE_KEY = 'nexus_crm_data';
+    let data = { deals: [], contacts: [] };
+    let currentTab = 'COMMAND';
+    let currentDealId = null;
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        renderAll();
+        setupEventListeners();
+    });
+    
+    function loadData() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) data = JSON.parse(saved);
+    }
+    
+    function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        renderAll();
+    }
+    
+    function setupEventListeners() {
+        // Nav tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+        
+        // War room tabs
+        document.querySelectorAll('.war-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.war-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.tab;
+                renderDeals();
+            });
+        });
+        
+        // Modal tabs
+        document.querySelectorAll('.modal-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.modal-tab-content').forEach(c => c.style.display = 'none');
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.modalTab).style.display = 'block';
+            });
+        });
+        
+        // Search
+        document.getElementById('search').addEventListener('input', renderDeals);
+        document.getElementById('contact-search').addEventListener('input', renderContacts);
+        
+        // Forms
+        document.getElementById('deal-form').addEventListener('submit', saveDeal);
+        document.getElementById('network-contact-form').addEventListener('submit', saveNetworkContact);
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // RENDERING
+    // ═══════════════════════════════════════════════════════════════
+    
+    function renderAll() {
+        renderDeals();
+        renderContacts();
+        renderAnalytics();
+        updateHeaderStats();
+        updateTabCounts();
+    }
+    
+    function renderDeals() {
+        const search = document.getElementById('search').value.toLowerCase();
+        const filtered = data.deals.filter(d => {
+            const matchesTab = d.warRoomTab === currentTab;
+            const matchesSearch = !search || 
+                d.company.toLowerCase().includes(search) || 
+                d.role.toLowerCase().includes(search) ||
+                (d.nextMove || '').toLowerCase().includes(search);
+            return matchesTab && matchesSearch;
+        });
+        
+        const grid = document.getElementById('deals-grid');
+        grid.innerHTML = filtered.map(deal => `
+            <div class="deal-card" onclick="openDealModal('${deal.id}')">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${deal.company}</div>
+                        <div class="deal-role">${deal.role}</div>
+                    </div>
+                    <span class="deal-status status-${deal.status}">${formatStatus(deal.status)}</span>
+                </div>
+                <div class="deal-metrics">
+                    <div class="metric">
+                        <div class="metric-value">${deal.value || '—'}</div>
+                        <div class="metric-label">Value</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${deal.probability || 0}%</div>
+                        <div class="metric-label">Prob</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${(deal.contacts || []).length}</div>
+                        <div class="metric-label">Contacts</div>
+                    </div>
+                </div>
+                ${deal.nextMove ? `<div class="deal-next">📌 ${deal.nextMove}</div>` : ''}
+                <div class="deal-actions">
+                    <button class="deal-btn" onclick="event.stopPropagation(); advanceStatus('${deal.id}')">⬆️ Advance</button>
+                    <button class="deal-btn" onclick="event.stopPropagation(); deleteDeal('${deal.id}')">🗑️ Delete</button>
+                </div>
+            </div>
+        `).join('') || '<p style="color: var(--text-muted); text-align: center; grid-column: 1/-1;">No deals in this tab</p>';
+    }
+    
+    function renderContacts() {
+        const search = document.getElementById('contact-search')?.value.toLowerCase() || '';
+        const filtered = data.contacts.filter(c => 
+            !search || c.name.toLowerCase().includes(search) || 
+            (c.company || '').toLowerCase().includes(search)
+        ).sort((a, b) => (b.signalScore || 0) - (a.signalScore || 0));
+        
+        const grid = document.getElementById('contacts-grid');
+        grid.innerHTML = filtered.map(c => {
+            const scoreClass = c.signalScore >= 8 ? 'score-high' : c.signalScore >= 5 ? 'score-med' : 'score-low';
+            return `
+            <div class="deal-card" onclick="openContactModal('${c.id}')">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${c.name}</div>
+                        <div class="deal-role">${c.role || ''} ${c.company ? '@ ' + c.company : ''}</div>
+                    </div>
+                    <span class="contact-score ${scoreClass}">${c.signalScore || 5}/10</span>
+                </div>
+                <div style="margin-top: 12px;">
+                    <span style="font-size: 0.7rem; padding: 3px 8px; background: var(--bg); border-radius: 4px; color: var(--text-muted);">${c.type || 'Contact'}</span>
+                </div>
+                ${c.notes ? `<p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-style: italic;">"${c.notes.substring(0, 100)}..."</p>` : ''}
+            </div>
+        `}).join('') || '<p style="color: var(--text-muted); text-align: center; grid-column: 1/-1;">No contacts yet</p>';
+    }
+    
+    function renderAnalytics() {
+        const active = data.deals.filter(d => d.status !== 'lost');
+        const closed = data.deals.filter(d => d.status === 'closed');
+        const totalValue = active.reduce((sum, d) => sum + parseValue(d.value), 0);
+        const weightedValue = active.reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0);
+        const avgDays = active.length ? Math.round(active.reduce((sum, d) => sum + (d.daysInStage || 0), 0) / active.length) : 0;
+        const winRate = data.deals.length ? Math.round((closed.length / data.deals.filter(d => d.status === 'closed' || d.status === 'lost').length) * 100) || 0 : 0;
+        const hotLeads = data.contacts.filter(c => (c.signalScore || 0) >= 8).length;
+        const stalled = active.filter(d => (d.daysInStage || 0) >= 14).length;
+        
+        document.getElementById('a-total-deals').textContent = active.length;
+        document.getElementById('a-pipeline').textContent = formatCurrency(totalValue);
+        document.getElementById('a-weighted').textContent = formatCurrency(weightedValue);
+        document.getElementById('a-avg-days').textContent = avgDays;
+        document.getElementById('a-win-rate').textContent = winRate + '%';
+        document.getElementById('a-hot').textContent = hotLeads;
+        document.getElementById('a-stalled').textContent = stalled;
+        document.getElementById('a-network').textContent = data.contacts.length;
+        
+        // Status breakdown
+        const statuses = ['lead', 'meeting', 'proposal', 'negotiation', 'closed', 'lost'];
+        document.getElementById('status-breakdown').innerHTML = statuses.map(s => {
+            const count = data.deals.filter(d => d.status === s).length;
+            const value = data.deals.filter(d => d.status === s).reduce((sum, d) => sum + parseValue(d.value), 0);
+            return `<div style="display: flex; justify-content: space-between; padding: 12px; background: var(--bg-card); border-radius: 8px; margin-bottom: 8px;">
+                <span style="font-size: 0.85rem;"><span class="deal-status status-${s}" style="margin-right: 10px;">${formatStatus(s)}</span></span>
+                <span style="color: var(--text-muted);">${count} deals · ${formatCurrency(value)}</span>
+            </div>`;
+        }).join('');
+    }
+    
+    function updateHeaderStats() {
+        const active = data.deals.filter(d => d.status !== 'lost');
+        const totalValue = active.reduce((sum, d) => sum + parseValue(d.value), 0);
+        const weightedValue = active.reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0);
+        
+        document.getElementById('stat-deals').textContent = active.length;
+        document.getElementById('stat-pipeline').textContent = formatCurrency(totalValue);
+        document.getElementById('stat-weighted').textContent = formatCurrency(weightedValue);
+        document.getElementById('stat-contacts').textContent = data.contacts.length;
+    }
+    
+    function updateTabCounts() {
+        const tabs = ['WAR_ROOM', 'COMMAND', 'FRACTIONAL', 'FREEZER', 'DEPOT'];
+        const ids = ['war', 'command', 'fractional', 'freezer', 'depot'];
+        tabs.forEach((tab, i) => {
+            document.getElementById('count-' + ids[i]).textContent = data.deals.filter(d => d.warRoomTab === tab).length;
+        });
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // DEAL OPERATIONS
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openDealModal(id = null) {
+        currentDealId = id;
+        const modal = document.getElementById('deal-modal');
+        const form = document.getElementById('deal-form');
+        
+        if (id) {
+            const deal = data.deals.find(d => d.id === id);
+            if (deal) {
+                document.getElementById('modal-title').textContent = 'Edit: ' + deal.company;
+                document.getElementById('deal-id').value = deal.id;
+                document.getElementById('deal-company').value = deal.company || '';
+                document.getElementById('deal-role').value = deal.role || '';
+                document.getElementById('deal-tab').value = deal.warRoomTab || 'DEPOT';
+                document.getElementById('deal-status').value = deal.status || 'lead';
+                document.getElementById('deal-value').value = deal.value || '';
+                document.getElementById('deal-probability').value = deal.probability || 50;
+                document.getElementById('deal-next').value = deal.nextMove || '';
+                document.getElementById('deal-notes').value = deal.notes || '';
+                document.getElementById('deal-url').value = deal.url || '';
+                // STAR
+                document.getElementById('star-situation').value = deal.star?.situation || '';
+                document.getElementById('star-task').value = deal.star?.task || '';
+                document.getElementById('star-action').value = deal.star?.action || '';
+                document.getElementById('star-result').value = deal.star?.result || '';
+                // Render contacts & timeline
+                renderDealContacts(deal);
+                renderActivityTimeline(deal);
+            }
+        } else {
+            document.getElementById('modal-title').textContent = 'Add New Deal';
+            form.reset();
+            document.getElementById('deal-contacts-list').innerHTML = '';
+            document.getElementById('activity-timeline').innerHTML = '';
+        }
+        
+        modal.classList.add('active');
+    }
+    
+    function closeDealModal() {
+        document.getElementById('deal-modal').classList.remove('active');
+        currentDealId = null;
+    }
+    
+    function saveDeal(e) {
+        e.preventDefault();
+        const id = document.getElementById('deal-id').value;
+        const dealData = {
+            id: id || Date.now().toString(),
+            company: document.getElementById('deal-company').value,
+            role: document.getElementById('deal-role').value,
+            warRoomTab: document.getElementById('deal-tab').value,
+            status: document.getElementById('deal-status').value,
+            value: document.getElementById('deal-value').value,
+            probability: parseInt(document.getElementById('deal-probability').value) || 0,
+            nextMove: document.getElementById('deal-next').value,
+            notes: document.getElementById('deal-notes').value,
+            url: document.getElementById('deal-url').value,
+            star: {
+                situation: document.getElementById('star-situation').value,
+                task: document.getElementById('star-task').value,
+                action: document.getElementById('star-action').value,
+                result: document.getElementById('star-result').value
+            },
+            updatedAt: new Date().toISOString()
+        };
+        
+        if (id) {
+            const idx = data.deals.findIndex(d => d.id === id);
+            if (idx !== -1) data.deals[idx] = { ...data.deals[idx], ...dealData };
+        } else {
+            dealData.createdAt = new Date().toISOString();
+            dealData.contacts = [];
+            dealData.activities = [];
+            dealData.daysInStage = 0;
+            data.deals.push(dealData);
+        }
+        
+        saveData();
+        closeDealModal();
+    }
+    
+    function advanceStatus(id) {
+        const stages = ['lead', 'meeting', 'proposal', 'negotiation', 'closed'];
+        const deal = data.deals.find(d => d.id === id);
+        if (!deal) return;
+        const idx = stages.indexOf(deal.status);
+        if (idx < stages.length - 1) {
+            deal.status = stages[idx + 1];
+            deal.daysInStage = 0;
+            saveData();
+        }
+    }
+    
+    function deleteDeal(id) {
+        if (confirm('Delete this deal?')) {
+            data.deals = data.deals.filter(d => d.id !== id);
+            saveData();
+        }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // CONTACTS & ACTIVITIES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function addContactToDeal() {
+        if (!currentDealId) return;
+        const deal = data.deals.find(d => d.id === currentDealId);
+        if (!deal) return;
+        if (!deal.contacts) deal.contacts = [];
+        
+        const contact = {
+            id: Date.now().toString(),
+            name: document.getElementById('contact-name').value,
+            role: document.getElementById('contact-role').value,
+            email: document.getElementById('contact-email').value,
+            type: document.getElementById('contact-type').value
+        };
+        
+        if (!contact.name) return alert('Name required');
+        deal.contacts.push(contact);
+        saveData();
+        renderDealContacts(deal);
+        document.getElementById('contact-name').value = '';
+        document.getElementById('contact-role').value = '';
+        document.getElementById('contact-email').value = '';
+    }
+    
+    function renderDealContacts(deal) {
+        const list = document.getElementById('deal-contacts-list');
+        list.innerHTML = (deal.contacts || []).map(c => `
+            <div class="contact-card">
+                <div class="contact-info">
+                    <h4>${c.name}</h4>
+                    <p>${c.role || ''} · ${c.type || ''}</p>
+                </div>
+                <button class="deal-btn" onclick="removeContact('${deal.id}', '${c.id}')">×</button>
+            </div>
+        `).join('') || '<p style="color: var(--text-muted); font-size: 0.8rem;">No contacts added</p>';
+    }
+    
+    function removeContact(dealId, contactId) {
+        const deal = data.deals.find(d => d.id === dealId);
+        if (deal) {
+            deal.contacts = (deal.contacts || []).filter(c => c.id !== contactId);
+            saveData();
+            renderDealContacts(deal);
+        }
+    }
+    
+    function addActivity() {
+        if (!currentDealId) return;
+        const deal = data.deals.find(d => d.id === currentDealId);
+        if (!deal) return;
+        if (!deal.activities) deal.activities = [];
+        
+        const text = document.getElementById('activity-text').value;
+        if (!text) return;
+        
+        deal.activities.unshift({
+            id: Date.now().toString(),
+            type: document.getElementById('activity-type').value,
+            text: text,
+            date: new Date().toISOString()
+        });
+        
+        saveData();
+        renderActivityTimeline(deal);
+        document.getElementById('activity-text').value = '';
+    }
+    
+    function renderActivityTimeline(deal) {
+        const timeline = document.getElementById('activity-timeline');
+        timeline.innerHTML = (deal.activities || []).map(a => `
+            <div style="padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; border-left: 3px solid ${a.type === 'MEETING' ? 'var(--purple)' : a.type === 'CALL' ? 'var(--success)' : a.type === 'EMAIL' ? 'var(--info)' : 'var(--text-muted)'};">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="font-size: 0.7rem; color: var(--gold);">${a.type}</span>
+                    <span style="font-size: 0.65rem; color: var(--text-dim);">${new Date(a.date).toLocaleDateString()}</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text);">${a.text}</p>
+            </div>
+        `).join('') || '<p style="color: var(--text-muted); font-size: 0.8rem;">No activities logged</p>';
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // NETWORK CONTACTS
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openContactModal(id = null) {
+        const modal = document.getElementById('contact-modal');
+        if (id) {
+            const c = data.contacts.find(x => x.id === id);
+            if (c) {
+                document.getElementById('nc-id').value = c.id;
+                document.getElementById('nc-name').value = c.name || '';
+                document.getElementById('nc-role').value = c.role || '';
+                document.getElementById('nc-company').value = c.company || '';
+                document.getElementById('nc-type').value = c.type || 'Peer';
+                document.getElementById('nc-score').value = c.signalScore || 5;
+                document.getElementById('nc-linkedin').value = c.linkedin || '';
+                document.getElementById('nc-notes').value = c.notes || '';
+            }
+        } else {
+            document.getElementById('network-contact-form').reset();
+            document.getElementById('nc-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+    
+    function closeContactModal() {
+        document.getElementById('contact-modal').classList.remove('active');
+    }
+    
+    function saveNetworkContact(e) {
+        e.preventDefault();
+        const id = document.getElementById('nc-id').value;
+        const contactData = {
+            id: id || Date.now().toString(),
+            name: document.getElementById('nc-name').value,
+            role: document.getElementById('nc-role').value,
+            company: document.getElementById('nc-company').value,
+            type: document.getElementById('nc-type').value,
+            signalScore: parseInt(document.getElementById('nc-score').value) || 5,
+            linkedin: document.getElementById('nc-linkedin').value,
+            notes: document.getElementById('nc-notes').value,
+            dateAdded: new Date().toISOString()
+        };
+        
+        if (id) {
+            const idx = data.contacts.findIndex(c => c.id === id);
+            if (idx !== -1) data.contacts[idx] = { ...data.contacts[idx], ...contactData };
+        } else {
+            data.contacts.push(contactData);
+        }
+        
+        saveData();
+        closeContactModal();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // LINKEDIN INGEST
+    // ═══════════════════════════════════════════════════════════════
+    
+    function processLinkedInIngest() {
+        const text = document.getElementById('ingest-text').value;
+        if (!text) return alert('Paste LinkedIn data first');
+        
+        // Simple parsing - looks for patterns like "Name • 1st" or "Name\nTitle at Company"
+        const lines = text.split('\n').filter(l => l.trim());
+        const parsed = [];
+        let current = null;
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Name line (contains • or is capitalized name)
+            if (line.includes('•') || (line.match(/^[A-Z][a-z]+ [A-Z][a-z]+/) && !line.includes('@'))) {
+                if (current) parsed.push(current);
+                const name = line.split('•')[0].trim();
+                const degree = line.includes('1st') ? '1st' : line.includes('2nd') ? '2nd' : '3rd+';
+                current = { name, degree, role: '', company: '', hiring: false };
+            }
+            // Title/Company line
+            else if (current && (line.includes(' at ') || line.includes(' @ '))) {
+                const parts = line.split(/ at | @ /);
+                current.role = parts[0].trim();
+                current.company = parts[1]?.trim() || '';
+            }
+            // Hiring indicator
+            else if (current && line.toLowerCase().includes('hiring')) {
+                current.hiring = true;
+            }
+            // Location (skip)
+            else if (current && !current.role && line.length < 50) {
+                // Could be role without "at"
+                if (!line.includes(',') && !line.match(/\d/)) {
+                    current.role = line;
+                }
+            }
+        }
+        if (current) parsed.push(current);
+        
+        // Score and display
+        const results = document.getElementById('ingest-results');
+        results.innerHTML = `<h4 style="color: var(--gold); margin-bottom: 16px;">Found ${parsed.length} contacts:</h4>`;
+        
+        parsed.forEach(p => {
+            // Calculate signal score
+            let score = 5;
+            if (p.degree === '1st') score += 2;
+            if (p.hiring) score += 2;
+            if (p.role.toLowerCase().includes('vp') || p.role.toLowerCase().includes('director') || p.role.toLowerCase().includes('head')) score += 1;
+            if (p.role.toLowerCase().includes('recruiter')) score += 1;
+            score = Math.min(10, score);
+            
+            const scoreClass = score >= 8 ? 'score-high' : score >= 5 ? 'score-med' : 'score-low';
+            
+            results.innerHTML += `
+                <div class="deal-card" style="margin-bottom: 12px;">
+                    <div class="deal-header">
+                        <div>
+                            <div class="deal-company">${p.name}</div>
+                            <div class="deal-role">${p.role} ${p.company ? '@ ' + p.company : ''}</div>
+                        </div>
+                        <span class="contact-score ${scoreClass}">${score}/10</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        ${p.hiring ? '<span style="font-size: 0.7rem; padding: 3px 8px; background: rgba(34,197,94,0.2); color: var(--success); border-radius: 4px;">🔥 Hiring</span>' : ''}
+                        <span style="font-size: 0.7rem; padding: 3px 8px; background: var(--bg); border-radius: 4px; color: var(--text-muted);">${p.degree}</span>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 12px; width: 100%;" onclick="addParsedContact('${encodeURIComponent(JSON.stringify({...p, signalScore: score}))}')">+ Add to Network</button>
+                </div>
+            `;
+        });
+    }
+    
+    function addParsedContact(encoded) {
+        const c = JSON.parse(decodeURIComponent(encoded));
+        data.contacts.push({
+            id: Date.now().toString(),
+            name: c.name,
+            role: c.role,
+            company: c.company,
+            type: c.hiring ? 'Hiring Manager' : 'Peer',
+            signalScore: c.signalScore,
+            notes: c.hiring ? 'Actively hiring' : '',
+            tags: c.degree === '1st' ? ['#1stDegree'] : [],
+            dateAdded: new Date().toISOString()
+        });
+        saveData();
+        alert('Added ' + c.name + ' to network!');
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // UTILITIES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openCalendar() {
+        const deal = currentDealId ? data.deals.find(d => d.id === currentDealId) : null;
+        const title = deal ? `Interview: ${deal.company} - ${deal.role}` : 'Interview';
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}`;
+        window.open(url, '_blank');
+    }
+    
+    function generateEmail() {
+        const deal = currentDealId ? data.deals.find(d => d.id === currentDealId) : null;
+        if (!deal) return alert('Save deal first');
+        
+        const template = `Subject: Following up - ${deal.role} opportunity
+
+Hi [Name],
+
+I wanted to follow up on our conversation about the ${deal.role} position at ${deal.company}.
+
+${deal.star?.result ? `As I mentioned, I recently drove results like: ${deal.star.result}` : ''}
+
+I'm very excited about this opportunity and would love to discuss next steps.
+
+Best regards,
+Leon`;
+        
+        navigator.clipboard.writeText(template);
+        alert('Email template copied to clipboard!');
+    }
+    
+    function exportData() {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nexus-crm-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    }
+    
+    function importData(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                if (imported.deals || imported.contacts) {
+                    data = imported;
+                    saveData();
+                    alert('Data imported!');
+                }
+            } catch (err) {
+                alert('Invalid file');
+            }
+        };
+        reader.readAsText(file);
+    }
+    
+    function parseValue(val) {
+        if (!val) return 0;
+        return parseInt(val.replace(/[^0-9]/g, '')) || 0;
+    }
+    
+    function formatCurrency(val) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+    }
+    
+    function formatStatus(s) {
+        return { lead: 'Lead', meeting: 'Meeting', proposal: 'Proposal', negotiation: 'Negotiating', closed: 'Won', lost: 'Lost' }[s] || s;
+    }
+    </script>
+</body>
+</html>
