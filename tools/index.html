@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>THE LABORATORY | Basin::NEXUS - Revenue Architecture Tools</title>
     <meta name="description"
         content="Enterprise-grade revenue intelligence. Zero budget. Built with Python, n8n, and Local LLMs.">
@@ -516,18 +516,133 @@
             color: var(--text-muted);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .proof-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE DESIGN — MOBILE FIRST
+        ═══════════════════════════════════════════════════════════════ */
 
-            .tools-grid {
-                grid-template-columns: 1fr;
+        /* Touch-friendly interactions */
+        button, a, input, textarea, select, .tool-card, .btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+        }
+
+        /* Minimum tap target size: 44x44px */
+        .btn, button, a[role="button"], .tool-card {
+            min-height: 44px;
+        }
+
+        /* Ensure readable font sizes (prevents auto-zoom on iOS) */
+        input, textarea, select {
+            font-size: 16px;
+        }
+
+        /* Mobile Small (< 480px) */
+        @media (max-width: 479px) {
+            .nav-container {
+                padding: 16px;
             }
 
             .category-header {
                 flex-direction: column;
+                gap: 16px;
+            }
+
+            .proof-bar {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .tool-card {
+                padding: 20px;
+            }
+
+            .tool-title {
+                font-size: 1.1rem;
+            }
+
+            .modal {
+                padding: 24px 16px;
+                margin: 16px;
+            }
+
+            .modal-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Mobile Large / Small Tablet (480px - 767px) */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .proof-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .category-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tool-card {
+                padding: 24px;
+            }
+        }
+
+        /* Tablet / iPad (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .proof-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .category-header {
+                gap: 32px;
+            }
+        }
+
+        /* Desktop (1024px+) */
+        @media (min-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Large Desktop (1440px+) */
+        @media (min-width: 1440px) {
+            .nav-container {
+                max-width: 1400px;
+            }
+
+            .tools-grid {
+                gap: 32px;
+            }
+        }
+
+        /* Landscape Orientation */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .nav {
+                padding: 8px 0;
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
         }
     </style>
