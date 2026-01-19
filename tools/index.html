@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>THE LABORATORY | Basin::NEXUS - Revenue Architecture Tools</title>
+    <title>The Laboratory & Library | Basin::NEXUS - Tools & Resources</title>
     <meta name="description"
-        content="Enterprise-grade revenue intelligence. Zero budget. Built with Python, n8n, and Local LLMs.">
+        content="Interactive tools and knowledge repository. Revenue Architecture frameworks, templates, case studies, and GTM intelligence.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,11 +131,307 @@
             color: var(--text-secondary);
             margin-bottom: 40px;
             font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
         }
 
         .hero-subtitle .strike {
             color: var(--text-muted);
             text-decoration: line-through;
+        }
+
+        .hero-quote {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 24px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 40px 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            background: var(--bg-card);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold-glow);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 40px 0 20px;
+            overflow-x: auto;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .category-tab:hover {
+            border-color: var(--gold-glow);
+            color: var(--gold);
+        }
+
+        .category-tab.active {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Resources Grid (Library Style) */
+        .resources-section {
+            padding: 60px 0;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .resource-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold-glow);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .resource-badges {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .resource-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .resource-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .resource-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Chronicles Section */
+        .chronicle-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-top: 32px;
+        }
+
+        .featured-chronicle {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .featured-chronicle a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .featured-chronicle a:hover {
+            transform: translateX(4px);
+        }
+
+        .chronicle-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .chronicle-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .chronicle-title:hover {
+            color: var(--gold);
+        }
+
+        .chronicle-excerpt {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .chronicle-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .chronicle-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chronicle-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chronicle-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+
+        .chronicle-item:hover {
+            border-color: var(--gold-glow);
+            transform: translateX(4px);
+        }
+
+        .chronicle-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .chronicle-item-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .chronicle-item-title:hover {
+            color: var(--gold);
+        }
+
+        .chronicle-item-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 8px;
         }
 
         /* Proof Bar */
@@ -162,6 +458,8 @@
             font-weight: 700;
             color: var(--text);
             margin-bottom: 4px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
         }
 
         .proof-value.savings {
@@ -173,6 +471,8 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            line-height: 1.4;
+            margin-top: 4px;
         }
 
         /* Tool Categories */
@@ -196,12 +496,15 @@
             font-weight: 700;
             color: var(--text);
             letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         .category-subtitle {
             font-size: 1rem;
             color: var(--text-secondary);
             margin-top: 8px;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
         }
 
         /* Tool Grid - Apple Store Style */
@@ -300,6 +603,8 @@
             font-weight: 600;
             color: var(--text);
             margin-bottom: 8px;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
         }
 
         .tool-desc {
@@ -307,6 +612,7 @@
             color: var(--text-secondary);
             line-height: 1.5;
             margin-bottom: 16px;
+            letter-spacing: -0.01em;
         }
 
         .tool-tags {
@@ -650,6 +956,41 @@
     <!-- Analytics: Plausible (Privacy-Friendly) with Custom Events -->
     <script defer data-domain="basinleon.github.io" src="https://plausible.io/js/script.outbound-links.js"></script>
     <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    
+    <!-- AGGRESSIVE Redirect Prevention -->
+    <script>
+        (function() {
+            // Immediately prevent any redirects to basinleon.com
+            if (window.location.hostname === 'basinleon.com' || window.location.hostname === 'www.basinleon.com') {
+                window.location.replace('https://basinleon.github.io/tools/');
+                return;
+            }
+            
+            // Intercept all blog link clicks
+            document.addEventListener('DOMContentLoaded', function() {
+                function forceGitHubBlogLinks() {
+                    const allLinks = document.querySelectorAll('a');
+                    allLinks.forEach(link => {
+                        if (link.href && (link.href.includes('basinleon.com') || (link.href.includes('/blog') && !link.href.includes('basinleon.github.io')))) {
+                            link.setAttribute('href', 'https://basinleon.github.io/blog/');
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                window.location.href = 'https://basinleon.github.io/blog/';
+                                return false;
+                            }, true);
+                        }
+                    });
+                }
+                
+                forceGitHubBlogLinks();
+                
+                // Re-run after any dynamic content loads
+                const observer = new MutationObserver(forceGitHubBlogLinks);
+                observer.observe(document.body, { childList: true, subtree: true });
+            });
+        })();
+    </script>
 </head>
 
 <body>
@@ -660,9 +1001,8 @@
             <a href="../" class="nav-logo">BASIN::NEXUS</a>
             <div class="nav-links">
                 <a href="../">Portfolio</a>
-                <a href="../library/">Library</a>
-                <a href="../blog/">Blog</a>
-                <a href="./" class="active">Laboratory</a>
+                <a href="https://basinleon.github.io/blog/">Blog</a>
+                <a href="./" class="active">Tools & Library</a>
                 <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
             </div>
         </div>
@@ -671,10 +1011,13 @@
     <!-- Hero -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">🔬 THE LABORATORY</div>
-            <h1 class="hero-title">$0 Revenue Engine</h1>
+            <div class="hero-badge">🔬📚 THE LABORATORY & LIBRARY</div>
+            <h1 class="hero-title">Tools & Resources</h1>
             <p class="hero-subtitle">
-                Replaced a <span class="strike">$950/mo</span> SaaS stack with Python, n8n, and Local LLMs
+                Interactive tools and knowledge repository. Frameworks, templates, case studies, and GTM intelligence—all in one place.
+            </p>
+            <p class="hero-quote" style="font-size: 1rem; color: var(--text-muted); font-style: italic; margin-top: 24px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                "The alchemist does not announce the gold. He transmutes in silence."
             </p>
 
             <div class="proof-bar">
@@ -683,19 +1026,39 @@
                     <div class="proof-label">Annual Savings</div>
                 </div>
                 <div class="proof-card">
-                    <div class="proof-value">8,400+</div>
+                    <div class="proof-value">83K+</div>
                     <div class="proof-label">Lines of Code</div>
                 </div>
                 <div class="proof-card">
-                    <div class="proof-value">5</div>
-                    <div class="proof-label">LLMs Integrated</div>
+                    <div class="proof-value">19</div>
+                    <div class="proof-label">Public Repos</div>
                 </div>
                 <div class="proof-card">
-                    <div class="proof-value">100%</div>
-                    <div class="proof-label">Local / Private</div>
+                    <div class="proof-value">50+</div>
+                    <div class="proof-label">Resources</div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" style="padding: 40px 0; border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);">
+        <div class="container">
+            <div style="max-width: 600px; margin: 0 auto; position: relative;">
+                <input type="text" class="search-input" id="search-input" placeholder="Search tools, frameworks, templates, case studies..." style="width: 100%; padding: 16px 50px 16px 20px; background: var(--bg-card); border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: var(--text); font-size: 1rem; transition: all 0.2s;">
+                <span style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">🔍</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="category-tabs container" style="display: flex; gap: 8px; padding: 40px 0 20px; overflow-x: auto; border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);">
+        <button class="category-tab active" data-category="all" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">All</button>
+        <button class="category-tab" data-category="tools" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">Tools</button>
+        <button class="category-tab" data-category="frameworks" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">Frameworks</button>
+        <button class="category-tab" data-category="templates" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">Templates</button>
+        <button class="category-tab" data-category="case-studies" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">Case Studies</button>
+        <button class="category-tab" data-category="premium" style="padding: 10px 20px; background: transparent; border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s;">Premium</button>
     </section>
 
     <!-- Tools Categories -->
@@ -710,14 +1073,14 @@
                     </div>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card" onclick="window.location.href='roi-calculator.html'">
+                    <div class="tool-card" data-category="tools templates" data-search="roi calculator savings revenue architecture sdr model" onclick="window.location.href='roi-calculator.html'">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                             <span class="badge badge-open-source">Open Source</span>
                         </div>
                         <div class="tool-icon">💰</div>
                         <div class="tool-title">ROI Calculator</div>
-                        <div class="tool-desc">Calculate savings from Revenue Architecture vs traditional SDR model.</div>
+                        <div class="tool-desc">Calculate your savings from Revenue Architecture versus traditional SDR model.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">HTML</span>
                             <span class="tool-tag">JavaScript</span>
@@ -727,7 +1090,7 @@
                         </div>
                     </div>
 
-                    <div class="tool-card" onclick="window.location.href='case-study-generator.html'">
+                    <div class="tool-card" data-category="tools templates" data-search="case study generator gtm deployment strategies templates" onclick="window.location.href='case-study-generator.html'">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                             <span class="badge badge-open-source">Open Source</span>
@@ -744,14 +1107,14 @@
                         </div>
                     </div>
 
-                    <div class="tool-card" onclick="window.location.href='headline-generator.html'">
+                    <div class="tool-card" data-category="tools templates" data-search="headline generator linkedin recruiters hiring managers" onclick="window.location.href='headline-generator.html'">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                             <span class="badge badge-open-source">Open Source</span>
                         </div>
                         <div class="tool-icon">💼</div>
                         <div class="tool-title">Headline Generator</div>
-                        <div class="tool-desc">Create LinkedIn headlines that get noticed by recruiters and hiring managers.</div>
+                        <div class="tool-desc">Generate LinkedIn headlines that get noticed by recruiters and hiring managers.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">HTML</span>
                             <span class="tool-tag">AI</span>
@@ -772,7 +1135,7 @@
                     </div>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools" data-search="private crm offline deal tracker star framework pwa">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                             <span class="badge badge-download">Download</span>
@@ -789,14 +1152,14 @@
                         </div>
                     </div>
 
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools" data-search="nexus crm revenue command center war room linkedin analytics ai assistant">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                             <span class="badge badge-download">Download</span>
                         </div>
                         <div class="tool-icon">⚡</div>
                         <div class="tool-title">NEXUS::CRM</div>
-                        <div class="tool-desc">Unified Revenue Command Center. War Room tabs, LinkedIn ingest, analytics, AI assistant.</div>
+                        <div class="tool-desc">Unified Revenue Command Center with War Room tabs, LinkedIn ingest, analytics, and AI assistant.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">PWA</span>
                             <span class="tool-tag">AI</span>
@@ -818,7 +1181,7 @@
                     </div>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card" onclick="openPremiumModal('nexus-ai')">
+                    <div class="tool-card" data-category="premium" data-search="ai assistant pro quantum search predictive analytics learning feedback loop nexus crm" onclick="openPremiumModal('nexus-ai')">
                         <div class="tool-badges">
                             <span class="badge badge-premium">Premium</span>
                         </div>
@@ -834,13 +1197,13 @@
                         </div>
                     </div>
 
-                    <div class="tool-card" onclick="openPremiumModal('automation')">
+                    <div class="tool-card" data-category="premium" data-search="automation workflows email sequences auto conversions smart triggers crm" onclick="openPremiumModal('automation')">
                         <div class="tool-badges">
                             <span class="badge badge-premium">Premium</span>
                         </div>
                         <div class="tool-icon">⚙️</div>
                         <div class="tool-title">Automation Workflows</div>
-                        <div class="tool-desc">Email sequences, auto-conversions, and smart triggers for your CRM.</div>
+                        <div class="tool-desc">Automate email sequences, auto-conversions, and smart triggers for your CRM.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">Automation</span>
                             <span class="tool-tag">Email</span>
@@ -850,13 +1213,13 @@
                         </div>
                     </div>
 
-                    <div class="tool-card" onclick="openPremiumModal('analytics')">
+                    <div class="tool-card" data-category="premium" data-search="advanced analytics enterprise insights hubspot salesforce forecasting custom reports" onclick="openPremiumModal('analytics')">
                         <div class="tool-badges">
                             <span class="badge badge-premium">Premium</span>
                         </div>
                         <div class="tool-icon">📊</div>
                         <div class="tool-title">Advanced Analytics</div>
-                        <div class="tool-desc">HubSpot/Salesforce-level insights, forecasting, and custom reports.</div>
+                        <div class="tool-desc">Enterprise-grade insights with HubSpot/Salesforce-level analytics, forecasting, and custom reports.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">Analytics</span>
                             <span class="tool-tag">Reports</span>
@@ -877,13 +1240,13 @@
                     </div>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools frameworks" data-search="pipeline scorer leads intent signals firmographics prioritization">
                         <div class="tool-badges">
                             <span class="badge badge-open-source">Open Source</span>
                         </div>
                         <div class="tool-icon">🎯</div>
                         <div class="tool-title">Pipeline Scorer</div>
-                        <div class="tool-desc">Prioritizes leads based on intent signals, not just firmographics.</div>
+                        <div class="tool-desc">Prioritize leads based on intent signals, not just firmographics.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">Python</span>
                             <span class="tool-tag">Streamlit</span>
@@ -893,13 +1256,13 @@
                         </div>
                     </div>
 
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools" data-search="cold email forensic diagnose failures bounce spam filter copy">
                         <div class="tool-badges">
                             <span class="badge badge-open-source">Open Source</span>
                         </div>
                         <div class="tool-icon">🔬</div>
                         <div class="tool-title">Cold Email Forensic</div>
-                        <div class="tool-desc">Diagnose failures. Why did your email bounce? Spam filter or bad copy?</div>
+                        <div class="tool-desc">Diagnose email failures. Why did your email bounce? Spam filter or bad copy?</div>
                         <div class="tool-tags">
                             <span class="tool-tag">Python</span>
                             <span class="tool-tag">LLM</span>
@@ -909,13 +1272,13 @@
                         </div>
                     </div>
 
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools templates" data-search="outbound architect llm powered sequences personalized">
                         <div class="tool-badges">
                             <span class="badge badge-open-source">Open Source</span>
                         </div>
                         <div class="tool-icon">📝</div>
                         <div class="tool-title">Outbound Architect</div>
-                        <div class="tool-desc">LLM-powered sequences that look like they took 20 minutes to write.</div>
+                        <div class="tool-desc">Generate LLM-powered sequences that look like they took 20 minutes to write.</div>
                         <div class="tool-tags">
                             <span class="tool-tag">Python</span>
                             <span class="tool-tag">LLM</span>
@@ -936,7 +1299,7 @@
                     </div>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card">
+                    <div class="tool-card" data-category="tools" data-search="basin nexus v10 career intelligence platform hunt prep close streamlit python">
                         <div class="tool-badges">
                             <span class="badge badge-free">Free</span>
                         </div>
@@ -951,6 +1314,196 @@
                             <a href="https://basin-nexus.streamlit.app" target="_blank" class="btn btn-primary">Launch Demo</a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Library Resources Section -->
+    <section id="library" class="resources-section" style="padding: 80px 0; border-top: 0.5px solid rgba(255, 255, 255, 0.1);">
+        <div class="container">
+            <div class="category-header" style="margin-bottom: 40px;">
+                <div>
+                    <h2 class="category-title">The Library</h2>
+                    <p class="category-subtitle">Frameworks, templates, and downloadable resources for GTM teams.</p>
+                </div>
+            </div>
+
+            <div class="resources-grid" id="resources-grid">
+                <!-- Frameworks -->
+                <div class="resource-card" data-category="frameworks" data-search="signal system scale framework revenue architecture gtm strategy">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Framework</span>
+                    </div>
+                    <div class="resource-icon">🎯</div>
+                    <div class="resource-title">Signal → System → Scale</div>
+                    <div class="resource-desc">Three-layer revenue architecture framework. Transform market signals into scalable systems.</div>
+                    <div class="resource-tags">
+                        <span class="tag">GTM Strategy</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://basinleon.github.io/blog/?tag=methodology" class="btn btn-secondary" style="text-decoration: none;">Learn More →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="frameworks" data-search="bifurcated model sdr transformation headcount reduction efficiency">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Framework</span>
+                    </div>
+                    <div class="resource-icon">⚡</div>
+                    <div class="resource-title">Bifurcated GTM Model</div>
+                    <div class="resource-desc">Replace $800K in headcount with 2 SDRs + automation. Reduce toil by 92%.</div>
+                    <div class="resource-tags">
+                        <span class="tag">SDR Transformation</span>
+                        <span class="tag">Economics</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://basinleon.github.io/blog/?tag=case-studies" class="btn btn-secondary" style="text-decoration: none;">View Case Study →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="frameworks" data-search="star framework interview preparation job hunting career">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Framework</span>
+                    </div>
+                    <div class="resource-icon">⭐</div>
+                    <div class="resource-title">STAR Framework</div>
+                    <div class="resource-desc">Situation, Task, Action, Result. Structure your interview stories and case studies.</div>
+                    <div class="resource-tags">
+                        <span class="tag">Interview Prep</span>
+                        <span class="tag">Storytelling</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://basinleon.github.io/blog/?tag=philosophy" class="btn btn-secondary" style="text-decoration: none;">Learn More →</a>
+                    </div>
+                </div>
+
+                <!-- Templates -->
+                <div class="resource-card" data-category="templates" data-search="meddic template sales qualification discovery">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Template</span>
+                    </div>
+                    <div class="resource-icon">📋</div>
+                    <div class="resource-title">MEDDIC Qualification</div>
+                    <div class="resource-desc">Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion.</div>
+                    <div class="resource-tags">
+                        <span class="tag">Sales</span>
+                        <span class="tag">Qualification</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="case-study-generator.html" class="btn btn-secondary" style="text-decoration: none;">Use Template →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="templates" data-search="30-60-90 plan onboarding first 90 days sales">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Template</span>
+                    </div>
+                    <div class="resource-icon">📅</div>
+                    <div class="resource-title">30-60-90 Day Plan</div>
+                    <div class="resource-desc">First 90 days execution template. Turn PoCs into renewals, pilots into revenue.</div>
+                    <div class="resource-tags">
+                        <span class="tag">Onboarding</span>
+                        <span class="tag">Execution</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://basinleon.github.io/blog/posts/30-60-90-ae-playbook.html" class="btn btn-secondary" style="text-decoration: none;">View Template →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="templates" data-search="outreach sequence email template cold email">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Template</span>
+                    </div>
+                    <div class="resource-icon">📧</div>
+                    <div class="resource-title">Outreach Sequence</div>
+                    <div class="resource-desc">5-email sequence template. Personalization at scale, signal-based targeting.</div>
+                    <div class="resource-tags">
+                        <span class="tag">Email</span>
+                        <span class="tag">Outreach</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://github.com/BasinLeon/lead-script-generator" target="_blank" class="btn btn-secondary" style="text-decoration: none;">View Source →</a>
+                    </div>
+                </div>
+
+                <!-- Case Studies -->
+                <div class="resource-card" data-category="case-studies" data-search="ambient ai computer vision security gtm signal architecture">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Case Study</span>
+                    </div>
+                    <div class="resource-icon">🎯</div>
+                    <div class="resource-title">Ambient.ai GTM Architecture</div>
+                    <div class="resource-desc">Signal-first architecture for computer vision security. Same system, different data.</div>
+                    <div class="resource-tags">
+                        <span class="tag">AI/ML</span>
+                        <span class="tag">Security</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="../ai/ambient.html" class="btn btn-secondary" style="text-decoration: none;">View Case Study →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="case-studies" data-search="fudo security partner activation pipeline growth latam">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Case Study</span>
+                    </div>
+                    <div class="resource-icon">🛡️</div>
+                    <div class="resource-title">Fudo Security Transformation</div>
+                    <div class="resource-desc">160% YoY pipeline growth. Zero US presence → Partner channel activation.</div>
+                    <div class="resource-tags">
+                        <span class="tag">Partnership</span>
+                        <span class="tag">GTM</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="../services/sentinel-case.html" class="btn btn-secondary" style="text-decoration: none;">View Case Study →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-category="case-studies" data-search="sense group bdr team transformation reply rate">
+                    <div class="resource-badges">
+                        <span class="badge badge-free">Case Study</span>
+                    </div>
+                    <div class="resource-icon">📈</div>
+                    <div class="resource-title">Sense BDR Transformation</div>
+                    <div class="resource-desc">8% → 18% reply rates. 125% response lift. $10M+ pipeline generated.</div>
+                    <div class="resource-tags">
+                        <span class="tag">SDR/BDR</span>
+                        <span class="tag">Email</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="https://basinleon.github.io/blog/?tag=case-studies" class="btn btn-secondary" style="text-decoration: none;">View Case Study →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Chronicles Section (Blog Posts) -->
+    <section id="chronicles" class="resources-section" style="padding: 80px 0; border-top: 0.5px solid rgba(255, 255, 255, 0.1);">
+        <div class="container">
+            <div class="category-header" style="margin-bottom: 40px;">
+                <div>
+                    <h2 class="category-title">The Chronicles</h2>
+                    <p class="category-subtitle">Latest insights, frameworks, and case studies from the blog.</p>
+                </div>
+                <a href="https://basinleon.github.io/blog/" class="btn btn-secondary" style="text-decoration: none;">View All Posts →</a>
+            </div>
+
+            <div class="chronicle-container" id="chronicle-container">
+                <!-- Featured Chronicle (Left) -->
+                <div class="featured-chronicle" id="featured-chronicle">
+                    <div class="chronicle-meta">FEATURED</div>
+                    <h3 class="chronicle-title" id="featured-title">Loading...</h3>
+                    <p class="chronicle-excerpt" id="featured-excerpt">Loading latest post...</p>
+                    <div class="chronicle-tags" id="featured-tags"></div>
+                </div>
+
+                <!-- Recent Chronicles Sidebar (Right) -->
+                <div class="chronicle-sidebar" id="chronicle-sidebar">
+                    <div class="chronicle-meta" style="margin-bottom: 20px;">RECENT</div>
+                    <!-- Populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -978,7 +1531,7 @@
     <footer>
         <div class="footer-links">
             <a href="../">Portfolio</a>
-            <a href="../blog/">Blog</a>
+            <a href="https://basinleon.github.io/blog/">Blog</a>
             <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
             <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
         </div>
@@ -1090,6 +1643,216 @@
             if (e.target.id === 'premium-modal') {
                 closePremiumModal();
             }
+        });
+
+        // Chronicles Section - Load Blog Posts
+        async function loadChronicles() {
+            try {
+                const postsUrl = '../data/posts.json?v=' + Date.now();
+                const response = await fetch(postsUrl, { 
+                    cache: 'no-store', 
+                    headers: { 'Cache-Control': 'no-cache' } 
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch posts');
+                }
+                
+                const posts = await response.json();
+                
+                // Filter out posts without valid URLs
+                const validPosts = posts.filter(p => p.url && p.url !== '#');
+                
+                if (validPosts.length === 0) {
+                    document.getElementById('featured-title').textContent = 'No posts available';
+                    document.getElementById('featured-excerpt').textContent = 'Check back soon for new content.';
+                    return;
+                }
+                
+                // Featured post (most recent)
+                const featured = validPosts[0];
+                const featuredEl = document.getElementById('featured-chronicle');
+                featuredEl.innerHTML = `
+                    <a href="${featured.url}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="chronicle-meta">FEATURED • ${formatChronicleDate(featured.date)}</div>
+                        <h3 class="chronicle-title">${featured.title}</h3>
+                        <p class="chronicle-excerpt">${featured.excerpt || featured.description || 'Read more...'}</p>
+                        <div class="chronicle-tags">
+                            ${(featured.tags || []).slice(0, 3).map(tag => 
+                                `<span class="chronicle-tag">${tag}</span>`
+                            ).join('')}
+                        </div>
+                    </a>
+                `;
+                
+                // Recent posts sidebar (next 5)
+                const recent = validPosts.slice(1, 6);
+                const sidebarEl = document.getElementById('chronicle-sidebar');
+                sidebarEl.innerHTML = `
+                    <div class="chronicle-meta" style="margin-bottom: 20px;">RECENT</div>
+                    ${recent.map(post => `
+                        <div class="chronicle-item">
+                            <a href="${post.url}" style="text-decoration: none; color: inherit;">
+                                <div class="chronicle-item-title">${post.title}</div>
+                                <div class="chronicle-item-meta">${formatChronicleDate(post.date)} • ${(post.tags || [])[0] || 'Archive'}</div>
+                            </a>
+                        </div>
+                    `).join('')}
+                    <div style="margin-top: 24px;">
+                        <a href="https://basinleon.github.io/blog/" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">View All →</a>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading chronicles:', error);
+                document.getElementById('featured-title').textContent = 'Unable to load posts';
+                document.getElementById('featured-excerpt').textContent = 'Please try again later.';
+            }
+        }
+        
+        function formatChronicleDate(dateStr) {
+            if (!dateStr) return 'Archive';
+            const d = new Date(dateStr);
+            if (isNaN(d)) return dateStr;
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        // Search & Filter Functionality
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        function filterTools() {
+            const toolCards = document.querySelectorAll('.tool-card');
+            const categorySections = document.querySelectorAll('.category-section');
+            let visibleCount = 0;
+
+            toolCards.forEach(card => {
+                const categories = card.getAttribute('data-category') || '';
+                const searchText = (card.getAttribute('data-search') || '').toLowerCase();
+                const title = (card.querySelector('.tool-title')?.textContent || '').toLowerCase();
+                const desc = (card.querySelector('.tool-desc')?.textContent || '').toLowerCase();
+                
+                // Category filter
+                const categoryMatch = currentCategory === 'all' || categories.includes(currentCategory);
+                
+                // Search filter
+                const searchMatch = !currentSearch || 
+                    searchText.includes(currentSearch.toLowerCase()) ||
+                    title.includes(currentSearch.toLowerCase()) ||
+                    desc.includes(currentSearch.toLowerCase());
+
+                if (categoryMatch && searchMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide/show category sections if all tools in section are hidden
+            categorySections.forEach(section => {
+                const sectionCards = section.querySelectorAll('.tool-card');
+                const visibleCards = Array.from(sectionCards).filter(card => 
+                    card.style.display !== 'none'
+                );
+                
+                if (visibleCards.length === 0 && sectionCards.length > 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = '';
+                }
+            });
+
+            // Show "no results" message if needed
+            showNoResults(visibleCount === 0 && (currentSearch || currentCategory !== 'all'));
+        }
+
+        function showNoResults(show) {
+            let noResults = document.getElementById('no-results-message');
+            if (show && !noResults) {
+                noResults = document.createElement('div');
+                noResults.id = 'no-results-message';
+                noResults.style.cssText = 'text-align: center; padding: 60px 20px; color: var(--text-secondary);';
+                noResults.innerHTML = `
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--text);">No results found</h3>
+                    <p style="font-size: 1rem;">Try adjusting your search or category filter</p>
+                `;
+                const categoriesSection = document.querySelector('.categories');
+                categoriesSection.appendChild(noResults);
+            } else if (!show && noResults) {
+                noResults.remove();
+            }
+        }
+
+        // Search input handler (works for both tools and resources)
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentSearch = e.target.value.trim();
+                    filterTools();
+                    filterResources(); // Also filter library resources
+                }, 300); // Debounce search
+            });
+        }
+
+        // Filter Library Resources
+        function filterResources() {
+            const resourceCards = document.querySelectorAll('.resource-card');
+            let visibleCount = 0;
+
+            resourceCards.forEach(card => {
+                const categories = card.getAttribute('data-category') || '';
+                const searchText = (card.getAttribute('data-search') || '').toLowerCase();
+                const title = (card.querySelector('.resource-title')?.textContent || '').toLowerCase();
+                const desc = (card.querySelector('.resource-desc')?.textContent || '').toLowerCase();
+                
+                // Category filter
+                const categoryMatch = currentCategory === 'all' || categories.includes(currentCategory);
+                
+                // Search filter
+                const searchMatch = !currentSearch || 
+                    searchText.includes(currentSearch.toLowerCase()) ||
+                    title.includes(currentSearch.toLowerCase()) ||
+                    desc.includes(currentSearch.toLowerCase());
+
+                if (categoryMatch && searchMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Category tab handlers
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                // Update active state
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    t.style.color = 'var(--text-secondary)';
+                });
+                
+                e.target.classList.add('active');
+                e.target.style.borderColor = 'var(--gold)';
+                e.target.style.color = 'var(--gold)';
+                
+                // Update category filter
+                currentCategory = e.target.getAttribute('data-category');
+                filterTools();
+            });
+        });
+
+        // Load chronicles on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChronicles();
+            filterTools(); // Initial filter
+            filterResources(); // Initial filter for resources
         });
     </script>
 
