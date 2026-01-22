@@ -2209,6 +2209,23 @@
         <p class="footer-copyright">© 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0</p>
     </footer>
 
+    <!-- Founder's Circle Button Handler -->
+    <script>
+        function handleFoundersCircleClick(event) {
+            event.preventDefault();
+            // Wait for agent to load, then show modal
+            if (window.MonetizationEngine && window.MonetizationEngine.showUpgradePrompt) {
+                window.MonetizationEngine.showUpgradePrompt({
+                    title: 'Founder\'s Circle',
+                    description: 'Join the exclusive community of revenue leaders building at scale.'
+                });
+            } else {
+                // Fallback: open email if agent not loaded yet
+                window.location.href = 'mailto:lbasin23@gmail.com?subject=Founder\'s Circle Subscription&body=Hi Leon,%0D%0A%0D%0AI\'m interested in joining the Founder\'s Circle. Please let me know next steps.%0D%0A%0D%0AThanks!';
+            }
+        }
+    </script>
+
     <!-- Calendar Handler Script -->
     <script>
         function handleCalendarClick(event) {
