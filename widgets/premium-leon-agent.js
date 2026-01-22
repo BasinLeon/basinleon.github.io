@@ -383,7 +383,7 @@
     // ═══════════════════════════════════════════════════════════════
 
     const ConversationEngine = {
-        generateResponse(userMessage, context) {
+        async generateResponse(userMessage, context) {
             // Extract topics
             const topics = ConversationMemory.extractTopics(userMessage);
             ConversationMemory.addToHistory('user', userMessage);
@@ -400,7 +400,7 @@
             const intent = this.detectIntent(userMessage);
             
             // Generate response based on intent and context
-            let response = this.handleIntent(intent, userMessage, topics, context);
+            let response = await this.handleIntent(intent, userMessage, topics, context);
             
             // If no specific response, use knowledge base
             if (!response) {
@@ -430,11 +430,11 @@
         detectIntent(message) {
             const lower = message.toLowerCase();
             
-            // Identity questions (highest priority)
-            if (lower.match(/(?:who is|who are|tell me about|what is|what are).*leon|leon.*who|leon.*what/)) return 'identity';
+            // Identity questions (highest priority) - improved pattern matching
+            if (lower.match(/(?:who is|who are|tell me about|what is|what are).*leon|leon.*(?:who|what|is|are)|^leon$|^who.*leon/i)) return 'identity';
             
             // Confused/negative responses
-            if (lower.match(/(?:huh|what|weird|confused|don't understand|unclear|what do you mean)/)) return 'confused';
+            if (lower.match(/(?:huh|what\?|weird|confused|don't understand|unclear|what do you mean)/)) return 'confused';
             
             // Other intents
             if (lower.match(/(?:show|see|view|look|code|project|repository)/)) return 'view_content';
@@ -448,10 +448,10 @@
             return 'general';
         },
 
-        handleIntent(intent, message, topics, context) {
+        async handleIntent(intent, message, topics, context) {
             switch (intent) {
                 case 'identity':
-                    return this.handleIdentityQuestion(message);
+                    return await this.handleIdentityQuestion(message);
 
                 case 'confused':
                     return this.handleConfusedResponse(message, context);
@@ -487,12 +487,62 @@
             }
         },
 
-        handleIdentityQuestion(message) {
+        async handleIdentityQuestion(message) {
+            // Try to load blog content about Leon
+            let blogContent = null;
+            try {
+                const blogUrl = '/blog/posts/why-leon-basin-matters.html';
+                const response = await fetch(blogUrl);
+                if (response.ok) {
+                    const html = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const content = doc.querySelector('.post-content');
+                    if (content) {
+                        // Extract key paragraphs
+                        const paragraphs = Array.from(content.querySelectorAll('p')).slice(0, 5);
+                        blogContent = paragraphs.map(p => p.textContent.trim()).join(' ');
+                    }
+                }
+            } catch (e) {
+                console.log('Could not load blog content:', e);
+            }
+            
             const responses = [
-                "I'm Leon Basin—a Revenue Architect who codes. 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp. Now I build AI-powered revenue systems that replace headcount with code. I started coding at 40 and have built 83K+ lines across Python, JavaScript, TypeScript.",
-                "Leon Basin here. I'm a Revenue Architect—which means I build systems, not just run playbooks. 15+ years GTM experience, MBA from Santa Clara, and I write code. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year.",
-                "I'm Leon. I build revenue systems that scale revenue, not teams. Started in GTM at Google, then SurveyMonkey, HP, NetApp. Now I code systems that automate research, prioritization, and outreach—so humans focus on the close. What would you like to know?"
+                `I'm Leon Basin—a Revenue Architect who codes. 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp, and a Series A cybersecurity company. 
+
+I build AI-powered revenue systems that replace headcount with code. Started coding at 40 and have built 83,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
+
+I don't just architect systems—I build them. 19 public repositories. 5 LLMs orchestrated. BASIN::NEXUS v10.0 is my autonomous GTM Operating System.
+
+Want to learn more? Check out my blog post: "Why Leon Basin Matters" or explore my case studies. What interests you most?`,
+                
+                `Leon Basin here. I'm a Revenue Architect—which means I build systems, not just run playbooks. 
+
+15+ years GTM experience across enterprise tech. MBA from Santa Clara. And I write code—83K+ lines of it. 
+
+My work: I replaced a 10-person SDR team with 2 SDRs + automation at a Series A cybersecurity company. Result: $424K annual savings, 77 meetings/month (vs 45 before), and 5-day SDR ramp (vs 3-month industry average).
+
+I built BASIN::NEXUS v10.0—an autonomous GTM OS that automates research, prioritization, and outreach. 5 LLMs orchestrated. 19 repositories deployed.
+
+What would you like to explore? My systems? Case studies? Or how I can help with your revenue challenge?`,
+                
+                `I'm Leon. I build revenue systems that scale revenue, not teams. 
+
+Started in GTM at Google (Operations Specialist), then SurveyMonkey ($300M+ portfolio), HP, NetApp. Now I code systems that automate research, prioritization, and outreach—so humans focus on the close.
+
+The numbers: $23M+ career pipeline, 160% pipeline growth, $424K annual savings, 5 days SDR ramp. 83,000+ lines of code. 19 repositories. 5 LLMs orchestrated.
+
+I wrote about this in my blog post "Why Leon Basin Matters"—it explains why a Revenue Architect who codes changes everything. Want me to share the key insights?`
             ];
+            
+            // If we have blog content, enhance the response
+            if (blogContent && blogContent.length > 100) {
+                const blogSummary = blogContent.substring(0, 300) + '...';
+                responses.push(`I'm Leon Basin. ${blogSummary} 
+
+Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-leon-basin-matters.html. What would you like to know more about?`);
+            }
             
             // Rotate through responses to avoid repetition
             const used = Array.from(ConversationMemory.responses);
@@ -507,6 +557,12 @@
             
             const key = response.toLowerCase().substring(0, 50);
             ConversationMemory.responses.add(key);
+            
+            // Track that we answered an identity question (for learning)
+            ConversationMemory.updateVisitorProfile({
+                questionsAsked: (ConversationMemory.visitorProfile.questionsAsked || 0) + 1,
+                lastIdentityQuestion: new Date().toISOString()
+            });
             
             return response;
         },
@@ -903,7 +959,7 @@
         thinkingEl.remove();
 
         const context = ConversationMemory.getContext();
-        const response = ConversationEngine.generateResponse(message, context);
+        const response = await ConversationEngine.generateResponse(message, context);
         
         await typeMessage(response, 'agent');
 
