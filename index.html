@@ -1364,7 +1364,7 @@
         
     </style>
 </head>
-<body>
+<body class="dark-mode">
 
     <!-- AVAILABILITY BANNER -->
     <div style="background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 100%); padding: 12px 0; text-align: center; border-bottom: 1px solid var(--gold-border);">
@@ -2242,13 +2242,20 @@
             // Check for saved theme preference or default to dark
             const currentTheme = localStorage.getItem('theme') || 'dark';
             if (currentTheme === 'light') {
+                body.classList.remove('dark-mode');
                 body.classList.add('light-mode');
                 themeIcon.textContent = '☀️';
                 themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
             }
             
             themeToggle.addEventListener('click', function() {
                 body.classList.toggle('light-mode');
+                body.classList.toggle('dark-mode');
                 
                 if (body.classList.contains('light-mode')) {
                     localStorage.setItem('theme', 'light');
