@@ -97,82 +97,32 @@
         ═══════════════════════════════════════════════════════════════ */
         
         :root {
-            <!-- Google Analytics 4 -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-XXXXXXXXXX');
-            </script>
-
-            <script>
-                (function() {
-                    // Immediately prevent any redirects to basinleon.com
-                    if (window.location.hostname === 'basinleon.com' || window.location.hostname === 'www.basinleon.com') {
-                        window.location.replace('https://basinleon.github.io/');
-                        return;
-                    }
-            
-                    // Prevent any future redirects
-                    const originalReplace = window.location.replace;
-                    window.location.replace = function(url) {
-                        if (typeof url === 'string' && (url.includes('basinleon.com') || url.includes('www.basinleon.com'))) {
-                            url = url.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
-                        }
-                        return originalReplace.call(this, url);
-                    };
-            
-                    const originalAssign = window.location.assign;
-                    window.location.assign = function(url) {
-                        if (typeof url === 'string' && (url.includes('basinleon.com') || url.includes('www.basinleon.com'))) {
-                            url = url.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
-                        }
-                        return originalAssign.call(this, url);
-                    };
-            
-                    // Intercept link clicks
-                    document.addEventListener('click', function(e) {
-                        let target = e.target;
-                        while (target && target.tagName !== 'A') {
-                            target = target.parentElement;
-                        }
-                        if (target && target.href) {
-                            if (target.href.includes('basinleon.com') || target.href.includes('www.basinleon.com')) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                window.location.href = target.href.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
-                                return false;
-                            }
-                        }
-                    }, true); // Use capture phase
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --gold-glow: rgba(212, 175, 55, 0.5);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
         
-                // Clear any old service workers that might be caching
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.getRegistrations().then(registrations => {
-                        registrations.forEach(registration => {
-                            if (registration.scope.includes('basinleon.github.io')) {
-                                registration.unregister().then(() => {
-                                    console.log('🧹 Cleared old service worker:', registration.scope);
-                                });
-                            }
-                        });
-                    });
-                }
+        body {
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
         
-                // Clear caches if any
-                if ('caches' in window) {
-                    caches.keys().then(names => {
-                        names.forEach(name => {
-                            if (name.includes('blog') || name.includes('basinleon')) {
-                                caches.delete(name).then(() => {
-                                    console.log('🧹 Cleared cache:', name);
-                                });
-                            }
-                        });
-                    });
-                }
-            </script>
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
             border: 1px solid var(--gold-border);
