@@ -129,7 +129,20 @@
             .filter(s => s.score > 0)
             .sort((a, b) => b.score - a.score)
             .slice(0, limit)
-            .map(s => s.post);
+            .map(s => {
+                // Ensure URL doesn't point to old domain
+                let postUrl = s.post.url || '#';
+                if (postUrl.includes('basinleon.com') || postUrl.includes('www.basinleon.com')) {
+                    postUrl = postUrl.replace(/https?:\/\/(www\.)?basinleon\.com/g, '');
+                }
+                // Ensure relative paths
+                if (postUrl && !postUrl.startsWith('http') && !postUrl.startsWith('/') && !postUrl.startsWith('./') && !postUrl.startsWith('../')) {
+                    if (!postUrl.startsWith('posts/')) {
+                        postUrl = 'posts/' + postUrl;
+                    }
+                }
+                return { ...s.post, url: postUrl };
+            });
     }
 
     // ═══════════════════════════════════════════════════════════════

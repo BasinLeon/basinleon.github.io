@@ -1206,11 +1206,11 @@
                             <div class="featured-small-meta">Jan 2 • 8 min</div>
                         </article>
                     </a>
-                    <a href="posts/signal-architecture-deep-dive.html" class="featured-link">
+                    <a href="posts/signal-engine.html" class="featured-link">
                         <article class="featured-small">
                             <div class="featured-badge">Deep Dive</div>
-                            <h3 class="featured-small-title">Signal Architecture: The Complete Technical Guide</h3>
-                            <div class="featured-small-meta">Dec 28 • 15 min</div>
+                            <h3 class="featured-small-title">I Stopped Waiting for Better Data. I Built a Signal Engine Instead.</h3>
+                            <div class="featured-small-meta">Dec 29 • 8 min</div>
                         </article>
                     </a>
                 </div>
@@ -1327,9 +1327,18 @@
                 if (postUrl.includes('basinleon.com') || postUrl.includes('www.basinleon.com')) {
                     postUrl = postUrl.replace(/https?:\/\/(www\.)?basinleon\.com/g, '');
                 }
-                // Ensure relative paths start with ./
-                if (postUrl && !postUrl.startsWith('http') && !postUrl.startsWith('/') && !postUrl.startsWith('./') && !postUrl.startsWith('../')) {
-                    postUrl = './' + postUrl;
+                // Ensure relative paths - if it starts with posts/, keep it; otherwise add posts/
+                if (postUrl && postUrl !== '#' && !postUrl.startsWith('http')) {
+                    if (!postUrl.startsWith('posts/') && !postUrl.startsWith('/posts/')) {
+                        // If it's just a filename, add posts/ prefix
+                        if (!postUrl.includes('/')) {
+                            postUrl = 'posts/' + postUrl;
+                        } else {
+                            postUrl = './' + postUrl;
+                        }
+                    } else if (postUrl.startsWith('/posts/')) {
+                        postUrl = postUrl.substring(1); // Remove leading slash
+                    }
                 }
                 return `
                 <a href="${postUrl}" class="post-card">
