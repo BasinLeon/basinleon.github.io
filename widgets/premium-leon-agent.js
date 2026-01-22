@@ -145,6 +145,7 @@
             if (lower.match(/(?:case study|project|example)/)) topics.push('case-studies');
             if (lower.match(/(?:service|consulting|help|work)/)) topics.push('services');
             if (lower.match(/(?:purpose|meaning|philosophy|values)/)) topics.push('philosophy');
+            if (lower.match(/(?:leon|who|what|identity|about)/)) topics.push('identity');
             
             topics.forEach(t => this.topics.add(t));
             return topics;
@@ -406,8 +407,9 @@
                 response = this.generateFromKnowledgeBase(topics, context);
             }
 
-            // Add follow-up question if appropriate
-            if (this.shouldAddFollowUp()) {
+            // Add follow-up question if appropriate (but not for identity or confused responses)
+            const skipFollowUp = ['identity', 'confused'].includes(intent);
+            if (!skipFollowUp && this.shouldAddFollowUp()) {
                 response += '\n\n' + this.generateFollowUpQuestion(topics, context);
             }
 
@@ -427,18 +429,33 @@
 
         detectIntent(message) {
             const lower = message.toLowerCase();
+            
+            // Identity questions (highest priority)
+            if (lower.match(/(?:who is|who are|tell me about|what is|what are).*leon|leon.*who|leon.*what/)) return 'identity';
+            
+            // Confused/negative responses
+            if (lower.match(/(?:huh|what|weird|confused|don't understand|unclear|what do you mean)/)) return 'confused';
+            
+            // Other intents
             if (lower.match(/(?:show|see|view|look|code|project|repository)/)) return 'view_content';
-            if (lower.match(/(?:tell|explain|how|what|why|walk)/)) return 'explain';
+            if (lower.match(/(?:tell|explain|how|walk)/)) return 'explain';
             if (lower.match(/(?:service|consulting|work|help|hire)/)) return 'services';
             if (lower.match(/(?:case study|example|project|result)/)) return 'case_study';
             if (lower.match(/(?:schedule|book|call|meeting|talk)/)) return 'schedule';
             if (lower.match(/(?:premium|upgrade|unlock|access)/)) return 'monetization';
             if (lower.match(/(?:making|revenue|money|300k|headcount|challenge)/)) return 'revenue_challenge';
+            
             return 'general';
         },
 
         handleIntent(intent, message, topics, context) {
             switch (intent) {
+                case 'identity':
+                    return this.handleIdentityQuestion(message);
+
+                case 'confused':
+                    return this.handleConfusedResponse(message, context);
+
                 case 'view_content':
                     if (message.toLowerCase().includes('code')) {
                         return KnowledgeBase.getResponse('code', context) || "I can show you specific repositories. Which interests you: basin-signal-engine (83K lines), headline-forge, or outreach-autopsy?";
@@ -468,6 +485,42 @@
                 default:
                     return null;
             }
+        },
+
+        handleIdentityQuestion(message) {
+            const responses = [
+                "I'm Leon Basin—a Revenue Architect who codes. 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp. Now I build AI-powered revenue systems that replace headcount with code. I started coding at 40 and have built 83K+ lines across Python, JavaScript, TypeScript.",
+                "Leon Basin here. I'm a Revenue Architect—which means I build systems, not just run playbooks. 15+ years GTM experience, MBA from Santa Clara, and I write code. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year.",
+                "I'm Leon. I build revenue systems that scale revenue, not teams. Started in GTM at Google, then SurveyMonkey, HP, NetApp. Now I code systems that automate research, prioritization, and outreach—so humans focus on the close. What would you like to know?"
+            ];
+            
+            // Rotate through responses to avoid repetition
+            const used = Array.from(ConversationMemory.responses);
+            const available = responses.filter(r => {
+                const key = r.toLowerCase().substring(0, 50);
+                return !used.has(key);
+            });
+            
+            const response = available.length > 0 
+                ? available[Math.floor(Math.random() * available.length)]
+                : responses[0];
+            
+            const key = response.toLowerCase().substring(0, 50);
+            ConversationMemory.responses.add(key);
+            
+            return response;
+        },
+
+        handleConfusedResponse(message, context) {
+            const responses = [
+                "Sorry if I wasn't clear! Let me try again. I'm Leon—I build revenue systems. What would you like to know? I can tell you about my work, show you case studies, or help with your GTM challenge.",
+                "My bad—let me clarify. I'm here to help with revenue architecture questions. What are you curious about? My systems? Case studies? Or something else?",
+                "No worries! I'm Leon, and I build revenue systems. What would be most helpful—learning about my work, seeing case studies, or discussing your revenue challenge?"
+            ];
+            
+            // Don't add follow-up question after confused response
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            return response;
         },
 
         handleRevenueChallenge(message) {
@@ -522,12 +575,22 @@
                 "What's your biggest revenue challenge right now?",
                 "What would you like to explore next?",
                 "Is there a specific system or case study you're curious about?",
-                "What stage are you at—exploring, ready to build, or need help now?"
+                "What stage are you at—exploring, ready to build, or need help now?",
+                "Want to see a specific case study or project?",
+                "What interests you most—the systems I've built, or how I can help you?"
             ];
 
-            // Avoid asking the same question
+            // Avoid asking the same question - check last 5 responses
+            const recentQuestions = ConversationMemory.history
+                .slice(-5)
+                .filter(h => h.role === 'agent' && h.message.includes('?'))
+                .map(h => h.message.split('?')[0].toLowerCase().trim());
+            
             const used = Array.from(ConversationMemory.questions);
-            const available = questions.filter(q => !used.includes(q.toLowerCase()));
+            const available = questions.filter(q => {
+                const qLower = q.toLowerCase();
+                return !used.includes(qLower) && !recentQuestions.some(rq => qLower.includes(rq) || rq.includes(qLower.substring(0, 20)));
+            });
             
             const question = available.length > 0 
                 ? available[Math.floor(Math.random() * available.length)]
@@ -544,8 +607,16 @@
             // Don't add follow-up if we just asked a question
             if (lastResponse.message.includes('?')) return false;
             
-            // Add follow-up every 2-3 responses
-            return ConversationMemory.history.length % 3 === 0;
+            // Don't add follow-up if user seems confused or negative
+            const lastUserMessage = ConversationMemory.history
+                .filter(h => h.role === 'user')
+                .slice(-1)[0];
+            if (lastUserMessage && lastUserMessage.message.match(/(?:huh|what|weird|confused|don't|no|stop)/i)) {
+                return false;
+            }
+            
+            // Add follow-up every 3-4 responses (less frequent)
+            return ConversationMemory.history.length % 4 === 0 && ConversationMemory.history.length > 2;
         }
     };
 
