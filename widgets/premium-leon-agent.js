@@ -1447,6 +1447,36 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
 
     // Expose MonetizationEngine globally for external buttons
     window.MonetizationEngine = MonetizationEngine;
+    
+    // Expose agent functions globally for ROI Calculator integration
+    window.DigitalLeon = {
+        updateContext: (context) => {
+            if (context.painPoints) {
+                ConversationMemory.visitorProfile.painPoints = context.painPoints;
+            }
+            if (context.budgetSignals) {
+                ConversationMemory.visitorProfile.budgetSignals = context.budgetSignals;
+            }
+            if (context.intent) {
+                ConversationMemory.visitorProfile.intent = context.intent;
+            }
+        },
+        typeMessage: (content, role) => {
+            const window = document.getElementById('premium-leon-window');
+            if (window) {
+                window.classList.add('open');
+            }
+            return typeMessage(content, role);
+        },
+        openWindow: () => {
+            const window = document.getElementById('premium-leon-window');
+            if (window) {
+                window.classList.add('open');
+                const input = document.getElementById('leon-input');
+                if (input) input.focus();
+            }
+        }
+    };
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

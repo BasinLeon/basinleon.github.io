@@ -702,6 +702,13 @@
             const annualSavings = currentAnnualCost - newTeamCost;
             const costReduction = ((currentAnnualCost - newTeamCost) / currentAnnualCost) * 100;
             const costPerSqlReduction = ((currentCostPerSql - newCostPerSql) / currentCostPerSql) * 100;
+            
+            // Trigger agent handoff if agent is available
+            if (annualSavings > 0 && window.DigitalLeon) {
+                setTimeout(() => {
+                    triggerAgentHandoff(sdrCount, currentAnnualCost, annualSavings, replyRate);
+                }, 1000);
+            }
 
             // Update results
             document.getElementById('currentCost').textContent = formatCurrency(currentAnnualCost);
@@ -732,12 +739,52 @@
             document.getElementById('costSqlDelta').textContent = '-' + costPerSqlReduction.toFixed(0) + '%';
         }
 
+        // ROI Calculator → Agent Handoff
+        function triggerAgentHandoff(sdrCount, currentCost, potentialSavings, replyRate) {
+            // Only trigger once per session
+            if (window.roiAgentTriggered) return;
+            window.roiAgentTriggered = true;
+            
+            // Wait for agent to load
+            const checkAgent = setInterval(() => {
+                if (window.DigitalLeon && window.DigitalLeon.openWindow) {
+                    clearInterval(checkAgent);
+                    
+                    // Open agent window
+                    window.DigitalLeon.openWindow();
+                    
+                    // Update context
+                    window.DigitalLeon.updateContext({
+                        painPoints: ['High SDR Costs', 'Low Reply Rate', 'Inefficient Headcount'],
+                        budgetSignals: [`Current Spend: $${currentCost.toLocaleString()}`, `Potential Savings: $${potentialSavings.toLocaleString()}`],
+                        intent: 'ROI_Calculator_User',
+                        sdrCount: sdrCount,
+                        replyRate: replyRate
+                    });
+                    
+                    // Agent speaks first
+                    setTimeout(() => {
+                        const savingsFormatted = `$${(potentialSavings / 1000).toFixed(0)}K`;
+                        window.DigitalLeon.typeMessage(
+                            `I see the math. You're looking at potentially **${savingsFormatted}** in annual savings.\n\n` +
+                            `Most VPs I talk to start by automating the "Research" agent first—that's where the biggest efficiency gains are.\n\n` +
+                            `Do you want me to send you a spec sheet on how that specific agent works?`,
+                            'agent'
+                        );
+                    }, 500);
+                }
+            }, 100);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => clearInterval(checkAgent), 5000);
+        }
+
         // Initial calculation
         calculateROI();
     </script>
 
-    <!-- NEXUS Intelligence Bot -->
-    <script src="../widgets/leon-logic-bot.js"></script>
+    <!-- Premium Leon Agent - For ROI Calculator Integration -->
+    <script src="../widgets/premium-leon-agent.js"></script>
 
 </body>
 
