@@ -349,20 +349,49 @@
             return {
                 message: "Want to dive deeper? I offer strategy sessions where we can architect your revenue system together. Book a call?",
                 action: () => {
-                    // Try Mixmax calendar first, fallback to email
-                    const calendarUrl = 'https://cal.mixmax.com/leonbasin';
-                    const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+                    // Try multiple calendar options with fallback
+                    const calendarOptions = [
+                        'https://cal.mixmax.com/leonbasin',
+                        'https://calendly.com/lbasin23',
+                        'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Schedule+Call+with+Leon+Basin&dates=20260101T120000Z/20260101T130000Z'
+                    ];
                     
-                    // Open calendar in new tab
-                    const calendarWindow = window.open(calendarUrl, '_blank');
+                    const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%0D%0A%0D%0AI%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.%0D%0A%0D%0AThanks!';
                     
-                    // Check if calendar loaded successfully after a delay
-                    setTimeout(() => {
-                        // If window was closed or blocked, offer email fallback
+                    // Try primary calendar (Mixmax)
+                    let calendarWindow = window.open(calendarOptions[0], '_blank', 'noopener,noreferrer');
+                    
+                    // Check if popup was blocked
+                    if (!calendarWindow || calendarWindow.closed || typeof calendarWindow.closed === 'undefined') {
+                        // Try Calendly as backup
+                        calendarWindow = window.open(calendarOptions[1], '_blank', 'noopener,noreferrer');
+                        
                         if (!calendarWindow || calendarWindow.closed) {
+                            // Both blocked - offer email fallback
                             if (confirm('Calendar didn\'t open. Would you like to email me instead to schedule?')) {
                                 window.location.href = emailFallback;
                             }
+                            return;
+                        }
+                    }
+                    
+                    // Track calendar click in GA4
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'calendar_click', {
+                            'calendar_type': 'mixmax',
+                            'source': 'agent_offer',
+                            'fallback_used': !calendarWindow || calendarWindow.closed
+                        });
+                    }
+                    
+                    // Check after 2 seconds if calendar loaded
+                    setTimeout(() => {
+                        try {
+                            if (calendarWindow && calendarWindow.closed) {
+                                console.log('Calendar window closed - may need fallback');
+                            }
+                        } catch (e) {
+                            console.log('Calendar opened successfully');
                         }
                     }, 2000);
                 }
@@ -1269,16 +1298,48 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         minimizeBtn.addEventListener('click', () => window.classList.remove('open'));
         closeBtn.addEventListener('click', () => window.classList.remove('open'));
         scheduleBtn.addEventListener('click', () => {
-            const calendarUrl = 'https://cal.mixmax.com/leonbasin';
-            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+            // Try multiple calendar options with fallback
+            const calendarOptions = [
+                'https://cal.mixmax.com/leonbasin',
+                'https://calendly.com/lbasin23',
+                'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Schedule+Call+with+Leon+Basin&dates=20260101T120000Z/20260101T130000Z'
+            ];
             
-            const calendarWindow = window.open(calendarUrl, '_blank');
+            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%0D%0A%0D%0AI%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.%0D%0A%0D%0AThanks!';
             
-            setTimeout(() => {
+            // Try primary calendar (Mixmax)
+            let calendarWindow = window.open(calendarOptions[0], '_blank', 'noopener,noreferrer');
+            
+            // Check if popup was blocked
+            if (!calendarWindow || calendarWindow.closed || typeof calendarWindow.closed === 'undefined') {
+                // Try Calendly as backup
+                calendarWindow = window.open(calendarOptions[1], '_blank', 'noopener,noreferrer');
+                
                 if (!calendarWindow || calendarWindow.closed) {
+                    // Both blocked - offer email fallback
                     if (confirm('Calendar didn\'t open. Would you like to email me instead?')) {
                         window.location.href = emailFallback;
                     }
+                    return;
+                }
+            }
+            
+            // Track calendar click in GA4
+            if (typeof gtag === 'function') {
+                gtag('event', 'calendar_click', {
+                    'calendar_type': 'mixmax',
+                    'source': 'agent',
+                    'fallback_used': !calendarWindow || calendarWindow.closed
+                });
+            }
+            
+            setTimeout(() => {
+                try {
+                    if (calendarWindow && calendarWindow.closed) {
+                        console.log('Calendar window closed - may need fallback');
+                    }
+                } catch (e) {
+                    console.log('Calendar opened successfully');
                 }
             }, 2000);
         });

@@ -32,6 +32,8 @@
     <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
     
     <!-- Google Analytics 4 -->
+    <!-- TODO: Replace G-XXXXXXXXXX with your actual GA4 Measurement ID -->
+    <!-- Get your ID from: https://analytics.google.com/ -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -39,7 +41,15 @@
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX', {
             'page_title': document.title,
-            'page_location': window.location.href
+            'page_location': window.location.href,
+            'send_page_view': true
+        });
+        
+        // Custom event tracking
+        gtag('event', 'page_view', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
         });
     </script>
     

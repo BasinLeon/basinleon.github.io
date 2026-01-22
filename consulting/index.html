@@ -586,35 +586,55 @@
     <!-- Calendar Handler Script -->
     <script>
         function handleCalendarClick(event) {
-            const calendarUrl = 'https://cal.mixmax.com/leonbasin';
-            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+            event.preventDefault();
+            event.stopPropagation();
             
-            // Try to open calendar
-            const calendarWindow = window.open(calendarUrl, '_blank', 'noopener,noreferrer');
+            // Try multiple calendar options with fallback
+            const calendarOptions = [
+                'https://cal.mixmax.com/leonbasin',
+                'https://calendly.com/lbasin23',
+                'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Schedule+Call+with+Leon+Basin&dates=20260101T120000Z/20260101T130000Z'
+            ];
             
-            // If popup was blocked or failed, offer email fallback
+            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%0D%0A%0D%0AI%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.%0D%0A%0D%0AThanks!';
+            
+            // Try primary calendar (Mixmax)
+            let calendarWindow = window.open(calendarOptions[0], '_blank', 'noopener,noreferrer');
+            
+            // Check if popup was blocked
             if (!calendarWindow || calendarWindow.closed || typeof calendarWindow.closed === 'undefined') {
-                event.preventDefault();
-                if (confirm('Calendar didn\'t open. Would you like to email me instead to schedule a call?')) {
-                    window.location.href = emailFallback;
+                // Try Calendly as backup
+                calendarWindow = window.open(calendarOptions[1], '_blank', 'noopener,noreferrer');
+                
+                if (!calendarWindow || calendarWindow.closed) {
+                    // Both blocked - offer email fallback
+                    if (confirm('Calendar didn\'t open. Would you like to email me instead to schedule a call?')) {
+                        window.location.href = emailFallback;
+                    }
+                    return false;
                 }
-                return false;
             }
             
-            // Check after 2 seconds if calendar loaded (basic check)
+            // Track calendar click in GA4
+            if (typeof gtag === 'function') {
+                gtag('event', 'calendar_click', {
+                    'calendar_type': 'mixmax',
+                    'fallback_used': !calendarWindow || calendarWindow.closed
+                });
+            }
+            
+            // Check after 2 seconds if calendar loaded
             setTimeout(() => {
                 try {
-                    if (calendarWindow.closed) {
-                        // Calendar might have closed due to error
+                    if (calendarWindow && calendarWindow.closed) {
                         console.log('Calendar window closed - may need fallback');
                     }
                 } catch (e) {
-                    // Cross-origin check failed - calendar might be on different domain
-                    console.log('Calendar check complete');
+                    console.log('Calendar opened successfully');
                 }
             }, 2000);
             
-            return true;
+            return false;
         }
     </script>
 </body>
