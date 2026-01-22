@@ -405,7 +405,20 @@
             const topics = ConversationMemory.extractTopics(userMessage);
             ConversationMemory.addToHistory('user', userMessage);
 
-            // Detect archetype if not set
+            // Check for specific intents FIRST (before archetype detection)
+            const intent = this.detectIntent(userMessage);
+            console.log('Detected intent:', intent, 'for message:', userMessage);
+            
+            // Generate response based on intent and context
+            let response = await this.handleIntent(intent, userMessage, topics, context);
+            
+            // If we got a response from intent handler, return it immediately
+            if (response) {
+                console.log('Response from intent handler:', response.substring(0, 100));
+                return response;
+            }
+            
+            // Detect archetype if not set (only if no specific intent)
             if (!ConversationMemory.visitorProfile.archetype) {
                 ConversationMemory.visitorProfile.archetype = this.detectArchetype(userMessage);
             }
@@ -413,16 +426,8 @@
             // Get archetype-specific response
             const archetype = VisitorArchetypes[ConversationMemory.visitorProfile.archetype] || VisitorArchetypes.traveler;
             
-            // Check for specific intents
-            const intent = this.detectIntent(userMessage);
-            
-            // Generate response based on intent and context
-            let response = await this.handleIntent(intent, userMessage, topics, context);
-            
             // If no specific response, use knowledge base
-            if (!response) {
-                response = this.generateFromKnowledgeBase(topics, context);
-            }
+            response = this.generateFromKnowledgeBase(topics, context);
 
             // Add follow-up question if appropriate (but not for identity or confused responses)
             const skipFollowUp = ['identity', 'confused'].includes(intent);
@@ -613,6 +618,13 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         },
 
         handleConfusedResponse(message, context) {
+            const lower = message.toLowerCase();
+            
+            // Handle "don't want to answer" or negative responses
+            if (lower.match(/(?:don't want|not interested|no thanks|not now|maybe later|skip)/)) {
+                return "No pressure at all! I'm here whenever you're ready. Feel free to explore the site—there's lots of case studies, blog posts, and tools. Come back anytime you want to chat.";
+            }
+            
             const responses = [
                 "Sorry if I wasn't clear! Let me try again. I'm Leon—I build revenue systems. What would you like to know? I can tell you about my work, show you case studies, or help with your GTM challenge.",
                 "My bad—let me clarify. I'm here to help with revenue architecture questions. What are you curious about? My systems? Case studies? Or something else?",
