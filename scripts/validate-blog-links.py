@@ -56,16 +56,22 @@ def validate_posts_json():
         return None
 
 def get_actual_post_files(repo_root):
-    """Get list of actual HTML files in blog/posts directory."""
+    """Get list of actual HTML files in blog/posts and blog directories."""
     posts_dir = repo_root / 'blog' / 'posts'
+    blog_dir = repo_root / 'blog'
     
-    if not posts_dir.exists():
-        print_warning(f"blog/posts directory not found at {posts_dir}")
-        return set()
+    actual_files = {}
     
-    actual_files = set()
-    for html_file in posts_dir.glob('*.html'):
-        actual_files.add(html_file.name)
+    # Check blog/posts directory
+    if posts_dir.exists():
+        for html_file in posts_dir.glob('*.html'):
+            actual_files[html_file.name] = f"posts/{html_file.name}"
+    
+    # Check blog root directory (for files like ai-powered-lead-scoring.html)
+    if blog_dir.exists():
+        for html_file in blog_dir.glob('*.html'):
+            if html_file.name != 'index.html':  # Skip main blog index
+                actual_files[html_file.name] = html_file.name
     
     print_success(f"Found {len(actual_files)} actual post files")
     return actual_files
@@ -88,25 +94,39 @@ def validate_post_urls(posts, actual_files, repo_root):
             })
             continue
         
-        # Normalize URL - remove leading/trailing slashes and 'posts/' prefix
+        # Normalize URL - remove leading/trailing slashes
         url_clean = url.strip('/')
+        url_path = url_clean
+        
+        # Handle different URL formats
         if url_clean.startswith('posts/'):
-            url_clean = url_clean[6:]  # Remove 'posts/' prefix
+            url_path = url_clean
+            url_clean = url_clean[6:]  # Remove 'posts/' prefix for filename check
         elif url_clean.startswith('blog/posts/'):
-            url_clean = url_clean[11:]  # Remove 'blog/posts/' prefix
+            url_path = url_clean[5:]  # Remove 'blog/' prefix
+            url_clean = url_clean[11:]  # Remove 'blog/posts/' prefix for filename check
+        elif url_clean.startswith('blog/'):
+            url_path = url_clean
+            url_clean = url_clean[5:]  # Remove 'blog/' prefix for filename check
         
         # Check if it's an external URL
         if url.startswith('http://') or url.startswith('https://'):
             # Skip external URLs for now (could add HTTP check later)
             continue
         
-        # Check if file exists
-        if url_clean not in actual_files:
+        # Check if file exists (by filename or full path)
+        file_found = False
+        if url_clean in actual_files:
+            file_found = True
+        elif url_path in actual_files.values():
+            file_found = True
+        
+        if not file_found:
             broken_links.append({
                 'title': title,
                 'url': url,
                 'expected_file': url_clean,
-                'reason': 'File not found in blog/posts/'
+                'reason': 'File not found in blog/ or blog/posts/'
             })
     
     return broken_links, missing_files, invalid_urls
