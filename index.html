@@ -2233,7 +2233,32 @@
 
     <!-- Premium Leon Agent - CRM Integrated, Monetization Enabled, Premium Class -->
     <script src="widgets/premium-leon-agent.js"></script>
-
+    
+    <!-- Coding Metrics Loader -->
+    <script>
+        // Load and display real-time coding metrics
+        (function() {
+            fetch('coding-metrics.json')
+                .then(r => r.json())
+                .then(data => {
+                    const badge = document.getElementById('status-badge');
+                    if (badge) {
+                        const lines = data.lines_of_code.total.toLocaleString();
+                        const commits = data.git_stats.total_commits.toLocaleString();
+                        const builds = data.builds_shipped.total_builds;
+                        const hours = data.time_invested.estimated_hours;
+                        badge.textContent = `⚡ SYSTEM ONLINE // v10.0 // ${lines} Lines Deployed // ${commits} Commits // ${builds} Builds Shipped // ${hours} Hours Coding`;
+                    }
+                })
+                .catch(() => {
+                    // Fallback if metrics not available
+                    const badge = document.getElementById('status-badge');
+                    if (badge) {
+                        badge.textContent = '⚡ SYSTEM ONLINE // v10.0 // 83,000+ Lines Deployed // 19 Repositories';
+                    }
+                });
+        })();
+    </script>
 </body>
 </html>
 </CodeContent>
