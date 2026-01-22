@@ -90,6 +90,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- FORCE DARK MODE IMMEDIATELY - Runs before page renders -->
+    <script>
+        (function() {
+            // Clear light mode preference if it exists
+            if (localStorage.getItem('theme') === 'light') {
+                localStorage.removeItem('theme');
+            }
+            
+            // Force dark background immediately
+            document.documentElement.style.backgroundColor = '#050508';
+            if (document.body) {
+                document.body.style.backgroundColor = '#050508';
+                document.body.style.color = '#f0e6d3';
+            } else {
+                // Body doesn't exist yet, wait for it
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.body.style.backgroundColor = '#050508';
+                    document.body.style.color = '#f0e6d3';
+                    document.body.classList.add('dark-mode');
+                    document.body.classList.remove('light-mode');
+                });
+            }
+        })();
+    </script>
+    
     <style>
         /* ═══════════════════════════════════════════════════════════════
            BASIN::NEXUS EXECUTIVE OS — GOLDEN PROTOCOL
