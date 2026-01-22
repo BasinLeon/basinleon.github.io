@@ -54,7 +54,7 @@
                 return originalAssign.call(this, url);
             };
             
-            // Intercept link clicks
+            // Intercept link clicks - AGGRESSIVE
             document.addEventListener('click', function(e) {
                 let target = e.target;
                 while (target && target.tagName !== 'A') {
@@ -64,11 +64,19 @@
                     if (target.href.includes('basinleon.com') || target.href.includes('www.basinleon.com')) {
                         e.preventDefault();
                         e.stopPropagation();
-                        window.location.href = target.href.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                        const newUrl = target.href.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                        window.location.href = newUrl;
                         return false;
                     }
                 }
             }, true); // Use capture phase
+            
+            // Also fix any existing links in the DOM
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('a[href*="basinleon.com"], a[href*="www.basinleon.com"]').forEach(link => {
+                    link.href = link.href.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                });
+            });
         
         // Clear any old service workers that might be caching
         if ('serviceWorker' in navigator) {
@@ -1314,8 +1322,17 @@
             postGrid.innerHTML = toShow.map(post => {
                 const views = window.BlogAnalytics ? window.BlogAnalytics.getViewCount(post.url) : 0;
                 const viewBadge = views > 0 ? `<span class="view-badge">👁 ${views}</span>` : '';
+                // Ensure URL is relative and doesn't point to old domain
+                let postUrl = post.url || '#';
+                if (postUrl.includes('basinleon.com') || postUrl.includes('www.basinleon.com')) {
+                    postUrl = postUrl.replace(/https?:\/\/(www\.)?basinleon\.com/g, '');
+                }
+                // Ensure relative paths start with ./
+                if (postUrl && !postUrl.startsWith('http') && !postUrl.startsWith('/') && !postUrl.startsWith('./') && !postUrl.startsWith('../')) {
+                    postUrl = './' + postUrl;
+                }
                 return `
-                <a href="${post.url}" class="post-card">
+                <a href="${postUrl}" class="post-card">
                     <div class="post-date">${formatDate(post.date)}${viewBadge}</div>
                     <h3 class="post-title">${post.title}</h3>
                     <div class="post-tags"><span class="post-tag">${getPrimaryTag(post.tags)}</span></div>

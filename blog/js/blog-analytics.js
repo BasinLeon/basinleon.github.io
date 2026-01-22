@@ -227,8 +227,18 @@
                     margin-bottom: 16px;
                 ">🔗 Related Articles</h3>
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;">
-                    ${related.map(post => `
-                        <a href="${post.url}" style="
+                    ${related.map(post => {
+                        // Ensure URL doesn't point to old domain
+                        let postUrl = post.url || '#';
+                        if (postUrl.includes('basinleon.com') || postUrl.includes('www.basinleon.com')) {
+                            postUrl = postUrl.replace(/https?:\/\/(www\.)?basinleon\.com/g, '');
+                        }
+                        // Ensure relative paths
+                        if (postUrl && !postUrl.startsWith('http') && !postUrl.startsWith('/') && !postUrl.startsWith('./') && !postUrl.startsWith('../')) {
+                            postUrl = '../' + postUrl;
+                        }
+                        return `
+                        <a href="${postUrl}" style="
                             display: block;
                             padding: 12px 16px;
                             background: rgba(212, 175, 55, 0.05);
