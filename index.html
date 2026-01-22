@@ -997,11 +997,34 @@
         .newsletter-tier.premium {
             border: 2px solid var(--gold-primary);
             transform: scale(1.05);
+            background: linear-gradient(145deg, var(--bg-deep) 0%, rgba(212, 175, 55, 0.05) 100%);
+            position: relative;
+        }
+        
+        .newsletter-tier.premium::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary), var(--gold-light), var(--gold-primary), var(--gold-dark));
+            background-size: 200% 200%;
+            border-radius: 12px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: shimmer-border 3s linear infinite;
         }
         
         .newsletter-tier:hover {
             border-color: var(--gold-primary);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .newsletter-tier.premium:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.25);
         }
         
         .premium-badge {
@@ -1058,6 +1081,11 @@
             left: 0;
             color: var(--gold-primary);
             font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .newsletter-tier li strong {
+            color: var(--text-primary);
         }
         
         /* ═══════════════════════════════════════════════════════════════
@@ -1153,6 +1181,7 @@
             .blog-grid { grid-template-columns: 1fr; }
             .newsletter-tiers { grid-template-columns: 1fr; }
             .newsletter-tier.premium { transform: scale(1); }
+            .newsletter-tier.premium::before { display: none; }
             .premium-grid { grid-template-columns: 1fr; }
             .case-studies-grid { grid-template-columns: 1fr; }
             .case-studies-section { padding: 24px; }
@@ -2058,33 +2087,62 @@
     <section id="newsletter" class="newsletter-section">
         <div class="container">
             <div class="newsletter-box">
-                <h2 class="section-title">The Secure Strategist Newsletter</h2>
-                <p class="section-subtitle">GTM insights, revenue architecture, and exclusive content. 1,884+ subscribers.</p>
+                <h2 class="section-title">THE SECURE STRATEGIST NEWSLETTER</h2>
+                <p class="section-subtitle" style="font-size: 1rem; margin-bottom: 8px;">
+                    GTM insights, revenue architecture, and exclusive content.
+                </p>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 40px; flex-wrap: wrap;">
+                    <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;">1,884+ subscribers</span>
+                    <span style="color: var(--text-muted);">•</span>
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Join revenue leaders building signal-driven GTM systems</span>
+                </div>
                 
                 <div class="newsletter-tiers">
                     <div class="newsletter-tier free">
                         <h3>Free Newsletter</h3>
                         <ul>
-                            <li>Weekly GTM insights</li>
-                            <li>Free templates</li>
-                            <li>Tool updates</li>
+                            <li>Weekly GTM insights & frameworks</li>
+                            <li>Free templates & playbooks</li>
+                            <li>Early access to new tools</li>
+                            <li>Links to LinkedIn content</li>
                         </ul>
-                        <a href="https://www.linkedin.com/newsletters/7222321933533470720/" class="btn btn-secondary" target="_blank">Subscribe Free</a>
+                        <a href="https://www.linkedin.com/newsletters/7222321933533470720/" class="btn btn-secondary" target="_blank" style="width: 100%; text-align: center; justify-content: center;">SUBSCRIBE FREE</a>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 12px; text-align: center;">No credit card required</p>
                     </div>
                     
                     <div class="newsletter-tier premium">
-                        <div class="premium-badge">Premium</div>
+                        <div class="premium-badge">PREMIUM</div>
                         <h3>Founder's Circle</h3>
                         <div class="price">$49<span>/month</span></div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); text-align: center; margin-bottom: 24px; font-style: italic;">
+                            For revenue leaders building at scale
+                        </p>
                         <ul>
-                            <li>Everything in Free</li>
-                            <li>Exclusive case studies</li>
-                            <li>Monthly Q&A sessions</li>
-                            <li>Private community access</li>
-                            <li>Early tool access</li>
-                            <li>Template library</li>
+                            <li><strong>Everything in Free</strong> — All weekly insights included</li>
+                            <li><strong>Exclusive case studies</strong> — Deep dives on $424K savings, 160% pipeline growth</li>
+                            <li><strong>Monthly Q&A sessions</strong> — Direct access to ask anything</li>
+                            <li><strong>Private community access</strong> — Connect with other GTM engineers</li>
+                            <li><strong>Early tool access</strong> — Beta features before public launch</li>
+                            <li><strong>Complete template library</strong> — 30-60-90 plans, signal frameworks, ROI calculators</li>
                         </ul>
-                        <a href="mailto:lbasin23@gmail.com?subject=Founder's Circle Subscription" class="btn btn-primary">Join Founder's Circle</a>
+                        <a href="mailto:lbasin23@gmail.com?subject=Founder's Circle Subscription&body=Hi Leon,%0D%0A%0D%0AI'm interested in joining the Founder's Circle. Please let me know next steps.%0D%0A%0D%0AThanks!" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; margin-top: 8px;">JOIN FOUNDER'S CIRCLE</a>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 12px; text-align: center;">
+                            Cancel anytime • 7-day money-back guarantee
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Trust Signals -->
+                <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--gold-border); text-align: center;">
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 16px;">
+                        Trusted by revenue leaders at:
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; align-items: center;">
+                        <span style="color: var(--text-muted); font-size: 0.75rem;">Google</span>
+                        <span style="color: var(--text-muted);">•</span>
+                        <span style="color: var(--text-muted); font-size: 0.75rem;">SurveyMonkey</span>
+                        <span style="color: var(--text-muted);">•</span>
+                        <span style="color: var(--text-muted); font-size: 0.75rem;">Series A/B Startups</span>
                     </div>
                 </div>
             </div>
