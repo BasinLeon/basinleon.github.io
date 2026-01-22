@@ -1289,42 +1289,72 @@
             margin: 48px 0;
         }
         
-        .metric-card {
-            text-align: center;
-            padding: 24px 16px;
-            background: rgba(212, 175, 55, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            min-width: 0;
-            overflow: hidden;
+        .hero-metrics-grid .metric-card {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 28px 20px !important;
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.03)) !important;
+            border: 1px solid rgba(212, 175, 55, 0.25) !important;
+            border-radius: 16px !important;
+            transition: all 0.3s ease !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            overflow: hidden !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+            isolation: isolate !important;
         }
         
-        .metric-card:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--gold-primary);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+        .hero-metrics-grid .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
-        .metric-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--gold-primary);
-            line-height: 1.1;
-            margin-bottom: 12px;
-            word-break: break-word;
-            white-space: nowrap;
+        .hero-metrics-grid .metric-card:hover {
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08)) !important;
+            border-color: var(--gold-primary) !important;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25);
         }
         
-        .metric-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            line-height: 1.5;
-            font-weight: 600;
+        .hero-metrics-grid .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        .hero-metrics-grid .metric-value {
+            display: block !important;
+            font-family: 'Orbitron', sans-serif !important;
+            font-size: 2.4rem !important;
+            font-weight: 900 !important;
+            color: var(--gold-primary) !important;
+            line-height: 1.1 !important;
+            margin-bottom: 14px !important;
+            word-break: break-word !important;
+            white-space: nowrap !important;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3) !important;
+            width: 100% !important;
+        }
+        
+        .hero-metrics-grid .metric-label {
+            display: block !important;
+            font-size: 0.7rem !important;
+            color: var(--text-secondary) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 2px !important;
+            line-height: 1.6 !important;
+            font-weight: 600 !important;
+            font-family: 'Orbitron', sans-serif !important;
+            width: 100% !important;
         }
         
         @media (max-width: 1200px) {
