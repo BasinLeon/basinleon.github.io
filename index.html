@@ -36,9 +36,14 @@
     <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
     
     <!-- Google Analytics 4 -->
-    <!-- Note: Replace G-XXXXXXXXXX with your actual GA4 Measurement ID when ready -->
-    <!-- Get your ID from: https://analytics.google.com/ -->
-    <!-- Currently disabled - uncomment and add your ID when ready -->
+    <!-- 
+    SETUP INSTRUCTIONS:
+    1. Go to https://analytics.google.com/
+    2. Create a new GA4 property (or use existing)
+    3. Get your Measurement ID (format: G-XXXXXXXXXX)
+    4. Replace 'G-XXXXXXXXXX' below with your actual ID
+    5. Uncomment the script blocks below
+    -->
     <!--
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
@@ -56,6 +61,26 @@
             'page_title': document.title,
             'page_location': window.location.href,
             'page_path': window.location.pathname
+        });
+        
+        // Track button clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a.btn-primary, a.btn-secondary, button')) {
+                gtag('event', 'click', {
+                    'event_category': 'CTA',
+                    'event_label': e.target.textContent.trim()
+                });
+            }
+        });
+        
+        // Track downloads
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[download]')) {
+                gtag('event', 'file_download', {
+                    'event_category': 'Download',
+                    'event_label': e.target.getAttribute('href')
+                });
+            }
         });
     </script>
     -->
@@ -1934,6 +1959,10 @@
             <a href="#contact" role="menuitem" aria-label="Contact Leon Basin">Contact</a>
         </div>
         <div class="nav-controls">
+            <div class="site-search">
+                <input type="text" class="search-input" id="site-search-input" placeholder="Search..." aria-label="Search website">
+                <div class="search-results" id="site-search-results"></div>
+            </div>
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode" aria-pressed="true">
                 <span id="theme-icon" aria-hidden="true">🌙</span> <span id="theme-text">Dark</span>
             </button>
@@ -2611,7 +2640,11 @@
                             <li>Early access to new tools</li>
                             <li>Links to LinkedIn content</li>
                         </ul>
-                        <a href="https://www.linkedin.com/newsletters/7222321933533470720/" class="btn btn-secondary" target="_blank" style="width: 100%; text-align: center; justify-content: center;">SUBSCRIBE FREE</a>
+                        <form id="newsletter-free-form" style="width: 100%;" onsubmit="return handleNewsletterSubmit(event, 'free')">
+                            <input type="email" id="newsletter-free-email" placeholder="Enter your email" required style="width: 100%; padding: 12px; margin-bottom: 12px; background: var(--bg-deep); border: 1px solid var(--gold-border); border-radius: 6px; color: var(--text-primary); font-family: 'Orbitron', sans-serif; font-size: 0.85rem;">
+                            <button type="submit" class="btn btn-secondary" style="width: 100%; text-align: center; justify-content: center;">SUBSCRIBE FREE</button>
+                            <div id="newsletter-free-message" style="margin-top: 8px; font-size: 0.75rem; min-height: 20px;"></div>
+                        </form>
                         <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 12px; text-align: center;">No credit card required</p>
                     </div>
                     
@@ -2708,6 +2741,10 @@
             <a href="https://linkedin.com/in/leonbasin" target="_blank" aria-label="Leon Basin LinkedIn profile" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://twitter.com/basin_leon" target="_blank" aria-label="Leon Basin Twitter profile" rel="noopener noreferrer">Twitter/X</a>
             <a href="https://github.com/BasinLeon" target="_blank" aria-label="Leon Basin GitHub profile" rel="noopener noreferrer">GitHub</a>
+            <a href="/blog/" aria-label="Read blog posts">Blog</a>
+            <a href="/case-studies/" aria-label="View case studies">Case Studies</a>
+            <a href="/tools/roi-calculator.html" aria-label="Calculate ROI">ROI Calculator</a>
+            <a href="/feed.xml" aria-label="RSS feed" type="application/rss+xml">RSS Feed</a>
             <a href="Leon_Basin_Resume.pdf" aria-label="Download resume PDF" download>Resume</a>
         </div>
         <p class="footer-copyright">© 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0</p>
