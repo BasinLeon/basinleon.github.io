@@ -1381,7 +1381,16 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                                 } else if (method === 'nft') {
                                     handleNFTPayment(tier, tierName);
                                 } else if (method === 'apple_pay' || method === 'google_pay') {
-                                    handleMobilePayment(tier, tierName, method);
+                                    // Use enhanced mobile payment handler
+                                    if (window.MobilePayments) {
+                                        const price = tier === 'premium' ? 99 : 499;
+                                        const description = tierName === 'Premium' 
+                                            ? 'Premium Subscription - Full case studies, GTM playbook library, Monthly Q&A'
+                                            : 'Founder\'s Circle - Everything in Premium + Code walkthroughs, 1:1 sessions, Custom tools';
+                                        window.MobilePayments.showMobilePaymentOptions(tier, price, description);
+                                    } else {
+                                        handleMobilePayment(tier, tierName, method);
+                                    }
                                 } else {
                                     // Default: Stripe/Email
                                     const emailSubject = encodeURIComponent(`${tierName} Subscription Request`);
