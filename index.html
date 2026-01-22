@@ -2750,6 +2750,53 @@
         <p class="footer-copyright">© 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0</p>
     </footer>
 
+    <!-- Newsletter Form Handler -->
+    <script>
+        function handleNewsletterSubmit(event, tier) {
+            event.preventDefault();
+            const form = event.target;
+            const emailInput = form.querySelector('input[type="email"]');
+            const messageDiv = form.querySelector('[id$="-message"]');
+            const email = emailInput.value.trim();
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.textContent = 'Please enter a valid email address';
+                messageDiv.style.color = '#ef4444';
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            
+            // Simulate submission (replace with actual API call)
+            setTimeout(() => {
+                messageDiv.textContent = tier === 'free' 
+                    ? '✅ Successfully subscribed! Check your email to confirm.' 
+                    : '✅ Thank you! We\'ll be in touch shortly.';
+                messageDiv.style.color = '#22c55e';
+                emailInput.value = '';
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                
+                // Track event if GA4 is enabled
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'newsletter_signup', {
+                        'event_category': 'Newsletter',
+                        'event_label': tier,
+                        'value': 1
+                    });
+                }
+            }, 1000);
+            
+            return false;
+        }
+    </script>
+
     <!-- Founder's Circle Button Handler -->
     <script>
         function handleFoundersCircleClick(event) {
