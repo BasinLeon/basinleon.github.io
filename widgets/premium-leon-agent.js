@@ -854,6 +854,109 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
             .premium-action-btn:hover {
                 background: rgba(212, 175, 55, 0.2); transform: translateY(-2px);
             }
+            .premium-upgrade-modal {
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.95); z-index: 100000;
+                display: flex; align-items: center; justify-content: center;
+                backdrop-filter: blur(10px);
+            }
+            .premium-modal-content {
+                background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
+                border: 2px solid rgba(212, 175, 55, 0.3);
+                border-radius: 16px;
+                padding: 32px;
+                max-width: 600px;
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+                position: relative;
+                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+            }
+            .premium-modal-close {
+                position: absolute; top: 16px; right: 16px;
+                width: 32px; height: 32px;
+                background: rgba(212, 175, 55, 0.1);
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                cursor: pointer; color: #D4AF37;
+                font-size: 20px; font-weight: bold;
+                transition: all 0.2s;
+            }
+            .premium-modal-close:hover {
+                background: rgba(212, 175, 55, 0.2);
+                transform: scale(1.1);
+            }
+            .premium-modal-content h3 {
+                font-family: 'Orbitron', sans-serif;
+                color: #D4AF37;
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+            .premium-modal-content p {
+                color: #8b8573;
+                margin-bottom: 24px;
+                line-height: 1.6;
+            }
+            .premium-tiers {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 24px;
+            }
+            .premium-tier {
+                background: rgba(212, 175, 55, 0.05);
+                border: 1px solid rgba(212, 175, 55, 0.2);
+                border-radius: 12px;
+                padding: 24px;
+                transition: all 0.3s;
+            }
+            .premium-tier.featured {
+                border: 2px solid #D4AF37;
+                background: rgba(212, 175, 55, 0.1);
+            }
+            .premium-tier h4 {
+                font-family: 'Orbitron', sans-serif;
+                color: #D4AF37;
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+            }
+            .premium-tier ul {
+                list-style: none;
+                padding: 0;
+                margin-bottom: 20px;
+            }
+            .premium-tier li {
+                color: #f0e6d3;
+                padding: 8px 0;
+                padding-left: 24px;
+                position: relative;
+            }
+            .premium-tier li:before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: #D4AF37;
+                font-weight: bold;
+            }
+            .premium-tier .btn-premium {
+                width: 100%;
+                padding: 12px 24px;
+                background: #D4AF37;
+                border: none;
+                border-radius: 8px;
+                color: #050508;
+                font-weight: 600;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-family: 'Orbitron', sans-serif;
+            }
+            .premium-tier .btn-premium:hover {
+                background: #FFD700;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            }
         `;
         document.head.appendChild(style);
     }
@@ -937,9 +1040,59 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                 }
             }, 2000);
         });
-        premiumBtn.addEventListener('click', () => {
-            window.open('/consulting/', '_blank');
-        });
+        if (premiumBtn) {
+            premiumBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                try {
+                    // Show premium upgrade modal
+                    const modal = MonetizationEngine.createUpgradeModal({
+                        title: 'Unlock Premium Content',
+                        description: 'Get access to exclusive case studies, code walkthroughs, and GTM playbooks.'
+                    });
+                    
+                    document.body.appendChild(modal);
+                    
+                    // Add close handler
+                    const closeBtn = modal.querySelector('.premium-modal-close');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            modal.remove();
+                        });
+                    }
+                    
+                    // Add click handlers for upgrade buttons
+                    setTimeout(() => {
+                        modal.querySelectorAll('.btn-premium').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const tier = btn.textContent.includes('Premium') && !btn.textContent.includes('Founder') ? 'premium' : 'founders-circle';
+                                const tierName = tier === 'premium' ? 'Premium' : 'Founder\'s Circle';
+                                const emailSubject = encodeURIComponent(`${tierName} Subscription Request`);
+                                const emailBody = encodeURIComponent(`Hi Leon,\n\nI'm interested in the ${tierName} tier. Please let me know how to proceed.\n\nThanks!`);
+                                window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                                modal.remove();
+                            });
+                        });
+                    }, 100);
+                    
+                    // Close on background click
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error showing premium modal:', error);
+                    // Fallback: open consulting page
+                    window.open('/consulting/', '_blank');
+                }
+            });
+        } else {
+            console.warn('Premium button not found');
+        }
     }
 
     function addMessage(content, role = 'agent') {
