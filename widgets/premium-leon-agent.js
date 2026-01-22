@@ -198,7 +198,7 @@
                 "I've built systems for companies from Series A to enterprise. The pattern: start with signal detection, automate the repetitive, focus humans on the strategic. That's the architecture that scales."
             ],
             services: [
-                "I offer three tiers: GTM Audit ($2,500), Signal Architecture Setup ($12,500), and Custom Tool Development ($25,000+). Each is designed to deliver measurable ROI. Want to know which fits your challenge?",
+                "I offer several service tiers: GTM Audit ($1,500), Signal Architecture Setup ($5,000), SDR Team Optimization ($10,000), and Custom Tool Development ($15,000+). Each is designed to deliver measurable ROI. Want to know which fits your challenge?",
                 "My services range from quick audits to full system builds. The GTM Audit gives you a roadmap. Signal Architecture sets up the foundation. Custom Tools build exactly what you need. What's your biggest challenge?",
                 "I work with companies that want to scale revenue without scaling headcount. That means building systems, not just running playbooks. What stage are you at—exploring, ready to build, or need help now?"
             ],
@@ -445,13 +445,34 @@
         },
 
         detectIntent(message) {
-            const lower = message.toLowerCase();
+            const lower = message.toLowerCase().trim();
             
-            // Identity questions (highest priority) - improved pattern matching
-            if (lower.match(/(?:who is|who are|tell me about|what is|what are).*leon|leon.*(?:who|what|is|are)|^leon$|^who.*leon/i)) return 'identity';
+            // Identity questions (highest priority) - comprehensive pattern matching
+            const identityPatterns = [
+                /who\s+is\s+leon/i,
+                /who\s+are\s+you/i,
+                /tell\s+me\s+about\s+leon/i,
+                /what\s+is\s+leon/i,
+                /what\s+are\s+you/i,
+                /leon\s+who/i,
+                /leon\s+what/i,
+                /^leon$/i,
+                /^who\s+leon/i,
+                /who\s+is\s+leon\s+basin/i,
+                /leon\s+basin\s+who/i,
+                /about\s+leon/i,
+                /introduce\s+yourself/i,
+                /who\s+am\s+i\s+talking\s+to/i
+            ];
+            
+            for (const pattern of identityPatterns) {
+                if (pattern.test(lower)) {
+                    return 'identity';
+                }
+            }
             
             // Confused/negative responses
-            if (lower.match(/(?:huh|what\?|weird|confused|don't understand|unclear|what do you mean)/)) return 'confused';
+            if (lower.match(/(?:huh|what\?|weird|confused|don't understand|unclear|what do you mean|don't want to answer)/)) return 'confused';
             
             // Other intents
             if (lower.match(/(?:show|see|view|look|code|project|repository)/)) return 'view_content';
@@ -505,6 +526,8 @@
         },
 
         async handleIdentityQuestion(message) {
+            console.log('Identity question detected:', message);
+            
             // Try to load blog content about Leon
             let blogContent = null;
             try {
@@ -526,21 +549,25 @@
             }
             
             const responses = [
-                `I'm Leon Basin—a Revenue Architect who codes. 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp, and a Series A cybersecurity company. 
+                `I'm Leon Basin—a Revenue Architect who codes. 
 
-I build AI-powered revenue systems that replace headcount with code. Started coding at 40 and have built 83,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
+15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp, and a Series A cybersecurity company. I build AI-powered revenue systems that replace headcount with code.
+
+Started coding at 40 and have built 88,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
 
 I don't just architect systems—I build them. 19 public repositories. 5 LLMs orchestrated. BASIN::NEXUS v10.0 is my autonomous GTM Operating System.
 
-Want to learn more? Check out my blog post: "Why Leon Basin Matters" or explore my case studies. What interests you most?`,
+The numbers: $23M+ career pipeline, 160% pipeline growth, 5 days SDR ramp (vs 3-month average), 270+ commits, 22 builds shipped.
+
+Want to learn more? Check out my blog post "Why Leon Basin Matters" or explore my case studies. What interests you most?`,
                 
                 `Leon Basin here. I'm a Revenue Architect—which means I build systems, not just run playbooks. 
 
-15+ years GTM experience across enterprise tech. MBA from Santa Clara. And I write code—83K+ lines of it. 
+15+ years GTM experience across enterprise tech. MBA from Santa Clara. And I write code—88K+ lines of it. 
 
 My work: I replaced a 10-person SDR team with 2 SDRs + automation at a Series A cybersecurity company. Result: $424K annual savings, 77 meetings/month (vs 45 before), and 5-day SDR ramp (vs 3-month industry average).
 
-I built BASIN::NEXUS v10.0—an autonomous GTM OS that automates research, prioritization, and outreach. 5 LLMs orchestrated. 19 repositories deployed.
+I built BASIN::NEXUS v10.0—an autonomous GTM OS that automates research, prioritization, and outreach. 5 LLMs orchestrated. 19 repositories deployed. 270+ commits. 22 builds shipped.
 
 What would you like to explore? My systems? Case studies? Or how I can help with your revenue challenge?`,
                 
@@ -548,7 +575,7 @@ What would you like to explore? My systems? Case studies? Or how I can help with
 
 Started in GTM at Google (Operations Specialist), then SurveyMonkey ($300M+ portfolio), HP, NetApp. Now I code systems that automate research, prioritization, and outreach—so humans focus on the close.
 
-The numbers: $23M+ career pipeline, 160% pipeline growth, $424K annual savings, 5 days SDR ramp. 83,000+ lines of code. 19 repositories. 5 LLMs orchestrated.
+The numbers: $23M+ career pipeline, 160% pipeline growth, $424K annual savings, 5 days SDR ramp. 88,000+ lines of code. 19 repositories. 5 LLMs orchestrated. 270+ commits. 22 builds shipped.
 
 I wrote about this in my blog post "Why Leon Basin Matters"—it explains why a Revenue Architect who codes changes everything. Want me to share the key insights?`
             ];
@@ -581,6 +608,7 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                 lastIdentityQuestion: new Date().toISOString()
             });
             
+            console.log('Returning identity response:', response.substring(0, 100));
             return response;
         },
 
@@ -608,6 +636,27 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         },
 
         generateFromKnowledgeBase(topics, context) {
+            // Don't generate generic greeting if user asked a direct question
+            const lastUserMessage = ConversationMemory.history
+                .filter(h => h.role === 'user')
+                .slice(-1)[0];
+            
+            if (lastUserMessage) {
+                const lower = lastUserMessage.message.toLowerCase();
+                // If it looks like a question, try to answer it
+                if (lower.includes('?') || lower.match(/(?:what|who|how|why|when|where|tell|explain)/)) {
+                    // Try knowledge base first
+                    if (topics.length > 0) {
+                        for (const topic of topics) {
+                            const response = KnowledgeBase.getResponse(topic, context);
+                            if (response) return response;
+                        }
+                    }
+                    // If no knowledge base match, provide helpful response
+                    return "I'd love to help! Could you be more specific? I can tell you about my systems, case studies, services, or help with your revenue challenge. What interests you most?";
+                }
+            }
+            
             if (topics.length === 0) {
                 return this.generateContextualGreeting(context);
             }
