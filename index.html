@@ -1801,7 +1801,7 @@
             
             <div class="cta-row" style="margin-top: 40px;">
                 <a href="Leon_Basin_Resume.pdf" class="btn btn-primary">📄 DOWNLOAD RESUME</a>
-                <a href="#contact" class="btn btn-secondary">📧 SCHEDULE A CALL</a>
+                <a href="https://cal.mixmax.com/leonbasin" target="_blank" class="btn btn-secondary" onclick="return handleCalendarClick(event)">📧 SCHEDULE A CALL</a>
                 <a href="consulting/" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);">🔧 VIEW CONSULTING</a>
             </div>
         </div>
@@ -2127,8 +2127,9 @@
         <h2 class="contact-title">Let's Build Something</h2>
         <p class="contact-desc">Seeking Director/VP GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
         <div class="cta-row">
-            <a href="mailto:lbasin23@gmail.com?subject=Hiring Inquiry" class="btn btn-primary">📧 Let's Talk</a>
-            <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary">📄 Download Resume</a>
+            <a href="https://cal.mixmax.com/leonbasin" target="_blank" class="btn btn-primary" onclick="return handleCalendarClick(event)">📅 Schedule a Call</a>
+            <a href="mailto:lbasin23@gmail.com?subject=Hiring Inquiry" class="btn btn-secondary">📧 Email Me</a>
+            <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);">📄 Download Resume</a>
             <a href="consulting/" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);">🔧 Consulting Services</a>
         </div>
     </section>
@@ -2143,6 +2144,41 @@
         </div>
         <p class="footer-copyright">© 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0</p>
     </footer>
+
+    <!-- Calendar Handler Script -->
+    <script>
+        function handleCalendarClick(event) {
+            const calendarUrl = 'https://cal.mixmax.com/leonbasin';
+            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+            
+            // Try to open calendar
+            const calendarWindow = window.open(calendarUrl, '_blank', 'noopener,noreferrer');
+            
+            // If popup was blocked or failed, offer email fallback
+            if (!calendarWindow || calendarWindow.closed || typeof calendarWindow.closed === 'undefined') {
+                event.preventDefault();
+                if (confirm('Calendar didn\'t open. Would you like to email me instead to schedule a call?')) {
+                    window.location.href = emailFallback;
+                }
+                return false;
+            }
+            
+            // Check after 2 seconds if calendar loaded (basic check)
+            setTimeout(() => {
+                try {
+                    if (calendarWindow.closed) {
+                        // Calendar might have closed due to error
+                        console.log('Calendar window closed - may need fallback');
+                    }
+                } catch (e) {
+                    // Cross-origin check failed - calendar might be on different domain
+                    console.log('Calendar check complete');
+                }
+            }, 2000);
+            
+            return true;
+        }
+    </script>
 
     <!-- Theme Toggle Script -->
     <script>

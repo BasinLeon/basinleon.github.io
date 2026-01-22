@@ -321,7 +321,24 @@
         offerScheduling() {
             return {
                 message: "Want to dive deeper? I offer strategy sessions where we can architect your revenue system together. Book a call?",
-                action: () => window.open('https://cal.mixmax.com/leonbasin', '_blank')
+                action: () => {
+                    // Try Mixmax calendar first, fallback to email
+                    const calendarUrl = 'https://cal.mixmax.com/leonbasin';
+                    const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+                    
+                    // Open calendar in new tab
+                    const calendarWindow = window.open(calendarUrl, '_blank');
+                    
+                    // Check if calendar loaded successfully after a delay
+                    setTimeout(() => {
+                        // If window was closed or blocked, offer email fallback
+                        if (!calendarWindow || calendarWindow.closed) {
+                            if (confirm('Calendar didn\'t open. Would you like to email me instead to schedule?')) {
+                                window.location.href = emailFallback;
+                            }
+                        }
+                    }, 2000);
+                }
             };
         }
     };
@@ -907,7 +924,18 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         minimizeBtn.addEventListener('click', () => window.classList.remove('open'));
         closeBtn.addEventListener('click', () => window.classList.remove('open'));
         scheduleBtn.addEventListener('click', () => {
-            MonetizationEngine.offerScheduling().action();
+            const calendarUrl = 'https://cal.mixmax.com/leonbasin';
+            const emailFallback = 'mailto:lbasin23@gmail.com?subject=Schedule%20a%20Call&body=Hi%20Leon,%20I%27d%20like%20to%20schedule%20a%20call.%20Please%20let%20me%20know%20your%20availability.';
+            
+            const calendarWindow = window.open(calendarUrl, '_blank');
+            
+            setTimeout(() => {
+                if (!calendarWindow || calendarWindow.closed) {
+                    if (confirm('Calendar didn\'t open. Would you like to email me instead?')) {
+                        window.location.href = emailFallback;
+                    }
+                }
+            }, 2000);
         });
         premiumBtn.addEventListener('click', () => {
             window.open('/consulting/', '_blank');
