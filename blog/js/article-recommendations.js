@@ -5,43 +5,75 @@
             try {
                 // Load posts data
                 const response = await fetch('/data/posts.json');
+                if (!response.ok) {
+                    console.error('Failed to load posts.json');
+                    return [];
+                }
                 const posts = await response.json();
                 
-                // Get current post
+                if (!posts || !Array.isArray(posts)) {
+                    console.error('Invalid posts.json format');
+                    return [];
+                }
+                
+                // Get current post - try multiple matching strategies
+                const urlParts = currentPostUrl.split('/');
+                const currentSlug = urlParts[urlParts.length - 1].replace('.html', '');
+                
                 const currentPost = posts.find(p => {
-                    const postUrl = p.url.replace(/^\//, '');
-                    return currentPostUrl.includes(postUrl) || postUrl.includes(currentPostUrl.split('/').pop());
+                    if (!p.url) return false;
+                    const postUrl = p.url.replace(/^\//, '').replace(/^blog\//, '').replace(/^posts\//, '');
+                    const postSlug = postUrl.split('/').pop().replace('.html', '');
+                    return postSlug === currentSlug || 
+                           currentPostUrl.includes(postUrl) || 
+                           postUrl.includes(currentSlug);
                 });
                 
-                if (!currentPost) return [];
+                if (!currentPost) {
+                    console.log('Current post not found in posts.json:', currentSlug);
+                    return [];
+                }
                 
                 // Extract tags from current post
                 const currentTags = (currentPost.tags || []).map(t => t.toLowerCase());
                 const currentTitle = (currentPost.title || '').toLowerCase();
+                const currentCategory = (currentPost.category || '').toLowerCase();
                 
                 // Score other posts
                 const scoredPosts = posts
-                    .filter(p => p.url !== currentPost.url)
+                    .filter(p => {
+                        if (!p.url) return false;
+                        return p.url !== currentPost.url && p.title !== currentPost.title;
+                    })
                     .map(post => {
                         let score = 0;
                         const postTags = (post.tags || []).map(t => t.toLowerCase());
                         const postTitle = (post.title || '').toLowerCase();
+                        const postCategory = (post.category || '').toLowerCase();
                         
                         // Tag matching (higher weight)
                         currentTags.forEach(tag => {
                             if (postTags.includes(tag)) score += 3;
                         });
                         
-                        // Title keyword matching
-                        const currentWords = currentTitle.split(/\s+/);
+                        // Title keyword matching (longer words = more relevant)
+                        const currentWords = currentTitle.split(/\s+/).filter(w => w.length > 4);
                         currentWords.forEach(word => {
-                            if (word.length > 4 && postTitle.includes(word)) score += 2;
+                            if (postTitle.includes(word)) score += 2;
                         });
                         
                         // Category matching
-                        if (currentPost.category && post.category === currentPost.category) {
+                        if (currentCategory && postCategory && currentCategory === postCategory) {
                             score += 2;
                         }
+                        
+                        // Description keyword matching
+                        const currentDesc = (currentPost.description || '').toLowerCase();
+                        const postDesc = (post.description || '').toLowerCase();
+                        const descWords = currentDesc.split(/\s+/).filter(w => w.length > 5);
+                        descWords.forEach(word => {
+                            if (postDesc.includes(word)) score += 1;
+                        });
                         
                         return { post, score };
                     })

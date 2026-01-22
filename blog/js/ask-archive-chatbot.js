@@ -251,34 +251,68 @@
         },
         
         async generateResponse(query) {
-            // Simple keyword-based response (can be enhanced with actual AI API)
             const lowerQuery = query.toLowerCase();
             
-            // Search blog posts for relevant content
+            // Try to use Claude API if available
+            if (window.ANTHROPIC_API_KEY || window.OPENAI_API_KEY) {
+                try {
+                    return await this.generateWithAI(query);
+                } catch (error) {
+                    console.error('AI API error:', error);
+                    // Fall through to keyword-based search
+                }
+            }
+            
+            // Enhanced keyword-based search
             const relevantPosts = (this.blogPosts || []).filter(post => {
                 const title = (post.title || '').toLowerCase();
+                const desc = (post.description || '').toLowerCase();
                 const tags = (post.tags || []).map(t => t.toLowerCase()).join(' ');
-                return title.includes(lowerQuery) || tags.includes(lowerQuery);
+                const category = (post.category || '').toLowerCase();
+                
+                const searchText = `${title} ${desc} ${tags} ${category}`;
+                const queryWords = lowerQuery.split(/\s+/).filter(w => w.length > 2);
+                
+                return queryWords.some(word => searchText.includes(word));
             }).slice(0, 3);
             
             if (relevantPosts.length > 0) {
-                return `I found ${relevantPosts.length} relevant article(s):\n\n${relevantPosts.map((p, i) => `${i + 1}. "${p.title}" - ${p.url}`).join('\n')}\n\nWould you like me to search for something more specific?`;
+                const baseUrl = window.location.origin;
+                return `I found ${relevantPosts.length} relevant article(s):\n\n${relevantPosts.map((p, i) => {
+                    const url = p.url.startsWith('http') ? p.url : `${baseUrl}${p.url.startsWith('/') ? '' : '/'}${p.url}`;
+                    return `${i + 1}. "${p.title}"\n   ${url}`;
+                }).join('\n\n')}\n\nWould you like me to search for something more specific?`;
             }
             
-            // Default responses based on keywords
-            if (lowerQuery.includes('roi') || lowerQuery.includes('savings')) {
-                return 'Check out "How I Replaced 10 SDRs" - it covers $424K in annual savings through signal architecture.';
+            // Contextual responses based on keywords
+            if (lowerQuery.includes('roi') || lowerQuery.includes('savings') || lowerQuery.includes('424k')) {
+                return 'Check out "How I Replaced 10 SDRs" - it covers $424K in annual savings through signal architecture. Link: /blog/posts/how-i-replaced-10-sdrs.html';
             }
             
             if (lowerQuery.includes('signal') || lowerQuery.includes('architecture')) {
-                return 'The "Signal Architecture" post explains how to detect buying signals across 7 vectors. Want the link?';
+                return 'The "Signal Architecture" post explains how to detect buying signals across 7 vectors. Also check "The Architecture of Revenue" for the methodology.';
             }
             
-            if (lowerQuery.includes('case study') || lowerQuery.includes('example')) {
-                return 'I have several case studies. The flagship is the $424K SDR replacement project. Check /case-studies/ for more.';
+            if (lowerQuery.includes('case study') || lowerQuery.includes('example') || lowerQuery.includes('project')) {
+                return 'I have several case studies. The flagship is the $424K SDR replacement project. Check /case-studies/ for more detailed breakdowns.';
             }
             
-            return 'I can help you find articles about GTM strategy, revenue architecture, signal detection, or case studies. What specifically are you looking for?';
+            if (lowerQuery.includes('python') || lowerQuery.includes('code') || lowerQuery.includes('gtm engineering')) {
+                return 'Check out the GTM Engineering Learning Roadmap at /library/gtm-engineering-learning.html - covers Python, SQL, Clay, Apollo, and more.';
+            }
+            
+            if (lowerQuery.includes('who is') || lowerQuery.includes('leon basin')) {
+                return 'Leon Basin is a Revenue Architect who codes. 15+ years GTM leadership, 88,000+ lines of code, $424K savings case study. Read "Why Leon Basin Matters" at /blog/posts/why-leon-basin-matters.html';
+            }
+            
+            return 'I can help you find articles about GTM strategy, revenue architecture, signal detection, case studies, Python automation, or Leon\'s background. What specifically are you looking for?';
+        },
+        
+        async generateWithAI(query) {
+            // This would call Claude/OpenAI API
+            // For now, return enhanced keyword search
+            // TODO: Implement actual API call when keys are available
+            return this.generateResponse(query);
         }
     };
     
