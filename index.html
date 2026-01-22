@@ -176,7 +176,7 @@
         }
         
         .status-badge {
-            display: inline-flex;
+            display: block !important;
             align-items: center;
             gap: 8px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
@@ -187,8 +187,10 @@
             color: var(--gold-primary);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 32px;
+            margin: 0 auto 32px !important;
             font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            width: fit-content;
         }
         
         .status-badge::before {
@@ -210,8 +212,11 @@
             font-size: clamp(1.8rem, 5vw, 2.8rem);
             font-weight: 900;
             line-height: 1.2;
-            margin-bottom: 24px;
+            margin: 0 auto 24px !important;
             color: var(--text-primary);
+            text-align: center !important;
+            max-width: 1000px;
+            width: 100%;
         }
         
         .hero-title .highlight {
@@ -232,9 +237,11 @@
         .hero-subtitle {
             font-size: 0.95rem;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 40px;
+            max-width: 700px;
+            margin: 0 auto 40px !important;
             line-height: 1.8;
+            text-align: center !important;
+            width: 100%;
         }
         
         .hero-subtitle strong {
@@ -349,6 +356,10 @@
         .hero-note {
             font-size: 0.75rem;
             color: var(--text-muted);
+            text-align: center !important;
+            max-width: 800px;
+            margin: 24px auto 0 !important;
+            width: 100%;
         }
         
         .hero-note span {
@@ -359,9 +370,60 @@
            SECTION STYLES
         ═══════════════════════════════════════════════════════════════ */
         
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
         section {
             padding: 60px 0;
             border-top: 1px solid var(--gold-border);
+        }
+        
+        .hero {
+            text-align: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        .hero .container {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            width: 100% !important;
+            max-width: 1200px !important;
+            margin: 0 auto !important;
+            padding: 0 24px !important;
+        }
+        
+        .hero h1,
+        .hero p,
+        .hero .hero-title,
+        .hero .hero-subtitle,
+        .hero .status-badge,
+        .hero .hero-note {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
+        /* Force center all text in hero */
+        .hero * {
+            text-align: center !important;
+        }
+        
+        .hero h1,
+        .hero h2,
+        .hero h3,
+        .hero p,
+        .hero span,
+        .hero div {
+            text-align: center !important;
         }
         
         .section-header {
@@ -1422,8 +1484,10 @@
                 padding-top: 120px;
             }
             
-            .hero { padding: 48px 0 40px; }
-            .hero-title { font-size: 1.6rem; }
+            .hero { padding: 48px 0 40px; text-align: center !important; }
+            .hero-title { font-size: 1.6rem; text-align: center !important; margin: 0 auto 24px !important; }
+            .hero-subtitle { text-align: center !important; margin: 0 auto 40px !important; }
+            .hero .container { text-align: center !important; align-items: center !important; display: flex !important; flex-direction: column !important; }
             .stats-row { gap: 24px; }
             .stat-value { font-size: 1.5rem; }
             .nexus-showcase { padding: 24px; }
@@ -1702,25 +1766,25 @@
     </nav>
 
     <!-- HERO -->
-    <section class="hero" id="hero">
-        <div class="container">
-            <div class="status-badge" id="status-badge">⚡ SYSTEM ONLINE // v10.0 // Loading metrics...</div>
+    <section class="hero" id="hero" style="text-align: center !important;">
+        <div class="container" style="text-align: center !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; width: 100% !important; max-width: 1200px !important; margin: 0 auto !important;">
+            <div class="status-badge" id="status-badge" style="display: block !important; margin: 0 auto 32px !important; text-align: center !important;">⚡ SYSTEM ONLINE // v10.0 // Loading metrics...</div>
             
-            <h1 class="hero-title">
+            <h1 class="hero-title" style="text-align: center !important; margin: 0 auto 24px !important; width: 100% !important; max-width: 1000px !important;">
                 I Don't Just Sell Tech—<br>
-                <span class="highlight">I Build AI Agents</span>
+                <span class="highlight" style="text-align: center !important; display: block !important;">I Build AI Agents</span>
             </h1>
             
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" style="text-align: center !important; margin: 0 auto 40px !important; width: 100% !important; max-width: 700px !important;">
                 <strong>15+ years GTM leadership.</strong> Google, SurveyMonkey, HP, NetApp.<br>
                 Now I build autonomous systems that automate research, prioritization, and outreach—so I spend human time on the close.
             </p>
             
             <!-- Small Metrics Above -->
-            <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin: 24px 0; font-size: 0.85rem; color: var(--gold-primary);">
-                <span>160% Pipeline Growth</span>
-                <span>$424K Annual Savings</span>
-                <span>5 Days SDR Ramp</span>
+            <div style="display: flex !important; gap: 24px !important; justify-content: center !important; flex-wrap: wrap !important; margin: 24px auto !important; font-size: 0.85rem !important; color: var(--gold-primary) !important; text-align: center !important; width: 100% !important;">
+                <span style="text-align: center !important;">160% Pipeline Growth</span>
+                <span style="text-align: center !important;">$424K Annual Savings</span>
+                <span style="text-align: center !important;">5 Days SDR Ramp</span>
             </div>
             
             <!-- Large Metrics Display -->
@@ -1758,7 +1822,7 @@
                 <a href="Leon_Basin_Resume.pdf" style="color: var(--text-secondary); text-decoration: none;">📄 Resume</a>
             </div>
             
-            <p class="hero-note">// Hiring managers: scroll down for <span>proof of work</span>, not promises.</p>
+            <p class="hero-note" style="text-align: center !important; margin: 24px auto 0 !important; width: 100% !important; max-width: 800px !important;">// Hiring managers: scroll down for <span>proof of work</span>, not promises.</p>
         </div>
     </section>
     
@@ -2590,14 +2654,20 @@
         })();
     </script>
 
-    <!-- Mobile Payments (Load First) -->
-    <script src="widgets/mobile-payments.js"></script>
+    <!-- Site Enhancements (Load First) -->
+    <script src="js/site-enhancements.js" defer></script>
+    
+    <!-- SEO Enhancements -->
+    <script src="js/seo-enhancements.js" defer></script>
+    
+    <!-- Mobile Payments -->
+    <script src="widgets/mobile-payments.js" defer></script>
     
     <!-- Interactive Terminal -->
-    <script src="widgets/terminal.js"></script>
+    <script src="widgets/terminal.js" defer></script>
     
     <!-- Premium Leon Agent - CRM Integrated, Monetization Enabled, Premium Class -->
-    <script src="widgets/premium-leon-agent.js"></script>
+    <script src="widgets/premium-leon-agent.js" defer></script>
     
     <!-- Coding Metrics Loader -->
     <script>
