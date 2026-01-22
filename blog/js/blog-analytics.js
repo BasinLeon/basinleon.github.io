@@ -106,6 +106,7 @@
     }
 
     // Find related posts based on current post's tags
+    // Exported for external use (e.g., chatbot)
     function findRelatedPosts(currentTags, currentUrl, limit = 3) {
         if (!allPosts.length || !currentTags || !currentTags.length) return [];
 

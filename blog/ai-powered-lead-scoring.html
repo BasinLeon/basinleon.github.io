@@ -215,35 +215,55 @@
 
                 <div class="code-block">
 # Simple labeling structure
-leads = [
-    {
-        "lead_id": "LEAD_001",
-        "company": "TechCorp Inc",
-        "signals": {
-            "pages_visited": 24,
-            "email_opens": 5,
-            "pricing_page_views": 2,
-            "company_employees": 450,
-            "industry": "SaaS",
-            "funding_stage": "Series B"
-        },
-        "outcome": "won",
-        "deal_size": 150000
-    },
-    # ... more leads
-]
-                </div>
+    <footer>
+        <div class="footer-links">
+            <a href="../../">Portfolio</a>
+            <a href="../../tools/">Tools</a>
+            <a href="https://github.com/BasinLeon">GitHub</a>
+        </div>
+        <div class="footer-copyright">© 2026 Leon Basin • Revenue Architect</div>
+    </footer>
 
-                <h3>Step 2: Feature Engineering</h3>
-                <p>Transform raw signals into meaningful features the model can learn from:</p>
-                <ul>
-                    <li><strong>Recency:</strong> Days since last engagement (more recent = higher weight)</li>
-                    <li><strong>Frequency:</strong> Total number of interactions over time</li>
-                    <li><strong>Engagement Velocity:</strong> Rate of increase in interaction (accelerating interest is key)</li>
-                    <li><strong>Content Affinity:</strong> Engagement with specific content categories</li>
-                    <li><strong>Fit Score:</strong> Company characteristics matching your ICP</li>
-                </ul>
+    <!-- Related Posts Container -->
+    <section class="related-posts" id="related-posts">
+        <h3>Related Articles</h3>
+        <div class="post-grid" id="related-posts-grid"></div>
+    </section>
 
+    <!-- Blog Analytics & Related Posts -->
+    <script src="../js/blog-analytics.js"></script>
+    <script>
+        const currentTags = ["AI", "Lead Scoring", "Revenue Operations", "Predictive Analytics"];
+        const currentUrl = 'ai-powered-lead-scoring.html';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.BlogAnalytics) {
+                // Inject related posts using the exported function
+                const related = findRelatedPosts(currentTags, currentUrl, 3);
+                const container = document.getElementById('related-posts-grid');
+                if (container && related.length) {
+                    related.forEach(p => {
+                        const el = document.createElement('a');
+                        el.href = p.url;
+                        el.className = 'post-card';
+                        el.innerHTML = `
+                            <div class="post-date">${p.date}</div>
+                            <div class="post-title">${p.title}</div>
+                            <div class="post-tags">${(p.tags || []).map(t => `<span class="post-tag">${t}</span>`).join('')}</div>`;
+                        container.appendChild(el);
+                    });
+                }
+            }
+        });
+    </script>
+
+    <!-- NEXUS Intelligence Bot -->
+    <script src="../../widgets/leon-logic-bot.js"></script>
+
+    <script src="../js/blog-features.js"></script>
+    <script src="../js/blog-search.js"></script>
+
+</body>
                 <h3>Step 3: Model Selection</h3>
                 <p>Start simple, then iterate:</p>
                 <ul>
@@ -310,6 +330,19 @@ leads = [
                 </ol>
 
                 <p style="font-style: italic; color: var(--text-secondary);">The revenue teams that win in 2026 won't be the ones with the most leads. They'll be the ones with the most <strong>intelligent</strong> leads.</p>
+            </div>
+
+            <!-- Social Sharing Buttons -->
+            <div class="share-buttons">
+                <a class="share-btn" href="https://twitter.com/intent/tweet?url=https://basinleon.github.io/blog/ai-powered-lead-scoring.html&text=AI-Powered%20Lead%20Scoring" target="_blank" rel="noopener noreferrer" onclick="gtag('event','share',{method:'twitter'});">
+                    🐦 Tweet
+                </a>
+                <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://basinleon.github.io/blog/ai-powered-lead-scoring.html" target="_blank" rel="noopener noreferrer" onclick="gtag('event','share',{method:'linkedin'});">
+                    💼 Share
+                </a>
+                <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https://basinleon.github.io/blog/ai-powered-lead-scoring.html" target="_blank" rel="noopener noreferrer" onclick="gtag('event','share',{method:'facebook'});">
+                    📘 Share
+                </a>
             </div>
 
             <div class="article-footer">
