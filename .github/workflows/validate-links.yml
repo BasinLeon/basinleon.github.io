@@ -1,0 +1,51 @@
+name: Validate Blog Links
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'data/posts.json'
+      - 'blog/**'
+      - 'case-studies/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'data/posts.json'
+      - 'blog/**'
+      - 'case-studies/**'
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Run link validator
+      run: |
+        python3 scripts/validate-blog-links.py
+        if [ $? -ne 0 ]; then
+          echo "❌ Link validation failed. Please fix broken links before merging."
+          exit 1
+        fi
+    
+    - name: Comment on PR
+      if: failure() && github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '❌ Link validation found broken links. Please run `python3 scripts/validate-blog-links.py` locally to see details.'
+          })
