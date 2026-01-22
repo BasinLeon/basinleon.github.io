@@ -1445,6 +1445,9 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         CRMIntegration.saveVisitor(ConversationMemory.visitorProfile);
     }
 
+    // Expose MonetizationEngine globally for external buttons
+    window.MonetizationEngine = MonetizationEngine;
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
