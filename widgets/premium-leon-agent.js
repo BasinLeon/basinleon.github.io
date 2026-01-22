@@ -289,31 +289,58 @@
                     <p>${content.description}</p>
                     <div class="premium-tiers">
                         <div class="premium-tier">
-                            <h4>Premium ($99/month)</h4>
+                            <h4>Premium</h4>
+                            <div class="tier-pricing">
+                                <div class="price-main">$99/month</div>
+                                <div class="price-crypto">0.05 ETH</div>
+                                <div class="price-usdc">99 USDC</div>
+                            </div>
                             <ul>
                                 <li>Full case studies</li>
                                 <li>GTM playbook library</li>
                                 <li>Monthly Q&A sessions</li>
                             </ul>
-                            <button class="btn-premium">Upgrade to Premium</button>
+                            <div class="payment-options">
+                                <button class="btn-premium" data-tier="premium" data-method="stripe">💳 Credit Card</button>
+                                <button class="btn-premium crypto" data-tier="premium" data-method="crypto">₿ Crypto</button>
+                                <button class="btn-premium mobile" data-tier="premium" data-method="apple_pay">🍎 Apple Pay</button>
+                                <button class="btn-premium mobile" data-tier="premium" data-method="google_pay">📱 Google Pay</button>
+                            </div>
                         </div>
                         <div class="premium-tier featured">
-                            <h4>Founder's Circle ($499/month)</h4>
+                            <div class="tier-badge">Web 3.0</div>
+                            <h4>Founder's Circle</h4>
+                            <div class="tier-pricing">
+                                <div class="price-main">$499/month</div>
+                                <div class="price-crypto">0.25 ETH</div>
+                                <div class="price-usdc">499 USDC</div>
+                            </div>
                             <ul>
                                 <li>Everything in Premium</li>
                                 <li>Code walkthroughs</li>
                                 <li>1:1 strategy sessions</li>
                                 <li>Custom tool development</li>
+                                <li>NFT Access Pass</li>
+                                <li>DAO Governance Token</li>
                             </ul>
-                            <button class="btn-premium">Join Founder's Circle</button>
+                            <div class="payment-options">
+                                <button class="btn-premium" data-tier="founders_circle" data-method="stripe">💳 Credit Card</button>
+                                <button class="btn-premium crypto" data-tier="founders_circle" data-method="crypto">₿ Crypto</button>
+                                <button class="btn-premium nft" data-tier="founders_circle" data-method="nft">🎨 NFT Pass</button>
+                                <button class="btn-premium mobile" data-tier="founders_circle" data-method="apple_pay">🍎 Apple Pay</button>
+                                <button class="btn-premium mobile" data-tier="founders_circle" data-method="google_pay">📱 Google Pay</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
             modal.style.cssText = `
                 position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0, 0, 0, 0.9); z-index: 100000;
+                background: rgba(0, 0, 0, 0.95); z-index: 100000;
                 display: flex; align-items: center; justify-content: center;
+                backdrop-filter: blur(10px);
+                overflow-y: auto;
+                padding: 20px;
             `;
             return modal;
         },
@@ -820,10 +847,87 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
             .premium-leon-window {
                 position: absolute; bottom: 84px; right: 0;
                 width: 420px; height: 600px;
+                max-width: calc(100vw - 40px);
+                max-height: calc(100vh - 120px);
                 background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
                 border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px;
                 box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
                 display: none; flex-direction: column; overflow: hidden;
+            }
+            
+            /* Mobile & Tablet Responsive */
+            @media (max-width: 768px) {
+                #premium-leon-container {
+                    bottom: 10px; right: 10px;
+                }
+                .premium-leon-toggle {
+                    width: 56px; height: 56px;
+                    font-size: 24px;
+                }
+                .premium-leon-window {
+                    width: calc(100vw - 20px);
+                    height: calc(100vh - 100px);
+                    bottom: 76px; right: 0;
+                    border-radius: 16px 16px 0 0;
+                }
+                .premium-leon-messages {
+                    padding: 16px;
+                }
+                .premium-leon-message {
+                    max-width: 90%;
+                    font-size: 0.85rem;
+                }
+                .premium-leon-input-container {
+                    padding: 12px;
+                }
+                .premium-leon-actions {
+                    flex-direction: column;
+                }
+                .premium-action-btn {
+                    width: 100%;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .premium-leon-window {
+                    width: 100vw;
+                    height: 100vh;
+                    bottom: 0; right: 0;
+                    border-radius: 0;
+                }
+                .premium-leon-header {
+                    padding: 12px;
+                }
+                .premium-leon-name {
+                    font-size: 0.9rem;
+                }
+            }
+            
+            /* iPad & Tablet */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                .premium-leon-window {
+                    width: 380px;
+                    height: 550px;
+                }
+            }
+            
+            /* Touch device optimizations */
+            @media (hover: none) and (pointer: coarse) {
+                .premium-leon-toggle {
+                    width: 60px; height: 60px;
+                }
+                .premium-action-btn {
+                    min-height: 44px; /* iOS touch target */
+                    padding: 12px 20px;
+                }
+                #leon-input {
+                    min-height: 44px;
+                    font-size: 16px; /* Prevents zoom on iOS */
+                }
+                #leon-send {
+                    min-width: 44px;
+                    min-height: 44px;
+                }
             }
             .premium-leon-window.open { display: flex; animation: slideInRight 0.3s; }
             @keyframes slideInRight {
@@ -1018,6 +1122,83 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
             }
+            .tier-pricing {
+                margin: 16px 0;
+                text-align: center;
+            }
+            .price-main {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 1.8rem;
+                color: #D4AF37;
+                font-weight: 900;
+                margin-bottom: 8px;
+            }
+            .price-crypto, .price-usdc {
+                font-size: 0.9rem;
+                color: #8b8573;
+                margin: 4px 0;
+            }
+            .payment-options {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 8px;
+                margin-top: 16px;
+            }
+            .btn-premium.crypto {
+                background: linear-gradient(135deg, #627EEA 0%, #4C6CD4 100%);
+                color: #fff;
+            }
+            .btn-premium.crypto:hover {
+                background: linear-gradient(135deg, #7A8FEA 0%, #5C7CE4 100%);
+            }
+            .btn-premium.nft {
+                background: linear-gradient(135deg, #9333EA 0%, #7C3AED 100%);
+                color: #fff;
+            }
+            .btn-premium.nft:hover {
+                background: linear-gradient(135deg, #A855F7 0%, #8B5CF6 100%);
+            }
+            .btn-premium.mobile {
+                background: linear-gradient(135deg, #000 0%, #333 100%);
+                color: #fff;
+            }
+            .btn-premium.mobile:hover {
+                background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+            }
+            .tier-badge {
+                position: absolute;
+                top: -12px;
+                right: 20px;
+                background: linear-gradient(135deg, #9333EA 0%, #7C3AED 100%);
+                color: #fff;
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .premium-tier.featured {
+                position: relative;
+            }
+            
+            /* Mobile payment button optimizations */
+            @media (max-width: 768px) {
+                .payment-options {
+                    grid-template-columns: 1fr;
+                }
+                .btn-premium {
+                    width: 100%;
+                    min-height: 48px;
+                }
+                .premium-modal-content {
+                    width: 95%;
+                    max-width: 500px;
+                    padding: 24px;
+                }
+                .premium-tiers {
+                    grid-template-columns: 1fr;
+                }
+            }
         `;
         document.head.appendChild(style);
     }
@@ -1123,21 +1304,73 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                         });
                     }
                     
-                    // Add click handlers for upgrade buttons
+                    // Add click handlers for upgrade buttons with Web 3.0 payment methods
                     setTimeout(() => {
                         modal.querySelectorAll('.btn-premium').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                const tier = btn.textContent.includes('Premium') && !btn.textContent.includes('Founder') ? 'premium' : 'founders-circle';
+                                const tier = btn.dataset.tier || (btn.textContent.includes('Premium') && !btn.textContent.includes('Founder') ? 'premium' : 'founders-circle');
+                                const method = btn.dataset.method || 'stripe';
                                 const tierName = tier === 'premium' ? 'Premium' : 'Founder\'s Circle';
-                                const emailSubject = encodeURIComponent(`${tierName} Subscription Request`);
-                                const emailBody = encodeURIComponent(`Hi Leon,\n\nI'm interested in the ${tierName} tier. Please let me know how to proceed.\n\nThanks!`);
-                                window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                                
+                                // Handle different payment methods
+                                if (method === 'crypto') {
+                                    handleCryptoPayment(tier, tierName);
+                                } else if (method === 'nft') {
+                                    handleNFTPayment(tier, tierName);
+                                } else if (method === 'apple_pay' || method === 'google_pay') {
+                                    handleMobilePayment(tier, tierName, method);
+                                } else {
+                                    // Default: Stripe/Email
+                                    const emailSubject = encodeURIComponent(`${tierName} Subscription Request`);
+                                    const emailBody = encodeURIComponent(`Hi Leon,\n\nI'm interested in the ${tierName} tier. Please let me know how to proceed.\n\nThanks!`);
+                                    window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                                }
                                 modal.remove();
                             });
                         });
                     }, 100);
+                    
+                    // Web 3.0 Payment Handlers
+                    function handleCryptoPayment(tier, tierName) {
+                        const prices = {
+                            premium: { eth: '0.05', usdc: '99' },
+                            founders_circle: { eth: '0.25', usdc: '499' }
+                        };
+                        const price = prices[tier];
+                        
+                        // Check if Web3 wallet is available
+                        if (typeof window.ethereum !== 'undefined') {
+                            // MetaMask or other Web3 wallet
+                            const walletAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'; // Placeholder - use your actual wallet
+                            const message = `Pay ${price.eth} ETH or ${price.usdc} USDC for ${tierName} subscription.\n\nWallet: ${walletAddress}\n\nAfter payment, email lbasin23@gmail.com with your transaction hash.`;
+                            if (confirm(message + '\n\nOpen wallet to send payment?')) {
+                                // In production, integrate with actual payment processor
+                                window.open(`https://etherscan.io/address/${walletAddress}`, '_blank');
+                            }
+                        } else {
+                            // No Web3 wallet - show instructions
+                            const walletAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
+                            alert(`Crypto Payment for ${tierName}:\n\nSend ${price.eth} ETH or ${price.usdc} USDC to:\n${walletAddress}\n\nAfter payment, email lbasin23@gmail.com with your transaction hash.`);
+                        }
+                    }
+                    
+                    function handleNFTPayment(tier, tierName) {
+                        alert(`NFT Access Pass for ${tierName}:\n\nMint your exclusive NFT pass to unlock all features.\n\nComing soon: NFT marketplace integration.\n\nFor now, email lbasin23@gmail.com to reserve your NFT pass.`);
+                    }
+                    
+                    function handleMobilePayment(tier, tierName, method) {
+                        // Apple Pay / Google Pay integration
+                        const prices = {
+                            premium: '99',
+                            founders_circle: '499'
+                        };
+                        const price = prices[tier];
+                        
+                        // In production, integrate with Apple Pay / Google Pay APIs
+                        alert(`${method === 'apple_pay' ? 'Apple Pay' : 'Google Pay'} for ${tierName}:\n\n$${price}/month\n\nPayment processing coming soon. For now, email lbasin23@gmail.com to subscribe.`);
+                    }
                     
                     // Close on background click
                     modal.addEventListener('click', (e) => {
