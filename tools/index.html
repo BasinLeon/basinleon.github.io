@@ -1022,7 +1022,7 @@
 
             <div class="proof-bar">
                 <div class="proof-card">
-                    <div class="proof-value savings">-$424k</div>
+                    <div class="proof-value savings">$424k</div>
                     <div class="proof-label">Annual Savings</div>
                 </div>
                 <div class="proof-card">
@@ -1429,12 +1429,12 @@
                 </div>
 
                 <!-- Case Studies -->
-                <div class="resource-card" data-category="case-studies" data-search="ambient ai computer vision security gtm signal architecture">
+                <div class="resource-card" data-category="case-studies" data-search="computer vision security gtm signal architecture ai ml">
                     <div class="resource-badges">
                         <span class="badge badge-free">Case Study</span>
                     </div>
                     <div class="resource-icon">🎯</div>
-                    <div class="resource-title">Ambient.ai GTM Architecture</div>
+                    <div class="resource-title">Computer Vision AI GTM Architecture</div>
                     <div class="resource-desc">Signal-first architecture for computer vision security. Same system, different data.</div>
                     <div class="resource-tags">
                         <span class="tag">AI/ML</span>
@@ -1445,12 +1445,12 @@
                     </div>
                 </div>
 
-                <div class="resource-card" data-category="case-studies" data-search="fudo security partner activation pipeline growth latam">
+                <div class="resource-card" data-category="case-studies" data-search="series a cybersecurity partner activation pipeline growth latam">
                     <div class="resource-badges">
                         <span class="badge badge-free">Case Study</span>
                     </div>
                     <div class="resource-icon">🛡️</div>
-                    <div class="resource-title">Fudo Security Transformation</div>
+                    <div class="resource-title">Series A Cybersecurity Transformation</div>
                     <div class="resource-desc">160% YoY pipeline growth. Zero US presence → Partner channel activation.</div>
                     <div class="resource-tags">
                         <span class="tag">Partnership</span>
@@ -1461,12 +1461,12 @@
                     </div>
                 </div>
 
-                <div class="resource-card" data-category="case-studies" data-search="sense group bdr team transformation reply rate">
+                <div class="resource-card" data-category="case-studies" data-search="bdr platform transformation reply rate email outreach">
                     <div class="resource-badges">
                         <span class="badge badge-free">Case Study</span>
                     </div>
                     <div class="resource-icon">📈</div>
-                    <div class="resource-title">Sense BDR Transformation</div>
+                    <div class="resource-title">BDR Platform Transformation</div>
                     <div class="resource-desc">8% → 18% reply rates. 125% response lift. $10M+ pipeline generated.</div>
                     <div class="resource-tags">
                         <span class="tag">SDR/BDR</span>
@@ -1476,6 +1476,31 @@
                         <a href="https://basinleon.github.io/blog/?tag=case-studies" class="btn btn-secondary" style="text-decoration: none;">View Case Study →</a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email Capture Section -->
+    <section class="resources-section" style="padding: 80px 0; border-top: 0.5px solid rgba(255, 255, 255, 0.1); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);">
+        <div class="container">
+            <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 16px;">📡</div>
+                <h2 class="category-title" style="margin-bottom: 12px;">Get GTM Intelligence Weekly</h2>
+                <p class="category-subtitle" style="margin-bottom: 32px;">
+                    Join 402+ revenue architects. Weekly frameworks, case studies, and tool updates. No spam.
+                </p>
+                <form id="tools-newsletter-form" action="https://formspree.io/f/meeeqyrg" method="POST" style="display: flex; gap: 12px; max-width: 500px; margin: 0 auto;">
+                    <input type="email" name="email" placeholder="your@email.com" required
+                        style="flex: 1; padding: 14px 20px; background: var(--bg-card); border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: var(--text); font-size: 1rem; font-family: 'Inter', sans-serif;">
+                    <input type="hidden" name="source" value="tools-page">
+                    <input type="hidden" name="interest" value="newsletter">
+                    <button type="submit" class="btn btn-primary" style="white-space: nowrap; padding: 14px 24px;">
+                        Subscribe
+                    </button>
+                </form>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px;">
+                    🔒 Privacy-first. Unsubscribe anytime.
+                </p>
             </div>
         </div>
     </section>
@@ -1847,6 +1872,51 @@
                 filterTools();
             });
         });
+
+        // Email capture form handling
+        const newsletterForm = document.getElementById('tools-newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Subscribing...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        submitBtn.textContent = '✓ Subscribed!';
+                        submitBtn.style.background = 'var(--green)';
+                        this.reset();
+                        
+                        // Track event
+                        if (typeof plausible !== 'undefined') {
+                            plausible('Newsletter Signup', {props: {source: 'tools-page'}});
+                        }
+                        
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.style.background = '';
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (error) {
+                    submitBtn.textContent = 'Try Again';
+                    submitBtn.disabled = false;
+                    console.error('Newsletter signup error:', error);
+                }
+            });
+        }
 
         // Load chronicles on page load
         document.addEventListener('DOMContentLoaded', () => {

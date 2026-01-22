@@ -12,6 +12,9 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
+    <!-- Canonical URL - Prevents redirects -->
+    <link rel="canonical" href="https://basinleon.github.io/blog/">
+
     <!-- Open Graph -->
     <meta property="og:title" content="The Archive | Leon Basin">
     <meta property="og:description"
@@ -25,8 +28,48 @@
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
     
-    <!-- Script to clear service workers if any -->
+    <!-- AGGRESSIVE Redirect Prevention - MUST BE FIRST SCRIPT -->
     <script>
+        (function() {
+            // Immediately prevent any redirects to basinleon.com
+            if (window.location.hostname === 'basinleon.com' || window.location.hostname === 'www.basinleon.com') {
+                window.location.replace('https://basinleon.github.io/blog/');
+                return;
+            }
+            
+            // Prevent any future redirects
+            const originalReplace = window.location.replace;
+            window.location.replace = function(url) {
+                if (typeof url === 'string' && (url.includes('basinleon.com') || url.includes('www.basinleon.com'))) {
+                    url = url.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                }
+                return originalReplace.call(this, url);
+            };
+            
+            const originalAssign = window.location.assign;
+            window.location.assign = function(url) {
+                if (typeof url === 'string' && (url.includes('basinleon.com') || url.includes('www.basinleon.com'))) {
+                    url = url.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                }
+                return originalAssign.call(this, url);
+            };
+            
+            // Intercept link clicks
+            document.addEventListener('click', function(e) {
+                let target = e.target;
+                while (target && target.tagName !== 'A') {
+                    target = target.parentElement;
+                }
+                if (target && target.href) {
+                    if (target.href.includes('basinleon.com') || target.href.includes('www.basinleon.com')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = target.href.replace(/https?:\/\/(www\.)?basinleon\.com/g, 'https://basinleon.github.io');
+                        return false;
+                    }
+                }
+            }, true); // Use capture phase
+        
         // Clear any old service workers that might be caching
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(registrations => {
@@ -315,9 +358,9 @@
 
         .sidebar-header {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: var(--gold-primary);
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             margin-bottom: 12px;
             padding-bottom: 8px;
@@ -387,22 +430,24 @@
         }
 
         .signal-stat-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Ask Archive Button */
         .ask-archive-btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
             border: 1px solid var(--gold-border);
             border-radius: 6px;
             color: var(--gold-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
             cursor: pointer;
             margin-bottom: 20px;
             display: flex;
@@ -427,15 +472,16 @@
 
         .cat-bubble {
             --cat-color: var(--gold-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            padding: 4px 10px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.7rem;
+            padding: 6px 12px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .cat-bubble:hover {
@@ -470,8 +516,8 @@
         }
 
         .category-link {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.2s;
@@ -539,9 +585,9 @@
 
         .archive-month {
             display: block;
-            padding: 4px 0;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            padding: 6px 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.75rem;
             color: var(--text-muted);
             text-decoration: none;
         }
@@ -578,10 +624,10 @@
         }
 
         .about-bio {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* Newsletter CTA */
@@ -608,13 +654,13 @@
 
         .newsletter-cta input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             background: var(--bg-deep);
             border: 1px solid var(--gold-border);
             border-radius: 4px;
             color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.75rem;
             margin-bottom: 8px;
         }
 
@@ -1005,7 +1051,7 @@
 
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-header">⚡ Control Panel</div>
+            <div class="sidebar-header"><span aria-hidden="true">⚡</span> Control Panel</div>
 
             <!-- Signal Engine Status -->
             <div class="signal-status">
@@ -1029,35 +1075,35 @@
             <div
                 style="background: #0a0a0f; color: var(--text-primary); padding: 1rem; border: 1px solid var(--gold-border); font-family: 'JetBrains Mono', monospace; margin-bottom: 20px; border-radius: 6px;">
                 <div
-                    style="font-size: 0.65rem; opacity: 0.7; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 0.75rem; color: var(--gold-primary);">
+                    style="font-size: 0.7rem; opacity: 0.85; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 0.75rem; color: var(--gold-primary); font-family: 'Inter', sans-serif;">
                     // SYSTEM_METRICS::LIVE
                 </div>
 
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.7rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
                     <span>SIGNALS_SCANNED:</span>
-                    <span style="color: var(--gold-primary);">14,203</span>
+                    <span style="color: var(--gold-primary); font-weight: 600;">14,203</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.7rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
                     <span>NOISE_BLOCKED:</span>
-                    <span style="color: #ff6b6b;">12,850</span>
+                    <span style="color: #ff6b6b; font-weight: 600;">12,850</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.7rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
                     <span>SIGNAL_INTEGRITY:</span>
-                    <span style="color: #22c55e;">91%</span>
+                    <span style="color: #22c55e; font-weight: 600;">91%</span>
                 </div>
 
-                <div style="margin-top: 0.75rem; font-size: 0.6rem; text-align: right; opacity: 0.5;">
+                <div style="margin-top: 0.75rem; font-size: 0.65rem; text-align: right; opacity: 0.7; font-family: 'Inter', sans-serif;">
                     UPDATED: T-MINUS 12M
                 </div>
             </div>
 
             <!-- Ask Archive - Connects to Chatbot -->
-            <button class="ask-archive-btn" id="ask-archive-btn">
-                🧠 Ask the Archive
+            <button class="ask-archive-btn" id="ask-archive-btn" aria-label="Ask the Archive - AI assistant">
+                <span aria-hidden="true">🧠</span> Ask the Archive
             </button>
 
             <!-- Categories as Bubbles -->
-            <div class="sidebar-header">📂 Topics</div>
+            <div class="sidebar-header"><span aria-hidden="true">📂</span> Topics</div>
             <div class="category-bubbles">
                 <span class="cat-bubble active" data-filter="all">All <small>163+</small></span>
                 <span class="cat-bubble" data-filter="gtm" style="--cat-color: #D4AF37;">GTM</span>
@@ -1072,41 +1118,46 @@
             </div>
 
             <!-- Archive Dropdown -->
-            <div class="sidebar-header">📅 Archive</div>
+            <div class="sidebar-header"><span aria-hidden="true">📅</span> Archive</div>
             <div class="archive-dropdown">
                 <button class="archive-toggle" id="archive-toggle">
                     <span>Browse by Month</span>
                     <span class="archive-toggle-arrow">▼</span>
                 </button>
                 <div class="archive-months" id="archive-months">
-                    <a href="#" class="archive-month" data-month="2026-01">January 2026 (12)</a>
-                    <a href="#" class="archive-month" data-month="2025-12">December 2025 (18)</a>
-                    <a href="#" class="archive-month" data-month="2025-11">November 2025 (14)</a>
-                    <a href="#" class="archive-month" data-month="2025-10">October 2025 (10)</a>
-                    <a href="#" class="archive-month" data-month="2025-09">September 2025 (8)</a>
-                    <a href="#" class="archive-month" data-month="2024">2024 Archive (18)</a>
+                    <a href="#" class="archive-month" data-month="2026-01" aria-label="Filter posts from January 2026">January 2026 (12)</a>
+                    <a href="#" class="archive-month" data-month="2025-12" aria-label="Filter posts from December 2025">December 2025 (18)</a>
+                    <a href="#" class="archive-month" data-month="2025-11" aria-label="Filter posts from November 2025">November 2025 (14)</a>
+                    <a href="#" class="archive-month" data-month="2025-10" aria-label="Filter posts from October 2025">October 2025 (10)</a>
+                    <a href="#" class="archive-month" data-month="2025-09" aria-label="Filter posts from September 2025">September 2025 (8)</a>
+                    <a href="#" class="archive-month" data-month="2024" aria-label="Filter posts from 2024">2024 Archive (18)</a>
                 </div>
             </div>
 
             <!-- About -->
-            <div class="sidebar-header">👤 The Archivist</div>
+            <div class="sidebar-header"><span aria-hidden="true">👤</span> The Archivist</div>
             <div class="about-section">
-                <div class="about-avatar">🧠</div>
+                <div class="about-avatar" aria-hidden="true">🧠</div>
                 <div class="about-name">Leon Basin</div>
                 <div class="about-bio">Revenue Architect. Building systems that replace headcount with intelligence.
                     $310M+ portfolio.</div>
             </div>
 
             <!-- Newsletter -->
-            <div class="sidebar-header">📡 Signal Feed</div>
+            <div class="sidebar-header"><span aria-hidden="true">📡</span> Signal Feed</div>
             <div class="newsletter-cta">
                 <h4>Subscribe</h4>
                 <p>402+ revenue architects</p>
-                <form action="https://formspree.io/f/meeeqyrg" method="POST">
+                <form id="blog-newsletter-form" action="https://formspree.io/f/meeeqyrg" method="POST">
                     <input type="email" name="email" placeholder="your@email.com" required>
                     <input type="hidden" name="_subject" value="🔔 Signal Feed Subscriber">
+                    <input type="hidden" name="source" value="blog-sidebar">
+                    <input type="hidden" name="interest" value="newsletter">
                     <button type="submit">SUBSCRIBE</button>
                 </form>
+                <p style="font-size: 0.6rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
+                    Weekly GTM intelligence. No spam. Unsubscribe anytime.
+                </p>
             </div>
         </aside>
 
@@ -1124,7 +1175,7 @@
             <section class="featured-hero">
                 <a href="posts/interview-as-architecture.html" class="featured-link">
                     <article class="featured-main">
-                        <div class="featured-badge">📌 Latest</div>
+                        <div class="featured-badge"><span aria-hidden="true">📌</span> Latest</div>
                         <h2 class="featured-title">Interview as Architecture: Why I Built an AI Coach That Knows My War
                             Stories</h2>
                         <p class="featured-excerpt">Treating job interviews like a systems problem with personalized AI
@@ -1160,7 +1211,7 @@
             <!-- Popular & Recent -->
             <section class="dual-section">
                 <div>
-                    <h2 class="section-header">🔥 Popular Posts</h2>
+                    <h2 class="section-header"><span aria-hidden="true">🔥</span> Popular Posts</h2>
                     <a href="posts/system-finds-the-role.html" class="mini-post">
                         <div class="mini-post-title">The System Finds the Role: Why I Built BASIN::NEXUS</div>
                         <div class="mini-post-meta">Dec 14 • GTM • 5 min</div>
@@ -1179,12 +1230,12 @@
                     </a>
                 </div>
                 <div>
-                    <h2 class="section-header">🕐 Recently Published</h2>
+                    <h2 class="section-header"><span aria-hidden="true">🕐</span> Recently Published</h2>
                     <a href="posts/30-60-90-enterprise.html" class="mini-post">
                         <div class="mini-post-title">The 30-60-90 Enterprise Playbook</div>
                         <div class="mini-post-meta">Jan 14 • GTM • 7 min</div>
                     </a>
-                    <a href="posts/signal-engine-instead.html" class="mini-post">
+                    <a href="posts/signal-engine.html" class="mini-post">
                         <div class="mini-post-title">I Stopped Waiting for Better Data</div>
                         <div class="mini-post-meta">Jan 12 • Revenue • 8 min</div>
                     </a>
@@ -1201,7 +1252,7 @@
 
             <!-- All Posts Grid -->
             <section>
-                <h2 class="section-header">📚 All Posts</h2>
+                <h2 class="section-header"><span aria-hidden="true">📚</span> All Posts</h2>
                 <div class="post-grid" id="post-grid">
                     <!-- Populated by JavaScript -->
                 </div>
@@ -1230,6 +1281,8 @@
         const postGrid = document.getElementById('post-grid');
         const loadMoreBtn = document.getElementById('load-more-btn');
         let currentFilter = 'all';
+        let originalPosts = [];
+        let isMonthFilterActive = false;
 
         // Format date for display
         function formatDate(dateStr) {
@@ -1284,6 +1337,11 @@
         // Category bubble filter
         document.querySelectorAll('.cat-bubble').forEach(bubble => {
             bubble.addEventListener('click', () => {
+                // Restore original posts if we were filtering by month
+                if (isMonthFilterActive && originalPosts.length > 0) {
+                    allPosts = [...originalPosts];
+                    isMonthFilterActive = false;
+                }
                 document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
                 bubble.classList.add('active');
                 currentFilter = bubble.dataset.filter;
@@ -1298,6 +1356,43 @@
         archiveToggle.addEventListener('click', () => {
             archiveToggle.classList.toggle('open');
             archiveMonths.classList.toggle('open');
+        });
+
+        // Archive month filter
+        document.querySelectorAll('.archive-month').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const month = link.dataset.month;
+                if (month) {
+                    // Save original posts if not already saved
+                    if (originalPosts.length === 0) {
+                        originalPosts = [...allPosts];
+                    }
+                    // Filter posts by month (YYYY-MM format)
+                    currentFilter = 'all';
+                    displayedCount = 15;
+                    isMonthFilterActive = true;
+                    allPosts = originalPosts.filter(p => {
+                        if (!p.date) return false;
+                        try {
+                            const postDate = new Date(p.date);
+                            if (isNaN(postDate.getTime())) return false;
+                            const postMonth = postDate.toISOString().slice(0, 7); // YYYY-MM
+                            const postYear = postDate.getFullYear().toString();
+                            return postMonth === month || (month.length === 4 && postYear === month);
+                        } catch (e) {
+                            return false;
+                        }
+                    });
+                    renderPosts();
+                    // Update active category bubble
+                    document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
+                    document.querySelector('.cat-bubble[data-filter="all"]')?.classList.add('active');
+                    // Close dropdown
+                    archiveToggle.classList.remove('open');
+                    archiveMonths.classList.remove('open');
+                }
+            });
         });
 
         // Ask Archive - Opens NEXUS Intelligence chatbot
@@ -1322,6 +1417,7 @@
                     if (!b.date) return -1;
                     return new Date(b.date) - new Date(a.date);
                 });
+                originalPosts = [...allPosts]; // Save original for filtering
                 renderPosts();
                 console.log(`📚 Loaded ${allPosts.length} posts from archive`);
             })
@@ -1337,6 +1433,7 @@
                             if (!b.date) return -1;
                             return new Date(b.date) - new Date(a.date);
                         });
+                        originalPosts = [...allPosts]; // Save original for filtering
                         renderPosts();
                     })
                     .catch(e => console.error('Alternative fetch also failed:', e));
@@ -1370,6 +1467,52 @@
 
     <!-- Blog Analytics -->
     <script src="js/blog-analytics.js?v=2.0"></script>
+    
+    <!-- Newsletter Form Enhancement -->
+    <script>
+        const blogNewsletterForm = document.getElementById('blog-newsletter-form');
+        if (blogNewsletterForm) {
+            blogNewsletterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Subscribing...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        submitBtn.textContent = '✓ Subscribed!';
+                        submitBtn.style.background = 'var(--green)';
+                        this.reset();
+                        
+                        if (typeof plausible !== 'undefined') {
+                            plausible('Newsletter Signup', {props: {source: 'blog-sidebar'}});
+                        }
+                        
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.style.background = '';
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (error) {
+                    submitBtn.textContent = 'Try Again';
+                    submitBtn.disabled = false;
+                    console.error('Newsletter signup error:', error);
+                }
+            });
+        }
+    </script>
 
     <!-- NEXUS Intelligence Bot -->
     <script src="../widgets/leon-logic-bot.js?v=2.0"></script>

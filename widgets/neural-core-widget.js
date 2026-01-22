@@ -123,7 +123,9 @@
         #neural-core-widget .ncw-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin: 4px 0;
+            gap: 8px;
         }
         
         #neural-core-widget .ncw-label {
@@ -242,13 +244,15 @@
         if (!dateStr || dateStr.includes('ago')) return dateStr;
         try {
             const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', {
+            const formatted = date.toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: false
             });
+            // Ensure proper spacing: "Jan 15, 09:20" -> "Jan 15 at 09:20"
+            return formatted.replace(',', ' at');
         } catch (e) {
             return dateStr;
         }
@@ -282,7 +286,7 @@
                     </div>
                     <div class="ncw-row">
                         <span class="ncw-label">Last Transmission</span>
-                        <span class="ncw-value" style="font-size: 10px;">${formattedDate}</span>
+                        <span class="ncw-value" style="font-size: 10px; white-space: nowrap;">${formattedDate}</span>
                     </div>
                 </div>
                 

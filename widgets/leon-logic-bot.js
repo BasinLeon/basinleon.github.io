@@ -540,7 +540,7 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
     const TOPIC_POST_MAP = {
         'revenue': ['architecture-of-revenue', 'revenue-is-not-math', 'expansion-revenue-engine'],
         'gtm': ['0-gtm-stack', 'gtm-mission', 'interview-as-architecture'],
-        'signal': ['signal-engine', 'signal-engine-instead', 'the-artifact'],
+        'signal': ['signal-engine', 'the-artifact'],
         'architecture': ['architecture-of-revenue', 'architecture-of-belief', 'architecture-language'],
         'ai': ['ai-cybersecurity-sword', 'labyrinth-of-the-mind', 'fractal-intelligence'],
         'automation': ['how-to-automate-e2e-outreach', '0-gtm-stack', 'signal-engine'],

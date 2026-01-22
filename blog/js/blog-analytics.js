@@ -136,22 +136,88 @@
     // UI COMPONENTS
     // ═══════════════════════════════════════════════════════════════
 
-    // Inject related posts section
+    // Tool recommendations based on post content
+    function getRecommendedTools(currentTags) {
+        const tools = [
+            {
+                name: 'ROI Calculator',
+                url: '../../tools/roi-calculator.html',
+                keywords: ['SDR', 'Revenue Architecture', 'CAC', 'headcount', 'savings', 'ROI'],
+                icon: '💰'
+            },
+            {
+                name: 'Case Study Generator',
+                url: '../../tools/case-study-generator.html',
+                keywords: ['GTM', 'case study', 'deployment', 'strategy', 'framework'],
+                icon: '📋'
+            },
+            {
+                name: 'Headline Generator',
+                url: '../../tools/headline-generator.html',
+                keywords: ['LinkedIn', 'career', 'recruiter', 'hiring', 'headline'],
+                icon: '💼'
+            },
+            {
+                name: 'NEXUS::CRM',
+                url: '../../tools/nexus-crm.html',
+                keywords: ['CRM', 'pipeline', 'revenue', 'GTM', 'automation'],
+                icon: '⚡'
+            },
+            {
+                name: 'Pipeline Scorer',
+                url: 'https://github.com/BasinLeon/gtm-signal-architect',
+                keywords: ['pipeline', 'leads', 'signals', 'scoring', 'prioritization'],
+                icon: '🎯'
+            }
+        ];
+
+        if (!currentTags || !currentTags.length) return [];
+
+        const currentTagsLower = currentTags.map(t => t.toLowerCase());
+        const scored = tools.map(tool => {
+            let score = 0;
+            const toolKeywords = tool.keywords.map(k => k.toLowerCase());
+            
+            for (const tag of currentTagsLower) {
+                if (toolKeywords.some(k => k.includes(tag) || tag.includes(k))) {
+                    score += 2;
+                }
+            }
+            
+            return { tool, score };
+        });
+
+        return scored
+            .filter(s => s.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 2)
+            .map(s => s.tool);
+    }
+
+    // Inject related posts section with tools
     async function injectRelatedPosts(containerSelector, currentTags, currentUrl) {
         await loadPostsData();
 
         const related = findRelatedPosts(currentTags, currentUrl);
-        if (!related.length) return;
+        const tools = getRecommendedTools(currentTags);
+        const hasContent = related.length > 0 || tools.length > 0;
+
+        if (!hasContent) return;
 
         const container = document.querySelector(containerSelector);
         if (!container) return;
 
-        const html = `
+        let html = `
             <section class="related-posts" style="
                 margin-top: 48px;
                 padding-top: 32px;
                 border-top: 1px dotted rgba(212, 175, 55, 0.3);
             ">
+        `;
+
+        // Related Posts
+        if (related.length > 0) {
+            html += `
                 <h3 style="
                     font-family: 'Orbitron', sans-serif;
                     font-size: 0.75rem;
@@ -159,8 +225,8 @@
                     letter-spacing: 2px;
                     text-transform: uppercase;
                     margin-bottom: 16px;
-                ">🔗 You Might Also Like</h3>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
+                ">🔗 Related Articles</h3>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;">
                     ${related.map(post => `
                         <a href="${post.url}" style="
                             display: block;
@@ -170,7 +236,7 @@
                             border-radius: 6px;
                             text-decoration: none;
                             transition: all 0.2s;
-                        " onmouseover="this.style.borderColor='#D4AF37'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)'">
+                        " onmouseover="this.style.borderColor='#D4AF37'; this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)'; this.style.background='rgba(212,175,55,0.05)'">
                             <div style="
                                 font-family: 'Crimson Pro', Georgia, serif;
                                 font-size: 1rem;
@@ -185,11 +251,57 @@
                         </a>
                     `).join('')}
                 </div>
-            </section>
-        `;
+            `;
+        }
+
+        // Recommended Tools
+        if (tools.length > 0) {
+            html += `
+                <h3 style="
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 0.75rem;
+                    color: #D4AF37;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    margin-bottom: 16px;
+                ">⚡ Try These Tools</h3>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    ${tools.map(tool => `
+                        <a href="${tool.url}" ${tool.url.startsWith('http') ? 'target="_blank"' : ''} style="
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            padding: 12px 16px;
+                            background: rgba(212, 175, 55, 0.05);
+                            border: 1px solid rgba(212, 175, 55, 0.2);
+                            border-radius: 6px;
+                            text-decoration: none;
+                            transition: all 0.2s;
+                        " onmouseover="this.style.borderColor='#D4AF37'; this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)'; this.style.background='rgba(212,175,55,0.05)'">
+                            <span style="font-size: 1.5rem;">${tool.icon}</span>
+                            <div>
+                                <div style="
+                                    font-family: 'Crimson Pro', Georgia, serif;
+                                    font-size: 1rem;
+                                    color: #f0e6d3;
+                                    margin-bottom: 2px;
+                                ">${tool.name}</div>
+                                <div style="
+                                    font-family: 'JetBrains Mono', monospace;
+                                    font-size: 0.65rem;
+                                    color: #8b8573;
+                                ">Interactive Tool</div>
+                            </div>
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        html += `</section>`;
 
         container.insertAdjacentHTML('beforeend', html);
-        console.log(`🔗 Injected ${related.length} related posts`);
+        console.log(`🔗 Injected ${related.length} related posts and ${tools.length} tools`);
     }
 
     // Display view count badge
