@@ -467,10 +467,11 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 80px 0 60px !important;
+            padding: 60px 0 60px !important;
             margin-top: 0 !important;
             background: var(--bg-deep);
             transition: background-color 0.3s ease;
+            min-height: calc(100vh - 108px); /* Account for nav + banner */
         }
         
         body.light-mode .hero {
@@ -1372,7 +1373,7 @@
         /* Availability Banner */
         .availability-banner {
             background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
-            padding: 14px 0;
+            padding: 12px 0;
             text-align: center;
             border-top: 4px solid var(--gold-primary);
             border-bottom: 2px solid rgba(0, 0, 0, 0.2);
@@ -1383,6 +1384,9 @@
             z-index: 999;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            height: 48px; /* Fixed height for consistent spacing */
+            display: flex;
+            align-items: center;
         }
         
         .availability-banner::before {
@@ -1409,6 +1413,10 @@
             flex-wrap: wrap;
             position: relative;
             z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
         
         .availability-badge {
@@ -2160,13 +2168,11 @@
 
     <!-- AVAILABILITY BANNER -->
     <div class="availability-banner">
-        <div class="container">
-            <div class="availability-content">
-                <span class="availability-badge">⚡ AVAILABLE</span>
-                <span class="availability-text">Seeking Director/VP GTM, RevOps, or GTM Engineering roles</span>
-                <span class="availability-separator">•</span>
-                <a href="#contact" class="availability-cta">Let's Talk →</a>
-            </div>
+        <div class="availability-content">
+            <span class="availability-badge">⚡ AVAILABLE</span>
+            <span class="availability-text">Seeking Director/VP GTM, RevOps, or GTM Engineering roles</span>
+            <span class="availability-separator">•</span>
+            <a href="#contact" class="availability-cta">Let's Talk →</a>
         </div>
     </div>
 
