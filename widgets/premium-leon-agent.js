@@ -277,6 +277,81 @@
         showUpgradePrompt(content) {
             const modal = this.createUpgradeModal(content);
             document.body.appendChild(modal);
+            
+            // Add event listeners for buttons
+            const closeBtn = modal.querySelector('.premium-modal-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modal.remove();
+                });
+            }
+            
+            // Close on background click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            // Add click handlers for payment buttons
+            const paymentButtons = modal.querySelectorAll('.btn-premium');
+            paymentButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const tier = btn.getAttribute('data-tier');
+                    const method = btn.getAttribute('data-method');
+                    this.handlePayment(tier, method);
+                });
+            });
+        },
+        
+        handlePayment(tier, method) {
+            const tierName = tier === 'premium' ? 'Premium' : 'Founder\'s Circle';
+            const amounts = {
+                premium: { usd: 99, eth: 0.05, usdc: 99 },
+                founders_circle: { usd: 499, eth: 0.25, usdc: 499 }
+            };
+            const amount = amounts[tier] || amounts.premium;
+            
+            // Track payment intent
+            if (typeof gtag === 'function') {
+                gtag('event', 'premium_payment_click', {
+                    'event_category': 'Monetization',
+                    'event_label': `${tierName} - ${method}`,
+                    'value': amount.usd,
+                    'tier': tier,
+                    'payment_method': method
+                });
+            }
+            
+            // Handle different payment methods
+            if (method === 'stripe') {
+                // Credit card - redirect to Stripe checkout or email
+                const emailSubject = encodeURIComponent(`Subscribe to ${tierName}`);
+                const emailBody = encodeURIComponent(`Hi Leon,\n\nI'd like to subscribe to ${tierName} ($${amount.usd}/month).\n\nPlease send me payment details.\n\nThanks!`);
+                window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            } else if (method === 'crypto') {
+                // Crypto payment - show wallet address or email
+                const emailSubject = encodeURIComponent(`Crypto Payment - ${tierName}`);
+                const emailBody = encodeURIComponent(`Hi Leon,\n\nI'd like to pay for ${tierName} with crypto.\n\nTier: ${tierName}\nAmount: ${amount.eth} ETH or ${amount.usdc} USDC\n\nPlease send me your wallet address.\n\nThanks!`);
+                window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            } else if (method === 'apple_pay' || method === 'google_pay') {
+                // Mobile payment - use MobilePayments handler if available
+                if (window.MobilePayments) {
+                    window.MobilePayments.showMobilePaymentOptions(tier, amount.usd, `${tierName} Subscription`);
+                } else {
+                    // Fallback to email
+                    const emailSubject = encodeURIComponent(`${method === 'apple_pay' ? 'Apple Pay' : 'Google Pay'} - ${tierName}`);
+                    const emailBody = encodeURIComponent(`Hi Leon,\n\nI'd like to subscribe to ${tierName} using ${method === 'apple_pay' ? 'Apple Pay' : 'Google Pay'}.\n\nAmount: $${amount.usd}/month\n\nPlease send me payment details.\n\nThanks!`);
+                    window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                }
+            } else if (method === 'nft') {
+                // NFT Pass - email for NFT details
+                const emailSubject = encodeURIComponent(`NFT Pass - ${tierName}`);
+                const emailBody = encodeURIComponent(`Hi Leon,\n\nI'm interested in the NFT Access Pass for ${tierName}.\n\nPlease send me details on how to mint/receive the NFT.\n\nThanks!`);
+                window.location.href = `mailto:lbasin23@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            }
         },
 
         createUpgradeModal(content) {

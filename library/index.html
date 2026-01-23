@@ -147,6 +147,91 @@
         .back-link a:hover {
             color: var(--gold-primary);
         }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: 6px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.2) 100%);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+        
+        .email-capture {
+            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+            text-align: center;
+        }
+        
+        .email-capture h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+        
+        .email-capture p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        .email-input-group {
+            display: flex;
+            gap: 8px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .email-input {
+            flex: 1;
+            padding: 10px 16px;
+            background: var(--bg-deep);
+            border: 1px solid var(--gold-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .email-input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        
+        .email-submit {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -154,6 +239,16 @@
         <div class="header">
             <h1>Library</h1>
             <p>GTM Frameworks, Playbooks, Templates & Resources</p>
+        </div>
+        
+        <!-- Email Capture for Lead Magnets -->
+        <div class="email-capture">
+            <h3>📥 Get Free Frameworks</h3>
+            <p>Subscribe to download GTM frameworks, templates, and playbooks</p>
+            <form class="email-input-group" onsubmit="handleLibrarySignup(event)">
+                <input type="email" class="email-input" placeholder="your@email.com" required aria-label="Email address">
+                <button type="submit" class="email-submit">Subscribe</button>
+            </form>
         </div>
         
         <div class="library-grid">
@@ -166,6 +261,40 @@
                     <span class="library-tag">Premium</span>
                 </div>
                 <a href="../blog/posts/architecture-of-revenue.html" class="library-link">View Playbook →</a>
+                <a href="../downloads/signal-architecture-playbook.pdf" class="download-btn" download>📥 Download PDF</a>
+            </div>
+            
+            <div class="library-card">
+                <h3>Signal → System → Scale Worksheet</h3>
+                <p>Step-by-step worksheet for building your revenue architecture. Map signals to systems to scale.</p>
+                <div class="library-tags">
+                    <span class="library-tag">Worksheet</span>
+                    <span class="library-tag">Template</span>
+                    <span class="library-tag">Free</span>
+                </div>
+                <a href="../downloads/signal-system-scale-worksheet.pdf" class="download-btn" download>📥 Download PDF</a>
+            </div>
+            
+            <div class="library-card">
+                <h3>MEDDIC Qualification Framework</h3>
+                <p>Enterprise sales qualification template. Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion.</p>
+                <div class="library-tags">
+                    <span class="library-tag">Sales</span>
+                    <span class="library-tag">MEDDIC</span>
+                    <span class="library-tag">Free</span>
+                </div>
+                <a href="../downloads/meddic-framework.pdf" class="download-btn" download>📥 Download PDF</a>
+            </div>
+            
+            <div class="library-card">
+                <h3>BANT Qualification Template</h3>
+                <p>Budget, Authority, Need, Timeline qualification framework for SMB/mid-market sales.</p>
+                <div class="library-tags">
+                    <span class="library-tag">Sales</span>
+                    <span class="library-tag">BANT</span>
+                    <span class="library-tag">Free</span>
+                </div>
+                <a href="../downloads/bant-template.pdf" class="download-btn" download>📥 Download PDF</a>
             </div>
             
             <div class="library-card">
@@ -232,5 +361,51 @@
             <a href="../tools/">View Tools</a>
         </div>
     </div>
+    
+    <script>
+        function handleLibrarySignup(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('.email-input').value;
+            const submitBtn = event.target.querySelector('.email-submit');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            
+            // Send to Formspree (or your email service)
+            fetch('https://formspree.io/f/meeeqyrg', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    source: 'Library Signup',
+                    interest: 'GTM Frameworks'
+                })
+            })
+            .then(() => {
+                submitBtn.textContent = '✅ Subscribed!';
+                event.target.querySelector('.email-input').value = '';
+                
+                // Track event
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'library_signup', {
+                        'event_category': 'Lead Generation',
+                        'event_label': 'Library',
+                        'value': 1
+                    });
+                }
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            })
+            .catch(() => {
+                submitBtn.textContent = 'Try Again';
+                submitBtn.disabled = false;
+            });
+        }
+    </script>
 </body>
 </html>

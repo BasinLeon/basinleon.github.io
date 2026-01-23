@@ -739,39 +739,81 @@
             document.getElementById('costSqlDelta').textContent = '-' + costPerSqlReduction.toFixed(0) + '%';
         }
 
-        // ROI Calculator → Agent Handoff
+        // ROI Calculator → Agent Handoff (Enhanced)
         function triggerAgentHandoff(sdrCount, currentCost, potentialSavings, replyRate) {
             // Only trigger once per session
             if (window.roiAgentTriggered) return;
             window.roiAgentTriggered = true;
             
-            // Wait for agent to load
+            // Calculate ROI percentage
+            const roiPercentage = ((potentialSavings / currentCost) * 100).toFixed(0);
+            const savingsFormatted = `$${(potentialSavings / 1000).toFixed(0)}K`;
+            
+            // Wait for agent to load (try both DigitalLeon and PremiumLeonAgent)
             const checkAgent = setInterval(() => {
-                if (window.DigitalLeon && window.DigitalLeon.openWindow) {
+                let agent = null;
+                
+                // Try premium agent first
+                if (window.PremiumLeonAgent && window.PremiumLeonAgent.openWindow) {
+                    agent = window.PremiumLeonAgent;
+                } else if (window.DigitalLeon && window.DigitalLeon.openWindow) {
+                    agent = window.DigitalLeon;
+                }
+                
+                if (agent) {
                     clearInterval(checkAgent);
                     
                     // Open agent window
-                    window.DigitalLeon.openWindow();
+                    agent.openWindow();
                     
-                    // Update context
-                    window.DigitalLeon.updateContext({
-                        painPoints: ['High SDR Costs', 'Low Reply Rate', 'Inefficient Headcount'],
-                        budgetSignals: [`Current Spend: $${currentCost.toLocaleString()}`, `Potential Savings: $${potentialSavings.toLocaleString()}`],
-                        intent: 'ROI_Calculator_User',
-                        sdrCount: sdrCount,
-                        replyRate: replyRate
-                    });
+                    // Update context with ROI data
+                    if (agent.updateContext) {
+                        agent.updateContext({
+                            painPoints: ['High SDR Costs', 'Low Reply Rate', 'Inefficient Headcount'],
+                            budgetSignals: [
+                                `Current Spend: $${currentCost.toLocaleString()}`,
+                                `Potential Savings: ${savingsFormatted}`,
+                                `ROI: ${roiPercentage}%`
+                            ],
+                            intent: 'ROI_Calculator_User',
+                            sdrCount: sdrCount,
+                            replyRate: replyRate,
+                            annualSavings: potentialSavings,
+                            calculatorData: {
+                                sdrCount: sdrCount,
+                                currentCost: currentCost,
+                                potentialSavings: potentialSavings,
+                                replyRate: replyRate
+                            }
+                        });
+                    }
                     
-                    // Agent speaks first
+                    // Agent speaks first with personalized message
                     setTimeout(() => {
-                        const savingsFormatted = `$${(potentialSavings / 1000).toFixed(0)}K`;
-                        window.DigitalLeon.typeMessage(
-                            `I see the math. You're looking at potentially **${savingsFormatted}** in annual savings.\n\n` +
-                            `Most VPs I talk to start by automating the "Research" agent first—that's where the biggest efficiency gains are.\n\n` +
-                            `Do you want me to send you a spec sheet on how that specific agent works?`,
-                            'agent'
-                        );
-                    }, 500);
+                        const message = `I see you've calculated the math. You're looking at potentially **${savingsFormatted}** in annual savings (${roiPercentage}% ROI).\n\n` +
+                            `Based on your numbers:\n` +
+                            `• Current: ${sdrCount} SDRs at $${(currentCost / sdrCount).toLocaleString()} each\n` +
+                            `• Reply rate: ${replyRate}%\n\n` +
+                            `Most VPs I work with start by automating the "Research" agent first—that's where the biggest efficiency gains are. Want me to send you a spec sheet on how that specific agent works?\n\n` +
+                            `Or we can schedule a 15-min call to architect your system.`;
+                        
+                        if (agent.typeMessage) {
+                            agent.typeMessage(message, 'agent');
+                        } else if (agent.sendMessage) {
+                            agent.sendMessage(message);
+                        }
+                        
+                        // Track event
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'roi_calculator_agent_handoff', {
+                                'event_category': 'Lead Generation',
+                                'event_label': 'ROI Calculator',
+                                'value': potentialSavings,
+                                'sdr_count': sdrCount,
+                                'reply_rate': replyRate
+                            });
+                        }
+                    }, 800);
                 }
             }, 100);
             
