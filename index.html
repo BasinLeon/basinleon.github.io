@@ -207,16 +207,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Font display optimization for better performance */
-        @font-face {
-            font-family: 'Orbitron';
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'JetBrains Mono';
-            font-display: swap;
-        }
+        /* Font display optimization - fonts loaded via Google Fonts link tag */
         
         /* Default to dark mode if no class is set */
         body:not(.light-mode):not(.dark-mode) {
@@ -260,6 +251,10 @@
             box-shadow: 0 2px 15px rgba(212, 175, 55, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
+            margin: 0 auto 32px !important;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            width: fit-content;
         }
         
         .status-badge::before {
@@ -276,20 +271,6 @@
         @keyframes status-pulse {
             0%, 100% { left: -100%; opacity: 0; }
             50% { left: 100%; opacity: 1; }
-        }
-            margin: 0 auto 32px !important;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            width: fit-content;
-        }
-        
-        .status-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--gold-primary);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
@@ -507,7 +488,7 @@
         }
         
         body {
-            padding-top: 60px !important;
+            padding-top: 108px !important; /* Nav (60px) + Banner (48px) = 108px */
         }
         
         .hero {
@@ -1432,9 +1413,29 @@
             background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
             padding: 14px 0;
             text-align: center;
-            border-bottom: 1px solid var(--gold-border);
-            position: relative;
+            border-top: 4px solid var(--gold-primary);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 60px; /* Position below nav */
+            left: 0;
+            right: 0;
+            z-index: 999;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-top: 0;
+        }
+        
+        /* Ensure nav and banner are visually separated with a clear dark line */
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #050508;
+            z-index: 1001;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .availability-banner::before {
@@ -1980,7 +1981,7 @@
             background: rgba(5, 5, 8, 0.98);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--gold-border);
+            border-bottom: none;
             padding: 10px 32px;
             z-index: 1000;
             display: flex;
@@ -3483,7 +3484,7 @@
     <script src="widgets/premium-leon-agent.js" defer></script>
     
     <!-- Visitor Counter -->
-    <div class="visitor-counter" id="visitor-counter" aria-label="Unique visitor count" style="position: fixed; bottom: 20px; left: 20px; background: rgba(5, 5, 8, 0.9); border: 1px solid var(--gold-border); border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; color: var(--text-secondary); z-index: 9999; display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; backdrop-filter: blur(10px);">
+    <div class="visitor-counter" id="visitor-counter" aria-label="Unique visitor count" style="position: fixed; bottom: 20px; left: 20px; background: rgba(5, 5, 8, 0.9); border: 1px solid var(--gold-border); border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; color: var(--text-secondary); z-index: 9999; display: flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; backdrop-filter: blur(10px); white-space: nowrap;">
         <span class="visitor-counter-icon">👁️</span>
         <span>Visitors:</span>
         <span class="visitor-counter-number" id="visitor-count" style="color: var(--gold-primary); font-weight: 600;">Loading...</span>
@@ -3564,23 +3565,6 @@
                         } else {
                             // Fallback: use localStorage
                             const localCount = parseInt(localStorage.getItem('visitor_count') || '0') + 1;
-                            localStorage.setItem('visitor_count', localCount.toString());
-                            counterEl.textContent = localCount.toLocaleString();
-                        }
-                    } else {
-                        // Just get current count without incrementing
-                        const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`, {
-                            method: 'GET',
-                            cache: 'no-cache'
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            const count = data.value || 1; // Default to 1 if 0
-                            counterEl.textContent = count.toLocaleString();
-                        } else {
-                            // Fallback: use localStorage
-                            const localCount = parseInt(localStorage.getItem('visitor_count') || '1') + 1;
                             localStorage.setItem('visitor_count', localCount.toString());
                             counterEl.textContent = localCount.toLocaleString();
                         }
