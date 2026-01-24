@@ -630,8 +630,7 @@ Google/NetApp → Operations rigor → Revenue systems
             if (response.ok) {
                 const data = await response.json();
                 blogPosts = data.filter(p => p.url && p.url !== '#');
-                console.log(`📚 NEXUS: Loaded ${blogPosts.length} blog posts for search`);
-            }
+                            }
         } catch (e) {
             console.warn('Could not load blog posts for NEXUS search');
         }
@@ -1263,8 +1262,7 @@ Google/NetApp → Operations rigor → Revenue systems
         // Load blog posts for search
         loadBlogPosts();
 
-        console.log('[NEXUS Intelligence] Widget initialized with blog search');
-    }
+            }
 
     function toggleBot() {
         const botWindow = document.getElementById('bot-window');

@@ -463,11 +463,9 @@
                     setTimeout(() => {
                         try {
                             if (calendarWindow && calendarWindow.closed) {
-                                console.log('Calendar window closed - may need fallback');
-                            }
+                                                            }
                         } catch (e) {
-                            console.log('Calendar opened successfully');
-                        }
+                                                    }
                     }, 2000);
                 }
             };
@@ -492,8 +490,7 @@
                 });
                 return response.ok;
             } catch (e) {
-                console.log('CRM save failed (expected if offline):', e);
-                return false;
+                                return false;
             }
         },
 
@@ -538,15 +535,12 @@
 
             // Check for specific intents FIRST (before archetype detection)
             const intent = this.detectIntent(userMessage);
-            console.log('Detected intent:', intent, 'for message:', userMessage);
-            
-            // Generate response based on intent and context
+                        // Generate response based on intent and context
             let response = await this.handleIntent(intent, userMessage, topics, context);
             
             // If we got a response from intent handler, return it immediately
             if (response) {
-                console.log('Response from intent handler:', response.substring(0, 100));
-                return response;
+                                return response;
             }
             
             // Detect archetype if not set (only if no specific intent)
@@ -662,9 +656,7 @@
         },
 
         async handleIdentityQuestion(message) {
-            console.log('Identity question detected:', message);
-            
-            // Try to load blog content about Leon
+                        // Try to load blog content about Leon
             let blogContent = null;
             try {
                 const blogUrl = '/blog/posts/why-leon-basin-matters.html';
@@ -681,8 +673,7 @@
                     }
                 }
             } catch (e) {
-                console.log('Could not load blog content:', e);
-            }
+                            }
             
             const responses = [
                 `I'm Leon Basin—a Revenue Architect who codes. 
@@ -744,8 +735,7 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
                 lastIdentityQuestion: new Date().toISOString()
             });
             
-            console.log('Returning identity response:', response.substring(0, 100));
-            return response;
+                        return response;
         },
 
         handleConfusedResponse(message, context) {
@@ -1411,11 +1401,9 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
             setTimeout(() => {
                 try {
                     if (calendarWindow && calendarWindow.closed) {
-                        console.log('Calendar window closed - may need fallback');
-                    }
+                                            }
                 } catch (e) {
-                    console.log('Calendar opened successfully');
-                }
+                                    }
             }, 2000);
         });
         if (premiumBtn) {

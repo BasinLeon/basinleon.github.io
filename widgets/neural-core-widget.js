@@ -309,8 +309,7 @@
             if (!response.ok) throw new Error('Fetch failed');
             return await response.json();
         } catch (e) {
-            console.log('[NeuralCore] Using fallback data');
-            return CONFIG.fallbackData;
+                        return CONFIG.fallbackData;
         }
     }
 
@@ -339,8 +338,7 @@
             widget.innerHTML = createWidget(newData);
         }, CONFIG.updateInterval);
 
-        console.log('[NeuralCore] Widget initialized');
-    }
+            }
 
     // ═══════════════════════════════════════════════════════════════
     // PUBLIC API

@@ -45,8 +45,7 @@
             return { status: 'live', timestamp: Date.now() };
 
         } catch (error) {
-            console.log(`[StatusChecker] ${url} appears offline:`, error.message);
-            return { status: 'offline', timestamp: Date.now() };
+                        return { status: 'offline', timestamp: Date.now() };
         }
     }
 
@@ -113,8 +112,7 @@
             updateBadge(element, status);
         }
 
-        console.log('[StatusChecker] All demo statuses updated');
-    }
+            }
 
     /**
      * Initialize status checker
@@ -130,8 +128,7 @@
         // Re-check every 5 minutes
         setInterval(checkAllDemos, CACHE_DURATION);
 
-        console.log('[StatusChecker] Initialized');
-    }
+            }
 
     // Auto-initialize
     init();
@@ -143,8 +140,7 @@
             Object.keys(DEMO_ENDPOINTS).forEach(id => {
                 localStorage.removeItem(`demo-status-${id}`);
             });
-            console.log('[StatusChecker] Cache cleared');
-        }
+                    }
     };
 
 })();

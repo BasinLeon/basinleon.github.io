@@ -21,8 +21,7 @@
                     return true;
                 }
             } catch (e) {
-                console.log('Apple Pay check failed:', e);
-            }
+                            }
             return false;
         },
 
@@ -64,8 +63,7 @@
                     }
                 }
             } catch (e) {
-                console.log('Google Pay check failed:', e);
-            }
+                            }
             return false;
         },
 
@@ -376,6 +374,5 @@
 
     // Auto-detect and show mobile payment options if on mobile
     if (MobilePayments.isMobile) {
-        console.log('📱 Mobile device detected:', MobilePayments.isIOS ? 'iOS' : 'Android');
-    }
+            }
 })();

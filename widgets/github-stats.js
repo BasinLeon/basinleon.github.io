@@ -27,8 +27,7 @@
             });
 
             if (!response.ok) {
-                console.log(`[GitHubStats] ${repoName}: ${response.status}`);
-                return null;
+                                return null;
             }
 
             const data = await response.json();
@@ -135,8 +134,7 @@
             updateMetrics(element, stats);
         }
 
-        console.log('[GitHubStats] All repository stats loaded');
-    }
+            }
 
     /**
      * Initialize
@@ -148,8 +146,7 @@
             loadAllStats();
         }
 
-        console.log('[GitHubStats] Initialized');
-    }
+            }
 
     // Auto-initialize
     init();
@@ -164,8 +161,7 @@
                     localStorage.removeItem(key);
                 }
             });
-            console.log('[GitHubStats] Cache cleared');
-        }
+                    }
     };
 
 })();

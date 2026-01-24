@@ -359,8 +359,7 @@
         }).catch(err => console.log('Lead submission error:', err));
 
         // Also log to console for debugging
-        console.log('🎯 LEAD CAPTURED:', leadData);
-    }
+            }
 
     // ═══════════════════════════════════════════════════════════════
     // UI CREATION

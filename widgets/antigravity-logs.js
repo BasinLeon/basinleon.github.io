@@ -193,8 +193,7 @@
     function init() {
         const target = document.getElementById('antigravity-logs');
         if (!target) {
-            console.log('[AntigravityLogs] No #antigravity-logs element found');
-            return;
+                        return;
         }
 
         // Inject styles
@@ -205,8 +204,7 @@
         // Render logs
         target.innerHTML = renderLogs();
 
-        console.log('[AntigravityLogs] Initialized');
-    }
+            }
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
