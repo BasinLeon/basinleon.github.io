@@ -91,10 +91,10 @@ Traditional GTM is linear. Mine is recursive — the system learns from every in
 Not "how many calls" but "how much signal captured per dollar spent."`
         },
 
-        // Vision for GTM
+        // Vision for GTM - Expanded Network
         vision: {
-            keywords: ['vision', 'future', 'goal', 'direction', 'want to', 'looking for', 'next'],
-            response: `**My Vision for GTM**
+            keywords: ['vision', 'future', 'goal', 'direction', 'want to', 'looking for', 'next', 'build', 'dream'],
+            response: `**My Vision for GTM — The Network**
 
 **The Problem:** Most companies still operate like it's 2015. They hire SDRs to "smile and dial" through bad lists, burning $150K/year per rep on 2% conversion rates.
 
@@ -110,10 +110,23 @@ A company where the GTM function is *engineered*, not managed. Where:
 - Every AE gets auto-generated battle cards before every call
 - Every executive gets real-time pipeline intelligence, not month-old spreadsheets
 
+**The Architecture:**
+- **Signal Layer:** 50k+ signals/day from 7 sources
+- **Processing Layer:** 5 LLMs orchestrate scoring and routing
+- **Output Layer:** Automated briefs, emails, CRM updates
+- **Human Layer:** Focus on high-value activities (closing, strategy)
+
 **The Role I'm Seeking:**
 Director/VP of GTM Engineering — where I can build this vision from scratch.
 
-**Why I'll Win:** Because I've already built it. Now I just need a company ambitious enough to deploy it.`
+**Why I'll Win:** Because I've already built it. BASIN::NEXUS is the proof. Now I just need a company ambitious enough to deploy it at scale.
+
+**Connection to Past:**
+- Google: Learned data systems at scale
+- Series A Cybersecurity: Proved signal architecture works
+- BASIN::NEXUS: Built the system that proves the thesis
+
+**Related Topics:** Philosophy → Framework → Case Studies → Tools`
         },
 
         // GTM Strategy Approach
@@ -205,7 +218,7 @@ I can deploy enterprise-grade GTM infrastructure for a startup with zero budget.
 
         // Company Fit Assessment
         fit: {
-            keywords: ['fit', 'culture', 'match', 'right for', 'work with', 'company', 'type'],
+            keywords: ['fit', 'culture', 'match', 'right for', 'work with', 'company', 'type', 'looking for', 'role'],
             response: `**How I Assess Company Fit**
 
 **What I Look For:**
@@ -231,8 +244,15 @@ I can deploy enterprise-grade GTM infrastructure for a startup with zero budget.
 - Founder-led sales → scaling motion
 - Budget-conscious (my superpower: $0 stack)
 
-**Deal Makers:**
-Ambient.ai, BRM Labs, LiveRamp-type companies where GTM = competitive advantage.`
+**Roles I'm Seeking:**
+- Director/VP of GTM Engineering
+- Director/VP of Sales (with systems focus)
+- Strategic BD roles with real ownership
+- Enterprise AE roles (SaaS / AI / Cybersecurity)
+
+**Connection:** This connects to my Vision → Philosophy → Framework. I want to build, not just operate.
+
+**Related Topics:** Vision → Philosophy → Case Studies`
         },
 
         // Problem Solving Approach
@@ -296,76 +316,136 @@ At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails faile
 **Bottom Line:** The best leaders make themselves unnecessary.`
         },
 
-        // Case Studies
+        // Case Studies - Network of Projects
         casestudies: {
-            keywords: ['case study', 'example', 'fudo', 'ambient', 'sense', 'sendbird', 'project', 'built', 'war story', 'sanho', 'hyperdrive', 'kickstarter', 'braintrust', 'slingshot', 'netapp'],
-            response: `**War Stories: What I've Built**
+            keywords: ['case study', 'example', 'fudo', 'ambient', 'sense', 'sendbird', 'project', 'built', 'war story', 'sanho', 'hyperdrive', 'kickstarter', 'braintrust', 'slingshot', 'netapp', 'google', 'surveymonkey'],
+            response: `**Case Studies Network — What I've Built**
 
-**🔐 Fudo Security (2024-2025)**
+**🔐 Series A Cybersecurity (2024-2025)**
 - Challenge: Zero US presence, dormant partners, stalled PoCs
 - Built: Americas GTM from scratch, activated NA & LATAM channels
+- Signal Architecture: LinkedIn + Crunchbase monitoring for CISO hires
 - Result: +160% pipeline YoY, partner channel → active revenue
+- Connection: Proved signal architecture works at enterprise scale
 
-**🎯 Ambient.ai (Interview Case Study)**
+**🎯 Interview Case Study (Ambient.ai)**
 - Challenge: "How would you scale our GTM?"
 - Built: $424K savings model showing 7 SDRs → 1 architect + automation
+- Signal Architecture: Automated lead scoring + enrichment
 - Result: Advanced to final round
+- Connection: Showed how to architect before being hired
 
-**📊 Sense (2021-2023)**
+**📊 Sense (2022-2023)**
 - Challenge: 5-person BDR team struggling — 8% reply rates, high churn
 - Built: "Outreach Autopsy" diagnostic tool + Social Selling playbook
-- Result: Reply rates 8% → 18%, $10M pipeline, $250K deal closed personally
+- Signal Architecture: Email failure analysis + persona targeting
+- Result: Reply rates 8% → 18%, significant pipeline, $250K deal closed personally
+- Connection: First tool I built to diagnose GTM problems
 
 **🚀 Sanho/HyperDrive (2015-2019)**
 - Challenge: Launch world's first USB-C Hub for iPad Pro via crowdfunding
 - Built: Kickstarter/Indiegogo strategy across 16+ campaigns
+- Signal Architecture: Community engagement + product-market fit signals
 - Result: $7M+ raised total, $3.1M single campaign (most crowdfunded MacBook accessory)
+- Connection: Learned community-driven growth before it was mainstream
+
+**📊 SurveyMonkey (2019-2021)**
+- Challenge: Manage $300M enterprise portfolio, 700+ accounts
+- Built: Portfolio optimization, expansion revenue systems
+- Signal Architecture: Account health scoring, renewal prediction
+- Result: Managed largest portfolio in company history
+- Connection: Proved I could handle enterprise scale
 
 **🏢 NetApp (2013-2014)**
 - Challenge: Security operations across 16-building campus
 - Built: Led 3-person team, managed global backup operations
+- Signal Architecture: Incident monitoring, threat detection
 - Result: Zero security incidents under tenure
+- Connection: Applied security rigor to revenue systems
 
-**🚀 Basin::Nexus (Ongoing)**
-- Challenge: Job hunting is broken
+**⚡ Basin::Nexus (2023-Present)**
+- Challenge: Job hunting is broken — too much noise, not enough signal
 - Built: 83K+ lines of code, 5 LLMs, React app, 3 interactive tools
-- Result: 4 active final-round interviews simultaneously
+- Signal Architecture: 7-vector job sweep, pipeline scoring, interview prep
+- Result: Multiple active final-round interviews simultaneously
+- Connection: The system that proves the thesis — 1 engineer > 10 SDRs
 
-**The Pattern:** Every role I automate myself out of a job — that's the point.`
+**🔍 Google (2014-2015)**
+- Challenge: Operations at scale for Google Shopping
+- Built: Data-driven decision systems, trend analysis
+- Signal Architecture: User behavior patterns, conversion optimization
+- Result: Foundation for signal-based thinking
+- Connection: Learned how data systems work at massive scale
+
+**The Pattern:** Every role I automate myself out of a job — that's the point. Each case study connects to the next, building a network of systems thinking.
+
+**Related Topics:** Framework → Philosophy → Tools → Vision`
         },
 
-        // About Leon
+        // About Leon - Expanded Network
         about: {
-            keywords: ['about', 'leon', 'who', 'yourself', 'background', 'bio', 'you'],
-            response: `**About Leon Basin**
+            keywords: ['about', 'leon', 'who', 'yourself', 'background', 'bio', 'you', 'leon basin'],
+            response: `**About Leon Basin — The Network**
 
 **The Short Version:**
 Revenue Architect. 15+ years GTM. I build systems that replace $770K in headcount costs with $150K in architecture ($424K saved).
 
-**Career Highlights:**
-- **Google** — Operations Specialist (Google Shopping)
-- **NetApp** — Led 3-person security team, 16 buildings, zero incidents
-- **Sanho/HyperDrive** — $7M+ crowdfunded across 16 campaigns
-- **SurveyMonkey** — $300M portfolio, 700+ accounts
-- **Sense** — $10M pipeline, 8%→18% reply rates, $250K closed
-- **Fudo Security** — 160% pipeline growth, Americas GTM from scratch
-- **Basin::Nexus** — 83K+ lines, 5 LLMs, $1.8M pipeline generated
+**Career Network — How Each Role Connected:**
 
-**Education:**
-- MBA, Santa Clara University (GTM Strategy & Technology)
-- BS Psychology (Buyer Psychology & Neuro-Marketing)
+**🔍 Google (2014-2015)**
+Operations Specialist, Google Shopping
+- Learned: Data-driven decision making at scale
+- Connection: Foundation for signal-based thinking
+
+**🛡️ NetApp (2013-2014)**
+Led 3-person security team, 16 buildings, zero incidents
+- Learned: Systems thinking for operations
+- Connection: Applied security rigor to revenue systems
+
+**🚀 Sanho/HyperDrive (2015-2019)**
+$7M+ crowdfunded across 16 campaigns
+- Learned: Community-driven growth, product-market fit
+- Connection: Built audience-first GTM before it was cool
+
+**📊 SurveyMonkey (2019-2021)**
+$300M portfolio, 700+ accounts
+- Learned: Enterprise sales at scale, portfolio management
+- Connection: Proved I could manage massive pipeline
+
+**📈 Sense (2022-2023)**
+$10M pipeline, 8%→18% reply rates, $250K closed personally
+- Learned: How to diagnose and fix broken GTM systems
+- Connection: Built first "Outreach Autopsy" tool
+
+**🔐 Series A Cybersecurity (2024-2025)**
+160% pipeline growth, Americas GTM from scratch
+- Learned: How to build GTM motion from zero
+- Connection: Proved signal architecture works at scale
+
+**⚡ Basin::Nexus (2023-Present)**
+83K+ lines, 5 LLMs, significant pipeline generated
+- Learned: How to code my own GTM stack
+- Connection: The system that proves the thesis
+
+**Education Network:**
+- **MBA, Santa Clara University** — GTM Strategy & Technology
+  - Connection: Strategic thinking meets execution
+- **BS Psychology** — Buyer Psychology & Neuro-Marketing
+  - Connection: Understanding human behavior in sales
 
 **My Thesis:**
 What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
 
 **What I Built:**
-BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs my job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
+BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
 
 **The Vibe:**
 - Mountain View, CA
-- JetBrains Mono on everything  
+- JetBrains Mono on everything
 - Author: "Unlock the Power of Storytelling" (Amazon 2024)
 - 1,884+ LinkedIn newsletter subscribers
+
+**Connected Topics:** Philosophy → Framework → Case Studies → Tools → Vision
 
 "Sales is just debugging human behavior." ⚡`
         },
@@ -399,20 +479,23 @@ Use my ROI Calculator at /tools/roi-calculator.html — plug in your numbers and
 - Basin::Nexus: Running my job search while I sleep`
         },
 
-        // Interactive Tools
+        // Interactive Tools - Network
         tools_interactive: {
-            keywords: ['calculator', 'roi', 'headline', 'case study', 'generator', 'interactive', 'try', 'demo', 'use'],
-            response: `**Interactive Tools I Built**
+            keywords: ['calculator', 'roi', 'headline', 'case study', 'generator', 'interactive', 'try', 'demo', 'use', 'tools', 'what tools', 'built'],
+            response: `**Tools Network — What I Built**
 
 **💰 ROI Calculator** (/tools/roi-calculator.html)
 Calculate your savings from Revenue Architecture vs traditional SDR model. Input your team size, costs, and see the $424K math in action.
+- Connection: Proves the $424K savings thesis with your numbers
+- Use Case: Business case for automation
 
 **📋 Case Study Generator** (/tools/case-study-generator.html)
 Generate GTM deployment strategies instantly. 4 templates:
 - Signal Architecture
-- Bifurcated Model  
+- Bifurcated Model
 - SDR Transformation
 - Partner Activation
+- Connection: Turns frameworks into actionable plans
 
 **💼 Headline Generator** (/tools/headline-generator.html)
 Create LinkedIn headlines that get noticed. 6 styles:
@@ -422,10 +505,28 @@ Create LinkedIn headlines that get noticed. 6 styles:
 - Builder (systems & scale)
 - Storyteller (narrative hook)
 - Contrarian (stand out bold)
+- Connection: Personal brand optimization
 
-**All free. No API costs. No sign-up required.**
+**🎯 Job Pipeline Tracker** (/tools/job-pipeline-tracker.html)
+Track your job search like a revenue pipeline. Stage-based CRM for career opportunities.
+- Connection: Applied GTM thinking to career search
+- Use Case: Manage multiple opportunities systematically
 
-Try them at basinleon.github.io/tools/`
+**📊 GTM Execution Dashboard** (/tools/gtm-execution-dashboard.html)
+Interactive dashboard visualizing real-world GTM execution: pipeline growth, SDR program build-out, deals advanced.
+- Connection: Shows the system in action
+- Use Case: Proof of execution, not just theory
+
+**🚀 Automation Dashboard** (/tools/automation-dashboard.html)
+Control center for automated workflows: daily protocol, system integration, revenue automation.
+- Connection: The orchestration layer of the Signal Engine
+- Use Case: See how automation replaces manual work
+
+**All free. No API costs. No sign-up required. 100% private.**
+
+Try them at basinleon.github.io/tools/
+
+**Related Topics:** Framework → Philosophy → Case Studies → Vision`
         },
 
         // Metrics & Lines of Code
@@ -456,23 +557,63 @@ Try them at basinleon.github.io/tools/`
 **The System Never Sleeps:** 50k+ signals/day monitored, 24/7 operation.`
         },
 
-        // Default/Fallback — now context-aware
+        // Default/Fallback — now context-aware with network navigation
         default: {
             keywords: [''],
-            response: `**How Can I Help?**
+            response: `**How Can I Help? — Navigate the Network**
 
-I'm the intelligence layer of BASIN::NEXUS — here to show you how Leon thinks about GTM, systems, and revenue architecture.
+I'm the intelligence layer of BASIN::NEXUS — here to show you how Leon thinks about GTM, systems, and revenue architecture. Everything is connected.
 
-**Try asking about:**
+**Core Topics (Click to Explore):**
 - 🧠 **Philosophy:** "What's your approach to GTM?"
 - 🔧 **Framework:** "Explain Signal-System-Scale"
 - 📊 **KPIs:** "What metrics matter?"
 - 🔮 **Vision:** "What do you want to build?"
 - 🛠️ **Tools:** "What's in your $0 stack?"
-- 💼 **Case Studies:** "Tell me about Fudo"
+- 💼 **Case Studies:** "Tell me about your projects"
 - 💰 **The $424K Question:** "How do you replace headcount with architecture?"
+- 👤 **About Leon:** "Tell me about your background"
+- 🎯 **Interviews:** "How do you approach interviews?"
+- 🔗 **Connections:** "How do these concepts connect?"
+
+**Network Navigation:**
+Every topic connects to others. Ask "How does philosophy connect to case studies?" or "What's the relationship between tools and framework?"
+
+**Archive Search:**
+Ask "What did you write about [topic]?" to search 160+ blog posts.
 
 Or ask me anything about the Signal Engine powering this site. ⚡`
+        },
+
+        // Network Connections - New Topic
+        connections: {
+            keywords: ['connect', 'relationship', 'network', 'how does', 'related', 'link', 'tie', 'connection'],
+            response: `**The Knowledge Network — How Everything Connects**
+
+**Philosophy → Framework → Execution:**
+My philosophy (signal-based thinking) → Framework (Signal-System-Scale) → Execution (Case Studies)
+
+**Case Studies → Tools → Vision:**
+What I built (Case Studies) → How I built it (Tools) → Where I'm going (Vision)
+
+**Education → Career → Systems:**
+Psychology degree → Understanding buyers → Signal detection
+MBA → Strategic thinking → System architecture
+Google/NetApp → Operations rigor → Revenue systems
+
+**The $424K Thread:**
+- Philosophy: Replace headcount with architecture
+- Framework: Signal Engine replaces manual research
+- Case Studies: Proved it at Series A cybersecurity company
+- Tools: Built calculators to show the math
+- Vision: Build this at scale for more companies
+
+**Signal Engine Network:**
+- Input: 50k+ signals/day (LinkedIn, Crunchbase, RSS, APIs)
+- Processing: 5 LLMs orchestrate scoring and routing
+- Output: Executive briefs, emails, CRM updates, pipeline
+
+**Everything connects. Ask "How does [topic A] relate to [topic B]?" to explore the network. ⚡`
         }
     };
 
@@ -1040,9 +1181,34 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                     <div class="bot-message assistant">
                         <strong>Welcome to BASIN::NEXUS Intelligence</strong>
                         <br><br>
-                        I'm the thinking layer of the Signal Engine — Leon's GTM philosophy, frameworks, and decision logic, codified.
+                        I'm the thinking layer of the Signal Engine — Leon's GTM philosophy, frameworks, and decision logic, codified into a knowledge network.
                         <br><br>
-                        Ask me about revenue architecture, the $424K savings thesis ($770K headcount → $150K architecture), or how to build systems that scale.
+                        <strong>About Leon Basin:</strong>
+                        <br>• Revenue Architect. 15+ years GTM leadership
+                        <br>• Built systems that replace $770K in headcount with $150K in architecture ($424K saved)
+                        <br>• BASIN::NEXUS: 83K+ lines, 5 LLMs, significant pipeline generated
+                        <br><br>
+                        <strong>Career Network:</strong>
+                        <br>• Google → NetApp → Sanho/HyperDrive → SurveyMonkey → Sense → Series A Cybersecurity → BASIN::Nexus
+                        <br>• Each role built on the last, creating a network of systems thinking
+                        <br><br>
+                        <strong>Education:</strong>
+                        <br>• MBA, Santa Clara University (GTM Strategy & Technology)
+                        <br>• BS Psychology (Buyer Psychology & Neuro-Marketing)
+                        <br><br>
+                        <strong>My Thesis:</strong>
+                        <br>What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
+                        <br><br>
+                        <strong>What I Built:</strong>
+                        <br>BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
+                        <br><br>
+                        <strong>The Vibe:</strong>
+                        <br>• Mountain View, CA
+                        <br>• JetBrains Mono on everything
+                        <br>• Author: "Unlock the Power of Storytelling" (Amazon 2024)
+                        <br>• 1,884+ LinkedIn newsletter subscribers
+                        <br><br>
+                        "Sales is just debugging human behavior." ⚡
                     </div>
                 </div>
                 <div id="bot-input-area">
@@ -1053,7 +1219,11 @@ Or ask me anything about the Signal Engine powering this site. ⚡`
                         <span class="quick-action" data-q="How do you replace $424K in headcount costs?">$424K Savings</span>
                         <span class="quick-action" data-q="Show me your KPIs and metrics">KPIs</span>
                         <span class="quick-action" data-q="Tell me about your case studies">Case Studies</span>
+                        <span class="quick-action" data-q="About Leon Basin">About Leon</span>
                         <span class="quick-action" data-q="What did you write about AI?">📚 Search Archive</span>
+                        <span class="quick-action" data-q="What tools did you build?">Tools</span>
+                        <span class="quick-action" data-q="What's your vision for GTM?">Vision</span>
+                        <span class="quick-action" data-q="How do you approach interviews?">Interviews</span>
                     </div>
                 </div>
             </div>
