@@ -178,7 +178,7 @@
     const KnowledgeBase = {
         responses: {
             code: [
-                "I started coding at 40. The trigger? Realizing GTM is an engineering problem. I've built 83K+ lines across Python, JavaScript, TypeScript. The key insight: treat revenue operations like software—version control, testing, iteration.",
+                "I started coding when I realized GTM is an engineering problem. I've built 83K+ lines across Python, JavaScript, TypeScript. The key insight: treat revenue operations like software—version control, testing, iteration.",
                 "My codebase spans 19 repositories. The flagship is basin-signal-engine—an AI Career Intelligence Platform. It's 83,000+ lines that orchestrate 5 LLMs to hunt, prep, and close opportunities. Want to see the architecture?",
                 "I don't just use tools—I build them. Every system I've built started as a problem I couldn't solve with existing tools. That's how basin-signal-engine was born: I needed a system that could find opportunities across 7 vectors simultaneously."
             ],
@@ -689,7 +689,7 @@
 
 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp, and a Series A cybersecurity company. I build AI-powered revenue systems that replace headcount with code.
 
-Started coding at 40 and have built 88,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
+I've built 88,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
 
 I don't just architect systems—I build them. 19 public repositories. 5 LLMs orchestrated. BASIN::NEXUS v10.0 is my autonomous GTM Operating System.
 
