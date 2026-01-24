@@ -895,6 +895,88 @@
             margin: 0 auto 32px;
         }
         
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: left;
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .contact-form .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .contact-form .form-input,
+        .contact-form .form-select,
+        .contact-form .form-textarea {
+            width: 100%;
+            background: var(--bg-deep);
+            border: 1px solid var(--gold-border);
+            color: var(--text-primary);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .contact-form .form-input:focus,
+        .contact-form .form-select:focus,
+        .contact-form .form-textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        
+        .contact-form .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .form-message {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .form-message.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+        
+        .form-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
         /* ═══════════════════════════════════════════════════════════════
            FOOTER
         ═══════════════════════════════════════════════════════════════ */
@@ -2987,14 +3069,69 @@
         </div>
     </section>
     
-    <!-- CONTACT CTA -->
+    <!-- CONTACT FORM -->
     <section class="contact-cta" id="contact">
-        <h2 class="contact-title">Let's Build Something</h2>
-        <p class="contact-desc">Seeking Director/VP GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
-        <div class="cta-row">
-            <a href="https://cal.mixmax.com/leonbasin" target="_blank" class="btn btn-primary" onclick="return handleCalendarClick(event)" aria-label="Schedule a call with Leon Basin" rel="noopener noreferrer">📅 Schedule a Call</a>
-            <a href="mailto:lbasin23@gmail.com?subject=Hiring Inquiry" class="btn btn-secondary" aria-label="Email Leon Basin">📧 Email Me</a>
-            <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);" aria-label="Download Leon Basin resume PDF" download>📄 Download Resume</a>
+        <div class="container">
+            <h2 class="contact-title">Let's Build Something</h2>
+            <p class="contact-desc">Seeking Director/VP GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
+            
+            <div style="max-width: 600px; margin: 40px auto 0;">
+                <form id="contact-form" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <input type="hidden" name="_subject" value="New Contact from BASIN::NEXUS Website">
+                    <input type="hidden" name="_next" value="https://basinleon.github.io/?submitted=true#contact">
+                    <input type="hidden" name="_replyto" id="reply-to-field">
+                    
+                    <div class="form-group">
+                        <label for="contact-name" class="form-label">Name</label>
+                        <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-email" class="form-label">Email *</label>
+                        <input type="email" id="contact-email" name="email" class="form-input" placeholder="your.email@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-role" class="form-label">I'm a...</label>
+                        <select id="contact-role" name="role" class="form-select">
+                            <option value="">Select one...</option>
+                            <option value="hiring-manager">Hiring Manager / Recruiter</option>
+                            <option value="founder">Founder / CEO</option>
+                            <option value="gtm-leader">GTM Leader / VP Sales</option>
+                            <option value="revops">RevOps Professional</option>
+                            <option value="peer">Peer / Colleague</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-message-text" class="form-label">Message *</label>
+                        <textarea id="contact-message-text" name="message" class="form-textarea" rows="6" placeholder="Tell me about the opportunity, your team, or what you'd like to discuss..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter" value="yes">
+                            <span>Subscribe to my newsletter for GTM insights (optional)</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="contact-submit" style="width: 100%;">
+                        Send Message
+                    </button>
+                    
+                    <div id="contact-form-message" class="form-message" style="margin-top: 16px; display: none;"></div>
+                </form>
+                
+                <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--gold-border); text-align: center;">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Or connect directly:</p>
+                    <div class="cta-row" style="justify-content: center;">
+                        <a href="https://cal.mixmax.com/leonbasin" target="_blank" class="btn btn-secondary" onclick="return handleCalendarClick(event)" aria-label="Schedule a call with Leon Basin" rel="noopener noreferrer">📅 Schedule a Call</a>
+                        <a href="mailto:lbasin23@gmail.com?subject=Hiring Inquiry" class="btn btn-secondary" aria-label="Email Leon Basin">📧 Email Me</a>
+                        <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);" aria-label="Download Leon Basin resume PDF" download>📄 Resume</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     
@@ -3013,8 +3150,79 @@
         <p class="footer-copyright">© 2026 Leon Basin • Revenue Architect • BASIN::NEXUS v10.0</p>
     </footer>
 
-    <!-- Newsletter Form Handler -->
+    <!-- Contact Form Handler -->
     <script>
+        // Handle contact form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contact-form');
+            const messageDiv = document.getElementById('contact-form-message');
+            const submitBtn = document.getElementById('contact-submit');
+            const emailField = document.getElementById('contact-email');
+            const replyToField = document.getElementById('reply-to-field');
+            
+            if (contactForm) {
+                // Set reply-to field
+                if (emailField && replyToField) {
+                    emailField.addEventListener('input', function() {
+                        replyToField.value = emailField.value;
+                    });
+                }
+                
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(contactForm);
+                    const originalText = submitBtn.textContent;
+                    
+                    // Show loading state
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+                    messageDiv.style.display = 'none';
+                    
+                    // Submit to Formspree
+                    fetch(contactForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            messageDiv.className = 'form-message success';
+                            messageDiv.textContent = '✅ Message sent! I\'ll get back to you within 24 hours. Check your email for a calendar link.';
+                            messageDiv.style.display = 'block';
+                            contactForm.reset();
+                            
+                            // Scroll to message
+                            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        } else {
+                            throw new Error('Form submission failed');
+                        }
+                    })
+                    .catch(error => {
+                        messageDiv.className = 'form-message error';
+                        messageDiv.textContent = '❌ Something went wrong. Please email me directly at lbasin23@gmail.com';
+                        messageDiv.style.display = 'block';
+                    })
+                    .finally(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+            
+            // Check for URL parameter indicating successful submission
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('submitted') === 'true') {
+                if (messageDiv) {
+                    messageDiv.className = 'form-message success';
+                    messageDiv.textContent = '✅ Message sent successfully! I\'ll get back to you within 24 hours.';
+                    messageDiv.style.display = 'block';
+                }
+            }
+        });
+        
         function handleNewsletterSubmit(event, tier) {
             event.preventDefault();
             const form = event.target;
