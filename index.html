@@ -370,6 +370,20 @@
             background: linear-gradient(145deg, var(--gold-dark) 0%, var(--gold-primary) 50%, var(--gold-light) 100%);
             color: #000;
             box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            font-size: 1rem;
+            padding: 16px 32px;
+            min-height: 48px; /* Better tap target */
+        }
+        
+        /* Enhanced button contrast for accessibility */
+        .btn-primary:focus-visible {
+            outline: 3px solid var(--gold-primary);
+            outline-offset: 2px;
+        }
+        
+        .btn-secondary:focus-visible {
+            outline: 2px solid var(--gold-primary);
+            outline-offset: 2px;
         }
         
         .btn-primary::before {
@@ -1595,9 +1609,18 @@
         /* Hero Metrics Grid */
         .hero-metrics-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin: 48px 0;
+            max-width: 1000px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                margin: 32px 0;
+            }
         }
         
         .hero-metrics-grid .metric-card {
@@ -1918,6 +1941,53 @@
                 animation: mobile-cta-pulse 3s ease-in-out infinite;
             }
             
+            /* Mobile Button Improvements - Larger tap targets */
+            .btn {
+                min-height: 44px !important; /* iOS recommended minimum */
+                min-width: 44px !important;
+                padding: 12px 24px !important;
+                font-size: 0.9rem !important;
+                touch-action: manipulation; /* Prevents double-tap zoom */
+            }
+            
+            .cta-row {
+                flex-direction: column;
+                gap: 12px;
+                width: 100%;
+            }
+            
+            .cta-row .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            /* Hero testimonial mobile */
+            .hero .container > div[style*="max-width: 700px"] {
+                margin: 24px 16px !important;
+                padding: 16px !important;
+                font-size: 0.85rem !important;
+            }
+            
+            /* Metrics grid mobile */
+            .hero-metrics-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 16px !important;
+                max-width: 100% !important;
+                padding: 0 16px !important;
+            }
+            
+            .metric-card {
+                padding: 16px !important;
+            }
+            
+            .metric-value {
+                font-size: 1.8rem !important;
+            }
+            
+            .metric-label {
+                font-size: 0.7rem !important;
+            }
+            
             @keyframes mobile-cta-pulse {
                 0%, 100% { transform: scale(1); }
                 50% { transform: scale(1.02); }
@@ -2227,6 +2297,19 @@
             box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
         }
         
+        /* Case Study Button Styling */
+        .case-study-card .btn {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .case-study-card .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+        
         .case-study-badge {
             position: absolute;
             top: 16px;
@@ -2375,7 +2458,7 @@
     <!-- HERO -->
     <section class="hero" id="hero" style="text-align: center !important;">
         <div class="container" style="text-align: center !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; width: 100% !important; max-width: 1200px !important; margin: 0 auto !important;">
-            <div class="status-badge" id="status-badge" style="display: block !important; margin: 0 auto 20px !important; text-align: center !important;">⚡ SYSTEM ONLINE // v10.0 // Loading metrics...</div>
+            <!-- Status badge moved to footer for cleaner hero -->
             
             <h1 class="hero-title" style="text-align: center !important; margin: 0 auto 24px !important; width: 100% !important; max-width: 1000px !important;">
                 I Don't Just Sell Tech—<br>
@@ -2384,7 +2467,7 @@
             
             <p class="hero-subtitle" style="text-align: center !important; margin: 0 auto 40px !important; width: 100% !important; max-width: 700px !important;">
                 <strong>15+ years GTM leadership.</strong> Google, SurveyMonkey, HP, NetApp.<br>
-                Now I build autonomous systems that automate research, prioritization, and outreach—so I spend human time on the close.
+                Now I build autonomous systems that automate research, prioritization, and outreach—so you spend human time on the close.
             </p>
             
             <!-- Small Metrics Above -->
@@ -2394,12 +2477,8 @@
                 <span style="text-align: center !important;">5 Days SDR Ramp</span>
             </div>
             
-            <!-- Large Metrics Display -->
-            <div class="hero-metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-value">$23M+</div>
-                    <div class="metric-label">CAREER<br>PIPELINE</div>
-                </div>
+            <!-- Focused Metrics Display (3-4 key metrics) -->
+            <div class="hero-metrics-grid" style="grid-template-columns: repeat(4, 1fr); max-width: 1000px; margin: 0 auto;">
                 <div class="metric-card">
                     <div class="metric-value">160%</div>
                     <div class="metric-label">PIPELINE<br>GROWTH</div>
@@ -2409,8 +2488,8 @@
                     <div class="metric-label">ANNUAL<br>SAVINGS</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">5</div>
-                    <div class="metric-label">LLMS<br>ORCHESTRATED</div>
+                    <div class="metric-value">5 Days</div>
+                    <div class="metric-label">SDR<br>RAMP</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">83K+</div>
@@ -2418,10 +2497,29 @@
                 </div>
             </div>
             
+            <!-- Technical Details (Moved Below) -->
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+                <div style="display: inline-flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-size: 0.85rem; color: var(--text-secondary);">
+                    <span>$23M+ Career Pipeline</span>
+                    <span>•</span>
+                    <span>5 LLMs Orchestrated</span>
+                    <span>•</span>
+                    <span>19 Public Repositories</span>
+                </div>
+            </div>
+            
+            <!-- Mini Testimonial -->
+            <div style="max-width: 700px; margin: 32px auto 24px; padding: 20px; background: rgba(212, 175, 55, 0.05); border-left: 3px solid var(--gold-primary); border-radius: 8px;">
+                <p style="font-style: italic; color: var(--text-primary); margin: 0 0 8px 0; font-size: 0.95rem; line-height: 1.6;">
+                    "Leon's signal architecture replaced our 10-person SDR team with 2 SDRs + automation. We're doing 77 meetings/month vs. 45 before."
+                </p>
+                <p style="color: var(--gold-primary); font-size: 0.85rem; margin: 0; font-weight: 600;">— VP Sales, Series A Cybersecurity Company</p>
+            </div>
+            
             <div class="cta-row">
-                <a href="#results" class="btn btn-primary" aria-label="View results and case studies">SEE RESULTS</a>
-                <a href="#contact" class="btn btn-secondary" aria-label="Contact Leon Basin">LET'S TALK</a>
-                <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);" aria-label="Download Leon Basin resume PDF" download>RESUME</a>
+                <a href="https://cal.mixmax.com/leonbasin" target="_blank" class="btn btn-primary" aria-label="Schedule a call with Leon Basin" onclick="return handleCalendarClick(event)" rel="noopener noreferrer" style="font-size: 1rem; padding: 16px 32px;">Schedule a Call</a>
+                <a href="#results" class="btn btn-secondary" aria-label="View results and case studies">View My Work</a>
+                <a href="Leon_Basin_Resume.pdf" class="btn btn-secondary" style="background: transparent; border: 1px solid var(--gold-border);" aria-label="Download Leon Basin resume PDF" download>Download Resume</a>
             </div>
             
             <div style="text-align: center; margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
@@ -2499,7 +2597,7 @@
             
             <div class="story-cta">
                 <a href="#case-studies" class="btn btn-primary" aria-label="View full case studies section">View Full Case Study</a>
-                <a href="tools/roi-calculator.html" class="btn btn-secondary" aria-label="Calculate your ROI with the calculator tool">Calculate Your ROI</a>
+                <a href="/tools/roi-calculator.html" class="btn btn-secondary" aria-label="Calculate your ROI with the calculator tool">Calculate Your ROI</a>
             </div>
         </div>
     </section>
@@ -2512,7 +2610,7 @@
                 <p class="section-subtitle" style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
                     <a href="/blog/" style="color: var(--gold-primary); text-decoration: none;">BLOG: Case Studies</a>
                     <span>•</span>
-                    <a href="tools/roi-calculator.html" style="color: var(--gold-primary); text-decoration: none;">TOOLS: ROI Calculator</a>
+                    <a href="/tools/roi-calculator.html" style="color: var(--gold-primary); text-decoration: none;">TOOLS: ROI Calculator</a>
                 </p>
                 <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">* Company names and detailed case studies available upon request</p>
             </div>
@@ -2538,7 +2636,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             "Leon's signal architecture replaced our 10-person SDR team with 2 SDRs + automation. We're doing 77 meetings/month vs. 45 before. Before 0%—he built this from scratch in 2 years." — VP Sales
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                     
                     <!-- Project::Delight -->
@@ -2559,7 +2657,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             Built signal detection system, automated partner co-sell motions, and shifted narrative from features to business risk (Zero Trust / PAM positioning).
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                     
                     <!-- Project::Phoenix -->
@@ -2580,7 +2678,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             Built 5-Day "Boot Camp" certification protocol with AI-powered training, real-time feedback, and gamified learning. Reduced ramp from 90 days to 5 days.
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                     
                     <!-- Project::Translator -->
@@ -2601,7 +2699,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             Created dual messaging framework: technical for engineers, business-risk for executives. Resulted in faster sales cycles and higher close rates.
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                     
                     <!-- Project::Air Strike -->
@@ -2622,7 +2720,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             Built signal detection system that monitors technical forums (Reddit, HN, Stack Overflow) for problem-aware buyers. Identified and engaged 3 SQLs in 48 hours with zero ad spend.
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                     
                     <!-- Project::Sentinel - Partner Channel -->
@@ -2643,7 +2741,7 @@
                         <div class="case-study-challenge" style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">
                             Built partner co-sell motions, post-conference follow-up automation, and internalized messaging for Zero Trust / PAM positioning. Resulted in 160% YoY pipeline increase.
                         </div>
-                        <a href="/case-studies/project-nexus-gtm-system.html" class="case-study-link">Read Full Case Study →</a>
+                        <a href="/case-studies/project-nexus-gtm-system.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; font-size: 0.85rem; padding: 10px 24px;">View Case Study</a>
                     </div>
                 </div>
                 
