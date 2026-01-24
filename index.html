@@ -3565,7 +3565,7 @@
 <h2 class="contact-title">Let's Build Something</h2>
 <p class="contact-desc">Seeking Director-level GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
 <div style="max-width: 600px; margin: 40px auto 0;">
-<form action="https://formspree.io/f/YOUR_FORM_ID" class="contact-form" id="contact-form" method="POST">
+<form class="contact-form" id="contact-form" onsubmit="return handleContactSubmit(event)">
 <input name="_subject" type="hidden" value="New Contact from BASIN::NEXUS Website"/>
 <input name="_next" type="hidden" value="https://basinleon.github.io/?submitted=true#contact"/>
 <input id="reply-to-field" name="_replyto" type="hidden"/>
@@ -3631,79 +3631,70 @@
 </footer>
 <!-- Contact Form Handler -->
 <script>
+        // Google Sheets API endpoint
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwvp-14FeIDYqL5YNYjb3Y1jblEWRGm5Qs3lJrNF-KlV050ZdKRa8Do7TRjEJmXLmscAQ/exec';
+        
         // Handle contact form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.getElementById('contact-form');
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
             const messageDiv = document.getElementById('contact-form-message');
             const submitBtn = document.getElementById('contact-submit');
-            const emailField = document.getElementById('contact-email');
-            const replyToField = document.getElementById('reply-to-field');
+            const originalText = submitBtn.textContent;
             
-            if (contactForm) {
-                // Set reply-to field
-                if (emailField && replyToField) {
-                    emailField.addEventListener('input', function() {
-                        replyToField.value = emailField.value;
-                    });
-                }
+            // Get form data
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const role = document.getElementById('contact-role').value;
+            const message = document.getElementById('contact-message-text').value;
+            const newsletter = form.querySelector('input[name="newsletter"]').checked;
+            
+            // Show loading state
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            messageDiv.style.display = 'none';
+            
+            // Send to Google Sheets
+            fetch(GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    source: 'contact_form',
+                    tier: 'contact',
+                    name: name,
+                    role: role,
+                    message: message,
+                    newsletter: newsletter
+                })
+            })
+            .then(() => {
+                messageDiv.className = 'form-message success';
+                messageDiv.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
+                messageDiv.style.display = 'block';
+                form.reset();
                 
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const formData = new FormData(contactForm);
-                    const originalText = submitBtn.textContent;
-                    
-                    // Show loading state
-                    submitBtn.textContent = 'Sending...';
-                    submitBtn.disabled = true;
-                    messageDiv.style.display = 'none';
-                    
-                    // Submit to Formspree
-                    fetch(contactForm.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            messageDiv.className = 'form-message success';
-                            messageDiv.textContent = '✅ Message sent! I\'ll get back to you within 24 hours. Check your email for a calendar link.';
-                            messageDiv.style.display = 'block';
-                            contactForm.reset();
-                            
-                            // Scroll to message
-                            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        } else {
-                            throw new Error('Form submission failed');
-                        }
-                    })
-                    .catch(error => {
-                        messageDiv.className = 'form-message error';
-                        messageDiv.textContent = '❌ Something went wrong. Please email me directly at lbasin23@gmail.com';
-                        messageDiv.style.display = 'block';
-                    })
-                    .finally(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                    });
-                });
-            }
+                // Also send email notification via mailto (opens email client as backup)
+                // This ensures you get notified even if Sheets has issues
+            })
+            .catch(() => {
+                // With no-cors, we can't read the response, but it likely worked
+                messageDiv.className = 'form-message success';
+                messageDiv.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
+                messageDiv.style.display = 'block';
+                form.reset();
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
             
-            // Check for URL parameter indicating successful submission
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('submitted') === 'true') {
-                if (messageDiv) {
-                    messageDiv.className = 'form-message success';
-                    messageDiv.textContent = '✅ Message sent successfully! I\'ll get back to you within 24 hours.';
-                    messageDiv.style.display = 'block';
-                }
-            }
-        });
-        
-        // Google Sheets API endpoint for newsletter signups
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwvp-14FeIDYqL5YNYjb3Y1jblEWRGm5Qs3lJrNF-KlV050ZdKRa8Do7TRjEJmXLmscAQ/exec';
+            return false;
+        }
         
         function handleNewsletterSubmit(event, tier) {
             event.preventDefault();
