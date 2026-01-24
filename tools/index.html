@@ -1805,9 +1805,11 @@
                 `;
                 
             } catch (error) {
-                console.error('Error loading chronicles:', error);
-                document.getElementById('featured-title').textContent = 'Unable to load posts';
-                document.getElementById('featured-excerpt').textContent = 'Please try again later.';
+                // Error handling - use featured-chronicle element
+                const featuredEl = document.getElementById('featured-chronicle');
+                if (featuredEl) {
+                    featuredEl.innerHTML = '<p style="color: var(--text-secondary);">Unable to load posts. Please try again later.</p>';
+                }
             }
         }
         
