@@ -40,7 +40,7 @@ Principal Consultant (GTM & Pipeline Strategy)
 Aug 2023 - Present
 • Advising early-stage AI & Cyber teams
 • Built BASIN::NEXUS v10.0 (83,000+ lines)
-• $621K Active Pipeline
+• Building revenue automation systems
 
 Sense
 Group Manager, Global Business Development
@@ -115,10 +115,10 @@ $424K              Annual Savings
                 execute: () => {
                     return `Contact Options
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 Schedule:      https://cal.mixmax.com/leonbasin
 📧 Email:         lbasin23@gmail.com
 💼 LinkedIn:      linkedin.com/in/leonbasin
 🐙 GitHub:        github.com/BasinLeon
+🌐 Website:       basinleon.github.io
 
 [Type 'help' for more commands]`;
                 }

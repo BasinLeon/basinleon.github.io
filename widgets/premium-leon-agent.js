@@ -760,7 +760,7 @@ Read the full story in my blog post "Why Leon Basin Matters" at /blog/posts/why-
         handleRevenueChallenge(message) {
             const lower = message.toLowerCase();
             if (lower.includes('300k') || lower.includes('making')) {
-                return "Making $300K+ in revenue? That's about building systems that work while you sleep. I've built systems that generate $621K+ pipeline. The key: signal detection + automation + human focus on high-value activities. What's your current revenue challenge?";
+                return "Making $300K+ in revenue? That's about building systems that work while you sleep. I've built systems that generate significant pipeline growth. The key: signal detection + automation + human focus on high-value activities. What's your current revenue challenge?";
             }
             if (lower.includes('headcount')) {
                 return "Headcount is expensive. I replaced 10 SDRs with 2 + automation, saving $424K/year. The system finds prospects, scores them, and routes to humans for the close. Want to see how?";
