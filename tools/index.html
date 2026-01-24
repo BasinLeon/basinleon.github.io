@@ -1755,12 +1755,18 @@
                 
                 const posts = await response.json();
                 
-                // Filter out posts without valid URLs
-                const validPosts = posts.filter(p => p.url && p.url !== '#');
+                // Filter out posts without valid URLs and convert relative to absolute
+                const validPosts = posts
+                    .filter(p => p.url && p.url !== '#')
+                    .map(p => ({
+                        ...p,
+                        url: p.url.startsWith('http') ? p.url : 
+                             p.url.startsWith('/') ? `https://basinleon.github.io${p.url}` :
+                             `https://basinleon.github.io/blog/${p.url}`
+                    }));
                 
                 if (validPosts.length === 0) {
-                    document.getElementById('featured-title').textContent = 'No posts available';
-                    document.getElementById('featured-excerpt').textContent = 'Check back soon for new content.';
+                    document.getElementById('featured-chronicle').innerHTML = '<p style="color: var(--text-secondary);">No posts available. Check back soon for new content.</p>';
                     return;
                 }
                 
