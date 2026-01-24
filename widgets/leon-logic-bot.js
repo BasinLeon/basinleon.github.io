@@ -64,7 +64,7 @@ Traditional GTM is linear. Mine is recursive — the system learns from every in
 
 **The Magic:** 1 human + 1 system = 10 SDRs worth of output.
 
-**Real Results:** +160% pipeline YoY at Fudo, $424K projected savings for Ambient.`
+**Real Results:** +160% pipeline YoY at Series A Cybersecurity, $424K projected annual savings.`
         },
 
         // KPIs and Metrics
@@ -153,7 +153,7 @@ Director/VP of GTM Engineering — where I can build this vision from scratch.
 - What bottlenecks exist?
 
 **Example:**
-At Fudo Security, I identified that "recently hired CISO at Series B" was a 10x signal. Built a system to monitor LinkedIn + Crunchbase, auto-enrich contacts, and generate personalized "congrats on new role" emails. 
+At a Series A Cybersecurity company, I identified that "recently hired CISO at Series B" was a 10x signal. Built a system to monitor LinkedIn + Crunchbase, auto-enrich contacts, and generate personalized "congrats on new role" emails. 
 
 **Result:** 18% reply rate, 160% pipeline increase YoY.
 
@@ -279,7 +279,7 @@ I can deploy enterprise-grade GTM infrastructure for a startup with zero budget.
 - If it doesn't: Kill it fast
 - No "let's give it more time" — data decides
 
-**Example: Fudo Security Pipeline Stall**
+**Example: Series A Cybersecurity Pipeline Stall**
 - Symptom: 60-day sales cycles
 - Root cause: AEs waiting for Security reviews
 - Fix: Built a "Security Requirement Checklist" tool
@@ -473,7 +473,7 @@ Same or better output. Zero burnout. 24/7 operation.
 Use my ROI Calculator at /tools/roi-calculator.html — plug in your numbers and see the savings.
 
 **Proof:**
-- Fudo: +160% pipeline with no new hires
+- Series A Cyber: +160% pipeline with no new hires
 - Sense: 5-person team → 105% quota, $10M pipeline
 - Ambient model: $424K annual savings calculated
 - Basin::Nexus: Running my job search while I sleep`
@@ -545,7 +545,7 @@ Try them at basinleon.github.io/tools/
 - $23M+ career pipeline generated
 - $7M+ crowdfunded (Sanho/HyperDrive)
 - $10M+ pipeline at Sense
-- 160% YoY pipeline growth (Fudo)
+- 160% YoY pipeline growth (Series A Cyber)
 - $424K projected annual savings model
 
 **Efficiency Gains:**
