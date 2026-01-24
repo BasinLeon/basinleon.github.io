@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Platform | Pitch, Interview, Present, 90-Day Plans</title>
+    <meta name="description" content="Practice platform for pitching, interviewing, presenting, 90-day plans, and more. Build your skills with structured practice sessions.">
+    <link rel="canonical" href="https://basinleon.github.io/tools/practice-platform.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Practice Platform | Pitch, Interview, Present, 90-Day Plans">
+    <meta property="og:description" content="Practice platform for pitching, interviewing, presenting, 90-day plans, and more.">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    <meta property="og:url" content="https://basinleon.github.io/tools/practice-platform.html">
+    <meta property="og:type" content="website">
+    
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a24;
+            --gold: #D4AF37;
+            --gold-glow: rgba(212,175,55,0.3);
+            --text: #f0e6d3;
+            --text-muted: #8b8573;
+            --text-dim: #5a584f;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --border: rgba(212,175,55,0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .practice-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .practice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .practice-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 24px rgba(212,175,55,0.2);
+        }
+        
+        .practice-card:hover::before {
+            opacity: 1;
+        }
+        
+        .practice-card.active {
+            border-color: var(--gold);
+            box-shadow: 0 8px 24px rgba(212,175,55,0.3);
+        }
+        
+        .practice-card.active::before {
+            opacity: 1;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .card-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .card-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .card-features li {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .card-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+        
+        .card-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--gold), #b8860b);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(212,175,55,0.4);
+        }
+        
+        .practice-panel {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 24px;
+        }
+        
+        .practice-panel.active {
+            display: block;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .panel-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
+        
+        .close-panel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-panel:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        
+        .practice-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .practice-section {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        
+        .timer {
+            font-size: 3rem;
+            color: var(--gold);
+            text-align: center;
+            font-weight: 700;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--gold);
+            color: #000;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .question-list {
+            list-style: none;
+        }
+        
+        .question-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .question-item:hover {
+            border-color: var(--gold);
+            transform: translateX(4px);
+        }
+        
+        .question-item.active {
+            border-color: var(--gold);
+            background: rgba(212,175,55,0.1);
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .question-tips {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: var(--danger);
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        
+        .recording-indicator.active {
+            display: flex;
+        }
+        
+        .recording-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .feedback-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .feedback-item {
+            background: var(--bg-elevated);
+            border-left: 3px solid var(--gold);
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+        
+        .feedback-label {
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        
+        .feedback-text {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #b8860b);
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .practice-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Practice Platform</h1>
+            <p>Master pitching, interviewing, presenting, 90-day plans, and more</p>
+        </div>
+        
+        <div class="practice-grid">
+            <!-- Pitch Practice -->
+            <div class="practice-card" data-practice="pitch">
+                <div class="card-icon">🎤</div>
+                <div class="card-title">Pitch Practice</div>
+                <div class="card-description">
+                    Practice your elevator pitch, product demos, and sales presentations with timing and feedback.
+                </div>
+                <ul class="card-features">
+                    <li>Record and review pitches</li>
+                    <li>Timing practice (30s, 60s, 2min)</li>
+                    <li>Feedback framework</li>
+                    <li>Multiple pitch types</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('pitch')">Start Practicing</button>
+            </div>
+            
+            <!-- Interview Practice -->
+            <div class="practice-card" data-practice="interview">
+                <div class="card-icon">💼</div>
+                <div class="card-title">Interview Practice</div>
+                <div class="card-description">
+                    Mock interviews with common questions, behavioral scenarios, and technical challenges.
+                </div>
+                <ul class="card-features">
+                    <li>Question bank (100+ questions)</li>
+                    <li>Behavioral interview practice</li>
+                    <li>Technical questions</li>
+                    <li>Answer recording & review</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('interview')">Start Practicing</button>
+            </div>
+            
+            <!-- Presentation Practice -->
+            <div class="practice-card" data-practice="presentation">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Presentation Practice</div>
+                <div class="card-description">
+                    Practice delivering presentations with timing, slide navigation, and audience engagement.
+                </div>
+                <ul class="card-features">
+                    <li>Timing practice</li>
+                    <li>Slide navigation</li>
+                    <li>Q&A preparation</li>
+                    <li>Delivery feedback</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('presentation')">Start Practicing</button>
+            </div>
+            
+            <!-- 90-Day Plan Builder -->
+            <div class="practice-card" data-practice="90day">
+                <div class="card-icon">📅</div>
+                <div class="card-title">90-Day Plan Builder</div>
+                <div class="card-description">
+                    Create and refine your 90-day plan with structured templates and feedback.
+                </div>
+                <ul class="card-features">
+                    <li>Structured templates</li>
+                    <li>30/60/90 day breakdown</li>
+                    <li>Goal setting framework</li>
+                    <li>Presentation mode</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('90day')">Start Building</button>
+            </div>
+            
+            <!-- Negotiation Practice -->
+            <div class="practice-card" data-practice="negotiation">
+                <div class="card-icon">🤝</div>
+                <div class="card-title">Negotiation Practice</div>
+                <div class="card-description">
+                    Practice salary negotiations, deal closing, and objection handling scenarios.
+                </div>
+                <ul class="card-features">
+                    <li>Salary negotiation scenarios</li>
+                    <li>Objection handling</li>
+                    <li>Deal closing practice</li>
+                    <li>Role-play scenarios</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('negotiation')">Start Practicing</button>
+            </div>
+            
+            <!-- Discovery Call Practice -->
+            <div class="practice-card" data-practice="discovery">
+                <div class="card-icon">🔍</div>
+                <div class="card-title">Discovery Call Practice</div>
+                <div class="card-description">
+                    Practice discovery calls, qualification questions, and needs assessment.
+                </div>
+                <ul class="card-features">
+                    <li>Discovery frameworks</li>
+                    <li>Qualification questions</li>
+                    <li>Needs assessment</li>
+                    <li>Call flow practice</li>
+                </ul>
+                <button class="card-button" onclick="openPractice('discovery')">Start Practicing</button>
+            </div>
+        </div>
+        
+        <!-- Practice Panels -->
+        <div id="practicePanels"></div>
+    </div>
+    
+    <script>
+        // Practice data
+        const practiceData = {
+            pitch: {
+                title: "🎤 Pitch Practice",
+                types: [
+                    { name: "Elevator Pitch (30s)", duration: 30 },
+                    { name: "Short Pitch (60s)", duration: 60 },
+                    { name: "Full Pitch (2min)", duration: 120 },
+                    { name: "Product Demo (5min)", duration: 300 }
+                ],
+                tips: [
+                    "Start with a hook that grabs attention",
+                    "Clearly state the problem you solve",
+                    "Explain your unique solution",
+                    "End with a clear call to action"
+                ]
+            },
+            interview: {
+                title: "💼 Interview Practice",
+                questions: [
+                    {
+                        text: "Tell me about yourself.",
+                        category: "Behavioral",
+                        tips: "Focus on relevant experience, key achievements, and why you're interested in this role."
+                    },
+                    {
+                        text: "Why do you want to work here?",
+                        category: "Motivation",
+                        tips: "Show you've researched the company, align your values, and connect your goals to theirs."
+                    },
+                    {
+                        text: "What's your biggest weakness?",
+                        category: "Behavioral",
+                        tips: "Choose a real weakness, show self-awareness, and explain how you're working on it."
+                    },
+                    {
+                        text: "Tell me about a time you failed.",
+                        category: "Behavioral",
+                        tips: "Use STAR method: Situation, Task, Action, Result. Focus on what you learned."
+                    },
+                    {
+                        text: "Why should we hire you?",
+                        category: "Closing",
+                        tips: "Summarize your key strengths, relevant experience, and unique value you bring."
+                    },
+                    {
+                        text: "Where do you see yourself in 5 years?",
+                        category: "Career Goals",
+                        tips: "Show ambition but also alignment with the company's growth trajectory."
+                    },
+                    {
+                        text: "How do you handle stress?",
+                        category: "Behavioral",
+                        tips: "Give specific examples of stressful situations and how you managed them."
+                    },
+                    {
+                        text: "What's your leadership style?",
+                        category: "Leadership",
+                        tips: "Describe your approach with examples, and show how it adapts to different situations."
+                    }
+                ]
+            },
+            presentation: {
+                title: "📊 Presentation Practice",
+                sections: [
+                    "Introduction & Hook",
+                    "Problem Statement",
+                    "Solution Overview",
+                    "Key Features/Benefits",
+                    "Proof Points/Case Studies",
+                    "Call to Action",
+                    "Q&A Preparation"
+                ],
+                timing: {
+                    "Short (5min)": 300,
+                    "Standard (10min)": 600,
+                    "Extended (20min)": 1200,
+                    "Full (30min)": 1800
+                }
+            },
+            "90day": {
+                title: "📅 90-Day Plan Builder",
+                phases: [
+                    {
+                        name: "Days 1-30: Learn & Assess",
+                        focus: "Understanding the role, team, processes, and current state"
+                    },
+                    {
+                        name: "Days 31-60: Build & Execute",
+                        focus: "Taking ownership, implementing improvements, delivering results"
+                    },
+                    {
+                        name: "Days 61-90: Scale & Optimize",
+                        focus: "Scaling what works, optimizing processes, demonstrating impact"
+                    }
+                ]
+            },
+            negotiation: {
+                title: "🤝 Negotiation Practice",
+                scenarios: [
+                    {
+                        name: "Salary Negotiation",
+                        situation: "You've received an offer. The base is $X, but you want $Y. How do you negotiate?",
+                        tips: "Research market rates, highlight your value, be collaborative not adversarial."
+                    },
+                    {
+                        name: "Deal Closing",
+                        situation: "Prospect is interested but says 'we need to think about it.' How do you respond?",
+                        tips: "Uncover real objections, provide urgency, offer to help with decision-making."
+                    },
+                    {
+                        name: "Objection Handling",
+                        situation: "Prospect says 'your price is too high.' How do you handle this?",
+                        tips: "Understand the real concern, reframe value, show ROI, find creative solutions."
+                    }
+                ]
+            },
+            discovery: {
+                title: "🔍 Discovery Call Practice",
+                frameworks: [
+                    {
+                        name: "BANT (Budget, Authority, Need, Timeline)",
+                        questions: [
+                            "What's your budget for this initiative?",
+                            "Who makes the final decision?",
+                            "What problem are you trying to solve?",
+                            "What's your timeline for implementation?"
+                        ]
+                    },
+                    {
+                        name: "SPIN (Situation, Problem, Implication, Need-payoff)",
+                        questions: [
+                            "Can you describe your current situation?",
+                            "What problems are you experiencing?",
+                            "What are the implications of not solving this?",
+                            "What would solving this mean for your business?"
+                        ]
+                    }
+                ]
+            }
+        };
+        
+        let currentPractice = null;
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let isRecording = false;
+        
+        function openPractice(type) {
+            // Close current practice
+            if (currentPractice) {
+                document.querySelector(`[data-practice="${currentPractice}"]`).classList.remove('active');
+                const panel = document.getElementById(`${currentPractice}Panel`);
+                if (panel) panel.remove();
+            }
+            
+            // Open new practice
+            currentPractice = type;
+            document.querySelector(`[data-practice="${type}"]`).classList.add('active');
+            
+            const data = practiceData[type];
+            const panel = document.createElement('div');
+            panel.id = `${type}Panel`;
+            panel.className = 'practice-panel active';
+            
+            panel.innerHTML = generatePanelHTML(type, data);
+            document.getElementById('practicePanels').appendChild(panel);
+            
+            // Scroll to panel
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function generatePanelHTML(type, data) {
+            switch(type) {
+                case 'pitch':
+                    return generatePitchPanel(data);
+                case 'interview':
+                    return generateInterviewPanel(data);
+                case 'presentation':
+                    return generatePresentationPanel(data);
+                case '90day':
+                    return generate90DayPanel(data);
+                case 'negotiation':
+                    return generateNegotiationPanel(data);
+                case 'discovery':
+                    return generateDiscoveryPanel(data);
+                default:
+                    return '';
+            }
+        }
+        
+        function generatePitchPanel(data) {
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content">
+                    <div class="practice-section">
+                        <div class="section-title">Select Pitch Type</div>
+                        ${data.types.map(type => `
+                            <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;" 
+                                    onclick="startPitchTimer(${type.duration}, '${type.name}')">
+                                ${type.name}
+                            </button>
+                        `).join('')}
+                        <div class="timer" id="pitchTimer">00:00</div>
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" onclick="startTimer()">Start</button>
+                            <button class="btn btn-secondary" onclick="pauseTimer()">Pause</button>
+                            <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+                        </div>
+                        <div class="recording-indicator" id="recordingIndicator">
+                            <div class="recording-dot"></div>
+                            Recording...
+                        </div>
+                    </div>
+                    <div class="practice-section">
+                        <div class="section-title">Your Pitch Notes</div>
+                        <textarea id="pitchNotes" placeholder="Write your pitch here..."></textarea>
+                        <div class="section-title" style="margin-top: 20px;">Tips</div>
+                        <ul class="card-features">
+                            ${data.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="feedback-section">
+                    <div class="section-title">Self-Assessment</div>
+                    <div class="feedback-item">
+                        <div class="feedback-label">Clarity (1-10)</div>
+                        <input type="range" min="1" max="10" value="5" id="clarityScore">
+                        <span id="clarityValue">5</span>
+                    </div>
+                    <div class="feedback-item">
+                        <div class="feedback-label">Engagement (1-10)</div>
+                        <input type="range" min="1" max="10" value="5" id="engagementScore">
+                        <span id="engagementValue">5</span>
+                    </div>
+                    <div class="feedback-item">
+                        <div class="feedback-label">Call to Action (1-10)</div>
+                        <input type="range" min="1" max="10" value="5" id="ctaScore">
+                        <span id="ctaValue">5</span>
+                    </div>
+                    <textarea id="pitchFeedback" placeholder="What went well? What needs improvement?"></textarea>
+                </div>
+            `;
+        }
+        
+        function generateInterviewPanel(data) {
+            let questionIndex = 0;
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content">
+                    <div class="practice-section">
+                        <div class="section-title">Interview Questions</div>
+                        <ul class="question-list" id="questionList">
+                            ${data.questions.map((q, i) => `
+                                <li class="question-item" onclick="selectQuestion(${i})">
+                                    <div class="question-text">${q.text}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">${q.category}</div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    <div class="practice-section">
+                        <div class="section-title" id="selectedQuestionTitle">Select a question to practice</div>
+                        <div id="selectedQuestionTips" class="question-tips"></div>
+                        <div class="timer" id="interviewTimer">00:00</div>
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" onclick="startTimer()">Start Answering</button>
+                            <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+                        </div>
+                        <textarea id="answerNotes" placeholder="Write your answer here..."></textarea>
+                        <div class="recording-indicator" id="recordingIndicator">
+                            <div class="recording-dot"></div>
+                            Recording your answer...
+                        </div>
+                    </div>
+                </div>
+                <div class="feedback-section">
+                    <div class="section-title">Answer Assessment</div>
+                    <div class="feedback-item">
+                        <div class="feedback-label">Did you use STAR method? (Situation, Task, Action, Result)</div>
+                        <input type="checkbox" id="starMethod"> Yes
+                    </div>
+                    <div class="feedback-item">
+                        <div class="feedback-label">Did you quantify results?</div>
+                        <input type="checkbox" id="quantified"> Yes
+                    </div>
+                    <textarea id="interviewFeedback" placeholder="What went well? What needs improvement?"></textarea>
+                </div>
+            `;
+        }
+        
+        function generate90DayPanel(data) {
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content" style="grid-template-columns: 1fr;">
+                    ${data.phases.map((phase, i) => `
+                        <div class="practice-section">
+                            <div class="section-title">${phase.name}</div>
+                            <div style="color: var(--text-muted); margin-bottom: 16px;">${phase.focus}</div>
+                            <div style="margin-bottom: 12px;">
+                                <strong>Key Goals:</strong>
+                                <textarea id="goals${i}" placeholder="List 3-5 key goals for this phase..." style="min-height: 100px; margin-top: 8px;"></textarea>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <strong>Key Activities:</strong>
+                                <textarea id="activities${i}" placeholder="List specific activities..." style="min-height: 100px; margin-top: 8px;"></textarea>
+                            </div>
+                            <div>
+                                <strong>Success Metrics:</strong>
+                                <textarea id="metrics${i}" placeholder="How will you measure success?" style="min-height: 80px; margin-top: 8px;"></textarea>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="feedback-section">
+                    <div class="section-title">90-Day Plan Summary</div>
+                    <textarea id="planSummary" placeholder="Write a summary of your 90-day plan that you can present..." style="min-height: 150px;"></textarea>
+                    <button class="btn btn-primary" style="margin-top: 16px;" onclick="export90DayPlan()">Export Plan</button>
+                </div>
+            `;
+        }
+        
+        function generatePresentationPanel(data) {
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content">
+                    <div class="practice-section">
+                        <div class="section-title">Presentation Timing</div>
+                        ${Object.entries(data.timing).map(([name, seconds]) => `
+                            <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;" 
+                                    onclick="startPresentationTimer(${seconds}, '${name}')">
+                                ${name}
+                            </button>
+                        `).join('')}
+                        <div class="timer" id="presentationTimer">00:00</div>
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" onclick="startTimer()">Start</button>
+                            <button class="btn btn-secondary" onclick="pauseTimer()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="practice-section">
+                        <div class="section-title">Presentation Sections</div>
+                        <ul class="question-list">
+                            ${data.sections.map(section => `
+                                <li class="question-item">
+                                    <div class="question-text">${section}</div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <textarea id="presentationNotes" placeholder="Add notes for each section..." style="margin-top: 16px; min-height: 200px;"></textarea>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateNegotiationPanel(data) {
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content">
+                    <div class="practice-section">
+                        <div class="section-title">Practice Scenarios</div>
+                        ${data.scenarios.map((scenario, i) => `
+                            <div class="question-item" style="margin-bottom: 20px;">
+                                <div class="question-text">${scenario.name}</div>
+                                <div style="color: var(--text-muted); margin: 12px 0;">${scenario.situation}</div>
+                                <div class="question-tips">
+                                    <strong>Tips:</strong> ${scenario.tips}
+                                </div>
+                                <textarea id="negotiation${i}" placeholder="Write your response..." style="margin-top: 12px; min-height: 100px;"></textarea>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="practice-section">
+                        <div class="section-title">Negotiation Framework</div>
+                        <div style="color: var(--text-muted); line-height: 1.8;">
+                            <p><strong>1. Prepare:</strong> Research, know your value, set your range</p>
+                            <p><strong>2. Listen:</strong> Understand their constraints and priorities</p>
+                            <p><strong>3. Propose:</strong> Make the first offer (anchor high)</p>
+                            <p><strong>4. Negotiate:</strong> Find creative solutions, trade-offs</p>
+                            <p><strong>5. Close:</strong> Confirm agreement, get it in writing</p>
+                        </div>
+                        <textarea id="negotiationNotes" placeholder="Your negotiation strategy and talking points..." style="margin-top: 20px; min-height: 200px;"></textarea>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateDiscoveryPanel(data) {
+            return `
+                <div class="panel-header">
+                    <div class="panel-title">${data.title}</div>
+                    <button class="close-panel" onclick="closePractice()">Close</button>
+                </div>
+                <div class="practice-content">
+                    ${data.frameworks.map((framework, i) => `
+                        <div class="practice-section">
+                            <div class="section-title">${framework.name}</div>
+                            <ul class="question-list">
+                                ${framework.questions.map(q => `
+                                    <li class="question-item">
+                                        <div class="question-text">${q}</div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <textarea id="discovery${i}" placeholder="Your answers and follow-up questions..." style="margin-top: 16px; min-height: 150px;"></textarea>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        function closePractice() {
+            if (currentPractice) {
+                document.querySelector(`[data-practice="${currentPractice}"]`).classList.remove('active');
+                const panel = document.getElementById(`${currentPractice}Panel`);
+                if (panel) panel.remove();
+                currentPractice = null;
+                resetTimer();
+            }
+        }
+        
+        function startPitchTimer(duration, name) {
+            timerSeconds = duration;
+            updateTimerDisplay();
+            document.getElementById('pitchTimer').textContent = formatTime(duration);
+        }
+        
+        function startPresentationTimer(duration, name) {
+            timerSeconds = duration;
+            updateTimerDisplay();
+            document.getElementById('presentationTimer').textContent = formatTime(duration);
+        }
+        
+        function startTimer() {
+            if (timerInterval) return;
+            
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) {
+                indicator.classList.add('active');
+                isRecording = true;
+            }
+            
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    pauseTimer();
+                    if (indicator) {
+                        indicator.classList.remove('active');
+                        isRecording = false;
+                    }
+                    alert('Time\'s up!');
+                }
+            }, 1000);
+        }
+        
+        function pauseTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) {
+                indicator.classList.remove('active');
+                isRecording = false;
+            }
+        }
+        
+        function resetTimer() {
+            pauseTimer();
+            timerSeconds = 0;
+            updateTimerDisplay();
+        }
+        
+        function updateTimerDisplay() {
+            const timerElements = document.querySelectorAll('.timer');
+            timerElements.forEach(el => {
+                el.textContent = formatTime(timerSeconds);
+            });
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        
+        function selectQuestion(index) {
+            const questions = practiceData.interview.questions;
+            const question = questions[index];
+            
+            document.querySelectorAll('.question-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
+            document.getElementById('selectedQuestionTitle').textContent = question.text;
+            document.getElementById('selectedQuestionTips').textContent = question.tips;
+            document.getElementById('answerNotes').value = '';
+            resetTimer();
+        }
+        
+        function export90DayPlan() {
+            const plan = {
+                phase1: {
+                    goals: document.getElementById('goals0')?.value || '',
+                    activities: document.getElementById('activities0')?.value || '',
+                    metrics: document.getElementById('metrics0')?.value || ''
+                },
+                phase2: {
+                    goals: document.getElementById('goals1')?.value || '',
+                    activities: document.getElementById('activities1')?.value || '',
+                    metrics: document.getElementById('metrics1')?.value || ''
+                },
+                phase3: {
+                    goals: document.getElementById('goals2')?.value || '',
+                    activities: document.getElementById('activities2')?.value || '',
+                    metrics: document.getElementById('metrics2')?.value || ''
+                },
+                summary: document.getElementById('planSummary')?.value || ''
+            };
+            
+            const blob = new Blob([JSON.stringify(plan, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '90-day-plan.json';
+            a.click();
+        }
+        
+        // Slider value updates
+        document.addEventListener('input', (e) => {
+            if (e.target.type === 'range') {
+                const valueSpan = document.getElementById(e.target.id.replace('Score', 'Value'));
+                if (valueSpan) valueSpan.textContent = e.target.value;
+            }
+        });
+    </script>
+</body>
+</html>
