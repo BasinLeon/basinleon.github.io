@@ -1455,15 +1455,44 @@
             .mobile-cta {
                 display: block;
                 position: fixed;
-                bottom: 80px;
-                left: 0;
-                right: 0;
-                padding: 16px;
+                bottom: 20px;
+                left: 16px;
+                right: 16px;
+                padding: 16px 40px 16px 16px;
                 background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
                 color: #000;
                 text-align: center;
                 z-index: 9999;
-                box-shadow: 0 -4px 20px rgba(212, 175, 55, 0.3);
+                box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+                border-radius: 12px;
+                animation: mobile-cta-pulse 3s ease-in-out infinite;
+            }
+            
+            .mobile-cta-close {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: rgba(0, 0, 0, 0.3);
+                border: none;
+                color: #000;
+                font-size: 24px;
+                font-weight: 700;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1;
+                padding: 0;
+                transition: all 0.2s ease;
+            }
+            
+            .mobile-cta-close:hover,
+            .mobile-cta-close:active {
+                background: rgba(0, 0, 0, 0.5);
+                transform: scale(1.1);
             }
             
             .mobile-cta-button {
@@ -1478,10 +1507,17 @@
                 font-family: 'Orbitron', sans-serif;
                 font-size: 0.9rem;
                 margin-top: 8px;
+                min-height: 44px;
+                touch-action: manipulation;
             }
             
             .mobile-cta-button:active {
                 transform: scale(0.98);
+            }
+            
+            @keyframes mobile-cta-pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.02); }
             }
         }
         
@@ -1957,6 +1993,10 @@
                 animation: mobile-cta-pulse 3s ease-in-out infinite;
             }
             
+            .mobile-cta-close {
+                display: flex !important;
+            }
+            
             /* Mobile Button Improvements - Larger tap targets */
             .btn {
                 min-height: 44px !important; /* iOS recommended minimum */
@@ -2399,6 +2439,80 @@
             color: var(--gold-light);
         }
         
+        /* Visitor Counter */
+        .visitor-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.25) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            font-family: 'Orbitron', sans-serif;
+            z-index: 9998;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .visitor-counter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.3);
+            border-color: var(--gold-primary);
+        }
+        
+        .visitor-counter-icon {
+            font-size: 1.2rem;
+        }
+        
+        .visitor-counter-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .visitor-counter-number {
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        @media (max-width: 768px) {
+            .visitor-counter {
+                bottom: 100px; /* Above mobile CTA banner */
+                right: 12px;
+                padding: 10px 16px;
+                font-size: 0.75rem;
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-end;
+            }
+            
+            .visitor-counter-label {
+                display: none; /* Hide "Visitors:" label on mobile */
+            }
+            
+            .visitor-counter-number {
+                font-size: 0.9rem;
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .visitor-counter {
+                bottom: 90px;
+                right: 8px;
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -2548,7 +2662,8 @@
     </section>
     
     <!-- Mobile CTA Banner (Hidden on Desktop) -->
-    <div class="mobile-cta">
+    <div class="mobile-cta" id="mobile-cta-banner" style="display: none;">
+        <button class="mobile-cta-close" id="mobile-cta-close" aria-label="Close banner" onclick="closeMobileBanner()">×</button>
         <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; font-family: 'Orbitron', sans-serif;">🚀 Ready to Scale Your Revenue?</div>
         <div style="font-size: 0.75rem; margin-bottom: 12px; opacity: 0.9;">Get instant access to premium case studies & GTM playbooks</div>
         <a href="#contact" class="mobile-cta-button" aria-label="Start free consultation" onclick="if(window.MobilePayments){window.MobilePayments.showMobilePaymentOptions('premium', 99, 'Premium Subscription - Full case studies, GTM playbook library, Monthly Q&A'); return false;}">Start Free Consultation</a>
@@ -3627,6 +3742,141 @@
     
     <!-- Premium Leon Agent - CRM Integrated, Monetization Enabled, Premium Class -->
     <script src="widgets/premium-leon-agent.js" defer></script>
+    
+    <!-- Visitor Counter -->
+    <div class="visitor-counter" id="visitor-counter" aria-label="Unique visitor count">
+        <span class="visitor-counter-icon">👁️</span>
+        <span class="visitor-counter-label">Visitors:</span>
+        <span class="visitor-counter-number" id="visitor-count">Loading...</span>
+    </div>
+    
+    <!-- Mobile Banner Close Handler -->
+    <script>
+        function closeMobileBanner() {
+            const banner = document.getElementById('mobile-cta-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                // Remember user closed it for this session
+                sessionStorage.setItem('mobileBannerClosed', 'true');
+            }
+        }
+        
+        // Show banner on mobile if not closed this session
+        function initMobileBanner() {
+            if (window.innerWidth <= 768) {
+                const banner = document.getElementById('mobile-cta-banner');
+                const isClosed = sessionStorage.getItem('mobileBannerClosed');
+                if (banner && !isClosed) {
+                    // Show after 2 seconds
+                    setTimeout(() => {
+                        banner.style.display = 'block';
+                    }, 2000);
+                }
+            }
+        }
+        
+        // Initialize on load and resize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMobileBanner);
+        } else {
+            initMobileBanner();
+        }
+        
+        window.addEventListener('resize', function() {
+            const banner = document.getElementById('mobile-cta-banner');
+            if (window.innerWidth > 768 && banner) {
+                banner.style.display = 'none';
+            } else if (window.innerWidth <= 768 && banner) {
+                const isClosed = sessionStorage.getItem('mobileBannerClosed');
+                if (!isClosed) {
+                    banner.style.display = 'block';
+                }
+            }
+        });
+    </script>
+    
+    <!-- Visitor Counter Script -->
+    <script>
+        (function() {
+            // Check if this is a unique visitor (24-hour window)
+            function isUniqueVisitor() {
+                const lastVisit = localStorage.getItem('last_visit');
+                const now = Date.now();
+                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+                
+                if (!lastVisit || (now - parseInt(lastVisit)) > oneDay) {
+                    localStorage.setItem('last_visit', now.toString());
+                    return true;
+                }
+                return false;
+            }
+            
+            // Update visitor count using CountAPI (free service)
+            async function updateVisitorCount() {
+                const counterEl = document.getElementById('visitor-count');
+                if (!counterEl) return;
+                
+                try {
+                    // Use CountAPI for persistent counting
+                    const namespace = 'basinleon.github.io';
+                    const key = 'unique_visitors';
+                    
+                    // Check if this is a unique visitor
+                    if (isUniqueVisitor()) {
+                        // Increment count
+                        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`, {
+                            method: 'GET',
+                            cache: 'no-cache'
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            const count = data.value || 0;
+                            counterEl.textContent = count.toLocaleString();
+                        } else {
+                            // Fallback: use localStorage
+                            const localCount = parseInt(localStorage.getItem('visitor_count') || '0') + 1;
+                            localStorage.setItem('visitor_count', localCount.toString());
+                            counterEl.textContent = localCount.toLocaleString();
+                        }
+                    } else {
+                        // Just get current count
+                        const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`, {
+                            method: 'GET',
+                            cache: 'no-cache'
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            const count = data.value || 0;
+                            counterEl.textContent = count.toLocaleString();
+                        } else {
+                            // Fallback: use localStorage
+                            const localCount = parseInt(localStorage.getItem('visitor_count') || '0');
+                            counterEl.textContent = localCount.toLocaleString();
+                        }
+                    }
+                } catch (error) {
+                    // Fallback to localStorage if API fails
+                    const localCount = parseInt(localStorage.getItem('visitor_count') || '0');
+                    if (isUniqueVisitor()) {
+                        const newCount = localCount + 1;
+                        localStorage.setItem('visitor_count', newCount.toString());
+                        counterEl.textContent = newCount.toLocaleString();
+                    } else {
+                        counterEl.textContent = localCount.toLocaleString();
+                    }
+                }
+            }
+            
+            // Initialize on page load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', updateVisitorCount);
+            } else {
+                updateVisitorCount();
+            }
+        })();
+    </script>
     
     <!-- Coding Metrics Loader -->
     <script>
