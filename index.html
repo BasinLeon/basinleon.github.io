@@ -1495,29 +1495,32 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 12px;
+            flex-wrap: nowrap;
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
+            white-space: nowrap;
         }
         
         .availability-badge {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             color: var(--gold-primary);
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-            padding: 6px 16px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 4px 12px;
             border-radius: 20px;
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid rgba(212, 175, 55, 0.3);
             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .availability-badge::before {
@@ -1538,24 +1541,33 @@
         
         .availability-text {
             color: var(--gold-primary);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            min-width: 0;
         }
         
         .availability-separator {
             color: var(--gold-primary);
             opacity: 0.5;
+            flex-shrink: 0;
+            margin: 0 4px;
         }
         
         .availability-cta {
             color: var(--gold-primary);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             border-bottom: 2px solid var(--gold-primary);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding-bottom: 2px;
             position: relative;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .availability-cta::after {
@@ -1817,6 +1829,44 @@
             
             body {
                 padding-top: 60px !important;
+            }
+            
+            .availability-banner {
+                height: auto;
+                min-height: 48px;
+                padding: 8px 0;
+            }
+            
+            .availability-content {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 0 12px;
+            }
+            
+            .availability-text {
+                font-size: 0.7rem;
+                white-space: normal;
+                text-align: center;
+                flex: 1 1 100%;
+                order: 2;
+            }
+            
+            .availability-badge {
+                order: 1;
+                font-size: 0.7rem;
+                padding: 3px 10px;
+            }
+            
+            .availability-separator {
+                display: none;
+            }
+            
+            .availability-cta {
+                order: 3;
+                font-size: 0.7rem;
+                flex: 1 1 100%;
+                text-align: center;
+                margin-top: 4px;
             }
             
             .hero { 
