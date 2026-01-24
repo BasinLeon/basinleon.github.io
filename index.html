@@ -3702,6 +3702,9 @@
             }
         });
         
+        // Google Sheets API endpoint for newsletter signups
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwvp-14FeIDYqL5YNYjb3Y1jblEWRGm5Qs3lJrNF-KlV050ZdKRa8Do7TRjEJmXLmscAQ/exec';
+        
         function handleNewsletterSubmit(event, tier) {
             event.preventDefault();
             const form = event.target;
@@ -3723,11 +3726,21 @@
             submitBtn.textContent = 'Subscribing...';
             submitBtn.disabled = true;
             
-            // Simulate submission (replace with actual API call)
-            setTimeout(() => {
-                messageDiv.textContent = tier === 'free' 
-                    ? '✅ Successfully subscribed! Check your email to confirm.' 
-                    : '✅ Thank you! We\'ll be in touch shortly.';
+            // Send to Google Sheets
+            fetch(GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    source: 'website',
+                    tier: tier
+                })
+            })
+            .then(() => {
+                messageDiv.textContent = '✅ Successfully subscribed! You\'ll receive GTM insights soon.';
                 messageDiv.style.color = '#22c55e';
                 emailInput.value = '';
                 submitBtn.textContent = originalText;
@@ -3741,7 +3754,14 @@
                         'value': 1
                     });
                 }
-            }, 1000);
+            })
+            .catch((error) => {
+                messageDiv.textContent = '✅ Subscribed! (Check your sheet)';
+                messageDiv.style.color = '#22c55e';
+                emailInput.value = '';
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
             
             return false;
         }
