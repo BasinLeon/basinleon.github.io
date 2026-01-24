@@ -4,6 +4,8 @@
         history: [],
         historyIndex: -1,
         output: [],
+        lastCommand: '',
+        lastCommandTime: 0,
         
         commands: {
             help: {
@@ -324,20 +326,23 @@ $424K              Annual Savings
             
             // Handle Enter key
             input.addEventListener('keydown', (e) => {
-                // Remove suggestions on any key
+                // Remove suggestions on any key except Tab
                 const suggestionsDiv = document.getElementById('terminal-suggestions');
                 if (suggestionsDiv && e.key !== 'Tab') {
                     suggestionsDiv.remove();
                 }
                 
                 if (e.key === 'Enter') {
+                    e.preventDefault();
                     const command = input.value.trim();
                     if (command) {
+                        // Clear input first to prevent double execution
+                        input.value = '';
+                        suggestions = [];
+                        // Execute command
                         (async () => {
                             await Terminal.executeCommand(command);
                         })();
-                        input.value = '';
-                        suggestions = [];
                     }
                 } else if (e.key === 'Tab' && suggestions.length > 0) {
                     e.preventDefault();
@@ -370,10 +375,18 @@ $424K              Annual Savings
             const cmd = command.toLowerCase().trim();
             const outputContainer = document.getElementById('terminal-output');
             
-            if (!outputContainer) return;
+            if (!outputContainer || !cmd) return;
+            
+            // Prevent duplicate execution (debounce)
+            const now = Date.now();
+            if (Terminal.lastCommand === cmd && (now - Terminal.lastCommandTime) < 500) {
+                return; // Skip duplicate within 500ms
+            }
+            Terminal.lastCommand = cmd;
+            Terminal.lastCommandTime = now;
             
             // Add to history
-            if (cmd && (!Terminal.history.length || Terminal.history[Terminal.history.length - 1] !== command)) {
+            if (!Terminal.history.length || Terminal.history[Terminal.history.length - 1] !== command) {
                 Terminal.history.push(command);
             }
             Terminal.historyIndex = Terminal.history.length;
