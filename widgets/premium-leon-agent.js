@@ -57,7 +57,7 @@
             approach: 'curious, story-driven, discovery-focused',
             triggers: ['asking questions', 'exploring multiple sections', 'open-ended queries'],
             responses: {
-                greeting: "Welcome! I'm Leon. I build revenue systems that replace headcount with code. What brings you on this journey?",
+                greeting: "Welcome! I'm Leon. I build revenue systems that replace headcount with code. How can I help?",
                 followUp: "What would you like to explore? I can show you case studies, code, or help you think through your GTM challenge."
             }
         },
