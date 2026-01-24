@@ -2439,11 +2439,11 @@
             color: var(--gold-light);
         }
         
-        /* Visitor Counter */
+        /* Visitor Counter - Positioned on left to avoid chatbot overlap */
         .visitor-counter {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 20px; /* Changed from right to left */
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.25) 100%);
             backdrop-filter: blur(10px);
             border: 1px solid var(--gold-border);
@@ -2455,7 +2455,7 @@
             font-size: 0.85rem;
             color: var(--gold-primary);
             font-family: 'Orbitron', sans-serif;
-            z-index: 9998;
+            z-index: 9997; /* Below chatbot (9999) but above most content */
             box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
             transition: all 0.3s ease;
         }
@@ -2486,12 +2486,13 @@
         @media (max-width: 768px) {
             .visitor-counter {
                 bottom: 100px; /* Above mobile CTA banner */
-                right: 12px;
+                left: 12px; /* Keep on left side */
+                right: auto; /* Remove right positioning */
                 padding: 10px 16px;
                 font-size: 0.75rem;
-                flex-direction: column;
-                gap: 4px;
-                align-items: flex-end;
+                flex-direction: row; /* Keep horizontal on mobile */
+                gap: 6px;
+                align-items: center;
             }
             
             .visitor-counter-label {
@@ -2507,7 +2508,8 @@
         @media (max-width: 480px) {
             .visitor-counter {
                 bottom: 90px;
-                right: 8px;
+                left: 8px;
+                right: auto;
                 padding: 8px 12px;
                 font-size: 0.7rem;
             }
