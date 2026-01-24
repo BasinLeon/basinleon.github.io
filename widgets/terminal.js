@@ -248,15 +248,29 @@ $424K              Annual Savings
                 terminalDiv.insertBefore(outputDiv, input.closest('div').nextSibling);
             }
             
-            // Make suggestion links clickable
-            const suggestions = document.querySelectorAll('#query-terminal span[style*="cursor: pointer"]');
-            suggestions.forEach(span => {
+            // Make suggestion links clickable (both old style and new class-based)
+            const suggestionsOld = document.querySelectorAll('#query-terminal span[style*="cursor: pointer"]');
+            suggestionsOld.forEach(span => {
                 span.addEventListener('click', () => {
                     const command = span.textContent.trim();
                     input.value = command;
                     (async () => {
                         await Terminal.executeCommand(command);
                     })();
+                });
+            });
+            
+            // Handle new class-based suggestions
+            const suggestionsNew = document.querySelectorAll('.terminal-suggestion[data-command]');
+            suggestionsNew.forEach(span => {
+                span.addEventListener('click', () => {
+                    const command = span.getAttribute('data-command');
+                    if (command) {
+                        input.value = command;
+                        (async () => {
+                            await Terminal.executeCommand(command);
+                        })();
+                    }
                 });
             });
             

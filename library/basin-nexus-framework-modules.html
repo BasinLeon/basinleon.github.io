@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::NEXUS GTM Framework Modules and Specialized Tools | Leon Basin</title>
+    <meta name="description" content="A comprehensive catalog of BASIN::NEXUS GTM framework modules and specialized tools: status, technical stack, strategic goals, and economic impact. Based on 21 sources.">
+    <link rel="canonical" href="https://basinleon.github.io/library/basin-nexus-framework-modules.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="BASIN::NEXUS GTM Framework Modules and Specialized Tools">
+    <meta property="og:description" content="A comprehensive catalog of BASIN::NEXUS GTM framework modules: status, technical stack, strategic goals, and economic impact.">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    <meta property="og:url" content="https://basinleon.github.io/library/basin-nexus-framework-modules.html">
+    <meta property="og:type" content="article">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BASIN::NEXUS GTM Framework Modules">
+    <meta name="twitter:description" content="A comprehensive catalog of BASIN::NEXUS GTM framework modules and specialized tools.">
+    <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #050508 0%, #0a0a0f 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 16px 24px;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .nav-links a:hover {
+            color: var(--gold-primary);
+        }
+        article {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+        .document-header {
+            border-bottom: 2px solid var(--gold-border);
+            padding-bottom: 32px;
+            margin-bottom: 48px;
+        }
+        .document-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+        .document-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin: 48px 0 24px;
+            letter-spacing: 1px;
+        }
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold-primary);
+            margin: 40px 0 16px;
+            letter-spacing: 1px;
+        }
+        h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: 32px 0 12px;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        strong {
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin: 20px 0 20px 24px;
+            color: var(--text-secondary);
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        .highlight-box {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+        .highlight-box h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+        .module-card {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid var(--gold-primary);
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .module-card h3 {
+            color: var(--gold-primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        .status-active {
+            background: rgba(0, 200, 0, 0.2);
+            border: 1px solid rgba(0, 200, 0, 0.5);
+            color: #00ff00;
+        }
+        .status-classified {
+            background: rgba(255, 165, 0, 0.2);
+            border: 1px solid rgba(255, 165, 0, 0.5);
+            color: #ffa500;
+        }
+        .module-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .meta-item {
+            padding: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+        }
+        .meta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .meta-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .impact-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold-primary);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            margin: 4px 4px 4px 0;
+        }
+        .framework-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            font-size: 0.85rem;
+        }
+        .framework-table th {
+            background: var(--bg-deep);
+            color: var(--gold-primary);
+            padding: 12px;
+            text-align: left;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            border: 1px solid var(--gold-border);
+        }
+        .framework-table td {
+            padding: 12px;
+            border: 1px solid var(--gold-border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+        .framework-table tr:nth-child(even) {
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 48px;
+            padding: 12px 24px;
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+        .back-link:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        .cta-box {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-deep));
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .cta-box h3 {
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+        .cta-box a {
+            color: var(--gold-primary);
+            text-decoration: underline;
+        }
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--gold-primary);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="/blog">Blog</a>
+                <a href="/case-studies">Case Studies</a>
+                <a href="/tools">Tools</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <article>
+        <div class="document-header">
+            <h1 class="document-title">BASIN::NEXUS GTM Framework Modules and Specialized Tools</h1>
+            <p class="document-subtitle">A comprehensive catalog of GTM framework modules: status, technical stack, strategic goals, and economic impact</p>
+        </div>
+        
+        <div class="highlight-box">
+            <h4>Framework Overview</h4>
+            <p>This document catalogs <strong>10 specialized modules and tools</strong> from the BASIN::NEXUS GTM framework, synthesized from <strong>21 sources</strong>. Each module includes status, primary function, technical stack, strategic goal, and measured economic impact.</p>
+        </div>
+        
+        <h1>Active Modules</h1>
+        
+        <div class="module-card">
+            <h3>
+                Project Sentinel
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Automated signal detection and AI-powered outreach sequences for Series A Cybersecurity GTM</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, LLM Orchestration (5 LLMs), 83k+ lines of code</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Building GTM motion from scratch (0% pipeline)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">$424K annual savings; replaced 10 SDRs with 2 SDRs + automation</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                n8n-sentry
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Governance layer integrating with Salesforce to enforce CRM integrity, kill 'Zombie Deals', and log SLA breaches</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, JavaScript, SQL, n8n, LLMs</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">CRM integrity and revenue engine health</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Maintains predictable growth by eliminating pipeline noise</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                Project Phoenix
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">5-day 'Live Fire' SDR certification protocol featuring AI-powered training and real-time feedback systems</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">AI-powered training modules, gamified learning systems</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Accelerated SDR time-to-productivity</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Reduced ramp time from 90 days to 5 days (18x faster)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                Project Translator
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Protocol converting technical features into executive value narratives focusing on risk mitigation and ROI</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Narrative Architecture Framework, LLMs</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Cross-functional narrative alignment for technical/C-suite buyers</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">18% ARR increase; 132% YoY growth</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                Outreach Autopsy
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Diagnostic tool using LLMs to analyze cold email failure/success rates and score messages for engineering credibility</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, LLMs (Claude, GPT-4, Llama)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Ensuring outreach resonance with technical personas</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Reduces rejection by identifying 'sales-speak' triggers</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                Lead-Script-Gen
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Generates personalized outbound sequences with specific ICP targeting via the BASIN::NEXUS Comms Studio</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, LLMs, BASIN::NEXUS Comms Studio</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Automating creative outreach while maintaining relevance</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Replaces manual creative labor with automated relevance</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                enrich_company.py
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">GTM Intelligence agent that scrapes domains for tech stack signatures and hiring intent signals</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, BuiltWith/Wappalyzer API (simulated)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Automating the research phase of the BDR workflow</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Reduces human latency by manufacturing leads from raw data</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <h3>
+                Basin Signal Engine
+                <span class="status-badge status-active">ACTIVE</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">AI career intelligence platform for signal detection across VC portfolios and automated interview preparation</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">20,000 lines of Python, AI voice coaching, LLMs</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Automating the 'Hunt' and 'Prep' phases of high-stakes job seeking</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Replaces manual research toil for career advancement</div>
+                </div>
+            </div>
+        </div>
+        
+        <h1>Classified Modules</h1>
+        
+        <div class="module-card">
+            <h3>
+                Project Air Strike
+                <span class="status-badge status-classified">CLASSIFIED</span>
+            </h3>
+            <div class="module-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Primary Function</div>
+                    <div class="meta-value">Guerrilla GTM tool for community signal mining; monitors technical forums (Reddit, HN, Stack Overflow) for problem-aware signals</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technical Stack</div>
+                    <div class="meta-value">Python, LLMs, Signal Detection Scripts</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Strategic Goal</div>
+                    <div class="meta-value">Signal mining and hidden demand identification</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Economic Impact</div>
+                    <div class="meta-value">Generated 3 SQLs in 48 hours with zero ad spend</div>
+                </div>
+            </div>
+        </div>
+        
+        <h1>Complete Framework Reference</h1>
+        
+        <p>The following table provides a comprehensive view of all modules in the BASIN::NEXUS framework:</p>
+        
+        <div style="overflow-x: auto;">
+            <table class="framework-table">
+                <thead>
+                    <tr>
+                        <th>Module Name</th>
+                        <th>Status</th>
+                        <th>Primary Function</th>
+                        <th>Technical Stack</th>
+                        <th>Strategic Goal</th>
+                        <th>Economic Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Project Sentinel</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>Automated signal detection and AI-powered outreach sequences for Series A Cybersecurity GTM</td>
+                        <td>Python, LLM Orchestration (5 LLMs), 83k+ lines of code</td>
+                        <td>Building GTM motion from scratch (0% pipeline)</td>
+                        <td>$424K annual savings; replaced 10 SDRs with 2 SDRs + automation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>n8n-sentry</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>Governance layer for CRM integrity, kill 'Zombie Deals', and log SLA breaches</td>
+                        <td>Python, JavaScript, SQL, n8n, LLMs</td>
+                        <td>CRM integrity and revenue engine health</td>
+                        <td>Maintains predictable growth by eliminating pipeline noise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project Air Strike</strong></td>
+                        <td><span class="status-badge status-classified">CLASSIFIED</span></td>
+                        <td>Guerrilla GTM tool for community signal mining in technical forums</td>
+                        <td>Python, LLMs, Signal Detection Scripts</td>
+                        <td>Signal mining and hidden demand identification</td>
+                        <td>Generated 3 SQLs in 48 hours with zero ad spend</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project Phoenix</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>5-day 'Live Fire' SDR certification protocol with AI-powered training</td>
+                        <td>AI-powered training modules, gamified learning systems</td>
+                        <td>Accelerated SDR time-to-productivity</td>
+                        <td>Reduced ramp time from 90 days to 5 days (18x faster)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project Translator</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>Protocol converting technical features into executive value narratives</td>
+                        <td>Narrative Architecture Framework, LLMs</td>
+                        <td>Cross-functional narrative alignment for technical/C-suite buyers</td>
+                        <td>18% ARR increase; 132% YoY growth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Outreach Autopsy</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>Diagnostic tool analyzing cold email performance and scoring for engineering credibility</td>
+                        <td>Python, LLMs (Claude, GPT-4, Llama)</td>
+                        <td>Ensuring outreach resonance with technical personas</td>
+                        <td>Reduces rejection by identifying 'sales-speak' triggers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lead-Script-Gen</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>Generates personalized outbound sequences with ICP targeting</td>
+                        <td>Python, LLMs, BASIN::NEXUS Comms Studio</td>
+                        <td>Automating creative outreach while maintaining relevance</td>
+                        <td>Replaces manual creative labor with automated relevance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>enrich_company.py</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>GTM Intelligence agent scraping domains for tech stack signatures and hiring intent</td>
+                        <td>Python, BuiltWith/Wappalyzer API (simulated)</td>
+                        <td>Automating the research phase of the BDR workflow</td>
+                        <td>Reduces human latency by manufacturing leads from raw data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Basin Signal Engine</strong></td>
+                        <td><span class="status-badge status-active">ACTIVE</span></td>
+                        <td>AI career intelligence platform for signal detection and interview preparation</td>
+                        <td>20,000 lines of Python, AI voice coaching, LLMs</td>
+                        <td>Automating the 'Hunt' and 'Prep' phases of high-stakes job seeking</td>
+                        <td>Replaces manual research toil for career advancement</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="highlight-box">
+            <h4>Framework Methodology</h4>
+            <p>The BASIN::NEXUS framework is built on a core philosophy: <strong>"I build systems, not just talk about them."</strong> Each module follows the operational cycle:</p>
+            <p><strong>Experiment → Measure → Systemize → Scale</strong></p>
+            <p>This ensures that successful tactics are converted into durable, delegable assets that generate leverage across the entire revenue function.</p>
+        </div>
+        
+        <div class="cta-box">
+            <h3>Want to Build Your Own GTM Framework Modules?</h3>
+            <p>I've built systems that replaced 10 SDRs ($424K savings) and grew pipeline 160%. If you're building GTM systems, let's connect.</p>
+            <p><a href="/contact">Schedule a Call</a> • <a href="https://basinleon.github.io">View My Work</a></p>
+        </div>
+        
+        <h2>Related Resources</h2>
+        
+        <ul>
+            <li><a href="/library/basin-nexus-gtm-engineering-framework.html">BASIN::NEXUS GTM Engineering Framework</a></li>
+            <li><a href="/library/gtm-engineering-framework.html">GTM Engineering Framework</a></li>
+            <li><a href="/library/gtm-systems-architecture.html">GTM Systems Architecture</a></li>
+            <li><a href="/library/gtm-strategic-plan.html">Go-To-Market Strategic Plan</a></li>
+            <li><a href="/blog/posts/gtm-systemization-framework.html">GTM Systemization: How I Turned Experiments Into a $621K Pipeline</a></li>
+            <li><a href="/tools/gtm-execution-dashboard.html">GTM Execution Dashboard</a></li>
+        </ul>
+        
+        <a href="/library" class="back-link">← Back to Library</a>
+    </article>
+</body>
+</html>
