@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation Dashboard | Leon Basin | Workflow Control Center</title>
+    <meta name="description" content="Control center for automated workflows: daily protocol, system integration, revenue automation, content pipeline. Focus on building, not managing.">
+    
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--gold-border);
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        
+        .header .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Status Grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--success);
+        }
+        
+        .status-card.warning::before {
+            background: var(--warning);
+        }
+        
+        .status-card.error::before {
+            background: var(--danger);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .status-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .badge-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .status-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+        
+        .status-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Automation Sections */
+        .automation-section {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--gold-primary);
+            margin-bottom: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-icon {
+            font-size: 1.5rem;
+        }
+        
+        .task-list {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            border-color: var(--gold-primary);
+            transform: translateX(4px);
+        }
+        
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--gold-border);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .task-checkbox.checked {
+            background: var(--gold-primary);
+            border-color: var(--gold-primary);
+        }
+        
+        .task-checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--bg-deep);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .task-content {
+            flex: 1;
+        }
+        
+        .task-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .task-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .task-time {
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .task-automated {
+            opacity: 0.6;
+        }
+        
+        .task-automated .task-name::after {
+            content: ' 🤖';
+            margin-left: 8px;
+        }
+        
+        /* Revenue Streams */
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        
+        .revenue-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .revenue-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+        
+        .revenue-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+        
+        .revenue-target {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .revenue-progress {
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .revenue-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .revenue-automation {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .revenue-automation strong {
+            color: var(--success);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--gold-subtle);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.primary {
+            background: var(--gold-primary);
+            color: var(--bg-deep);
+            border-color: var(--gold-primary);
+        }
+        
+        .action-btn.primary:hover {
+            background: var(--gold-light);
+        }
+        
+        /* Back Link */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .revenue-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Automation Dashboard</h1>
+            <p class="subtitle">Control center for automated workflows. Focus on building, not managing.</p>
+        </div>
+        
+        <!-- Status Overview -->
+        <div class="status-grid">
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">Daily Workflow</div>
+                    <span class="status-badge badge-success">Automated</span>
+                </div>
+                <div class="status-value">5 min</div>
+                <div class="status-desc">Down from 30 min manual protocol</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">Pipeline Follow-ups</div>
+                    <span class="status-badge badge-success">12 Scheduled</span>
+                </div>
+                <div class="status-value">12</div>
+                <div class="status-desc">Auto-reminders for next 7 days</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">Content Queue</div>
+                    <span class="status-badge badge-success">3 Posts</span>
+                </div>
+                <div class="status-value">3</div>
+                <div class="status-desc">Auto-generated from Dojo sessions</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">System Health</div>
+                    <span class="status-badge badge-success">All Connected</span>
+                </div>
+                <div class="status-value">100%</div>
+                <div class="status-desc">All tools integrated and running</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">Revenue Pipeline</div>
+                    <span class="status-badge badge-success">Active</span>
+                </div>
+                <div class="status-value">$15K</div>
+                <div class="status-desc">3 leads qualified, auto-nurturing</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-title">Time Saved Today</div>
+                    <span class="status-badge badge-success">25 min</span>
+                </div>
+                <div class="status-value">25 min</div>
+                <div class="status-desc">125 hours/year at current rate</div>
+            </div>
+        </div>
+        
+        <!-- Daily Workflow Automation -->
+        <div class="automation-section">
+            <h2 class="section-title">
+                <span class="section-icon">⚡</span>
+                Daily Workflow Automation
+            </h2>
+            <div class="task-list">
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">5-Vector Job Hunt Sweep</div>
+                        <div class="task-desc">LinkedIn, ATS, VC portfolios, Twitter, Reddit, HN, financial news</div>
+                    </div>
+                    <div class="task-time">🤖 Auto</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Pipeline Follow-up Check</div>
+                        <div class="task-desc">Next 7 days follow-ups identified and scheduled</div>
+                    </div>
+                    <div class="task-time">🤖 Auto</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Content Generation</div>
+                        <div class="task-desc">LinkedIn posts auto-generated from Dojo sessions</div>
+                    </div>
+                    <div class="task-time">🤖 Auto</div>
+                </div>
+                
+                <div class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div class="task-name">Review Today's Opportunities</div>
+                        <div class="task-desc">3 new roles found, 2 pipeline items need attention</div>
+                    </div>
+                    <div class="task-time">5 min</div>
+                </div>
+                
+                <div class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div class="task-name">Execute Priority Actions</div>
+                        <div class="task-desc">2 follow-ups, 1 application, 1 content approval</div>
+                    </div>
+                    <div class="task-time">15 min</div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="action-btn primary" onclick="runDailyWorkflow()">Run Daily Workflow</button>
+                <button class="action-btn" onclick="viewWorkflowLog()">View Log</button>
+                <button class="action-btn" onclick="configureWorkflow()">Configure</button>
+            </div>
+        </div>
+        
+        <!-- System Integration -->
+        <div class="automation-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔗</span>
+                System Integration Status
+            </h2>
+            <div class="task-list">
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Job Pipeline Tracker ↔ BASIN::NEXUS</div>
+                        <div class="task-desc">Auto-syncs opportunities, notes, follow-ups</div>
+                    </div>
+                    <div class="task-time">🤖 Synced</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Contact Form → CRM → Email Sequence</div>
+                        <div class="task-desc">Auto-qualifies leads, routes to appropriate nurture</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">ROI Calculator → Lead Capture → Follow-up</div>
+                        <div class="task-desc">Auto-captures qualified leads, sends custom blueprint</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">GTM Dashboard → Metrics → Social Proof</div>
+                        <div class="task-desc">Auto-updates website metrics, case studies</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Calendar Integration</div>
+                        <div class="task-desc">Auto-schedules from pipeline, sends reminders</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Revenue Automation -->
+        <div class="automation-section">
+            <h2 class="section-title">
+                <span class="section-icon">💰</span>
+                Revenue Automation Streams
+            </h2>
+            <div class="revenue-grid">
+                <div class="revenue-card">
+                    <div class="revenue-title">Consulting/GTM Engineering</div>
+                    <div class="revenue-amount">$45K</div>
+                    <div class="revenue-target">Target: $200K-300K/year</div>
+                    <div class="revenue-progress">
+                        <div class="revenue-progress-bar" style="width: 18%"></div>
+                    </div>
+                    <div class="revenue-automation">
+                        <strong>Automated:</strong> Lead qualification, proposal generation, follow-up sequences
+                    </div>
+                </div>
+                
+                <div class="revenue-card">
+                    <div class="revenue-title">SaaS Product (BASIN::NEXUS)</div>
+                    <div class="revenue-amount">$12K</div>
+                    <div class="revenue-target">Target: $300K-400K/year</div>
+                    <div class="revenue-progress">
+                        <div class="revenue-progress-bar" style="width: 3%"></div>
+                    </div>
+                    <div class="revenue-automation">
+                        <strong>Automated:</strong> Free → Paid upsell, usage tracking, billing, onboarding
+                    </div>
+                </div>
+                
+                <div class="revenue-card">
+                    <div class="revenue-title">Content/Education</div>
+                    <div class="revenue-amount">$8K</div>
+                    <div class="revenue-target">Target: $200K-300K/year</div>
+                    <div class="revenue-progress">
+                        <div class="revenue-progress-bar" style="width: 3%"></div>
+                    </div>
+                    <div class="revenue-automation">
+                        <strong>Automated:</strong> Lead magnets, email sequences, course delivery
+                    </div>
+                </div>
+                
+                <div class="revenue-card">
+                    <div class="revenue-title">Agency Model</div>
+                    <div class="revenue-amount">$0</div>
+                    <div class="revenue-target">Target: $200K-300K/year</div>
+                    <div class="revenue-progress">
+                        <div class="revenue-progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="revenue-automation">
+                        <strong>Automated:</strong> Client onboarding, system deployment, reporting
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 24px; padding: 20px; background: var(--bg-elevated); border-radius: 8px; border: 1px solid var(--gold-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">Total Revenue (Year to Date)</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--gold-primary);">$65K</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">Target</div>
+                        <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">$1M</div>
+                    </div>
+                </div>
+                <div class="revenue-progress">
+                    <div class="revenue-progress-bar" style="width: 6.5%"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px;">
+                    <strong style="color: var(--success);">Automation Impact:</strong> 2x conversion rate expected = $500K → $1M potential
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Automation -->
+        <div class="automation-section">
+            <h2 class="section-title">
+                <span class="section-icon">📝</span>
+                Content Automation Pipeline
+            </h2>
+            <div class="task-list">
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Dojo Session → LinkedIn Post</div>
+                        <div class="task-desc">Auto-generates post from "FINAL SYNTHESIS" output</div>
+                    </div>
+                    <div class="task-time">🤖 3 Queued</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Case Study → Blog Post</div>
+                        <div class="task-desc">Auto-generates blog post from project completion</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Weekly Wins → Newsletter</div>
+                        <div class="task-desc">Auto-compiles weekly achievements into newsletter</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+                
+                <div class="task-item task-automated">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-content">
+                        <div class="task-name">Metrics → Social Proof</div>
+                        <div class="task-desc">Auto-updates website metrics, case study numbers</div>
+                    </div>
+                    <div class="task-time">🤖 Active</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Task checkbox toggle
+        document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                if (this.classList.contains('checked')) {
+                    this.classList.remove('checked');
+                } else {
+                    this.classList.add('checked');
+                }
+            });
+        });
+        
+        // Daily workflow runner
+        function runDailyWorkflow() {
+            alert('🚀 Running daily workflow automation...\n\nThis would:\n1. Execute 5-vector job hunt sweep\n2. Check pipeline follow-ups\n3. Generate content from Dojo sessions\n4. Update analytics\n\nIn production, this connects to BASIN::NEXUS API.');
+        }
+        
+        function viewWorkflowLog() {
+            alert('📊 Workflow Log\n\nThis would show:\n- Last run time\n- Tasks completed\n- Errors/warnings\n- Performance metrics\n\nIn production, this connects to automation backend.');
+        }
+        
+        function configureWorkflow() {
+            alert('⚙️ Configure Workflow\n\nThis would allow you to:\n- Set automation schedules\n- Configure triggers\n- Customize workflows\n- Set up integrations\n\nIn production, this is a full settings panel.');
+        }
+        
+        // Auto-refresh status (simulated)
+        setInterval(() => {
+            // In production, this would fetch real-time status from backend
+            console.log('Status check...');
+        }, 60000); // Every minute
+    </script>
+</body>
+</html>
