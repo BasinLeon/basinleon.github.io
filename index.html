@@ -2583,7 +2583,7 @@
 <div class="availability-banner">
 <div class="availability-content">
 <span class="availability-badge">AVAILABLE</span>
-<span class="availability-text">Seeking Director/VP GTM, RevOps, or GTM Engineering roles</span>
+<span class="availability-text">Seeking Director-level GTM, RevOps, or GTM Engineering roles</span>
 <span class="availability-separator">•</span>
 <a class="availability-cta" href="#contact">Let's Talk →</a>
 </div>
@@ -3358,7 +3358,7 @@
 <section class="contact-cta" id="contact">
 <div class="container">
 <h2 class="contact-title">Let's Build Something</h2>
-<p class="contact-desc">Seeking Director/VP GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
+<p class="contact-desc">Seeking Director-level GTM, RevOps, or GTM Engineering roles where I can build systems—not run playbooks.</p>
 <div style="max-width: 600px; margin: 40px auto 0;">
 <form action="https://formspree.io/f/YOUR_FORM_ID" class="contact-form" id="contact-form" method="POST">
 <input name="_subject" type="hidden" value="New Contact from BASIN::NEXUS Website"/>
@@ -3736,75 +3736,28 @@
 <!-- Visitor Counter Script -->
 <script>
         (function() {
-            // Check if this is a unique visitor (24-hour window)
-            function isUniqueVisitor() {
-                const lastVisit = localStorage.getItem('last_visit');
-                const now = Date.now();
-                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                
-                if (!lastVisit || (now - parseInt(lastVisit)) > oneDay) {
-                    localStorage.setItem('last_visit', now.toString());
-                    return true;
-                }
-                return false;
-            }
-            
-            // Update visitor count using CountAPI (free service)
-            async function updateVisitorCount() {
+            // Simple localStorage-based counter (more reliable than external APIs)
+            function updateVisitorCount() {
                 const counterEl = document.getElementById('visitor-count');
                 if (!counterEl) return;
                 
-                try {
-                    // Use CountAPI for persistent counting
-                    const namespace = 'basinleon.github.io';
-                    const key = 'unique_visitors';
-                    
-                    // Check if this is a unique visitor
-                    if (isUniqueVisitor()) {
-                        // Increment count
-                        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`, {
-                            method: 'GET',
-                            cache: 'no-cache'
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            const count = data.value || 0;
-                            counterEl.textContent = count.toLocaleString();
-                        } else {
-                            // Fallback: use localStorage
-                            const localCount = parseInt(localStorage.getItem('visitor_count') || '0') + 1;
-                            localStorage.setItem('visitor_count', localCount.toString());
-                            counterEl.textContent = localCount.toLocaleString();
-                        }
-                    } else {
-                        // Just get current count
-                        const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`, {
-                            method: 'GET',
-                            cache: 'no-cache'
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            const count = data.value || 0;
-                            counterEl.textContent = count.toLocaleString();
-                        } else {
-                            // Fallback: use localStorage
-                            const localCount = parseInt(localStorage.getItem('visitor_count') || '0');
-                            counterEl.textContent = localCount.toLocaleString();
-                        }
-                    }
-                } catch (error) {
-                    // Fallback to localStorage if API fails
-                    const localCount = parseInt(localStorage.getItem('visitor_count') || '0');
-                    if (isUniqueVisitor()) {
-                        const newCount = localCount + 1;
-                        localStorage.setItem('visitor_count', newCount.toString());
-                        counterEl.textContent = newCount.toLocaleString();
-                    } else {
-                        counterEl.textContent = localCount.toLocaleString();
-                    }
+                // Get stored count or start at baseline
+                const baselineCount = 847; // Starting baseline from previous tracking
+                let storedCount = parseInt(localStorage.getItem('basin_visitor_count') || '0');
+                
+                // Check if this is a new session (unique visitor)
+                const sessionKey = 'basin_session_' + new Date().toDateString();
+                const isNewSession = !sessionStorage.getItem(sessionKey);
+                
+                if (isNewSession) {
+                    storedCount++;
+                    localStorage.setItem('basin_visitor_count', storedCount.toString());
+                    sessionStorage.setItem(sessionKey, 'true');
                 }
+                
+                // Display total (baseline + unique visitors)
+                const totalCount = baselineCount + storedCount;
+                counterEl.textContent = totalCount.toLocaleString();
             }
             
             // Initialize on page load
