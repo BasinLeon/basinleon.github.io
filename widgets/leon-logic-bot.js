@@ -1209,6 +1209,15 @@ Google/NetApp → Operations rigor → Revenue systems
                         <br>• 1,884+ LinkedIn newsletter subscribers
                         <br><br>
                         "Sales is just debugging human behavior." ⚡
+                        <br><br>
+                        <strong>📚 From the Archive (Connected Posts):</strong>
+                        <br>• The Architect vs. The Applicant: 5 Power Plays [Career Strategy]
+                        <br>• Stop Selling, Start Architecting: The Rise of the GTM Engineer [GTM Engineering]
+                        <br>• 5 Counter-Intuitive Career Lessons [Career Strategy]
+                        <br>• Stop Running a Pipeline, Start Building an Engine [GTM Strategy]
+                        <br>• Decoding the GTM Engine: A Beginner's Guide [GTM Strategy]
+                        <br><br>
+                        <em>Ask "What did you write about [topic]?" to search 160+ posts</em>
                     </div>
                 </div>
                 <div id="bot-input-area">
