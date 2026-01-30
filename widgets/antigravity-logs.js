@@ -1,11 +1,11 @@
 /**
- * BASIN::NEXUS — Antigravity Logs
+ * BASIN::NEXUS — Antigravity Transmission Log
  * ═══════════════════════════════════════════════════════════════
- * 
- * A live feed showing what Leon's AI agents are building today.
- * Styled as a transmission log from the Archivist's archive.
- * 
- * Built with Google Antigravity | December 2025
+ *
+ * Live feed from the Basin::Nexus Autonomous Revenue OS.
+ * Tracks agent activity across Signal, Intelligence, and Execution layers.
+ *
+ * Built with Google Antigravity | January 2026
  */
 
 (function () {
@@ -16,13 +16,15 @@
     // ═══════════════════════════════════════════════════════════════
 
     const LOGS = [
-        { time: '20:45', action: 'Created interactive-console.js', category: 'BUILD', agent: 'Antigravity' },
-        { time: '20:40', action: 'Built neural-core-widget.js', category: 'BUILD', agent: 'Antigravity' },
-        { time: '20:35', action: 'Analyzed 3 JDs via Market Signal Factory', category: 'SIGNAL', agent: 'MarketSignal' },
-        { time: '20:30', action: 'Reviewed basinleon.github.io architecture', category: 'PLAN', agent: 'Antigravity' },
-        { time: '20:15', action: 'Market Signal Factory tested at 80% match', category: 'VERIFY', agent: 'Antigravity' },
-        { time: '20:00', action: 'Created market_signal_factory.py (500+ lines)', category: 'BUILD', agent: 'Antigravity' },
-        { time: '19:45', action: 'Initialized planning for Director RevOps search', category: 'PLAN', agent: 'Antigravity' },
+        { time: '22:15', action: 'Signal Audit report generated for TalSmart — 3 assessment voids identified', category: 'SIGNAL', agent: 'SignalRefinery' },
+        { time: '21:50', action: 'Basin::Operator Swarm deployed: Scout → Analyst → Strategist handoff tested', category: 'BUILD', agent: 'Antigravity' },
+        { time: '21:30', action: 'CoachRobo pilot proposal — GTM diagnostic audit drafted via n8n workflow', category: 'PLAN', agent: 'Antigravity' },
+        { time: '21:10', action: 'Executive brief generation pipeline (plasma-ring) pushed to production', category: 'BUILD', agent: 'NexusCore' },
+        { time: '20:45', action: 'LinkedIn Growth System (rogue-cassini) — Ollama content engine scoring 87% relevance', category: 'VERIFY', agent: 'MarketSignal' },
+        { time: '20:20', action: 'USA Signal Refinery ingesting 12K+ signals/day — breach signal boost +50 active', category: 'SIGNAL', agent: 'SignalRefinery' },
+        { time: '20:00', action: 'Interview::Nexus Digital Twin biometric calibration complete — speech analysis live', category: 'BUILD', agent: 'Antigravity' },
+        { time: '19:30', action: 'Content Factory (scarlet-aurora) — WordPress → LinkedIn automation deployed', category: 'BUILD', agent: 'NexusCore' },
+        { time: '19:00', action: 'Ambient.ai case study slides finalized — PDF generation via dark-blazar', category: 'PLAN', agent: 'Antigravity' },
     ];
 
     // ═══════════════════════════════════════════════════════════════
@@ -179,7 +181,7 @@
 
         html += `
             <div class="logs-footer">
-                Powered by <a href="https://github.com/BasinLeon/basin-signal-engine" target="_blank">BASIN::NEXUS</a> + Google Antigravity
+                Powered by <a href="https://github.com/BasinLeon/basin-signal-engine" target="_blank">BASIN::NEXUS Revenue OS</a> + Google Antigravity — 15 active projects, 23 brain folders
             </div>
         `;
 
