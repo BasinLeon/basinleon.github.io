@@ -12,6 +12,7 @@
             --success: #238636;
             --text: #C9D1D9;
             --gold: #D29922;
+            --caution: #ab7df8;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -22,7 +23,7 @@
             justify-content: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
         }
         h1 {
@@ -31,16 +32,29 @@
             color: white;
             font-size: 24px;
             letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 30px;
         }
         .section {
-            margin-top: 30px;
+            margin-top: 40px;
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
         }
         .section-title {
-            font-size: 14px;
+            font-size: 16px;
             text-transform: uppercase;
             color: #8b949e;
-            margin-bottom: 15px;
-            font-weight: 600;
+            margin-bottom: 20px;
+            font-weight: 800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .asset-card {
             background: var(--card);
@@ -49,109 +63,97 @@
             padding: 20px;
             margin-bottom: 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
+            gap: 20px;
+            transition: all 0.2s;
         }
-        .asset-card:hover {
-            border-color: var(--accent);
-            transform: translateX(5px);
+        .asset-card:hover { border-color: var(--accent); background: #1c2128; }
+        .asset-info { flex: 1; }
+        .asset-info h2 { margin: 0; font-size: 20px; color: var(--accent); }
+        .asset-info p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #8b949e; }
+        .talk-track {
+            background: rgba(88, 166, 255, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #E6EDF3;
+            font-size: 14px;
         }
-        .asset-info h2 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--accent);
-        }
-        .asset-info p {
-            margin: 5px 0 0;
-            font-size: 13px;
-            color: #8b949e;
-        }
+        .btn-group { display: flex; flex-direction: column; gap: 8px; min-width: 180px; }
         .btn {
             background: var(--success);
             color: white;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
+            text-align: center;
+            border: none;
+            cursor: pointer;
         }
-        .btn-advisory {
-            background: #ab7df8;
-        }
-        .btn-gold {
-            background: var(--gold);
-        }
-        .time {
-            font-family: monospace;
-            color: var(--gold);
-            font-weight: bold;
-        }
+        .btn-caution { background: var(--caution); }
+        .btn-gold { background: var(--gold); }
+        .btn-outline { background: transparent; border: 1px solid #30363d; color: var(--text); }
+        .badge { padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-live { background: #da3633; color: white; animation: pulse 2s infinite; }
+        .time { color: var(--gold); font-family: monospace; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🦅 MISSION DASHBOARD: FEB 3RD</h1>
-    <p style="color: #8b949e;">All assets for the Revenue Architect transition are locked and cached.</p>
+    <div class="subtitle">Operational Command // Stick the Landing</div>
 
-    <!-- BRM.AI SECTION -->
-    <div class="section">
-        <div class="section-title">01 // BRM.AI INTERVIEW <span class="time">[11:00 AM]</span></div>
+    <!-- 11:00 AM CALL -->
+    <div class="section" style="border-left: 4px solid var(--accent);">
+        <div class="section-title">
+            <span>01 // BRM.AI (JAMES MCGILLICUDDY)</span>
+            <span class="badge badge-live">LIVE @ 11:00 AM</span>
+        </div>
         
         <div class="asset-card">
             <div class="asset-info">
-                <h2>Q1 Architecture Blueprint</h2>
-                <p>Tactical one-pager for James focusing on March Leads & Context Engineering.</p>
+                <h2>The Architect Strategy</h2>
+                <div class="talk-track">
+                    "James – I've been refining the architecture for the March influx (5k leads). I'm ready to dive into the plan for securing those high-value accounts."
+                </div>
+                <p>Focus: Solving <strong>Signal Latency</strong>. No 'whales', just High-Value Targets.</p>
             </div>
-            <a href="brm_q1_architecture.html" class="btn">VIEW ASSET</a>
-        </div>
-
-        <div class="asset-card">
-            <div class="asset-info">
-                <h2>Master CEO Battle Card</h2>
-                <p>Consolidated cheat sheet for James (BRM) & Jared (RevGenius).</p>
+            <div class="btn-group">
+                <a href="../BRM-INTERVIEW-KIT/BRM_Q1_Architecture.pdf" target="_blank" class="btn">SHARP: VIEW 1-PAGER</a>
+                <a href="../BRM-INTERVIEW-KIT/JAMES-BATTLE-CARD-SIMPLE.md" target="_blank" class="btn btn-caution">WORDS: CHEAT SHEET</a>
+                <a href="../BRM-INTERVIEW-KIT/analyze_targeted_leads.py" target="_blank" class="btn btn-outline">FLEX: OPEN CODE</a>
             </div>
-            <a href="MASTER_CEO_BATTLE_CARD.md" class="btn btn-advisory">OPEN MASTER CARD</a>
         </div>
     </div>
 
-    <!-- REVGENIUS SECTION -->
-    <div class="section">
-        <div class="section-title">02 // REVGENIUS / JARED ROBIN <span class="time">[01:30 PM]</span></div>
+    <!-- 1:30 PM CALL -->
+    <div class="section" style="border-left: 4px solid var(--gold);">
+        <div class="section-title">
+            <span>02 // REVGENIUS (JARED ROBIN)</span>
+            <span class="time">[01:30 PM]</span>
+        </div>
         
         <div class="asset-card">
             <div class="asset-info">
-                <h2>GTM Engineering Framework</h2>
-                <p>Premium 6-Step architecture visual for the 40k audience pre-read.</p>
+                <h2>The Signal Protocol</h2>
+                <div class="talk-track">
+                    "Jared – Most people think GTM is about the message. I think it’s about the Math. Leads decay by 18% every hour. We aren't building funnels anymore. We’re building Logic Gates."
+                </div>
+                <p>Focus on the "18% Decay Rule" and the "Signal Engineer" vs "SDR" pivot.</p>
             </div>
-            <a href="gtm_framework_one_pager.html" class="btn btn-gold">VIEW FRAMEWORK</a>
-        </div>
-    </div>
-
-    <!-- GENERAL PREP -->
-    <div class="section">
-        <div class="section-title">03 // STRATEGIC ASSETS</div>
-        
-        <div class="asset-card">
-            <div class="asset-info">
-                <h2>Master Interview Prep</h2>
-                <p>Consolidated cheat sheet for all Tuesday targets.</p>
+            <div class="btn-group">
+                <a href="GTM-Signal-Engineering-Protocol.md" target="_blank" class="btn btn-gold">DEEP: VIEW PROTOCOL</a>
+                <a href="JARED-CHEAT-SHEET.md" target="_blank" class="btn btn-caution">SOUNDBITES: SHEET</a>
             </div>
-            <a href="interview-prep-feb3.md" class="btn">OPEN PREP</a>
-        </div>
-
-        <div class="asset-card">
-            <div class="asset-info">
-                <h2>Signal Engine (The Code)</h2>
-                <p>Keep this open in VS Code to flash "The Engine Room" to James.</p>
-            </div>
-            <a href="signal_engine.py" class="btn btn-advisory">VIEW CODE</a>
         </div>
     </div>
 
     <div style="margin-top: 50px; text-align: center; border-top: 1px solid #30363d; padding-top: 20px;">
-        <span style="font-size: 12px; color: #8b949e;">BASIN::NEXUS OPERATIONAL COMMAND // 2026 // STICK THE LANDING</span>
+        <span style="font-size: 11px; color: #8b949e; letter-spacing: 2px;">BASIN::NEXUS // REVENUE ARCHITECT // SPRINT 2026</span>
     </div>
 </div>
 
