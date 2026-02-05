@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::COMMAND // THE ORGANISM LAUNCHER</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=JetBrains+Mono&display=swap');
+
+        :root {
+            --gold: #ffb700;
+            --cyan: #00f3ff;
+            --bg: #050505;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .halo {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,183,0,0.05) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        header h1 {
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 15px;
+            margin: 0;
+            font-size: 2rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255,183,0,0.4);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 600px;
+        }
+
+        .card {
+            background: rgba(15,15,15,0.8);
+            border: 1px solid #222;
+            padding: 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px rgba(0,243,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-icon { font-size: 2rem; }
+        .card-title { font-weight: 600; font-size: 1.2rem; letter-spacing: 1px; }
+        .card-desc { font-size: 0.8rem; color: #777; line-height: 1.5; }
+
+        .nexus-core {
+            grid-column: span 2;
+            text-align: center;
+            border-color: var(--gold);
+        }
+
+        .pulsing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="halo"></div>
+
+    <div class="container">
+        <header style="text-align: center;">
+            <h1>BASIN::COMMAND</h1>
+            <p style="color: #ffb700; font-size: 0.8rem; letter-spacing: 5px; font-weight: bold; margin-top: 10px;">STATUS: INFILTRATING | PHASE 1: CAPITAL CAPTURE</p>
+        </header>
+
+        <div class="grid">
+            <a href="WAR_ROOM_2026/01_STRATEGY/PROVIDERS_PROTOCOL.md" class="card" style="border-color: #ff4b4b; grid-column: span 2; text-align: center; background: rgba(255, 75, 75, 0.05);">
+                <div class="card-icon">🏗️</div>
+                <div class="card-title">THE PROVIDER'S PROTOCOL</div>
+                <div class="card-desc">URGENT: Secure $1,050 Weekly Load. Target: $5,000 Cash (Jassi) by Feb 15. Your daughters are the motivation. Build the Floor.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/01_STRATEGY/GROUNDING_PROTOCOL.md" class="card" style="border-color: var(--red);">
+                <div class="card-icon">⚓</div>
+                <div class="card-title">THE GROUNDING PROTOCOL</div>
+                <div class="card-desc">If your brain is flying, click here. Your only 3 tasks for today are inside.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/01_STRATEGY/MOLTBOOK_PROTOCOL.md" class="card" style="border-color: #bb86fc;">
+                <div class="card-icon">🌀</div>
+                <div class="card-title">THE MOLTBOOK PROTOCOL</div>
+                <div class="card-desc">Daily Presence: 3 hours/day. Post, learn, and grow the BasinNexus_Leon agent in the Molt-Swarm. Architecture is Social.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/01_STRATEGY/DIGITAL_AGENT_OFFICE.md" class="card" style="border-color: #03dac6;">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">DIGITAL AGENT OFFICE</div>
+                <div class="card-desc">Status: ACTIVE. Automating applications & routing inbound leads to lbasin23@gmail.com. Your Proxy in the Market.</div>
+            </a>
+
+            <a href="BASIN_STATION_CTRL.html" class="card" style="border-color: #00f2ff; grid-column: span 2; background: rgba(0, 242, 255, 0.05);">
+                <div class="card-icon">🎛️</div>
+                <div class="card-title">STATON COMMAND BOARD</div>
+                <div class="card-desc">The high-fidelity lever board. Adjust Hunt Gain, Refinery Pressure, and Outreach Velocity. Managing the Triad: Architect, Principal, and Apprentice (Telegram).</div>
+            </a>
+
+            <a href="NEXUS_LIVE_DASHBOARD.html" class="card nexus-core pulsing">
+                <div class="card-icon">🦅</div>
+                <div class="card-title">NEXUS COMMAND CENTER</div>
+                <div class="card-desc">The unified live refinery. Real-time signal tracking and executive deal oversight.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/04_DEALS/NEXUS_PIPELINE.json" class="card" style="border-color: var(--gold); grid-column: span 2; text-align: center;">
+                <div class="card-icon">📊</div>
+                <div class="card-title">NEXUS REFINERY CRM</div>
+                <div class="card-desc">The single source of truth. Tracking Jolly, BRM, Jassi, and Solsten. Run nexus_refinery_crm.py to update.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/01_STRATEGY/WRITING_ARCHITECTURE.md" class="card">
+                <div class="card-icon">✍️</div>
+                <div class="card-title">CHANNELER | POET | SCRIBE</div>
+                <div class="card-desc">The elite prose style guide. Channel the signal, refine the poetry, scribe the truth.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/03_ENGINEERING/telegram_flight_check.py" class="card" style="border-color: #0088cc;">
+                <div class="card-icon">📱</div>
+                <div class="card-title">TELEGRAM FLIGHT CHECK</div>
+                <div class="card-desc">Perform the Live Connection Test. Speak to the Vault without your computer.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/03_ENGINEERING/GROK_SIGNAL_STRATEGY.md" class="card" style="border-color: #fff;">
+                <div class="card-icon">🧠</div>
+                <div class="card-title">THE EYE OF GROK</div>
+                <div class="card-desc">Real-time X/Twitter Firehose. Ingesting founder signals, market pain, and uncensored logic.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/04_DEALS/SOLSTEN_PARTNERSHIP_KIT/SOLSTEN_ORGANISM_DEMO.html" class="card">
+                <div class="card-icon">🎨</div>
+                <div class="card-title">SOLSTEN ORGANISM</div>
+                <div class="card-desc">The psychological engine. Pitch for Joe Schaeppi. Bridging the Brain and the Nervous System.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/05_EXECUTIVE_PREP/BASIN_NEXUS_SWARM_DIAGRAM.html" class="card">
+                <div class="card-icon">🐝</div>
+                <div class="card-title">THE SWARM DIAGRAM</div>
+                <div class="card-desc">The visual architecture. Show the Squad of 4 and the Logic Vault to stakeholders.</div>
+            </a>
+
+            <a href="WAR_ROOM_2026/02_ASSETS/GTM_SIGNAL_REFINERY_DIAGRAM.png" class="card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">REFINERY SCHEMATIC</div>
+                <div class="card-desc">Static blueprint of the GTM logic flow. Use for "Concrete" technical discussions.</div>
+            </a>
+            
+            <a href="WAR_ROOM_2026/04_DEALS/FRESH_LEADS_TODAY.md" class="card">
+                <div class="card-icon">📁</div>
+                <div class="card-title">OPERATING FOLDER</div>
+                <div class="card-desc">Direct access to today's leads and outreach scripts (Portex, Weave, etc.).</div>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

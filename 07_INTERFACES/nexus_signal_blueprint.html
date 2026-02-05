@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Blueprint | Basin::Nexus Architecture</title>
+    <style>
+        :root {
+            --bg: #0a0e14;
+            --panel: #141b24;
+            --text: #e0e6ed;
+            --subtext: #94a3b8;
+            --accent: #2563eb;
+            --success: #10b981;
+            --border: #1e293b;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .blueprint-frame {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            margin-top: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
+
+        .node-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .node {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            padding: 20px 30px;
+            border-radius: 8px;
+            width: 300px;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .node.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+            background: #233554;
+        }
+
+        .node.completed {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .arrow {
+            width: 2px;
+            height: 30px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--border);
+        }
+
+        .arrow.active {
+            background: var(--accent);
+        }
+
+        .arrow.active::after {
+            border-top-color: var(--accent);
+        }
+
+        .log-window {
+            margin-top: 40px;
+            background: #000;
+            border-radius: 6px;
+            padding: 20px;
+            height: 120px;
+            text-align: left;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: #52ff00; /* Terminal Green */
+            overflow-y: hidden;
+            border: 1px solid #333;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .btn:hover { background: #1d4ed8; }
+
+        .tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--subtext);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+        }
+
+        #output { opacity: 0; transition: opacity 0.5s; font-weight: 800; color: var(--success); margin-top: 20px;}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="tag">Technical Demonstration // Internal Use</div>
+        <h1>Basin::Nexus Signal Blueprint</h1>
+        <p style="color: var(--subtext); max-width: 600px; margin: 0 auto;">Simulating the <b>"Zero-Latency"</b> capture engine. Turning brand gravity into hard-coded revenue triggers.</p>
+
+        <div class="blueprint-frame">
+            <div class="node-flow">
+                <div class="node" id="node1">INPUT: Raw Signal Ingest</div>
+                <div class="arrow" id="arrow1"></div>
+                <div class="node" id="node2">PROCESS: Semantic Intelligence</div>
+                <div class="arrow" id="arrow2"></div>
+                <div class="node" id="node3">LOGIC: Strategic Account Scoring</div>
+                <div class="arrow" id="arrow3"></div>
+                <div class="node" id="node4">OUTPUT: Leadership Activation</div>
+            </div>
+
+            <div class="log-window" id="log">
+                > System Standby...<br>
+                > Logic V5.3 Active.<br>
+                > Pending Signal Deployment.
+            </div>
+
+            <button class="btn" onclick="startSimulation()">Simulate Revenue Cycle</button>
+            <div id="output">SIGNAL DEPLOYED TO SLACK // TARGET IDENTIFIED</div>
+        </div>
+        
+        <div style="margin-top: 40px; font-size: 0.7rem; color: #444; font-family: var(--mono); text-transform: uppercase; letter-spacing: 2px;">
+            SYSTEM CLASSIFIED // BASIN::NEXUS // CORE ARCHITECTURE
+        </div>
+    </div>
+
+    <script>
+        function addLog(msg) {
+            const log = document.getElementById('log');
+            log.innerHTML += `> ${msg}<br>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function startSimulation() {
+            const btn = document.querySelector('.btn');
+            btn.disabled = true;
+            btn.innerHTML = "Processing...";
+            
+            document.getElementById('output').style.opacity = 0;
+            
+            // Step 1
+            const n1 = document.getElementById('node1');
+            n1.classList.add('active');
+            addLog("Ingesting Raw Metadata (API Trigger)...");
+            await new Promise(r => setTimeout(r, 800));
+            n1.classList.replace('active', 'completed');
+            document.getElementById('arrow1').classList.add('active');
+
+            // Step 2
+            const n2 = document.getElementById('node2');
+            n2.classList.add('active');
+            addLog("Parsing Intent Signals (DeepSeek R1)...");
+            await new Promise(r => setTimeout(r, 1000));
+            n2.classList.replace('active', 'completed');
+            document.getElementById('arrow2').classList.add('active');
+
+            // Step 3
+            const n3 = document.getElementById('node3');
+            n3.classList.add('active');
+            addLog("Scoring Strategic Account Probability: 94.2%...");
+            await new Promise(r => setTimeout(r, 1200));
+            n3.classList.replace('active', 'completed');
+            document.getElementById('arrow3').classList.add('active');
+
+            // Step 4
+            const n4 = document.getElementById('node4');
+            n4.classList.add('active');
+            addLog("Encapsulating Brief... Sending to Slack/CRM.");
+            await new Promise(r => setTimeout(r, 800));
+            n4.classList.replace('active', 'completed');
+
+            document.getElementById('output').style.opacity = 1;
+            btn.disabled = false;
+            btn.innerHTML = "Reset Cycle";
+            
+            addLog("PIPELINE ACTIVATED. Latency: 382ms.");
+
+            btn.onclick = () => window.location.reload();
+        }
+    </script>
+</body>
+</html>

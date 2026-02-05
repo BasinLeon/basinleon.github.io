@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basin::Nexus CRM</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="crm_assets/style.css" rel="stylesheet">
+    
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Nexus ServiceWorker active'))
+            .catch(err => console.log('SW registration failed', err));
+        });
+      }
+    </script>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div id="loading-text" style="color:var(--text-secondary); font-weight:500; text-align:center">
+            Initializing Basin::Nexus Engine...<br>
+            <span style="font-size:0.8rem; opacity:0.7">Loading Enriched Data</span>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Floating Orb Background -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <i class="fa-solid fa-cube fa-sm" style="color:var(--accent-color)"></i>
+                Basin<span>::Nexus</span>
+            </div>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div id="ai-status" class="d-none d-md-flex align-items-center gap-2 me-4" style="background:rgba(129,140,248,0.1); padding:4px 12px; border-radius:20px; border:1px solid rgba(129,140,248,0.2)">
+                    <div class="status-dot pulse-blue"></div>
+                    <span style="font-size:0.75rem; font-weight:600; color:#818cf8; text-transform:uppercase; letter-spacing:0.05em">Nexus AI Online</span>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary text-light border-secondary" onclick="window.location.reload()">
+                    <i class="fa-solid fa-sync me-1"></i> Refresh Data
+                </button>
+                <div class="avatar-circle" style="width:32px;height:32px;background:#334155;border-radius:50%;color:#94a3b8;display:flex;align-items:center;justify-content:center;cursor:pointer" title="Admin">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Wrapper (Table + Sidebar) -->
+        <div class="main-wrapper">
+            <main class="app-main">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total">...</div>
+                        <div class="stat-label">Total Leads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-enriched">...</div>
+                        <div class="stat-label">Enriched signals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-priority">...</div>
+                        <div class="stat-label">High Priority</div>
+                    </div>
+                    <div class="stat-card" style="border-color:var(--accent-color); background:rgba(99,102,241,0.1)">
+                        <div class="stat-value" id="stat-outreach" style="font-size:1.5rem; color:#818cf8">...</div>
+                        <div class="stat-label">Nexus Pitches Ready</div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="data-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="m-0" style="font-weight:600; color:var(--text-primary)">
+                            <i class="fa-solid fa-bullseye me-2" style="color:var(--accent-color)"></i>
+                            Target Accounts
+                        </h5>
+                    </div>
+                    <div class="dt-container">
+                        <table id="leads-table" class="display" style="width:100%">
+                            <!-- Headers populated by JS -->
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar -->
+            <aside id="lead-details-sidebar" class="details-sidebar">
+                <div class="sidebar-header">
+                    <h5 class="m-0">Lead Intelligence</h5>
+                    <button class="btn-close btn-close-white" onclick="closeSidebar()"></button>
+                </div>
+                <div id="sidebar-content" class="sidebar-body">
+                    <div class="placeholder-content">
+                        <i class="fa-solid fa-id-card fa-3x mb-3" style="opacity:0.2"></i>
+                        <p>Select a lead to view architectural intelligence</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"></script>
+    <script src="crm_assets/app.js"></script>
+</body>
+</html>

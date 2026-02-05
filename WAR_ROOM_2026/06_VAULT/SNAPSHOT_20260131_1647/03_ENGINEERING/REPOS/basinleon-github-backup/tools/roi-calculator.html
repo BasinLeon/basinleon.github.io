@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator | Revenue Architecture Savings | Leon Basin</title>
+    <meta name="description"
+        content="Calculate how much you could save by replacing SDR headcount with Revenue Architecture. Free ROI calculator for GTM leaders.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="ROI Calculator | How Much Could You Save?">
+    <meta property="og:description"
+        content="Calculate your potential savings by replacing SDR headcount with AI-powered Revenue Architecture.">
+    <meta property="og:url" content="https://basinleon.github.io/tools/roi-calculator.html">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+            --green: #22c55e;
+            --red: #ef4444;
+            --cyan: #06b6d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 14px 24px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 40px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            color: var(--green);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Calculator */
+        .calculator {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .calc-section {
+            margin-bottom: 32px;
+        }
+
+        .calc-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .input-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Slider */
+        .slider-container {
+            margin-top: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(212, 175, 55, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-border);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gold-primary);
+            margin-left: 12px;
+        }
+
+        /* Results */
+        .results {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 2px solid var(--green);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .results-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--green);
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .result-card.highlight {
+            border-color: var(--green);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .result-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--gold-light);
+        }
+
+        .result-value.savings {
+            color: var(--green);
+        }
+
+        .result-value.negative {
+            color: var(--red);
+            text-decoration: line-through;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            margin-top: 40px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--gold-border);
+        }
+
+        .comparison-table th {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table td {
+            font-size: 0.9rem;
+        }
+
+        .comparison-table .traditional {
+            color: var(--red);
+        }
+
+        .comparison-table .architecture {
+            color: var(--green);
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--gold-border);
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            box-shadow: 0 0 30px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="../" class="nav-logo">BASIN::NEXUS</a>
+            <div class="nav-links">
+                <a href="../">Portfolio</a>
+                <a href="https://basinleon.github.io/blog/">Blog</a>
+                <a href="./" class="active">Tools</a>
+                <a href="https://github.com/BasinLeon" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">💰 FREE TOOL</div>
+            <h1 class="hero-title">ROI CALCULATOR</h1>
+            <p class="hero-subtitle">
+                How much could you save by replacing SDR headcount with Revenue Architecture?
+            </p>
+        </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="container">
+        <div class="calculator">
+            <div class="calc-section">
+                <h2 class="calc-section-title">📊 YOUR CURRENT STATE</h2>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Number of SDRs</label>
+                        <input type="number" id="sdrCount" class="input-field" value="10" min="1" max="100">
+                        <p class="input-hint">How many SDRs on your team?</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Average SDR Salary (Fully Loaded)</label>
+                        <input type="number" id="sdrSalary" class="input-field" value="110000" min="50000" max="200000">
+                        <p class="input-hint">Include benefits, tools, management overhead</p>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">SQLs per SDR per Month</label>
+                        <input type="number" id="sqlsPerSdr" class="input-field" value="3" min="1" max="20">
+                        <p class="input-hint">Qualified meetings generated per rep</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Current Reply Rate (%)</label>
+                        <input type="number" id="replyRate" class="input-field" value="2" min="0.5" max="30" step="0.5">
+                        <p class="input-hint">Cold outreach reply percentage</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h2 class="calc-section-title">⚙️ ARCHITECTURE MODEL</h2>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        Headcount Reduction
+                        <span class="slider-value" id="reductionValue">70%</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="headcountReduction" class="slider" min="50" max="90" value="70">
+                    </div>
+                    <p class="input-hint">Typical range: 50-90% depending on automation maturity</p>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">GTM Engineer Salary</label>
+                        <input type="number" id="engineerSalary" class="input-field" value="180000" min="100000"
+                            max="300000">
+                        <p class="input-hint">Revenue Architect / GTM Engineer cost</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Expected Reply Rate Improvement (%)</label>
+                        <input type="number" id="replyImprovement" class="input-field" value="150" min="50" max="500">
+                        <p class="input-hint">Signal-based targeting typically yields 100-200% lift</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2 class="results-title">📈 YOUR PROJECTED SAVINGS</h2>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Current Annual Cost</div>
+                        <div class="result-value negative" id="currentCost">$1,100,000</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Architecture Model Cost</div>
+                        <div class="result-value" id="newCost">$510,000</div>
+                    </div>
+
+                    <div class="result-card highlight">
+                        <div class="result-label">Annual Savings</div>
+                        <div class="result-value savings" id="annualSavings">$590,000</div>
+                    </div>
+
+                    <div class="result-card highlight">
+                        <div class="result-label">Cost Per SQL</div>
+                        <div class="result-value savings" id="costPerSql">-68%</div>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="comparison">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Traditional SDR</th>
+                                <th>Revenue Architecture</th>
+                                <th>Delta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Team Size</td>
+                                <td class="traditional" id="tradTeamSize">10 SDRs</td>
+                                <td class="architecture" id="archTeamSize">1 Eng + 3 SDRs</td>
+                                <td id="teamDelta">-70%</td>
+                            </tr>
+                            <tr>
+                                <td>Annual Cost</td>
+                                <td class="traditional" id="tradCost">$1,100,000</td>
+                                <td class="architecture" id="archCost">$510,000</td>
+                                <td id="costDelta">-54%</td>
+                            </tr>
+                            <tr>
+                                <td>Reply Rate</td>
+                                <td class="traditional" id="tradReply">2%</td>
+                                <td class="architecture" id="archReply">5%</td>
+                                <td id="replyDelta">+150%</td>
+                            </tr>
+                            <tr>
+                                <td>SQLs/Month</td>
+                                <td class="traditional" id="tradSqls">30</td>
+                                <td class="architecture" id="archSqls">45</td>
+                                <td id="sqlDelta">+50%</td>
+                            </tr>
+                            <tr>
+                                <td>Cost per SQL</td>
+                                <td class="traditional" id="tradCostSql">$3,056</td>
+                                <td class="architecture" id="archCostSql">$944</td>
+                                <td id="costSqlDelta">-69%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Enhanced CTA Section -->
+                <div class="cta-section" style="background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-deep) 100%); border: 2px solid var(--gold-primary); border-radius: 16px; padding: 48px 32px; margin-top: 60px;">
+                    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--gold-primary); margin-bottom: 16px; text-align: center;">
+                        🧠 Ready to Build Your Revenue Architecture?
+                    </h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 1rem; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        I help companies gather intel, find clients, and build systems that replace headcount with intelligence. Let's discuss your specific situation.
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                        <div style="text-align: center; padding: 24px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 12px;">
+                            <div style="font-size: 2rem; margin-bottom: 12px;">📊</div>
+                            <div style="font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-weight: 700; margin-bottom: 8px;">Free GTM Audit</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">30-min consultation to identify opportunities</div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 24px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 12px;">
+                            <div style="font-size: 2rem; margin-bottom: 12px;">🔬</div>
+                            <div style="font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-weight: 700; margin-bottom: 8px;">Signal Architecture Setup</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Build your signal detection system</div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 24px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-border); border-radius: 12px;">
+                            <div style="font-size: 2rem; margin-bottom: 12px;">⚡</div>
+                            <div style="font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-weight: 700; margin-bottom: 8px;">Custom Tool Development</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Build tools specific to your needs</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <a href="mailto:lbasin23@gmail.com?subject=ROI Calculator Consultation&body=Hi Leon, I used your ROI calculator and would like to discuss how Revenue Architecture could work for my team." class="cta-btn" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-light)); color: #000; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;">
+                            📧 Let's Talk
+                        </a>
+                        <a href="https://basinleon.github.io/consulting/" class="cta-btn" style="background: transparent; border: 2px solid var(--gold-primary); color: var(--gold-primary); padding: 16px 32px; border-radius: 8px; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;">
+                            💼 View Services
+                        </a>
+                    </div>
+                    
+                    <p style="text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--text-muted);">
+                        Or <a href="https://basinleon.github.io/#contact" style="color: var(--gold-primary);">use the contact form</a> on my portfolio
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="../">Portfolio</a>
+            <a href="https://basinleon.github.io/blog/">Blog</a>
+            <a href="./">Tools</a>
+            <a href="https://www.linkedin.com/in/leonbasin/" target="_blank">LinkedIn</a>
+        </div>
+        <div class="footer-copyright">© 2026 Leon Basin • Revenue Architect</div>
+    </footer>
+
+    <!-- Calculator Script -->
+    <script>
+        // Format currency
+        function formatCurrency(num) {
+            return '$' + num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        }
+
+        // Format percentage
+        function formatPercent(num) {
+            const sign = num >= 0 ? '+' : '';
+            return sign + num.toFixed(0) + '%';
+        }
+
+        // Update slider value display
+        document.getElementById('headcountReduction').addEventListener('input', function () {
+            document.getElementById('reductionValue').textContent = this.value + '%';
+            calculateROI();
+        });
+
+        // Add event listeners to all inputs
+        const inputs = document.querySelectorAll('.input-field');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateROI);
+        });
+
+        // Main calculation function
+        function calculateROI() {
+            // Get inputs
+            const sdrCount = parseInt(document.getElementById('sdrCount').value) || 10;
+            const sdrSalary = parseInt(document.getElementById('sdrSalary').value) || 110000;
+            const sqlsPerSdr = parseInt(document.getElementById('sqlsPerSdr').value) || 3;
+            const replyRate = parseFloat(document.getElementById('replyRate').value) || 2;
+            const headcountReduction = parseInt(document.getElementById('headcountReduction').value) || 70;
+            const engineerSalary = parseInt(document.getElementById('engineerSalary').value) || 180000;
+            const replyImprovement = parseInt(document.getElementById('replyImprovement').value) || 150;
+
+            // Calculate current state
+            const currentAnnualCost = sdrCount * sdrSalary;
+            const currentMonthlySqls = sdrCount * sqlsPerSdr;
+            const currentAnnualSqls = currentMonthlySqls * 12;
+            const currentCostPerSql = currentAnnualCost / currentAnnualSqls;
+
+            // Calculate architecture model
+            const remainingSdrs = Math.ceil(sdrCount * (1 - headcountReduction / 100));
+            const newTeamCost = engineerSalary + (remainingSdrs * sdrSalary);
+
+            // Productivity gains (remaining SDRs are 1.5x more productive with automation)
+            const productivityMultiplier = 1.5;
+            const newReplyRate = replyRate * (1 + replyImprovement / 100);
+            const newSqlsPerSdr = sqlsPerSdr * productivityMultiplier;
+            const newMonthlySqls = remainingSdrs * newSqlsPerSdr;
+            const newAnnualSqls = newMonthlySqls * 12;
+            const newCostPerSql = newTeamCost / newAnnualSqls;
+
+            // Calculate savings
+            const annualSavings = currentAnnualCost - newTeamCost;
+            const costReduction = ((currentAnnualCost - newTeamCost) / currentAnnualCost) * 100;
+            const costPerSqlReduction = ((currentCostPerSql - newCostPerSql) / currentCostPerSql) * 100;
+            
+            // Trigger agent handoff if agent is available
+            if (annualSavings > 0 && window.DigitalLeon) {
+                setTimeout(() => {
+                    triggerAgentHandoff(sdrCount, currentAnnualCost, annualSavings, replyRate);
+                }, 1000);
+            }
+
+            // Update results
+            document.getElementById('currentCost').textContent = formatCurrency(currentAnnualCost);
+            document.getElementById('newCost').textContent = formatCurrency(newTeamCost);
+            document.getElementById('annualSavings').textContent = formatCurrency(annualSavings);
+            document.getElementById('costPerSql').textContent = '-' + costPerSqlReduction.toFixed(0) + '%';
+
+            // Update comparison table
+            document.getElementById('tradTeamSize').textContent = sdrCount + ' SDRs';
+            document.getElementById('archTeamSize').textContent = '1 Eng + ' + remainingSdrs + ' SDRs';
+            document.getElementById('teamDelta').textContent = '-' + headcountReduction + '%';
+
+            document.getElementById('tradCost').textContent = formatCurrency(currentAnnualCost);
+            document.getElementById('archCost').textContent = formatCurrency(newTeamCost);
+            document.getElementById('costDelta').textContent = '-' + costReduction.toFixed(0) + '%';
+
+            document.getElementById('tradReply').textContent = replyRate + '%';
+            document.getElementById('archReply').textContent = newReplyRate.toFixed(1) + '%';
+            document.getElementById('replyDelta').textContent = '+' + replyImprovement + '%';
+
+            document.getElementById('tradSqls').textContent = currentMonthlySqls;
+            document.getElementById('archSqls').textContent = Math.round(newMonthlySqls);
+            const sqlChange = ((newMonthlySqls - currentMonthlySqls) / currentMonthlySqls) * 100;
+            document.getElementById('sqlDelta').textContent = formatPercent(sqlChange);
+
+            document.getElementById('tradCostSql').textContent = formatCurrency(currentCostPerSql);
+            document.getElementById('archCostSql').textContent = formatCurrency(newCostPerSql);
+            document.getElementById('costSqlDelta').textContent = '-' + costPerSqlReduction.toFixed(0) + '%';
+        }
+
+        // ROI Calculator → Agent Handoff (Enhanced)
+        function triggerAgentHandoff(sdrCount, currentCost, potentialSavings, replyRate) {
+            // Only trigger once per session
+            if (window.roiAgentTriggered) return;
+            window.roiAgentTriggered = true;
+            
+            // Calculate ROI percentage
+            const roiPercentage = ((potentialSavings / currentCost) * 100).toFixed(0);
+            const savingsFormatted = `$${(potentialSavings / 1000).toFixed(0)}K`;
+            
+            // Wait for agent to load (try both DigitalLeon and PremiumLeonAgent)
+            const checkAgent = setInterval(() => {
+                let agent = null;
+                
+                // Try premium agent first
+                if (window.PremiumLeonAgent && window.PremiumLeonAgent.openWindow) {
+                    agent = window.PremiumLeonAgent;
+                } else if (window.DigitalLeon && window.DigitalLeon.openWindow) {
+                    agent = window.DigitalLeon;
+                }
+                
+                if (agent) {
+                    clearInterval(checkAgent);
+                    
+                    // Open agent window
+                    agent.openWindow();
+                    
+                    // Update context with ROI data
+                    if (agent.updateContext) {
+                        agent.updateContext({
+                            painPoints: ['High SDR Costs', 'Low Reply Rate', 'Inefficient Headcount'],
+                            budgetSignals: [
+                                `Current Spend: $${currentCost.toLocaleString()}`,
+                                `Potential Savings: ${savingsFormatted}`,
+                                `ROI: ${roiPercentage}%`
+                            ],
+                            intent: 'ROI_Calculator_User',
+                            sdrCount: sdrCount,
+                            replyRate: replyRate,
+                            annualSavings: potentialSavings,
+                            calculatorData: {
+                                sdrCount: sdrCount,
+                                currentCost: currentCost,
+                                potentialSavings: potentialSavings,
+                                replyRate: replyRate
+                            }
+                        });
+                    }
+                    
+                    // Agent speaks first with personalized message
+                    setTimeout(() => {
+                        const message = `I see you've calculated the math. You're looking at potentially **${savingsFormatted}** in annual savings (${roiPercentage}% ROI).\n\n` +
+                            `Based on your numbers:\n` +
+                            `• Current: ${sdrCount} SDRs at $${(currentCost / sdrCount).toLocaleString()} each\n` +
+                            `• Reply rate: ${replyRate}%\n\n` +
+                            `Most VPs I work with start by automating the "Research" agent first—that's where the biggest efficiency gains are. Want me to send you a spec sheet on how that specific agent works?\n\n` +
+                            `Or we can schedule a 15-min call to architect your system.`;
+                        
+                        if (agent.typeMessage) {
+                            agent.typeMessage(message, 'agent');
+                        } else if (agent.sendMessage) {
+                            agent.sendMessage(message);
+                        }
+                        
+                        // Track event
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'roi_calculator_agent_handoff', {
+                                'event_category': 'Lead Generation',
+                                'event_label': 'ROI Calculator',
+                                'value': potentialSavings,
+                                'sdr_count': sdrCount,
+                                'reply_rate': replyRate
+                            });
+                        }
+                    }, 800);
+                }
+            }, 100);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => clearInterval(checkAgent), 5000);
+        }
+
+        // Initial calculation
+        calculateROI();
+    </script>
+
+    <!-- Premium Leon Agent - For ROI Calculator Integration -->
+    <script src="../widgets/premium-leon-agent.js"></script>
+
+</body>
+
+</html>

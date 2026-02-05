@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::NEXUS // JOLLY INCENTIVE CONSOLE</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --panel-bg: #1a1a1a;
+            --text-main: #f0f0f0;
+            --text-dim: #777;
+            --accent-tesla: #e82127; /* Tesla Red */
+            --accent-cyan: #00f3ff;
+            --accent-jolly: #6366f1; /* Jolly Purple/Blue */
+            --accent-green: #00ff9d;
+            --border: 1px solid #2a2a2a;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        body { margin: 0; background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-mono); overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+
+        /* HEADER */
+        header { border-bottom: var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); z-index: 10; }
+        .brand { font-size: 1.4rem; font-weight: bold; letter-spacing: 2px; }
+        .brand span { color: var(--accent-jolly); }
+        .status { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--accent-green); border: 1px solid rgba(0, 255, 157, 0.3); padding: 5px 10px; border-radius: 4px;}
+        .blink { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: blink 2s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* NAVIGATION */
+        nav { display: flex; background: #080808; border-bottom: var(--border); }
+        .nav-item { flex: 1; text-align: center; padding: 15px 0; cursor: pointer; border-right: var(--border); color: var(--text-dim); transition: all 0.3s; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; font-weight: bold; }
+        .nav-item:hover, .nav-item.active { color: var(--accent-jolly); background: rgba(99, 102, 241, 0.05); box-shadow: inset 0 -2px 0 var(--accent-jolly); color: #fff; }
+
+        /* MAIN */
+        main { flex: 1; position: relative; overflow: hidden; }
+        .view-section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 40px; padding-bottom: 120px; box-sizing: border-box; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        .view-section.active { opacity: 1; pointer-events: all; }
+        h2 { color: #fff; margin-bottom: 30px; font-weight: normal; letter-spacing: 2px; border-bottom: 2px solid var(--accent-jolly); padding-bottom: 10px; display: inline-block;}
+
+        /* TELEPROMPTER */
+        .teleprompter {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 110px;
+            background: #050505; border-top: 2px solid var(--accent-jolly);
+            display: flex; align-items: center; padding: 0 40px; box-sizing: border-box;
+            z-index: 20; box-shadow: 0 -10px 40px rgba(0,0,0,0.9);
+        }
+        .prompter-label { color: var(--accent-jolly); font-weight: bold; margin-right: 20px; font-size: 0.8rem; white-space: nowrap; letter-spacing: 2px; border: 1px solid var(--accent-jolly); padding: 3px 8px; }
+        .prompter-text { color: #fff; font-size: 1.05rem; line-height: 1.5; font-family: 'Outfit', sans-serif; opacity: 0.95; }
+
+        /* LAUNCHPAD */
+        .launch-grid { display: flex; flex-direction: column; gap: 20px; width: 550px; }
+        .launch-btn { padding: 30px; background: rgba(20,20,20,0.8); border: 1px solid #333; color: #fff; text-align: left; cursor: pointer; transition: 0.4s; display: flex; align-items: center; gap: 25px; border-radius: 8px; backdrop-filter: blur(10px); }
+        .launch-btn:hover { border-color: var(--accent-jolly); background: rgba(99, 102, 241, 0.1); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2); }
+        .l-icon { font-size: 2.5rem; }
+        .l-title { font-weight: bold; font-size: 1.2rem; color: #fff; display: block; margin-bottom: 5px; }
+        .l-desc { font-size: 0.85rem; color: #888; }
+
+        /* TAB 0: THE ARCHITECT */
+        .profile-container { display: flex; gap: 50px; width: 95%; max-width: 1300px; height: 75vh;}
+        .profile-left { flex: 1; display: flex; flex-direction: column; gap: 40px; justify-content: center; border-right: 1px solid #222; padding-right: 50px;}
+        .timeline-item { border-left: 3px solid #1a1a1a; padding-left: 25px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -8px; top: 0; width: 13px; height: 13px; background: #1a1a1a; border-radius: 50%; }
+        .timeline-item.active { border-left-color: var(--accent-jolly); }
+        .timeline-item.active::before { background: var(--accent-jolly); box-shadow: 0 0 15px var(--accent-jolly); }
+        .t-year { color: var(--accent-jolly); font-weight: bold; font-size: 1.3rem; }
+        .t-role { color: #fff; font-size: 1.2rem; margin: 8px 0; font-weight: bold; }
+        .t-desc { color: #999; font-size: 0.95rem; line-height: 1.6; }
+
+        .profile-right { flex: 1.2; display: flex; flex-direction: column; justify-content: center; }
+        .tesla-frame { background: rgba(232, 33, 39, 0.05); border: 1px solid var(--accent-tesla); padding: 30px; border-radius: 8px; position: relative; }
+        .tesla-tag { position: absolute; top: -12px; left: 20px; background: var(--accent-tesla); color: #fff; font-size: 0.7rem; padding: 4px 12px; font-weight: bold; letter-spacing: 2px; }
+        .client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .client-card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 20px; transition: 0.3s; }
+        .client-card:hover { border-color: var(--accent-jolly); background: rgba(99, 102, 241, 0.05); }
+        .c-name { color: var(--accent-jolly); font-weight: bold; font-size: 1rem; }
+        .c-res { color: #aaa; font-size: 0.85rem; margin-top: 8px; }
+
+        /* TAB 1: MARKET GRAVITY */
+        .stat-grid { display: flex; gap: 25px; width: 90%; max-width: 1100px; margin-bottom: 50px; }
+        .m-stat { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 30px; text-align: center; border-radius: 8px;}
+        .m-val { font-size: 2.8rem; color: #fff; font-weight: bold; line-height: 1; }
+        .m-lbl { font-size: 0.9rem; color: #777; margin-top: 15px; }
+
+        .latency-container { width: 90%; max-width: 1000px; padding: 40px; background: #050505; border: 1px solid #111; border-radius: 8px; }
+        .track { height: 12px; background: #111; position: relative; width: 100%; border-radius: 6px; overflow: hidden; margin-bottom: 50px;}
+        .bar { height: 100%; position: absolute; left: 0; top: 0; }
+        .bar-old { background: #444; width: 0%; transition: width 4s linear; }
+        .bar-tesla { background: var(--accent-tesla); width: 0%; transition: width 0.3s cubic-bezier(0,1,0,1); box-shadow: 0 0 25px var(--accent-tesla); }
+
+        /* CARD STYLE FOR DEVIANCE */
+        .offer-card { background: #0a0a0a; border: 1px solid #222; padding: 30px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; }
+
+        /* TAB 2: LOGIC KERNEL */
+        .kernel-visual { display: flex; gap: 50px; align-items: center; width: 90%; }
+        .node { flex: 1; border: 1px solid #222; padding: 30px; background: rgba(10,10,10,0.8); border-radius: 8px; min-height: 250px; display: flex; flex-direction: column; gap: 15px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .node.active { border-color: var(--accent-jolly); box-shadow: 0 0 30px rgba(99, 102, 241, 0.15); }
+        .node h3 { margin: 0; color: #fff; border-bottom: 1px solid #222; padding-bottom: 15px; font-size: 1.1rem; letter-spacing: 1px; }
+        .code-box { font-size: 0.85rem; color: var(--accent-cyan); line-height: 1.6; }
+        .arrow { font-size: 2.5rem; color: #222; }
+
+        /* TAB 3: LIVE REFINERY */
+        .refinery-frame { width: 95%; max-width: 1300px; height: 65vh; border: var(--border); background: #050505; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .refinery-header { padding: 20px; background: #0a0a0a; border-bottom: var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .feed-table { width: 100%; border-collapse: collapse; }
+        .feed-table th { text-align: left; padding: 15px 20px; color: #555; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
+        .feed-row { border-bottom: 1px solid #111; animation: slideIn 0.5s ease forwards; opacity: 0; transform: translateX(-10px); }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        .feed-row td { padding: 18px 20px; color: #888; font-size: 0.9rem; }
+        .sig-high { color: var(--accent-jolly) !important; font-weight: bold; }
+        
+        /* TAB 5: THE DEAL */
+        .deal-matrix { display: flex; gap: 40px; width: 90%; max-width: 1200px; }
+        .ote-large { font-size: 3.5rem; color: #fff; font-weight: bold; }
+        .ote-lbl { color: var(--accent-jolly); font-weight: bold; }
+        .feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .feature { display: flex; gap: 15px; align-items: center; color: #aaa; }
+        .f-check { color: var(--accent-green); font-weight: bold; }
+
+        .btn-cta { padding: 20px 50px; background: var(--accent-jolly); color: #fff; border: none; font-family: var(--font-mono); font-size: 1.4rem; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: bold; }
+        .btn-cta:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">BASIN<span>::</span>NEXUS <small style="font-size: 0.6rem; color: #555; vertical-align: middle;">JOLLY_DEPLOYMENT_v1.0</small></div>
+        <div class="status"><div class="blink"></div> REFINERY ACTIVE</div>
+    </header>
+
+    <nav>
+        <div class="nav-item active" data-view="intro">LAUNCHPAD</div>
+        <div class="nav-item" data-view="architect">0. INCENTIVE ARCHITECT</div>
+        <div class="nav-item" data-view="market">1. TEMPORAL DISCOUNTING</div>
+        <div class="nav-item" data-view="deviance" style="color:var(--accent-tesla)">2. GTM SAFETY</div>
+        <div class="nav-item" data-view="kernel">3. REFERRAL KERNEL</div>
+        <div class="nav-item" data-view="live">4. SIGNAL REFINERY</div>
+        <div class="nav-item" data-view="deal">5. THE DEPLOYMENT</div>
+    </nav>
+
+    <main>
+        <!-- INTRO -->
+        <div id="intro" class="view-section active">
+            <h2>INCENTIVE SIGNAL ARCHITECTURE</h2>
+            <div class="launch-grid">
+                <div class="launch-btn" onclick="showView('architect')">
+                    <div class="l-icon">📐</div>
+                    <div>
+                        <span class="l-title">INCENTIVE ENGINEER™</span>
+                        <span class="l-desc">Vertical Integration of GTM & Psychology.</span>
+                    </div>
+                </div>
+                <div class="launch-btn" onclick="showView('live')">
+                    <div class="l-icon">💎</div>
+                    <div>
+                        <span class="l-title">REFERRAL REFINERY</span>
+                        <span class="l-desc">Scaling Sam Shiah's Partnership Logic.</span>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 40px; color: #444; font-size: 0.8rem;">[ KEYBOARD NAV: ARROWS TO BROWSE ]</p>
+        </div>
+
+        <!-- ARCHITECT -->
+        <div id="architect" class="view-section">
+            <h2>0. INCENTIVE ARCHITECT: BEYOND SALES</h2>
+            <div class="profile-container">
+                <div class="profile-left">
+                    <div class="timeline-item">
+                        <div class="t-year">GOOGLE</div>
+                        <div class="t-role">The Systems Blueprint</div>
+                        <div class="t-desc">Learned how to design incentives for global scale. Logic first, everything else follows.</div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="t-year">BASIN::NEXUS</div>
+                        <div class="t-role">Proprietary Architecture</div>
+                        <div class="t-desc">83k lines of code. Deployed the first "Incentive Loop" for 8 different GTM orgs.</div>
+                    </div>
+                </div>
+                <div class="profile-right">
+                    <div class="tesla-frame">
+                        <div class="tesla-tag">THE TESLA FRAME</div>
+                        <p style="font-size: 1.1rem; line-height: 1.6; color: #fff;">
+                            "Dean, as an ex-<b>Tesla</b> engineer, you know vertical integration is the only moat. I don't buy lists; I build the <b>Incentive Refinery</b> that connects Sam's partnerships to a live engine."
+                        </p>
+                        <div class="client-grid">
+                            <div class="client-card"><div class="c-name">SAM SHIAH (RECON)</div><div class="c-res">Partnership Logic Ops</div></div>
+                            <div class="client-card"><div class="c-name">AMBIENT.AI</div><div class="c-res">Architect Audit (PASS)</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">FOR DEAN & TREVOR ></div>
+                <div class="prompter-text">"Everyone hires SDRs to dial. I build the <b>Incentive Engine</b> that tells you who to dial before they even know they need you. This is vertical integration for Jolly."</div>
+            </div>
+        </div>
+
+        <!-- MARKET -->
+        <div id="market" class="view-section">
+            <h2>1. TEMPORAL DISCOUNTING: KILLING THE VOID</h2>
+            <div class="stat-grid">
+                <div class="m-stat"><div class="m-val">$16.5M</div><div class="m-lbl">Jolly Series A (Speed is the only Moat)</div></div>
+                <div class="m-stat"><div class="m-val" style="color:var(--accent-tesla)">48 HRS</div><div class="m-lbl">Avg Response Time (The Challenger Gap)</div></div>
+                <div class="m-stat" style="border-color:var(--accent-jolly)"><div class="m-val" style="color:var(--accent-jolly)">5 MIN</div><div class="m-lbl">Incentive Goal (Dopamine Threshold)</div></div>
+            </div>
+            <div class="latency-container">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:#555; font-size:0.8rem;"><span>SIGNAL DETECTED</span><span>"SATISFACTION OF COMPLETION"</span></div>
+                <div class="track"><div class="bar bar-old" id="latency-old"></div></div>
+                <div class="track"><div class="bar bar-tesla" id="latency-tesla"></div></div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">BEHAVIORAL OPS ></div>
+                <div class="prompter-text">"Dean, you posted about <b>Temporal Discounting</b>. If the delay between action and reward is 48 hours, the incentive dies. My Nexus engine triggers missions in <u>5 minutes</u>. Instant satisfaction."</div>
+            </div>
+        </div>
+
+        <!-- DEVIANCE -->
+        <div id="deviance" class="view-section">
+            <h2 style="border-color: var(--accent-tesla);">2. NORMALIZATION OF DEVIANCE: GTM SAFETY</h2>
+            <div style="display:flex; gap:40px; width:90%;">
+                <div class="offer-card" style="flex:1; border-color:var(--accent-tesla); background:rgba(232, 33, 39, 0.05);">
+                    <h3 style="color:var(--accent-tesla); margin-top:0;">THE CHALLENGER TRAP</h3>
+                    <p style="color:#ccc; line-height:1.6;">"Schedule, optics, and political pressure outweigh engineering truth."</p>
+                    <ul style="color:#888; font-size:0.9rem;">
+                        <li>Hiring BDRs to "just hit numbers"</li>
+                        <li>Accepting low response rates as "normal"</li>
+                        <li>Prioritizing volume over Signal Integrity</li>
+                    </ul>
+                </div>
+                <div class="offer-card" style="flex:1; border-color:var(--accent-green); background:rgba(0, 255, 157, 0.05);">
+                    <h3 style="color:var(--accent-green); margin-top:0;">THE REFINERY SOLUTION</h3>
+                    <p style="color:#ccc; line-height:1.6;">"Treating every campaign as an iterative test. Transparency is rewarded."</p>
+                    <ul style="color:#888; font-size:0.9rem;">
+                        <li>Logic gates for every outbound event</li>
+                        <li>Automated rejection of low-signal leads</li>
+                        <li>Incentivizing quality over sheer volume</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">THE SAFETY PROTOCOL ></div>
+                <div class="prompter-text">"I read your post on the <b>Challenger</b> disaster, Dean. In GTM, 'Normalization of Deviance' is when we accept 0.01% reply rates as safe. I build the O-rings that ensure we only launch high-signal missions."</div>
+            </div>
+        </div>
+
+        <!-- KERNEL -->
+        <div id="kernel" class="view-section">
+            <h2>3. THE REFERRAL KERNEL: LOGIC-BASED GTM</h2>
+            <div class="kernel-visual">
+                <div class="node active">
+                    <h3>I. INGESTION</h3>
+                    <div class="code-box">
+                        > TRACK: Jolly_Backers.list<br>
+                        > PULL: New_Hires (VP/Dir)<br>
+                        > SCRAPE: Tech_Stack (Apollo/Clay)
+                    </div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="node" style="border-color: var(--accent-tesla);">
+                    <h3>II. THE REFINERY</h3>
+                    <div class="code-box" style="color: #fff;">
+                        if role in ['Sales', 'HR', 'Eng']:<br>
+                        &nbsp;&nbsp;score += 50<br>
+                        if previous_co in BACKERS:<br>
+                        &nbsp;&nbsp;TRIGGER: "Skin in the Game"
+                    </div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="node" style="border-color: var(--accent-jolly);">
+                    <h3>III. MISSION DEPLOY</h3>
+                    <div class="code-box" style="color: var(--accent-jolly);">
+                        > DISPATCH: Jolly_Pocket_Coach<br>
+                        > TRIGGER: Referral_Bonus_Nudge<br>
+                        > REWARD: Shared_Profit_Model
+                    </div>
+                </div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">INCENTIVE ENGINEERING™ ></div>
+                <div class="prompter-text">"We apply the <b>Affleck-Damon Model</b>. Everyone has skin in the game. I don't just send emails; I deploy <b>Missions</b> that align the whole org chart with the P&L."</div>
+            </div>
+        </div>
+
+        <!-- LIVE -->
+        <div id="live" class="view-section">
+            <h2>4. SIGNAL REFINERY: LIVE DEPLOYMENT</h2>
+            <div class="refinery-frame">
+                <div class="refinery-header">
+                    <div><span style="color:var(--accent-jolly)">NODE:</span> NYC_FOUNDING_REP // <span style="color:#555">FEED: VERIFIED_TARGETS</span></div>
+                    <div style="font-size:0.8rem; border:1px solid #333; padding:5px 15px; border-radius:30px;">ACTIVE WORKSPACE: JOLLY_BDR_CORE</div>
+                </div>
+                <div style="flex:1; overflow-y:auto;">
+                    <table class="feed-table">
+                        <thead><tr><th>STATUS</th><th>SIGNAL</th><th>TARGET COMPANY</th><th>FOUNDING BACKER</th><th>SCORE</th><th>ACTION</th></tr></thead>
+                        <tbody id="refinery-body">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">THE "SAM SHIAH" BRIDGE ></div>
+                <div class="prompter-text">"Look at row 3. That's a target from <b>Bear Stearns</b> (heritage connection). My system flagged it, scored it, and drafted the mission to Sam's desk in 60 seconds."</div>
+            </div>
+        </div>
+
+        <!-- DEAL -->
+        <div id="deal" class="view-section">
+            <h2>5. THE DEPLOYMENT: FOUNDING GTM ENGINEER</h2>
+            <div class="deal-matrix">
+                <div class="offer-card" style="flex:1.5;">
+                    <div class="offer-header" style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid #222; padding-bottom:20px;">
+                        <div>
+                            <span class="ote-large">$180,000</span>
+                            <span class="ote-lbl"> / OTE</span>
+                        </div>
+                        <div style="color:var(--accent-tesla); font-weight:bold;">+ FOUNDING EQUITY</div>
+                    </div>
+                    <div class="feature-list" style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin: 30px 0;">
+                        <div class="feature"><span class="f-check">✓</span> Ownership of End-to-End Outbound</div>
+                        <div class="feature"><span class="f-check">✓</span> Tech Stack Consolidation</div>
+                        <div class="feature"><span class="f-check">✓</span> Data Workflow Engineering</div>
+                        <div class="feature"><span class="f-check">✓</span> Scaling Jolly to Series B</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <button class="btn-cta" onclick="window.location.href='https://cal.com/jollytrevor/interview'">CONFIRM Monday @ 12 PM PT</button>
+                    </div>
+                </div>
+            </div>
+            <div class="teleprompter">
+                <div class="prompter-label">FINAL TAKE ></div>
+                <div class="prompter-text">"You're building the first Incentive Engine™ for the world's best workers. You deserve an architect who treats GTM like a <b>Nintendo</b> feedback loop. I'm ready to build, Trevor."</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showView(id) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            let nav = document.querySelector(`[data-view="${id}"]`);
+            if(nav) nav.classList.add('active');
+            
+            if(id === 'market') startLatency();
+            if(id === 'live') startRefinery();
+            if(id === 'deviance') { /* Could add animations here */ }
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.onclick = () => showView(item.getAttribute('data-view'));
+        });
+
+        function startLatency() {
+            const old = document.getElementById('latency-old');
+            const tesla = document.getElementById('latency-tesla');
+            old.style.width = '0%'; tesla.style.width = '0%';
+            setTimeout(() => { old.style.width = '80%'; }, 100);
+            setTimeout(() => { tesla.style.width = '100%'; }, 500);
+        }
+
+        const mockTargets = [
+            { sig: "CMO Connection", co: "Ambient.ai", backer: "Alberto Farronato", score: "99/100", act: "DRAFT: SAFETY_SYSTEM" },
+            { sig: "Founder Sync", co: "Retell AI", backer: "Alexandra Monopoli", score: "98/100", act: "DRAFT: SAM_AND_INK" },
+            { sig: "Hiring Manager", co: "LiveRamp", backer: "Tammy Ammon", score: "95/100", act: "NURTURE: HUMAN_ELEM" },
+            { sig: "Founder/CEO", co: "Portex", backer: "Anonymous Founder", score: "94/100", act: "APPLY: FOUNDING_ENG" },
+            { sig: "VP Engineering", co: "Weave", backer: "Unknown", score: "92/100", act: "APPLY: AUTOMATION" },
+        ];
+
+        function startRefinery() {
+            const body = document.getElementById('refinery-body');
+            body.innerHTML = '';
+            mockTargets.forEach((t, i) => {
+                setTimeout(() => {
+                    const row = document.createElement('tr');
+                    row.className = 'feed-row';
+                    row.innerHTML = `
+                        <td><span class="status"><div class="blink"></div></span></td>
+                        <td style="color:#fff;">${t.sig}</td>
+                        <td>${t.co}</td>
+                        <td>${t.backer}</td>
+                        <td class="${parseInt(t.score) > 90 ? 'sig-high' : ''}">${t.score}</td>
+                        <td><span style="border:1px solid #444; padding:5px 10px; font-size:0.75rem;">${t.act}</span></td>
+                    `;
+                    body.appendChild(row);
+                }, i * 300);
+            });
+        }
+
+        // Keyboard Nav
+        const views = ['intro', 'architect', 'market', 'deviance', 'kernel', 'live', 'deal'];
+        document.onkeydown = (e) => {
+            let activeEl = document.querySelector('.view-section.active');
+            if(!activeEl) return;
+            let active = activeEl.id;
+            let idx = views.indexOf(active);
+            if(e.key === 'ArrowRight') {
+                showView(views[(idx + 1) % views.length]);
+            } else if(e.key === 'ArrowLeft') {
+                showView(views[(idx - 1 + views.length) % views.length]);
+            }
+        };
+    </script>
+</body>
+</html>

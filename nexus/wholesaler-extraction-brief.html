@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wholesaler Extraction Engine | Technical Brief</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        body { background: white; color: #0f172a; font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        /* STRICT SINGLE PAGE ENFORCEMENT */
+        @media print {
+            @page { margin: 0; size: auto; }
+            body, html { margin: 0; padding: 0; width: 100%; height: 100vh; overflow: hidden; }
+            .no-print { display: none !important; }
+            
+            /* Scale down content to fit */
+            .main-container {
+                transform: scale(0.9);
+                transform-origin: top center;
+                width: 100%;
+                margin: 0 auto;
+                padding: 10mm 20mm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-10">
+
+    <div class="fixed top-5 right-5 no-print z-50">
+        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded shadow-lg text-sm transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-file-pdf"></i> Save as PDF
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER - SCALES DOWN ON PRINT -->
+    <div class="main-container max-w-4xl mx-auto bg-white shadow-2xl p-12 min-h-[297mm]">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-start mb-8 border-b-2 border-slate-900 pb-6">
+            <div>
+                <div class="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-2">Basin & Associates // Technical Brief</div>
+                <h1 class="text-3xl font-bold text-slate-900 leading-none tracking-tight">Wholesaler Extraction Logic</h1>
+            </div>
+            <div class="text-right">
+                <div class="text-xs font-mono text-slate-400">v2.4</div>
+            </div>
+        </div>
+
+        <!-- The Problem Statement -->
+        <h2 class="text-xs font-bold uppercase text-slate-900 mb-2">The Operational Problem</h2>
+        <p class="text-xs text-slate-600 mb-8 leading-relaxed max-w-2xl border-l-2 border-slate-200 pl-4">
+            Most acquisition teams rely on static data providers (PropStream, ListSource). This creates a heavily saturated market where multiple investors call the same lead simultaneously. The result is diminishing returns on outreach efforts and wasted labor hours.
+        </p>
+
+        <!-- The Solution -->
+        <h2 class="text-xs font-bold uppercase text-slate-900 mb-2">The Automated Solution</h2>
+        <p class="text-xs text-slate-600 mb-8 leading-relaxed max-w-2xl">
+            We implement a proprietary <strong>Signal Extraction Engine</strong>. Instead of buying old lists, the system autonomously monitors digital footprints for active "intent signals" (e.g., motivated seller behavior on specialized forums and networks) before they appear on public indexes.
+        </p>
+
+        <!-- The Mechanics -->
+        <div class="grid grid-cols-3 gap-6 mb-10">
+            <!-- Step 1 -->
+            <div class="metric-card">
+                <div class="text-[10px] font-bold uppercase text-slate-400 mb-2">Step 01</div>
+                <div class="text-sm font-bold text-slate-900 mb-1">Signal Detection</div>
+                <div class="h-0.5 w-8 bg-slate-900 mb-2"></div>
+                <p class="text-[10px] text-slate-600 leading-snug">
+                    System scans 15+ data sources for specific keywords indicating immediate intent to sell.
+                </p>
+            </div>
+            <!-- Step 2 -->
+            <div class="metric-card">
+                <div class="text-[10px] font-bold uppercase text-slate-400 mb-2">Step 02</div>
+                <div class="text-sm font-bold text-slate-900 mb-1">Data Enrichment</div>
+                <div class="h-0.5 w-8 bg-slate-900 mb-2"></div>
+                <p class="text-[10px] text-slate-600 leading-snug">
+                    System cross-references property addresses to identify the legal owner and appends direct mobile contact numbers.
+                </p>
+            </div>
+            <!-- Step 3 -->
+            <div class="metric-card">
+                <div class="text-[10px] font-bold uppercase text-slate-400 mb-2">Step 03</div>
+                <div class="text-sm font-bold text-slate-900 mb-1">CRM Injection</div>
+                <div class="h-0.5 w-8 bg-slate-900 mb-2"></div>
+                <p class="text-[10px] text-slate-600 leading-snug">
+                    Verified data is pushed to the client's internal database (CRM) for immediate action by the sales team.
+                </p>
+            </div>
+        </div>
+
+        <!-- The Result -->
+        <div class="bg-gray-50 border border-gray-200 p-8 rounded mb-10">
+            <h3 class="text-[10px] font-bold uppercase text-slate-900 mb-4">Projected Output Metrics</h3>
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <div class="text-[10px] font-mono text-slate-500 mb-1">Verified Signals</div>
+                    <div class="text-3xl font-mono font-bold text-slate-900">500+ <span class="text-xs font-normal text-slate-500">per month</span></div>
+                </div>
+                <div>
+                    <div class="text-[10px] font-mono text-slate-500 mb-1">Manual Search Time</div>
+                    <div class="text-3xl font-mono font-bold text-slate-900">REDUNDANT <span class="text-xs font-normal text-slate-500">100% Automated</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-slate-200 pt-6 flex justify-between items-end">
+            <div>
+                <p class="text-[10px] text-slate-400 font-mono uppercase">Basin & Associates</p>
+                <p class="text-[10px] text-slate-400 font-mono uppercase">Internal Documentation</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] font-bold text-slate-900 uppercase">Confidential</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

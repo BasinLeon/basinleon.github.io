@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project SENTINEL | Leon Basin</title>
+    <meta name="description"
+        content="Protocol SENTINEL: The Signal Defense Grid - A case study on replacing brute-force labor with high-fidelity signal processing.">
+    <meta property="og:title" content="Project SENTINEL | Leon Basin">
+    <meta property="og:description"
+        content="How Basin::Nexus transformed a $800k SDR operation into a precision signal system.">
+    <meta property="og:type" content="article">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --ink-deep: #1a1a2e;
+            --sepia: #8b7355;
+            --burgundy: #8b2942;
+            --parchment: #f4f1ea;
+            --gold: #d4af37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            background: var(--parchment);
+            color: var(--ink-deep);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        nav {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+        }
+
+        nav a {
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--ink-deep);
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--burgundy);
+        }
+
+        .terminal-hint {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--sepia);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .case-header {
+            text-align: center;
+            padding: 6rem 2rem;
+            border-bottom: 2px solid var(--sepia);
+            background: linear-gradient(180deg, rgba(139, 41, 66, 0.05) 0%, transparent 100%);
+        }
+
+        .case-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin: 1rem 0;
+            color: var(--ink-deep);
+        }
+
+        .case-header .subtitle {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--sepia);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .framework-section {
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 3px solid var(--sepia);
+        }
+
+        .framework-section.alt-bg {
+            background: #eae6db;
+            max-width: 100%;
+            border-left: none;
+        }
+
+        .framework-section.alt-bg>* {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .editorial-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--burgundy);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .framework-section p {
+            margin-bottom: 1.5rem;
+        }
+
+        .framework-section ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .framework-section li {
+            margin-bottom: 0.75rem;
+        }
+
+        .code-block {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 1px dashed var(--ink-deep);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            background: rgba(26, 26, 46, 0.03);
+        }
+
+        .code-block strong {
+            color: var(--burgundy);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 2rem 1.5rem;
+            border: 1px solid var(--sepia);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(139, 41, 66, 0.15);
+        }
+
+        .metric {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--burgundy);
+            font-weight: 700;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(139, 115, 85, 0.3);
+        }
+
+        footer a {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: var(--ink-deep);
+            border-bottom: 2px solid var(--burgundy);
+            padding-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--burgundy);
+        }
+
+        @media (max-width: 600px) {
+            .case-header {
+                padding: 4rem 1.5rem;
+            }
+
+            .framework-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="../library/">← The Library</a>
+        <span class="terminal-hint">VOL. I: SENTINEL</span>
+    </nav>
+
+    <header class="case-header">
+        <div class="terminal-hint">// PROTOCOL: SENTINEL</div>
+        <h1>The Signal Defense Grid</h1>
+        <p class="subtitle">
+            "Replacing brute-force labor with high-fidelity signal processing."
+        </p>
+    </header>
+
+    <section class="framework-section">
+        <h2 class="editorial-title">I. Structure (The Friction)</h2>
+        <p><strong>The Context:</strong> A Series-B cybersecurity firm (Fudo Security) relied on the "Rolodex Fallacy."
+            Ten SDRs executed high-volume, low-conviction outreach based on static LinkedIn lists.</p>
+        <p><strong>The Failure Mode:</strong></p>
+        <ul>
+            <li><strong>Human Latency:</strong> 24-48 hours between signal detection and action.</li>
+            <li><strong>CAC Inefficiency:</strong> $800k in headcount yielding <1% cold conversion.</li>
+            <li><strong>The "Zombie" Pipeline:</strong> CRM filled with "Activity" metrics rather than "Intent" signals.
+            </li>
+        </ul>
+        <p>The team was optimizing the wrong function. They measured <em>effort</em> when they should have measured
+            <em>signal quality</em>.</p>
+    </section>
+
+    <section class="framework-section alt-bg">
+        <h2 class="editorial-title">II. System (The Architecture)</h2>
+        <p>We deployed <strong>Basin::Nexus (v1.0)</strong>, a proprietary GTM Operating System built on Python &
+            Streamlit.</p>
+
+        <div class="code-block">
+            <strong>// THE STACK</strong><br><br>
+            > Ingestion: Python Scrapers (Reddit SecOps, Tech Docs)<br>
+            > Logic: Binary Signal Scoring (0-100)<br>
+            > Execution: n8n Orchestration → "Sniper" Rep Routing<br>
+            > Output: Auto-generated briefs, Slack alerts, CRM sync
+        </div>
+
+        <p><strong>The Mechanics:</strong> Instead of generic lists, the system scraped "Dark Social" signals—developer
+            documentation downloads, specific subreddit threads, job posting patterns, and tech stack changes. It
+            assigned a binary <strong>Signal Score</strong> to every lead. Anything below 70% was blocked at the gate.
+        </p>
+
+        <p><strong>The Key Insight:</strong> The best time to reach a security buyer is within 72 hours of a compliance
+            audit announcement or a competitor incident. The system knew this before humans could react.</p>
+    </section>
+
+    <section class="framework-section">
+        <h2 class="editorial-title">III. Soul (The Transmutation)</h2>
+        <p>We stopped selling "features" and started architecting "risk narratives." The system found the truth hidden
+            in the noise.</p>
+
+        <p>The SDRs who remained became <strong>Signal Interpreters</strong>, not cold callers. They received
+            pre-qualified leads with context: "This CISO just posted about zero-trust gaps on LinkedIn. Their company
+            announced SOC2 compliance last week. Here's your opener."</p>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="metric">160%</div>
+                <div class="terminal-hint">Pipeline Velocity YoY</div>
+            </div>
+            <div class="stat-card">
+                <div class="metric">$424k</div>
+                <div class="terminal-hint">OpEx Saved/Year</div>
+            </div>
+            <div class="stat-card">
+                <div class="metric">92%</div>
+                <div class="terminal-hint">Manual Toil Reduced</div>
+            </div>
+        </div>
+
+        <p style="margin-top: 2rem; font-style: italic; color: var(--sepia);">
+            "The best salespeople don't make more calls. They make better ones." — Field Notes
+        </p>
+    </section>
+
+    <footer>
+        <a href="../library/">
+            Return to The Library
+        </a>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Trajectory Report | Basin::Nexus</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #10b981;
+        --accent: #f59e0b;
+        --dark: #0f172a;
+        --dark-surface: #1e293b;
+        --dark-elevated: #334155;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --gradient-primary: linear-gradient(
+          135deg,
+          #6366f1 0%,
+          #8b5cf6 50%,
+          #a855f7 100%
+        );
+        --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--dark);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .report-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      /* Header Section */
+      .report-header {
+        text-align: center;
+        margin-bottom: 48px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--dark-elevated);
+      }
+
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--dark-surface);
+        border: 1px solid var(--dark-elevated);
+        border-radius: 100px;
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+      }
+
+      .brand-badge .logo {
+        width: 20px;
+        height: 20px;
+        background: var(--gradient-primary);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 10px;
+      }
+
+      .report-title {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .report-subtitle {
+        font-size: 16px;
+        color: var(--text-secondary);
+      }
+
+      /* Recipient Card */
+      .recipient-card {
+        background: var(--dark-surface);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        border: 1px solid var(--dark-elevated);
+      }
+
+      .recipient-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .recipient-info h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .recipient-info .title {
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .recipient-info .company {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .score-display {
+        text-align: center;
+      }
+
+      .score-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--secondary) 0deg,
+          var(--secondary) calc(var(--score) * 3.6deg),
+          var(--dark-elevated) calc(var(--score) * 3.6deg),
+          var(--dark-elevated) 360deg
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .score-circle::before {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        background: var(--dark-surface);
+        border-radius: 50%;
+      }
+
+      .score-value {
+        position: relative;
+        z-index: 1;
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--secondary);
+      }
+
+      .score-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 8px;
+      }
+
+      /* Percentile Banner */
+      .percentile-banner {
+        background: var(--gradient-success);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+
+      .percentile-banner h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .percentile-banner p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* Gap Analysis Section */
+      .section {
+        margin-bottom: 32px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .section-icon.analysis {
+        background: rgba(99, 102, 241, 0.15);
+      }
+      .section-icon.trajectory {
+        background: rgba(16, 185, 129, 0.15);
+      }
+      .section-icon.action {
+        background: rgba(245, 158, 11, 0.15);
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      /* Gap Cards */
+      .gap-card {
+        background: var(--dark-surface);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 12px;
+        border-left: 3px solid var(--primary);
+      }
+
+      .gap-card h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .gap-card p {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .gap-tag {
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 100px;
+        font-weight: 600;
+      }
+
+      .gap-tag.critical {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+      }
+
+      .gap-tag.high {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fbbf24;
+      }
+
+      .gap-tag.moderate {
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+      }
+
+      /* Trajectory Section */
+      .trajectory-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .trajectory-card {
+        background: var(--dark-surface);
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        border: 1px solid var(--dark-elevated);
+      }
+
+      .trajectory-card .label {
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+      }
+
+      .trajectory-card .value {
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .trajectory-card .value.salary {
+        background: var(--gradient-gold);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .trajectory-card .value.track {
+        color: var(--secondary);
+      }
+
+      .trajectory-card .delta {
+        font-size: 12px;
+        color: var(--secondary);
+        margin-top: 4px;
+      }
+
+      /* Recommendation Cards */
+      .rec-card {
+        background: var(--dark-surface);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--dark-elevated);
+        transition: all 0.2s ease;
+      }
+
+      .rec-card:hover {
+        border-color: var(--primary);
+        transform: translateX(4px);
+      }
+
+      .rec-content h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .rec-content p {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .rec-impact {
+        text-align: right;
+      }
+
+      .rec-impact .value {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .rec-impact .label {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      /* CTA Section */
+      .cta-section {
+        background: var(--gradient-primary);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      .cta-section h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .cta-section p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin-bottom: 24px;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        color: var(--primary-dark);
+        font-size: 15px;
+        font-weight: 600;
+        padding: 14px 28px;
+        border-radius: 100px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .cta-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Footer */
+      .report-footer {
+        text-align: center;
+        padding-top: 40px;
+        border-top: 1px solid var(--dark-elevated);
+        margin-top: 40px;
+      }
+
+      .powered-by {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .powered-by span {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+          color: #1e293b;
+        }
+        .report-container {
+          padding: 20px;
+        }
+        .cta-button {
+          background: var(--primary);
+          color: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report-container">
+      <!-- Header -->
+      <header class="report-header">
+        <div class="brand-badge">
+          <div class="logo">N</div>
+          <span>Powered by Basin::Nexus</span>
+        </div>
+        <h1 class="report-title">Career Trajectory Report</h1>
+        <p class="report-subtitle">IT Sales Intelligence Assessment Results</p>
+      </header>
+
+      <!-- Recipient Card -->
+      <div class="recipient-card">
+        <div class="recipient-row">
+          <div class="recipient-info">
+            <h2>Marcus Chen</h2>
+            <p class="title">Enterprise Sales Director</p>
+            <p class="company">ServiceNow • San Francisco, CA</p>
+          </div>
+          <div class="score-display">
+            <div class="score-circle" style="--score: 87">
+              <span class="score-value">87</span>
+            </div>
+            <p class="score-label">Assessment Score</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Percentile Banner -->
+      <div class="percentile-banner">
+        <h3>🏆 Top 5% of IT Sales Professionals</h3>
+        <p>
+          Your score places you among elite Enterprise Sales leaders globally.
+        </p>
+      </div>
+
+      <!-- Gap Analysis Section -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon analysis">🔍</div>
+          <h3 class="section-title">Identified Gaps</h3>
+        </div>
+
+        <div class="gap-card">
+          <h4>
+            Agentic AI GTM Strategy
+            <span class="gap-tag critical">Critical</span>
+          </h4>
+          <p>
+            Your assessment reveals a 23% gap in leveraging AI-native
+            prospecting tools. With 78% of Enterprise deals now influenced by
+            AI-driven discovery, this directly impacts your close rate.
+          </p>
+        </div>
+
+        <div class="gap-card">
+          <h4>
+            Discovery-to-Value Loop
+            <span class="gap-tag high">High Priority</span>
+          </h4>
+          <p>
+            The speed from first meeting to validated business case averaged 18
+            days in your responses—top performers close this loop in 7 days.
+          </p>
+        </div>
+
+        <div class="gap-card">
+          <h4>
+            Multi-Threading Strategy
+            <span class="gap-tag moderate">Moderate</span>
+          </h4>
+          <p>
+            Your deal architecture shows strong executive alignment but limited
+            technical champion development. This creates single-thread risk on
+            complex deals.
+          </p>
+        </div>
+      </section>
+
+      <!-- Career Trajectory Section -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon trajectory">📈</div>
+          <h3 class="section-title">12-Month Trajectory Projection</h3>
+        </div>
+
+        <div class="trajectory-grid">
+          <div class="trajectory-card">
+            <p class="label">Current Track</p>
+            <p class="value track">Executive Leadership</p>
+          </div>
+          <div class="trajectory-card">
+            <p class="label">Projected Earnings</p>
+            <p class="value salary">$320k - $410k</p>
+            <p class="delta">+$45k - $110k with gap closure</p>
+          </div>
+          <div class="trajectory-card">
+            <p class="label">Percentile Potential</p>
+            <p class="value track">Top 2%</p>
+            <p class="delta">↑ 3 percentile points</p>
+          </div>
+          <div class="trajectory-card">
+            <p class="label">Deal Velocity Impact</p>
+            <p class="value salary">+28%</p>
+            <p class="delta">Enterprise close rate</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommended Actions -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon action">🎯</div>
+          <h3 class="section-title">Recommended Actions</h3>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-content">
+            <h4>AI-Native GTM Masterclass</h4>
+            <p>
+              Close your critical gap with hands-on AI prospecting frameworks
+            </p>
+          </div>
+          <div class="rec-impact">
+            <p class="value">+22%</p>
+            <p class="label">Pipeline velocity</p>
+          </div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-content">
+            <h4>Enterprise Discovery Accelerator</h4>
+            <p>Compress your discovery-to-value loop from 18 days to 7</p>
+          </div>
+          <div class="rec-impact">
+            <p class="value">+$85k</p>
+            <p class="label">Projected earnings</p>
+          </div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-content">
+            <h4>Strategic Multi-Threading Workshop</h4>
+            <p>Build technical champion networks that protect your deals</p>
+          </div>
+          <div class="rec-impact">
+            <p class="value">-40%</p>
+            <p class="label">Deal slip risk</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <div class="cta-section">
+        <h3>Ready to Close the Gap?</h3>
+        <p>
+          Schedule your 1:1 Strategic Gap Analysis with a TalSmart advisor to
+          build your personalized development roadmap.
+        </p>
+        <a href="#" class="cta-button"> Book Strategy Session → </a>
+      </div>
+
+      <!-- Footer -->
+      <footer class="report-footer">
+        <p class="powered-by">
+          Assessment processed by <span>Basin::Nexus</span> | Zero-Latency
+          Intelligence Routing
+        </p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px">
+          Report generated: January 28, 2026 • Confidential
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

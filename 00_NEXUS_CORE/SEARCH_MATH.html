@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::COMMAND | GTM ARCHITECTURE V11.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@200;300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --gold: #C5A059;
+            --gold-dark: #8A6D3B;
+            --accent: #1A1A1B;
+            --white: #F8F9FA;
+            --text: #1A1A1B;
+            --text-dim: #64748B;
+            --success: #059669;
+            --warning: #D97706;
+            --border: #E2E8F0;
+            --glass: blur(10px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                linear-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197, 160, 89, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .dashboard {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            gap: 25px;
+        }
+
+        /* --- THE PRESTIGE HEADER --- */
+        header {
+            grid-column: 1 / -1;
+            background: var(--gold);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.2);
+            color: white;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 10px;
+            font-size: 1.6rem;
+            font-weight: 900;
+        }
+
+        .sys-info {
+            font-family: 'JetBrains Mono', monospace;
+            text-align: right;
+            font-size: 0.75rem;
+        }
+
+        .sys-info b { color: white; border: 1px solid white; padding: 2px 8px; border-radius: 20px; margin-left: 10px; }
+
+        /* --- KPI SHELF --- */
+        .kpi-shelf {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .kpi-box {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .kpi-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 4px; width: 0;
+            background: var(--gold);
+            transition: 0.5s;
+        }
+
+        .kpi-box:hover::after { width: 100%; }
+        .kpi-box:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+
+        .kpi-lab { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+        .kpi-val { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; color: var(--gold-dark); margin: 5px 0; }
+        .kpi-sub { font-size: 0.7rem; color: var(--success); font-weight: bold; }
+
+        /* --- SIDEBARS --- */
+        .widget {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .widget-head {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gold-dark);
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* --- WORKFLOW STRIP --- */
+        .w-item { padding-left: 15px; border-left: 1px solid var(--border); margin-bottom: 15px; position: relative; }
+        .w-item.active { border-left-color: var(--gold); background: rgba(197, 160, 89, 0.03); }
+        .w-item.active::before { content: ''; position: absolute; left: -4px; top: 0; height: 10px; width: 7px; background: var(--gold); }
+        .w-time { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold-dark); display: block; }
+        .w-task { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+        .w-desc { font-size: 0.65rem; color: var(--text-dim); }
+
+        /* --- ENGINE CORE --- */
+        .engine { display: flex; flex-direction: column; gap: 20px; }
+
+        .stat-wheel {
+            display: flex; justify-content: space-between; align-items: flex-end; padding: 20px; border: 1px solid var(--gold);
+        }
+
+        .count-node {
+            background: #FDFCF8;
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .c-flex { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .c-btn { width: 30px; height: 30px; border: 1px solid var(--gold); background: white; color: var(--gold); font-weight: 900; }
+        .c-btn:hover { background: var(--gold); color: white; }
+        .c-val { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--text); font-weight: 800; width: 40px; text-align: center; }
+
+        .tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid var(--gold); color: var(--gold); font-weight: bold; border-radius: 20px; }
+
+        /* --- CRM TABLE --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 12px; font-size: 0.6rem; text-transform: uppercase; color: var(--text-dim); border-bottom: 2px solid var(--gold); }
+        td { padding: 15px 12px; border-bottom: 1px solid var(--border); font-size: 0.75rem; color: var(--text); }
+        tr:hover { background: rgba(197, 160, 89, 0.02); }
+
+        .badge { font-size: 0.6rem; font-weight: 800; padding: 4px 10px; text-transform: uppercase; border-radius: 4px; }
+        .b-tech { background: #E0F2FE; color: #0369A1; }
+        .b-victory { background: #DCFCE7; color: #15803D; }
+        .b-pilot { background: #FEF3C7; color: #92400E; }
+
+        /* --- ARSENAL --- */
+        .a-link {
+            display: block; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; color: var(--text);
+            text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between; transition: 0.2s;
+        }
+        .a-link:hover { border-color: var(--gold); transform: scale(1.02); }
+
+        .hook-box {
+            background: #1A1A1B; color: #C5A059; padding: 20px; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; line-height: 1.6; border-radius: 4px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .deploy-btn {
+            width: 100%; padding: 15px; background: var(--gold); border: none; color: white;
+            font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 3px; margin-top: 20px;
+        }
+        .deploy-btn:hover { background: var(--gold-dark); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+
+        @media (max-width: 1300px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <header>
+        <div class="brand">
+            <span style="font-size: 0.6rem; letter-spacing: 4px; opacity: 0.8; font-weight: 900;">ARCHITECTURE::SYSTEM</span>
+            <h1>BASIN::NEXUS V12.0</h1>
+        </div>
+        <div class="sys-info">
+            PIPELINE_FLOW::STABLE <b>AUTHORITY MODE</b> <span id="clock">15:00:00</span>
+        </div>
+    </header>
+
+    <!-- KPI SHELF: DUAL METRICS -->
+    <div class="kpi-shelf">
+        <div class="kpi-box">
+            <span class="kpi-lab">Active Pursuits</span>
+            <div class="kpi-val">$752K</div>
+            <div class="kpi-sub">7 Live Architectures</div>
+        </div>
+        <div class="kpi-box">
+            <span class="kpi-lab">Audience Reach</span>
+            <div class="kpi-val">7.7K+</div>
+            <div class="kpi-sub">Official LinkedIn Suppport</div>
+        </div>
+        <div class="kpi-box">
+            <span class="kpi-lab">Closed Confidence</span>
+            <div class="kpi-val">68%</div>
+            <div class="kpi-sub">Distribution Lock: RevGenius</div>
+        </div>
+        <div class="kpi-box">
+            <span class="kpi-lab">Automation Impact</span>
+            <div class="kpi-val">$424K</div>
+            <div class="kpi-sub">Annual OpEx Delta</div>
+        </div>
+    </div>
+
+    <!-- LEFT COL: DAILY FLOW -->
+    <div class="side-col">
+        <div class="widget">
+            <div class="widget-head">DAILY DRIVER | FEB 5</div>
+            <div class="w-item">
+                <span class="w-time">09:00 - 11:00</span>
+                <span class="w-task">Newsletter Deployment</span>
+                <p class="w-desc">Edition 38: The Architect in the Arena (Viral).</p>
+            </div>
+            <div class="w-item active">
+                <span class="w-time">11:00 - 13:00</span>
+                <span class="w-task">CEO Technical Briefing</span>
+                <p class="w-desc">Async Architecture Exchange: John Shewell (Merlin).</p>
+            </div>
+            <div class="w-item">
+                <span class="w-time">13:00 - 15:00</span>
+                <span class="w-task">RevGenius Feature Prep</span>
+                <p class="w-desc">Drafting "Proof of Code" for Jared Robin.</p>
+            </div>
+        </div>
+
+        <div class="widget" style="background: rgba(197, 160, 89, 0.05); border: 1px solid var(--gold);">
+            <div class="widget-head">PRACTICAL NARRATIVE</div>
+            <div style="font-size: 0.7rem; line-height: 1.6;">
+                <p style="color: var(--gold-dark); font-weight: 900; margin-bottom: 10px;">"SYSTEMS > HIRES" ANCHORS:</p>
+                <div style="margin-bottom: 8px;"><b>48-HOUR VOID</b>: "Eliminating lead signal decay."</div>
+                <div style="margin-bottom: 8px;"><b>COMPLEXITY WALL</b>: "Solving the 50-200 headcount trap."</div>
+                <div><b>IDENTITY</b>: "Featured GTM Architect."</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTER COL: CENTRALIZED ENGINE -->
+    <div class="engine">
+        <!-- THE DAILY SCORE -->
+        <div class="widget" style="background: #FFFFFF; border-top: 3px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+            <div class="widget-head">DAILY AUTHORITY SCORE</div>
+            <div class="stat-wheel">
+                <div>
+                    <span class="kpi-lab">Today's Authority Gain</span>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--gold-dark);" id="score">85</div>
+                </div>
+                <div style="text-align: right;">
+                    <span class="kpi-lab">EST. OPPORTUNITY PROB.</span>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--text);" id="est">4.8</div>
+                </div>
+            </div>
+            <div style="width:100%; height:8px; background:#F1F5F9; margin-top:20px;">
+                <div id="p-bar" style="width:85%; height:100%; background:var(--gold); transition:1s;"></div>
+            </div>
+        </div>
+
+        <!-- ACTIVE CRM -->
+        <div class="widget">
+            <div class="widget-head">ACTIVE MISSION LOG | TARGET SHIFT</div>
+            <table>
+                <thead>
+                    <tr><th>Org</th><th>Stage</th><th>Persona</th><th>Status</th><th>Owner</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: var(--gold-dark); font-weight: bold;">Merlin</td>
+                        <td><span class="badge b-tech">CEO Briefing</span></td>
+                        <td>CEO</td>
+                        <td style="font-family: 'JetBrains Mono';">Async Lock</td>
+                        <td>John S.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--gold-dark); font-weight: bold;">RevGenius</td>
+                        <td><span class="badge b-victory">Feature Lock</span></td>
+                        <td>Founder</td>
+                        <td style="font-family: 'JetBrains Mono';">Drafting</td>
+                        <td>Jared R.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--gold-dark); font-weight: bold;">Upwind</td>
+                        <td><span class="badge b-pilot">Sniper Active</span></td>
+                        <td>Executive</td>
+                        <td style="font-family: 'JetBrains Mono';">Sent</td>
+                        <td>Tal S. / Leon B.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--gold-dark); font-weight: bold;">Proofpoint</td>
+                        <td><span class="badge b-pilot">Nudge Active</span></td>
+                        <td>Recruiter</td>
+                        <td style="font-family: 'JetBrains Mono';">Audit Readied</td>
+                        <td>Annie N.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CENTRALIZED ARCHITECTURE LOG (THE 120-DAY VIEW) -->
+        <div class="widget" style="border-top: 2px dashed var(--gold);">
+            <div class="widget-head">CENTRALIZED ARCHITECTURE LOG [STATUS DEPLOYMENTS]</div>
+            <p style="font-size: 0.65rem; color: var(--text-dim); margin-bottom: 15px;">Tracking total work effort and historical signal arcs since Oct 2025.</p>
+            <table>
+                <thead>
+                    <tr><th>Company</th><th>Interview Arc</th><th>Historical Value</th><th>Final Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ambient.ai</td>
+                        <td>Early Discovery / Founder Sync</td>
+                        <td style="font-family: 'JetBrains Mono';">$220,000</td>
+                        <td><span style="opacity: 0.6;">STALLED / NO-GO</span></td>
+                    </tr>
+                    <tr>
+                        <td>RapidFort</td>
+                        <td>Founder Initial</td>
+                        <td style="font-family: 'JetBrains Mono';">$190,000</td>
+                        <td><span style="opacity: 0.6;">SENT / FOLLOW-UP</span></td>
+                    </tr>
+                    <tr>
+                        <td>TalSmart</td>
+                        <td>Fractional Partnership Build</td>
+                        <td style="font-family: 'JetBrains Mono';">$48,000</td>
+                        <td><span style="color: var(--success); font-weight: 900;">WON (FRACTIONAL)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Upwind Security</td>
+                        <td>4-Way Multi-Pronged Arc</td>
+                        <td style="font-family: 'JetBrains Mono';">$240,000+</td>
+                        <td><span style="color: var(--gold-dark); font-weight: 900;">ACTIVE PURSUIT</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        <div class="side-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width:100%;">
+            <div class="count-node">
+                <span class="tag">CEO CALLS x5</span>
+                <div class="c-flex" style="margin-top:10px;">
+                    <button class="c-btn" onclick="adj('f', -1)">-</button>
+                    <span class="c-val" id="f-val">1</span>
+                    <button class="c-btn" onclick="adj('f', 1)">+</button>
+                </div>
+                <div style="font-size:0.6rem; color: var(--text-dim);">MERLIN (ACTIVE)</div>
+            </div>
+            <div class="count-node">
+                <span class="tag">AUTHORITY PR x10</span>
+                <div class="c-flex" style="margin-top:10px;">
+                    <button class="c-btn" onclick="adj('r', -1)">-</button>
+                    <span class="c-val" id="r-val">3</span>
+                    <button class="c-btn" onclick="adj('r', 1)">+</button>
+                </div>
+                <div style="font-size:0.6rem; color: var(--text-dim);">THOMAS A, REVGENIUS, LI...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT COL: ARSENAL -->
+    <div class="side-col">
+        <div class="widget">
+            <div class="widget-head">WEAPON ARSENAL</div>
+            <a href="WAR_ROOM_2026/04_DEALS/MERLIN_STRATEGIC_BRIEF.md" class="a-link">Merlin Brief <span style="color: var(--success);">DEPLOYED</span></a>
+            <a href="EDITION_38.html" class="a-link">Architect Arena Post <span style="color: var(--success);">VIRAL</span></a>
+            <a href="GTM_ARCHITECTURE_PLAYS.md" class="a-link">6-Step System <span style="color: var(--gold);">FEATURED</span></a>
+        </div>
+
+        <div class="widget" style="background: #1A1A1B; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <div class="widget-head" style="color: var(--gold); border-bottom-color: var(--gold-dark); padding: 15px 0;">ACTIVE AUTHORITY HOOK</div>
+            <div style="padding: 10px 0;">
+                <div class="hook-box" id="hook" style="background: rgba(197, 160, 89, 0.05); border: 1px solid rgba(197, 160, 89, 0.2); min-height: 180px; display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic;">
+                    "I was just featured in the 'Best of LinkedIn GTM' report today for my work on 'Revenue Architecture.' I suspect the 'Complexity Wall' I described there—the moment data systems fail to keep up with headcount—is exactly what your team is facing right now. Shall we architect a solution you own forever?"
+                </div>
+                <button class="deploy-btn" onclick="copyHook()" style="margin-top: 15px; background: var(--gold); border-radius: 4px;">DEPLOY AUTHORITY</button>
+            </div>
+        </div>
+
+        <div class="widget" style="text-align: center; border: 2px dashed var(--gold);">
+            <div class="kpi-lab">INTELLIGENCE VAULT</div>
+            <p style="font-size: 0.65rem; color: var(--text-dim); margin-top: 10px;">
+                <b>Official LinkedIn</b> Page reaction.<br>
+                <b>RevGenius</b> Standalone confirmed.<br>
+                <b>Merlin CEO</b> briefing locked.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function adj(id, amt) {
+        const el = document.getElementById(id + '-val');
+        let val = parseInt(el.textContent) + amt;
+        if (val < 0) val = 0;
+        el.textContent = val;
+        calc();
+    }
+
+    function calc() {
+        const f = parseInt(document.getElementById('f-val').textContent);
+        const r = parseInt(document.getElementById('r-val').textContent);
+        let total = (f * 5) + (r * 10) + 50; // New weights for authority wins
+        
+        document.getElementById('score').textContent = total;
+        document.getElementById('est').textContent = (total / 100 * 5).toFixed(1);
+        document.getElementById('p-bar').style.width = Math.min((total / 100) * 100, 100) + '%';
+        
+        localStorage.setItem('basin_v12', JSON.stringify({f, r}));
+    }
+
+    function copyHook() {
+        navigator.clipboard.writeText(document.getElementById('hook').textContent.trim());
+        alert("AUTHORITY HOOK COPIED.");
+    }
+
+    setInterval(() => {
+        document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+    }, 1000);
+
+    window.onload = () => {
+        const saved = localStorage.getItem('basin_v12');
+        if (saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('f-val').textContent = data.f;
+            document.getElementById('r-val').textContent = data.r;
+        }
+        calc();
+    };
+</script>
+
+</body>
+</html>

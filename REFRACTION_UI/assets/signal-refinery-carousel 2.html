@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Refinery - LinkedIn Carousel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: 8.5in 8.5in;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+
+        .slide {
+            width: 8.5in;
+            height: 8.5in;
+            background: #1A1A1A;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 80px;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide:last-child {
+            page-break-after: auto;
+        }
+
+        /* Footer on every slide */
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        /* ===== SLIDE 1: THE HOOK ===== */
+        .slide-1 {
+            background: linear-gradient(135deg, #1A1A1A 0%, #0d0d0d 100%);
+        }
+
+        .slide-1 .headline {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-1 .highlight {
+            color: #FF4444;
+            -webkit-text-fill-color: #FF4444;
+        }
+
+        .slide-1 .subheadline {
+            font-size: 22px;
+            color: #999;
+            line-height: 1.6;
+            max-width: 600px;
+            font-weight: 400;
+        }
+
+        .slide-1 .visual {
+            position: absolute;
+            right: 60px;
+            bottom: 100px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle at center, rgba(255, 68, 68, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-1 .void-symbol {
+            font-size: 120px;
+            opacity: 0.3;
+        }
+
+        /* ===== SLIDE 2: THE PROBLEM ===== */
+        .slide-2 {
+            background: linear-gradient(135deg, #1A1A1A 0%, #1a0d0d 100%);
+        }
+
+        .slide-2 .headline {
+            font-size: 64px;
+            font-weight: 800;
+            color: #FF4444;
+            margin-bottom: 50px;
+        }
+
+        .slide-2 .content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .slide-2 .point {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .slide-2 .label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00D4FF;
+            min-width: 100px;
+        }
+
+        .slide-2 .text {
+            font-size: 20px;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .slide-2 .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 68, 68, 0.05);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            border-radius: 12px;
+        }
+
+        .diagram-box {
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .diagram-box.signal {
+            background: rgba(0, 212, 255, 0.15);
+            border: 2px solid #00D4FF;
+            color: #00D4FF;
+        }
+
+        .diagram-box.gate {
+            background: rgba(255, 68, 68, 0.15);
+            border: 2px solid #FF4444;
+            color: #FF4444;
+            padding: 30px 40px;
+        }
+
+        .diagram-box.gate .time {
+            font-size: 32px;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .diagram-box.dead {
+            background: rgba(102, 102, 102, 0.15);
+            border: 2px solid #666;
+            color: #666;
+        }
+
+        .diagram-arrow {
+            font-size: 28px;
+            color: #444;
+        }
+
+        /* ===== SLIDE 3: THE SYSTEM ===== */
+        .slide-3 {
+            background: linear-gradient(135deg, #1A1A1A 0%, #0d1a1a 100%);
+        }
+
+        .slide-3 .headline {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .slide-3 .headline .brand {
+            color: #00D4FF;
+        }
+
+        .slide-3 .headline .subtitle {
+            color: #666;
+        }
+
+        .slide-3 .tagline {
+            font-size: 20px;
+            color: #888;
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+
+        .slide-3 .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        .flow-step {
+            text-align: center;
+            padding: 24px 32px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            min-width: 140px;
+        }
+
+        .flow-step .icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .flow-step .label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #00D4FF;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flow-arrow {
+            font-size: 32px;
+            color: #00D4FF;
+        }
+
+        .slide-3 .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .slide-3 .step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-3 .step-num {
+            width: 32px;
+            height: 32px;
+            background: #00D4FF;
+            color: #1A1A1A;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .slide-3 .step-label {
+            font-weight: 700;
+            color: #00FF88;
+            min-width: 80px;
+        }
+
+        .slide-3 .step-text {
+            color: #aaa;
+            font-size: 18px;
+        }
+
+        /* ===== SLIDE 4: THE PROOF ===== */
+        .slide-4 {
+            background: linear-gradient(135deg, #1A1A1A 0%, #0d1a12 100%);
+            text-align: center;
+        }
+
+        .slide-4 .headline {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #00FF88 0%, #00D4FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-4 .metrics {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric .value {
+            font-size: 56px;
+            font-weight: 800;
+            color: #00FF88;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .metric .label {
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slide-4 .metric:nth-child(2) .value {
+            color: #00D4FF;
+        }
+
+        .slide-4 .metric:nth-child(3) .value {
+            color: #FFD700;
+        }
+
+        .slide-4 .cta {
+            font-size: 20px;
+            color: #999;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .slide-4 .cta strong {
+            color: #00D4FF;
+        }
+
+        .slide-4 .author {
+            font-size: 16px;
+            color: #666;
+            margin-top: 40px;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: #1A1A1A;
+            }
+
+            .slide {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE 1: THE HOOK -->
+    <div class="slide slide-1">
+        <h1 class="headline">
+            Human Latency is the<br>
+            <span class="highlight">$1.8M GTM Killer.</span>
+        </h1>
+        <p class="subheadline">
+            Most teams try to fix pipeline problems by hiring more SDRs.<br>
+            I built a system to replace the manual toil instead.
+        </p>
+        <div class="visual">
+            <span class="void-symbol">◉</span>
+        </div>
+        <div class="footer">basinleon.github.io</div>
+    </div>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <div class="slide slide-2">
+        <h2 class="headline">The 48-Hour Void.</h2>
+        <div class="content">
+            <div class="point">
+                <span class="label">The Signal:</span>
+                <span class="text">Funding news, technical hiring spikes, and intent data are everywhere.</span>
+            </div>
+            <div class="point">
+                <span class="label">The Friction:</span>
+                <span class="text">It takes 48 hours for a human to find, score, and route that signal.</span>
+            </div>
+            <div class="point">
+                <span class="label">The Result:</span>
+                <span class="text">By the time you call, the prospect is already in a demo with your competitor.</span>
+            </div>
+        </div>
+        <div class="diagram">
+            <div class="diagram-box signal">Raw Signals<br>📡</div>
+            <span class="diagram-arrow">→</span>
+            <div class="diagram-box gate">
+                <span class="time">48 HRS</span>
+                Manual Review
+            </div>
+            <span class="diagram-arrow">→</span>
+            <div class="diagram-box dead">Dead Deals<br>💀</div>
+        </div>
+        <div class="footer">basinleon.github.io</div>
+    </div>
+
+    <!-- SLIDE 3: THE SYSTEM -->
+    <div class="slide slide-3">
+        <h2 class="headline">
+            <span class="brand">Basin::Nexus</span> <span class="subtitle">— The Signal Refinery</span>
+        </h2>
+        <p class="tagline">I treated GTM as an engineering problem.</p>
+
+        <div class="flow">
+            <div class="flow-step">
+                <div class="icon">🌐</div>
+                <div class="label">Market Signal</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="icon">⚙️</div>
+                <div class="label">Basin::Nexus</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="icon">🚀</div>
+                <div class="label">Revenue</div>
+            </div>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <span class="step-num">1</span>
+                <span class="step-label">Ingest:</span>
+                <span class="step-text">API-native monitoring of market signals.</span>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <span class="step-label">Refine:</span>
+                <span class="step-text">Python/LLM gate scores for 0.8 precision.</span>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <span class="step-label">Action:</span>
+                <span class="step-text">High-intent leads delivered to reps in seconds, not days.</span>
+            </div>
+        </div>
+        <div class="footer">basinleon.github.io</div>
+    </div>
+
+    <!-- SLIDE 4: THE PROOF -->
+    <div class="slide slide-4">
+        <h2 class="headline">Architect for Signal,<br>Not Activity.</h2>
+
+        <div class="metrics">
+            <div class="metric">
+                <span class="value">160%</span>
+                <span class="label">Pipeline Growth</span>
+            </div>
+            <div class="metric">
+                <span class="value">$1.8M</span>
+                <span class="label">New Yield</span>
+            </div>
+            <div class="metric">
+                <span class="value">$240k</span>
+                <span class="label">Labor Replaced</span>
+            </div>
+        </div>
+
+        <p class="cta">
+            I don't just manage teams; I build the engines that power them.<br>
+            See the code at <strong>basinleon.github.io</strong>
+        </p>
+
+        <p class="author">Leon Basin | Revenue Architect</p>
+        <div class="footer">basinleon.github.io</div>
+    </div>
+
+</body>
+
+</html>

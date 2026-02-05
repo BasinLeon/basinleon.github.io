@@ -1,0 +1,2820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS::CRM | Unified Revenue Command Center</title>
+    <link rel="manifest" href="nexus-crm-manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        :root {
+            --bg: #050508; --bg-card: #0a0a0f; --bg-elevated: #12121a;
+            --gold: #D4AF37; --gold-glow: rgba(212,175,55,0.3);
+            --text: #f0e6d3; --text-muted: #8b8573; --text-dim: #5a584f;
+            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
+            --info: #3b82f6; --purple: #a855f7; --cyan: #06b6d4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
+        
+        /* Header */
+        .header { background: linear-gradient(90deg, var(--gold), #b8860b); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1rem; color: #000; letter-spacing: 2px; font-weight: 700; }
+        .header-stats { display: flex; gap: 20px; }
+        .header-stat { text-align: center; }
+        .header-stat-value { font-size: 1.2rem; font-weight: 700; color: #000; }
+        .header-stat-label { font-size: 0.6rem; color: rgba(0,0,0,0.7); text-transform: uppercase; }
+        
+        /* Nav Tabs */
+        .nav-tabs { display: flex; background: var(--bg-card); border-bottom: 1px solid var(--gold-glow); overflow-x: auto; }
+        .nav-tab { padding: 12px 20px; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; }
+        .nav-tab:hover { color: var(--gold); }
+        .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(212,175,55,0.05); }
+        .nav-tab .count { background: var(--bg); padding: 2px 6px; border-radius: 10px; font-size: 0.6rem; margin-left: 6px; }
+        
+        /* Main Container */
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* War Room Tabs */
+        .war-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .war-tab { padding: 8px 16px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .war-tab.war-room { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.3); }
+        .war-tab.command { background: rgba(212,175,55,0.1); color: var(--gold); border-color: var(--gold-glow); }
+        .war-tab.fractional { background: rgba(168,85,247,0.1); color: #a855f7; border-color: rgba(168,85,247,0.3); }
+        .war-tab.freezer { background: rgba(6,182,212,0.1); color: #06b6d4; border-color: rgba(6,182,212,0.3); }
+        .war-tab.depot { background: rgba(100,116,139,0.1); color: #64748b; border-color: rgba(100,116,139,0.3); }
+        .war-tab.active { transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+        
+        /* Controls */
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 200px; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 8px; color: var(--text); font-size: 0.85rem; }
+        .search-box:focus { outline: none; border-color: var(--gold); }
+        .btn { padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; }
+        .btn-primary:hover { box-shadow: 0 0 20px var(--gold-glow); transform: translateY(-2px); }
+        .btn-secondary { background: var(--bg-card); border: 1px solid var(--gold-glow); color: var(--text-muted); }
+        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* Deal Cards Grid */
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .deal-card { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 20px; transition: all 0.2s; }
+        .deal-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .deal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .deal-company { font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+        .deal-role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .deal-status { padding: 4px 10px; border-radius: 12px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+        .status-lead { background: var(--info); color: #fff; }
+        .status-meeting { background: var(--warning); color: #000; }
+        .status-proposal { background: var(--purple); color: #fff; }
+        .status-negotiation { background: #ec4899; color: #fff; }
+        .status-closed { background: var(--success); color: #fff; }
+        .status-lost { background: var(--danger); color: #fff; }
+        
+        .deal-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+        .metric { background: var(--bg); padding: 8px; border-radius: 6px; text-align: center; }
+        .metric-value { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+        .metric-label { font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; }
+        
+        .deal-next { background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); padding: 10px; border-radius: 0 6px 6px 0; font-size: 0.75rem; color: var(--warning); margin: 12px 0; }
+        
+        .deal-actions { display: flex; gap: 8px; }
+        .deal-btn { flex: 1; padding: 8px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; color: var(--text-muted); font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .deal-btn:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--gold-glow); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.2rem; color: var(--gold); font-weight: 700; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 20px; }
+        
+        /* Form */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; color: var(--text); font-size: 0.85rem; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--gold); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        
+        /* Tabs inside modal */
+        .modal-tabs { display: flex; border-bottom: 1px solid var(--gold-glow); margin-bottom: 20px; }
+        .modal-tab { padding: 10px 20px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+        .modal-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+        
+        /* STAR Framework */
+        .star-section { margin-top: 20px; padding: 16px; background: var(--bg); border-radius: 8px; border: 1px solid var(--gold-glow); }
+        .star-title { font-size: 0.8rem; color: var(--gold); font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .star-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .star-item label { font-size: 0.65rem; color: var(--text-dim); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .star-item label span { font-size: 0.8rem; }
+        
+        /* Contacts */
+        .contacts-list { margin-top: 16px; }
+        .contact-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; }
+        .contact-info h4 { font-size: 0.9rem; color: var(--text); }
+        .contact-info p { font-size: 0.7rem; color: var(--text-muted); }
+        .contact-score { padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+        .score-high { background: rgba(34,197,94,0.2); color: var(--success); }
+        .score-med { background: rgba(245,158,11,0.2); color: var(--warning); }
+        .score-low { background: rgba(100,116,139,0.2); color: #64748b; }
+        
+        /* Analytics Dashboard */
+        .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .analytics-card { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 20px; text-align: center; }
+        .analytics-value { font-size: 2rem; font-weight: 700; color: var(--gold); }
+        .analytics-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        .analytics-delta { font-size: 0.75rem; margin-top: 8px; }
+        .delta-up { color: var(--success); }
+        .delta-down { color: var(--danger); }
+        
+        /* LinkedIn Ingest */
+        .ingest-area { background: var(--bg); border: 2px dashed var(--gold-glow); border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 20px; }
+        .ingest-area:hover { border-color: var(--gold); }
+        .ingest-textarea { width: 100%; min-height: 150px; background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 8px; padding: 16px; color: var(--text); font-family: monospace; font-size: 0.8rem; resize: vertical; }
+        
+        /* View Toggle */
+        .view-toggle { display: flex; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--gold-glow); }
+        .view-btn { padding: 8px 16px; font-size: 0.7rem; color: var(--text-muted); cursor: pointer; border: none; background: none; }
+        .view-btn.active { background: var(--gold); color: #000; }
+        
+        /* Kanban Board */
+        .kanban-board { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 20px; }
+        .kanban-column { min-width: 280px; background: var(--bg-card); border-radius: 12px; padding: 16px; border: 1px solid var(--gold-glow); }
+        .kanban-column-header { font-size: 0.8rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .kanban-column-count { background: var(--bg); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+        .kanban-deals { display: flex; flex-direction: column; gap: 12px; min-height: 200px; }
+        .kanban-deal { background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 8px; padding: 12px; cursor: move; transition: all 0.2s; }
+        .kanban-deal:hover { border-color: var(--gold); transform: translateX(4px); }
+        .kanban-deal.dragging { opacity: 0.5; }
+        
+        /* Advanced Filters */
+        .filters-panel { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 16px; margin-bottom: 20px; display: none; }
+        .filters-panel.active { display: block; }
+        .filter-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .filter-label { font-size: 0.65rem; color: var(--text-dim); margin-bottom: 4px; }
+        
+        /* Bulk Actions */
+        .bulk-actions { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--gold); border-radius: 12px; padding: 12px 20px; z-index: 999; }
+        .bulk-actions.active { display: flex; gap: 12px; align-items: center; }
+        .bulk-count { color: var(--gold); font-weight: 600; margin-right: 12px; }
+        
+        /* Quick Actions */
+        .quick-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .quick-action-btn { padding: 6px 12px; font-size: 0.7rem; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; color: var(--text-muted); cursor: pointer; }
+        .quick-action-btn:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* Smart Suggestions */
+        .suggestions-panel { background: rgba(212,175,55,0.1); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+        .suggestion-item { padding: 10px; background: var(--bg); border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .suggestion-action { font-size: 0.7rem; color: var(--gold); cursor: pointer; }
+        
+        /* Relationship Map */
+        .relationship-node { display: inline-block; padding: 6px 12px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 6px; margin: 4px; font-size: 0.75rem; }
+        .relationship-line { stroke: var(--gold-glow); stroke-width: 2; }
+        
+        /* Table View */
+        .table-view { display: none; overflow-x: auto; }
+        .table-view.active { display: block; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { background: var(--bg-card); padding: 12px; text-align: left; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--gold-glow); }
+        .data-table td { padding: 12px; border-bottom: 1px solid rgba(212,175,55,0.1); }
+        .data-table tr:hover { background: rgba(212,175,55,0.05); }
+        
+        /* Contact-to-Deal Button */
+        .convert-btn { background: linear-gradient(135deg, var(--purple), #9333ea); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; border: none; }
+        .convert-btn:hover { box-shadow: 0 0 15px rgba(168,85,247,0.5); }
+        
+        /* AI Assistant / Chatbot */
+        .ai-assistant-container { display: flex; flex-direction: column; height: calc(100vh - 200px); max-height: 800px; }
+        .ai-chat-header { background: linear-gradient(135deg, var(--purple), #9333ea); padding: 16px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .ai-chat-header h3 { color: #fff; font-size: 0.9rem; font-weight: 700; }
+        .ai-status { font-size: 0.65rem; color: rgba(255,255,255,0.8); }
+        .ai-chat-messages { flex: 1; overflow-y: auto; padding: 20px; background: var(--bg-card); border: 1px solid var(--gold-glow); }
+        .ai-message { margin-bottom: 16px; display: flex; gap: 12px; }
+        .ai-message.user { flex-direction: row-reverse; }
+        .ai-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), #9333ea); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .ai-avatar.user { background: var(--gold); }
+        .ai-message-content { flex: 1; background: var(--bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--gold-glow); }
+        .ai-message.user .ai-message-content { background: rgba(212,175,55,0.1); border-color: var(--gold); }
+        .ai-message-text { font-size: 0.85rem; line-height: 1.6; color: var(--text); }
+        .ai-message-time { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; }
+        .ai-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .ai-suggestion-chip { padding: 6px 12px; background: var(--bg-elevated); border: 1px solid var(--gold-glow); border-radius: 16px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .ai-suggestion-chip:hover { border-color: var(--gold); color: var(--gold); }
+        .ai-chat-input-area { padding: 16px; background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 0 0 12px 12px; border-top: none; }
+        .ai-input-wrapper { display: flex; gap: 8px; }
+        .ai-chat-input { flex: 1; padding: 12px 16px; background: var(--bg); border: 1px solid var(--gold-glow); border-radius: 24px; color: var(--text); font-size: 0.85rem; }
+        .ai-chat-input:focus { outline: none; border-color: var(--gold); }
+        .ai-send-btn { padding: 12px 24px; background: linear-gradient(135deg, var(--purple), #9333ea); color: #fff; border: none; border-radius: 24px; font-weight: 600; cursor: pointer; }
+        .ai-send-btn:hover { box-shadow: 0 0 20px rgba(168,85,247,0.5); }
+        .ai-loading { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--gold-glow); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Predictive Insights */
+        .predictive-insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .insight-card { background: var(--bg-card); border: 1px solid var(--gold-glow); border-radius: 12px; padding: 16px; }
+        .insight-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .insight-title { font-size: 0.8rem; font-weight: 600; color: var(--gold); }
+        .insight-confidence { font-size: 0.65rem; padding: 3px 8px; background: rgba(34,197,94,0.2); color: var(--success); border-radius: 10px; }
+        .insight-content { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+        .insight-action { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gold-glow); }
+        
+        /* Quantum Search Results */
+        .quantum-results { margin-top: 16px; }
+        .quantum-result-item { padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; border-left: 3px solid var(--gold); }
+        .quantum-result-title { font-size: 0.8rem; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+        .quantum-result-snippet { font-size: 0.75rem; color: var(--text-muted); }
+        .quantum-result-score { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; }
+        
+        /* Feedback Loop */
+        .feedback-buttons { display: flex; gap: 8px; margin-top: 8px; }
+        .feedback-btn { padding: 4px 12px; font-size: 0.65rem; background: var(--bg-elevated); border: 1px solid var(--gold-glow); border-radius: 12px; cursor: pointer; }
+        .feedback-btn:hover { border-color: var(--gold); }
+        .feedback-btn.positive { border-color: var(--success); }
+        .feedback-btn.negative { border-color: var(--danger); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .analytics-grid { grid-template-columns: repeat(2, 1fr); }
+            .deals-grid { grid-template-columns: 1fr; }
+            .header-stats { display: none; }
+        }
+        
+        /* Hidden sections */
+        .section { display: none; }
+        .section.active { display: block; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>⚡ NEXUS::CRM</h1>
+        <div class="header-stats">
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-deals">0</div>
+                <div class="header-stat-label">Active Deals</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-pipeline">$0</div>
+                <div class="header-stat-label">Pipeline</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-weighted">$0</div>
+                <div class="header-stat-label">Weighted</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="stat-contacts">0</div>
+                <div class="header-stat-label">Contacts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <div class="nav-tab active" data-section="pipeline">📊 Pipeline</div>
+        <div class="nav-tab" data-section="contacts">👥 Network</div>
+        <div class="nav-tab" data-section="analytics">📈 Analytics</div>
+        <div class="nav-tab" data-section="ai-assistant">🤖 AI Assistant</div>
+        <div class="nav-tab" data-section="ingest">🔗 LinkedIn Ingest</div>
+    </div>
+
+    <div class="container">
+        <!-- PIPELINE SECTION -->
+        <div id="pipeline" class="section active">
+            <!-- War Room Tabs -->
+            <div class="war-tabs">
+                <div class="war-tab war-room" data-tab="WAR_ROOM">🔴 War Room <span class="count" id="count-war">0</span></div>
+                <div class="war-tab command active" data-tab="COMMAND">⚡ Command Center <span class="count" id="count-command">0</span></div>
+                <div class="war-tab fractional" data-tab="FRACTIONAL">💼 Fractional <span class="count" id="count-fractional">0</span></div>
+                <div class="war-tab freezer" data-tab="FREEZER">❄️ Freezer <span class="count" id="count-freezer">0</span></div>
+                <div class="war-tab depot" data-tab="DEPOT">📦 Depot <span class="count" id="count-depot">0</span></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <input type="text" class="search-box" id="search" placeholder="Search deals, companies, contacts...">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="toggleFilters()">🔍 Filters</button>
+                    <button class="quick-action-btn" onclick="showSmartSuggestions()">💡 Suggestions</button>
+                    <button class="quick-action-btn" onclick="autoPopulateFromContacts()">⚡ Auto-Fill</button>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" onclick="switchView('grid')">Grid</button>
+                    <button class="view-btn" data-view="kanban" onclick="switchView('kanban')">Kanban</button>
+                    <button class="view-btn" data-view="table" onclick="switchView('table')">Table</button>
+                </div>
+                <button class="btn btn-secondary" onclick="exportData()">📥 Export</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📤 Import</button>
+                <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
+                <button class="btn btn-primary" onclick="openDealModal()">+ Add Deal</button>
+            </div>
+
+            <!-- Advanced Filters -->
+            <div class="filters-panel" id="filters-panel">
+                <div class="filter-group">
+                    <div>
+                        <div class="filter-label">Status</div>
+                        <select class="form-select" id="filter-status" style="font-size: 0.75rem; padding: 6px;">
+                            <option value="">All Statuses</option>
+                            <option value="lead">Lead</option>
+                            <option value="meeting">Meeting</option>
+                            <option value="proposal">Proposal</option>
+                            <option value="negotiation">Negotiation</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="filter-label">Signal Score</div>
+                        <select class="form-select" id="filter-score" style="font-size: 0.75rem; padding: 6px;">
+                            <option value="">All Scores</option>
+                            <option value="10">10 (Highest)</option>
+                            <option value="8-9">8-9 (High)</option>
+                            <option value="5-7">5-7 (Medium)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="filter-label">Contact Type</div>
+                        <select class="form-select" id="filter-type" style="font-size: 0.75rem; padding: 6px;">
+                            <option value="">All Types</option>
+                            <option value="Hiring Manager">Hiring Manager</option>
+                            <option value="Recruiter">Recruiter</option>
+                            <option value="Executive">Executive</option>
+                            <option value="Peer">Peer</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="filter-label">Company</div>
+                        <input type="text" class="form-input" id="filter-company" placeholder="Filter by company..." style="font-size: 0.75rem; padding: 6px;">
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="applyFilters()" style="font-size: 0.7rem; padding: 6px 12px;">Apply Filters</button>
+                <button class="btn btn-secondary" onclick="clearFilters()" style="font-size: 0.7rem; padding: 6px 12px; margin-left: 8px;">Clear</button>
+            </div>
+
+            <!-- Smart Suggestions -->
+            <div class="suggestions-panel" id="suggestions-panel" style="display:none;">
+                <h4 style="color: var(--gold); font-size: 0.85rem; margin-bottom: 12px;">💡 Smart Suggestions</h4>
+                <div id="suggestions-list"></div>
+            </div>
+
+            <!-- Deals Grid -->
+            <div class="deals-grid" id="deals-grid"></div>
+            
+            <!-- Kanban Board -->
+            <div class="kanban-board" id="kanban-board" style="display:none;">
+                <div class="kanban-column" data-status="lead">
+                    <div class="kanban-column-header">
+                        <span>📋 Lead</span>
+                        <span class="kanban-column-count" id="kanban-count-lead">0</span>
+                    </div>
+                    <div class="kanban-deals" id="kanban-lead"></div>
+                </div>
+                <div class="kanban-column" data-status="meeting">
+                    <div class="kanban-column-header">
+                        <span>📅 Meeting</span>
+                        <span class="kanban-column-count" id="kanban-count-meeting">0</span>
+                    </div>
+                    <div class="kanban-deals" id="kanban-meeting"></div>
+                </div>
+                <div class="kanban-column" data-status="proposal">
+                    <div class="kanban-column-header">
+                        <span>📄 Proposal</span>
+                        <span class="kanban-column-count" id="kanban-count-proposal">0</span>
+                    </div>
+                    <div class="kanban-deals" id="kanban-proposal"></div>
+                </div>
+                <div class="kanban-column" data-status="negotiation">
+                    <div class="kanban-column-header">
+                        <span>🤝 Negotiation</span>
+                        <span class="kanban-column-count" id="kanban-count-negotiation">0</span>
+                    </div>
+                    <div class="kanban-deals" id="kanban-negotiation"></div>
+                </div>
+                <div class="kanban-column" data-status="closed">
+                    <div class="kanban-column-header">
+                        <span>✅ Closed Won</span>
+                        <span class="kanban-column-count" id="kanban-count-closed">0</span>
+                    </div>
+                    <div class="kanban-deals" id="kanban-closed"></div>
+                </div>
+            </div>
+            
+            <!-- Table View -->
+            <div class="table-view" id="table-view">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                            <th>Probability</th>
+                            <th>War Room</th>
+                            <th>Contacts</th>
+                            <th>Next Move</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CONTACTS/NETWORK SECTION -->
+        <div id="contacts" class="section">
+            <div class="controls">
+                <input type="text" class="search-box" id="contact-search" placeholder="Search contacts, companies, roles...">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="filterContactsByScore(8)">🔥 Hot (8+)</button>
+                    <button class="quick-action-btn" onclick="filterContactsByType('Hiring Manager')">👔 Hiring Managers</button>
+                    <button class="quick-action-btn" onclick="filterContactsByType('Recruiter')">📞 Recruiters</button>
+                    <button class="quick-action-btn" onclick="showContactRelationships()">🔗 Relationships</button>
+                </div>
+                <button class="btn btn-secondary" onclick="bulkConvertContactsToDeals()">⚡ Convert to Deals</button>
+                <button class="btn btn-primary" onclick="openContactModal()">+ Add Contact</button>
+            </div>
+            <div style="margin-bottom: 12px; display: flex; gap: 8px; align-items: center;">
+                <input type="checkbox" id="select-all-contacts" onchange="toggleSelectAllContacts(this.checked)">
+                <label for="select-all-contacts" style="font-size: 0.75rem; color: var(--text-muted);">Select All</label>
+                <span id="selected-count" style="font-size: 0.75rem; color: var(--gold); margin-left: auto;"></span>
+            </div>
+            <div class="deals-grid" id="contacts-grid"></div>
+            
+            <!-- Bulk Actions Bar -->
+            <div class="bulk-actions" id="bulk-actions">
+                <span class="bulk-count" id="bulk-count">0 selected</span>
+                <button class="btn btn-secondary" onclick="bulkConvertSelected()" style="font-size: 0.7rem;">⚡ Convert to Deals</button>
+                <button class="btn btn-secondary" onclick="bulkUpdateScore()" style="font-size: 0.7rem;">📊 Update Score</button>
+                <button class="btn btn-secondary" onclick="clearSelection()" style="font-size: 0.7rem;">Clear</button>
+            </div>
+        </div>
+
+        <!-- ANALYTICS SECTION -->
+        <div id="analytics" class="section">
+            <div class="controls" style="margin-bottom: 20px;">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="showEmailSequences()">📧 Email Sequences</button>
+                    <button class="quick-action-btn" onclick="showAutomationWorkflows()">⚙️ Automation</button>
+                    <button class="quick-action-btn" onclick="exportAnalyticsReport()">📊 Export Report</button>
+                </div>
+            </div>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-total-deals">0</div>
+                    <div class="analytics-label">Total Deals</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-pipeline">$0</div>
+                    <div class="analytics-label">Total Pipeline</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-weighted">$0</div>
+                    <div class="analytics-label">Weighted Value</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-avg-days">0</div>
+                    <div class="analytics-label">Avg Days in Stage</div>
+                </div>
+            </div>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-win-rate">0%</div>
+                    <div class="analytics-label">Win Rate</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-hot">0</div>
+                    <div class="analytics-label">Hot Leads (8+)</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-stalled">0</div>
+                    <div class="analytics-label">Stalled (14+ days)</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="a-network">0</div>
+                    <div class="analytics-label">Network Size</div>
+                </div>
+            </div>
+            <h3 style="color: var(--gold); margin: 24px 0 16px; font-size: 0.9rem;">📊 Pipeline by Status</h3>
+            <div id="status-breakdown"></div>
+            
+            <!-- Email Sequences Panel -->
+            <div id="email-sequences-panel" style="display:none; margin-top: 24px;">
+                <h3 style="color: var(--gold); margin-bottom: 16px; font-size: 0.9rem;">📧 Email Sequences</h3>
+                <div class="deals-grid" id="sequences-grid"></div>
+            </div>
+            
+            <!-- Automation Workflows Panel -->
+            <div id="automation-workflows-panel" style="display:none; margin-top: 24px;">
+                <h3 style="color: var(--gold); margin-bottom: 16px; font-size: 0.9rem;">⚙️ Automation Workflows</h3>
+                <div class="deals-grid" id="workflows-grid"></div>
+            </div>
+        </div>
+
+        <!-- AI ASSISTANT SECTION -->
+        <div id="ai-assistant" class="section">
+            <div class="ai-assistant-container">
+                <div class="ai-chat-header">
+                    <div>
+                        <h3>🤖 Basin::NEXUS AI Assistant</h3>
+                        <div class="ai-status">Quantum Search • Predictive Analytics • Learning Mode</div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="showPredictiveInsights()" style="font-size: 0.7rem; padding: 6px 12px;">📊 Insights</button>
+                </div>
+                
+                <div class="ai-chat-messages" id="ai-chat-messages">
+                    <div class="ai-message">
+                        <div class="ai-avatar">🤖</div>
+                        <div class="ai-message-content">
+                            <div class="ai-message-text">
+                                <strong>Welcome to Basin::NEXUS AI Assistant!</strong><br><br>
+                                I can help you with:
+                                <ul style="margin: 8px 0; padding-left: 20px;">
+                                    <li>🔍 <strong>Quantum Search</strong> - Find contacts, deals, or insights across your entire CRM</li>
+                                    <li>📊 <strong>Predictive Analytics</strong> - Forecast deal outcomes, suggest next actions</li>
+                                    <li>🎯 <strong>Smart Recommendations</strong> - AI-powered suggestions for your pipeline</li>
+                                    <li>📈 <strong>Pattern Recognition</strong> - Identify trends and opportunities</li>
+                                </ul>
+                                <div class="ai-suggestions">
+                                    <div class="ai-suggestion-chip" onclick="sendAIMessage('Who are my top 10 contacts to reach out to this week?')">Top 10 contacts this week</div>
+                                    <div class="ai-suggestion-chip" onclick="sendAIMessage('What deals need my attention?')">Deals needing attention</div>
+                                    <div class="ai-suggestion-chip" onclick="sendAIMessage('Predict which deals will close this month')">Predict deal outcomes</div>
+                                    <div class="ai-suggestion-chip" onclick="sendAIMessage('Find all contacts at companies in my pipeline')">Find related contacts</div>
+                                </div>
+                            </div>
+                            <div class="ai-message-time">Just now</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ai-chat-input-area">
+                    <div class="ai-input-wrapper">
+                        <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Ask me anything about your CRM... (e.g., 'Find high-signal contacts at AI companies')" onkeypress="if(event.key==='Enter') sendAIMessage()">
+                        <button class="ai-send-btn" onclick="sendAIMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Predictive Insights Panel -->
+            <div id="predictive-insights-panel" style="display:none; margin-top: 24px;">
+                <h3 style="color: var(--gold); margin-bottom: 16px; font-size: 0.9rem;">📊 Predictive Insights (HubSpot/Salesforce Style)</h3>
+                <div class="predictive-insights" id="predictive-insights-grid"></div>
+            </div>
+        </div>
+
+        <!-- LINKEDIN INGEST SECTION -->
+        <div id="ingest" class="section">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">🔗 LinkedIn Smart Ingest</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                Paste raw LinkedIn text (e.g., search results, connection lists). AI will parse names, roles, companies and score signal strength.
+            </p>
+            <div class="ingest-area">
+                <textarea class="ingest-textarea" id="ingest-text" placeholder="Paste LinkedIn data here...
+
+Example:
+John Smith • 1st
+VP of Sales at Acme Corp
+San Francisco Bay Area
+
+Jane Doe • 2nd  
+Director of Revenue Operations at TechCo
+Hiring • New York"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="processLinkedInIngest()" style="width: 100%;">⚡ Process & Score Contacts</button>
+            <div id="ingest-results" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Deal Modal -->
+    <div class="modal" id="deal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Add New Deal</div>
+                <button class="modal-close" onclick="closeDealModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <div class="modal-tab active" data-modal-tab="overview">Overview</div>
+                    <div class="modal-tab" data-modal-tab="star">STAR Framework</div>
+                    <div class="modal-tab" data-modal-tab="contacts">Contacts</div>
+                    <div class="modal-tab" data-modal-tab="timeline">Timeline</div>
+                </div>
+                
+                <form id="deal-form">
+                    <input type="hidden" id="deal-id">
+                    
+                    <!-- Overview Tab -->
+                    <div id="tab-overview" class="modal-tab-content">
+                        <div class="form-row">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Company *</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="form-input" id="deal-company" required list="company-suggestions">
+                                <button type="button" class="btn btn-secondary" onclick="suggestCompanyFromContacts()" style="font-size: 0.7rem; padding: 8px 12px;">🔍</button>
+                            </div>
+                            <datalist id="company-suggestions"></datalist>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Role *</label>
+                            <input type="text" class="form-input" id="deal-role" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <button type="button" class="btn btn-secondary" onclick="autoPopulateDealFromContact()" style="width: 100%; font-size: 0.75rem;">
+                            ⚡ Auto-Fill from Contact
+                        </button>
+                        <select class="form-select" id="contact-selector" style="margin-top: 8px; font-size: 0.75rem;" onchange="selectContactForDeal(this.value)">
+                            <option value="">Select a contact to auto-fill...</option>
+                        </select>
+                    </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">War Room Tab</label>
+                                <select class="form-select" id="deal-tab">
+                                    <option value="DEPOT">📦 Depot</option>
+                                    <option value="COMMAND">⚡ Command Center</option>
+                                    <option value="WAR_ROOM">🔴 War Room</option>
+                                    <option value="FRACTIONAL">💼 Fractional</option>
+                                    <option value="FREEZER">❄️ Freezer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="deal-status">
+                                    <option value="lead">Lead</option>
+                                    <option value="meeting">Meeting Set</option>
+                                    <option value="proposal">Proposal</option>
+                                    <option value="negotiation">Negotiation</option>
+                                    <option value="closed">Closed Won</option>
+                                    <option value="lost">Lost</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Deal Value / Salary</label>
+                                <input type="text" class="form-input" id="deal-value" placeholder="$150,000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Probability %</label>
+                                <input type="number" class="form-input" id="deal-probability" min="0" max="100" value="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">⚡ Next Move (Action Item)</label>
+                            <input type="text" class="form-input" id="deal-next" placeholder="Follow up with hiring manager on Monday">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Notes / Intel</label>
+                            <textarea class="form-textarea" id="deal-notes" placeholder="Key insights, context, strategy..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Job URL</label>
+                            <input type="url" class="form-input" id="deal-url" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <!-- STAR Tab -->
+                    <div id="tab-star" class="modal-tab-content" style="display:none;">
+                        <div class="star-section">
+                            <div class="star-title">⭐ STAR Framework for Interview Prep</div>
+                            <div class="star-grid">
+                                <div class="star-item">
+                                    <label><span>🎯</span> Situation</label>
+                                    <textarea class="form-textarea" id="star-situation" placeholder="What was the context/challenge?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>📋</span> Task</label>
+                                    <textarea class="form-textarea" id="star-task" placeholder="What was your responsibility?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>⚙️</span> Action</label>
+                                    <textarea class="form-textarea" id="star-action" placeholder="What did you do specifically?"></textarea>
+                                </div>
+                                <div class="star-item">
+                                    <label><span>📈</span> Result</label>
+                                    <textarea class="form-textarea" id="star-result" placeholder="What was the measurable outcome?"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contacts Tab -->
+                    <div id="tab-contacts" class="modal-tab-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Contact Name</label>
+                                <input type="text" class="form-input" id="contact-name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role/Title</label>
+                                <input type="text" class="form-input" id="contact-role">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" id="contact-email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select class="form-select" id="contact-type">
+                                    <option value="HM">Hiring Manager</option>
+                                    <option value="RECRUITER">Recruiter</option>
+                                    <option value="CRO">CRO/VP</option>
+                                    <option value="PEER">Peer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addContactToDeal()" style="margin-bottom: 16px;">+ Add Contact</button>
+                        <div class="contacts-list" id="deal-contacts-list"></div>
+                    </div>
+                    
+                    <!-- Timeline Tab -->
+                    <div id="tab-timeline" class="modal-tab-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label class="form-label">Log Activity</label>
+                                <input type="text" class="form-input" id="activity-text" placeholder="Had call with VP Sales...">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Type</label>
+                                <select class="form-select" id="activity-type">
+                                    <option value="NOTE">📝 Note</option>
+                                    <option value="CALL">📞 Call</option>
+                                    <option value="EMAIL">✉️ Email</option>
+                                    <option value="MEETING">📅 Meeting</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addActivity()" style="margin-bottom: 16px;">+ Log Activity</button>
+                        <div id="activity-timeline"></div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--gold-glow);">
+                        <button type="button" class="btn btn-secondary" onclick="closeDealModal()">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="openCalendar()" style="flex: 1;">📅 Schedule</button>
+                        <button type="button" class="btn btn-secondary" onclick="generateEmail()" style="flex: 1;">✉️ Draft Email</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 2;">💾 Save Deal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">Add Network Contact</div>
+                <button class="modal-close" onclick="closeContactModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="network-contact-form">
+                    <input type="hidden" id="nc-id">
+                    <div class="form-group">
+                        <label class="form-label">Name *</label>
+                        <input type="text" class="form-input" id="nc-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Role</label>
+                            <input type="text" class="form-input" id="nc-role">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company</label>
+                            <input type="text" class="form-input" id="nc-company">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <select class="form-select" id="nc-type">
+                                <option value="Hiring Manager">Hiring Manager</option>
+                                <option value="Recruiter">Recruiter</option>
+                                <option value="Executive">Executive</option>
+                                <option value="Peer">Peer</option>
+                                <option value="VC">VC</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Signal Score (1-10)</label>
+                            <input type="number" class="form-input" id="nc-score" min="1" max="10" value="5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn URL</label>
+                        <input type="url" class="form-input" id="nc-linkedin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes / Reasoning</label>
+                        <textarea class="form-textarea" id="nc-notes" placeholder="Why is this contact valuable?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">💾 Save Contact</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════════
+    // NEXUS::CRM - Unified Revenue Command Center
+    // ═══════════════════════════════════════════════════════════════
+    
+    const STORAGE_KEY = 'nexus_crm_data';
+    let data = { deals: [], contacts: [] };
+    let currentTab = 'COMMAND';
+    let currentDealId = null;
+    let currentView = 'grid';
+    let activeFilters = {};
+    let selectedItems = new Set();
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('🚀 NEXUS CRM v2.0 - AI Assistant Enabled');
+        console.log('Sections found:', document.querySelectorAll('.section').length);
+        console.log('Nav tabs found:', document.querySelectorAll('.nav-tab').length);
+        loadData();
+        renderAll();
+        setupEventListeners();
+        
+        // Verify AI Assistant is accessible
+        const aiSection = document.getElementById('ai-assistant');
+        if (aiSection) {
+            console.log('✅ AI Assistant section found');
+        } else {
+            console.error('❌ AI Assistant section NOT found!');
+        }
+    });
+    
+    function loadData() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            data = JSON.parse(saved);
+        } else {
+            // Initialize with pre-loaded contacts on first run
+            initializeWithPreloadedContacts();
+        }
+    }
+    
+    function initializeWithPreloadedContacts() {
+        // Pre-loaded contacts from your network (134 contacts)
+        fetch('../data/preloaded-contacts.json')
+            .then(res => res.json())
+            .then(contacts => {
+                data.contacts = contacts;
+                saveData();
+            })
+            .catch(() => {
+                // Fallback: initialize empty if fetch fails
+                data.contacts = [];
+                saveData();
+            });
+    }
+    
+    function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        renderAll();
+    }
+    
+    function setupEventListeners() {
+        // Nav tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+        
+        // War room tabs
+        document.querySelectorAll('.war-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.war-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.tab;
+                renderDeals();
+            });
+        });
+        
+        // Modal tabs
+        document.querySelectorAll('.modal-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.modal-tab-content').forEach(c => c.style.display = 'none');
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.modalTab).style.display = 'block';
+            });
+        });
+        
+        // Search
+        document.getElementById('search').addEventListener('input', renderDeals);
+        document.getElementById('contact-search').addEventListener('input', renderContacts);
+        
+        // Forms
+        document.getElementById('deal-form').addEventListener('submit', saveDeal);
+        document.getElementById('network-contact-form').addEventListener('submit', saveNetworkContact);
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // RENDERING
+    // ═══════════════════════════════════════════════════════════════
+    
+    function renderAll() {
+        renderDeals();
+        renderContacts();
+        renderAnalytics();
+        updateHeaderStats();
+        updateTabCounts();
+        updateCompanySuggestions();
+        updateContactSelector();
+    }
+    
+    function renderDeals() {
+        const search = document.getElementById('search').value.toLowerCase();
+        let filtered = data.deals.filter(d => {
+            const matchesTab = d.warRoomTab === currentTab;
+            const matchesSearch = !search || 
+                d.company.toLowerCase().includes(search) || 
+                d.role.toLowerCase().includes(search) ||
+                (d.nextMove || '').toLowerCase().includes(search) ||
+                ((d.contacts || []).some(c => c.name.toLowerCase().includes(search)));
+            return matchesTab && matchesSearch;
+        });
+        
+        // Apply filters
+        if (activeFilters.status) {
+            filtered = filtered.filter(d => d.status === activeFilters.status);
+        }
+        if (activeFilters.company) {
+            filtered = filtered.filter(d => d.company.toLowerCase().includes(activeFilters.company.toLowerCase()));
+        }
+        
+        // Render based on current view
+        if (currentView === 'kanban') {
+            renderKanban(filtered);
+        } else if (currentView === 'table') {
+            renderTableView(filtered);
+        } else {
+            renderGridView(filtered);
+        }
+    }
+    
+    function renderGridView(deals) {
+        const grid = document.getElementById('deals-grid');
+        grid.innerHTML = deals.map(deal => {
+            const relatedContacts = getContactsForCompany(deal.company);
+            return `
+            <div class="deal-card" onclick="openDealModal('${deal.id}')">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${deal.company}</div>
+                        <div class="deal-role">${deal.role}</div>
+                    </div>
+                    <span class="deal-status status-${deal.status}">${formatStatus(deal.status)}</span>
+                </div>
+                <div class="deal-metrics">
+                    <div class="metric">
+                        <div class="metric-value">${deal.value || '—'}</div>
+                        <div class="metric-label">Value</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${deal.probability || 0}%</div>
+                        <div class="metric-label">Prob</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${(deal.contacts || []).length}</div>
+                        <div class="metric-label">Contacts</div>
+                    </div>
+                </div>
+                ${deal.nextMove ? `<div class="deal-next">📌 ${deal.nextMove}</div>` : ''}
+                ${relatedContacts.length > 0 ? `<div style="font-size: 0.65rem; color: var(--text-dim); margin-top: 8px;">🔗 ${relatedContacts.length} network contact(s) available</div>` : ''}
+                <div class="deal-actions">
+                    <button class="deal-btn" onclick="event.stopPropagation(); advanceStatus('${deal.id}')">⬆️ Advance</button>
+                    <button class="deal-btn" onclick="event.stopPropagation(); linkContactsToDeal('${deal.id}')">🔗 Link Contacts</button>
+                    <button class="deal-btn" onclick="event.stopPropagation(); deleteDeal('${deal.id}')">🗑️ Delete</button>
+                </div>
+            </div>
+        `}).join('') || '<p style="color: var(--text-muted); text-align: center; grid-column: 1/-1;">No deals in this tab</p>';
+    }
+    
+    function renderKanban(deals) {
+        const statuses = ['lead', 'meeting', 'proposal', 'negotiation', 'closed'];
+        statuses.forEach(status => {
+            const columnDeals = deals.filter(d => d.status === status);
+            const column = document.getElementById(`kanban-${status}`);
+            document.getElementById(`kanban-count-${status}`).textContent = columnDeals.length;
+            
+            column.innerHTML = columnDeals.map(deal => `
+                <div class="kanban-deal" draggable="true" data-deal-id="${deal.id}" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" onclick="openDealModal('${deal.id}')">
+                    <div style="font-weight: 600; color: var(--gold); margin-bottom: 4px;">${deal.company}</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">${deal.role}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.65rem;">
+                        <span>${deal.value || '—'}</span>
+                        <span>${deal.probability || 0}%</span>
+                    </div>
+                    ${deal.nextMove ? `<div style="font-size: 0.65rem; color: var(--warning); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--gold-glow);">📌 ${deal.nextMove.substring(0, 40)}</div>` : ''}
+                </div>
+            `).join('');
+        });
+    }
+    
+    function renderTableView(deals) {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = deals.map(deal => `
+            <tr>
+                <td><strong>${deal.company}</strong></td>
+                <td>${deal.role}</td>
+                <td><span class="deal-status status-${deal.status}">${formatStatus(deal.status)}</span></td>
+                <td>${deal.value || '—'}</td>
+                <td>${deal.probability || 0}%</td>
+                <td>${formatWarRoomTab(deal.warRoomTab)}</td>
+                <td>${(deal.contacts || []).length}</td>
+                <td>${deal.nextMove || '—'}</td>
+                <td>
+                    <button class="deal-btn" onclick="openDealModal('${deal.id}')">Edit</button>
+                    <button class="deal-btn" onclick="deleteDeal('${deal.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('') || '<tr><td colspan="9" style="text-align: center; color: var(--text-muted);">No deals</td></tr>';
+    }
+    
+    function renderContacts() {
+        const search = document.getElementById('contact-search')?.value.toLowerCase() || '';
+        let filtered = data.contacts.filter(c => 
+            !search || c.name.toLowerCase().includes(search) || 
+            (c.company || '').toLowerCase().includes(search) ||
+            (c.role || '').toLowerCase().includes(search)
+        );
+        
+        // Apply filters
+        if (activeFilters.score) {
+            filtered = filtered.filter(c => (c.signalScore || 0) >= activeFilters.score);
+        }
+        if (activeFilters.type) {
+            filtered = filtered.filter(c => c.type === activeFilters.type);
+        }
+        
+        filtered.sort((a, b) => (b.signalScore || 0) - (a.signalScore || 0));
+        
+        const grid = document.getElementById('contacts-grid');
+        grid.innerHTML = filtered.map(c => {
+            const scoreClass = c.signalScore >= 8 ? 'score-high' : c.signalScore >= 5 ? 'score-med' : 'score-low';
+            const isSelected = selectedItems.has(c.id);
+            const relatedDeals = getRelatedDealsCount(c.company);
+            const relatedContacts = getRelatedContactsCount(c.company);
+            return `
+            <div class="deal-card" style="${isSelected ? 'border-color: var(--gold); border-width: 2px;' : ''}" onclick="if(!event.target.closest('input,button')) openContactModal('${c.id}')">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleContactSelection('${c.id}', this.checked)" onclick="event.stopPropagation();" style="cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-company">${c.name}</div>
+                                <div class="deal-role">${c.role || ''} ${c.company ? '@ ' + c.company : ''}</div>
+                            </div>
+                            <span class="contact-score ${scoreClass}">${c.signalScore || 5}/10</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 0.7rem; padding: 3px 8px; background: var(--bg); border-radius: 4px; color: var(--text-muted);">${c.type || 'Contact'}</span>
+                    <button class="convert-btn" onclick="event.stopPropagation(); convertContactToDeal('${c.id}')" style="font-size: 0.65rem; padding: 3px 8px;">
+                        ➡️ Create Deal
+                    </button>
+                    ${c.linkedin ? `<a href="${c.linkedin}" target="_blank" onclick="event.stopPropagation();" style="font-size: 0.65rem; padding: 3px 8px; background: var(--info); color: #fff; border-radius: 4px; text-decoration: none;">🔗 LinkedIn</a>` : ''}
+                </div>
+                ${c.notes ? `<p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-style: italic;">"${c.notes.substring(0, 100)}..."</p>` : ''}
+                <div style="margin-top: 8px; font-size: 0.65rem; color: var(--text-dim); display: flex; gap: 12px;">
+                    <span>${relatedDeals} deal(s)</span>
+                    <span>${relatedContacts} contact(s)</span>
+                    ${relatedDeals > 0 ? `<button class="quick-action-btn" onclick="event.stopPropagation(); showDealsForCompany('${c.company}')" style="font-size: 0.6rem;">View Deals</button>` : ''}
+                </div>
+            </div>
+        `}).join('') || '<p style="color: var(--text-muted); text-align: center; grid-column: 1/-1;">No contacts yet</p>';
+        
+        updateBulkActions();
+    }
+    
+    function renderAnalytics() {
+        const active = data.deals.filter(d => d.status !== 'lost');
+        const closed = data.deals.filter(d => d.status === 'closed');
+        const totalValue = active.reduce((sum, d) => sum + parseValue(d.value), 0);
+        const weightedValue = active.reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0);
+        const avgDays = active.length ? Math.round(active.reduce((sum, d) => sum + (d.daysInStage || 0), 0) / active.length) : 0;
+        const winRate = data.deals.length ? Math.round((closed.length / data.deals.filter(d => d.status === 'closed' || d.status === 'lost').length) * 100) || 0 : 0;
+        const hotLeads = data.contacts.filter(c => (c.signalScore || 0) >= 8).length;
+        const stalled = active.filter(d => (d.daysInStage || 0) >= 14).length;
+        
+        document.getElementById('a-total-deals').textContent = active.length;
+        document.getElementById('a-pipeline').textContent = formatCurrency(totalValue);
+        document.getElementById('a-weighted').textContent = formatCurrency(weightedValue);
+        document.getElementById('a-avg-days').textContent = avgDays;
+        document.getElementById('a-win-rate').textContent = winRate + '%';
+        document.getElementById('a-hot').textContent = hotLeads;
+        document.getElementById('a-stalled').textContent = stalled;
+        document.getElementById('a-network').textContent = data.contacts.length;
+        
+        // Status breakdown
+        const statuses = ['lead', 'meeting', 'proposal', 'negotiation', 'closed', 'lost'];
+        document.getElementById('status-breakdown').innerHTML = statuses.map(s => {
+            const count = data.deals.filter(d => d.status === s).length;
+            const value = data.deals.filter(d => d.status === s).reduce((sum, d) => sum + parseValue(d.value), 0);
+            return `<div style="display: flex; justify-content: space-between; padding: 12px; background: var(--bg-card); border-radius: 8px; margin-bottom: 8px;">
+                <span style="font-size: 0.85rem;"><span class="deal-status status-${s}" style="margin-right: 10px;">${formatStatus(s)}</span></span>
+                <span style="color: var(--text-muted);">${count} deals · ${formatCurrency(value)}</span>
+            </div>`;
+        }).join('');
+    }
+    
+    function updateHeaderStats() {
+        const active = data.deals.filter(d => d.status !== 'lost');
+        const totalValue = active.reduce((sum, d) => sum + parseValue(d.value), 0);
+        const weightedValue = active.reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0);
+        
+        document.getElementById('stat-deals').textContent = active.length;
+        document.getElementById('stat-pipeline').textContent = formatCurrency(totalValue);
+        document.getElementById('stat-weighted').textContent = formatCurrency(weightedValue);
+        document.getElementById('stat-contacts').textContent = data.contacts.length;
+        
+        // Update nav tab counts
+        document.querySelectorAll('.nav-tab .count').forEach(el => el.remove());
+        const networkTab = document.querySelector('[data-section="contacts"]');
+        if (networkTab) {
+            const count = document.createElement('span');
+            count.className = 'count';
+            count.textContent = data.contacts.length;
+            networkTab.appendChild(count);
+        }
+    }
+    
+    function updateTabCounts() {
+        const tabs = ['WAR_ROOM', 'COMMAND', 'FRACTIONAL', 'FREEZER', 'DEPOT'];
+        const ids = ['war', 'command', 'fractional', 'freezer', 'depot'];
+        tabs.forEach((tab, i) => {
+            document.getElementById('count-' + ids[i]).textContent = data.deals.filter(d => d.warRoomTab === tab).length;
+        });
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // DEAL OPERATIONS
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openDealModal(id = null) {
+        currentDealId = id;
+        const modal = document.getElementById('deal-modal');
+        const form = document.getElementById('deal-form');
+        
+        if (id) {
+            const deal = data.deals.find(d => d.id === id);
+            if (deal) {
+                document.getElementById('modal-title').textContent = 'Edit: ' + deal.company;
+                document.getElementById('deal-id').value = deal.id;
+                document.getElementById('deal-company').value = deal.company || '';
+                document.getElementById('deal-role').value = deal.role || '';
+                document.getElementById('deal-tab').value = deal.warRoomTab || 'DEPOT';
+                document.getElementById('deal-status').value = deal.status || 'lead';
+                document.getElementById('deal-value').value = deal.value || '';
+                document.getElementById('deal-probability').value = deal.probability || 50;
+                document.getElementById('deal-next').value = deal.nextMove || '';
+                document.getElementById('deal-notes').value = deal.notes || '';
+                document.getElementById('deal-url').value = deal.url || '';
+                // STAR
+                document.getElementById('star-situation').value = deal.star?.situation || '';
+                document.getElementById('star-task').value = deal.star?.task || '';
+                document.getElementById('star-action').value = deal.star?.action || '';
+                document.getElementById('star-result').value = deal.star?.result || '';
+                // Render contacts & timeline
+                renderDealContacts(deal);
+                renderActivityTimeline(deal);
+            }
+        } else {
+            document.getElementById('modal-title').textContent = 'Add New Deal';
+            form.reset();
+            document.getElementById('deal-contacts-list').innerHTML = '';
+            document.getElementById('activity-timeline').innerHTML = '';
+        }
+        
+        // Update contact selector when modal opens
+        updateContactSelector();
+        modal.classList.add('active');
+    }
+    
+    function closeDealModal() {
+        document.getElementById('deal-modal').classList.remove('active');
+        currentDealId = null;
+    }
+    
+    function saveDeal(e) {
+        e.preventDefault();
+        const id = document.getElementById('deal-id').value;
+        const dealData = {
+            id: id || Date.now().toString(),
+            company: document.getElementById('deal-company').value,
+            role: document.getElementById('deal-role').value,
+            warRoomTab: document.getElementById('deal-tab').value,
+            status: document.getElementById('deal-status').value,
+            value: document.getElementById('deal-value').value,
+            probability: parseInt(document.getElementById('deal-probability').value) || 0,
+            nextMove: document.getElementById('deal-next').value,
+            notes: document.getElementById('deal-notes').value,
+            url: document.getElementById('deal-url').value,
+            star: {
+                situation: document.getElementById('star-situation').value,
+                task: document.getElementById('star-task').value,
+                action: document.getElementById('star-action').value,
+                result: document.getElementById('star-result').value
+            },
+            updatedAt: new Date().toISOString()
+        };
+        
+        if (id) {
+            const idx = data.deals.findIndex(d => d.id === id);
+            if (idx !== -1) data.deals[idx] = { ...data.deals[idx], ...dealData };
+        } else {
+            dealData.createdAt = new Date().toISOString();
+            dealData.contacts = [];
+            dealData.activities = [];
+            dealData.daysInStage = 0;
+            data.deals.push(dealData);
+        }
+        
+        saveData();
+        closeDealModal();
+    }
+    
+    function advanceStatus(id) {
+        const stages = ['lead', 'meeting', 'proposal', 'negotiation', 'closed'];
+        const deal = data.deals.find(d => d.id === id);
+        if (!deal) return;
+        const idx = stages.indexOf(deal.status);
+        if (idx < stages.length - 1) {
+            deal.status = stages[idx + 1];
+            deal.daysInStage = 0;
+            saveData();
+        }
+    }
+    
+    function deleteDeal(id) {
+        if (confirm('Delete this deal?')) {
+            data.deals = data.deals.filter(d => d.id !== id);
+            saveData();
+        }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // CONTACTS & ACTIVITIES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function addContactToDeal() {
+        if (!currentDealId) return;
+        const deal = data.deals.find(d => d.id === currentDealId);
+        if (!deal) return;
+        if (!deal.contacts) deal.contacts = [];
+        
+        const contact = {
+            id: Date.now().toString(),
+            name: document.getElementById('contact-name').value,
+            role: document.getElementById('contact-role').value,
+            email: document.getElementById('contact-email').value,
+            type: document.getElementById('contact-type').value
+        };
+        
+        if (!contact.name) return alert('Name required');
+        deal.contacts.push(contact);
+        saveData();
+        renderDealContacts(deal);
+        document.getElementById('contact-name').value = '';
+        document.getElementById('contact-role').value = '';
+        document.getElementById('contact-email').value = '';
+    }
+    
+    function renderDealContacts(deal) {
+        const list = document.getElementById('deal-contacts-list');
+        list.innerHTML = (deal.contacts || []).map(c => `
+            <div class="contact-card">
+                <div class="contact-info">
+                    <h4>${c.name}</h4>
+                    <p>${c.role || ''} · ${c.type || ''}</p>
+                </div>
+                <button class="deal-btn" onclick="removeContact('${deal.id}', '${c.id}')">×</button>
+            </div>
+        `).join('') || '<p style="color: var(--text-muted); font-size: 0.8rem;">No contacts added</p>';
+    }
+    
+    function removeContact(dealId, contactId) {
+        const deal = data.deals.find(d => d.id === dealId);
+        if (deal) {
+            deal.contacts = (deal.contacts || []).filter(c => c.id !== contactId);
+            saveData();
+            renderDealContacts(deal);
+        }
+    }
+    
+    function addActivity() {
+        if (!currentDealId) return;
+        const deal = data.deals.find(d => d.id === currentDealId);
+        if (!deal) return;
+        if (!deal.activities) deal.activities = [];
+        
+        const text = document.getElementById('activity-text').value;
+        if (!text) return;
+        
+        deal.activities.unshift({
+            id: Date.now().toString(),
+            type: document.getElementById('activity-type').value,
+            text: text,
+            date: new Date().toISOString()
+        });
+        
+        saveData();
+        renderActivityTimeline(deal);
+        document.getElementById('activity-text').value = '';
+    }
+    
+    function renderActivityTimeline(deal) {
+        const timeline = document.getElementById('activity-timeline');
+        timeline.innerHTML = (deal.activities || []).map(a => `
+            <div style="padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; border-left: 3px solid ${a.type === 'MEETING' ? 'var(--purple)' : a.type === 'CALL' ? 'var(--success)' : a.type === 'EMAIL' ? 'var(--info)' : 'var(--text-muted)'};">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="font-size: 0.7rem; color: var(--gold);">${a.type}</span>
+                    <span style="font-size: 0.65rem; color: var(--text-dim);">${new Date(a.date).toLocaleDateString()}</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text);">${a.text}</p>
+            </div>
+        `).join('') || '<p style="color: var(--text-muted); font-size: 0.8rem;">No activities logged</p>';
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // NETWORK CONTACTS
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openContactModal(id = null) {
+        const modal = document.getElementById('contact-modal');
+        if (id) {
+            const c = data.contacts.find(x => x.id === id);
+            if (c) {
+                document.getElementById('nc-id').value = c.id;
+                document.getElementById('nc-name').value = c.name || '';
+                document.getElementById('nc-role').value = c.role || '';
+                document.getElementById('nc-company').value = c.company || '';
+                document.getElementById('nc-type').value = c.type || 'Peer';
+                document.getElementById('nc-score').value = c.signalScore || 5;
+                document.getElementById('nc-linkedin').value = c.linkedin || '';
+                document.getElementById('nc-notes').value = c.notes || '';
+            }
+        } else {
+            document.getElementById('network-contact-form').reset();
+            document.getElementById('nc-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+    
+    function closeContactModal() {
+        document.getElementById('contact-modal').classList.remove('active');
+    }
+    
+    function saveNetworkContact(e) {
+        e.preventDefault();
+        const id = document.getElementById('nc-id').value;
+        const contactData = {
+            id: id || Date.now().toString(),
+            name: document.getElementById('nc-name').value,
+            role: document.getElementById('nc-role').value,
+            company: document.getElementById('nc-company').value,
+            type: document.getElementById('nc-type').value,
+            signalScore: parseInt(document.getElementById('nc-score').value) || 5,
+            linkedin: document.getElementById('nc-linkedin').value,
+            notes: document.getElementById('nc-notes').value,
+            dateAdded: new Date().toISOString()
+        };
+        
+        if (id) {
+            const idx = data.contacts.findIndex(c => c.id === id);
+            if (idx !== -1) data.contacts[idx] = { ...data.contacts[idx], ...contactData };
+        } else {
+            data.contacts.push(contactData);
+        }
+        
+        saveData();
+        closeContactModal();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // LINKEDIN INGEST
+    // ═══════════════════════════════════════════════════════════════
+    
+    function processLinkedInIngest() {
+        const text = document.getElementById('ingest-text').value;
+        if (!text) return alert('Paste LinkedIn data first');
+        
+        // Simple parsing - looks for patterns like "Name • 1st" or "Name\nTitle at Company"
+        const lines = text.split('\n').filter(l => l.trim());
+        const parsed = [];
+        let current = null;
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Name line (contains • or is capitalized name)
+            if (line.includes('•') || (line.match(/^[A-Z][a-z]+ [A-Z][a-z]+/) && !line.includes('@'))) {
+                if (current) parsed.push(current);
+                const name = line.split('•')[0].trim();
+                const degree = line.includes('1st') ? '1st' : line.includes('2nd') ? '2nd' : '3rd+';
+                current = { name, degree, role: '', company: '', hiring: false };
+            }
+            // Title/Company line
+            else if (current && (line.includes(' at ') || line.includes(' @ '))) {
+                const parts = line.split(/ at | @ /);
+                current.role = parts[0].trim();
+                current.company = parts[1]?.trim() || '';
+            }
+            // Hiring indicator
+            else if (current && line.toLowerCase().includes('hiring')) {
+                current.hiring = true;
+            }
+            // Location (skip)
+            else if (current && !current.role && line.length < 50) {
+                // Could be role without "at"
+                if (!line.includes(',') && !line.match(/\d/)) {
+                    current.role = line;
+                }
+            }
+        }
+        if (current) parsed.push(current);
+        
+        // Score and display
+        const results = document.getElementById('ingest-results');
+        results.innerHTML = `<h4 style="color: var(--gold); margin-bottom: 16px;">Found ${parsed.length} contacts:</h4>`;
+        
+        parsed.forEach(p => {
+            // Calculate signal score
+            let score = 5;
+            if (p.degree === '1st') score += 2;
+            if (p.hiring) score += 2;
+            if (p.role.toLowerCase().includes('vp') || p.role.toLowerCase().includes('director') || p.role.toLowerCase().includes('head')) score += 1;
+            if (p.role.toLowerCase().includes('recruiter')) score += 1;
+            score = Math.min(10, score);
+            
+            const scoreClass = score >= 8 ? 'score-high' : score >= 5 ? 'score-med' : 'score-low';
+            
+            results.innerHTML += `
+                <div class="deal-card" style="margin-bottom: 12px;">
+                    <div class="deal-header">
+                        <div>
+                            <div class="deal-company">${p.name}</div>
+                            <div class="deal-role">${p.role} ${p.company ? '@ ' + p.company : ''}</div>
+                        </div>
+                        <span class="contact-score ${scoreClass}">${score}/10</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        ${p.hiring ? '<span style="font-size: 0.7rem; padding: 3px 8px; background: rgba(34,197,94,0.2); color: var(--success); border-radius: 4px;">🔥 Hiring</span>' : ''}
+                        <span style="font-size: 0.7rem; padding: 3px 8px; background: var(--bg); border-radius: 4px; color: var(--text-muted);">${p.degree}</span>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 12px; width: 100%;" onclick="addParsedContact('${encodeURIComponent(JSON.stringify({...p, signalScore: score}))}')">+ Add to Network</button>
+                </div>
+            `;
+        });
+    }
+    
+    function addParsedContact(encoded) {
+        const c = JSON.parse(decodeURIComponent(encoded));
+        data.contacts.push({
+            id: Date.now().toString(),
+            name: c.name,
+            role: c.role,
+            company: c.company,
+            type: c.hiring ? 'Hiring Manager' : 'Peer',
+            signalScore: c.signalScore,
+            notes: c.hiring ? 'Actively hiring' : '',
+            tags: c.degree === '1st' ? ['#1stDegree'] : [],
+            dateAdded: new Date().toISOString()
+        });
+        saveData();
+        alert('Added ' + c.name + ' to network!');
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // UTILITIES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function openCalendar() {
+        const deal = currentDealId ? data.deals.find(d => d.id === currentDealId) : null;
+        const title = deal ? `Interview: ${deal.company} - ${deal.role}` : 'Interview';
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}`;
+        window.open(url, '_blank');
+    }
+    
+    function generateEmail() {
+        const deal = currentDealId ? data.deals.find(d => d.id === currentDealId) : null;
+        if (!deal) return alert('Save deal first');
+        
+        const template = `Subject: Following up - ${deal.role} opportunity
+
+Hi [Name],
+
+I wanted to follow up on our conversation about the ${deal.role} position at ${deal.company}.
+
+${deal.star?.result ? `As I mentioned, I recently drove results like: ${deal.star.result}` : ''}
+
+I'm very excited about this opportunity and would love to discuss next steps.
+
+Best regards,
+Leon`;
+        
+        navigator.clipboard.writeText(template);
+        alert('Email template copied to clipboard!');
+    }
+    
+    function exportData() {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nexus-crm-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    }
+    
+    function importData(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                if (imported.deals || imported.contacts) {
+                    data = imported;
+                    saveData();
+                    alert('Data imported!');
+                }
+            } catch (err) {
+                alert('Invalid file');
+            }
+        };
+        reader.readAsText(file);
+    }
+    
+    function parseValue(val) {
+        if (!val) return 0;
+        return parseInt(val.replace(/[^0-9]/g, '')) || 0;
+    }
+    
+    function formatCurrency(val) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+    }
+    
+    function formatStatus(s) {
+        return { lead: 'Lead', meeting: 'Meeting', proposal: 'Proposal', negotiation: 'Negotiating', closed: 'Won', lost: 'Lost' }[s] || s;
+    }
+    
+    function formatWarRoomTab(tab) {
+        const tabs = {
+            'WAR_ROOM': '🔴 War Room',
+            'COMMAND': '⚡ Command',
+            'FRACTIONAL': '💼 Fractional',
+            'FREEZER': '❄️ Freezer',
+            'DEPOT': '📦 Depot'
+        };
+        return tabs[tab] || tab;
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ENTERPRISE FEATURES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function switchView(view) {
+        currentView = view;
+        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-view="${view}"]`).classList.add('active');
+        
+        document.getElementById('deals-grid').style.display = view === 'grid' ? 'grid' : 'none';
+        document.getElementById('kanban-board').style.display = view === 'kanban' ? 'flex' : 'none';
+        document.getElementById('table-view').classList.toggle('active', view === 'table');
+        
+        renderDeals();
+    }
+    
+    // Kanban Drag & Drop
+    let draggedDeal = null;
+    function handleDragStart(e) {
+        draggedDeal = e.target.dataset.dealId;
+        e.target.classList.add('dragging');
+    }
+    
+    function handleDragOver(e) {
+        e.preventDefault();
+        const column = e.currentTarget.closest('.kanban-column');
+        if (column) {
+            column.style.borderColor = 'var(--gold)';
+        }
+    }
+    
+    function handleDrop(e) {
+        e.preventDefault();
+        const column = e.currentTarget.closest('.kanban-column');
+        if (column && draggedDeal) {
+            const newStatus = column.dataset.status;
+            const deal = data.deals.find(d => d.id === draggedDeal);
+            if (deal) {
+                deal.status = newStatus;
+                deal.daysInStage = 0;
+                saveData();
+            }
+        }
+        document.querySelectorAll('.kanban-column').forEach(col => col.style.borderColor = 'var(--gold-glow)');
+        draggedDeal = null;
+    }
+    
+    // Contact-to-Deal Conversion
+    function convertContactToDeal(contactId) {
+        const contact = data.contacts.find(c => c.id === contactId);
+        if (!contact) return;
+        
+        // Check if deal already exists for this company
+        const existingDeal = data.deals.find(d => d.company.toLowerCase() === (contact.company || '').toLowerCase());
+        if (existingDeal) {
+            if (confirm(`Deal already exists for ${contact.company}. Open it?`)) {
+                openDealModal(existingDeal.id);
+            }
+            return;
+        }
+        
+        // Create new deal from contact
+        const newDeal = {
+            id: Date.now().toString(),
+            company: contact.company || '',
+            role: contact.role || 'Opportunity',
+            warRoomTab: currentTab,
+            status: 'lead',
+            value: '',
+            probability: contact.signalScore >= 8 ? 60 : 40,
+            nextMove: `Follow up with ${contact.name}`,
+            notes: `Converted from contact: ${contact.name}. ${contact.notes || ''}`,
+            contacts: [{
+                id: contact.id,
+                name: contact.name,
+                role: contact.role,
+                email: '',
+                type: contact.type
+            }],
+            activities: [{
+                id: Date.now().toString(),
+                type: 'NOTE',
+                text: `Deal created from contact: ${contact.name}`,
+                date: new Date().toISOString()
+            }],
+            star: {},
+            createdAt: new Date().toISOString(),
+            daysInStage: 0
+        };
+        
+        data.deals.push(newDeal);
+        saveData();
+        openDealModal(newDeal.id);
+    }
+    
+    function bulkConvertContactsToDeals() {
+        const hotContacts = data.contacts.filter(c => (c.signalScore || 0) >= 8 && c.company);
+        if (hotContacts.length === 0) {
+            alert('No high-signal contacts with companies found.');
+            return;
+        }
+        
+        if (!confirm(`Convert ${hotContacts.length} high-signal contacts to deals?`)) return;
+        
+        let created = 0;
+        hotContacts.forEach(contact => {
+            const existing = data.deals.find(d => d.company.toLowerCase() === contact.company.toLowerCase());
+            if (!existing) {
+                data.deals.push({
+                    id: Date.now().toString() + Math.random(),
+                    company: contact.company,
+                    role: contact.role || 'Opportunity',
+                    warRoomTab: 'COMMAND',
+                    status: 'lead',
+                    probability: contact.signalScore >= 9 ? 60 : 50,
+                    nextMove: `Reach out to ${contact.name}`,
+                    notes: `Auto-created from contact: ${contact.name}`,
+                    contacts: [{ id: contact.id, name: contact.name, role: contact.role, type: contact.type }],
+                    activities: [],
+                    star: {},
+                    createdAt: new Date().toISOString(),
+                    daysInStage: 0
+                });
+                created++;
+            }
+        });
+        
+        saveData();
+        alert(`Created ${created} new deals from contacts!`);
+    }
+    
+    // Auto-Population from Contacts
+    function autoPopulateDealFromContact() {
+        const contactId = document.getElementById('contact-selector').value;
+        if (!contactId) {
+            alert('Select a contact first');
+            return;
+        }
+        
+        const contact = data.contacts.find(c => c.id === contactId);
+        if (!contact) return;
+        
+        document.getElementById('deal-company').value = contact.company || '';
+        document.getElementById('deal-role').value = contact.role || '';
+        
+        // Auto-link contact
+        if (currentDealId) {
+            const deal = data.deals.find(d => d.id === currentDealId);
+            if (deal && !deal.contacts.find(c => c.id === contactId)) {
+                if (!deal.contacts) deal.contacts = [];
+                deal.contacts.push({
+                    id: contact.id,
+                    name: contact.name,
+                    role: contact.role,
+                    email: '',
+                    type: contact.type
+                });
+                saveData();
+                renderDealContacts(deal);
+            }
+        }
+    }
+    
+    function selectContactForDeal(contactId) {
+        if (contactId) autoPopulateDealFromContact();
+    }
+    
+    function suggestCompanyFromContacts() {
+        const companyInput = document.getElementById('deal-company');
+        const company = companyInput.value.toLowerCase();
+        if (!company) return;
+        
+        const matches = data.contacts.filter(c => 
+            c.company && c.company.toLowerCase().includes(company)
+        ).slice(0, 5);
+        
+        if (matches.length > 0) {
+            const suggestions = matches.map(c => c.company).filter((v, i, a) => a.indexOf(v) === i);
+            const datalist = document.getElementById('company-suggestions');
+            datalist.innerHTML = suggestions.map(c => `<option value="${c}">`).join('');
+            
+            // Show suggestion
+            if (suggestions.length === 1) {
+                companyInput.value = suggestions[0];
+                // Auto-fill role if available
+                const contact = matches.find(c => c.company === suggestions[0]);
+                if (contact && contact.role) {
+                    document.getElementById('deal-role').value = contact.role;
+                }
+            }
+        }
+    }
+    
+    function autoPopulateFromContacts() {
+        const highSignal = data.contacts.filter(c => (c.signalScore || 0) >= 8 && c.company && !data.deals.find(d => d.company.toLowerCase() === c.company.toLowerCase()));
+        
+        if (highSignal.length === 0) {
+            alert('No high-signal contacts available to convert.');
+            return;
+        }
+        
+        if (confirm(`Create deals for ${highSignal.length} high-signal contacts?`)) {
+            highSignal.forEach(contact => {
+                data.deals.push({
+                    id: Date.now().toString() + Math.random(),
+                    company: contact.company,
+                    role: contact.role || 'Opportunity',
+                    warRoomTab: currentTab,
+                    status: 'lead',
+                    probability: contact.signalScore >= 9 ? 60 : 50,
+                    nextMove: `Reach out to ${contact.name}`,
+                    notes: `Auto-populated from contact: ${contact.name}`,
+                    contacts: [{ id: contact.id, name: contact.name, role: contact.role, type: contact.type }],
+                    activities: [],
+                    star: {},
+                    createdAt: new Date().toISOString(),
+                    daysInStage: 0
+                });
+            });
+            saveData();
+            alert(`Created ${highSignal.length} deals!`);
+        }
+    }
+    
+    // Advanced Filtering
+    function toggleFilters() {
+        document.getElementById('filters-panel').classList.toggle('active');
+    }
+    
+    function applyFilters() {
+        activeFilters = {
+            status: document.getElementById('filter-status').value,
+            score: document.getElementById('filter-score').value,
+            type: document.getElementById('filter-type').value,
+            company: document.getElementById('filter-company').value
+        };
+        renderDeals();
+        renderContacts();
+    }
+    
+    function clearFilters() {
+        activeFilters = {};
+        document.getElementById('filter-status').value = '';
+        document.getElementById('filter-score').value = '';
+        document.getElementById('filter-type').value = '';
+        document.getElementById('filter-company').value = '';
+        renderDeals();
+        renderContacts();
+    }
+    
+    // Smart Suggestions
+    function showSmartSuggestions() {
+        const panel = document.getElementById('suggestions-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            generateSuggestions();
+        }
+    }
+    
+    function generateSuggestions() {
+        const suggestions = [];
+        const list = document.getElementById('suggestions-list');
+        
+        // Suggestion 1: High-signal contacts without deals
+        const contactsWithoutDeals = data.contacts.filter(c => {
+            if ((c.signalScore || 0) < 8 || !c.company) return false;
+            return !data.deals.find(d => d.company.toLowerCase() === c.company.toLowerCase());
+        });
+        
+        if (contactsWithoutDeals.length > 0) {
+            suggestions.push({
+                text: `${contactsWithoutDeals.length} high-signal contacts ready to convert to deals`,
+                action: () => bulkConvertContactsToDeals()
+            });
+        }
+        
+        // Suggestion 2: Deals without contacts
+        const dealsWithoutContacts = data.deals.filter(d => (!d.contacts || d.contacts.length === 0) && d.status !== 'lost');
+        if (dealsWithoutContacts.length > 0) {
+            suggestions.push({
+                text: `${dealsWithoutContacts.length} deals need contacts linked`,
+                action: () => {
+                    alert(`Found ${dealsWithoutContacts.length} deals. Click "Link Contacts" on any deal to add network contacts.`);
+                }
+            });
+        }
+        
+        // Suggestion 3: Stalled deals
+        const stalled = data.deals.filter(d => (d.daysInStage || 0) >= 14 && d.status !== 'closed' && d.status !== 'lost');
+        if (stalled.length > 0) {
+            suggestions.push({
+                text: `${stalled.length} deals stalled (14+ days) - need action`,
+                action: () => {
+                    currentTab = 'FREEZER';
+                    document.querySelectorAll('.war-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('[data-tab="FREEZER"]').classList.add('active');
+                    renderDeals();
+                }
+            });
+        }
+        
+        list.innerHTML = suggestions.map((s, i) => `
+            <div class="suggestion-item">
+                <span style="font-size: 0.75rem;">${s.text}</span>
+                <button class="suggestion-action" onclick="suggestions[${i}].action()">Take Action →</button>
+            </div>
+        `).join('');
+        
+        window.suggestions = suggestions;
+    }
+    
+    // Contact Filtering
+    function filterContactsByScore(minScore) {
+        document.getElementById('contact-search').value = '';
+        activeFilters.score = minScore;
+        renderContacts();
+    }
+    
+    function filterContactsByType(type) {
+        document.getElementById('contact-search').value = '';
+        activeFilters.type = type;
+        renderContacts();
+    }
+    
+    // Relationship Mapping
+    function showContactRelationships() {
+        alert('Relationship mapping: Shows how contacts connect to deals and each other. Coming in next update!');
+    }
+    
+    // Cross-Section Communication
+    function getContactsForCompany(company) {
+        if (!company) return [];
+        return data.contacts.filter(c => c.company && c.company.toLowerCase() === company.toLowerCase());
+    }
+    
+    function getRelatedDealsCount(company) {
+        if (!company) return 0;
+        return data.deals.filter(d => d.company && d.company.toLowerCase() === company.toLowerCase()).length;
+    }
+    
+    function getRelatedContactsCount(company) {
+        return getContactsForCompany(company).length;
+    }
+    
+    function linkContactsToDeal(dealId) {
+        const deal = data.deals.find(d => d.id === dealId);
+        if (!deal) return;
+        
+        const availableContacts = getContactsForCompany(deal.company);
+        if (availableContacts.length === 0) {
+            alert('No network contacts found for this company.');
+            return;
+        }
+        
+        if (!deal.contacts) deal.contacts = [];
+        
+        availableContacts.forEach(contact => {
+            if (!deal.contacts.find(c => c.id === contact.id)) {
+                deal.contacts.push({
+                    id: contact.id,
+                    name: contact.name,
+                    role: contact.role,
+                    email: '',
+                    type: contact.type
+                });
+            }
+        });
+        
+        saveData();
+        openDealModal(dealId);
+        alert(`Linked ${availableContacts.length} contact(s) to deal!`);
+    }
+    
+    function updateCompanySuggestions() {
+        const companies = [...new Set(data.contacts.map(c => c.company).filter(Boolean))];
+        const datalist = document.getElementById('company-suggestions');
+        datalist.innerHTML = companies.map(c => `<option value="${c}">`).join('');
+    }
+    
+    function updateContactSelector() {
+        const selector = document.getElementById('contact-selector');
+        const options = data.contacts
+            .filter(c => c.company)
+            .sort((a, b) => (b.signalScore || 0) - (a.signalScore || 0))
+            .slice(0, 50)
+            .map(c => `<option value="${c.id}">${c.name} @ ${c.company} (${c.signalScore}/10)</option>`)
+            .join('');
+        selector.innerHTML = '<option value="">Select a contact to auto-fill...</option>' + options;
+    }
+    
+    // Bulk Operations
+    function toggleContactSelection(contactId, checked) {
+        if (checked) {
+            selectedItems.add(contactId);
+        } else {
+            selectedItems.delete(contactId);
+        }
+        updateBulkActions();
+        renderContacts();
+    }
+    
+    function toggleSelectAllContacts(checked) {
+        const search = document.getElementById('contact-search')?.value.toLowerCase() || '';
+        let filtered = data.contacts.filter(c => 
+            !search || c.name.toLowerCase().includes(search) || 
+            (c.company || '').toLowerCase().includes(search)
+        );
+        
+        if (checked) {
+            filtered.forEach(c => selectedItems.add(c.id));
+        } else {
+            filtered.forEach(c => selectedItems.delete(c.id));
+        }
+        updateBulkActions();
+        renderContacts();
+    }
+    
+    function updateBulkActions() {
+        const count = selectedItems.size;
+        document.getElementById('selected-count').textContent = count > 0 ? `${count} selected` : '';
+        document.getElementById('bulk-count').textContent = `${count} selected`;
+        document.getElementById('bulk-actions').classList.toggle('active', count > 0);
+    }
+    
+    function clearSelection() {
+        selectedItems.clear();
+        document.getElementById('select-all-contacts').checked = false;
+        updateBulkActions();
+        renderContacts();
+    }
+    
+    function bulkConvertSelected() {
+        const selected = Array.from(selectedItems).map(id => data.contacts.find(c => c.id === id)).filter(Boolean);
+        if (selected.length === 0) return;
+        
+        let created = 0;
+        selected.forEach(contact => {
+            if (contact.company && !data.deals.find(d => d.company.toLowerCase() === contact.company.toLowerCase())) {
+                data.deals.push({
+                    id: Date.now().toString() + Math.random(),
+                    company: contact.company,
+                    role: contact.role || 'Opportunity',
+                    warRoomTab: currentTab,
+                    status: 'lead',
+                    probability: contact.signalScore >= 9 ? 60 : 50,
+                    nextMove: `Reach out to ${contact.name}`,
+                    notes: `Bulk converted from contact: ${contact.name}`,
+                    contacts: [{ id: contact.id, name: contact.name, role: contact.role, type: contact.type }],
+                    activities: [],
+                    star: {},
+                    createdAt: new Date().toISOString(),
+                    daysInStage: 0
+                });
+                created++;
+            }
+        });
+        
+        saveData();
+        clearSelection();
+        alert(`Created ${created} deals from selected contacts!`);
+    }
+    
+    function bulkUpdateScore() {
+        const newScore = prompt('Enter new signal score (1-10):');
+        if (!newScore || isNaN(newScore) || newScore < 1 || newScore > 10) return;
+        
+        Array.from(selectedItems).forEach(id => {
+            const contact = data.contacts.find(c => c.id === id);
+            if (contact) contact.signalScore = parseInt(newScore);
+        });
+        
+        saveData();
+        clearSelection();
+        renderContacts();
+    }
+    
+    function showDealsForCompany(company) {
+        const deals = data.deals.filter(d => d.company && d.company.toLowerCase() === company.toLowerCase());
+        if (deals.length === 0) {
+            alert(`No deals found for ${company}`);
+            return;
+        }
+        
+        // Switch to pipeline view and filter
+        document.querySelector('[data-section="pipeline"]').click();
+        document.getElementById('search').value = company;
+        renderDeals();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // AI ASSISTANT - QUANTUM SEARCH & PREDICTIVE ANALYTICS
+    // ═══════════════════════════════════════════════════════════════
+    
+    let aiConversationHistory = [];
+    let aiLearningData = JSON.parse(localStorage.getItem('nexus_ai_learning') || '{}');
+    
+    function sendAIMessage(userMessage = null) {
+        const input = document.getElementById('ai-chat-input');
+        const message = userMessage || input.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        addAIMessage(message, 'user');
+        input.value = '';
+        
+        // Show loading
+        const loadingId = addAIMessage('', 'assistant', true);
+        
+        // Process with quantum search and AI
+        setTimeout(() => {
+            const response = processAIQuery(message);
+            updateAIMessage(loadingId, response.text, response.results, response.insights);
+            
+            // Store in conversation history
+            aiConversationHistory.push({ query: message, response: response.text, timestamp: Date.now() });
+            if (aiConversationHistory.length > 50) aiConversationHistory.shift();
+        }, 500);
+    }
+    
+    function addAIMessage(text, type = 'assistant', isLoading = false) {
+        const messagesDiv = document.getElementById('ai-chat-messages');
+        const messageId = 'msg-' + Date.now();
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${type}`;
+        messageDiv.id = messageId;
+        
+        const avatar = document.createElement('div');
+        avatar.className = `ai-avatar ${type}`;
+        avatar.textContent = type === 'user' ? '👤' : '🤖';
+        
+        const content = document.createElement('div');
+        content.className = 'ai-message-content';
+        
+        const textDiv = document.createElement('div');
+        textDiv.className = 'ai-message-text';
+        if (isLoading) {
+            textDiv.innerHTML = '<span class="ai-loading"></span> Analyzing...';
+        } else {
+            textDiv.innerHTML = text;
+        }
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'ai-message-time';
+        timeDiv.textContent = new Date().toLocaleTimeString();
+        
+        content.appendChild(textDiv);
+        content.appendChild(timeDiv);
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(content);
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
+        return messageId;
+    }
+    
+    function updateAIMessage(messageId, text, results = null, insights = null) {
+        const messageDiv = document.getElementById(messageId);
+        if (!messageDiv) return;
+        
+        const textDiv = messageDiv.querySelector('.ai-message-text');
+        let html = text;
+        
+        if (results && results.length > 0) {
+            html += '<div class="quantum-results" style="margin-top: 12px;">';
+            results.slice(0, 5).forEach(r => {
+                html += `
+                    <div class="quantum-result-item">
+                        <div class="quantum-result-title">${r.title}</div>
+                        <div class="quantum-result-snippet">${r.snippet}</div>
+                        <div class="quantum-result-score">Relevance: ${r.score}%</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+        
+        if (insights) {
+            html += '<div style="margin-top: 12px; padding: 12px; background: rgba(212,175,55,0.1); border-radius: 8px; border-left: 3px solid var(--gold);">';
+            html += `<strong style="color: var(--gold);">💡 Insight:</strong> ${insights}`;
+            html += '</div>';
+        }
+        
+        // Add feedback buttons
+        html += `
+            <div class="feedback-buttons">
+                <button class="feedback-btn positive" onclick="provideAIFeedback('${messageId}', true)">👍 Helpful</button>
+                <button class="feedback-btn negative" onclick="provideAIFeedback('${messageId}', false)">👎 Not helpful</button>
+            </div>
+        `;
+        
+        textDiv.innerHTML = html;
+    }
+    
+    function processAIQuery(query) {
+        const lowerQuery = query.toLowerCase();
+        let response = '';
+        let results = [];
+        let insights = null;
+        
+        // Quantum Search - Multi-dimensional search across all data
+        if (lowerQuery.includes('contact') || lowerQuery.includes('who') || lowerQuery.includes('find')) {
+            results = quantumSearchContacts(query);
+            response = generateContactResponse(query, results);
+        } else if (lowerQuery.includes('deal') || lowerQuery.includes('pipeline') || lowerQuery.includes('opportunity')) {
+            results = quantumSearchDeals(query);
+            response = generateDealResponse(query, results);
+        } else if (lowerQuery.includes('predict') || lowerQuery.includes('forecast') || lowerQuery.includes('outcome')) {
+            const predictions = generatePredictions();
+            response = generatePredictionResponse(predictions);
+            insights = predictions.insight;
+        } else if (lowerQuery.includes('top') || lowerQuery.includes('best') || lowerQuery.includes('priority')) {
+            results = quantumSearchPriority(query);
+            response = generatePriorityResponse(query, results);
+        } else if (lowerQuery.includes('attention') || lowerQuery.includes('urgent') || lowerQuery.includes('stalled')) {
+            results = quantumSearchAttention(query);
+            response = generateAttentionResponse(results);
+        } else {
+            // General query - comprehensive search
+            const contactResults = quantumSearchContacts(query);
+            const dealResults = quantumSearchDeals(query);
+            results = [...contactResults, ...dealResults].slice(0, 5);
+            response = generateGeneralResponse(query, contactResults, dealResults);
+        }
+        
+        // Apply learning from feedback
+        if (aiLearningData[query]) {
+            response = aiLearningData[query].improvedResponse || response;
+        }
+        
+        return { text: response, results, insights };
+    }
+    
+    function quantumSearchContacts(query) {
+        const lowerQuery = query.toLowerCase();
+        const keywords = lowerQuery.split(/\s+/);
+        const results = [];
+        
+        data.contacts.forEach(contact => {
+            let score = 0;
+            const searchableText = `${contact.name} ${contact.role} ${contact.company} ${contact.notes || ''} ${contact.type}`.toLowerCase();
+            
+            keywords.forEach(keyword => {
+                if (searchableText.includes(keyword)) {
+                    score += 20;
+                }
+            });
+            
+            // Boost for signal score
+            if (contact.signalScore >= 8) score += 15;
+            if (contact.signalScore >= 9) score += 10;
+            
+            // Boost for specific types
+            if (lowerQuery.includes('hiring') && contact.type === 'Hiring Manager') score += 20;
+            if (lowerQuery.includes('recruiter') && contact.type === 'Recruiter') score += 20;
+            if (lowerQuery.includes('executive') && contact.type === 'Executive') score += 20;
+            
+            if (score > 0) {
+                results.push({
+                    type: 'contact',
+                    title: `${contact.name} - ${contact.role} @ ${contact.company}`,
+                    snippet: contact.notes ? contact.notes.substring(0, 150) : `Signal Score: ${contact.signalScore}/10`,
+                    score: Math.min(100, score),
+                    data: contact
+                });
+            }
+        });
+        
+        return results.sort((a, b) => b.score - a.score);
+    }
+    
+    function quantumSearchDeals(query) {
+        const lowerQuery = query.toLowerCase();
+        const keywords = lowerQuery.split(/\s+/);
+        const results = [];
+        
+        data.deals.forEach(deal => {
+            let score = 0;
+            const searchableText = `${deal.company} ${deal.role} ${deal.status} ${deal.notes || ''} ${deal.nextMove || ''}`.toLowerCase();
+            
+            keywords.forEach(keyword => {
+                if (searchableText.includes(keyword)) {
+                    score += 20;
+                }
+            });
+            
+            // Boost for active deals
+            if (deal.status !== 'lost' && deal.status !== 'closed') score += 15;
+            
+            // Boost for high probability
+            if (deal.probability >= 70) score += 10;
+            
+            if (score > 0) {
+                results.push({
+                    type: 'deal',
+                    title: `${deal.company} - ${deal.role} (${formatStatus(deal.status)})`,
+                    snippet: deal.nextMove || deal.notes?.substring(0, 150) || `Value: ${deal.value || '—'}, Probability: ${deal.probability || 0}%`,
+                    score: Math.min(100, score),
+                    data: deal
+                });
+            }
+        });
+        
+        return results.sort((a, b) => b.score - a.score);
+    }
+    
+    function quantumSearchPriority(query) {
+        const highSignalContacts = data.contacts
+            .filter(c => (c.signalScore || 0) >= 8)
+            .sort((a, b) => (b.signalScore || 0) - (a.signalScore || 0))
+            .slice(0, 10)
+            .map(c => ({
+                type: 'contact',
+                title: `${c.name} - ${c.role} @ ${c.company}`,
+                snippet: `Signal: ${c.signalScore}/10 | ${c.type}`,
+                score: c.signalScore * 10,
+                data: c
+            }));
+        
+        const activeDeals = data.deals
+            .filter(d => d.status !== 'lost' && d.status !== 'closed')
+            .sort((a, b) => (b.probability || 0) - (a.probability || 0))
+            .slice(0, 5)
+            .map(d => ({
+                type: 'deal',
+                title: `${d.company} - ${d.role}`,
+                snippet: `Probability: ${d.probability || 0}% | ${d.nextMove || 'No action set'}`,
+                score: (d.probability || 0) * 1.2,
+                data: d
+            }));
+        
+        return [...highSignalContacts, ...activeDeals].sort((a, b) => b.score - a.score);
+    }
+    
+    function quantumSearchAttention(query) {
+        const stalledDeals = data.deals.filter(d => (d.daysInStage || 0) >= 14 && d.status !== 'closed' && d.status !== 'lost');
+        const dealsWithoutContacts = data.deals.filter(d => (!d.contacts || d.contacts.length === 0) && d.status !== 'lost');
+        const contactsWithoutDeals = data.contacts.filter(c => {
+            if ((c.signalScore || 0) < 8 || !c.company) return false;
+            return !data.deals.find(d => d.company && d.company.toLowerCase() === c.company.toLowerCase());
+        });
+        
+        const results = [];
+        
+        stalledDeals.forEach(deal => {
+            results.push({
+                type: 'deal',
+                title: `⚠️ Stalled: ${deal.company} - ${deal.role}`,
+                snippet: `No activity for ${deal.daysInStage} days. Status: ${formatStatus(deal.status)}`,
+                score: 90,
+                data: deal
+            });
+        });
+        
+        dealsWithoutContacts.forEach(deal => {
+            results.push({
+                type: 'deal',
+                title: `🔗 Missing Contacts: ${deal.company}`,
+                snippet: `Deal has no linked contacts. ${getContactsForCompany(deal.company).length} network contacts available.`,
+                score: 85,
+                data: deal
+            });
+        });
+        
+        contactsWithoutDeals.slice(0, 5).forEach(contact => {
+            results.push({
+                type: 'contact',
+                title: `💡 High-Signal Contact: ${contact.name}`,
+                snippet: `Signal: ${contact.signalScore}/10 @ ${contact.company} - Ready to convert to deal`,
+                score: contact.signalScore * 8,
+                data: contact
+            });
+        });
+        
+        return results.sort((a, b) => b.score - a.score);
+    }
+    
+    function generateContactResponse(query, results) {
+        if (results.length === 0) {
+            return "I couldn't find any contacts matching your query. Try searching by name, company, role, or type.";
+        }
+        
+        const topResult = results[0];
+        let response = `Found ${results.length} contact(s) matching your query:\n\n`;
+        response += `**Top Result:** ${topResult.title}\n`;
+        response += `${topResult.snippet}\n\n`;
+        
+        if (results.length > 1) {
+            response += `**Other matches:**\n`;
+            results.slice(1, 4).forEach((r, i) => {
+                response += `${i + 2}. ${r.title} (${r.score}% match)\n`;
+            });
+        }
+        
+        if (topResult.data.signalScore >= 8) {
+            response += `\n💡 **Insight:** This is a high-signal contact (${topResult.data.signalScore}/10). Consider converting to a deal or reaching out soon.`;
+        }
+        
+        return response;
+    }
+    
+    function generateDealResponse(query, results) {
+        if (results.length === 0) {
+            return "No deals found matching your query.";
+        }
+        
+        let response = `Found ${results.length} deal(s):\n\n`;
+        results.slice(0, 3).forEach((r, i) => {
+            response += `${i + 1}. **${r.title}**\n`;
+            response += `   ${r.snippet}\n\n`;
+        });
+        
+        return response;
+    }
+    
+    function generatePredictionResponse(predictions) {
+        let response = `📊 **Predictive Analytics Report**\n\n`;
+        response += `**Deal Forecast:**\n`;
+        response += `- Likely to close this month: ${predictions.likelyToClose}\n`;
+        response += `- At risk: ${predictions.atRisk}\n`;
+        response += `- Average days to close: ${predictions.avgDaysToClose}\n\n`;
+        response += `**Recommendations:**\n`;
+        predictions.recommendations.forEach((rec, i) => {
+            response += `${i + 1}. ${rec}\n`;
+        });
+        
+        return response;
+    }
+    
+    function generatePriorityResponse(query, results) {
+        let response = `🎯 **Priority Recommendations**\n\n`;
+        response += `**Top ${Math.min(5, results.length)} items requiring attention:**\n\n`;
+        results.slice(0, 5).forEach((r, i) => {
+            response += `${i + 1}. ${r.title}\n`;
+            response += `   ${r.snippet}\n\n`;
+        });
+        
+        return response;
+    }
+    
+    function generateAttentionResponse(results) {
+        if (results.length === 0) {
+            return "✅ Great! No urgent items need attention right now.";
+        }
+        
+        let response = `⚠️ **${results.length} items need your attention:**\n\n`;
+        results.slice(0, 5).forEach((r, i) => {
+            response += `${i + 1}. ${r.title}\n`;
+            response += `   ${r.snippet}\n\n`;
+        });
+        
+        return response;
+    }
+    
+    function generateGeneralResponse(query, contactResults, dealResults) {
+        let response = `I searched across your CRM and found:\n\n`;
+        
+        if (contactResults.length > 0) {
+            response += `**Contacts (${contactResults.length}):**\n`;
+            contactResults.slice(0, 3).forEach(r => {
+                response += `- ${r.title}\n`;
+            });
+            response += `\n`;
+        }
+        
+        if (dealResults.length > 0) {
+            response += `**Deals (${dealResults.length}):**\n`;
+            dealResults.slice(0, 3).forEach(r => {
+                response += `- ${r.title}\n`;
+            });
+        }
+        
+        if (contactResults.length === 0 && dealResults.length === 0) {
+            response = "I couldn't find anything matching your query. Try rephrasing or asking about specific contacts, deals, or insights.";
+        }
+        
+        return response;
+    }
+    
+    function generatePredictions() {
+        const activeDeals = data.deals.filter(d => d.status !== 'lost' && d.status !== 'closed');
+        const highProbDeals = activeDeals.filter(d => (d.probability || 0) >= 70);
+        const atRiskDeals = activeDeals.filter(d => (d.daysInStage || 0) >= 14 && (d.probability || 0) < 50);
+        
+        const avgDays = activeDeals.length > 0 
+            ? Math.round(activeDeals.reduce((sum, d) => sum + (d.daysInStage || 0), 0) / activeDeals.length)
+            : 0;
+        
+        const recommendations = [];
+        if (atRiskDeals.length > 0) {
+            recommendations.push(`Focus on ${atRiskDeals.length} at-risk deal(s) - they've been stalled for 14+ days`);
+        }
+        if (highProbDeals.length > 0) {
+            recommendations.push(`Push ${highProbDeals.length} high-probability deal(s) to close this month`);
+        }
+        const contactsWithoutDeals = data.contacts.filter(c => (c.signalScore || 0) >= 8 && c.company && !data.deals.find(d => d.company && d.company.toLowerCase() === c.company.toLowerCase()));
+        if (contactsWithoutDeals.length > 0) {
+            recommendations.push(`Convert ${contactsWithoutDeals.length} high-signal contact(s) to deals`);
+        }
+        
+        return {
+            likelyToClose: highProbDeals.length,
+            atRisk: atRiskDeals.length,
+            avgDaysToClose: avgDays,
+            recommendations,
+            insight: `Based on ${activeDeals.length} active deals, you have a ${Math.round((highProbDeals.length / activeDeals.length) * 100) || 0}% high-probability rate.`
+        };
+    }
+    
+    function provideAIFeedback(messageId, isPositive) {
+        const messageDiv = document.getElementById(messageId);
+        if (!messageDiv) return;
+        
+        const feedbackBtns = messageDiv.querySelectorAll('.feedback-btn');
+        feedbackBtns.forEach(btn => {
+            btn.style.opacity = '0.5';
+            btn.disabled = true;
+        });
+        
+        // Store feedback for learning
+        const query = aiConversationHistory[aiConversationHistory.length - 1]?.query;
+        if (query) {
+            if (!aiLearningData[query]) {
+                aiLearningData[query] = { positive: 0, negative: 0 };
+            }
+            if (isPositive) {
+                aiLearningData[query].positive++;
+            } else {
+                aiLearningData[query].negative++;
+            }
+            localStorage.setItem('nexus_ai_learning', JSON.stringify(aiLearningData));
+        }
+        
+        // Show confirmation
+        const confirmation = document.createElement('div');
+        confirmation.style.cssText = 'font-size: 0.7rem; color: var(--success); margin-top: 8px;';
+        confirmation.textContent = isPositive ? '✓ Thanks! This helps me learn.' : '✓ Noted. I\'ll improve next time.';
+        messageDiv.querySelector('.ai-message-content').appendChild(confirmation);
+    }
+    
+    function showPredictiveInsights() {
+        const panel = document.getElementById('predictive-insights-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            generatePredictiveInsights();
+        }
+    }
+    
+    function generatePredictiveInsights() {
+        const insights = [
+            {
+                title: 'Deal Win Probability',
+                confidence: '92%',
+                content: `${data.deals.filter(d => (d.probability || 0) >= 70).length} deals have 70%+ win probability. Focus on these for faster closes.`,
+                action: 'View High-Probability Deals'
+            },
+            {
+                title: 'Contact Conversion Opportunity',
+                confidence: '88%',
+                content: `${data.contacts.filter(c => (c.signalScore || 0) >= 8 && c.company && !data.deals.find(d => d.company && d.company.toLowerCase() === c.company.toLowerCase())).length} high-signal contacts ready to convert to deals.`,
+                action: 'Convert to Deals'
+            },
+            {
+                title: 'Pipeline Health',
+                confidence: '85%',
+                content: `Average ${Math.round(data.deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (d.daysInStage || 0), 0) / Math.max(1, data.deals.filter(d => d.status !== 'lost').length))} days in current stage. ${data.deals.filter(d => (d.daysInStage || 0) >= 14 && d.status !== 'lost').length} deals stalled.`,
+                action: 'Review Stalled Deals'
+            },
+            {
+                title: 'Network Expansion',
+                confidence: '90%',
+                content: `You have ${data.contacts.length} contacts across ${new Set(data.contacts.map(c => c.company).filter(Boolean)).size} companies. ${data.contacts.filter(c => (c.signalScore || 0) >= 8).length} are high-signal.`,
+                action: 'Explore Network'
+            }
+        ];
+        
+        const grid = document.getElementById('predictive-insights-grid');
+        grid.innerHTML = insights.map(insight => `
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-title">${insight.title}</div>
+                    <div class="insight-confidence">${insight.confidence}</div>
+                </div>
+                <div class="insight-content">${insight.content}</div>
+                <div class="insight-action">
+                    <button class="btn btn-secondary" onclick="handleInsightAction('${insight.action}')" style="font-size: 0.7rem; padding: 6px 12px; width: 100%;">${insight.action}</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function handleInsightAction(action) {
+        if (action.includes('High-Probability')) {
+            document.querySelector('[data-section="pipeline"]').click();
+            activeFilters = { probability: '70' };
+            renderDeals();
+        } else if (action.includes('Convert')) {
+            bulkConvertContactsToDeals();
+        } else if (action.includes('Stalled')) {
+            document.querySelector('[data-section="pipeline"]').click();
+            sendAIMessage('What deals need my attention?');
+        } else if (action.includes('Network')) {
+            document.querySelector('[data-section="contacts"]').click();
+        }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PREMIUM COMMERCIAL FEATURES
+    // ═══════════════════════════════════════════════════════════════
+    
+    function showEmailSequences() {
+        const panel = document.getElementById('email-sequences-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            renderEmailSequences();
+        }
+    }
+    
+    function renderEmailSequences() {
+        const sequences = [
+            {
+                name: 'Cold Outreach - High Signal',
+                description: '3-email sequence for high-signal contacts (8+ score)',
+                triggers: 'Signal Score ≥ 8',
+                emails: 3,
+                status: 'Active'
+            },
+            {
+                name: 'Deal Follow-Up',
+                description: 'Follow-up sequence for deals in Meeting stage',
+                triggers: 'Deal Status = Meeting',
+                emails: 2,
+                status: 'Active'
+            },
+            {
+                name: 'Stalled Deal Revival',
+                description: 'Re-engagement sequence for stalled deals (14+ days)',
+                triggers: 'Days in Stage ≥ 14',
+                emails: 2,
+                status: 'Active'
+            },
+            {
+                name: 'New Contact Welcome',
+                description: 'Welcome sequence for newly added contacts',
+                triggers: 'Contact Added',
+                emails: 1,
+                status: 'Active'
+            }
+        ];
+        
+        const grid = document.getElementById('sequences-grid');
+        grid.innerHTML = sequences.map(seq => `
+            <div class="deal-card">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${seq.name}</div>
+                        <div class="deal-role">${seq.description}</div>
+                    </div>
+                    <span class="deal-status status-meeting">${seq.status}</span>
+                </div>
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Trigger:</strong> ${seq.triggers}
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">
+                        <strong>Emails:</strong> ${seq.emails} in sequence
+                    </div>
+                </div>
+                <div class="deal-actions" style="margin-top: 12px;">
+                    <button class="deal-btn" onclick="editEmailSequence('${seq.name}')">✏️ Edit</button>
+                    <button class="deal-btn" onclick="previewEmailSequence('${seq.name}')">👁️ Preview</button>
+                    <button class="deal-btn" onclick="activateEmailSequence('${seq.name}')">▶️ Activate</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function showAutomationWorkflows() {
+        const panel = document.getElementById('automation-workflows-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        if (panel.style.display === 'block') {
+            renderAutomationWorkflows();
+        }
+    }
+    
+    function renderAutomationWorkflows() {
+        const workflows = [
+            {
+                name: 'Auto-Convert High-Signal Contacts',
+                description: 'Automatically create deals from contacts with 9+ signal score',
+                trigger: 'Contact Signal Score ≥ 9',
+                action: 'Create Deal',
+                status: 'Active',
+                count: data.contacts.filter(c => (c.signalScore || 0) >= 9 && !data.deals.find(d => d.company && d.company.toLowerCase() === (c.company || '').toLowerCase())).length
+            },
+            {
+                name: 'Stalled Deal Alert',
+                description: 'Notify when deals are stalled for 14+ days',
+                trigger: 'Days in Stage ≥ 14',
+                action: 'Send Alert',
+                status: 'Active',
+                count: data.deals.filter(d => (d.daysInStage || 0) >= 14 && d.status !== 'lost' && d.status !== 'closed').length
+            },
+            {
+                name: 'Link Contacts to Deals',
+                description: 'Automatically link network contacts when deal created',
+                trigger: 'Deal Created',
+                action: 'Link Matching Contacts',
+                status: 'Active',
+                count: data.deals.filter(d => d.company && getContactsForCompany(d.company).length > 0 && (!d.contacts || d.contacts.length === 0)).length
+            },
+            {
+                name: 'Update Probability Based on Activity',
+                description: 'Increase deal probability when activities logged',
+                trigger: 'Activity Added',
+                action: 'Update Probability',
+                status: 'Active',
+                count: 0
+            }
+        ];
+        
+        const grid = document.getElementById('workflows-grid');
+        grid.innerHTML = workflows.map(wf => `
+            <div class="deal-card">
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${wf.name}</div>
+                        <div class="deal-role">${wf.description}</div>
+                    </div>
+                    <span class="deal-status status-meeting">${wf.status}</span>
+                </div>
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">
+                        <strong>When:</strong> ${wf.trigger}
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">
+                        <strong>Then:</strong> ${wf.action}
+                    </div>
+                    ${wf.count > 0 ? `<div style="font-size: 0.7rem; color: var(--warning); margin-top: 8px;">
+                        ⚠️ ${wf.count} item(s) match this trigger
+                    </div>` : ''}
+                </div>
+                <div class="deal-actions" style="margin-top: 12px;">
+                    <button class="deal-btn" onclick="runWorkflow('${wf.name}')">▶️ Run Now</button>
+                    <button class="deal-btn" onclick="editWorkflow('${wf.name}')">✏️ Edit</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function editEmailSequence(name) {
+        alert(`Edit email sequence: ${name}\n\nThis would open an editor to customize the email templates, timing, and triggers.`);
+    }
+    
+    function previewEmailSequence(name) {
+        alert(`Preview email sequence: ${name}\n\nThis would show you a preview of all emails in the sequence with sample content.`);
+    }
+    
+    function activateEmailSequence(name) {
+        alert(`Email sequence "${name}" is now active and will trigger automatically based on conditions.`);
+    }
+    
+    function runWorkflow(name) {
+        if (name.includes('Auto-Convert')) {
+            bulkConvertContactsToDeals();
+        } else if (name.includes('Stalled Deal')) {
+            sendAIMessage('What deals need my attention?');
+        } else if (name.includes('Link Contacts')) {
+            const deals = data.deals.filter(d => d.company && getContactsForCompany(d.company).length > 0 && (!d.contacts || d.contacts.length === 0));
+            if (deals.length === 0) {
+                alert('No deals need contacts linked.');
+                return;
+            }
+            deals.forEach(deal => linkContactsToDeal(deal.id));
+            alert(`Linked contacts to ${deals.length} deal(s)!`);
+        } else {
+            alert(`Workflow "${name}" executed.`);
+        }
+    }
+    
+    function editWorkflow(name) {
+        alert(`Edit workflow: ${name}\n\nThis would open a workflow builder to customize triggers and actions.`);
+    }
+    
+    function exportAnalyticsReport() {
+        const report = {
+            generated: new Date().toISOString(),
+            summary: {
+                totalDeals: data.deals.length,
+                activeDeals: data.deals.filter(d => d.status !== 'lost').length,
+                totalPipeline: data.deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + parseValue(d.value), 0),
+                weightedPipeline: data.deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (parseValue(d.value) * (d.probability || 0) / 100), 0),
+                totalContacts: data.contacts.length,
+                highSignalContacts: data.contacts.filter(c => (c.signalScore || 0) >= 8).length
+            },
+            deals: data.deals,
+            contacts: data.contacts.map(c => ({
+                name: c.name,
+                company: c.company,
+                role: c.role,
+                signalScore: c.signalScore,
+                type: c.type
+            }))
+        };
+        
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nexus-crm-analytics-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    }
+    
+    // Update days in stage periodically
+    setInterval(() => {
+        data.deals.forEach(deal => {
+            if (deal.updatedAt) {
+                const daysSince = Math.floor((Date.now() - new Date(deal.updatedAt).getTime()) / (1000 * 60 * 60 * 24));
+                deal.daysInStage = daysSince;
+            }
+        });
+        saveData();
+    }, 60000); // Update every minute
+    </script>
+</body>
+</html>

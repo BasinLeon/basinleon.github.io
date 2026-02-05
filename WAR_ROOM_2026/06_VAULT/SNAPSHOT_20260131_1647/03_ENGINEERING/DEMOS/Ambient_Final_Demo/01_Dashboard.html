@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambient.ai | Agentic GTM Engine</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-green: #238636;
+            --accent-red: #da3633;
+            --accent-blue: #388bfd;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+            height: 80%;
+        }
+
+        .column {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .col-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .data-point {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-blue);
+            font-size: 13px;
+        }
+
+        .brain-box {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .output-card {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+
+        .critical { border-color: var(--accent-green); }
+        .blocked { border-color: var(--accent-red); opacity: 0.7; }
+
+        .score-badge {
+            float: right;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        .card-title { font-weight: bold; margin-bottom: 5px; color: #fff; }
+        .card-meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+        .card-action { font-family: monospace; font-size: 11px; color: var(--accent-blue); }
+
+    </style>
+</head>
+<body>
+
+    <h1>Agentic GTM Architecture // <span style="color: var(--accent-blue)">Ambient.ai</span></h1>
+
+    <div class="dashboard-grid">
+        
+        <div class="column">
+            <div class="col-header">1. Signal Ingestion</div>
+            <div class="data-point">
+                <strong>Firmographics</strong><br>
+                Revenue, Industry, HQ, Tech Stack
+            </div>
+            <div class="data-point">
+                <strong>Engagement (Motion)</strong><br>
+                Web Visits, Clicks, Webinar Attendance
+            </div>
+            <div class="data-point">
+                <strong>Triggers (Context)</strong><br>
+                News, Breaches, Hires, Funding
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="col-header">2. Agentic Reasoning</div>
+            <div class="brain-box">
+                <p>> Normalizing Account Names...</p>
+                <p>> enriching_contact_data()...</p>
+                <p style="color: var(--accent-blue)">> DETECTED TRIGGER: "Breach"</p>
+                <p style="color: var(--accent-red)">> DETECTED TRIGGER: "Competitor Launch"</p>
+                <p>> Calculating Priority Score...</p>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="col-header">3. Prioritized Action</div>
+            
+            <div class="output-card critical">
+                <span class="score-badge" style="color: var(--accent-green)">94</span>
+                <div class="card-title">INITECH (VP Security)</div>
+                <div class="card-meta">Signal: Major Data Breach + 7 Visits</div>
+                <div class="card-action">> DEPLOY: "Risk Mitigation" Sequence</div>
+            </div>
+
+            <div class="output-card critical">
+                <span class="score-badge" style="color: var(--accent-green)">85</span>
+                <div class="card-title">ACME INC (CISO)</div>
+                <div class="card-meta">Signal: New CISO Hire + 15 Visits</div>
+                <div class="card-action">> DEPLOY: "New Leader" Sequence</div>
+            </div>
+
+            <div class="output-card blocked">
+                <span class="score-badge" style="color: var(--accent-red)">0</span>
+                <div class="card-title">HOOLI (Head of IT)</div>
+                <div class="card-meta">Signal: Competitor Product Launch</div>
+                <div class="card-action">> ACTION: BLOCK & ROUTE TO STRATEGY</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

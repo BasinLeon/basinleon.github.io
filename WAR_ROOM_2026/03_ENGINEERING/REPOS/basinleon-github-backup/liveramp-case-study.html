@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveRamp GTM Architecture — BASIN::NEXUS Case Study</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050508;
+            --bg-card: #0a0a0c;
+            --bg-elevated: #13131a;
+            --gold-primary: #D4AF37;
+            --gold-light: #f4d166;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --text-primary: #e8e8e8;
+            --text-secondary: #a8a8b0;
+            --text-muted: #6a6a70;
+            --green: #22c55e;
+            --cyan: #06b6d4;
+            --purple: #a855f7;
+            --red: #ef4444;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* SLIDE CONTAINER */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* NAVIGATION */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-primary);
+            padding: 12px 24px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold-primary);
+            color: var(--bg-deep);
+            border-color: var(--gold-primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            z-index: 1000;
+        }
+
+        /* SLIDE 1: TITLE */
+        .title-slide {
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--purple);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .title-slide .author {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 60px;
+        }
+
+        .title-slide .version {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--purple);
+            color: var(--purple);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* COMMON STYLES */
+        .slide-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: var(--gold-primary);
+        }
+
+        .slide-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        .architecture-diagram {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--purple);
+            border-radius: 8px;
+        }
+
+        .arch-layer {
+            padding: 24px;
+            margin: 16px 0;
+            background: var(--bg-elevated);
+            border-left: 4px solid var(--purple);
+            border-radius: 4px;
+        }
+
+        .arch-layer-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--purple);
+        }
+
+        .arch-layer-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .proof-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .proof-metric {
+            font-size: 2rem;
+            color: var(--purple);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .proof-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .proof-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .quote {
+            margin-top: 60px;
+            padding: 30px;
+            border-left: 4px solid var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+            }
+            .title-slide h1 {
+                font-size: 2rem;
+            }
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / 5
+    </div>
+
+    <div class="slide-container" id="slideContainer">
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active" data-slide="1">
+            <div class="version">CASE STUDY v1.0</div>
+            <div class="title-slide">
+                <h1>LIVERAMP GTM ARCHITECTURE</h1>
+                <p class="subtitle">Identity & Data Marketplace Revenue Systems</p>
+                <p class="author">
+                    Leon Basin, MBA<br>
+                    Revenue Architect • BASIN::NEXUS v10.0<br>
+                    <span style="color: var(--purple);">Portfolio Demonstration</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE CHALLENGE -->
+        <div class="slide" data-slide="2">
+            <h2 class="slide-title">THE CHALLENGE</h2>
+            <p class="slide-subtitle">Two Products, Two Personas, One GTM Engine</p>
+
+            <div class="proof-grid">
+                <div class="proof-card">
+                    <div class="proof-label">Identity Graph</div>
+                    <div class="proof-metric">Complex</div>
+                    <div class="proof-desc">
+                        • Technical buyer (Data Engineers, CDOs)<br>
+                        • Long sales cycle (compliance reviews)<br>
+                        • High ACV, strategic deployment<br>
+                        • Product-led education required
+                    </div>
+                </div>
+
+                <div class="proof-card">
+                    <div class="proof-label">Data Marketplace</div>
+                    <div class="proof-metric">Transactional</div>
+                    <div class="proof-desc">
+                        • Commercial buyer (Marketing, Analytics)<br>
+                        • Faster velocity (data activation needs)<br>
+                        • Variable deal sizes<br>
+                        • Network effects drive adoption
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote">
+                "LiveRamp doesn't need more pipeline. It needs the RIGHT pipeline—routed to the RIGHT team with the RIGHT narrative."
+            </div>
+        </div>
+
+        <!-- SLIDE 3: THE ARCHITECTURE -->
+        <div class="slide" data-slide="3">
+            <h2 class="slide-title">THE GTM ARCHITECTURE</h2>
+            <p class="slide-subtitle">Same System, Bifurcated Execution</p>
+
+            <div class="architecture-diagram">
+                <div class="arch-layer">
+                    <div class="arch-layer-title" style="color: var(--cyan);">LAYER 1 — MARKET SIGNALS</div>
+                    <div class="arch-layer-desc">
+                        Funding events, hiring patterns (CDO/VP Data roles), compliance news (GDPR/CCPA)<br>
+                        <strong>50k+ signals/day monitored</strong> → Scored for Identity vs. Data Marketplace intent
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-title" style="color: var(--purple);">LAYER 2 — SIGNAL ENGINE 🔥</div>
+                    <div class="arch-layer-desc">
+                        Python + LLMs translate technical signals → Business value<br>
+                        <strong>Scoring Logic:</strong> Hiring CDO = Identity intent | Marketing expansion = Marketplace intent<br>
+                        Auto-route to correct GTM motion
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-title" style="color: var(--gold-primary);">LAYER 3 — NARRATIVE HUB</div>
+                    <div class="arch-layer-desc">
+                        <strong>Identity Track:</strong> "Unify customer identity across touchpoints"<br>
+                        <strong>Marketplace Track:</strong> "Activate 2nd-party data for growth"<br>
+                        Persona-specific enablement (Data Engineer vs. CMO)
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-title" style="color: var(--green);">LAYER 4 — EXECUTION & VELOCITY</div>
+                    <div class="arch-layer-desc">
+                        Commercial team toolkits → Launch playbooks → KPI tracking<br>
+                        Real-time dashboards replace quarterly reporting
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: PROOF OF IMPACT -->
+        <div class="slide" data-slide="4">
+            <h2 class="slide-title">PROOF OF IMPACT</h2>
+            <p class="slide-subtitle">Why This Architecture Works</p>
+
+            <div class="proof-grid">
+                <div class="proof-card">
+                    <div class="proof-metric">160%</div>
+                    <div class="proof-label">Pipeline Growth YoY</div>
+                    <div class="proof-desc">
+                        <strong>What I Did:</strong> Rebuilt Series A vendor's GTM engine from scratch<br>
+                        <strong>LiveRamp Application:</strong> Same rigor for Identity + Data Marketplace bifurcation
+                    </div>
+                </div>
+
+                <div class="proof-card">
+                    <div class="proof-metric">68% → 91%</div>
+                    <div class="proof-label">Forecast Accuracy</div>
+                    <div class="proof-desc">
+                        <strong>What I Did:</strong> Replaced gut-feel with algorithmic scoring<br>
+                        <strong>LiveRamp Application:</strong> Define KPIs that guide real decisions, not vanity metrics
+                    </div>
+                </div>
+
+                <div class="proof-card">
+                    <div class="proof-metric">$10M+</div>
+                    <div class="proof-label">Pipeline Generated</div>
+                    <div class="proof-desc">
+                        <strong>What I Did:</strong> Cross-functional orchestration at Sense (BDR team management)<br>
+                        <strong>LiveRamp Application:</strong> Align Product, Pricing, Commercial, Data Ethics teams
+                    </div>
+                </div>
+
+                <div class="proof-card">
+                    <div class="proof-metric"><48 hrs</div>
+                    <div class="proof-label">Tool Deployment</div>
+                    <div class="proof-desc">
+                        <strong>What I Did:</strong> Production tools shipped fast (27,000+ lines of code)<br>
+                        <strong>LiveRamp Application:</strong> "Type S" DNA — speed over perfection, iterate based on feedback
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote">
+                "You're not interviewing a marketer. You're interviewing the Architect who will build the GTM engine for Identity and Data Marketplace."
+                <div style="font-size: 0.7rem; margin-top: 10px; color: var(--text-muted);">
+                    — Leon Basin, Revenue Architect
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: THE SYSTEMS -->
+        <div class="slide" data-slide="5">
+            <h2 class="slide-title">THE SYSTEMS I'D DEPLOY</h2>
+            <p class="slide-subtitle">BASIN::NEXUS → LiveRamp GTM</p>
+
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div class="proof-card" style="margin-bottom: 20px;">
+                    <div class="proof-label">SYSTEM 1: Identity Portfolio Dashboard</div>
+                    <div class="proof-desc" style="font-size: 0.8rem; line-height: 1.8;">
+                        <strong>At Fudo Security:</strong> Real-time market pulse, pipeline prioritization<br>
+                        <strong>At LiveRamp:</strong> Track which signals (funding, hiring, compliance) indicate high-intent buyers for Identity vs. Marketplace
+                    </div>
+                </div>
+
+                <div class="proof-card" style="margin-bottom: 20px;">
+                    <div class="proof-label">SYSTEM 2: Data Marketplace Command Center</div>
+                    <div class="proof-desc" style="font-size: 0.8rem; line-height: 1.8;">
+                        <strong>At Fudo Security:</strong> Unified revenue signals, forecast accuracy<br>
+                        <strong>At LiveRamp:</strong> Buyer/seller liquidity, network health, GTM velocity by product line
+                    </div>
+                </div>
+
+                <div class="proof-card" style="margin-bottom: 20px;">
+                    <div class="proof-label">SYSTEM 3: Identity GTM Tracker</div>
+                    <div class="proof-desc" style="font-size: 0.8rem; line-height: 1.8;">
+                        <strong>At Fudo Security:</strong> Pipeline stages, velocity tracking<br>
+                        <strong>At LiveRamp:</strong> Separate tracking for Identity vs. Data Marketplace, persona-level messaging resonance
+                    </div>
+                </div>
+
+                <div class="proof-card">
+                    <div class="proof-label">SYSTEM 4: PMM Automation Layer</div>
+                    <div class="proof-desc" style="font-size: 0.8rem; line-height: 1.8;">
+                        <strong>At Fudo Security:</strong> LLM-powered agents for outreach, content generation<br>
+                        <strong>At LiveRamp:</strong> Agents that draft persona-specific messaging, generate enablement materials, score market signals
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote" style="margin-top: 40px; text-align: center;">
+                "I don't explain products. I build the systems that turn product launches into repeatable revenue."
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+
+            if (n > totalSlides) { currentSlide = totalSlides; }
+            if (n < 1) { currentSlide = 1; }
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+
+            document.getElementById('currentSlide').textContent = currentSlide;
+
+            document.getElementById('prevBtn').disabled = (currentSlide === 1);
+            document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

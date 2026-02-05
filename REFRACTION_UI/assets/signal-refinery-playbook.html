@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Refinery — DM Playbook</title>
+    <meta name="description" content="Signal Refinery DM Playbook: Technical architecture brief on eliminating latency gaps in GTM systems. Signal-based revenue systems and automation.">
+    <link rel="canonical" href="https://basinleon.github.io/assets/signal-refinery-playbook.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Signal Refinery — DM Playbook">
+    <meta property="og:description" content="Technical architecture brief on eliminating latency gaps in GTM systems. Signal-based revenue systems and automation.">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    <meta property="og:url" content="https://basinleon.github.io/assets/signal-refinery-playbook.html">
+    <meta property="og:type" content="website">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: letter;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            line-height: 1.6;
+        }
+
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            padding: 0.75in 1in;
+            background: #ffffff;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .page:last-child {
+            page-break-after: auto;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0.5in;
+            left: 1in;
+            right: 1in;
+            font-size: 11px;
+            color: #888;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: #0a1628;
+        }
+
+        /* Page 1: Cover */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover .badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #0066cc;
+            margin-bottom: 40px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .cover .subtitle {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 60px;
+        }
+
+        .cover .logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+            padding: 16px 32px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .cover .author {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Page 2: Playbook */
+        .playbook h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        .step-section {
+            margin-bottom: 28px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            background: #0066cc;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0a1628;
+        }
+
+        .step-content {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #333;
+            margin-left: 40px;
+        }
+
+        .step-content code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        /* Page 3: DM Templates */
+        .templates h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #00884a;
+        }
+
+        .template-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .template-card h3 {
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 12px;
+        }
+
+        .template-card.ceo h3 {
+            color: #8b5cf6;
+        }
+
+        .template-card.vp h3 {
+            color: #0066cc;
+        }
+
+        .template-card.cro h3 {
+            color: #00884a;
+        }
+
+        .template-text {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Page 4: Quick Stats */
+        .stats h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #cc6600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 36px;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            color: #0066cc;
+        }
+
+        .stat-box:nth-child(2) .value {
+            color: #00884a;
+        }
+
+        .stat-box:nth-child(3) .value {
+            color: #cc6600;
+        }
+
+        .stat-box:nth-child(4) .value {
+            color: #8b5cf6;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .comment-box {
+            background: #0a1628;
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        .comment-box h3 {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .comment-box p {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .comment-box .link {
+            color: #66b3ff;
+            font-weight: 600;
+        }
+
+        @media print {
+            .page {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE 1: COVER -->
+    <div class="page cover">
+        <div class="badge">Internal Playbook</div>
+        <h1>Signal Refinery<br>DM Playbook</h1>
+        <p class="subtitle">Convert LinkedIn engagement into executive conversations.</p>
+        <div class="logo">BASIN::NEXUS</div>
+        <p class="author">Leon Basin | Revenue Architect</p>
+        <div class="footer">
+            <span>Confidential</span>
+            <span>basinleon.github.io</span>
+        </div>
+    </div>
+
+    <!-- PAGE 2: PLAYBOOK -->
+    <div class="page playbook">
+        <h2>The Engagement Playbook</h2>
+
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-num">1</div>
+                <div class="step-title">POST — The Hook</div>
+            </div>
+            <div class="step-content">
+                Use the "Human Latency" image with the script. This is the scroll-stopper.
+            </div>
+        </div>
+
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-num">2</div>
+                <div class="step-title">FIRST COMMENT — The Link</div>
+            </div>
+            <div class="step-content">
+                Drop <code>https://basinleon.github.io</code> in the first comment.<br>
+                This avoids the algorithm penalty for external links in the post body.
+            </div>
+        </div>
+
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-num">3</div>
+                <div class="step-title">REPLY — The Bait</div>
+            </div>
+            <div class="step-content">
+                When someone likes or comments:<br><br>
+                <em>"Appreciate the engagement. I'm putting the full technical white paper together now—should I send
+                    you the PDF?"</em>
+            </div>
+        </div>
+
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-num">4</div>
+                <div class="step-title">DM — The Delivery</div>
+            </div>
+            <div class="step-content">
+                When they say "Yes," send the White Paper PDF with a personalized note.<br>
+                This starts a direct conversation with a potential lead or employer.
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>Page 2 of 4</span>
+            <span>basinleon.github.io</span>
+        </div>
+    </div>
+
+    <!-- PAGE 3: DM TEMPLATES -->
+    <div class="page templates">
+        <h2>Executive DM Templates</h2>
+
+        <div class="template-card ceo">
+            <h3>→ After a CEO Downloads the PDF</h3>
+            <div class="template-text">Appreciate you grabbing the brief.
+
+                Quick context: The "Refinery" logic started as a side project to solve a real problem I was seeing—SDR
+                teams burning cycles on stale signals while hot leads went cold.
+
+                If this maps to anything you're seeing on your GTM side, happy to walk through the architecture in 15
+                minutes. No pitch—just the technical breakdown.
+
+                Leon</div>
+        </div>
+
+        <div class="template-card vp">
+            <h3>→ After a VP of Sales Downloads the PDF</h3>
+            <div class="template-text">Thanks for the download.
+
+                The 160% growth came from one shift: stop measuring "activity" (calls, emails) and start measuring
+                "signal quality" (precision, latency).
+
+                If your team is dealing with similar friction—signals piling up, reps chasing stale leads—I can show you
+                the Python logic behind the gates.
+
+                Worth a 15-minute call?
+
+                Leon</div>
+        </div>
+
+        <div class="template-card cro">
+            <h3>→ After a CRO Downloads the PDF</h3>
+            <div class="template-text">Thanks for grabbing this.
+
+                The core thesis: Your SDR team isn't slow because they're bad. They're slow because they're running 2026
+                pipeline on 2015 infrastructure.
+
+                The "Refinery" is my answer to that. If you're evaluating how to scale GTM without linear headcount
+                growth, I'd be happy to map the architecture to your current stack.
+
+                Leon</div>
+        </div>
+
+        <div class="footer">
+            <span>Page 3 of 4</span>
+            <span>basinleon.github.io</span>
+        </div>
+    </div>
+
+    <!-- PAGE 4: STATS -->
+    <div class="page stats">
+        <h2>Quick Stats for Comments</h2>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="value">160%</div>
+                <div class="label">Pipeline Growth</div>
+            </div>
+            <div class="stat-box">
+                <div class="value">Significant</div>
+                <div class="label">New Yield</div>
+            </div>
+            <div class="stat-box">
+                <div class="value">$240k</div>
+                <div class="label">Labor Replaced</div>
+            </div>
+            <div class="stat-box">
+                <div class="value">0.8</div>
+                <div class="label">Precision Score</div>
+            </div>
+        </div>
+
+        <div class="comment-box">
+            <h3>First Comment Template</h3>
+            <p>"I've detailed the full architecture and the 'Refinery' logic on my site for those who want to see the
+                code behind the 160% growth: <span class="link">https://basinleon.github.io</span>"</p>
+        </div>
+
+        <div class="footer">
+            <span>Page 4 of 4</span>
+            <span>basinleon.github.io</span>
+        </div>
+    </div>
+
+</body>
+
+</html>

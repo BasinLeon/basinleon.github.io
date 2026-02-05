@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artifact: Why I Built a Native Executive Signal Brief Generator | Leon Basin</title>
+    <meta name="description"
+        content="I killed the Friday Status Update. Standard CRMs are data warehouses, not decision engines. Here is the local-first 'Signal Brief' architecture I built to replace dashboards with artifacts.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-left: 24px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--gold-primary);
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .post-content {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .post-content p {
+            margin-bottom: 24px;
+        }
+
+        .post-content h2,
+        .post-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            margin: 48px 0 24px;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 24px 0;
+            padding-left: 24px;
+        }
+
+        .post-content li {
+            margin-bottom: 12px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 48px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            border-top: 1px solid var(--gold-border);
+            padding: 40px 24px;
+            text-align: center;
+            background: var(--bg-deep);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+    <link rel="stylesheet" href="../css/blog.css">
+</head>
+
+<body>
+    <div class="reading-progress" id="reading-progress"></div>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="https://basinleon.github.io" class="nav-logo">LEON BASIN</a>
+            <div class="nav-links">
+                <a href="https://basinleon.github.io">Home</a>
+                <a href="../index.html">Blog</a>
+                <a href="https://basinleon.github.io/tools.html">Tools</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="post-meta">January 2, 2026 • Tool • AI</div>
+        <h1>The Artifact: Why I Built a Native Executive Signal Brief Generator</h1>
+
+        <div class="post-content">
+            <p>I killed the Friday Status Update. Standard CRMs are data warehouses, not decision engines. Here is the
+                local-first "Signal Brief" architecture I built to replace dashboards with artifacts.</p>
+
+            <p>For years, revenue leaders have been drowning in dashboards. Salesforce reports. HubSpot analytics. Gong
+                call summaries. Slack threads. The problem isn't data—it's signal extraction.</p>
+
+            <h3>The Problem with Dashboards</h3>
+            <p>Dashboards are passive. They require context-switching. They assume you have time to synthesize
+                information from multiple sources. In the real world, executives have 30 seconds to make a decision.
+                They need a brief, not a warehouse.</p>
+
+            <h3>The Solution: Signal Briefs</h3>
+            <p>I built a local-first system that generates a one-page "Executive Signal Brief" every Friday. It pulls
+                data from my CRM, enriches it with AI, and outputs a single artifact that answers three questions:</p>
+            <ul>
+                <li><strong>What closed this week?</strong> — Wins, losses, key lessons.</li>
+                <li><strong>What's at risk?</strong> — Deals going dark, competitors emerging.</li>
+                <li><strong>What's the signal?</strong> — Patterns I should act on next week.</li>
+            </ul>
+
+            <h3>The Architecture</h3>
+            <p>The system runs entirely on my machine. No SaaS dependencies. Python pulls data from HubSpot via API,
+                runs it through a scoring algorithm, then passes the structured data to an LLM for narrative synthesis.
+                The output is a Markdown file that I can print, share, or archive.</p>
+
+            <h3>Why This Matters</h3>
+            <p>The future of GTM isn't more tools. It's better intelligence. Leaders who can architect their own signal
+                systems will outperform those waiting for vendors to catch up. This is the builder's advantage.</p>
+
+            <p>Want to see the code? <a href="https://github.com/BasinLeon"
+                    style="color: var(--gold-primary);">github.com/BasinLeon</a></p>
+        </div>
+
+        
+    <!-- Social Sharing Buttons -->
+    <div class="social-share-container">
+        <span class="social-share-label">Share:</span>
+        <a href="#" class="social-share-btn twitter" onclick="shareToTwitter(event)">🐦 Twitter</a>
+        <a href="#" class="social-share-btn linkedin" onclick="shareToLinkedIn(event)">💼 LinkedIn</a>
+        <a href="#" class="social-share-btn facebook" onclick="shareToFacebook(event)">📘 Facebook</a>
+        <a href="#" class="social-share-btn copy" onclick="copyArticleLink(event)">📋 Copy Link</a>
+    </div>
+<a href="../index.html" class="back-link">← Back to Archive</a>
+    </main>
+
+    <footer>
+        <div class="footer-copyright">© 2026 Leon Basin. Signal. Architecture. Revenue.</div>
+    </footer>
+
+    <!-- Blog Analytics & Related Posts -->
+    <script src="../js/blog-analytics.js"></script>
+    <script>
+        // Inject related posts based on this article's tags
+        const currentTags = ['AI', 'Tool', 'Signal'];
+        const currentUrl = 'posts/the-artifact.html';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.BlogAnalytics) {
+                window.BlogAnalytics.injectRelatedPosts('.post-content', currentTags, currentUrl);
+            }
+        });
+    </script>
+
+    <!-- NEXUS Intelligence Bot -->
+    <script src="../../widgets/leon-logic-bot.js"></script>
+
+    <script src="../js/blog-features.js"></script>
+    <script src="../js/blog-search.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRM.ai Q1 Architecture | Leon Basin</title>
+    <style>
+        :root {
+            --bg: #0F1115;
+            --card: #1A1D24;
+            --text-main: #EAEAEA;
+            --text-muted: #9CA3AF;
+            --accent: #D4AF37; /* Gold */
+            --code: #10B981; /* Green for success/code */
+            --danger: #EF4444;
+            --border: #2D3748;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+        .header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+        .meta {
+            text-align: right;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .mission-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mission-text strong { color: var(--accent); }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        .card-header {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .metric-big {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .workflow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .step-icon {
+            margin-right: 12px;
+            color: var(--accent);
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .step-content {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .code-snippet {
+            font-family: 'Monaco', monospace;
+            background: #000;
+            padding: 6px;
+            border-radius: 4px;
+            color: var(--code);
+            font-size: 10px;
+            margin-top: 4px;
+            border: 1px solid #333;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <h1>Q1 Architecture: "Context Engineering"</h1>
+            <div class="subtitle">Operational Blueprint for March Influx (5,000 Leads)</div>
+        </div>
+        <div class="meta">
+            PREPARED FOR JAMES MCGILLICUDDY<br>
+            BY LEON BASIN
+        </div>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-text">
+            <strong>THE OBJECTIVE:</strong> Ingest 5,000 Sponsorship Leads → Extract the "Vendor Managers" → Route 500 "Whales" to AEs in real-time.
+        </div>
+        <div style="text-align: right;">
+            <span style="font-size: 12px; color: var(--text-muted);">STATUS</span><br>
+            <strong style="color: var(--code);">READY TO BUILD</strong>
+        </div>
+    </div>
+
+    <div class="grid">
+        <!-- LEFT: THE PROBLEM -->
+        <div class="card">
+            <div class="card-header">Current State (The Void)</div>
+            <p class="step-content">
+                Standard lead processing for events is "Batch and Blast."
+                <br><br>
+                <strong>The Friction:</strong>
+                <ul style="font-size: 13px; color: var(--text-muted); padding-left: 20px;">
+                    <li>Manual research takes 15-20 mins per lead.</li>
+                    <li>SDRs focus on "Job Titles" (noisy) instead of "Stack Signals."</li>
+                    <li>Leads decay by 90% within 48 hours.</li>
+                </ul>
+            </p>
+            <div style="margin-top: 20px;">
+                <div class="metric-big" style="color: var(--danger);">48 Hours</div>
+                <div class="metric-label">Avg "Time to Context" (Too Slow)</div>
+            </div>
+        </div>
+
+        <!-- RIGHT: THE SOLUTION -->
+        <div class="card" style="border-color: var(--accent);">
+            <div class="card-header" style="color: var(--accent);">Future State (The Architecture)</div>
+            
+            <div class="workflow-step">
+                <div class="step-icon">01</div>
+                <div class="step-content">
+                    <strong>Ingest & Signal Check</strong><br>
+                    Leads hit the API. Script instantly checks Technographics.<br>
+                    <div class="code-snippet">if "Brex" in tech_stack or "Coupa" in tech_stack: priority = "HIGH"</div>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-icon">02</div>
+                <div class="step-content">
+                    <strong>Enrich "Vendor Identity"</strong><br>
+                    We don't just look for "Head of IT." We look for "Category Managers" responsible for SaaS Spend.
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-icon">03</div>
+                <div class="step-content">
+                    <strong>Route to AEs</strong><br>
+                    Top 10% ("Whales") go to Slack instantly. Bottom 90% go to automated nurture.<br>
+                    <div class="code-snippet">latency: < 200ms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 25px;">
+        <div class="card-header">Expansion Pack: The "Watering Hole" Strategy</div>
+        <div class="grid" style="grid-template-columns: 1fr 3fr; gap: 20px; align-items: center;">
+            <div style="text-align: center;">
+                <div class="metric-big">Finance Dinners</div>
+                <div class="metric-label">Q1 Targeted Event</div>
+            </div>
+            <div class="step-content">
+                <strong>Pre-Event Architecture:</strong> Instead of waiting for the guest list, we pre-scrape attendees and map their "Vendor Management" responsibilities.<br><br>
+                <strong>The Play:</strong> AEs walk into the dinner knowing exactly who manages the "SaaS Sprawl" problem at TD Ameritrade (and who is just a guest).
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        BASIN::NEXUS // GTM ENGINEERING // 2026
+    </div>
+</div>
+
+</body>
+</html>
