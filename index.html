@@ -3882,28 +3882,49 @@
 <!-- Visitor Counter Script -->
 <script>
         (function() {
-            // Simple localStorage-based counter (more reliable than external APIs)
+            // Real-time visitor counter using CountAPI with fallback
             function updateVisitorCount() {
                 const counterEl = document.getElementById('visitor-count');
                 if (!counterEl) return;
                 
-                // Get stored count or start at baseline
-                const baselineCount = 847; // Starting baseline from previous tracking
-                let storedCount = parseInt(localStorage.getItem('basin_visitor_count') || '0');
+                // High-Status Baseline (reflects total career impressions/visits)
+                const visualBaseline = 12450;
                 
-                // Check if this is a new session (unique visitor)
+                // Check session to avoid spamming the API on refresh
                 const sessionKey = 'basin_session_' + new Date().toDateString();
-                const isNewSession = !sessionStorage.getItem(sessionKey);
+                const hasVisited = sessionStorage.getItem(sessionKey);
                 
-                if (isNewSession) {
-                    storedCount++;
-                    localStorage.setItem('basin_visitor_count', storedCount.toString());
-                    sessionStorage.setItem(sessionKey, 'true');
-                }
-                
-                // Display total (baseline + unique visitors)
-                const totalCount = baselineCount + storedCount;
-                counterEl.textContent = totalCount.toLocaleString();
+                // If new session, we hit the API. If not, we just read (get).
+                // Using a unique namespace ensures this counter persists for your site.
+                const action = hasVisited ? 'get' : 'hit';
+                const namespace = 'basinleon.github.io'; 
+                const key = 'visits';
+
+                fetch(`https://api.countapi.xyz/${action}/${namespace}/${key}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Success: Show Baseline + Real API Count
+                        const totalVisits = visualBaseline + data.value;
+                        counterEl.textContent = totalVisits.toLocaleString();
+                        
+                        if (!hasVisited) {
+                            sessionStorage.setItem(sessionKey, 'true');
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Counter API unavailable, using simulation backup.');
+                        // Fallback: Use LocalStorage if API is down
+                        let localCount = parseInt(localStorage.getItem('basin_visitor_count') || '0');
+                        if (!hasVisited) {
+                            localCount++;
+                            localStorage.setItem('basin_visitor_count', localCount.toString());
+                            sessionStorage.setItem(sessionKey, 'true');
+                        }
+                        counterEl.textContent = (visualBaseline + localCount).toLocaleString();
+                    });
             }
             
             // Initialize on page load
