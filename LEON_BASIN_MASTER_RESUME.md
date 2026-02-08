@@ -1,6 +1,6 @@
 # Leon Basin, MBA
 **GTM Engineer**
-Mountain View, CA | [linkedin.com/in/leonbasin](https://www.linkedin.com/in/leonbasin/) | [basinleon.com](https://basinleon.com) | [Contact via LinkedIn]
+Mountain View, CA | [linkedin.com/in/leonbasin](https://www.linkedin.com/in/leonbasin/) | [basinleon.com](https://basinleon.com)
 
 ### PROFESSIONAL SUMMARY
 Strategic GTM Architect and "Orchestrator" with over 10 years of experience driving **GTM efficiency** by replacing manual sales tasks with automated infrastructure. I specialize in building "Signal Refineries" for SaaS and Cybersecurity organizations—using Clay, n8n, and Python to scale pipeline without increasing burn or headcount. I have managed $300M+ in enterprise portfolios and architected systems that generated over $30M in lifetime pipeline. My focus is on turning complex business logic into automated, high-output revenue engines.

@@ -53,7 +53,7 @@ I am looking for partners, founders, and boards who are ready to stop "hustling"
 *GTM System Architect // Revenue Engineer*
 *Ex-Fudo Security // PAM Expert*
 
-[LEON_BASIN_MASTER_RESUME.md](../LEON_BASIN_MASTER_RESUME.md)
+[linkedin.com/in/leonbasin](https://www.linkedin.com/in/leonbasin/) | [LEON_BASIN_MASTER_RESUME.md](../LEON_BASIN_MASTER_RESUME.md)
 
 ---
 *Codified on Feb 8, 2026 // Version 2.0*
