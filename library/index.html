@@ -1,454 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library | Leon Basin - GTM Frameworks, Playbooks & Resources</title>
-    <meta name="description" content="GTM frameworks, revenue architecture playbooks, templates, and resources. Built from 15+ years of GTM leadership experience.">
-    <link rel="canonical" href="https://basinleon.github.io/library/">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      BASIN::NEXUS | The Lab - Institutional Memory & GTM Architecture
+    </title>
+    <meta
+      name="description"
+      content="Operational surface for GTM Engineering, AI Agent Governance, and Sovereign Revenue Systems."
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        :root {
-            --gold-primary: #D4AF37;
-            --gold-light: #FFD700;
-            --gold-dark: #B8860B;
-            --gold-glow: rgba(212, 175, 55, 0.6);
-            --gold-subtle: rgba(212, 175, 55, 0.15);
-            --gold-border: rgba(212, 175, 55, 0.3);
-            --bg-deep: #050508;
-            --bg-card: #0a0a0f;
-            --bg-elevated: #0f0f15;
-            --text-primary: #f0e6d3;
-            --text-secondary: #8b8573;
-            --text-muted: #5a584f;
+      :root {
+        --bg-deep: #050508;
+        --bg-card: rgba(15, 15, 25, 0.7);
+        --gold-primary: #c9a227;
+        --gold-glow: rgba(201, 162, 39, 0.3);
+        --text-primary: #fafaf8;
+        --text-secondary: #a8a89c;
+        --accent-blue: #00a3ff;
+        --border-style: 1px solid rgba(201, 162, 39, 0.2);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+        background-image:
+          radial-gradient(
+            circle at 50% -20%,
+            rgba(201, 162, 39, 0.15),
+            transparent 80%
+          ),
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size:
+          100% 100%,
+          50px 50px,
+          50px 50px;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 24px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 80px;
+      }
+
+      .logo {
+        font-family: "Orbitron", sans-serif;
+        font-weight: 900;
+        font-size: 1.2rem;
+        letter-spacing: 4px;
+        color: var(--gold-primary);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #fff, var(--gold-primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+        margin-top: 60px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: var(--border-style);
+        border-radius: 12px;
+        padding: 32px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--gold-primary);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.4),
+          0 0 20px var(--gold-glow);
+        border-color: var(--gold-primary);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--gold-primary);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card-tag::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--gold-primary);
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 8px var(--gold-primary);
+      }
+
+      .card-title {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .card-desc {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        flex-grow: 1;
+      }
+
+      .card-footer {
+        margin-top: 24px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--gold-primary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        margin-top: 100px;
+        padding-top: 40px;
+        border-top: var(--border-style);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Status Badge */
+      .status-header {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+
+      .status-pill {
+        background: rgba(0, 163, 255, 0.1);
+        border: 1px solid var(--accent-blue);
+        color: var(--accent-blue);
+        padding: 4px 12px;
+        border-radius: 100px;
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--accent-blue);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        50% {
+          transform: scale(1.5);
+          opacity: 0.5;
         }
-        
-        body {
-            font-family: 'JetBrains Mono', monospace;
-            background: 
-                radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(212, 175, 55, 0.02) 0%, transparent 40%),
-                linear-gradient(180deg, #050508 0%, #0a0a0f 50%, #050508 100%);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            line-height: 1.7;
-            min-height: 100vh;
-            padding: 40px 24px;
+        100% {
+          transform: scale(1);
+          opacity: 1;
         }
-        
+      }
+
+      @media (max-width: 768px) {
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+          padding: 40px 20px;
         }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 48px;
+        h1 {
+          font-size: 2.5rem;
         }
-        
-        .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: var(--gold-primary);
-            margin-bottom: 16px;
-        }
-        
-        .header p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        
-        .library-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 48px;
-        }
-        
-        .library-card {
-            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-deep) 100%);
-            border: 1px solid var(--gold-border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-        
-        .library-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
-        }
-        
-        .library-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--gold-primary);
-            margin-bottom: 12px;
-        }
-        
-        .library-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            line-height: 1.6;
-        }
-        
-        .library-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        
-        .library-tag {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold-border);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            color: var(--gold-primary);
-        }
-        
-        .library-link {
-            color: var(--gold-primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .library-link:hover {
-            color: var(--gold-light);
-        }
-        
-        .back-link {
-            text-align: center;
-            margin-top: 48px;
-        }
-        
-        .back-link a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .back-link a:hover {
-            color: var(--gold-primary);
-        }
-        
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
-            border: 1px solid var(--gold-border);
-            border-radius: 6px;
-            color: var(--gold-primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            margin-top: 12px;
-        }
-        
-        .download-btn:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.2) 100%);
-            border-color: var(--gold-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
-        }
-        
-        .email-capture {
-            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-deep) 100%);
-            border: 1px solid var(--gold-border);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 32px 0;
-            text-align: center;
-        }
-        
-        .email-capture h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--gold-primary);
-            margin-bottom: 12px;
-        }
-        
-        .email-capture p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-        
-        .email-input-group {
-            display: flex;
-            gap: 8px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .email-input {
-            flex: 1;
-            padding: 10px 16px;
-            background: var(--bg-deep);
-            border: 1px solid var(--gold-border);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-        
-        .email-input:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-        
-        .email-submit {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            border: none;
-            border-radius: 6px;
-            color: #000;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .email-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>Library</h1>
-            <p>Frameworks, playbooks, and resources I've built from 15+ years of GTM work</p>
+      <header>
+        <div class="status-header">
+          <div class="status-pill">System Online // Level 5 Maturity</div>
         </div>
-        
-        <!-- Email Capture for Lead Magnets -->
-        <div class="email-capture">
-            <h3>📥 Get Free Frameworks</h3>
-            <p>Subscribe to get access to GTM frameworks, templates, and playbooks I've built</p>
-            <form class="email-input-group" onsubmit="handleLibrarySignup(event)">
-                <input type="email" class="email-input" placeholder="your@email.com" required aria-label="Email address">
-                <button type="submit" class="email-submit">Subscribe</button>
-            </form>
-        </div>
-        
-        <div class="library-grid">
-            <div class="library-card">
-                <div class="status-tag" style="display: inline-block; padding: 2px 8px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-primary); color: var(--gold-primary); border-radius: 4px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">Technical Thesis</div>
-                <h3>Sybill AI Performance Thesis</h3>
-                <p>A GTM Engineering teardown of Sybill's technical architecture. From "Passive Recording" to "Outcome Orchestration" and "Signal Persistence."</p>
-                <div class="library-tags">
-                    <span class="library-tag">Teardown</span>
-                    <span class="library-tag">Sybill AI</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="sybill-ai-performance-thesis.html" class="library-link">View Thesis →</a>
-            </div>
-            <div class="library-card">
-                <h3>GTM Signal Architecture Playbook</h3>
-                <p>How I build signal-based revenue systems. The methodology I use, the templates that work, and how to actually implement it.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Framework</span>
-                    <span class="library-tag">GTM</span>
-                    <span class="library-tag">Premium</span>
-                </div>
-                <a href="../blog/posts/architecture-of-revenue.html" class="library-link">View Playbook →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>30-60-90 AE Playbook</h3>
-                <p>My first 90 days framework for enterprise sales. What I learned from ramping at Series A companies and how to avoid the common mistakes.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Sales</span>
-                    <span class="library-tag">Onboarding</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="../blog/posts/30-60-90-ae-playbook.html" class="library-link">View Playbook →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Strategy Journey</h3>
-                <p>The story of how I built GTM systems from scratch. Real lessons, frameworks that worked, and what I'd do differently.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Story</span>
-                    <span class="library-tag">GTM</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="../blog/posts/gtm-strategy-journey.html" class="library-link">Read Story →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Engineering Framework</h3>
-                <p>How I approach GTM engineering: signal architecture, automation patterns, and the roles that matter. Includes 8 real projects I've built with the technical details and what actually worked.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Framework</span>
-                    <span class="library-tag">GTM Engineering</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-engineering-framework.html" class="library-link">View Framework →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Systems Architecture</h3>
-                <p>How I built 9 production GTM systems. The design patterns I use, API integrations that work, LLM orchestration, and infrastructure that actually scales.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Architecture</span>
-                    <span class="library-tag">Systems</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-systems-architecture.html" class="library-link">View Document →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Performance Metrics</h3>
-                <p>How I measure GTM systems. The KPIs that matter, dashboard setups that work, optimization strategies, and real results from systems I've deployed.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Metrics</span>
-                    <span class="library-tag">Performance</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-performance-metrics.html" class="library-link">View Document →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Strategic Plan</h3>
-                <p>My approach to building repeatable revenue engines. The Signal Engine, Conversion Engine, and a 90-day roadmap that actually works.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Strategic Plan</span>
-                    <span class="library-tag">GTM</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-strategic-plan.html" class="library-link">View Plan →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Strategy & Execution Synthesis</h3>
-                <p>How I think about GTM strategy and execution. Six plays that worked, the metrics that matter, and how I built out SDR programs.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Strategy</span>
-                    <span class="library-tag">Execution</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-strategy-execution-synthesis.html" class="library-link">View Document →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>BASIN::NEXUS GTM Engineering Framework</h3>
-                <p>The GTM engineering projects I've built and the specialized roles that make them work. Eight projects with real metrics and technical specs.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Framework</span>
-                    <span class="library-tag">BASIN::NEXUS</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="basin-nexus-gtm-engineering-framework.html" class="library-link">View Framework →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>BASIN::NEXUS Framework Modules</h3>
-                <p>All the modules and tools I've built. Nine modules total—eight active, one classified—with status, tech stack, and what they actually deliver.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Modules</span>
-                    <span class="library-tag">BASIN::NEXUS</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="basin-nexus-framework-modules.html" class="library-link">View Catalog →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Transformation Business Case</h3>
-                <p>Why I moved from traditional SDR models to automated GTM. The savings, CAC reduction, pipeline growth, and case studies from real deployments.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Business Case</span>
-                    <span class="library-tag">ROI</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-transformation-business-case.html" class="library-link">View Business Case →</a>
-            </div>
-            
-            <div class="library-card">
-                <h3>GTM Engineering Campaign Briefing</h3>
-                <p>How I think about GTM Engineering campaigns. Strategy, assets, pipeline approach, consulting framework, Agentic GTM systems, and the talking points that work.</p>
-                <div class="library-tags">
-                    <span class="library-tag">Campaign</span>
-                    <span class="library-tag">Briefing</span>
-                    <span class="library-tag">Free</span>
-                </div>
-                <a href="gtm-engineering-campaign-briefing.html" class="library-link">View Briefing →</a>
-            </div>
-        </div>
-        
-        <div class="back-link">
-            <a href="../">← Back to Portfolio</a>
-            <span style="margin: 0 16px; color: var(--text-muted);">|</span>
-            <a href="../blog/">View Blog</a>
-            <span style="margin: 0 16px; color: var(--text-muted);">|</span>
-            <a href="../tools/">View Tools</a>
-        </div>
+        <div class="logo">Basin::Nexus</div>
+        <h1>The Operating Surface</h1>
+        <p class="subtitle">
+          Institutional memory, governance models, and sovereign GTM
+          architecture. This is how I run agents at scale.
+        </p>
+      </header>
+
+      <div class="grid">
+        <!-- DOCTRINE -->
+        <a href="../PROTOCOLS/architecture.md" class="card">
+          <div class="card-tag">Doctrine</div>
+          <h3 class="card-title">System Architecture</h3>
+          <p class="card-desc">
+            The structural logic of sovereign revenue systems. Layering, data
+            ownership, and signal flows.
+          </p>
+          <div class="card-footer">View Protocol →</div>
+        </a>
+
+        <a href="../PROTOCOLS/coding-rules.md" class="card">
+          <div class="card-tag">Doctrine</div>
+          <h3 class="card-title">Coding Rules</h3>
+          <p class="card-desc">
+            The "Hard Rails" for technical excellence. Logic gates for Python
+            and aesthetic standards for interfaces.
+          </p>
+          <div class="card-footer">View Protocol →</div>
+        </a>
+
+        <!-- EXECUTION -->
+        <a href="../PROTOCOLS/website-architecture.md" class="card">
+          <div class="card-tag">Execution</div>
+          <h3 class="card-title">Website Control Plane</h3>
+          <p class="card-desc">
+            How this platform operates as a Mission Control center for agentic
+            development patterns.
+          </p>
+          <div class="card-footer">View Architecture →</div>
+        </a>
+
+        <!-- EVIDENCE -->
+        <a href="../PROTOCOLS/failure-gallery.md" class="card">
+          <div class="card-tag">Evidence</div>
+          <h3 class="card-title">Failure Gallery</h3>
+          <p class="card-desc">
+            Institutional memory of agentic errors and the compensating controls
+            implemented to solve them.
+          </p>
+          <div class="card-footer">View Log →</div>
+        </a>
+
+        <!-- PARTICIPATION -->
+        <a href="../PROTOCOLS/collaboration-protocol.md" class="card">
+          <div class="card-tag">Participation</div>
+          <h3 class="card-title">Collaboration Protocol</h3>
+          <p class="card-desc">
+            The refined interface for high-level engagement, speculative audits,
+            and system installations.
+          </p>
+          <div class="card-footer">Plug In →</div>
+        </a>
+
+        <!-- MANIFESTO overflow -->
+        <a href="../gtm-stack/MANIFESTO.md" class="card">
+          <div class="card-tag">Vision</div>
+          <h3 class="card-title">GTM Manifesto</h3>
+          <p class="card-desc">
+            The shift from traditional sales to systems-based GTM Engineering.
+            The high-gravity vision.
+          </p>
+          <div class="card-footer">Read Manifesto →</div>
+        </a>
+      </div>
+
+      <footer>BASIN::NEXUS // VER 2.0 // SOVEREIGN_AI_OPERATIONS</footer>
     </div>
-    
-    <script>
-        function handleLibrarySignup(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('.email-input').value;
-            const submitBtn = event.target.querySelector('.email-submit');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading
-            submitBtn.textContent = 'Subscribing...';
-            submitBtn.disabled = true;
-            
-            // Send to Formspree (or your email service)
-            fetch('https://formspree.io/f/meeeqyrg', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: email,
-                    source: 'Library Signup',
-                    interest: 'GTM Frameworks'
-                })
-            })
-            .then(() => {
-                submitBtn.textContent = '✅ Subscribed!';
-                event.target.querySelector('.email-input').value = '';
-                
-                // Track event
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'library_signup', {
-                        'event_category': 'Lead Generation',
-                        'event_label': 'Library',
-                        'value': 1
-                    });
-                }
-                
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 2000);
-            })
-            .catch(() => {
-                submitBtn.textContent = 'Try Again';
-                submitBtn.disabled = false;
-            });
-        }
-    </script>
-</body>
+  </body>
 </html>
