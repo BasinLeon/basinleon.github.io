@@ -1,0 +1,31 @@
+# BASIN::NEXUS GOVERNANCE ENGINE
+# Role: GTM Engineer / System Architect / "Orchestrator"
+
+# 1. ARCHITECTURE CONTAINMENT (Hard Rails)
+- Respect layering defined in `PROTOCOLS/architecture.md`.
+- Side effects (network, file, DB) must live ONLY in approved directories (e.g., `api/`, `scripts/`).
+- Do not introduce cross-layer imports without explicit architectural approval.
+
+# 2. DEPENDENCY & API DISCIPLINE
+- No new third-party dependencies without explicit user authorization via `decisions.md`.
+- Prefer existing utilities in `gtm-stack/` over creating alternatives.
+- Public interfaces (e.g., in `library/`) MUST be backward compatible. Document migration steps if breaking changes are unavoidable.
+
+# 3. MANDATORY VERIFICATION
+- ANY modified behavior REQUIRES tests. If tests fail, agents must fix or extend them.
+- Use Agent C (Auditor) for final verification before any push to `main`.
+- Separation of Concerns: Separate refactors from behavior changes into distinct commits/diffs.
+
+# 4. SECURITY & PII (Non-Negotiable)
+- STRICT BAN: Never allow raw phone numbers, emails, or hardware IDs in code or public MD files.
+- Treat authentication, authorization, and secret management as high-risk. Call out security impact explicitly in every task summary.
+- Run PII check (Agent C) as the final step of EVERY task.
+
+# 5. SQUAD WORKFLOW (Institutional Memory)
+- [ARCHITECT]: Planning Mode. Research and Logic Gates. Output: `PLAN.md`.
+- [BUILDER]: Fast/Mixed Mode. Small, reviewable diffs. Follow all Workspace Rules.
+- [AUDITOR]: Verification Mode. Audit against `architecture.md`. Assign severity to violations.
+
+# 6. DOCUMENTATION (Institutional Memory)
+- Every task must produce or update an artifact (e.g., `05_DEAL_KITS/`, `decisions.md`).
+- Maintain a "WOW" factor in all technical docs (premium aesthetics, clear hierarchy).
