@@ -14,7 +14,26 @@
     <meta property="og:url" content="https://basinleon.github.io/library/gtm-systems-architecture.html">
     <meta property="og:type" content="article">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -22,207 +41,203 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'JetBrains Mono', monospace;
+            background: 
+                radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
             line-height: 1.7;
-            color: #1a1a1a;
-            background: #ffffff;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 40px 24px;
         }
         
         .header {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #D4AF37;
+            margin-bottom: 60px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--gold-border);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         h1 {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #1a1a1a;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8em;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
             margin-bottom: 15px;
+            text-transform: uppercase;
         }
         
         .subtitle {
-            font-size: 1.2em;
-            color: #666;
+            font-size: 1.1em;
+            color: var(--text-secondary);
             margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
         
         .intro {
             font-size: 1.1em;
             line-height: 1.8;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-left: 4px solid #D4AF37;
+            margin-bottom: 60px;
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-left: 4px solid var(--gold-primary);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
+        .systems-table-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            overflow-x: auto;
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            background: var(--bg-card);
+        }
+
         .systems-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 30px 0;
-            font-size: 0.9em;
-            overflow-x: auto;
-            display: block;
-        }
-        
-        .systems-table thead {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-        
-        .systems-table tbody {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
+            font-size: 0.85em;
         }
         
         .systems-table th {
-            background: #1a1a1a;
-            color: #D4AF37;
-            padding: 15px 10px;
+            background: var(--bg-elevated);
+            color: var(--gold-primary);
+            padding: 20px 15px;
             text-align: left;
-            font-weight: 600;
-            border: 1px solid #333;
-            position: sticky;
-            top: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--gold-border);
+            text-transform: uppercase;
         }
         
         .systems-table td {
-            padding: 12px 10px;
-            border: 1px solid #e0e0e0;
+            padding: 20px 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
             vertical-align: top;
         }
         
-        .systems-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-        
         .systems-table tr:hover {
-            background: #fff9e6;
+            background: rgba(212, 175, 55, 0.05);
         }
         
         .category-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 4px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid currentColor;
+            opacity: 0.9;
         }
         
-        .category-intelligence {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .category-guerrilla {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .category-leadgen {
-            background: #e8f5e9;
-            color: #388e3c;
-        }
-        
-        .category-strategic {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-        
-        .category-governance {
-            background: #e0f2f1;
-            color: #00796b;
-        }
-        
-        .category-partner {
-            background: #fce4ec;
-            color: #c2185b;
-        }
-        
-        .category-training {
-            background: #fff8e1;
-            color: #f9a825;
-        }
-        
-        .category-enablement {
-            background: #f1f8e9;
-            color: #558b2f;
-        }
+        .category-intelligence { color: #a6c1ff; background: rgba(130, 170, 255, 0.15); }
+        .category-guerrilla { color: #ffa98f; background: rgba(247, 140, 108, 0.15); }
+        .category-leadgen { color: #d4f5a2; background: rgba(195, 232, 141, 0.15); }
+        .category-strategic { color: #dbaff5; background: rgba(199, 146, 234, 0.15); }
+        .category-governance { color: #acf0ff; background: rgba(137, 221, 255, 0.15); }
+        .category-partner { color: #ff7b91; background: rgba(255, 83, 112, 0.15); }
+        .category-training { color: #ffe0a3; background: rgba(255, 203, 107, 0.15); }
+        .category-enablement { color: #f2dab4; background: rgba(236, 196, 141, 0.15); }
         
         .impact-highlight {
-            font-weight: 700;
-            color: #D4AF37;
+            color: var(--gold-light);
+            font-weight: 600;
         }
         
         .tech-stack {
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: 0.85em;
-            color: #666;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-top: 40px;
-            color: #D4AF37;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .back-link:hover {
-            text-decoration: underline;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
         
         .summary-box {
-            background: #1a1a1a;
-            color: #ffffff;
-            padding: 30px;
-            margin: 40px 0;
-            border-radius: 8px;
+            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+            border: 1px solid var(--gold-primary);
+            padding: 40px;
+            margin: 60px auto;
+            border-radius: 12px;
+            max-width: 1200px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
         }
         
         .summary-box h2 {
-            color: #D4AF37;
-            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            margin-bottom: 30px;
+            text-align: center;
         }
         
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            gap: 24px;
         }
         
         .summary-item {
-            padding: 15px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 4px;
+            padding: 24px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold-border);
+            border-radius: 8px;
+            text-align: center;
         }
         
         .summary-item strong {
-            color: #D4AF37;
+            display: block;
+            font-size: 1.4em;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
         }
         
         .system-detail {
-            margin: 30px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-left: 4px solid #D4AF37;
-            border-radius: 4px;
+            margin: 32px auto;
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
+            max-width: 1200px;
         }
         
         .system-detail h3 {
-            color: #1a1a1a;
-            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
         }
         
-        .system-detail .category {
+        .back-link {
             display: inline-block;
-            margin-bottom: 10px;
+            margin-top: 40px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--gold-primary);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            margin: 80px 0 40px;
+            color: var(--gold-primary);
+            letter-spacing: 4px;
         }
     </style>
 </head>
@@ -246,7 +261,7 @@
                 Covering intelligence, guerrilla GTM, lead gen, strategic messaging, governance, partner activation, training, and enablement
             </div>
             <div class="summary-item">
-                <strong>83K+ Lines of Code</strong><br>
+                <strong>650K+ Lines of Code</strong><br>
                 Python, LLM orchestration, automation
             </div>
             <div class="summary-item">
@@ -262,15 +277,16 @@
     
     <h2>The Systems</h2>
     
+    <div class="systems-table-container">
     <table class="systems-table">
         <thead>
             <tr>
                 <th style="width: 15%;">System Name</th>
                 <th style="width: 12%;">Category</th>
-                <th style="width: 20%;">Core Functional Logic</th>
+                <th style="width: 25%;">Core Functional Logic</th>
                 <th style="width: 15%;">Technical Stack</th>
-                <th style="width: 20%;">Strategic Impact</th>
-                <th style="width: 10%;">Macrotrends</th>
+                <th style="width: 25%;">Strategic Impact</th>
+                <th style="width: 8%;">Trends</th>
             </tr>
         </thead>
         <tbody>
@@ -278,76 +294,77 @@
                 <td><strong>Basin Signal Engine</strong></td>
                 <td><span class="category-badge category-intelligence">Career Intelligence</span></td>
                 <td>Hunt-Prep-Close framework: discovers opportunities via VC portfolios, preps for interviews using AI voice coaching</td>
-                <td class="tech-stack">Python (20k-27k lines), LLM Orchestration</td>
-                <td><span class="impact-highlight">Automates market engagement; showcases 'Revenue Architect' capability to ship code-driven strategy</span></td>
-                <td>Technology Change</td>
+                <td><code class="tech-stack">Python (650k+ lines)</code></td>
+                <td>Automates market engagement; showcases 'Revenue Architect' capability to ship <span class="impact-highlight">code-driven strategy</span></td>
+                <td>Tech ∆</td>
             </tr>
             <tr>
                 <td><strong>Project Air Strike</strong></td>
                 <td><span class="category-badge category-guerrilla">Guerrilla GTM</span></td>
                 <td>Monitors technical forums (Reddit, HN, Stack Overflow) for problem-aware signals and users expressing frustration</td>
-                <td class="tech-stack">Python, Signal Detection Scripts</td>
-                <td><span class="impact-highlight">Identifies hidden demand; generated 3 SQLs in 48 hours with $0 CAC</span></td>
-                <td>Technology Change</td>
+                <td><code class="tech-stack">Python / Signaler</code></td>
+                <td>Identifies hidden demand; <span class="impact-highlight">generated 3 SQLs in 48 hours with $0 CAC</span></td>
+                <td>Tech ∆</td>
             </tr>
             <tr>
                 <td><strong>enrich_company.py</strong></td>
                 <td><span class="category-badge category-leadgen">Lead Gen / Intelligence</span></td>
                 <td>Automates BDR research by taking domain input and performing deep scans for High-Value Signals (tech stack, hiring intent)</td>
-                <td class="tech-stack">Python, JSON</td>
-                <td><span class="impact-highlight">Proves 'Data Fabric' capability; reduces manual research toil; opportunity scores > 80</span></td>
-                <td>Technology Change</td>
+                <td><code class="tech-stack">Python / JSON</code></td>
+                <td>Proves 'Data Fabric' capability; reduces research toil; <span class="impact-highlight">opportunity scores > 80</span></td>
+                <td>Tech ∆</td>
             </tr>
             <tr>
                 <td><strong>Project Translator</strong></td>
                 <td><span class="category-badge category-strategic">Strategic Messaging</span></td>
                 <td>Converts technical product features into executive-level value narratives (e.g., 'Granular Access' → 'Risk Mitigation')</td>
-                <td class="tech-stack">Narrative Architecture, LLM Prompting</td>
+                <td><code class="tech-stack">Narrative / LLM</code></td>
                 <td><span class="impact-highlight">Drove 18% increase in quarterly ARR and 132% YoY growth</span></td>
-                <td>Economic Uncertainty</td>
+                <td>Economic</td>
             </tr>
             <tr>
                 <td><strong>n8n-sentry</strong></td>
                 <td><span class="category-badge category-governance">Governance</span></td>
                 <td>Integrates with Salesforce to enforce 100% CRM integrity, identifies 'Zombie Deals', logs SLA breaches</td>
-                <td class="tech-stack">n8n, Salesforce, Python</td>
-                <td><span class="impact-highlight">Ensures data governance; eliminates pipeline noise; 100% CRM integrity for forecasting</span></td>
-                <td>Economic Uncertainty</td>
+                <td><code class="tech-stack">n8n / SFDC / Py</code></td>
+                <td>Ensures data governance; eliminates pipeline noise; <span class="impact-highlight">100% CRM integrity</span> for forecasting</td>
+                <td>Economic</td>
             </tr>
             <tr>
                 <td><strong>Project Sentinel</strong></td>
-                <td><span class="category-badge category-partner">Partner Channel Activation</span></td>
+                <td><span class="category-badge category-partner">Partner Activation</span></td>
                 <td>Operationalizes dormant partner channels by building signal detection systems and automated partner co-sell motions</td>
-                <td class="tech-stack">Python, CRM Integration</td>
-                <td><span class="impact-highlight">Converts 'paper partners' into active revenue streams; 160% pipeline growth</span></td>
-                <td>Economic Uncertainty</td>
+                <td><code class="tech-stack">Python / CRM</code></td>
+                <td>Converts 'paper partners' into active revenue streams; <span class="impact-highlight">160% pipeline growth</span></td>
+                <td>Economic</td>
             </tr>
             <tr>
                 <td><strong>Project Phoenix</strong></td>
                 <td><span class="category-badge category-training">Training / Enablement</span></td>
                 <td>5-day 'Live Fire' certification protocol for SDRs utilizing AI-powered training modules and real-time feedback</td>
-                <td class="tech-stack">AI Training Modules, Gamified Learning</td>
-                <td><span class="impact-highlight">Reduced SDR ramp from 90 days to 5 days (18× improvement); 3 SQLs by Day 30</span></td>
-                <td>Economic Uncertainty</td>
+                <td><code class="tech-stack">AI / Gamified</code></td>
+                <td>Reduced SDR ramp from 90 days to 5 days <span class="impact-highlight">(18× improvement)</span>; 3 SQLs by Day 30</td>
+                <td>Economic</td>
             </tr>
             <tr>
                 <td><strong>Outreach Autopsy</strong></td>
-                <td><span class="category-badge category-enablement">Diagnostic / Enablement</span></td>
+                <td><span class="category-badge category-enablement">Diagnostic</span></td>
                 <td>Analyzes cold email campaign failures and predicts success rates by scoring messages for engineering credibility and sentiment</td>
-                <td class="tech-stack">Python, LLMs (Claude/OpenAI)</td>
-                <td><span class="impact-highlight">Acts as 'BS-Detector'; ensures outreach resonates with technical personas; improved reply rates</span></td>
-                <td>Technology Change</td>
+                <td><code class="tech-stack">Claude / OpenAI</code></td>
+                <td>Acts as 'BS-Detector'; <span class="impact-highlight">ensures outreach resonates</span> with technical personas; improved reply rates</td>
+                <td>Tech ∆</td>
             </tr>
             <tr>
                 <td><strong>Lead-Script-Gen</strong></td>
-                <td><span class="category-badge category-leadgen">Lead Gen / Personalization</span></td>
+                <td><span class="category-badge category-leadgen">Lead Gen / Pers.</span></td>
                 <td>Generates personalized outbound sequences with specific ICP targeting, automating creative outreach at scale</td>
-                <td class="tech-stack">Python, LLMs</td>
-                <td><span class="impact-highlight">Maintains high relevance in automated outreach; reduces manual time on message drafting</span></td>
-                <td>Technology Change</td>
+                <td><code class="tech-stack">Python / LLMs</code></td>
+                <td><span class="impact-highlight">Maintains high relevance</span> in automated outreach; reduces manual time on message drafting</td>
+                <td>Tech ∆</td>
             </tr>
         </tbody>
     </table>
+    </div>
     
     <h2>System Details</h2>
     
@@ -355,7 +372,7 @@
         <h3>Basin Signal Engine</h3>
         <span class="category-badge category-intelligence">Career Intelligence / GTM Innovation</span>
         <p><strong>Core Logic:</strong> Hunt-Prep-Close framework discovers opportunities via VC portfolios and preps for interviews using AI voice coaching.</p>
-        <p><strong>Technical Stack:</strong> Python (20k-27k lines), LLM Orchestration</p>
+        <p><strong>Technical Stack:</strong> Python (650k+ lines), LLM Orchestration</p>
         <p><strong>Impact:</strong> Automates arduous parts of market engagement; showcases 'Revenue Architect' capability to ship code-driven strategy.</p>
     </div>
     

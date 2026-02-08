@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS::MIRROR | GTM Primitive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: #050505; 
+            color: #888; 
+            font-family: 'JetBrains Mono', monospace; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .terminal-glow { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        .nexus-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f0e6d3;
+            transition: all 0.3s ease;
+        }
+        .nexus-input:focus {
+            border-color: #D4AF37;
+            outline: none;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .gold-accent { color: #D4AF37; }
+        .bg-gold { background: #D4AF37; }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logic-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .logic-card:hover { border-color: rgba(212, 175, 55, 0.3); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #222; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-12">
+        <div class="text-[10px] tracking-[0.5em] uppercase text-white font-bold">
+            NEXUS<span class="gold-accent">::</span>MIRROR <span class="text-[8px] opacity-30 font-light">PROTOTYPE_v0.1.1</span>
+        </div>
+        <div class="text-[8px] uppercase tracking-widest opacity-40">
+            SOVEREIGN_REVENUE_ENGINE
+        </div>
+    </header>
+
+    <!-- Main Console -->
+    <main class="flex-grow flex flex-col max-w-5xl mx-auto w-full">
+        
+        <div class="mb-12">
+            <h1 class="text-white text-xl md:text-2xl font-light mb-4 terminal-glow uppercase tracking-tighter">
+                Extract the <span class="gold-accent">Tri-Vector SitRep</span>.
+            </h1>
+            <p class="text-[10px] leading-relaxed max-w-xl opacity-60 uppercase tracking-widest">
+                Mirror the GTM noise. Output the psychological primitive.
+            </p>
+        </div>
+
+        <!-- Input Area -->
+        <div class="relative group mb-12">
+            <textarea 
+                id="mirror-input"
+                class="nexus-input w-full h-32 p-6 text-sm rounded-lg resize-none"
+                placeholder="PROJECTION: Paste lead lists, signals, or raw mess here..."
+            ></textarea>
+            <button 
+                onclick="reflect()"
+                id="reflect-btn"
+                class="absolute bottom-4 right-4 bg-white hover:bg-gold text-black px-6 py-2 text-[10px] uppercase font-bold tracking-widest rounded-md transition-all"
+            >
+                Reflect Noise
+            </button>
+        </div>
+
+        <!-- The Mirror: Tri-Vector Display -->
+        <div id="mirror-output" class="hidden flex-grow border-t border-white/5 pt-12 fade-in">
+            <!-- Verdict Banner -->
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <div class="text-[9px] uppercase tracking-[0.3em] mb-2 gold-accent">SITREP Verdict</div>
+                    <div id="verdict-label" class="text-5xl font-bold text-white tracking-tighter">--</div>
+                    <div id="company-name" class="text-xs uppercase opacity-40 mt-1 tracking-widest">--</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-[9px] uppercase tracking-[0.3em] mb-2 gold-accent">Revenue Gravity</div>
+                    <div id="gravity-score" class="text-5xl font-bold text-white tracking-tighter">0.0</div>
+                </div>
+            </div>
+
+            <!-- The Tri-Vector Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Behavioral -->
+                <div class="logic-card">
+                    <div class="text-[8px] uppercase tracking-widest opacity-40 mb-4">Vector 01: Behavioral</div>
+                    <div id="behavioral-stance" class="text-lg text-white font-bold mb-2">--</div>
+                    <p id="behavioral-logic" class="text-[10px] leading-relaxed opacity-60">--</p>
+                </div>
+                <!-- Structural -->
+                <div class="logic-card border-l-2 border-l-gold/20">
+                    <div class="text-[8px] uppercase tracking-widest opacity-40 mb-4">Vector 02: Structural</div>
+                    <div id="structural-tech" class="text-lg text-white font-bold mb-2">--</div>
+                    <div id="structural-velocity" class="text-[10px] text-gold font-bold mb-2 tracking-widest">--</div>
+                    <p class="text-[10px] leading-relaxed opacity-60 italic">"Pipeline-as-Code Validated"</p>
+                </div>
+                <!-- Neural -->
+                <div class="logic-card">
+                    <div class="text-[8px] uppercase tracking-widest opacity-40 mb-4">Vector 03: Neural</div>
+                    <div id="neural-hash" class="text-[10px] font-mono text-gold mb-2">--</div>
+                    <div class="text-[8px] uppercase tracking-widest opacity-40 mb-1">Intent Momentum</div>
+                    <div id="neural-momentum" class="text-lg text-white font-bold">--</div>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="bg-white/5 p-8 rounded-lg border border-white/10">
+                <div class="text-[9px] uppercase tracking-[0.3em] mb-4 gold-accent">Executive Reflection</div>
+                <p id="executive-summary" class="text-sm font-light leading-relaxed text-slate-300 italic">
+                    "--"
+                </p>
+            </div>
+            
+            <!-- JSON Toggle for Builders -->
+            <div class="mt-8 text-right">
+                <button onclick="toggleJSON()" class="text-[9px] uppercase tracking-widest opacity-20 hover:opacity-100 transition-opacity">
+                    [View Primitive JSON]
+                </button>
+                <pre id="json-primitive" class="hidden text-left mt-4 p-4 bg-black text-[10px] text-slate-500 overflow-x-auto"></pre>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 flex justify-between items-end border-t border-white/5 pt-6">
+        <div class="text-[8px] font-mono opacity-20 uppercase tracking-[0.5em]">
+            SYSTEMS_OVER_HEADCOUNT
+        </div>
+        <div class="flex gap-6 text-[9px] font-mono">
+            <a href="#" class="hover:text-gold transition-colors">API_DOCS</a>
+            <a href="#" class="text-gold font-bold">BUY ENGINE ($500)</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleJSON() {
+            const el = document.getElementById('json-primitive');
+            el.classList.toggle('hidden');
+        }
+
+        async function reflect() {
+            const input = document.getElementById('mirror-input');
+            const btn = document.getElementById('reflect-btn');
+            const output = document.getElementById('mirror-output');
+            
+            if (!input.value.trim()) return;
+
+            btn.innerText = 'REFINING...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/mirror', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input_text: input.value })
+                });
+                
+                const data = await response.json();
+                
+                // Populate Mirror
+                document.getElementById('company-name').innerText = data.company;
+                document.getElementById('verdict-label').innerText = data.verdict;
+                document.getElementById('gravity-score').innerText = data.gravity_score;
+                
+                document.getElementById('behavioral-stance').innerText = data.vectors.behavioral.stance;
+                document.getElementById('behavioral-logic').innerText = data.vectors.behavioral.logic;
+                
+                document.getElementById('structural-tech').innerText = `Authority: ${data.vectors.structural.tech_authority}`;
+                document.getElementById('structural-velocity').innerText = `Velocity: ${data.vectors.structural.inbound_velocity}`;
+                
+                document.getElementById('neural-hash').innerText = data.vectors.neural.intent_hash;
+                document.getElementById('neural-momentum').innerText = `${data.gravity_score}x G-Force`;
+                
+                document.getElementById('executive-summary').innerText = `"${data.executive_summary}"`;
+                document.getElementById('json-primitive').innerText = JSON.stringify(data, null, 4);
+                
+                // Show Mirror
+                output.classList.remove('hidden');
+                btn.innerText = 'REFLECT NOISE';
+                btn.disabled = false;
+                
+                output.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (e) {
+                console.error(e);
+                btn.innerText = 'REFRACT_ERROR';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

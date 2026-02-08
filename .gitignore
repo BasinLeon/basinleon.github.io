@@ -1,87 +1,67 @@
 # 🦅 BASIN::NEXUS SECURITY VAULT
-# PROTECT IDENTITY AND PRIVATE DATA AT ALL COSTS
+# PROTECT IDENTITY AND PROPRIETARY STRATEGY
 
-# 🛡️ PRIVATE DATA & LOGS
-*.log
-*.csv
-# Keep raw lead data private
+# 1. DENY EVERYTHING BY DEFAULT
+*
+!.gitignore
+!README.md
+
+# 2. ALLOW WEB INFRASTRUCTURE (THE PUBLIC FRONT)
+!index.html
+!css/
+!js/
+!assets/
+!**/assets/
+!07_INTERFACES/index.html
+!07_INTERFACES/index.css
+!07_INTERFACES/index.js
+
+# 3. ALLOW THE PUBLIC SIGNAL (THE BRAND)
+!gtm-stack/
+!gtm-stack/MANIFESTO.md
+!LEON_BASIN_MASTER_RESUME.md
+!library/
+!library/*.html
+!case-studies/
+
+# 4. EXPLICITLY DENY PROPRIETARY STRATEGY (THE SECRET SAUCE)
+05_DEAL_KITS/
+WAR_ROOM_2026/04_DEALS/
+SPECULATIVE_AUDITS/
+JOB_SEARCH_SPRINT_*/
 08_LOG_VAULT/
 !08_LOG_VAULT/SCOUT_DAILY_YIELD.md
 
-# 🛡️ ALLOW STRATEGIC FOLDERS (THE SIGNAL)
-!WAR_ROOM_2026/
-!00_NEXUS_CORE/
-!01_STRATEGY/
-!03_ENGINEERING/
-!04_PRODUCTS/
-
-# 🛡️ PROTECT SENSITIVE FILES WITHIN ALLOWED FOLDERS
-*.json
-.env
-.DS_Store
-__pycache__/
-
-# 🛡️ GLOBAL ALLOWS FOR LOGIC
-!*.md
-!*.py
-!*.html
-!*.css
-!*.js
-!LEON_BASIN_*.md
-
-ELLEN_SESSION_KIT/
-JASSI_FINAL_BATTLE_KIT/
-JASSI_PARTNERSHIP_KIT/
-community-response-templates/
-content-outreach-templates/
-untitled folder*/
-ambient_founding_engineer/
-github_profile_repo/
+# 5. DENY PERSONAL DATA & BINARIES
+*.pdf
+*.xlsx
+*.csv
+*.xlsx
 *.zip
 *.dmg
 *.pkg
+*.pkg.download
 NEXUS_ARCHIVE_2025/
 
-# 🛡️ PYTHON & SCRIPTS
-*.py
-*.sh
-*.command
-__pycache__/
-.env
-.venv/
-env/
-venv/
-requirements_enrichment.txt
-
-# 🛡️ MEDIA & SCREENSHOTS
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.mov
-*.mp4
-*.dmg
-!assets/
-!**/assets/
-
-# 🛡️ SYSTEM FILES
+# 6. SYSTEM & TECH CRUFT
 .DS_Store
+.env
+__pycache__/
 .cursorrules
 .continue/
 .gemini/
+.git/
+node_modules/
+.venv/
+env/
+venv/
+*.log
+*.tmp
 
-# 🦅 ALLOWED PUBLIC FILES (THE SIGNAL)
-!index.html
-!sovereign-ai/
-!sovereign-ai/*.html
-!blog/
-!case-studies/
-!nexus/
-!consulting/
-!nexus-intelligence/
-!signal-refinery/
-!tools/
-!css/
+# 7. DENY ALL OTHER SCRIPTS (Keep logic local)
+*.py
+*.sh
+*.command
+*.js
 !js/
-!**/index.html
-!**/index.css
+!**/index.js
