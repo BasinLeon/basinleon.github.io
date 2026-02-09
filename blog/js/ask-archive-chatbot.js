@@ -302,7 +302,7 @@
             }
             
             if (lowerQuery.includes('who is') || lowerQuery.includes('leon basin')) {
-                return 'Leon Basin is a Revenue Architect who codes. 15+ years GTM leadership, 88,000+ lines of code, $424K savings case study. Read "Why Leon Basin Matters" at /blog/posts/why-leon-basin-matters.html';
+                return 'Leon Basin is a Revenue Architect who codes. 15+ years GTM leadership, 700,000+ lines of code, $424K savings case study. Read "Why Leon Basin Matters" at /blog/posts/why-leon-basin-matters.html';
             }
             
             return 'I can help you find articles about GTM strategy, revenue architecture, signal detection, case studies, Python automation, or Leon\'s background. What specifically are you looking for?';

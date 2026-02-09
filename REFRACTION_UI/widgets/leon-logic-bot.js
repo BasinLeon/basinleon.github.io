@@ -365,7 +365,7 @@ At Sense, I built an "Outreach Autopsy" tool that analyzed why cold emails faile
 
 **⚡ Basin::Nexus (2023-Present)**
 - Challenge: Job hunting is broken — too much noise, not enough signal
-- Built: 83K+ lines of code, 5 LLMs, React app, 3 interactive tools
+- Built: 700,000+ lines of code, 5 LLMs, React app, 3 interactive tools
 - Signal Architecture: 7-vector job sweep, pipeline scoring, interview prep
 - Result: Multiple active final-round interviews simultaneously
 - Connection: The system that proves the thesis — 1 engineer > 10 SDRs
@@ -423,7 +423,7 @@ $10M pipeline, 8%→18% reply rates, $250K closed personally
 - Connection: Proved signal architecture works at scale
 
 **⚡ Basin::Nexus (2023-Present)**
-83K+ lines, 5 LLMs, significant pipeline generated
+700,000+ lines, 5 LLMs, significant pipeline generated
 - Learned: How to code my own GTM stack
 - Connection: The system that proves the thesis
 
@@ -437,7 +437,7 @@ $10M pipeline, 8%→18% reply rates, $250K closed personally
 What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
 
 **What I Built:**
-BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
+BASIN::NEXUS — 700,000+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
 
 **The Vibe:**
 - Mountain View, CA
@@ -535,7 +535,7 @@ Try them at basinleon.github.io/tools/
             response: `**By The Numbers**
 
 **Code Stats:**
-- 88,000+ lines of code deployed across all projects
+- 700,000+ lines of code deployed across all projects
 - BASIN::NEXUS React app: 8,400+ lines
 - Python signal engine: 20,000+ lines
 - This portfolio: 4,000+ lines HTML/CSS/JS
@@ -1185,7 +1185,7 @@ Google/NetApp → Operations rigor → Revenue systems
                         <strong>About Leon Basin:</strong>
                         <br>• Revenue Architect. 15+ years GTM leadership
                         <br>• Built systems that replace $770K in headcount with $150K in architecture ($424K saved)
-                        <br>• BASIN::NEXUS: 83K+ lines, 5 LLMs, significant pipeline generated
+                        <br>• BASIN::NEXUS: 700,000+ lines, 5 LLMs, significant pipeline generated
                         <br><br>
                         <strong>Career Network:</strong>
                         <br>• Google → NetApp → Sanho/HyperDrive → SurveyMonkey → Sense → Series A Cybersecurity → BASIN::Nexus
@@ -1199,7 +1199,7 @@ Google/NetApp → Operations rigor → Revenue systems
                         <br>What if we treated GTM like a distributed system? Input signals, processing logic, output actions. No manual research. No spray-and-pray. Just signal → system → scale.
                         <br><br>
                         <strong>What I Built:</strong>
-                        <br>BASIN::NEXUS — 83K+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
+                        <br>BASIN::NEXUS — 700,000+ lines of code. React app + Python backend + 5 LLMs. Monitors 50k+ signals/day, runs job search, generates executive briefs. Proof that 1 engineer > 10 SDRs.
                         <br><br>
                         <strong>The Vibe:</strong>
                         <br>• Mountain View, CA

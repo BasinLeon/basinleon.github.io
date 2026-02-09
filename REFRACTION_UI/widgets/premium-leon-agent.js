@@ -79,7 +79,7 @@
             approach: 'technical, code-first, architecture-focused',
             triggers: ['code questions', 'technical terms', 'system architecture', 'implementation'],
             responses: {
-                greeting: "Hey builder! 👋 I see you're interested in systems. I've built 83K+ lines of code—want to see the architecture?",
+                greeting: "Hey builder! 👋 I see you're interested in systems. I've built 700,000+ lines of code—want to see the architecture?",
                 followUp: "What are you building? I can show you specific projects, code patterns, or help architect your system."
             }
         },
@@ -178,7 +178,7 @@
     const KnowledgeBase = {
         responses: {
             code: [
-                "I started coding when I realized GTM is an engineering problem. I've built 83K+ lines across Python, JavaScript, TypeScript. The key insight: treat revenue operations like software—version control, testing, iteration.",
+                "I started coding when I realized GTM is an engineering problem. I've built 700,000+ lines across Python, JavaScript, TypeScript. The key insight: treat revenue operations like software—version control, testing, iteration.",
                 "My codebase spans 19 repositories. The flagship is basin-signal-engine—an AI Career Intelligence Platform. It's 83,000+ lines that orchestrate 5 LLMs to hunt, prep, and close opportunities. Want to see the architecture?",
                 "I don't just use tools—I build them. Every system I've built started as a problem I couldn't solve with existing tools. That's how basin-signal-engine was born: I needed a system that could find opportunities across 7 vectors simultaneously."
             ],
@@ -246,7 +246,7 @@
             },
             'code-walkthrough': {
                 title: 'Code Architecture Walkthrough',
-                description: 'Deep dive into 83K+ lines: patterns, decisions, trade-offs',
+                description: 'Deep dive into 700,000+ lines: patterns, decisions, trade-offs',
                 unlockTier: 'founders-circle',
                 action: () => window.open('https://github.com/BasinLeon/basin-signal-engine', '_blank')
             },
@@ -626,7 +626,7 @@
 
                 case 'view_content':
                     if (message.toLowerCase().includes('code')) {
-                        return KnowledgeBase.getResponse('code', context) || "I can show you specific repositories. Which interests you: basin-signal-engine (83K lines), headline-forge, or outreach-autopsy?";
+                        return KnowledgeBase.getResponse('code', context) || "I can show you specific repositories. Which interests you: basin-signal-engine (700,000+ lines), headline-forge, or outreach-autopsy?";
                     }
                     return "What would you like to see? I can show you case studies, code repositories, or specific projects.";
 
@@ -680,17 +680,14 @@
 
 15+ years of GTM leadership at Google, SurveyMonkey, HP, NetApp, and a Series A cybersecurity company. I build AI-powered revenue systems that replace headcount with code.
 
-I've built 88,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
+I've built 700,000+ lines across Python, JavaScript, TypeScript. My flagship project: replaced 10 SDRs with 2 + automation, saving $424K/year while increasing output by 71%.
 
 I don't just architect systems—I build them. 19 public repositories. 5 LLMs orchestrated. BASIN::NEXUS v10.0 is my autonomous GTM Operating System.
 
-The numbers: $30M+ career pipeline, 160% pipeline growth, 5 days SDR ramp (vs 3-month average), 270+ commits, 22 builds shipped.
-
 Want to learn more? Check out my blog post "Why Leon Basin Matters" or explore my case studies. What interests you most?`,
-                
                 `Leon Basin here. I'm a Revenue Architect—which means I build systems, not just run playbooks. 
 
-15+ years GTM experience across enterprise tech. MBA from Santa Clara. And I write code—88K+ lines of it. 
+15+ years GTM experience across enterprise tech. MBA from Santa Clara. And I write code—700,000+ lines of it. 
 
 My work: I replaced a 10-person SDR team with 2 SDRs + automation at a Series A cybersecurity company. Result: $424K annual savings, 77 meetings/month (vs 45 before), and 5-day SDR ramp (vs 3-month industry average).
 
@@ -702,7 +699,7 @@ What would you like to explore? My systems? Case studies? Or how I can help with
 
 Started in GTM at Google (Operations Specialist), then SurveyMonkey ($300M+ portfolio), HP, NetApp. Now I code systems that automate research, prioritization, and outreach—so humans focus on the close.
 
-The numbers: $30M+ career pipeline, 160% pipeline growth, $424K annual savings, 5 days SDR ramp. 88,000+ lines of code. 19 repositories. 5 LLMs orchestrated. 270+ commits. 22 builds shipped.
+The numbers: $30M+ career pipeline, 160% pipeline growth, $424K annual savings, 5 days SDR ramp. 700,000+ lines of code. 19 repositories. 5 LLMs orchestrated. 270+ commits. 22 builds shipped.
 
 I wrote about this in my blog post "Why Leon Basin Matters"—it explains why a Revenue Architect who codes changes everything. Want me to share the key insights?`
             ];

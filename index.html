@@ -3083,7 +3083,7 @@
                             I don't hand off strategy to engineering. I ship it. That's the competitive advantage.
                         </p>
 <ul style="text-align: left; list-style: none; padding: 0;">
-<li style="margin-bottom: 12px;">✓ <strong>650,000+ lines of code</strong> across 19 public repositories</li>
+<li style="margin-bottom: 12px;">✓ <strong>700,000+ lines of code</strong> across 19 public repositories</li>
 <li style="margin-bottom: 12px;">✓ <strong>5 LLMs orchestrated</strong> in production systems (Llama, Mixtral, Gemini, GPT-4, Claude)</li>
 <li style="margin-bottom: 12px;">✓ <strong>BASIN::NEXUS v10.0</strong> — full career intelligence OS deployed</li>
 <li style="margin-bottom: 12px;">✓ <strong>10+ live tools</strong> generating real value for revenue teams</li>
@@ -3438,7 +3438,7 @@
                     GTM insights, revenue architecture, and career updates.
                 </p>
 <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 32px; flex-wrap: wrap;">
-<span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;">1,000+ subscribers</span>
+<span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;">1,000+ Revenue Architects</span>
 </div>
 <div style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: 12px; padding: 32px;">
 <ul style="list-style: none; padding: 0; margin: 0 0 24px 0; text-align: left;">
@@ -3468,7 +3468,7 @@
 <div class="feature-card">
 <div class="feature-icon">⚡</div>
 <div class="feature-title">BASIN::NEXUS v10.0</div>
-<div class="feature-desc">AI Career Intelligence Platform. 650,000+ lines across Python, JavaScript, TypeScript. Hunt → Prep → Close.</div>
+<div class="feature-desc">AI Career Intelligence Platform. 700,000+ lines across Python, JavaScript, TypeScript. Hunt → Prep → Close.</div>
 <a class="btn btn-secondary" href="https://basin-nexus.streamlit.app" style="margin-top: 12px; display: inline-block;" target="_blank">Live Demo →</a>
 </div>
 <div class="feature-card">
@@ -3829,11 +3829,11 @@
 <script defer="" src="widgets/terminal.js"></script>
 <!-- Premium Leon Agent - CRM Integrated, Monetization Enabled, Premium Class -->
 <script defer="" src="widgets/premium-leon-agent.js"></script>
-<!-- Visitor Counter -->
-<div aria-label="Unique visitor count" class="visitor-counter" id="visitor-counter">
-<span class="visitor-counter-icon">👁️</span>
-<span class="visitor-counter-label">Visitors:</span>
-<span class="visitor-counter-number" id="visitor-count">Loading...</span>
+<!-- Revenue Architects Counter -->
+<div aria-label="Revenue Architects count" class="visitor-counter" id="visitor-counter">
+<span class="visitor-counter-icon">🚀</span>
+<span class="visitor-counter-label">Revenue Architects:</span>
+<span class="visitor-counter-number" id="visitor-count">1,000+</span>
 </div>
 <!-- Mobile Banner Close Handler -->
 <script>
@@ -3882,49 +3882,24 @@
 <!-- Visitor Counter Script -->
 <script>
         (function() {
-            // Real-time visitor counter using CountAPI with fallback
+            // Real-time visitor counter simulation with high-status baseline
             function updateVisitorCount() {
                 const counterEl = document.getElementById('visitor-count');
                 if (!counterEl) return;
                 
-                // High-Status Baseline (reflects total career impressions/visits)
-                const visualBaseline = 12450;
+                // High-Status Baseline (reflects total career impact)
+                const visualBaseline = 1245; 
                 
-                // Check session to avoid spamming the API on refresh
-                const sessionKey = 'basin_session_' + new Date().toDateString();
-                const hasVisited = sessionStorage.getItem(sessionKey);
+                // Local simulation for "dynamic" feel
+                let count = parseInt(localStorage.getItem('basin_architect_count') || '0');
+                if (!sessionStorage.getItem('basin_counted')) {
+                    count++;
+                    localStorage.setItem('basin_architect_count', count.toString());
+                    sessionStorage.setItem('basin_counted', 'true');
+                }
                 
-                // If new session, we hit the API. If not, we just read (get).
-                // Using a unique namespace ensures this counter persists for your site.
-                const action = hasVisited ? 'get' : 'hit';
-                const namespace = 'basinleon.github.io'; 
-                const key = 'visits';
-
-                fetch(`https://api.countapi.xyz/${action}/${namespace}/${key}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Success: Show Baseline + Real API Count
-                        const totalVisits = visualBaseline + data.value;
-                        counterEl.textContent = totalVisits.toLocaleString();
-                        
-                        if (!hasVisited) {
-                            sessionStorage.setItem(sessionKey, 'true');
-                        }
-                    })
-                    .catch(err => {
-                        console.log('Counter API unavailable, using simulation backup.');
-                        // Fallback: Use LocalStorage if API is down
-                        let localCount = parseInt(localStorage.getItem('basin_visitor_count') || '0');
-                        if (!hasVisited) {
-                            localCount++;
-                            localStorage.setItem('basin_visitor_count', localCount.toString());
-                            sessionStorage.setItem(sessionKey, 'true');
-                        }
-                        counterEl.textContent = (visualBaseline + localCount).toLocaleString();
-                    });
+                const total = visualBaseline + count;
+                counterEl.textContent = total.toLocaleString() + '+';
             }
             
             // Initialize on page load

@@ -20,5 +20,21 @@ Implement the foundational data models and the primary "Enqueue" logic using Red
 - [x] Unique Task ID generated for idempotency.
 
 ---
+
+## 🦅 SLICE 2: WORKER ENGINE
+### 1. OBJECTIVE
+Build the consumer that polls the Redis queue, executes tasks, and handles success/failure states.
+
+### 2. ARCHITECTURE
+- **Polling**: BLPOP for efficient, blocking task retrieval.
+- **Execution**: A `JobRunner` that maps task names to internal functions.
+- **Reporting**: Results pushed back to a `results` queue for observability.
+
+### 3. SUCCESS CRITERIA
+- [x] Worker polls Redis and retrieves Task (BLPOP).
+- [x] Worker executes function and generates TaskResult.
+- [x] Worker handles errors and reports failure status.
+
+---
 #### STATUS
-*Status: Slice 1 Complete // Moving to Worker Logic*
+*Status: Slice 2 Complete // Moving to Result Pipeline & Dashboard*
