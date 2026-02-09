@@ -1,0 +1,1368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Signal Refinery | Kill Human Latency in GTM | Leon Basin</title>
+    <meta
+      name="description"
+      content="Replace 48-hour signal latency with 5-minute automation. The Signal Refinery architecture that drove 160% pipeline growth."
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="The Signal Refinery | Kill Human Latency in GTM"
+    />
+    <meta
+      property="og:description"
+      content="Replace 48-hour signal latency with 5-minute automation. 160% pipeline growth."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://basinleon.github.io/signal-refinery/"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-dark: #0a0a0a;
+        --bg-card: #141414;
+        --text-primary: #ffffff;
+        --text-secondary: #888;
+        --cyan: #00d4ff;
+        --green: #00ff88;
+        --red: #ff4444;
+        --gold: #d4af37;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 80px 0 60px;
+        text-align: center;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 212, 255, 0.05) 0%,
+          transparent 50%
+        );
+      }
+
+      .badge {
+        display: inline-block;
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid var(--cyan);
+        color: var(--cyan);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: clamp(32px, 6vw, 48px);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 16px;
+      }
+
+      h1 .highlight {
+        background: linear-gradient(135deg, var(--cyan), var(--green));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 40px;
+      }
+
+      /* Metrics */
+      .metrics {
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+        flex-wrap: wrap;
+        margin-bottom: 48px;
+      }
+
+      .metric {
+        text-align: center;
+      }
+
+      .metric-value {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--cyan);
+      }
+
+      .metric:nth-child(2) .metric-value {
+        color: var(--green);
+      }
+
+      .metric:nth-child(3) .metric-value {
+        color: var(--gold);
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Problem Section */
+      .problem {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 68, 68, 0.2);
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 40px;
+      }
+
+      .problem h2 {
+        color: var(--red);
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .problem-list {
+        list-style: none;
+      }
+
+      .problem-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        gap: 12px;
+      }
+
+      .problem-list li:last-child {
+        border-bottom: none;
+      }
+
+      .problem-list .icon {
+        color: var(--red);
+      }
+
+      /* Solution Section */
+      .solution {
+        background: var(--bg-card);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 40px;
+      }
+
+      .solution h2 {
+        color: var(--cyan);
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .step-num {
+        width: 32px;
+        height: 32px;
+        background: var(--cyan);
+        color: var(--bg-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .step-content h3 {
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .step-content p {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      /* CTA Section */
+      .cta-section {
+        text-align: center;
+        padding: 60px 0;
+      }
+
+      .cta-section h2 {
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+
+      .cta-section p {
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 32px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        margin: 8px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--cyan), var(--green));
+        color: var(--bg-dark);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--cyan);
+        color: var(--cyan);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(0, 212, 255, 0.1);
+      }
+
+      /* Author */
+      .author {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 40px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .author-info h3 {
+        font-size: 16px;
+      }
+
+      .author-info p {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 40px 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      footer a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .metrics {
+          gap: 24px;
+        }
+
+        .problem,
+        .solution {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="hero">
+      <div class="container">
+        <div class="badge">Revenue Architecture</div>
+        <h1>
+          Kill the <span class="highlight">48-Hour Void</span><br />in Your GTM
+        </h1>
+        <p class="subtitle">
+          Most teams try to fix pipeline problems by hiring more SDRs. I built a
+          system to replace the manual toil instead.
+        </p>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-value">160%</div>
+            <div class="metric-label">Pipeline Growth</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">Significant</div>
+            <div class="metric-label">New Yield</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">$240k</div>
+            <div class="metric-label">Labor Replaced</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="problem">
+        <h2>The Problem: Human Latency</h2>
+        <ul class="problem-list">
+          <li>
+            <span class="icon">⚠️</span>
+            <span
+              ><strong>The Signal:</strong> Funding news, technical hiring
+              spikes, and intent data are everywhere.</span
+            >
+          </li>
+          <li>
+            <span class="icon">⏱️</span>
+            <span
+              ><strong>The Friction:</strong> It takes 48 hours for a human to
+              find, score, and route that signal.</span
+            >
+          </li>
+          <li>
+            <span class="icon">💀</span>
+            <span
+              ><strong>The Result:</strong> By the time you call, the prospect
+              is already in a demo with your competitor.</span
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section class="solution">
+        <h2>The Solution: Basin::Nexus Signal Refinery</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Ingest</h3>
+              <p>
+                API-native monitoring of market signals. Funding alerts, hiring
+                spikes, intent data—captured in real-time.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Refine</h3>
+              <p>
+                Python/LLM signal gates with 0.8 precision. Only
+                "Decision-Grade" signals pass through.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Action</h3>
+              <p>
+                High-intent leads delivered to reps in seconds, not days. Full
+                context included.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Precision Gate Section -->
+      <section
+        class="precision-gate"
+        style="
+          background: var(--bg-card);
+          border: 1px solid rgba(212, 175, 55, 0.2);
+          border-radius: 12px;
+          padding: 40px;
+          margin-bottom: 40px;
+        "
+      >
+        <h2 style="color: var(--gold); font-size: 24px; margin-bottom: 24px">
+          🛠 The Precision Gate: How 0.8 is Calculated
+        </h2>
+        <p style="color: var(--text-secondary); margin-bottom: 24px">
+          Basin::Nexus doesn't use "black box" AI. Every market signal passes
+          through a weighted scoring engine (Pydantic-validated) to ensure only
+          "Decision-Grade" leads reach the CRM.
+        </p>
+
+        <h3
+          style="
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+          "
+        >
+          The 4 Pillars of Precision
+        </h3>
+        <div style="overflow-x: auto; margin-bottom: 24px">
+          <table
+            style="width: 100%; border-collapse: collapse; font-size: 14px"
+          >
+            <thead>
+              <tr style="border-bottom: 2px solid var(--gold)">
+                <th
+                  style="
+                    text-align: left;
+                    padding: 12px 8px;
+                    color: var(--gold);
+                  "
+                >
+                  Pillar
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    padding: 12px 8px;
+                    color: var(--gold);
+                  "
+                >
+                  Weight
+                </th>
+                <th
+                  style="
+                    text-align: left;
+                    padding: 12px 8px;
+                    color: var(--gold);
+                  "
+                >
+                  Definition
+                </th>
+                <th
+                  style="
+                    text-align: left;
+                    padding: 12px 8px;
+                    color: var(--gold);
+                  "
+                >
+                  Technical Trigger
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1)">
+                <td style="padding: 12px 8px; font-weight: 600">
+                  Industry Fit
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    text-align: center;
+                    color: var(--cyan);
+                  "
+                >
+                  25%
+                </td>
+                <td style="padding: 12px 8px; color: var(--text-secondary)">
+                  Cyber, AI, or High-Growth Tech
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    color: var(--text-secondary);
+                    font-family: &quot;JetBrains Mono&quot;, monospace;
+                    font-size: 12px;
+                  "
+                >
+                  SIC/NAICS + LinkedIn API
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1)">
+                <td style="padding: 12px 8px; font-weight: 600">
+                  Funding Velocity
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    text-align: center;
+                    color: var(--cyan);
+                  "
+                >
+                  25%
+                </td>
+                <td style="padding: 12px 8px; color: var(--text-secondary)">
+                  Series B/C ("Scale-up" sweet spot)
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    color: var(--text-secondary);
+                    font-family: &quot;JetBrains Mono&quot;, monospace;
+                    font-size: 12px;
+                  "
+                >
+                  Crunchbase/SignalFire API
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1)">
+                <td style="padding: 12px 8px; font-weight: 600">
+                  Tech Stack Signal
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    text-align: center;
+                    color: var(--green);
+                  "
+                >
+                  35%
+                </td>
+                <td style="padding: 12px 8px; color: var(--text-secondary)">
+                  Compatibility with GTM infra
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    color: var(--text-secondary);
+                    font-family: &quot;JetBrains Mono&quot;, monospace;
+                    font-size: 12px;
+                  "
+                >
+                  Job Keywords + BuiltWith
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 8px; font-weight: 600">
+                  Market Momentum
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    text-align: center;
+                    color: var(--cyan);
+                  "
+                >
+                  15%
+                </td>
+                <td style="padding: 12px 8px; color: var(--text-secondary)">
+                  Executive hires or expansion
+                </td>
+                <td
+                  style="
+                    padding: 12px 8px;
+                    color: var(--text-secondary);
+                    font-family: &quot;JetBrains Mono&quot;, monospace;
+                    font-size: 12px;
+                  "
+                >
+                  News Sentiment Analysis
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3
+          style="
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+          "
+        >
+          The Logic (Pseudo-Code)
+        </h3>
+        <pre
+          style="
+            background: #0d0d0d;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: &quot;JetBrains Mono&quot;, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+          "
+        ><code style="color: var(--text-secondary);"><span style="color: #666;"># Basin::Nexus Precision Filter</span>
+<span style="color: var(--cyan);">def</span> <span style="color: var(--green);">evaluate_signal</span>(signal_data):
+    weights = {
+        <span style="color: #f0a050;">"industry"</span>: <span style="color: var(--cyan);">0.25</span>,
+        <span style="color: #f0a050;">"funding"</span>: <span style="color: var(--cyan);">0.25</span>,
+        <span style="color: #f0a050;">"tech_stack"</span>: <span style="color: var(--cyan);">0.35</span>,
+        <span style="color: #f0a050;">"momentum"</span>: <span style="color: var(--cyan);">0.15</span>
+    }
+    
+    score = (
+        calculate_fit(signal_data.industry) * weights[<span style="color: #f0a050;">"industry"</span>] +
+        calculate_velocity(signal_data.funding) * weights[<span style="color: #f0a050;">"funding"</span>] +
+        calculate_stack_match(signal_data.stack) * weights[<span style="color: #f0a050;">"tech_stack"</span>] +
+        calculate_sentiment(signal_data.news) * weights[<span style="color: #f0a050;">"momentum"</span>]
+    )
+
+    <span style="color: var(--cyan);">if</span> score >= <span style="color: var(--green);">0.8</span>:
+        <span style="color: var(--cyan);">return</span> promote_to_crm(signal_data)  <span style="color: #666;"># The Refinery</span>
+    <span style="color: var(--cyan);">else</span>:
+        <span style="color: var(--cyan);">return</span> route_to_nurture(signal_data)  <span style="color: #666;"># The Void Purge</span></code></pre>
+
+        <p
+          style="
+            color: var(--text-secondary);
+            margin-top: 20px;
+            font-size: 14px;
+          "
+        >
+          <strong style="color: var(--green)">Result:</strong> By enforcing the
+          0.8 threshold, Basin::Nexus reduces "Human Latency" by
+          <strong style="color: var(--cyan)">94%</strong>, ensuring reps only
+          touch mathematically pre-qualified deals.
+        </p>
+      </section>
+
+      <!-- Active Tribunal Swarm -->
+      <section
+        id="tribunal-swarm"
+        class="solution"
+        style="
+          border: 1px solid var(--cyan);
+          background: rgba(0, 212, 255, 0.02);
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+          "
+        >
+          <h2 style="color: var(--cyan); font-size: 24px; margin: 0">
+            🏛 Active Tribunal Swarm
+          </h2>
+          <div
+            class="badge"
+            style="
+              margin: 0;
+              padding: 4px 12px;
+              font-size: 10px;
+              background: rgba(0, 255, 136, 0.1);
+              border-color: var(--green);
+              color: var(--green);
+            "
+          >
+            Kimi 2.5 Online
+          </div>
+        </div>
+
+        <p
+          style="
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 15px;
+          "
+        >
+          Behold the **Adversarial Adjudication Swarm**. This isn't a scorecard;
+          it's a Council of 6 Agents debating the economic viability and strike
+          vector of every lead in real-time.
+        </p>
+
+        <!-- Lead Card: Patrowl -->
+        <div
+          class="strike-card"
+          style="
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              margin-bottom: 20px;
+            "
+          >
+            <div>
+              <h3 style="font-size: 18px; color: var(--text-primary)">
+                Nicolas Mattiocco
+              </h3>
+              <p style="font-size: 14px; color: var(--text-secondary)">
+                Co-Founder / CEO • Patrowl.io
+              </p>
+            </div>
+            <div style="text-align: right">
+              <div
+                style="font-size: 24px; font-weight: 800; color: var(--green)"
+              >
+                9.2
+              </div>
+              <div
+                style="
+                  font-size: 10px;
+                  color: var(--text-secondary);
+                  text-transform: uppercase;
+                "
+              >
+                Gravity Score
+              </div>
+            </div>
+          </div>
+
+          <!-- Inner Council Debate -->
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 16px;
+              margin-bottom: 24px;
+            "
+          >
+            <div
+              style="
+                background: rgba(255, 68, 68, 0.05);
+                padding: 16px;
+                border-radius: 8px;
+                border-left: 3px solid var(--red);
+              "
+            >
+              <h4
+                style="
+                  font-size: 12px;
+                  color: var(--red);
+                  text-transform: uppercase;
+                  margin-bottom: 8px;
+                "
+              >
+                The Prosecutor
+              </h4>
+              <p
+                style="
+                  font-size: 12px;
+                  color: var(--text-secondary);
+                  line-height: 1.4;
+                "
+              >
+                "Early-stage cyber startup. Low ACV potential ($50k). Seed
+                founders have zero budget for enterprise infra. Verdict:
+                REJECT."
+              </p>
+            </div>
+            <div
+              style="
+                background: rgba(0, 255, 136, 0.05);
+                padding: 16px;
+                border-radius: 8px;
+                border-left: 3px solid var(--green);
+              "
+            >
+              <h4
+                style="
+                  font-size: 12px;
+                  color: var(--green);
+                  text-transform: uppercase;
+                  margin-bottom: 8px;
+                "
+              >
+                The Defender
+              </h4>
+              <p
+                style="
+                  font-size: 12px;
+                  color: var(--text-secondary);
+                  line-height: 1.4;
+                "
+              >
+                "Founder-to-founder resonance + NIS2/DORA compliance urgency.
+                ACV floor is $100k+. Verdict: STRIKE."
+              </p>
+            </div>
+          </div>
+
+          <!-- The Strike Vector -->
+          <div
+            style="
+              background: rgba(212, 175, 55, 0.05);
+              padding: 16px;
+              border-radius: 8px;
+              border: 1px dashed var(--gold);
+              margin-bottom: 24px;
+            "
+          >
+            <h4
+              style="
+                font-size: 12px;
+                color: var(--gold);
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              👑 Auditor Adjudication
+            </h4>
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text-primary);
+                margin-bottom: 8px;
+              "
+            >
+              <strong>Authorized:</strong> High-Touch ABM Strike
+            </p>
+            <p style="font-size: 12px; color: var(--text-secondary)">
+              "Overruled Prosecutor based on $195K labor replacement arbitrage.
+              Deploy 'Compliance Infrastructure' narrative."
+            </p>
+          </div>
+
+          <!-- Strike Actuator (Copy Preview) -->
+          <div style="background: #1a1a1a; padding: 20px; border-radius: 8px">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+              "
+            >
+              <h4
+                style="
+                  font-size: 11px;
+                  color: var(--cyan);
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                "
+              >
+                Kimi 2.5 Strike Package
+              </h4>
+              <button
+                onclick="copyStrikeCopy()"
+                style="
+                  background: transparent;
+                  border: 1px solid var(--cyan);
+                  color: var(--cyan);
+                  font-size: 10px;
+                  cursor: pointer;
+                  padding: 4px 8px;
+                  border-radius: 4px;
+                "
+              >
+                Copy Draft
+              </button>
+            </div>
+            <p
+              style="
+                font-size: 13px;
+                color: var(--gold);
+                margin-bottom: 8px;
+                font-family: &quot;JetBrains Mono&quot;, monospace;
+              "
+            >
+              Subject: Python SDK latency at 10k+ IOC volume
+            </p>
+            <div
+              style="
+                font-size: 12px;
+                color: var(--text-secondary);
+                font-family: &quot;JetBrains Mono&quot;, monospace;
+                line-height: 1.5;
+                height: 120px;
+                overflow-y: auto;
+                padding-right: 8px;
+              "
+            >
+              Nicolas—<br /><br />
+              Saw your recent commits tightening the Python SDK's async handling
+              for custom threat intel ingestion. Are you hitting latency
+              bottlenecks when enterprise customers push high-volume IOC feeds
+              through the REST API at 10k+ asset scale?<br /><br />
+              Also noticed Patrowl orchestrates outbound to Splunk/TheHive but
+              lacks native bidirectional SOAR sync—architectural by design or
+              roadmap gap?<br /><br />
+              Most orchestration founders I know get stuck when manual
+              reconnaissance and alert triage break at enterprise deployment
+              size. We eliminated 2.5 FTEs of manual security analysis for a
+              comparable ASM vendor last quarter—$195K in fully-loaded labor
+              costs at $135K platform spend. That's 1.4x cost arbitrage in Year
+              1, plus 35% faster sales cycles by removing custom playbook
+              development bottlenecks.<br /><br />
+              With boards scrutinizing operational leverage ahead of funding
+              rounds, that efficiency creates ~$3.2M enterprise value on a
+              typical $4M pipeline via accelerated ARR recognition.
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 16px">
+          <p
+            style="
+              font-size: 11px;
+              color: var(--text-secondary);
+              font-family: &quot;JetBrains Mono&quot;, monospace;
+            "
+          >
+            <span style="color: var(--green)">●</span> 14 other signals
+            currently being adjudicated in the vault.
+          </p>
+        </div>
+      </section>
+
+      <!-- Sovereign Intelligence Networks -->
+      <section
+        class="solution"
+        style="
+          border: 1px solid var(--gold);
+          background: rgba(212, 175, 55, 0.02);
+        "
+      >
+        <h2 style="color: var(--gold); font-size: 24px; margin-bottom: 24px">
+          📡 Sovereign Intelligence Networks
+        </h2>
+        <p
+          style="
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 15px;
+          "
+        >
+          The Signal Refinery does not rely on third-party AI drift. We ingest,
+          process, and verify market signals against an authoritative
+          cross-reference grid of industrial, financial, and regulatory data
+          nodes.
+        </p>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+          "
+        >
+          <a
+            href="https://companiesmarketcap.com/"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >🏛 CompaniesMarketCap</a
+          >
+          <a
+            href="https://www.ycombinator.com/companies"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >🦄 YC Company Directory</a
+          >
+          <a
+            href="https://finance.yahoo.com/research-hub/screener/sec-ind_sec-largest-equities_technology/"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >📈 SEC Industry Screener</a
+          >
+          <a
+            href="https://stockanalysis.com/stocks/industry/"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >📊 Tech Equity Clusters</a
+          >
+          <a
+            href="https://www.sec.gov/files/rules/other/4-460list.htm"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >⚖️ SEC 4-460 Compliance</a
+          >
+          <a
+            href="https://wellfound.com/startups"
+            target="_blank"
+            style="
+              background: #0d0d0d;
+              padding: 12px;
+              border-radius: 6px;
+              text-decoration: none;
+              color: var(--text-primary);
+              font-size: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.05);
+            "
+            >🚀 Wellfound/AngelList</a
+          >
+        </div>
+      </section>
+
+      <!-- Strike Package Repository -->
+      <section
+        class="solution"
+        style="
+          border: 1px solid var(--green);
+          background: rgba(0, 255, 136, 0.02);
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+          "
+        >
+          <h2 style="color: var(--green); font-size: 24px; margin: 0">
+            📦 Strike Package Repository
+          </h2>
+          <div
+            class="badge"
+            style="
+              margin: 0;
+              padding: 4px 12px;
+              font-size: 10px;
+              background: rgba(0, 255, 136, 0.1);
+              border-color: var(--green);
+              color: var(--green);
+            "
+          >
+            Awaiting Deployment
+          </div>
+        </div>
+
+        <!-- elina papernaya -->
+        <div
+          style="
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 16px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 12px;
+            "
+          >
+            <div>
+              <h3 style="font-size: 16px; color: var(--text-primary)">
+                Elina Papernaya (Alta)
+              </h3>
+              <p style="font-size: 12px; color: var(--text-secondary)">
+                Head of GTM • Series B • Infrastructure SaaS
+              </p>
+            </div>
+            <div style="text-align: right">
+              <span
+                style="color: var(--green); font-size: 12px; font-weight: 600"
+                >BRIEF GENERATED</span
+              >
+            </div>
+          </div>
+          <pre
+            style="
+              background: #050505;
+              padding: 12px;
+              border-radius: 6px;
+              color: var(--text-secondary);
+              font-size: 11px;
+              white-space: pre-wrap;
+              border-left: 2px solid var(--green);
+            "
+          >Subject: Eliminating Human Latency in $100k+ ACV Signal Processing
+
+Elina, You're operating in a market where CAC inflation is outpacing revenue growth and high-skilled GTM talent scarcity is constraining your territory expansion...</pre>
+        </div>
+
+        <!-- sumit nautiyal -->
+        <div
+          style="
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 16px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 12px;
+            "
+          >
+            <div>
+              <h3 style="font-size: 16px; color: var(--text-primary)">
+                Sumit Nautiyal (RevOps Advisor)
+              </h3>
+              <p style="font-size: 12px; color: var(--text-secondary)">
+                GTM Advisor • $20M-$200M Scale • AI RevOps
+              </p>
+            </div>
+            <div style="text-align: right">
+              <span
+                style="color: var(--green); font-size: 12px; font-weight: 600"
+                >BRIEF GENERATED</span
+              >
+            </div>
+          </div>
+          <pre
+            style="
+              background: #050505;
+              padding: 12px;
+              border-radius: 6px;
+              color: var(--text-secondary);
+              font-size: 11px;
+              white-space: pre-wrap;
+              border-left: 2px solid var(--green);
+            "
+          >Subject: Architecting Signal Refineries: Eliminating the 48-Hour GTM Latency Gap
+
+Sumit, Your current GTM stack is likely bleeding velocity through human middleware. Most technical founders architect robust product infrastructure, then tolerate fragile revenue systems...</pre>
+        </div>
+
+        <!-- david fox -->
+        <div
+          style="
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 16px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 12px;
+            "
+          >
+            <div>
+              <h3 style="font-size: 16px; color: var(--text-primary)">
+                David Fox (AscendRevenue)
+              </h3>
+              <p style="font-size: 12px; color: var(--text-secondary)">
+                CRO & Growth Architect • Series B Mandate
+              </p>
+            </div>
+            <div style="text-align: right">
+              <span
+                style="color: var(--green); font-size: 12px; font-weight: 600"
+                >BRIEF GENERATED</span
+              >
+            </div>
+          </div>
+          <pre
+            style="
+              background: #050505;
+              padding: 12px;
+              border-radius: 6px;
+              color: var(--text-secondary);
+              font-size: 11px;
+              white-space: pre-wrap;
+              border-left: 2px solid var(--green);
+            "
+          >Subject: Revenue Architecture: Eliminating the 48-Hour Signal Decay in $100K+ Deal Cycles
+
+David, Your GTM stack likely suffers from Human Latency: the 48-hour void between high-intent signal generation and first sales motion...</pre>
+        </div>
+
+        <!-- nicolas mattiocco -->
+        <div
+          style="
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 16px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 12px;
+            "
+          >
+            <div>
+              <h3 style="font-size: 16px; color: var(--text-primary)">
+                Nicolas Mattiocco (Patrowl)
+              </h3>
+              <p style="font-size: 12px; color: var(--text-secondary)">
+                CEO • Cyber Security • Seed/A Stage
+              </p>
+            </div>
+            <div style="text-align: right">
+              <span
+                style="color: var(--green); font-size: 12px; font-weight: 600"
+                >BRIEF GENERATED</span
+              >
+            </div>
+          </div>
+          <pre
+            style="
+              background: #050505;
+              padding: 12px;
+              border-radius: 6px;
+              color: var(--text-secondary);
+              font-size: 11px;
+              white-space: pre-wrap;
+              border-left: 2px solid var(--green);
+            "
+          >Subject: Patrowl Signal Refinery: Automating High-Gravity Cyber GTM
+
+Nicolas, Manual GTM is internal debt. 48-hour human latency in your pipeline is costing you demos...</pre>
+        </div>
+
+        <!-- Asel & Adam Queue -->
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+          "
+        >
+          <div
+            style="
+              background: rgba(0, 212, 255, 0.05);
+              padding: 16px;
+              border-radius: 8px;
+              border: 1px dashed var(--cyan);
+            "
+          >
+            <h4 style="font-size: 12px; color: var(--cyan); margin-bottom: 4px">
+              ASEL TURSUN (ARC)
+            </h4>
+            <p style="font-size: 10px; color: var(--text-secondary)">
+              SWARM STATUS: QUEUED (PHYSICAL AI)
+            </p>
+          </div>
+          <div
+            style="
+              background: rgba(0, 212, 255, 0.05);
+              padding: 16px;
+              border-radius: 8px;
+              border: 1px dashed var(--cyan);
+            "
+          >
+            <h4 style="font-size: 12px; color: var(--cyan); margin-bottom: 4px">
+              ADAM ROBINSON (RB2B)
+            </h4>
+            <p style="font-size: 10px; color: var(--text-secondary)">
+              SWARM STATUS: QUEUED (IDENTITY)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <h2>Get the Architecture Brief</h2>
+        <p>
+          Download the 4-page technical white paper with the full Signal
+          Refinery methodology.
+        </p>
+        <div>
+          <a
+            href="/assets/signal-refinery-whitepaper.html"
+            class="btn btn-primary"
+            target="_blank"
+          >
+            📄 Download White Paper
+          </a>
+          <a href="/" class="btn btn-secondary"> ← Back to Portfolio </a>
+        </div>
+      </section>
+
+      <div class="author">
+        <div class="author-info">
+          <h3>Leon Basin</h3>
+          <p>
+            Revenue Architect • 15+ Years GTM • Google, SurveyMonkey, Series A
+            Cybersecurity
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 Leon Basin • <a href="/">basinleon.github.io</a></p>
+    </footer>
+  </body>
+</html>

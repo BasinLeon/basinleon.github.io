@@ -1,0 +1,57 @@
+name: "NEXUS::OPS - Signal Audit"
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_company:
+        description: "Target Company Name (e.g., 'Google' or 'SecureWorks')"
+        required: true
+        type: string
+      notif_channel:
+        description: "Output Channel"
+        required: true
+        default: "slack"
+        type: choice
+        options:
+          - slack
+          - telegram
+          - console_only
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Execute Refinery Audit
+        env:
+          TARGET_COMPANY: ${{ github.event.inputs.target_company }}
+          NOTIF_CHANNEL: ${{ github.event.inputs.notif_channel }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c "
+          import os
+          import requests
+          from api.index import nexus_refinery_audit, send_notifications
+
+          company = os.environ.get('TARGET_COMPANY')
+          channel = os.environ.get('NOTIF_CHANNEL')
+          
+          print(f'🚀 Initiating Nexus Audit for: {company}')
+          audit_data = nexus_refinery_audit(company)
+          
+          # Wrap in notification format expected by our engine
+          send_notifications(audit_data, channel)
+          print('✅ Audit Complete. Check designated channel.')
+          "
