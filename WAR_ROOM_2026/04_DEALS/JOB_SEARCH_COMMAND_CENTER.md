@@ -1,6 +1,21 @@
 # 🦅 MISSION CONTROL: JOB SEARCH TRACKER 2026
-**Current Date:** Jan 31, 2026
+**Current Date:** Feb 8, 2026
 **Status:** DEFCON 1 (Active Assault)
+**Intelligence Phase:** SOVEREIGN STACK (Crystal, 6sense, ZoomInfo, Crunchbase Replacements Active)
+
+---
+
+## 🏛️ SECTION 0: THE SOVEREIGN ENGINE (JOBS_ENGINE)
+*Status: Automated Intelligence & Strike Packages.*
+
+| Target | Category | Engine Status | Last Strike |
+| :--- | :--- | :--- | :--- |
+| **Nicolas Mattiocco** | CEO (Patrowl) | **COMPLETE** | Brief Drafted (Strike Package 001) |
+| **Raviv Levi** | CPO/CTO (ex-Sift) | **PROCESSING** | Swarm Active |
+| **Charles Studt** | CMO (Sendbird) | **PROCESSING** | Swarm Active (Resurrection Move) |
+| **Aman Verjee** | VC (Practical VC) | **PROCESSING** | Swarm Active |
+| **Annie Lohr** | Global GTM (Deel) | **READY** | Swarm Queued (Resurrection Move) |
+| **Gaurav Bhattacharya** | CEO (Jeeva AI) | **PROCESSING** | Swarm Active |
 
 ---
 
