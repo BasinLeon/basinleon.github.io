@@ -3,245 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revenue Engine Architecture | Cyngular Security</title>
+    <title>Cyngular Revenue Architecture | Leon Basin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-color: #00bcd4;
-            --accent-secondary: #0091ea;
-            --card-bg: #1a1a1a;
-            --border-color: #333;
+            --bg: #fafafa;
+            --text: #1a1a1a;
+            --text-secondary: #555;
+            --accent: #0f4c75;
+            --accent-light: #e8f0f7;
+            --border: #ddd;
+            --card-bg: #ffffff;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* Top bar */
+        .top-bar {
+            background: var(--accent);
+            color: #fff;
+            padding: 12px 0;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 780px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 60px 24px 80px;
         }
-        header {
-            margin-bottom: 60px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 40px;
+
+        /* Header */
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--text);
         }
-        .tag {
-            display: inline-block;
-            background: rgba(0, 188, 212, 0.15);
-            color: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin: 0 0 16px 0;
+        .doc-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
             letter-spacing: -0.02em;
+            line-height: 1.3;
         }
-        .subtitle {
+        .doc-meta {
+            text-align: right;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin: 0;
+            line-height: 1.8;
         }
-        h2 {
-            color: var(--accent-color);
-            font-size: 1.4rem;
-            margin-top: 50px;
-            margin-bottom: 20px;
+
+        /* Sections */
+        .section { margin-bottom: 48px; }
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        h3 {
-            font-size: 1.15rem;
-            margin-top: 30px;
-            color: var(--text-primary);
-        }
-        p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-        ul {
-            padding-left: 20px;
-            color: var(--text-secondary);
-        }
-        li {
+            letter-spacing: 0.15em;
+            color: var(--accent);
             margin-bottom: 12px;
         }
-        .parallel-box {
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+        p { margin-bottom: 16px; color: var(--text-secondary); font-size: 0.95rem; }
+        p.lead { color: var(--text); font-size: 1.05rem; font-weight: 400; }
+
+        /* Grid */
+        .two-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 30px 0;
+            gap: 24px;
+            margin: 24px 0;
         }
-        .parallel-card {
+        .col-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1px solid var(--border);
             padding: 24px;
+            border-radius: 4px;
         }
-        .parallel-card h3 {
-            margin-top: 0;
-            font-size: 1rem;
-            color: var(--accent-color);
+        .col-card h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 16px;
         }
-        .parallel-card p {
-            font-size: 0.95rem;
+        .col-card p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        /* Timeline */
+        .timeline {
+            border-left: 2px solid var(--accent);
+            padding-left: 24px;
+            margin: 24px 0;
+        }
+        .timeline-item {
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            left: -29px;
+            top: 6px;
+        }
+        .timeline-item h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .timeline-item p {
+            font-size: 0.85rem;
             margin-bottom: 0;
         }
-        .metric-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            margin-top: 40px;
+
+        /* Metrics bar */
+        .metrics-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            background: var(--accent);
+            color: #fff;
+            padding: 32px 24px;
+            border-radius: 4px;
+            margin: 40px 0;
+            text-align: center;
         }
-        .highlight {
-            color: var(--accent-color);
+        .metric-item .metric-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+        }
+        .metric-item .metric-desc {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Numbered list */
+        .numbered-list {
+            counter-reset: item;
+            list-style: none;
+            padding: 0;
+        }
+        .numbered-list li {
+            counter-increment: item;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .numbered-list li::before {
+            content: counter(item, decimal-leading-zero);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 32px;
+            line-height: 1.5;
+        }
+        .numbered-list li:last-child { border-bottom: none; }
+        .numbered-list h4 {
+            font-size: 0.95rem;
             font-weight: 600;
+            margin-bottom: 4px;
         }
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
+        .numbered-list p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
         }
-        a:hover {
-            text-decoration: underline;
-        }
-        .divider {
+
+        /* Divider */
+        hr {
             border: none;
-            border-top: 1px solid var(--border-color);
-            margin: 50px 0;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
         }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 2px solid var(--text);
+        }
+        .footer-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .footer-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        /* Links */
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
         @media (max-width: 600px) {
-            .parallel-box {
-                grid-template-columns: 1fr;
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
+            .two-col { grid-template-columns: 1fr; }
+            .metrics-bar { grid-template-columns: repeat(2, 1fr); }
+            .doc-header { flex-direction: column; gap: 16px; }
+            .doc-meta { text-align: left; }
         }
     </style>
 </head>
 <body>
+    <div class="top-bar">Confidential &mdash; Prepared for Cyngular Security Leadership</div>
+
     <div class="container">
-        <header>
-            <span class="tag">Confidential Brief</span>
-            <h1>Cyngular Revenue Engine</h1>
-            <p class="subtitle">Prepared for Paul Moskovich & Cyngular Leadership // by Leon Basin</p>
-        </header>
-
-        <section>
-            <h2>The Thesis</h2>
-            <p>
-                Cyngular has built a world-class <span class="highlight">Detection & Response</span> engine for cloud threats.
-                The revenue function deserves the same engineering discipline.
-            </p>
-            <p>
-                Today, most cybersecurity vendors run their GTM like it's 2015: manual prospecting, generic sequences, siloed data.
-                The result is <strong>"Human Latency"</strong> — the gap between a buying signal appearing in the market and a rep acting on it.
-            </p>
-            <p>
-                I architect the systems that eliminate that gap.
-            </p>
-        </section>
-
-        <section>
-            <h2>The Builder</h2>
-            <p>
-                I started my career in <span class="highlight">Operations at Google</span>, building lean frameworks for Google Shopping. From there I moved to the front lines — business development, enterprise sales, and sales leadership at SurveyMonkey and Sense (an AI automation platform where I was promoted 3 times).
-            </p>
-            <p>
-                Along the way, I earned my <strong>MBA from Santa Clara University</strong> and realized that the gap between "business strategy" and "technical execution" was where most revenue teams break down. So I learned to code.
-            </p>
-            <p>
-                For the last 2+ years, I've been building production-grade revenue systems in Python — not as a hobby, but as the core of how I operate. At <strong>Fudo Security</strong> (a cybersecurity vendor), I reported directly to the CEO and built the entire GTM engine from scratch: CRM migration (Zoho → HubSpot → Salesforce), lead enrichment pipelines, automated outbound sequences, and partnership frameworks across 300+ cybersecurity vendors. The result: <span class="highlight">$0 to $2M pipeline in 2 years</span>, 8 people onboarded.
-            </p>
-            <p>
-                I am not a "RevOps manager" who configures dashboards. I am a <strong>GTM Engineer</strong> — someone who bridges the business logic with the technical infrastructure to build revenue systems that scale without scaling headcount.
-            </p>
-        </section>
-
-        <section>
-            <h2>The Parallel: CIRA ↔ Revenue</h2>
-            <p>Your CIRA platform follows a clear logic: <em>Detect → Investigate → Respond.</em> A revenue engine should operate identically.</p>
-            <div class="parallel-box">
-                <div class="parallel-card">
-                    <h3>🛡️ Cyber (CIRA)</h3>
-                    <p><strong>Detect:</strong> Threat signals across multi-cloud.</p>
-                    <p><strong>Investigate:</strong> Automated triage & correlation.</p>
-                    <p><strong>Respond:</strong> Neutralize with precision.</p>
-                </div>
-                <div class="parallel-card">
-                    <h3>📈 Revenue (GTM Engine)</h3>
-                    <p><strong>Detect:</strong> Buying signals (funding, hiring, tech shifts).</p>
-                    <p><strong>Investigate:</strong> Automated enrichment & ICP scoring.</p>
-                    <p><strong>Respond:</strong> Personalized outreach in &lt;5 minutes.</p>
-                </div>
+        <div class="doc-header">
+            <h1>Revenue Engine Architecture<br>for Cyngular Security</h1>
+            <div class="doc-meta">
+                <strong>Prepared by:</strong> Leon Basin<br>
+                <strong>Date:</strong> February 2026<br>
+                <strong>Version:</strong> 1.0
             </div>
-        </section>
-
-        <section>
-            <h2>What I Would Build</h2>
-
-            <h3>1. Signal Detection Layer</h3>
-            <p>Automated monitoring for high-intent triggers: CISO job changes, cloud migration announcements, compliance mandate shifts, breach disclosures. These are the "threat indicators" of the revenue world — if you miss them, a competitor closes the deal.</p>
-
-            <h3>2. Enrichment & Governance</h3>
-            <p>Every signal passes through a governed pipeline. ICP fit check, contact verification, previous engagement history. Nothing fires without passing the logic gate. No spam. No brand risk. Full audit trail — the same standard you'd expect from your CIRA platform.</p>
-
-            <h3>3. Automated Response</h3>
-            <p>Qualified signals trigger hyper-personalized outreach referencing the <em>exact</em> trigger event. Response time drops from days to minutes. Your sales team wakes up to booked meetings, not cold lists.</p>
-        </section>
-
-        <section>
-            <h2>Why Cyngular, Specifically</h2>
-            <p>
-                I've built GTM infrastructure for a cybersecurity startup before. I understand the landscape: long enterprise sales cycles, technical buyers (CISOs, CIOs) who see through generic outreach, and a market with hundreds of competing vendors where differentiation is everything.
-            </p>
-            <p>
-                Cyngular's CIRA platform is a genuinely differentiated product. The challenge is not the technology — it's ensuring that every CISO who <em>needs</em> cloud investigation and response automation knows about it at the exact moment they're evaluating solutions. That is the gap I close.
-            </p>
-            <p>
-                With your recent growth (Nimbus exclusivity, active hiring across engineering), the revenue engine needs to match the pace of the product engine. I want to be the person who builds that bridge.
-            </p>
-        </section>
-
-        <hr class="divider">
-
-        <div class="metric-card">
-            <h3>Proof of Work</h3>
-            <ul>
-                <li><strong>Google → SurveyMonkey → Sense → Fudo Security:</strong> 15+ years from enterprise ops to cybersecurity GTM engineering.</li>
-                <li><strong>$2M pipeline from $0</strong> at Fudo Security — built the entire GTM engine from scratch, reporting to the CEO.</li>
-                <li><strong>10 SDRs replaced</strong> by a single automated signal engine — $424K annual savings.</li>
-                <li><strong>MBA, Santa Clara University</strong> — strategy meets hands-on execution.</li>
-                <li><strong>700K+ lines of code</strong> deployed across production revenue systems.</li>
-                <li><strong>$300M+ in enterprise portfolios</strong> managed across career.</li>
-            </ul>
         </div>
 
-        <section style="margin-top: 50px; text-align: center;">
+        <!-- SECTION 1: THE PROBLEM -->
+        <div class="section">
+            <div class="section-label">Context</div>
+            <h2>The Revenue Gap in Cybersecurity</h2>
+            <p class="lead">
+                Cyngular has built a genuinely differentiated product. CIRA solves a real problem in cloud investigation and response. The challenge now is not technology &mdash; it is ensuring that every CISO evaluating cloud security solutions encounters Cyngular at the right moment, with the right message.
+            </p>
             <p>
-                <a href="https://basinleon.github.io/blog/posts/how-i-replaced-10-sdrs.html">Case Study: How I Replaced 10 SDRs →</a>
+                Most cybersecurity vendors still run GTM the same way they did in 2015: hire SDRs, buy lead lists, blast sequences, hope for replies. The result is what I call <strong>Human Latency</strong> &mdash; the time between a buying signal appearing in the market and a salesperson acting on it. In enterprise cyber sales, that gap is typically 48 to 72 hours. By then, CrowdStrike or Palo Alto has already booked the meeting.
             </p>
-            <p style="margin-top: 16px;">
-                <a href="https://basinleon.github.io">Full Engineering Portfolio →</a>
+            <p>
+                I build the infrastructure to close that gap.
             </p>
-        </section>
+        </div>
 
-        <hr class="divider">
-        <p style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
-            Leon Basin | GTM Engineer | <a href="https://basinleon.github.io">basinleon.github.io</a>
-        </p>
+        <!-- SECTION 2: WHO I AM -->
+        <div class="section">
+            <div class="section-label">Background</div>
+            <h2>Leon Basin</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Google &mdash; Operations Analyst</h4>
+                    <p>Built lean operational frameworks for Google Shopping. Learned how to think in systems at scale.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>SurveyMonkey &amp; Sense &mdash; Sales Leadership</h4>
+                    <p>Enterprise AE and sales manager. Promoted 3 times at Sense (AI automation platform). Led teams, closed deals, and started noticing where the process was breaking.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Santa Clara University &mdash; MBA</h4>
+                    <p>Strategy and business logic. Decided to bridge the gap between what executives need and what engineers build.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Fudo Security &mdash; GTM Architect (Reporting to CEO)</h4>
+                    <p>Israeli cybersecurity vendor. Built the entire go-to-market engine from zero: migrated CRM from Zoho to HubSpot to Salesforce, built lead enrichment pipelines in Python, automated outbound across 300+ partner channels. Result: $0 to $2M pipeline in 24 months, 8 hires onboarded into the system I built.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Present &mdash; Fractional GTM Engineering</h4>
+                    <p>Building revenue architectures for B2B companies. Combining business experience with code to eliminate manual GTM overhead.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- METRICS -->
+        <div class="metrics-bar">
+            <div class="metric-item">
+                <span class="metric-num">15+</span>
+                <span class="metric-desc">Years in GTM</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-num">$2M</span>
+                <span class="metric-desc">Pipeline Built (Cyber)</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-num">$424K</span>
+                <span class="metric-desc">Annual SDR Savings</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-num">700K+</span>
+                <span class="metric-desc">Lines of Code</span>
+            </div>
+        </div>
+
+        <!-- SECTION 3: THE PARALLEL -->
+        <div class="section">
+            <div class="section-label">Architecture</div>
+            <h2>CIRA Logic Applied to Revenue</h2>
+            <p>
+                Your product operates on a clear principle: detect threats, investigate context, respond with precision. A revenue engine should work the same way. The discipline should not change just because the domain shifts from security to sales.
+            </p>
+            <div class="two-col">
+                <div class="col-card">
+                    <h3>CIRA (Cyber)</h3>
+                    <p><strong>Detect</strong> &mdash; Threat signals across multi-cloud environments.</p>
+                    <p><strong>Investigate</strong> &mdash; Automated triage, correlation, and context.</p>
+                    <p><strong>Respond</strong> &mdash; Targeted neutralization with precision.</p>
+                </div>
+                <div class="col-card">
+                    <h3>Revenue Engine (GTM)</h3>
+                    <p><strong>Detect</strong> &mdash; Buying signals: CISO job changes, cloud migrations, compliance shifts.</p>
+                    <p><strong>Investigate</strong> &mdash; ICP scoring, contact verification, engagement history.</p>
+                    <p><strong>Respond</strong> &mdash; Personalized outreach referencing the exact trigger. Under 5 minutes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: WHAT I WOULD BUILD -->
+        <div class="section">
+            <div class="section-label">Proposal</div>
+            <h2>What I Would Build for Cyngular</h2>
+            <ol class="numbered-list">
+                <li>
+                    <div>
+                        <h4>Signal Detection</h4>
+                        <p>Automated monitoring for the events that indicate a company is actively evaluating cloud security: CISO appointments, breach disclosures, cloud migration announcements, regulatory changes. These are the demand signals your competitors are missing or responding to too late.</p>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4>Governed Enrichment Pipeline</h4>
+                        <p>Every signal passes through a logic gate before anyone acts on it. ICP fit, company size, tech stack verification, prior engagement check. Nothing fires without passing governance. No spam, no brand risk, full audit trail. The same standard you would expect from any system touching Cyngular's name.</p>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4>Precision Response</h4>
+                        <p>Qualified signals trigger outreach that references the specific event. A CISO who just announced a multi-cloud migration receives a message about CIRA's investigation capabilities in that exact environment. Response time drops from days to minutes.</p>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4>Pipeline Visibility</h4>
+                        <p>Real-time view of every qualified opportunity: where it came from, what signal triggered it, where it sits in the funnel, and what action is needed. No Friday spreadsheet updates. The board sees pipeline health the same way your SOC sees threat posture &mdash; live.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <!-- SECTION 5: WHY CYNGULAR -->
+        <div class="section">
+            <div class="section-label">Fit</div>
+            <h2>Why This Engagement</h2>
+            <p>
+                I have built GTM infrastructure for a cybersecurity vendor before. I understand the sales cycle, the technical buyer, and the competitive landscape. I know what it takes to stand out when CrowdStrike and Palo Alto are in every conversation.
+            </p>
+            <p>
+                Cyngular is at an inflection point. You have the Nimbus exclusivity. You are hiring across engineering. The product is scaling. The revenue function needs to match that pace without the cost and fragility of scaling headcount linearly.
+            </p>
+            <p>
+                I want to build the system that makes that possible.
+            </p>
+        </div>
+
+        <hr>
+
+        <!-- SECTION 6: CASE STUDY -->
+        <div class="section" style="text-align: center;">
+            <div class="section-label">Reference</div>
+            <p>
+                <a href="https://basinleon.github.io/blog/posts/how-i-replaced-10-sdrs.html"><strong>Case Study:</strong> How I Replaced 10 SDRs with a Single Automated Engine</a>
+            </p>
+            <p>
+                <a href="https://basinleon.github.io"><strong>Portfolio:</strong> Engineering Work &amp; Architecture</a>
+            </p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-name">Leon Basin</div>
+            <div class="footer-title">GTM Engineer</div>
+            <a href="https://basinleon.github.io">basinleon.github.io</a>
+        </div>
     </div>
 </body>
 </html>
