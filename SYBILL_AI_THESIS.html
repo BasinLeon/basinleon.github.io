@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sybill AI Performance Thesis | Leon Basin</title>
+    <meta name="description" content="A GTM Engineering teardown of Sybill AI's technical architecture, conversational intelligence, and potential for outcome orchestration.">
+    <link rel="canonical" href="https://basinleon.github.io/library/sybill-ai-performance-thesis.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sybill AI Performance Thesis: From Capture to Orchestration">
+    <meta property="og:description" content="Technical teardown of Sybill AI's architecture and the next frontier of 'Outcome Orchestration'.">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #B8860B;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-subtle: rgba(212, 175, 55, 0.15);
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --bg-deep: #050508;
+            --bg-card: #0a0a0f;
+            --bg-elevated: #0f0f15;
+            --text-primary: #f0e6d3;
+            --text-secondary: #8b8573;
+            --text-muted: #5a584f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: 
+                radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #050508 0%, #0a0a0f 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 40px 24px;
+        }
+        
+        .header {
+            margin-bottom: 60px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--gold-border);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .subtitle {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .content-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--gold-primary);
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--gold-subtle);
+            padding-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .thesis-box {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-left: 4px solid var(--gold-primary);
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .thesis-box strong {
+            color: var(--gold-primary);
+            display: block;
+            margin-bottom: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        ul li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--gold-primary);
+            font-weight: bold;
+        }
+
+        .highlight-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-subtle);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .highlight-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold-primary);
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .tech-stack {
+            font-family: 'JetBrains Mono', monospace;
+            background: #000;
+            padding: 4px 8px;
+            color: var(--gold-light);
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--gold-primary);
+        }
+
+        .status-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrap">
+        <div class="header">
+            <a href="/library" class="back-link">← Back to Library</a>
+            <div style="margin-top: 20px;">
+                <span class="status-tag">GTM Engineering Analysis</span>
+                <h1>Sybill AI Performance Thesis</h1>
+                <p class="subtitle">From Call Capture to Outcome Orchestration</p>
+            </div>
+        </div>
+
+        <div class="thesis-box">
+            <strong>The Core Thesis</strong>
+            "Sybill AI represents the transition from 'Passive Recording' to 'Active Intelligence.' While first-gen tools solved for *Storage*, Sybill is solving for *Synthesis*. The next evolution is not better summaries—it is **Outcome Orchestration**, where the meeting data survives the call to drive the entire revenue engine."
+        </div>
+
+        <section>
+            <h2>1. Technical Differentiation: The "Synthesis Layer"</h2>
+            <p>Unlike Gong or Chorus, which operate primarily as <em>Video Storage Engines</em> with an LLM wrapper, Sybill's architecture prioritizes the <strong>Emotional Journey</strong> and <strong>Non-Verbal Intent</strong>.</p>
+            
+            <div class="highlight-card">
+                <h3>Behavioral Modeling</h3>
+                <p>By mapping reactions (nods, smiles, distraction) to specific timestamps, Sybill builds a <em>multimodal signal map</em>. This isn't just transcription; it's <strong>Sentiment as Data</strong>.</p>
+                <code class="tech-stack">Signal: [Timestamp: 12:44] | Action: Head Nod + Sustained Gaze | Confidence: 0.89 | Label: Champion Buy-In</code>
+            </div>
+            
+            <p>For a GTM Engineer, this signal is more valuable than the transcript itself. It allows for <em>Automated Champion Detection</em>—identifying the silent influencer in a 10-person Zoom room who is doing the most physical agreeing.</p>
+        </section>
+
+        <section>
+            <h2>2. The "Toil" Liquidation: CRM as a Side Effect</h2>
+            <p>Sybill is liquidating the most expensive administrative burden in sales: <strong>CRM Maintenance</strong>. By automatically updating 30+ fields, Sybill shifts the BDR/AE from a <em>data entry clerk</em> to a <em>Revenue Architect</em>.</p>
+            <ul>
+                <li><strong>Latency Zero:</strong> Updates happen immediately after the call, preventing "Pipeline amnesia."</li>
+                <li><strong>High Fidelity:</strong> AI-driven field population eliminates "Happy Ears" bias in manual tagging.</li>
+                <li><strong>Workflow Native:</strong> Pushes intelligence into Slack/Email so the rep never leaves their flow.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. The "Outcome" Gap: From Discovery to Delivery</h2>
+            <p>The biggest challenge in current Sales AI is <strong>Signal Persistence</strong>. A summary is useful for the AE for 2 hours. But how does that summary drive the <em>Post-Sales Implementation</em> or the <em>Strategic QBR</em> 6 months later?</p>
+            
+            <div class="highlight-card">
+                <h3>The Persistence Pipeline</h3>
+                <p>I build systems (BASIN::NEXUS) that ingest Sybill's output and turn it into persistent <strong>Executive Dossiers</strong>. The goal is 100% signal retention across the entire customer lifecycle.</p>
+            </div>
+            
+            <p>Sybill is uniquely positioned to be the <strong>"Operating System for the Zoom Office."</strong> It doesn't just record the meeting; it governs the <em>outcome</em> of the meeting.</p>
+        </section>
+
+        <section>
+            <h2>4. Strategic Opportunities for Sybill</h2>
+            <ul>
+                <li><strong>Signal-Based Prospecting:</strong> Using call sentiment data to retarget "almost closed" deals with personalized ad spend.</li>
+                <li><strong>The implementation Gap:</strong> Automatically drafting the <em>Project Plan</em> based on the technical discovery in the call.</li>
+                <li><strong>Pipeline as Code:</strong> Using "Ask Sybill" to audit pipeline health not by "Close Date" but by "Engagement Depth" (behavioral metrics).</li>
+            </ul>
+        </section>
+
+        <div class="thesis-box" style="border-left-color: var(--gold-light);">
+            <strong>The Engineer's Conclusion</strong>
+            "Gorish Aggarwal and the Sybill team are building the **Context Engine** for GTM. My mission is to build the **Execution Framework** that lives on top of that context. When Capture meets Orchestration, you get a self-healing revenue engine."
+        </div>
+
+        <a href="/library" class="back-link">← Back to Library</a>
+    </div>
+</body>
+</html>
