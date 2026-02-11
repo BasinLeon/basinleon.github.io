@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALSMART | Neuroscience-Backed Sales Training for Tech Teams</title>
+    <meta name="description" content="Stop losing deals to the competition. TALSMART's neuroscience-driven sales training, designed by coaches from Google, IBM, and Oracle, transforms tech sales teams with Hollywood-quality immersive learning.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════ */
+        /*  DESIGN SYSTEM                                 */
+        /* ═══════════════════════════════════════════════ */
+        :root {
+            --primary: #0A2463;
+            --primary-light: #1E3A7A;
+            --accent: #3E92CC;
+            --accent-bright: #00B4D8;
+            --gold: #F0A500;
+            --gold-glow: rgba(240, 165, 0, 0.15);
+            --success: #06D6A0;
+            --danger: #EF476F;
+            --bg: #FAFBFE;
+            --bg-alt: #F0F4FA;
+            --card-bg: #FFFFFF;
+            --text: #1A1A2E;
+            --text-secondary: #5A6178;
+            --text-muted: #8B93A7;
+            --border: #E2E8F0;
+            --border-light: #F1F5F9;
+            --shadow-sm: 0 1px 3px rgba(10, 36, 99, 0.06);
+            --shadow-md: 0 4px 20px rgba(10, 36, 99, 0.08);
+            --shadow-lg: 0 12px 40px rgba(10, 36, 99, 0.12);
+            --shadow-xl: 0 20px 60px rgba(10, 36, 99, 0.15);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-full: 100px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  NAV                                            */
+        /* ═══════════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        .nav.scrolled { box-shadow: var(--shadow-sm); }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        .nav-logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        .nav-logo-text span { color: var(--accent); }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(62, 146, 204, 0.3);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(62, 146, 204, 0.4); }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  HERO                                           */
+        /* ═══════════════════════════════════════════════ */
+        .hero {
+            padding: 140px 24px 80px;
+            background: linear-gradient(175deg, #FAFBFE 0%, #EEF2FA 40%, #E8F0FE 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(62,146,204,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px; left: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(240,165,0,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--gold-glow);
+            border: 1px solid rgba(240,165,0,0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #B47A00;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 520px;
+        }
+        .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 25px rgba(62,146,204,0.35);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(62,146,204,0.45); }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 36px;
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .hero-social-proof {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 28px;
+        }
+        .avatar-stack {
+            display: flex;
+        }
+        .avatar-stack .avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-left: -10px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .avatar-stack .avatar:first-child { margin-left: 0; }
+        .social-proof-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .social-proof-text strong { color: var(--primary); }
+
+        /* Hero Right — 3D Assessment Preview */
+        .hero-visual {
+            position: relative;
+        }
+        .assessment-preview {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .assessment-preview::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-bright), var(--gold));
+        }
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .preview-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--success);
+            text-transform: uppercase;
+        }
+        .preview-step {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .preview-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .dimension-bars { display: flex; flex-direction: column; gap: 16px; }
+        .dim-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dim-label {
+            width: 80px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .dim-strategy .dim-label { color: #7C3AED; }
+        .dim-tech .dim-label { color: var(--accent); }
+        .dim-revenue .dim-label { color: var(--success); }
+        .dim-bar-bg {
+            flex: 1;
+            height: 10px;
+            background: var(--bg-alt);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .dim-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+        .dim-strategy .dim-bar-fill { background: linear-gradient(90deg, #7C3AED, #A78BFA); width: 0%; }
+        .dim-tech .dim-bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); width: 0%; }
+        .dim-revenue .dim-bar-fill { background: linear-gradient(90deg, var(--success), #34D399); width: 0%; }
+        .dim-score {
+            width: 40px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .preview-result {
+            margin-top: 24px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(6,214,160,0.08), rgba(6,214,160,0.02));
+            border: 1px solid rgba(6,214,160,0.15);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .result-score {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--success);
+        }
+        .result-text { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; }
+        .result-text strong { color: var(--text); }
+        .floating-badge {
+            position: absolute;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 12px 18px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: float 4s ease-in-out infinite;
+        }
+        .floating-badge.top-right {
+            top: -15px; right: -20px;
+            color: var(--gold);
+        }
+        .floating-badge.bottom-left {
+            bottom: -15px; left: -20px;
+            color: var(--accent);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  LOGO BAR                                       */
+        /* ═══════════════════════════════════════════════ */
+        .logo-bar {
+            padding: 40px 24px;
+            background: white;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .logo-bar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .logo-bar-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+        .logo-item {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .logo-item:hover { opacity: 0.8; }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  3-STEP JOURNEY                                 */
+        /* ═══════════════════════════════════════════════ */
+        .journey {
+            padding: 100px 24px;
+            background: var(--bg);
+        }
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        .section-eyebrow {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .steps {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .step-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            border: 1px solid var(--border);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        .step-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+        }
+        .step-number {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .step-card:nth-child(1) .step-number { background: linear-gradient(135deg, var(--accent), var(--accent-bright)); }
+        .step-card:nth-child(2) .step-number { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+        .step-card:nth-child(3) .step-number { background: linear-gradient(135deg, var(--success), #34D399); }
+        .step-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .tag-free { background: rgba(6,214,160,0.1); color: var(--success); }
+        .tag-intro { background: rgba(62,146,204,0.1); color: var(--accent); }
+        .tag-pro { background: var(--gold-glow); color: #B47A00; }
+        .step-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .step-features { list-style: none; }
+        .step-features li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .step-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .step-price {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+        }
+        .step-price .price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .step-price .price-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .step-price .price-original {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-left: 8px;
+        }
+        .step-cta {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .cta-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: white;
+            box-shadow: 0 4px 15px rgba(62,146,204,0.25);
+        }
+        .cta-primary:hover { box-shadow: 0 6px 25px rgba(62,146,204,0.35); transform: translateY(-2px); }
+        .cta-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        .cta-outline:hover { background: var(--accent); color: white; }
+        .cta-gold {
+            background: linear-gradient(135deg, var(--gold), #E09100);
+            color: white;
+            box-shadow: 0 4px 15px rgba(240,165,0,0.25);
+        }
+        .cta-gold:hover { box-shadow: 0 6px 25px rgba(240,165,0,0.35); transform: translateY(-2px); }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  WHY DIFFERENT SECTION                          */
+        /* ═══════════════════════════════════════════════ */
+        .why-section {
+            padding: 100px 24px;
+            background: var(--primary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .why-section::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(62,146,204,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .why-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .why-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .why-header .section-eyebrow { color: var(--accent-bright); }
+        .why-header .section-title { color: white; }
+        .why-header .section-desc { color: rgba(255,255,255,0.7); }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .why-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .why-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+        .why-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .why-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+        .why-card p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  TRAINERS                                       */
+        /* ═══════════════════════════════════════════════ */
+        .trainers {
+            padding: 100px 24px;
+            background: var(--bg-alt);
+        }
+        .trainer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .trainer-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .trainer-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .trainer-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+        }
+        .trainer-card:nth-child(1) .trainer-avatar { background: linear-gradient(135deg, #0A2463, #1E3A7A); }
+        .trainer-card:nth-child(2) .trainer-avatar { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+        .trainer-card:nth-child(3) .trainer-avatar { background: linear-gradient(135deg, var(--accent), var(--accent-bright)); }
+        .trainer-card:nth-child(4) .trainer-avatar { background: linear-gradient(135deg, var(--gold), #E09100); }
+        .trainer-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .trainer-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .trainer-companies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .company-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            background: var(--bg-alt);
+            color: var(--text-secondary);
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  TESTIMONIALS                                   */
+        /* ═══════════════════════════════════════════════ */
+        .testimonials {
+            padding: 100px 24px;
+            background: white;
+        }
+        .testimonial-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .testimonial-card {
+            background: var(--bg);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover { box-shadow: var(--shadow-md); }
+        .testimonial-stars {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .testimonial-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .author-avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .author-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        .author-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  STATS BAR                                      */
+        /* ═══════════════════════════════════════════════ */
+        .stats {
+            padding: 60px 24px;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .stat-item { text-align: center; }
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  CTA SECTION                                    */
+        /* ═══════════════════════════════════════════════ */
+        .final-cta {
+            padding: 100px 24px;
+            background: linear-gradient(175deg, var(--primary) 0%, #0D2D70 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(62,146,204,0.1) 0%, transparent 60%);
+            border-radius: 50%;
+        }
+        .final-cta-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .final-cta h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+        .final-cta p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 36px;
+            line-height: 1.7;
+        }
+        .final-cta .btn-primary {
+            font-size: 1.1rem;
+            padding: 18px 44px;
+        }
+        .final-cta .guarantee {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  FOOTER                                         */
+        /* ═══════════════════════════════════════════════ */
+        .footer {
+            padding: 40px 24px;
+            background: #050A15;
+            text-align: center;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-copy {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+        }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  VIDEO SECTION                                   */
+        /* ═══════════════════════════════════════════════ */
+        .video-section {
+            padding: 100px 24px;
+            background: white;
+        }
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
+        .video-caption {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  FAQ SECTION                                     */
+        /* ═══════════════════════════════════════════════ */
+        .faq {
+            padding: 100px 24px;
+            background: var(--bg);
+        }
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover { border-color: var(--accent); }
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary);
+            user-select: none;
+        }
+        .faq-question::after {
+            content: '+';
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-weight: 300;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+        .faq-item.open .faq-question::after {
+            transform: rotate(45deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+        .faq-answer-inner {
+            padding: 0 24px 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  URGENCY BANNER                                  */
+        /* ═══════════════════════════════════════════════ */
+        .urgency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  STICKY MOBILE CTA                               */
+        /* ═══════════════════════════════════════════════ */
+        .sticky-cta {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 999;
+            background: white;
+            padding: 12px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-light);
+        }
+        .sticky-cta a {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(62,146,204,0.3);
+        }
+        .sticky-cta .sticky-sub {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  RESPONSIVE                                     */
+        /* ═══════════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-visual { display: none; }
+            .trainer-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4rem; }
+            .section-title { font-size: 2rem; }
+            .steps { grid-template-columns: 1fr; }
+            .stats-inner { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .sticky-cta { display: block; }
+            .footer-inner { flex-direction: column; gap: 16px; }
+            .final-cta h2 { font-size: 2rem; }
+            body { padding-bottom: 80px; }
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  ANIMATIONS                                     */
+        /* ═══════════════════════════════════════════════ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════ NAV ═══════ -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">T</div>
+                <div class="nav-logo-text">TAL<span>SMART</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="#journey">How It Works</a>
+                <a href="#trainers">Trainers</a>
+                <a href="#testimonials">Results</a>
+                <a href="https://www.talsmart.com/free-assessment" class="nav-cta">Free Assessment →</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════ HERO ═══════ -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge">🧠 Neuroscience-Backed Framework</div>
+                <h1>Your Sales Team Runs on <span class="highlight">Instinct.</span><br>Ours Run on <span class="highlight">Logic.</span></h1>
+                <p class="hero-sub">
+                    TALSMART's 3D Neuroscience Framework — Strategy, Technology, Revenue — diagnoses 
+                    exactly where your tech sales team leaks deals, then fixes it with immersive 
+                    training from coaches who built teams at Google, IBM, and Oracle.
+                </p>
+                <div class="hero-actions">
+                    <a href="https://www.talsmart.com/free-assessment" class="btn-primary">
+                        Take the Free Assessment →
+                    </a>
+                    <a href="#journey" class="btn-secondary">
+                        ▶ See How It Works
+                    </a>
+                </div>
+                <div class="hero-social-proof">
+                    <div class="avatar-stack">
+                        <div class="avatar">SH</div>
+                        <div class="avatar">MC</div>
+                        <div class="avatar">JT</div>
+                        <div class="avatar">RK</div>
+                        <div class="avatar">+</div>
+                    </div>
+                    <div class="social-proof-text">
+                        <strong>7,000+</strong> tech sales professionals assessed
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="assessment-preview">
+                    <div class="floating-badge top-right">⚡ 3 Minutes</div>
+                    <div class="floating-badge bottom-left">📊 Instant Score</div>
+                    <div class="preview-header">
+                        <div class="preview-badge">● LIVE ASSESSMENT</div>
+                        <div class="preview-step">Your IT Sales IQ</div>
+                    </div>
+                    <div class="preview-title">Your 3D Sales DNA Score</div>
+                    <div class="dimension-bars">
+                        <div class="dim-row dim-strategy">
+                            <span class="dim-label">Strategy</span>
+                            <div class="dim-bar-bg"><div class="dim-bar-fill" id="bar-strategy"></div></div>
+                            <span class="dim-score" id="score-s">—</span>
+                        </div>
+                        <div class="dim-row dim-tech">
+                            <span class="dim-label">Tech</span>
+                            <div class="dim-bar-bg"><div class="dim-bar-fill" id="bar-tech"></div></div>
+                            <span class="dim-score" id="score-t">—</span>
+                        </div>
+                        <div class="dim-row dim-revenue">
+                            <span class="dim-label">Revenue</span>
+                            <div class="dim-bar-bg"><div class="dim-bar-fill" id="bar-revenue"></div></div>
+                            <span class="dim-score" id="score-r">—</span>
+                        </div>
+                    </div>
+                    <div class="preview-result">
+                        <div class="result-score" id="result-composite">—</div>
+                        <div class="result-text">
+                            <strong>Take the assessment</strong> to unlock your score and see exactly where your team leaks revenue.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ LOGO BAR ═══════ -->
+    <div class="logo-bar">
+        <div class="logo-bar-inner">
+            <div class="logo-bar-label">Our trainers have coached teams at</div>
+            <div class="logos">
+                <div class="logo-item">Google</div>
+                <div class="logo-item">IBM</div>
+                <div class="logo-item">Oracle</div>
+                <div class="logo-item">McAfee</div>
+                <div class="logo-item">PayPal</div>
+                <div class="logo-item">Salesforce</div>
+                <div class="logo-item">Marketo</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ STATS ═══════ -->
+    <div class="stats">
+        <div class="stats-inner">
+            <div class="stat-item fade-up">
+                <div class="stat-value">7,000+</div>
+                <div class="stat-label">Sales Pros Assessed</div>
+            </div>
+            <div class="stat-item fade-up">
+                <div class="stat-value">4.8★</div>
+                <div class="stat-label">Course Rating (67 reviews)</div>
+            </div>
+            <div class="stat-item fade-up">
+                <div class="stat-value">1,000+</div>
+                <div class="stat-label">Course Enrollments</div>
+            </div>
+            <div class="stat-item fade-up">
+                <div class="stat-value">15+</div>
+                <div class="stat-label">3D Interactive Tools</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ 3-STEP JOURNEY ═══════ -->
+    <section class="journey" id="journey">
+        <div class="section-header">
+            <div class="section-eyebrow">How It Works</div>
+            <h2 class="section-title">From Diagnosis to<br>Sales Domination — in 3 Steps</h2>
+            <p class="section-desc">
+                We don't guess what's wrong with your sales team. We measure it. Then we fix it 
+                with training designed by neuroscientists and field-tested by the best.
+            </p>
+        </div>
+
+        <div class="steps">
+            <!-- STEP 1 -->
+            <div class="step-card fade-up">
+                <div class="step-number">1</div>
+                <div class="step-tag tag-free">FREE</div>
+                <h3 class="step-title">Know Your Sales DNA</h3>
+                <p class="step-desc">
+                    The IT Sales IQ Assessment maps your team across our 3D Neuroscience Model 
+                    — Strategy, Technology, Revenue — to reveal exactly where deals die.
+                </p>
+                <ul class="step-features">
+                    <li>Mapped to every stage of the B2B tech sales cycle</li>
+                    <li>Instant scorecard with dimensional breakdown</li>
+                    <li>Personalized gap analysis & recommendations</li>
+                    <li>Compare against 7,000+ industry benchmarks</li>
+                </ul>
+                <div class="step-price">
+                    <span class="price">Free</span>
+                    <span class="price-label"> · 3 minutes</span>
+                </div>
+                <a href="https://www.talsmart.com/free-assessment" class="step-cta cta-primary">Start Free Assessment →</a>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="step-card fade-up">
+                <div class="step-number">2</div>
+                <div class="step-tag tag-intro">INTRO OFFER</div>
+                <h3 class="step-title">Predictive Prospecting Mastery</h3>
+                <p class="step-desc">
+                    Stage 1 of the Sales Hunter Series. Build rapport instantly with data-driven 
+                    strategies and predictive scoring tools. Designed by coaches from Google, IBM, and Oracle.
+                </p>
+                <ul class="step-features">
+                    <li>Self-paced on Udemy — start instantly</li>
+                    <li>Interactive 3D models & role-play scenarios</li>
+                    <li>Hollywood-produced immersive case studies</li>
+                    <li>TALSMART Certificate upon completion</li>
+                </ul>
+                <div class="step-price">
+                    <span class="price">$420</span>
+                    <span class="price-original">$800</span>
+                    <span class="price-label"> · per team member</span>
+                </div>
+                <div class="urgency-badge">🔥 Launch pricing — limited to first 50 teams</div>
+                <a href="https://www.udemy.com/course/sales-prospecting/" class="step-cta cta-outline">Enroll Your Team →</a>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step-card fade-up">
+                <div class="step-number">3</div>
+                <div class="step-tag tag-pro">FULL PROGRAM</div>
+                <h3 class="step-title">The Complete Sales Hunter Series</h3>
+                <p class="step-desc">
+                    4 days. 11 modules. 15 interactive tools. The full neuroscience-backed 
+                    transformation — from prospecting to negotiation to close.
+                </p>
+                <ul class="step-features">
+                    <li>Live trainer-led sessions with real roleplays</li>
+                    <li>IT & software industry case studies</li>
+                    <li>Advanced 3D Neuroscience Scoring Models</li>
+                    <li>Ongoing coaching & reinforcement</li>
+                </ul>
+                <div class="step-price">
+                    <span class="price">Custom</span>
+                    <span class="price-label"> · for teams of 5+</span>
+                </div>
+                <a href="#contact" class="step-cta cta-gold">Talk to a Trainer →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ WHY DIFFERENT ═══════ -->
+    <section class="why-section">
+        <div class="why-inner">
+            <div class="why-header">
+                <div class="section-eyebrow">Why TALSMART Is Different</div>
+                <h2 class="section-title">Not Another PowerPoint Training</h2>
+                <p class="section-desc">
+                    Our trainers forgot they were trainers — they were too invested in the story.
+                    That's the power of experiential, neuroscience-backed learning.
+                </p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card fade-up">
+                    <div class="why-icon">🧠</div>
+                    <h3>Neuroscience Framework</h3>
+                    <p>Developed with the Brain Institute of Dallas. We target all three brain layers — instinctual, emotional, and logical — that trigger during a sales cycle.</p>
+                </div>
+                <div class="why-card fade-up">
+                    <div class="why-icon">🎬</div>
+                    <h3>Hollywood Production</h3>
+                    <p>Professional actors bring sales scenarios to life. You follow "Sam" through real roadblocks and watch the framework solve problems you face every day.</p>
+                </div>
+                <div class="why-card fade-up">
+                    <div class="why-icon">📐</div>
+                    <h3>Interactive 3D Models</h3>
+                    <p>Not static diagrams. Our 3D models let you manipulate variables and see how different approaches impact outcomes — Strategy, Tech, and Revenue dimensions.</p>
+                </div>
+                <div class="why-card fade-up">
+                    <div class="why-icon">🏢</div>
+                    <h3>IT Industry Native</h3>
+                    <p>Every case study, every roleplay, every scenario is built for B2B technology sales. No generic advice — this is built for your exact selling environment.</p>
+                </div>
+                <div class="why-card fade-up">
+                    <div class="why-icon">📊</div>
+                    <h3>Measurable ROI</h3>
+                    <p>Pre and post-assessment scoring means you can quantify exactly how much your team improved. Show leadership the numbers, not just the receipts.</p>
+                </div>
+                <div class="why-card fade-up">
+                    <div class="why-icon">🏆</div>
+                    <h3>World-Class Trainers</h3>
+                    <p>Our panel includes the author of the only Sales Enablement book (Version 3.0), 25+ year veterans from IBM, Google, Oracle, PayPal, and Salesforce.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ VIDEO SECTION ═══════ -->
+    <section class="video-section">
+        <div class="section-header">
+            <div class="section-eyebrow">See It In Action</div>
+            <h2 class="section-title">Meet Sam — The Mediocre<br>Salesman Who Gets Better</h2>
+            <p class="section-desc">
+                Our training is built like a movie. Professional actors. Real roadblocks. 
+                You follow Sam from Lead to Close — and learn the framework while you're hooked on the story.
+            </p>
+        </div>
+        <div class="video-wrapper fade-up">
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/?listType=user_uploads&list=talsmart" 
+                    title="TALSMART Training Preview" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            </div>
+            <p class="video-caption">Preview from the Sales Hunter Series — 11 modules, 15 interactive 3D tools, TALSMART certified</p>
+        </div>
+    </section>
+
+    <!-- ═══════ TRAINERS ═══════ -->
+    <section class="trainers" id="trainers">
+        <div class="section-header">
+            <div class="section-eyebrow">Meet Your Coaches</div>
+            <h2 class="section-title">Trained by the Veterans<br>Who Built the Industry</h2>
+            <p class="section-desc">
+                Combined 100+ years of enterprise sales leadership at the companies your 
+                team sells to — and competes against.
+            </p>
+        </div>
+        <div class="trainer-grid">
+            <div class="trainer-card fade-up">
+                <div class="trainer-avatar">RJ</div>
+                <div class="trainer-name">Roderick Jefferson</div>
+                <div class="trainer-title">Author, "Sales Enablement 3.0"</div>
+                <div class="trainer-companies">
+                    <span class="company-tag">Salesforce</span>
+                    <span class="company-tag">Oracle</span>
+                    <span class="company-tag">Marketo</span>
+                    <span class="company-tag">PayPal</span>
+                </div>
+            </div>
+            <div class="trainer-card fade-up">
+                <div class="trainer-avatar">BF</div>
+                <div class="trainer-name">Bryan Flanagan</div>
+                <div class="trainer-title">21-Year Sales Training Veteran</div>
+                <div class="trainer-companies">
+                    <span class="company-tag">IBM</span>
+                    <span class="company-tag">Ziglar Inc.</span>
+                    <span class="company-tag">University Faculty</span>
+                </div>
+            </div>
+            <div class="trainer-card fade-up">
+                <div class="trainer-avatar">PL</div>
+                <div class="trainer-name">Paul</div>
+                <div class="trainer-title">Global Sales Enablement Leader</div>
+                <div class="trainer-companies">
+                    <span class="company-tag">Oracle</span>
+                    <span class="company-tag">25+ Years</span>
+                    <span class="company-tag">Award-Winner</span>
+                </div>
+            </div>
+            <div class="trainer-card fade-up">
+                <div class="trainer-avatar">MH</div>
+                <div class="trainer-name">Mark Hunter</div>
+                <div class="trainer-title">Bestselling Author & Sales Strategist</div>
+                <div class="trainer-companies">
+                    <span class="company-tag">Author</span>
+                    <span class="company-tag">Keynote Speaker</span>
+                    <span class="company-tag">Top 50 Sales</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ TESTIMONIALS ═══════ -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-header">
+            <div class="section-eyebrow">Results</div>
+            <h2 class="section-title">What Sales Leaders Are Saying</h2>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "I have 20 years of consultative selling experience and have taken at least 15 different assessments. 
+                    I found this quiz to be rather unique in that depending on one's experience level, there might be a 
+                    different 'right' answer. I imagine this may be partly by design."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SH</div>
+                    <div>
+                        <div class="author-name">Shannon Helms</div>
+                        <div class="author-role">Healthcare & Insurance Technology Sales Executive</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "Since I joined Oracle, I had the opportunity to attend a few training sessions facilitated by Paul — 
+                    these were the most engaging sessions I've ever attended. I saw rapid improvement of our sales metrics 
+                    across both EMEA and NAMER regions."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">OT</div>
+                    <div>
+                        <div class="author-name">Oracle Team Lead</div>
+                        <div class="author-role">Sales Manager, EMEA & NAMER</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "What I liked most was how the course gave me confidence. Prospecting always felt like throwing 
+                    darts blindfolded, but the predictive frameworks gave me structure. I now know what to look for 
+                    and how to organize my pipeline."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JP</div>
+                    <div>
+                        <div class="author-name">Udemy Student</div>
+                        <div class="author-role">B2B Technology Sales Professional</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "The 3D models and Hollywood-quality scenarios were unlike anything I've seen in 30 years of sales. 
+                    Our trainers literally forgot they were trainers — they just wanted to see if Sam closed the deal. 
+                    That's the power of experiential learning."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JS</div>
+                    <div>
+                        <div class="author-name">Jassi Singh</div>
+                        <div class="author-role">Chairman, TALSMART</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FAQ ═══════ -->
+    <section class="faq" id="faq">
+        <div class="section-header">
+            <div class="section-eyebrow">Questions</div>
+            <h2 class="section-title">Frequently Asked</h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">How is the assessment scored?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    Our proprietary 3D Neuroscience Model scores your team across three dimensions — Strategy, Technology, and Revenue — developed in partnership with the Brain Institute of Dallas. Each dimension maps to specific stages of the B2B tech sales cycle. Your instant scorecard shows exactly where the gaps are and how to close them.
+                </div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">What makes this training different from other sales courses?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    Two things. First, our content is produced with professional Hollywood actors — you follow a character named Sam through real sales roadblocks that mirror yours. Second, it's built exclusively for B2B technology sales. No generic selling advice. Every case study, roleplay, and tool is designed for your industry.
+                </div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Who designed the curriculum?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    Our panel includes Roderick Jefferson (author of the only Sales Enablement book, now in Version 3.0), Bryan Flanagan (21-year IBM veteran and university professor), and senior coaches from Google, Oracle, PayPal, Salesforce, and Marketo. Combined, our team has 100+ years of enterprise tech sales leadership.
+                </div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Why is the course $420 instead of $800?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    We're running a limited launch offer for the first 50 teams to enroll. This is Stage 1 (Predictive Prospecting) of the full Sales Hunter Series. The full retail price is $800 per team member and will be restored once we hit capacity. We want feedback from early teams to perfect the experience.
+                </div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Can I enroll my entire team?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    Absolutely. The self-paced Udemy course works for individual reps. For teams of 5+, we offer the full live trainer-led Sales Hunter Series (4 days, 11 modules, 15 interactive tools) with custom pricing. Click "Talk to a Trainer" to get started.
+                </div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Is there a money-back guarantee?</div>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    Yes. The Udemy course comes with a 30-day money-back guarantee. If you don't see measurable improvement in your team's prospecting approach, you pay nothing. We also offer pre/post assessment scoring so you can quantify the ROI.
+                </div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FINAL CTA ═══════ -->
+    <section class="final-cta" id="contact">
+        <div class="final-cta-inner">
+            <h2>Stop Losing Deals<br>to the Competition</h2>
+            <p>
+                Take the 3-minute assessment. See exactly where your team leaks revenue.
+                Then let our world-class trainers fix it — with neuroscience, not guesswork.
+            </p>
+            <a href="https://www.talsmart.com/free-assessment" class="btn-primary">
+                Start Free Assessment →
+            </a>
+            <p class="guarantee">✓ Free · ✓ 3 Minutes · ✓ Instant Results · ✓ No Credit Card</p>
+        </div>
+    </section>
+
+    <!-- ═══════ FOOTER ═══════ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-copy">© 2026 TALSMART. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="https://www.talsmart.com">Home</a>
+                <a href="https://www.talsmart.com/sales-hunter-series">Training Programs</a>
+                <a href="https://www.youtube.com/@talsmart">Video Channel</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════ STICKY MOBILE CTA ═══════ -->
+    <div class="sticky-cta" id="stickyCta">
+        <a href="https://www.talsmart.com/free-assessment">Take the Free Assessment →</a>
+        <div class="sticky-sub">Free · 3 minutes · Instant results</div>
+    </div>
+
+    <!-- ═══════ SCRIPTS ═══════ -->
+    <script>
+        // ──── NAV SCROLL EFFECT ────
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ──── FADE-UP ON SCROLL ────
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // ──── HERO ASSESSMENT ANIMATION ────
+        function animateAssessment() {
+            const stratScore = 78;
+            const techScore = 52;
+            const revScore = 85;
+            const composite = Math.round((stratScore * 0.30) + (techScore * 0.25) + (revScore * 0.45));
+
+            setTimeout(() => {
+                document.getElementById('bar-strategy').style.width = stratScore + '%';
+                document.getElementById('score-s').textContent = stratScore;
+            }, 800);
+            setTimeout(() => {
+                document.getElementById('bar-tech').style.width = techScore + '%';
+                document.getElementById('score-t').textContent = techScore;
+            }, 1200);
+            setTimeout(() => {
+                document.getElementById('bar-revenue').style.width = revScore + '%';
+                document.getElementById('score-r').textContent = revScore;
+            }, 1600);
+            setTimeout(() => {
+                document.getElementById('result-composite').textContent = composite + '/100';
+            }, 2200);
+        }
+        window.addEventListener('load', animateAssessment);
+
+        // ──── FAQ TOGGLE ────
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        }
+
+        // ──── STICKY CTA SHOW ON SCROLL ────
+        const stickyCta = document.getElementById('stickyCta');
+        if (stickyCta) {
+            window.addEventListener('scroll', () => {
+                if (window.innerWidth <= 768) {
+                    stickyCta.style.transform = window.scrollY > 400 ? 'translateY(0)' : 'translateY(100%)';
+                }
+            });
+            stickyCta.style.transform = 'translateY(100%)';
+            stickyCta.style.transition = 'transform 0.3s ease';
+        }
+    </script>
+
+</body>
+</html>
