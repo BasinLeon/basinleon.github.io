@@ -660,18 +660,20 @@
             border-color: var(--accent);
         }
         .trainer-avatar {
-            width: 80px; height: 80px;
+            width: 100px; height: 100px;
             border-radius: 50%;
             margin: 0 auto 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: white;
+            overflow: hidden;
+            border: 3px solid var(--border-light);
+            transition: border-color 0.3s;
         }
-        .trainer-card:nth-child(1) .trainer-avatar { background: linear-gradient(135deg, #0A2463, #1E3A7A); }
-        .trainer-card:nth-child(2) .trainer-avatar { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
-        .trainer-card:nth-child(3) .trainer-avatar { background: linear-gradient(135deg, var(--accent), var(--accent-bright)); }
-        .trainer-card:nth-child(4) .trainer-avatar { background: linear-gradient(135deg, var(--gold), #E09100); }
+        .trainer-card:hover .trainer-avatar {
+            border-color: var(--accent);
+        }
+        .trainer-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
         .trainer-name {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.1rem;
@@ -679,11 +681,33 @@
             color: var(--primary);
             margin-bottom: 4px;
         }
+        .trainer-name a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .trainer-name a:hover { color: var(--accent); }
+        .trainer-linkedin {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #0A66C2;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: opacity 0.2s;
+        }
+        .trainer-linkedin:hover { opacity: 0.8; }
+        .trainer-linkedin svg {
+            width: 14px; height: 14px;
+            fill: #0A66C2;
+        }
         .trainer-title {
             font-size: 0.75rem;
             color: var(--text-muted);
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .trainer-companies {
             display: flex;
@@ -705,57 +729,97 @@
         /* ═══════════════════════════════════════════════ */
         .testimonials {
             padding: 100px 24px;
-            background: white;
+            background: linear-gradient(180deg, var(--bg) 0%, white 100%);
         }
         .testimonial-grid {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
+            gap: 28px;
         }
         .testimonial-card {
-            background: var(--bg);
+            background: white;
             border-radius: var(--radius-lg);
-            padding: 32px;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
+            padding: 36px;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            position: relative;
         }
-        .testimonial-card:hover { box-shadow: var(--shadow-md); }
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 16px; left: 24px;
+            font-family: Georgia, serif;
+            font-size: 5rem;
+            color: var(--accent);
+            opacity: 0.08;
+            line-height: 1;
+        }
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
         .testimonial-stars {
             color: var(--gold);
-            font-size: 0.9rem;
-            margin-bottom: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
         }
         .testimonial-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 20px;
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 24px;
             font-style: italic;
+            font-weight: 500;
+        }
+        .testimonial-pullquote {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-style: normal;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
         }
         .author-avatar {
-            width: 44px; height: 44px;
+            width: 52px; height: 52px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--primary));
             display: flex; align-items: center; justify-content: center;
             color: white;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            flex-shrink: 0;
         }
         .author-name {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: var(--primary);
         }
         .author-role {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .author-company-badge {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 2px 10px;
+            background: var(--bg-alt);
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--accent);
         }
 
         /* ═══════════════════════════════════════════════ */
@@ -857,7 +921,7 @@
             font-size: 0.8rem;
             color: rgba(255,255,255,0.4);
         }
-        .footer-links { display: flex; gap: 24px; }
+        .footer-links { display: flex; gap: 24px; align-items: center; }
         .footer-links a {
             font-size: 0.8rem;
             color: rgba(255,255,255,0.4);
@@ -865,6 +929,16 @@
             transition: color 0.2s;
         }
         .footer-links a:hover { color: rgba(255,255,255,0.7); }
+        .footer-social { display: flex; gap: 16px; align-items: center; margin-left: 16px; padding-left: 16px; border-left: 1px solid rgba(255,255,255,0.1); }
+        .footer-social a {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .footer-social a:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .footer-social svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.5); }
 
         /* ═══════════════════════════════════════════════ */
         /*  VIDEO SECTION                                   */
@@ -1335,8 +1409,9 @@
         </div>
         <div class="trainer-grid">
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar">RJ</div>
-                <div class="trainer-name">Roderick Jefferson</div>
+                <div class="trainer-avatar"><img src="images/roderick.png" alt="Roderick Jefferson"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/in/roderickjefferson/" target="_blank" rel="noopener">Roderick Jefferson</a></div>
+                <a href="https://www.linkedin.com/in/roderickjefferson/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
                 <div class="trainer-title">Author, "Sales Enablement 3.0"</div>
                 <div class="trainer-companies">
                     <span class="company-tag">Salesforce</span>
@@ -1346,8 +1421,9 @@
                 </div>
             </div>
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar">BF</div>
-                <div class="trainer-name">Bryan Flanagan</div>
+                <div class="trainer-avatar"><img src="images/bryan.png" alt="Bryan Flanagan"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/in/bryanflanagan/" target="_blank" rel="noopener">Bryan Flanagan</a></div>
+                <a href="https://www.linkedin.com/in/bryanflanagan/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
                 <div class="trainer-title">21-Year Sales Training Veteran</div>
                 <div class="trainer-companies">
                     <span class="company-tag">IBM</span>
@@ -1356,8 +1432,9 @@
                 </div>
             </div>
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar">PL</div>
-                <div class="trainer-name">Paul</div>
+                <div class="trainer-avatar"><img src="images/paul.png" alt="Paul"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">Paul</a></div>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
                 <div class="trainer-title">Global Sales Enablement Leader</div>
                 <div class="trainer-companies">
                     <span class="company-tag">Oracle</span>
@@ -1366,9 +1443,10 @@
                 </div>
             </div>
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar">MH</div>
-                <div class="trainer-name">Mark Hunter</div>
-                <div class="trainer-title">Bestselling Author & Sales Strategist</div>
+                <div class="trainer-avatar"><img src="images/mark.png" alt="Mark Hunter"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/in/thesaleshunter/" target="_blank" rel="noopener">Mark Hunter</a></div>
+                <a href="https://www.linkedin.com/in/thesaleshunter/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
+                <div class="trainer-title">Bestselling Author &amp; Sales Strategist</div>
                 <div class="trainer-companies">
                     <span class="company-tag">Author</span>
                     <span class="company-tag">Keynote Speaker</span>
@@ -1388,60 +1466,68 @@
             <div class="testimonial-card fade-up">
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">
-                    "I have 20 years of consultative selling experience and have taken at least 15 different assessments. 
+                    <span class="testimonial-pullquote">"Unlike any assessment I've taken in 20 years."</span>
+                    I have 20 years of consultative selling experience and have taken at least 15 different assessments. 
                     I found this quiz to be rather unique in that depending on one's experience level, there might be a 
-                    different 'right' answer. I imagine this may be partly by design."
+                    different 'right' answer. I imagine this may be partly by design.
                 </p>
                 <div class="testimonial-author">
                     <div class="author-avatar">SH</div>
                     <div>
                         <div class="author-name">Shannon Helms</div>
-                        <div class="author-role">Healthcare & Insurance Technology Sales Executive</div>
+                        <div class="author-role">Healthcare &amp; Insurance Technology Sales Executive</div>
+                        <span class="author-company-badge">20 Years in Tech Sales</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card fade-up">
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">
-                    "Since I joined Oracle, I had the opportunity to attend a few training sessions facilitated by Paul — 
+                    <span class="testimonial-pullquote">"Rapid improvement across EMEA and NAMER."</span>
+                    Since I joined Oracle, I had the opportunity to attend a few training sessions facilitated by Paul — 
                     these were the most engaging sessions I've ever attended. I saw rapid improvement of our sales metrics 
-                    across both EMEA and NAMER regions."
+                    across both EMEA and NAMER regions.
                 </p>
                 <div class="testimonial-author">
                     <div class="author-avatar">OT</div>
                     <div>
                         <div class="author-name">Oracle Team Lead</div>
-                        <div class="author-role">Sales Manager, EMEA & NAMER</div>
+                        <div class="author-role">Sales Manager, EMEA &amp; NAMER</div>
+                        <span class="author-company-badge">Oracle</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card fade-up">
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">
-                    "What I liked most was how the course gave me confidence. Prospecting always felt like throwing 
+                    <span class="testimonial-pullquote">"Prospecting finally has structure."</span>
+                    What I liked most was how the course gave me confidence. Prospecting always felt like throwing 
                     darts blindfolded, but the predictive frameworks gave me structure. I now know what to look for 
-                    and how to organize my pipeline."
+                    and how to organize my pipeline.
                 </p>
                 <div class="testimonial-author">
                     <div class="author-avatar">JP</div>
                     <div>
-                        <div class="author-name">Udemy Student</div>
+                        <div class="author-name">Verified Udemy Student</div>
                         <div class="author-role">B2B Technology Sales Professional</div>
+                        <span class="author-company-badge">Udemy Verified</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card fade-up">
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">
-                    "The 3D models and Hollywood-quality scenarios were unlike anything I've seen in 30 years of sales. 
+                    <span class="testimonial-pullquote">"Unlike anything I've seen in 30 years of sales."</span>
+                    The 3D models and Hollywood-quality scenarios were unlike anything I've seen in 30 years of sales. 
                     Our trainers literally forgot they were trainers — they just wanted to see if Sam closed the deal. 
-                    That's the power of experiential learning."
+                    That's the power of experiential learning.
                 </p>
                 <div class="testimonial-author">
                     <div class="author-avatar">JS</div>
                     <div>
                         <div class="author-name">Jassi Singh</div>
                         <div class="author-role">Chairman, TALSMART</div>
+                        <span class="author-company-badge">30 Years in Sales</span>
                     </div>
                 </div>
             </div>
@@ -1518,6 +1604,14 @@
                 <a href="https://www.talsmart.com/sales-hunter-series">Training Programs</a>
                 <a href="https://www.youtube.com/@talsmart">Video Channel</a>
                 <a href="#">Privacy Policy</a>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/company/talsmart/" target="_blank" rel="noopener" title="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@talsmart" target="_blank" rel="noopener" title="YouTube">
+                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
