@@ -1119,6 +1119,176 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  INTERACTIVE EFFECTS                             */
+        /* ═══════════════════════════════════════════════ */
+        .assessment-preview {
+            transition: transform 0.15s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .assessment-preview:hover {
+            box-shadow: 0 20px 60px rgba(10, 36, 99, 0.18);
+        }
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            opacity: 0;
+            z-index: -1;
+            animation: ctaPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes ctaPulse {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.05); }
+        }
+        .score-cycling {
+            transition: opacity 0.3s ease;
+        }
+        .score-cycling.fade {
+            opacity: 0.3;
+        }
+        .counter-animate {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /*  RESEARCH SECTION                                */
+        /* ═══════════════════════════════════════════════ */
+        .research {
+            padding: 100px 24px;
+            background: var(--bg);
+        }
+        .research-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .neuro-framework {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .neuro-framework::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #EF4444, #F59E0B, #3E92CC);
+        }
+        .neuro-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .brain-layer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .brain-layer:hover {
+            transform: translateX(6px);
+        }
+        .brain-layer.instinctual { background: rgba(239, 68, 68, 0.06); border-left: 3px solid #EF4444; }
+        .brain-layer.emotional { background: rgba(245, 158, 11, 0.06); border-left: 3px solid #F59E0B; }
+        .brain-layer.logical { background: rgba(62, 146, 204, 0.06); border-left: 3px solid #3E92CC; }
+        .brain-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+        .brain-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+        .brain-desc {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .neuro-source {
+            margin-top: 16px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .research-articles {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .article-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .article-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+        .article-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .article-card:nth-child(1) .article-icon { background: rgba(124,58,237,0.08); }
+        .article-card:nth-child(2) .article-icon { background: rgba(239,68,68,0.08); }
+        .article-card:nth-child(3) .article-icon { background: rgba(6,214,160,0.08); }
+        .article-card:nth-child(4) .article-icon { background: rgba(62,146,204,0.08); }
+        .article-card:nth-child(5) .article-icon { background: rgba(245,158,11,0.08); }
+        .article-card:nth-child(6) .article-icon { background: rgba(10,36,99,0.08); }
+        .article-title {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--primary);
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+        .article-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .article-arrow {
+            margin-left: auto;
+            color: var(--accent);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+        .article-card:hover .article-arrow { transform: translateX(4px); }
+
+        @media (max-width: 1024px) {
+            .research-layout { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -1536,7 +1706,95 @@
         </div>
     </section>
 
-    <!-- ═══════ FAQ ═══════ -->
+    <!-- ═══════ RESEARCH & FRAMEWORKS ═══════ -->
+    <section class="research" id="research">
+        <div class="section-header">
+            <div class="section-eyebrow">The Science Behind It</div>
+            <h2 class="section-title">Neuroscience Meets<br>Sales Performance</h2>
+            <p class="section-desc">
+                Our training is built on published research, not opinions. The TALSMART tri-fold 
+                neuroscience framework targets the three brain systems that activate during every B2B sales cycle.
+            </p>
+        </div>
+        <div class="research-layout">
+            <div class="neuro-framework fade-up">
+                <div class="neuro-title">🧠 The Tri-Fold Neuroscience Framework</div>
+                <div class="brain-layer instinctual">
+                    <div class="brain-icon">⚡</div>
+                    <div>
+                        <div class="brain-label">Instinctual Brain</div>
+                        <div class="brain-desc">Fight-or-flight responses that trigger when a prospect feels pressured. We teach reps to disarm this layer first.</div>
+                    </div>
+                </div>
+                <div class="brain-layer emotional">
+                    <div class="brain-icon">💡</div>
+                    <div>
+                        <div class="brain-label">Emotional Brain</div>
+                        <div class="brain-desc">Where trust and rapport live. Our Hollywood-produced scenarios build emotional engagement that PowerPoint never can.</div>
+                    </div>
+                </div>
+                <div class="brain-layer logical">
+                    <div class="brain-icon">📊</div>
+                    <div>
+                        <div class="brain-label">Logical Brain</div>
+                        <div class="brain-desc">ROI calculations, competitive positioning, and data. Our predictive scoring tools give reps the numbers to close.</div>
+                    </div>
+                </div>
+                <div class="neuro-source">Developed in partnership with the Brain Institute of Dallas. Published in TALSMART Whitepaper Series.</div>
+            </div>
+            <div class="research-articles fade-up">
+                <a href="https://www.talsmart.com/success-from-social-selling" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">📱</div>
+                    <div>
+                        <div class="article-title">Success From Social Selling</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+                <a href="https://www.talsmart.com/pitfalls-to-avoid-in-it-sales-training" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">⚠️</div>
+                    <div>
+                        <div class="article-title">Pitfalls to Avoid in IT Sales Training</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+                <a href="https://www.talsmart.com/how-to-choose-the-best-sales-training-company-to-grow-your-business-fast" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">🏆</div>
+                    <div>
+                        <div class="article-title">How to Choose the Best Sales Training Company</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+                <a href="https://www.talsmart.com/simplifying-prospecting-the-biggest-it-sales-challenge-in-2023" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">🎯</div>
+                    <div>
+                        <div class="article-title">Simplifying Prospecting: The Biggest IT Sales Challenge</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+                <a href="https://www.talsmart.com/measuring-the-roi-from-your-salestraining" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">📈</div>
+                    <div>
+                        <div class="article-title">Measuring the ROI From Your Sales Training</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+                <a href="https://www.talsmart.com/successful-navigating-b2b-technology-sales-in-the-new-normal" target="_blank" rel="noopener" class="article-card">
+                    <div class="article-icon">🧭</div>
+                    <div>
+                        <div class="article-title">Navigating Successful B2B Technology Sales</div>
+                        <div class="article-meta">TALSMART Research</div>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section class="faq" id="faq">
         <div class="section-header">
             <div class="section-eyebrow">Questions</div>
@@ -1641,29 +1899,105 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-        // ──── HERO ASSESSMENT ANIMATION ────
-        function animateAssessment() {
-            const stratScore = 78;
-            const techScore = 52;
-            const revScore = 85;
-            const composite = Math.round((stratScore * 0.30) + (techScore * 0.25) + (revScore * 0.45));
+        // ──── ANIMATED COUNTER ────
+        function animateCounter(el, target, duration = 2000) {
+            const start = 0;
+            const startTime = performance.now();
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(start + (target - start) * eased);
+                el.textContent = current.toLocaleString() + '+';
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ──── HERO ASSESSMENT — CYCLING SCORES ────
+        const scoreProfiles = [
+            { s: 78, t: 52, r: 85 },
+            { s: 45, t: 71, r: 38 },
+            { s: 92, t: 64, r: 73 },
+            { s: 33, t: 88, r: 56 },
+            { s: 67, t: 41, r: 94 },
+            { s: 55, t: 79, r: 62 },
+        ];
+        let currentProfile = 0;
+
+        function setScores(profile, animate = true) {
+            const composite = Math.round((profile.s * 0.30) + (profile.t * 0.25) + (profile.r * 0.45));
+            const card = document.querySelector('.assessment-preview');
+            if (animate && card) card.classList.add('score-cycling', 'fade');
 
             setTimeout(() => {
-                document.getElementById('bar-strategy').style.width = stratScore + '%';
-                document.getElementById('score-s').textContent = stratScore;
+                document.getElementById('bar-strategy').style.width = profile.s + '%';
+                document.getElementById('score-s').textContent = profile.s;
+                document.getElementById('bar-tech').style.width = profile.t + '%';
+                document.getElementById('score-t').textContent = profile.t;
+                document.getElementById('bar-revenue').style.width = profile.r + '%';
+                document.getElementById('score-r').textContent = profile.r;
+                document.getElementById('result-composite').textContent = composite + '/100';
+                if (animate && card) card.classList.remove('fade');
+            }, animate ? 300 : 0);
+        }
+
+        function animateAssessment() {
+            // Initial load animation
+            const p = scoreProfiles[0];
+            const composite = Math.round((p.s * 0.30) + (p.t * 0.25) + (p.r * 0.45));
+            setTimeout(() => {
+                document.getElementById('bar-strategy').style.width = p.s + '%';
+                document.getElementById('score-s').textContent = p.s;
             }, 800);
             setTimeout(() => {
-                document.getElementById('bar-tech').style.width = techScore + '%';
-                document.getElementById('score-t').textContent = techScore;
+                document.getElementById('bar-tech').style.width = p.t + '%';
+                document.getElementById('score-t').textContent = p.t;
             }, 1200);
             setTimeout(() => {
-                document.getElementById('bar-revenue').style.width = revScore + '%';
-                document.getElementById('score-r').textContent = revScore;
+                document.getElementById('bar-revenue').style.width = p.r + '%';
+                document.getElementById('score-r').textContent = p.r;
             }, 1600);
             setTimeout(() => {
                 document.getElementById('result-composite').textContent = composite + '/100';
             }, 2200);
+
+            // Cycle every 5s
+            setInterval(() => {
+                currentProfile = (currentProfile + 1) % scoreProfiles.length;
+                setScores(scoreProfiles[currentProfile]);
+            }, 5000);
         }
+
+        // ──── 3D CARD TILT ON MOUSE MOVE ────
+        const card = document.querySelector('.assessment-preview');
+        if (card) {
+            const visual = document.querySelector('.hero-visual');
+            visual.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+            });
+            visual.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(800px) rotateY(0) rotateX(0)';
+            });
+        }
+
+        // ──── COUNTER ANIMATION ON SCROLL ────
+        const counterEl = document.querySelector('.social-proof-text strong');
+        if (counterEl) {
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(counterEl, 7000, 2500);
+                        counterObserver.disconnect();
+                    }
+                });
+            }, { threshold: 0.5 });
+            counterObserver.observe(counterEl);
+        }
+
         window.addEventListener('load', animateAssessment);
 
         // ──── FAQ TOGGLE ────
