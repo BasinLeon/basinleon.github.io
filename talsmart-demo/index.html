@@ -188,19 +188,39 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 36px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
             color: white;
             border: none;
-            border-radius: var(--radius-full);
+            border-radius: 50px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 25px rgba(62,146,204,0.35);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(62,146,204,0.45); }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            opacity: 0;
+            z-index: -1;
+            animation: ctaPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes ctaPulse {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.05); }
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 198, 255, 0.4);
+            filter: brightness(1.1);
+        }
         .btn-secondary {
             display: inline-flex;
             align-items: center;
@@ -1120,34 +1140,6 @@
             transform: translateY(0);
         }
 
-        /* ═══════════════════════════════════════════════ */
-        /*  INTERACTIVE EFFECTS                             */
-        /* ═══════════════════════════════════════════════ */
-        .assessment-preview {
-            transition: transform 0.15s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .assessment-preview:hover {
-            box-shadow: 0 20px 60px rgba(10, 36, 99, 0.18);
-        }
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: inherit;
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
-            opacity: 0;
-            z-index: -1;
-            animation: ctaPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes ctaPulse {
-            0%, 100% { opacity: 0; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(1.05); }
-        }
         .score-cycling {
             transition: opacity 0.3s ease;
         }
@@ -1304,7 +1296,7 @@
                 <a href="#journey">How It Works</a>
                 <a href="#trainers">Trainers</a>
                 <a href="#testimonials">Results</a>
-                <a href="https://www.talsmart.com/free-assessment" class="nav-cta">Free Assessment →</a>
+                <a href="#diagnostic" class="nav-cta">Free Assessment →</a>
             </div>
         </div>
     </nav>
@@ -1321,7 +1313,7 @@
                     from coaches who built teams at Google, IBM, and Oracle.
                 </p>
                 <div class="hero-actions">
-                    <a href="https://www.talsmart.com/free-assessment" class="btn-primary">
+                    <a href="#diagnostic" class="btn-primary">
                         Take the Free Assessment →
                     </a>
                     <a href="#journey" class="btn-secondary">
@@ -1330,7 +1322,7 @@
                 </div>
                 <div class="hero-social-proof">
                     <div class="avatar-stack">
-                        <div class="avatar">SH</div>
+                        <div class="avatar"><img src="https://www.talsmart.com/assets/tech-sales/20251203230315.jpg" alt="SH" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"></div>
                         <div class="avatar">MC</div>
                         <div class="avatar">JT</div>
                         <div class="avatar">RK</div>
@@ -1371,7 +1363,7 @@
                     <div class="preview-result">
                         <div class="result-score" id="result-composite">—</div>
                         <div class="result-text">
-                            <strong>Take the assessment</strong> to unlock your score and see exactly where your team leaks revenue.
+                            <a href="#diagnostic" style="color:var(--accent); text-decoration:none;"><strong>Take the assessment</strong></a> to unlock your score and see exactly where your team leaks revenue.
                         </div>
                     </div>
                 </div>
@@ -1578,55 +1570,297 @@
                 Combined 100+ years of enterprise sales leadership at the companies your 
                 team sells to, and competes against.
             </p>
+            <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
+                <a href="#diagnostic" class="btn-primary">Take the Free Audit</a>
+            </div>
         </div>
         <div class="trainer-grid">
-            <div class="trainer-card fade-up">
-                <div class="trainer-avatar"><img src="images/roderick.png" alt="Roderick Jefferson"></div>
-                <div class="trainer-name"><a href="https://www.linkedin.com/in/roderickjefferson/" target="_blank" rel="noopener">Roderick Jefferson</a></div>
-                <a href="https://www.linkedin.com/in/roderickjefferson/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
-                <div class="trainer-title">Author, "Sales Enablement 3.0"</div>
+            <!-- CHAIRMAN / FOUNDER -->
+            <div class="trainer-card fade-up" style="border: 1px solid var(--accent); background: rgba(5, 10, 20, 0.8);">
+                <div class="trainer-avatar"><img src="https://www.talsmart.com/assets/uploads/2021/10/Jassi-Singh-1.jpg" alt="Jassi Singh"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/in/jassisingh/" target="_blank" rel="noopener">Jassi Singh</a></div>
+                <a href="https://www.linkedin.com/in/jassisingh/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
+                <div class="trainer-title">Chairman &amp; Founder, TalSmart</div>
                 <div class="trainer-companies">
-                    <span class="company-tag">Salesforce</span>
-                    <span class="company-tag">Oracle</span>
-                    <span class="company-tag">Marketo</span>
-                    <span class="company-tag">PayPal</span>
+                    <span class="company-tag">Visionary</span>
+                    <span class="company-tag">Leadership</span>
+                    <span class="company-tag">GTM Strategy</span>
                 </div>
             </div>
+            <!-- TRAINER 1: JASON -->
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar"><img src="images/bryan.png" alt="Bryan Flanagan"></div>
-                <div class="trainer-name"><a href="https://www.linkedin.com/in/bryanflanagan/" target="_blank" rel="noopener">Bryan Flanagan</a></div>
-                <a href="https://www.linkedin.com/in/bryanflanagan/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
-                <div class="trainer-title">21-Year Sales Training Veteran</div>
+                <div class="trainer-avatar"><img src="https://www.talsmart.com/assets/uploads/2020/12/tech-sales-trainer-ireland.png" alt="Jason"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">Jason</a></div>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
+                <div class="trainer-title">IT-Sales Trainer &amp; Coach</div>
                 <div class="trainer-companies">
-                    <span class="company-tag">IBM</span>
-                    <span class="company-tag">Ziglar Inc.</span>
-                    <span class="company-tag">University Faculty</span>
+                    <span class="company-tag">Enterprise IT</span>
+                    <span class="company-tag">EMEA Market</span>
                 </div>
             </div>
+            <!-- TRAINER 2: BRYAN -->
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar"><img src="images/paul.png" alt="Paul"></div>
+                <div class="trainer-avatar"><img src="https://www.talsmart.com/assets/uploads/2020/12/bryan-tech-sales-trainer-dallas.jpg" alt="Bryan"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">Bryan</a></div>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
+                <div class="trainer-title">Tech-Sales Trainer &amp; Coach</div>
+                <div class="trainer-companies">
+                    <span class="company-tag">SaaS Sales</span>
+                    <span class="company-tag">Dallas Tech Hub</span>
+                </div>
+            </div>
+            <!-- TRAINER 3: PAUL -->
+            <div class="trainer-card fade-up">
+                <div class="trainer-avatar"><img src="https://www.talsmart.com/assets/uploads/2020/12/tech-sales-trainer-phoenix.jpg" alt="Paul"></div>
                 <div class="trainer-name"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">Paul</a></div>
                 <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
-                <div class="trainer-title">Global Sales Enablement Leader</div>
+                <div class="trainer-title">IT-Sales Trainer &amp; Coach</div>
                 <div class="trainer-companies">
-                    <span class="company-tag">Oracle</span>
-                    <span class="company-tag">25+ Years</span>
-                    <span class="company-tag">Award-Winner</span>
+                    <span class="company-tag">Complex IT Ops</span>
+                    <span class="company-tag">Phoenix Hub</span>
                 </div>
             </div>
+            <!-- TRAINER 4: MITCH -->
             <div class="trainer-card fade-up">
-                <div class="trainer-avatar"><img src="images/mark.png" alt="Mark Hunter"></div>
-                <div class="trainer-name"><a href="https://www.linkedin.com/in/thesaleshunter/" target="_blank" rel="noopener">Mark Hunter</a></div>
-                <a href="https://www.linkedin.com/in/thesaleshunter/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
-                <div class="trainer-title">Bestselling Author &amp; Sales Strategist</div>
+                <div class="trainer-avatar"><img src="https://www.talsmart.com/assets/uploads/2020/12/tech-sales-trainer-california.jpg" alt="Mitch"></div>
+                <div class="trainer-name"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">Mitch</a></div>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="trainer-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> View Profile</a>
+                <div class="trainer-title">Tech-Sales Trainer &amp; Coach</div>
                 <div class="trainer-companies">
-                    <span class="company-tag">Author</span>
-                    <span class="company-tag">Keynote Speaker</span>
-                    <span class="company-tag">Top 50 Sales</span>
+                    <span class="company-tag">Startups</span>
+                    <span class="company-tag">California Hub</span>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- ═══════ NEURAL GTM DIAGNOSTIC (REIMAGINED ASSESSMENT) ═══════ -->
+    <section class="diagnostic-section" id="diagnostic">
+        <div class="diagnostic-container">
+            <div class="diagnostic-glow"></div>
+            <div class="diagnostic-content">
+                <div class="diagnostic-badge">Interactive Audit</div>
+                <h2 class="section-title">Scan Your Team's Sales DNA</h2>
+                <p class="section-desc">
+                    Get an instant breakdown of your pipeline efficiency using our 
+                    proprietary Neuroscience GTM framework.
+                </p>
+
+                <div class="diagnostic-card" id="assessment-interface">
+                    <!-- Progress Bar -->
+                    <div class="diagnostic-progress-container">
+                        <div class="diagnostic-progress-bar" id="diag-progress" style="width: 20%;"></div>
+                        <div class="diagnostic-steps">Step 1 of 3</div>
+                    </div>
+
+                    <!-- Question Area -->
+                    <div id="diag-question-container" class="diag-question-container">
+                        <div class="diag-question active" data-step="1">
+                            <h3>Which best describes your current pipeline bottleneck?</h3>
+                            <div class="diag-options">
+                                <button class="diag-option" onclick="advanceDiag(2)">Low volume of qualified leads</button>
+                                <button class="diag-option" onclick="advanceDiag(2)">High volume, but low conversion</button>
+                                <button class="diag-option" onclick="advanceDiag(2)">Deals stalling in mid-funnel</button>
+                                <button class="diag-option" onclick="advanceDiag(2)">Inconsistent follow-up speed</button>
+                            </div>
+                        </div>
+
+                        <div class="diag-question" data-step="2" style="display:none;">
+                            <h3>What is your average SDR-to-AE handoff time?</h3>
+                            <div class="diag-options">
+                                <button class="diag-option" onclick="advanceDiag(3)">Under 1 hour (Elite)</button>
+                                <button class="diag-option" onclick="advanceDiag(3)">1-24 hours (Average)</button>
+                                <button class="diag-option" onclick="advanceDiag(3)">1-4 days (Lagging)</button>
+                                <button class="diag-option" onclick="advanceDiag(3)">Unknown / No Tracking</button>
+                            </div>
+                        </div>
+
+                        <div class="diag-question" data-step="3" style="display:none;">
+                            <h3>Final Check: Your Primary Growth Goal?</h3>
+                            <div class="diag-options">
+                                <button class="diag-option" onclick="showDiagResult()">Scale Pipeline Velocity</button>
+                                <button class="diag-option" onclick="showDiagResult()">Lower Acquisition Cost</button>
+                                <button class="diag-option" onclick="showDiagResult()">Improve Rep Training Speed</button>
+                                <button class="diag-option" onclick="showDiagResult()">Automate Manual Research</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Area (Hidden initially) -->
+                    <div id="diag-result" class="diag-result" style="display:none;">
+                        <div class="result-header">
+                            <span class="result-icon">⚡</span>
+                            <h4>Diagnostic Complete</h4>
+                        </div>
+                        <div class="result-score">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <path class="circle" stroke-dasharray="72, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <text x="18" y="20.35" class="percentage">72%</text>
+                                </svg>
+                            </div>
+                            <div class="score-details">
+                                <h5>Your GTM Signal Score: High Potential</h5>
+                                <p>You have a strong foundation, but "Quiet Machines" could automate 40% of your manual research tasks.</p>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-primary" onclick="window.location.href='#contact'">Get Full Report</button>
+                            <button class="btn-secondary" onclick="resetDiag()">Restart Scan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function advanceDiag(step) {
+                const questions = document.querySelectorAll('.diag-question');
+                questions.forEach(q => q.style.display = 'none');
+                
+                const nextQ = document.querySelector(`.diag-question[data-step="${step}"]`);
+                if(nextQ) {
+                    nextQ.style.display = 'block';
+                    document.getElementById('diag-progress').style.width = (step / 3 * 100) + '%';
+                    document.querySelector('.diagnostic-steps').innerText = `Step ${step} of 3`;
+                }
+            }
+
+            function showDiagResult() {
+                document.getElementById('diag-question-container').style.display = 'none';
+                document.getElementById('diag-result').style.display = 'block';
+                document.getElementById('diag-progress').style.width = '100%';
+                document.querySelector('.diagnostic-steps').innerText = `Complete`;
+            }
+
+            function resetDiag() {
+                document.getElementById('diag-question-container').style.display = 'block';
+                document.getElementById('diag-result').style.display = 'none';
+                advanceDiag(1);
+            }
+        </script>
+
+        <style>
+            .diagnostic-section {
+                padding: 100px 20px;
+                background: var(--bg);
+                position: relative;
+                overflow: hidden;
+            }
+            .diagnostic-container {
+                max-width: 900px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 2;
+                text-align: center;
+            }
+            .diagnostic-glow {
+                position: absolute;
+                top: 50%; left: 50%;
+                width: 600px; height: 600px;
+                background: radial-gradient(circle, var(--accent-low) 0%, transparent 70%);
+                transform: translate(-50%, -50%);
+                filter: blur(100px);
+                z-index: 1;
+                pointer-events: none;
+            }
+            .diagnostic-badge {
+                display: inline-block;
+                padding: 6px 12px;
+                background: rgba(0, 198, 255, 0.1);
+                border: 1px solid var(--accent);
+                border-radius: 20px;
+                color: var(--accent);
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 1.5rem;
+            }
+            .diagnostic-card {
+                background: rgba(10, 15, 30, 0.8);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255,255,255,0.05);
+                border-radius: 24px;
+                padding: 40px;
+                margin-top: 40px;
+                box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+                text-align: left;
+            }
+            .diagnostic-progress-container {
+                margin-bottom: 40px;
+            }
+            .diagnostic-progress-bar {
+                height: 4px;
+                background: linear-gradient(90deg, var(--accent), var(--primary));
+                border-radius: 2px;
+                transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .diagnostic-steps {
+                font-size: 0.8rem;
+                color: var(--text-dim);
+                margin-top: 10px;
+                font-weight: 600;
+            }
+            .diag-question h3 {
+                font-size: 1.5rem;
+                margin-bottom: 25px;
+                color: white;
+            }
+            .diag-options {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .diag-option {
+                background: rgba(255,255,255,0.03);
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 12px;
+                padding: 20px;
+                color: var(--text-dim);
+                text-align: left;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-size: 0.95rem;
+                font-family: inherit;
+            }
+            .diag-option:hover {
+                background: rgba(0, 198, 255, 0.05);
+                border-color: var(--accent);
+                color: white;
+                transform: translateY(-2px);
+            }
+            .diag-result {
+                text-align: center;
+                animation: fadeIn 0.5s ease;
+            }
+            .result-header {
+                display: flex; align-items: center; justify-content: center;
+                gap: 10px; margin-bottom: 30px;
+            }
+            .result-icon { font-size: 1.5rem; }
+            .result-score {
+                display: flex; align-items: center; justify-content: center;
+                gap: 40px; margin-bottom: 40px;
+                text-align: left;
+            }
+            .score-circle { width: 120px; }
+            .circular-chart { display: block; margin: 10px auto; max-width: 100%; max-height: 250px; }
+            .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 2.8; }
+            .circle { fill: none; stroke: var(--accent); stroke-width: 2.8; stroke-linecap: round; animation: progress 1s ease-out forwards; }
+            @keyframes progress { 0% { stroke-dasharray: 0 100; } }
+            .percentage { fill: white; font-family: sans-serif; font-size: 0.5rem; text-anchor: middle; font-weight: 700; }
+            .score-details h5 { font-size: 1.25rem; margin-bottom: 10px; color: var(--accent); }
+            .score-details p { color: var(--text-dim); line-height: 1.6; max-width: 300px; }
+            .result-actions { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+
+            @media (max-width: 768px) {
+                .diag-options { grid-template-columns: 1fr; }
+                .result-score { flex-direction: column; text-align: center; }
+                .score-details p { margin: 0 auto; }
+            }
+        </style>
 
     <!-- ═══════ TESTIMONIALS ═══════ -->
     <section class="testimonials" id="testimonials">
@@ -1644,7 +1878,7 @@
                     different 'right' answer. I imagine this may be partly by design.
                 </p>
                 <div class="testimonial-author">
-                    <div class="author-avatar">SH</div>
+                    <div class="author-avatar"><img src="https://www.talsmart.com/assets/tech-sales/20251203230315.jpg" alt="Shannon Helms"></div>
                     <div>
                         <div class="author-name">Shannon Helms</div>
                         <div class="author-role">Healthcare &amp; Insurance Technology Sales Executive</div>
