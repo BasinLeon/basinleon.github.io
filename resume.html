@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Master Resume | Leon Basin</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #B8860B;
+            --gold-light: #D4AF37;
+            --gold-soft: rgba(184, 134, 11, 0.08);
+            --bg-premium: #f9f6f1;
+            --text-main: #000000;
+            --text-dim: #555555;
+            --border-soft: rgba(184, 134, 11, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-premium);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+            padding-bottom: 6rem;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+        nav {
+            padding: 2rem 0;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 4rem;
+        }
+        .nav-back { text-decoration: none; color: var(--text-dim); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-back:hover { color: var(--gold-primary); }
+
+        header { text-align: center; margin-bottom: 4rem; }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        .sub-header { font-family: 'Orbitron'; font-size: 0.9rem; color: var(--gold-primary); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 2rem; }
+        .contact-info { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 2rem; }
+        .contact-info a { color: var(--text-dim); text-decoration: none; margin: 0 0.5rem; transition: 0.3s; border-bottom: 1px dotted var(--text-dim); }
+        .contact-info a:hover { color: var(--gold-primary); border-color: var(--gold-primary); }
+
+        .summary-box {
+            background: #fff; padding: 2.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 3rem;
+            text-align: center;
+        }
+        .summary-text { font-size: 1.1rem; color: var(--text-dim); max-width: 800px; margin: 0 auto; line-height: 1.8; }
+
+        /* Nexus Audit Section */
+        .audit-section {
+            background: #fff; border-left: 5px solid var(--gold-primary); padding: 2rem; margin-bottom: 4rem; border-radius: 0 1rem 1rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .audit-header { font-family: 'Orbitron'; font-size: 1.1rem; font-weight: 900; margin-bottom: 1rem; color: #000; }
+        .audit-list { list-style: none; margin-left: 0; }
+        .audit-list li { margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-dim); display: flex; gap: 10px; }
+        .audit-list li::before { content: '→'; color: var(--gold-primary); font-weight: 900; }
+
+        /* Experience Section */
+        .section-title { font-family: 'Orbitron'; font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-bottom: 1px solid var(--border-soft); padding-bottom: 1rem; display: inline-block; }
+
+        .role-block { 
+            margin-bottom: 3rem; 
+            padding-left: 2rem; 
+            border-left: 3px solid var(--border-soft);
+            transition: 0.3s;
+        }
+        .role-block:hover { border-left-color: var(--gold-primary); }
+
+        .role-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; flex-wrap: wrap; }
+        .role-title { font-size: 1.3rem; font-weight: 800; color: #000; letter-spacing: -0.5px; }
+        .role-company { font-family: 'Orbitron'; font-weight: 900; color: #000; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .role-date { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: var(--gold-primary); background: rgba(184, 134, 11, 0.1); padding: 0.2rem 0.6rem; border-radius: 4px; }
+        .role-desc { font-size: 1.05rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.6; }
+        .role-achievements { list-style: none; padding-left: 0; }
+        .role-achievements li { margin-bottom: 0.8rem; font-size: 0.95rem; color: #333; position: relative; padding-left: 1.5rem; line-height: 1.5; }
+        .role-achievements li::before { content: '>'; color: var(--gold-primary); font-family: 'JetBrains Mono'; font-weight: 900; position: absolute; left: 0; }
+        .role-achievements strong { color: #000; font-weight: 800; }
+
+        /* Tech Stack Pills */
+        .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; margin-bottom: 4rem; }
+        .stack-cat h4 { font-family: 'Orbitron'; font-size: 0.9rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px; border-bottom: 1px solid var(--border-soft); padding-bottom: 0.5rem; }
+        .stack-pills { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+        .pill { 
+            font-family: 'JetBrains Mono'; font-size: 0.8rem; 
+            background: #fff; border: 1px solid var(--border-soft); 
+            padding: 0.4rem 0.8rem; border-radius: 100px; 
+            color: var(--text-dim); transition: 0.2s;
+        }
+        .pill:hover { border-color: var(--gold-primary); color: #000; transform: translateY(-2px); }
+
+        /* Print Optimization */
+        @media print {
+            body { background: #fff; color: #000; }
+            nav, .nav-back { display: none; }
+            .container { max-width: 100%; padding: 0; margin: 0; }
+            .summary-box, .audit-section { box-shadow: none; border: 1px solid #ccc; }
+            .role-block { break-inside: avoid; border-left: 3px solid #000; }
+            a { text-decoration: none; color: #000; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <a href="/" class="nav-back">← Return Home</a>
+        <span style="font-family: 'Orbitron'; font-weight: 900;">MASTER RESUME</span>
+    </nav>
+
+    <header>
+        <h1>Leon Basin</h1>
+        <div class="sub-header">GTM Engineer | Revenue Systems Architect</div>
+        <div class="contact-info">
+            <span>Mountain View, CA</span> &bull; 
+            <a href="mailto:lbasin23@gmail.com">lbasin23@gmail.com</a> &bull; 
+            <span>408-933-8269</span><br>
+            <a href="https://linkedin.com/in/leonbasin">LinkedIn</a> &bull; 
+            <a href="https://basinleon.github.io">Portfolio</a> &bull; 
+            <a href="https://github.com/basinleon">GitHub</a>
+        </div>
+    </header>
+
+    <!-- Professional Summary -->
+    <div class="summary-box">
+        <p class="summary-text">
+            I build code-based revenue systems for AI software teams. I replace manual prospecting and SDR research with 
+            <strong>Python + LLM workflows</strong> that turn intent signals into qualified pipeline. At Fudo, I drove 
+            <strong>160% pipeline growth</strong> and saved <strong>$424k/year in OpEx</strong>. I’m looking to start with 
+            a 2–4 week Nexus Audit and convert in-house if the fit is right. If you need a CRM admin, I’m the wrong hire.
+        </p>
+    </div>
+
+    <!-- The Nexus Audit Blueprint -->
+    <div class="audit-section">
+        <div class="audit-header">THE NEXUS AUDIT (0-to-1 Deployment Blueprint)</div>
+        <p style="margin-bottom: 1rem; font-size: 0.95rem;">Available as a 2–4 week high-impact engagement to prove ROI before W2 conversion.</p>
+        <ul class="audit-list">
+            <li><strong>Audit Assets:</strong> Full ICP & signal spec, automated account scoring workflow, and a live pipeline-leakage dashboard.</li>
+            <li><strong>Target Outcomes:</strong> Reduce manual research debt by 40%; lift target account reply rates by 25% within 90 days.</li>
+        </ul>
+    </div>
+
+    <div class="stack-grid">
+        <div class="stack-cat">
+            <h4>Automation & Code</h4>
+            <div class="stack-pills">
+                <span class="pill">Python</span>
+                <span class="pill">n8n</span>
+                <span class="pill">Clay</span>
+                <span class="pill">Zapier</span>
+                <span class="pill">Make.com</span>
+                <span class="pill">SQL</span>
+            </div>
+        </div>
+        <div class="stack-cat">
+            <h4>Sales Tech Architecture</h4>
+            <div class="stack-pills">
+                <span class="pill">Salesforce (Architect)</span>
+                <span class="pill">HubSpot</span>
+                <span class="pill">Outreach</span>
+                <span class="pill">Apollo</span>
+                <span class="pill">Gong</span>
+                <span class="pill">ZoomInfo</span>
+            </div>
+        </div>
+        <div class="stack-cat">
+            <h4>AI & LLM Orchestration</h4>
+            <div class="stack-pills">
+                <span class="pill">GPT-4</span>
+                <span class="pill">Claude</span>
+                <span class="pill">Reasoning Layers</span>
+                <span class="pill">Tokenized Signals</span>
+            </div>
+        </div>
+        <div class="stack-cat">
+            <h4>Core Methodologies</h4>
+            <div class="stack-pills">
+                <span class="pill">Signal-Based Prospecting</span>
+                <span class="pill">Technical Sales Enablement</span>
+                <span class="pill">Data Integrity Frameworks</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Experience -->
+    <section>
+        <div class="section-title">Professional Experience</div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Principal GTM Engineer (Consulting)</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span> 
+                    <span class="role-company">Basin Consulting</span>
+                </div>
+                <span class="role-date">Nov 2025 – Present</span>
+            </div>
+            <p class="role-desc">Executing the "Nexus" blueprint for AI startups; currently looking to bring this technical GTM architecture in-house for one high-growth team.</p>
+            <ul class="role-achievements">
+                <li><strong>80% Research Reduction:</strong> Reduced manual account research overhead by deploying Python-based signal refineries.</li>
+                <li><strong>LLM Architecture:</strong> Architected orchestration layers to automate multi-channel data enrichment and high-intent prioritization.</li>
+                <li><strong>Automated Audits:</strong> Implemented automated GTM audits that identify pipeline leakage and technical data debt in 2–4 weeks.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Senior Manager, GTM Strategy</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">Fudo Security</span>
+                </div>
+                <span class="role-date">Feb 2024 – Oct 2025</span>
+            </div>
+            <p class="role-desc">Owned the US market entry strategy and technical sales engine for an Identity Security (PAM) leader.</p>
+            <ul class="role-achievements">
+                <li><strong>160% YoY Pipeline Growth:</strong> Architected a "Signal Refinery" to automate partner co-sell and trigger-based prospecting.</li>
+                <li><strong>$424K OpEx Savings:</strong> Developed Python workflows to automate CRM enrichment and eliminate manual research.</li>
+                <li><strong>Redefined Onboarding:</strong> Reduced SDR ramp from 90 days to 5 days via an automated technical certification system.</li>
+                <li><strong>Closing Muscle:</strong> Secured multiple $100K+ enterprise contracts by bridging technical architecture with buyer objectives.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">GTM Consultant (Contract)</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">Braintrust</span>
+                </div>
+                <span class="role-date">Jan 2024 – Jul 2024</span>
+            </div>
+            <p class="role-desc">Built automated outbound infrastructure for the world’s largest decentralized talent network.</p>
+            <ul class="role-achievements">
+                <li><strong>ICP Scoring Models:</strong> Engineered scoring models using multi-source enrichment data to accelerate Fortune 1000 adoption.</li>
+                <li><strong>Technical Diagnostics:</strong> Developed tools to identify high-intent leads, streamlining the pilot-to-enterprise transition.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Group Manager, Global BD</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">Sense (Series D)</span>
+                </div>
+                <span class="role-date">Jan 2021 – Apr 2023</span>
+            </div>
+            <p class="role-desc">Promoted 3x to oversee GTM systems for a Google-backed AI recruitment automation platform.</p>
+            <ul class="role-achievements">
+                <li><strong>$10M+ Qualified Pipeline:</strong> Architected a signal-based outbound engine leveraging automated routing and social selling.</li>
+                <li><strong>125% Response Lift:</strong> Operationalized scalable messaging frameworks and multi-channel workflows.</li>
+                <li><strong>12% Churn Reduction:</strong> Developed behavioral churn-detection logic to trigger automated retention alerts.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Enterprise Business Development</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">SurveyMonkey</span>
+                </div>
+                <span class="role-date">Feb 2019 – Jan 2021</span>
+            </div>
+            <p class="role-desc">Managed a $300M enterprise portfolio, focusing on technical adoption and strategic expansion.</p>
+            <ul class="role-achievements">
+                <li><strong>$300k+ Expansion Revenue:</strong> Identified upsell paths by integrating survey feedback data into enterprise tech stacks.</li>
+                <li><strong>Strategic Alignment:</strong> Partnered with Product/Eng to capture technical signals for high-value expansion opportunities.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Infrastructure & GTM Strategy</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">Sanho Corp (Hyper)</span>
+                </div>
+                <span class="role-date">Feb 2015 – Feb 2019</span>
+            </div>
+            <ul class="role-achievements">
+                <li><strong>30% Latency Reduction:</strong> Optimized supply chain data loops for partners including Apple and Best Buy.</li>
+                <li><strong>$3.1M Crowdfunding Launch:</strong> Managed data loops for the most funded tech project in Kickstarter history at the time.</li>
+            </ul>
+        </div>
+
+        <div class="role-block">
+            <div class="role-header">
+                <div>
+                    <span class="role-title">Operations Analyst (Google Shopping)</span> <span style="margin: 0 0.5rem; color: #ccc;">|</span>
+                    <span class="role-company">Google</span>
+                </div>
+                <span class="role-date">Aug 2014 – Jan 2015</span>
+            </div>
+            <ul class="role-achievements">
+                <li>Architected data integrity frameworks to support global revenue modeling and financial reporting.</li>
+                <li>Managed large-scale data validation projects for the national Google Shopping index.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <!-- Education -->
+    <section>
+        <div class="section-title">Education</div>
+        <div class="edu-item">
+            <div class="edu-degree">Executive MBA</div>
+            <div class="edu-school">Santa Clara University – Leavey School of Business (2023)</div>
+        </div>
+        <div class="edu-item">
+            <div class="edu-degree">B.S., Psychology</div>
+            <div class="edu-school">University of Phoenix</div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 6rem; font-size: 0.8rem; color: var(--text-dim);">
+        &copy; 2026 LEON BASIN | GTM ENGINEER
+    </footer>
+
+</div>
+
+</body>
+</html>
