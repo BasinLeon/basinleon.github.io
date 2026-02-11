@@ -3,461 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM Execution Case Study | Leon Basin | Revenue Architect</title>
+    <title>GTM Execution Proof | Leon Basin | Revenue Architect</title>
     <meta name="description" content="Audited GTM Performance: 4.6x pipeline growth and real-time signal extraction architecture.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --gold-primary: #B8860B; /* Darker gold for better contrast on light */
+            --gold-primary: #B8860B;
             --gold-light: #D4AF37;
-            --gold-soft: rgba(184, 134, 11, 0.1);
-            --bg-premium: #fcfaf7; /* Creamy white for premium feel */
+            --gold-soft: rgba(184, 134, 11, 0.08);
+            --bg-premium: #fcfaf7;
             --bg-card: #ffffff;
             --text-main: #1a1a1a;
-            --text-dim: #666666;
+            --text-dim: #555555;
             --border-soft: rgba(184, 134, 11, 0.15);
+            --shadow-subtle: 0 20px 50px rgba(0,0,0,0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-premium);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
             background-image: 
                 radial-gradient(circle at 10% 10%, rgba(184, 134, 11, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 90% 90%, rgba(184, 134, 11, 0.03) 0%, transparent 50%);
+            padding-top: 100px;
         }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
 
         /* --- Navigation --- */
-        .nav-sidebar {
+        nav {
             position: fixed;
-            left: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
+            top: 0; width: 100%;
+            height: 90px;
+            padding: 0 4rem;
+            background: rgba(252, 250, 247, 0.85);
+            backdrop-filter: blur(25px);
+            z-index: 2000;
             display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-soft);
         }
 
-        .nav-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ddd;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid #ccc;
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: #000;
+            text-decoration: none;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
         }
 
-        .nav-dot:hover, .nav-dot.active {
-            background: var(--gold-primary);
-            box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
-            width: 12px;
-            height: 12px;
-            border-color: var(--gold-primary);
-        }
-
-        .nav-dot::after {
-            content: attr(data-label);
-            position: absolute;
-            left: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
+        .nav-links { display: flex; gap: 3rem; }
+        .nav-links a {
+            text-decoration: none;
             color: var(--text-dim);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            opacity: 0;
+            font-weight: 800;
             transition: 0.3s;
-            pointer-events: none;
         }
-
-        .nav-dot:hover::after { opacity: 1; left: 1.5rem; }
-
-        /* --- Layout --- */
-        .content-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 5rem 2rem;
-        }
+        .nav-links a:hover { color: var(--gold-primary); }
 
         /* --- Header --- */
-        .hero {
-            padding-bottom: 3rem;
-            border-bottom: 2px solid var(--gold-soft);
-            margin-bottom: 4rem;
-        }
-
-        .badge {
+        .hero-proof { margin-bottom: 6rem; border-bottom: 1px solid var(--border-soft); padding-bottom: 4rem; }
+        .badge-proof {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             background: var(--gold-soft);
             border: 1px solid var(--border-soft);
             border-radius: 100px;
             color: var(--gold-primary);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
-
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 3rem);
+            font-size: 3.5rem;
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             color: #000;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
         }
+        .hero-desc { font-size: 1.4rem; color: var(--text-dim); font-weight: 300; }
 
-        .hero-text {
-            font-size: 1.25rem;
-            color: var(--text-dim);
-            max-width: 700px;
-        }
-
-        /* --- Global Sections --- */
-        section { padding: 4rem 0; scroll-margin-top: 2rem; }
-
+        /* --- Sections --- */
+        section { padding: 6rem 0; border-bottom: 1px solid var(--border-soft); }
         h2 {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 4px;
             color: var(--gold-primary);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        h2::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, var(--border-soft), transparent);
-        }
-
-        /* --- Metrics Grid --- */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-soft);
-            padding: 2rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: 0.3s;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold-primary);
-        }
-
-        .metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--gold-primary);
-            display: block;
-        }
-
-        .metric-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            margin-top: 0.5rem;
-        }
-
-        /* --- Case Study Highlights --- */
-        .case-study-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-soft);
-            border-left: 5px solid var(--gold-primary);
-            padding: 2.5rem;
-            border-radius: 0.5rem;
             margin-bottom: 3rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
         }
 
-        .case-header {
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 1rem;
-        }
-
-        .case-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: #000;
-            font-size: 1.25rem;
-        }
-
-        .workflow-visual {
+        /* --- Metrics --- */
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .workflow-step {
-            background: #fafafa;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid #eee;
-            text-align: center;
-        }
-
-        .step-label {
-            color: var(--gold-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
-            font-weight: 700;
-        }
-
-        .step-desc {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
-
-        .code-block {
-            background: #1a1a1a;
-            padding: 1.2rem;
-            border-radius: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: #4ade80;
-            margin: 1.5rem 0;
-            border: 1px solid #333;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        /* --- Yield List --- */
-        .yield-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .yield-item {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-
-        .yield-item strong {
-            color: #000;
-            font-weight: 600;
-        }
-
-        /* --- Footer --- */
-        footer {
-            margin-top: 6rem;
-            padding: 3rem 0;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-links {
-            display: flex;
             gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .metric-card {
+            background: #fff;
+            border: 1px solid var(--border-soft);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow-subtle);
+        }
+        .metric-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            display: block;
+        }
+        .metric-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 800; margin-top: 0.5rem; display: block; }
+
+        /* --- Case Box --- */
+        .case-box {
+            background: #fff;
+            border: 1px solid var(--border-soft);
+            border-radius: 1.5rem;
+            padding: 4rem;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 4rem;
+        }
+        .case-title { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; margin-bottom: 1.5rem; color: #000; }
+        .case-text { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 3rem; }
+
+        .viz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 3rem 0; }
+        .viz-item { background: var(--bg-premium); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--gold-soft); text-align: center; }
+        .viz-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 0.5rem; display: block; }
+        .viz-desc { font-size: 0.85rem; color: var(--text-dim); }
+
+        .nexus-log {
+            background: #000;
+            padding: 2rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #4ade80;
+            margin: 2rem 0;
+            border: 1px solid #333;
         }
 
-        .footer-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            transition: 0.3s;
+        /* --- Resources Footer --- */
+        .resources-foot {
+            background: #000; color: #fff; border-radius: 2rem; padding: 4rem; margin: 6rem 0;
         }
+        .res-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; margin-top: 3rem; }
+        .res-col h3 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--gold-light); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .res-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+        .res-list a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .res-list a:hover { color: var(--gold-primary); }
 
-        .footer-links a:hover { color: var(--gold-primary); }
+        footer { text-align: center; padding: 4rem 0; border-top: 1px solid var(--border-soft); }
 
         @media (max-width: 768px) {
-            .nav-sidebar { display: none; }
-            .metrics { grid-template-columns: 1fr; }
-            .workflow-visual { grid-template-columns: 1fr; }
-            .yield-list { grid-template-columns: 1fr; }
-            footer { flex-direction: column; gap: 2rem; }
+            .metrics-grid, .viz-grid, .res-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            nav { padding: 0 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="nav-sidebar">
-        <a href="#hero" class="nav-dot active" data-label="Vision" aria-label="Vision Section"></a>
-        <a href="#impact" class="nav-dot" data-label="Impact" aria-label="Impact Section"></a>
-        <a href="#reddit" class="nav-dot" data-label="Reddit Case" aria-label="Reddit Section"></a>
-        <a href="#campaign" class="nav-dot" data-label="Campaign" aria-label="Campaign Section"></a>
-    </nav>
-
-    <div class="content-wrapper">
-        <!-- Hero Section -->
-        <header class="hero" id="hero">
-            <span class="badge">Audited Performance Proof</span>
-            <h1>GTM System<br>Execution</h1>
-            <p class="hero-text">
-                Architecture for high-fidelity revenue growth. Below is the audited evidence of a 
-                120-day sprint turning zero-base systems into a 4.6x revenue engine.
-            </p>
-        </header>
-
-        <!-- Impact Section -->
-        <section id="impact">
-            <h2>Audited Yield</h2>
-            <div class="metrics">
-                <div class="metric-card">
-                    <span class="metric-value">4.6x</span>
-                    <span class="metric-label">Pipeline Growth</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value">500+</span>
-                    <span class="metric-label">Weekly Touches</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value">26.3%</span>
-                    <span class="metric-label">Peak Campaign CTR</span>
-                </div>
-            </div>
-            <ul class="yield-list">
-                <li class="yield-item"><strong>18+</strong> High-Value Leads Generated</li>
-                <li class="yield-item"><strong>4</strong> Meetings Booked in 72h (Peak)</li>
-                <li class="yield-item"><strong>0 → 1</strong> SDR Program Built</li>
-                <li class="yield-item"><strong>92%</strong> Signal Accuracy Score</li>
-            </ul>
-        </section>
-
-        <!-- Reddit Case Study -->
-        <section id="reddit">
-            <h2>The Reddit Air Strike</h2>
-            <div class="case-study-box">
-                <div class="case-header">
-                    <span class="case-title">Ex-Post Intent Detection</span>
-                </div>
-                <p>Instead of cold outreach to generic titles, I deployed an automated "Refinery" to monitor technical subreddits for problem-aware buyers signaling immediate pain.</p>
-                
-                <div class="workflow-visual">
-                    <div class="workflow-step">
-                        <span class="step-label">1. Ingest</span>
-                        <p class="step-desc">Python scraper monitors SecOps subreddits for keywords (e.g., "pricing spike").</p>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="step-label">2. Reason</span>
-                        <p class="step-desc">Nexus logic separates toxicity from intent. Matches domain to tech fingerprint.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="step-label">3. Action</span>
-                        <p class="step-desc">SDR executes 'Air Strike' script via Technical Brief. 100% resonance.</p>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    [SIGNAL DETECTED]<br>
-                    User: tehiota | Sub: r/procurement<br>
-                    Query: "Evaluating replacement for legacy PAM — cost is a blocker."<br>
-                    Nexus Result: High-Intent Score (92%) | Action: Strategic Audit Brief
-                </div>
-
-                <p style="font-size: 0.9rem;"><strong>Result:</strong> 3 enterprise SQLs (tehiota, tryingtobalance, JuniorCombination774) converted into pipeline with <strong>$0 Ad Spend</strong>.</p>
-            </div>
-        </section>
-
-        <!-- RSA/Campaign Case Study -->
-        <section id="campaign">
-            <h2>The RSA 48-Hour Protocol</h2>
-            <div class="case-study-box">
-                <div class="case-header">
-                    <span class="case-title">The "Speed-to-Lead" Architecture</span>
-                </div>
-                <p>Strategic Campaign: Transitioning from conference "noise" to qualified pipeline. Most teams wait 2 weeks for data cleanup; I hit the inbox with a personalized audit in 48 hours.</p>
-                
-                <div style="margin-top: 2rem;">
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <span style="font-family: 'JetBrains Mono', monospace; color: var(--gold-primary); font-weight: 700;">T+0</span>
-                        <p style="font-size: 0.9rem;">Lead scanned or signal detected. Automated data normalization via Nexus API.</p>
-                    </div>
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <span style="font-family: 'JetBrains Mono', monospace; color: var(--gold-primary); font-weight: 700;">T+24</span>
-                        <p style="font-size: 0.9rem;">Technical "Loom + Audit" context-brief delivered. No generic templates.</p>
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <span style="font-family: 'JetBrains Mono', monospace; color: var(--gold-primary); font-weight: 700;">T+48</span>
-                        <p style="font-size: 0.9rem; font-weight: 600;">Meeting secured. System resets for next batch.</p>
-                    </div>
-                </div>
-
-                <div style="background: var(--gold-soft); padding: 1rem; border-radius: 0.5rem; margin-top: 2rem; border-left: 3px solid var(--gold-primary);">
-                    <p style="font-size: 0.85rem; font-style: italic; color: #555;">
-                        "I hired the first SDR and invested 10+ hours in manual shadowing to ensure the 'Front Door' outreach matched the data model. Resulted in a 4.6x pipeline multiplier in 90 days."
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <div class="footer-links">
-                <a href="/">Systems Portfolio</a>
-                <a href="/case-studies/">Case Studies</a>
-                <a href="/blog/">Insights</a>
-            </div>
-            <div style="font-size: 0.75rem; color: var(--text-dim);">
-                &copy; 2026 BASIN::NEXUS
-            </div>
-        </footer>
+<nav>
+    <a href="/" class="nav-logo">BASIN::NEXUS</a>
+    <div class="nav-links">
+        <a href="/">Architecture</a>
+        <a href="/case-studies/">Impact</a>
+        <a href="/library/">Library</a>
     </div>
+</nav>
 
-    <script>
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section, header');
-            const navDots = document.querySelectorAll('.nav-dot');
+<main class="container">
+    <header class="hero-proof">
+        <span class="badge-proof">Audited Performance Logic</span>
+        <h1>GTM System<br>Execution Proof</h1>
+        <p class="hero-desc">The industrialization of revenue. Below is the technical evidence of systems that turn raw signals into qualified enterprise pipeline.</p>
+    </header>
+
+    <section id="metrics">
+        <h2>Yield Metrics</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-val">4.6x</span>
+                <span class="metric-tag">Pipeline Flow Multiplier</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">92%</span>
+                <span class="metric-tag">Signal Extraction Accuracy</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">26.3%</span>
+                <span class="metric-tag">Peak Campaign Resonance</span>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; font-size: 1rem;">
+            <p><strong>18+</strong> High-Value Accounts Identified</p>
+            <p><strong>4</strong> Strategic Meetings in 72h (Peak)</p>
+            <p><strong>0 → 1</strong> Autonomous Program Built</p>
+            <p><strong>400ms</strong> Lead Processing Latency</p>
+        </div>
+    </section>
+
+    <section id="case-reddit">
+        <h2>Case Study: Reddit Air Strike</h2>
+        <div class="case-box">
+            <h3 class="case-title">Intent Detection at Scale</h3>
+            <p class="case-text">We bypassed generic 'Firmographic' lists to target problem-aware technical buyers. Using a custom Python refinery, we monitored subreddits for specific technical pain points.</p>
             
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
+            <div class="viz-grid">
+                <div class="viz-item">
+                    <span class="viz-label">INGEST</span>
+                    <p class="viz-desc">Keyword scraper targeting SecOps subreddits.</p>
+                </div>
+                <div class="viz-item">
+                    <span class="viz-label">LOGIC</span>
+                    <p class="viz-desc">Nexus filters toxicity and matches tech stacks.</p>
+                </div>
+                <div class="viz-item">
+                    <span class="viz-label">ACTION</span>
+                    <p class="viz-desc">Technical brief delivery with 100% resonance.</p>
+                </div>
+            </div>
 
-            navDots.forEach(dot => {
-                dot.classList.remove('active');
-                if (dot.getAttribute('href').slice(1) === current) {
-                    dot.classList.add('active');
-                }
-            });
-        });
-    </script>
+            <div class="nexus-log">
+                [SIGNAL_DETECTED_0x42]<br>
+                Source: r/procurement | Sub: Security Ops<br>
+                Signal: "Legacy PAM cost is a blocker. Seeking replacement."<br>
+                Nexus Score: 92% | Action: Direct Technical Audit
+            </div>
+
+            <p style="color: var(--text-dim); font-size: 0.95rem;"><strong>Result:</strong> Converted 3 Enterprise SQLs from tehiota, tryingtobalance, and JuniorCombination774 with $0 advertising cost.</p>
+        </div>
+    </section>
+
+    <section id="resources-section">
+        <div class="resources-foot">
+            <h2 style="color: #fff; margin-bottom: 1rem;">Related Resources</h2>
+            <p style="color: #aaa; font-weight: 300;">Continuous intelligence for the Revenue Architect.</p>
+            
+            <div class="res-grid">
+                <div class="res-col">
+                    <h3>📝 Documentation</h3>
+                    <ul class="res-list">
+                        <li><a href="https://basinandassociates.substack.com/">→ How I Replaced 10 SDRs</a></li>
+                        <li><a href="https://basinleon.github.io/case-studies/">→ Audited Performance Data</a></li>
+                    </ul>
+                </div>
+                <div class="res-col">
+                    <h3>📚 The Library</h3>
+                    <ul class="res-list">
+                        <li><a href="https://basinleon.github.io/library/">→ GTM Frameworks</a></li>
+                        <li><a href="https://basinleon.github.io/library/">→ 30-60-90 Playbooks</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div style="margin-bottom: 3rem;">
+            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fbasinleon.github.io%2Fgtm-execution-proof&count_bg=%23B8860B&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=NODES_AUDITED&edge_flat=true" alt="Counter"/>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-dim); letter-spacing: 2px; font-weight: 700;">&copy; 2026 LEON BASIN | BASIN::NEXUS</p>
+    </footer>
+</main>
+
 </body>
 </html>
