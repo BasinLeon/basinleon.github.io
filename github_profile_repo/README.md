@@ -38,11 +38,11 @@ Building governed systems that deploy human capital on high-value activities via
 
 | Career Impact | Technical Output |
 | :---: | :---: |
-| **$23M+** Career Pipeline | **700,000+** Lines of Code |
-| **160%** Pipeline Growth YoY | **30+** Public Repositories |
-| **$424K** Annual Savings (Case Study) | **10+** LLMs Orchestrated |
+| **$30M+** Career Pipeline | **700,000+** Lines of Code |
+| **160%** Pipeline Growth YoY | **32+** Public Repositories |
+| **$424K** Annual Savings (Case Study) | **15+** LLMs Orchestrated |
 | **77** Meetings/Month (+71%) | **15+** Live Tools |
-| **5 Days** SDR Ramp Time | **10+** Blog Posts |
+| **5 Days** SDR Ramp Time | **80+** Blog Posts |
 | **10→2** SDRs (80% Reduction) | **9** GTM Frameworks |
 
 ---
@@ -69,6 +69,7 @@ Building governed systems that deploy human capital on high-value activities via
 
 | Tool | Description | Status | Links |
 | :---: | :--- | :---: | :--- |
+| 🧪 **AI-Project-Gallery** | **R&D Playground: 30+ End-to-End AI Projects**<br>Classification, Regression, GenAI, Agentic Workflows | 🟢 Live | [Code](https://github.com/BasinLeon/AI-Project-Gallery) |
 | 🧪 **free-llm-api-resources** | The Ultimate Guide to Free LLM APIs (15+ Providers) | 🟢 Live | [Code](https://github.com/BasinLeon/free-llm-api-resources) |
 | 🪞 **gtm-mirror** | Real-time GTM Strategy & Execution Mirroring | 🟢 Live | [Code](https://github.com/BasinLeon/gtm-mirror) |
 | 🛠️ **ai-agent-tools-catalog** | A specialized catalog of tools for autonomous agents | 🟡 Beta | [Code](https://github.com/BasinLeon/ai-agent-tools-catalog) |
@@ -252,10 +253,10 @@ Interactive Query Console, NEXUS Intelligence
 | Metric | Value |
 | :---: | :---: |
 | **Lines of Code** | **700,000+** |
-| **Public Repositories** | **31** |
-| **LLMs Orchestrated** | **10+** |
+| **Public Repositories** | **32** |
+| **LLMs Orchestrated** | **15+** |
 | **Live Tools** | **15+** |
-| **Blog Posts** | **10+** |
+| **Blog Posts** | **80+** |
 | **Frameworks** | **9** |
 
 **Top Languages:**
