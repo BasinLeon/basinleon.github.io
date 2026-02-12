@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Leon Basin | Revenue Systems Architect</title>
+    <title>Leon Basin | GTM Systems Architect</title>
     
     <!-- Primary SEO -->
-    <meta name="description" content="Revenue Systems Architect. Hardened at Google, scale-tested at SurveyMonkey. Building the engines of hypergrowth with BASIN::NEXUS." />
+    <meta name="description" content="Revenue Systems Architect. Hardened at Google, scale-tested at SurveyMonkey. Deploying high-fidelity, deterministic revenue engines through proprietary automation frameworks." />
 
     <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        img { max-width: 100%; height: auto; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -80,6 +82,8 @@
             margin-bottom: 3rem;
             color: #000;
             letter-spacing: -4px;
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.1s;
         }
         .hero .manifesto {
             font-size: 1.4rem;
@@ -88,6 +92,8 @@
             margin: 0 auto 4rem;
             font-weight: 400;
             line-height: 1.5;
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.2s;
         }
         .hero .manifesto strong { color: #000; font-weight: 800; }
 
@@ -114,7 +120,11 @@
         .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 800; }
 
         /* --- CTA Buttons --- */
-        .cta-group { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 6rem; }
+        .cta-group { 
+            display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 6rem; 
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.3s;
+        }
         .btn {
             padding: 1.2rem 2.5rem;
             border-radius: 0.5rem;
@@ -205,17 +215,138 @@
         .footer-links { display: flex; justify-content: center; gap: 3rem; margin-bottom: 4rem; }
         .footer-links a { text-decoration: none; color: var(--text-dim); font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
 
-        @media (max-width: 1024px) {
-            .journey-layout, .stats-grid, .impact-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 4rem; }
-            nav { padding: 0 2rem; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        .stat-card, .journey-card, .board-card, .impact-card, .framework-card {
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+        }
+
+        .stats-grid .stat-card:nth-child(1) { animation-delay: 0.4s; }
+        .stats-grid .stat-card:nth-child(2) { animation-delay: 0.5s; }
+        .stats-grid .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stats-grid .stat-card:nth-child(4) { animation-delay: 0.7s; }
+        .stats-grid .stat-card:nth-child(5) { animation-delay: 0.8s; }
+
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 5rem; }
+            nav { padding: 0 4rem; }
+        }
+
+        @media (max-width: 991px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .journey-layout { grid-template-columns: 1fr; }
+            .impact-grid { grid-template-columns: repeat(2, 1fr); }
+            .frameworks-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid.four-cols { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 1.5rem; height: 70px; }
+            .nav-links {
+                position: fixed;
+                top: 70px; right: -100%;
+                width: 100%; height: calc(100vh - 70px);
+                background: var(--bg-premium);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 3rem;
+                gap: 2rem;
+                transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+                border-top: 1px solid var(--border-soft);
+                z-index: 999;
+                backdrop-filter: blur(20px);
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1rem; }
+            
+            .menu-toggle { display: flex; }
+            .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            .hero { padding: 120px 0 60px; }
+            .hero h1 { font-size: clamp(3rem, 15vw, 4.5rem); letter-spacing: -2px; }
+            .hero .manifesto { font-size: 1.15rem; margin-bottom: 3rem; }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .stats-grid.four-cols { grid-template-columns: repeat(2, 1fr); }
+            .stat-card { padding: 2rem 1rem; }
+            .stat-val { font-size: 1.8rem; }
+            
+            .journey-card, .board-card, .impact-card { padding: 2.5rem 1.5rem; }
+            .section-label { font-size: 1.4rem; gap: 1rem; margin-bottom: 2.5rem; }
+            
+            .frameworks-grid, .impact-grid { grid-template-columns: 1fr; }
+            
+            .arch-intro p { font-size: 1.25rem; }
+            
+            .cta-group { flex-direction: column; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
+            .btn { justify-content: center; width: 100%; }
+
+            .job-node { padding-left: 2rem; }
+            .job-meta { font-size: 1.2rem; }
+            .job-desc { font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid.four-cols { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3.2rem; }
+            .nav-logo { font-size: 0.9rem; letter-spacing: 2px; }
+        }
+
+        /* Helper Classes */
+        .frameworks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 6rem; }
+        .framework-card { background: #fff; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: var(--shadow-premium); overflow: hidden; }
+        .framework-card h4 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px; }
+        .framework-img-container { width: 100%; height: 220px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.8rem; border: 1px solid #eee; }
+        .framework-img { width: 100%; height: 100%; object-fit: contain; transition: 0.3s; }
+        .framework-img:hover { transform: scale(1.05); }
+        .framework-desc { margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.4; }
+
+        .arch-intro { margin-bottom: 6rem; max-width: 800px; }
+        .arch-intro p { font-size: 1.5rem; line-height: 1.5; color: var(--text-dim); }
+
+        .stats-grid.three-cols { grid-template-columns: repeat(3, 1fr); }
+        
+        @media (max-width: 991px) {
+            .stats-grid.three-cols { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid.three-cols { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .footer-links { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+            .footer-links a { font-size: 0.8rem; }
+        }
+
+        .menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+        .menu-toggle span { width: 28px; height: 2px; background: #000; border-radius: 2px; transition: 0.3s; }
     </style>
+</head>
+<body>
+    <meta name="description" content="Revenue Systems Architect. Hardened at Google, scale-tested at SurveyMonkey. Deploying high-fidelity, deterministic revenue engines through proprietary automation frameworks." />
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
 <nav>
-    <a href="/" class="nav-logo">BASIN::NEXUS</a>
+    <a href="/" class="nav-logo">LEON BASIN</a>
+    <div class="menu-toggle" id="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <div class="nav-links">
         <a href="#journey">Strategic Journey</a>
         <a href="#architecture">Architecture</a>
@@ -228,15 +359,15 @@
     
     <!-- Hero / Manifesto -->
     <header class="hero">
-        <h1>Building the<br>Engines of<br>Hypergrowth</h1>
+        <h1>Engineering<br>Deterministic<br>Growth</h1>
         <p class="manifesto">
-            Hardened at <strong>Google</strong>, scale-tested at <strong>SurveyMonkey</strong>, 
-            and architecture-led in <strong>Series A Cybersecurity</strong>. I build AI-powered revenue systems 
-            that turn technical signals into enterprise pipeline.
+            Hardened at <strong>Google</strong> (Antigravity Operations) and scale-tested at <strong>SurveyMonkey</strong>. 
+            I am a <strong>Revenue Architect</strong> who brings a proprietary library of automation frameworks 
+            to turn technical signals into high-fidelity enterprise pipeline.
         </p>
 
         <div class="cta-group">
-            <a href="resume.html" class="btn btn-gold">RESUME</a>
+            <a href="resume.html" class="btn btn-gold">OPERATOR RESUME</a>
         </div>
     </header>
 
@@ -270,20 +401,20 @@
         <div class="journey-layout">
             <div class="journey-card">
                 <div class="job-node">
-                    <div class="job-meta">GTM Americas (Security) <span>Series A Stealth</span></div>
-                    <p class="job-desc">Scaled outbound engine to 160% YoY pipeline growth. Built the discovery rubrics and autonomous SDR protocols.</p>
+                    <div class="job-meta">Revenue Architect <span>Series A Cybersecurity</span></div>
+                    <p class="job-desc">Architected the deterministic lead-to-opportunity engine that scaled pipeline to 160% YoY. Replaced manual SDR toil with autonomous signal-refining protocols.</p>
                 </div>
                 <div class="job-node">
-                    <div class="job-meta">Global BD Leadership <span>Sense (Series D)</span></div>
-                    <p class="job-desc">Architected the global outbound motion. Owned headcount, tech-stack, and the revenue bridge.</p>
+                    <div class="job-meta">GTM Systems Leadership <span>Sense (Series D)</span></div>
+                    <p class="job-desc">Owned the global revenue stack and outreach architecture. Integrated disparate data layers into a unified 'Source of Truth' for the global BD org.</p>
                 </div>
                 <div class="job-node">
                     <div class="job-meta">Enterprise BD Architecture <span>SurveyMonkey</span></div>
-                    <p class="job-desc">Strategic alignment for F500 accounts. Developed the "Technical Outreach" framework later adopted at scale.</p>
+                    <p class="job-desc">Strategic alignment for F500 accounts. Developed the 'Technical Outreach' framework used to automate discovery at scale.</p>
                 </div>
                 <div class="job-node" style="margin-bottom: 0;">
-                    <div class="job-meta">GTM Operations & Data <span>Google</span></div>
-                    <p class="job-desc">Full-cycle operations analyst. Rooted in data, hardened in Silicon Valley's most rigorous environment.</p>
+                    <div class="job-meta">Operations Analyst <span>Google (Shopping/Antigravity)</span></div>
+                    <p class="job-desc">Hardened in Google's internal development ecosystems. Focused on data validation, systems uptime, and scaling complex operational pipelines.</p>
                 </div>
             </div>
 
@@ -308,54 +439,54 @@
     <!-- The Architecture Section -->
     <section id="architecture">
         <h2 class="section-label">Revenue Architecture</h2>
-        <div style="margin-bottom: 6rem; max-width: 800px;">
-            <p style="font-size: 1.5rem; line-height: 1.5; color: var(--text-dim);">
-                My proprietary OS, <strong>BASIN::NEXUS</strong>, orchestrates 5 LLMs and 691,000+ lines of custom Python code to automate the high-friction parts of the revenue cycle.
+        <div class="arch-intro">
+            <p>
+                I maintain a <strong>proprietary library of automation frameworks</strong> (700,000+ lines of R&D) used to eliminate human latency in the revenue cycle. I treat the GTM stack as a high-uptime data pipeline.
             </p>
         </div>
 
         <!-- Framework Visuals -->
         <h3 class="section-label" style="display: block; margin-bottom: 3rem;">Engineering Models</h3>
-        <div class="frameworks-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 6rem;">
+        <div class="frameworks-grid">
             <!-- Model 1: Signal Refinery -->
-            <div class="framework-card" style="background: #fff; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: var(--shadow-premium); overflow: hidden;">
-                <h4 style="font-family: 'Orbitron'; font-size: 0.8rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px;">SIGNAL REFINERY OS</h4>
-                <div style="width: 100%; height: 220px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.8rem; border: 1px solid #eee;">
-                    <img src="assets/img/frameworks/final_v4_signal_white.png" alt="Architectural Blueprint: Signal Refinery" style="width: 100%; height: 100%; object-fit: contain; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="framework-card">
+                <h4>SIGNAL REFINERY OS</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/final_v4_signal_white.png" alt="Architectural Blueprint: Signal Refinery" class="framework-img">
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.4;">Multi-channel ingestion architecture for high-fidelity intent mapping.</p>
+                <p class="framework-desc">Multi-channel ingestion architecture for high-fidelity intent mapping.</p>
             </div>
 
             <!-- Model 2: Logic Flow -->
-            <div class="framework-card" style="background: #fff; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: var(--shadow-premium); overflow: hidden;">
-                <h4 style="font-family: 'Orbitron'; font-size: 0.8rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px;">AUTONOMOUS LOGIC</h4>
-                <div style="width: 100%; height: 220px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.8rem; border: 1px solid #eee;">
-                    <img src="assets/img/frameworks/logic-flow.png" alt="Autonomous Logic Flow" style="width: 100%; height: 100%; object-fit: contain; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="framework-card">
+                <h4>AUTONOMOUS LOGIC</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/logic-flow.png" alt="Autonomous Logic Flow" class="framework-img">
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.4;">Engineering schematics for decision-tree automation and routing.</p>
+                <p class="framework-desc">Engineering schematics for decision-tree automation and routing.</p>
             </div>
 
             <!-- Model 3: Proprietary IP Blueprint -->
-            <div class="framework-card" style="background: #fff; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: var(--shadow-premium); overflow: hidden;">
-                <h4 style="font-family: 'Orbitron'; font-size: 0.8rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px;">PROPRIETARY IP BLUEPRINT</h4>
-                <div style="width: 100%; height: 220px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.8rem; border: 1px solid #eee;">
-                    <img src="assets/img/frameworks/final_v4_patent_dark.jpg" alt="Patent Schematic: Revenue Architecture" style="width: 100%; height: 100%; object-fit: contain; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="framework-card">
+                <h4>PROPRIETARY IP BLUEPRINT</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/final_v4_patent_dark.jpg" alt="Patent Schematic: Revenue Architecture" class="framework-img">
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.4;">The patented logic framework for signal-to-pipeline conversion.</p>
+                <p class="framework-desc">The patented logic framework for signal-to-pipeline conversion.</p>
             </div>
         </div>
 
-        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="stats-grid three-cols">
             <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron'; margin-bottom: 1rem;">Signal Refinery</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">Signal Refinery</h3>
                 <p style="color: var(--text-dim); font-size: 0.95rem;">Automated intent extraction from Reddit, X, and technical forums. 92% signal accuracy.</p>
             </div>
             <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron'; margin-bottom: 1rem;">The 48h Loop</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">The 48h Loop</h3>
                 <p style="color: var(--text-dim); font-size: 0.95rem;">Autonomous follow-up engine for conferences (RSA/BlackHat). Personalized briefs at scale.</p>
             </div>
             <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron'; margin-bottom: 1rem;">Comms Studio</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">Comms Studio</h3>
                 <p style="color: var(--text-dim); font-size: 0.95rem;">Persona-targeted messaging that replaces generic scripts with high-fidelity technical briefs.</p>
             </div>
         </div>
@@ -387,26 +518,26 @@
     <!-- Intel & Research Section -->
     <section id="intel">
         <h2 class="section-label">Intel & Research</h2>
-        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+        <div class="stats-grid four-cols">
             <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron'; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">The Secure Strategist</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">The Secure Strategist</h3>
                 <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">GTM engineering for Security leaders.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
             </a>
             <a href="https://basinandassociates.substack.com/" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron'; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">BASIN::NEXUS</h3>
-                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Executive strategy & Market analysis.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 900;">Substack →</span>
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">GTM Engineering</h3>
+                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signals, Systems & Market analysis.</p>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Substack →</span>
             </a>
             <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron'; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Leadership Labyrinth</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Leadership Labyrinth</h3>
                 <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Organizational architecture insights.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
             </a>
             <a href="https://basinleon.github.io/library/" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron'; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Technical Library</h3>
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Technical Library</h3>
                 <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signal Ops & GTM Frameworks.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 900;">Library →</span>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Library →</span>
             </a>
         </div>
     </section>
@@ -415,7 +546,7 @@
 
 <footer>
     <div class="container">
-        <a href="/" class="footer-logo">BASIN::NEXUS</a>
+        <a href="/" class="footer-logo">LEON BASIN</a>
         <div class="footer-links">
             <a href="https://linkedin.com/in/leonbasin">LinkedIn</a>
             <a href="https://basinandassociates.substack.com/">Substack</a>
@@ -423,10 +554,28 @@
             <a href="https://basinleon.github.io/library/">Library</a>
         </div>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #aaa; letter-spacing: 2px;">
-            &copy; 2026 LEON BASIN | BASIN::NEXUS // REVENUE SYSTEMS ARCHITECT
+            &copy; 2026 LEON BASIN | GTM SYSTEMS ARCHITECT
         </p>
     </div>
 </footer>
+
+<script>
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+
+    mobileMenu.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+</script>
 
 </body>
 </html>
