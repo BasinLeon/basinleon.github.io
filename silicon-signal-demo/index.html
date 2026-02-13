@@ -61,6 +61,33 @@
             text-transform: uppercase;
         }
 
+        /* NEW: WORKING MODEL CONTROLS */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid var(--glass-border);
+            padding: 20px 40px;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .input-group { flex: 1; position: relative; }
+        .input-field {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+        .input-field:focus { outline: none; border-color: var(--gold); }
+        .input-label {
+            position: absolute; top: -10px; left: 12px;
+            font-size: 0.6rem; color: var(--gold); background: var(--bg);
+            padding: 0 4px; font-weight: 800;
+        }
+
         /* LAYOUT */
         .page-wrapper {
             max-width: 1440px;
@@ -247,9 +274,13 @@
     <div class="nav">
         <div class="nav-brand">
             <div class="nav-logo">BASIN<span>::NEXUS</span></div>
-            <div class="nav-tag">MBA_OPERATIONAL_BLUEPRINT_V4</div>
+            <div class="nav-tag">LIVING_R&D_STREAK: 14_DAYS</div>
         </div>
-        <div style="display:flex; gap:16px;">
+        <div style="display:flex; gap:16px; align-items:center;">
+            <div style="display:flex; gap:8px; align-items:center; margin-right: 20px;">
+                <div style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 2s infinite;"></div>
+                <span style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted);">AGENTIC_HEALTH: OPTIMAL</span>
+            </div>
             <button class="btn" onclick="window.print()">
                 <span>📄</span> EXPORT_PDF
             </button>
@@ -257,6 +288,16 @@
                 <span>🚀</span> AIRDROP_BRIEF
             </button>
         </div>
+    </div>
+
+    <div class="control-panel">
+        <div class="input-group">
+            <span class="input-label">REAL-TIME_STRATEGY_INPUT</span>
+            <input type="text" class="input-field" id="strategy-input" placeholder="Enter target company or persona (e.g. CMOs at FinTech Series C)..." value="Founders at B2B Agencies">
+        </div>
+        <button class="btn" style="height: 44px; border-color: var(--gold);" onclick="runAudit()">
+            INITIATE_SIGNAL_AUDIT
+        </button>
     </div>
 
     <div class="page-wrapper">
@@ -315,21 +356,32 @@
                 </div>
             </div>
 
-            <!-- VISUAL 2: THE DEAL ECONOMICS -->
+            <div class="glass-card">
+                <div class="memo-heading">ROI DYNAMICS MODELER</div>
+                <div style="display:flex; flex-direction:column; gap:20px;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size: 0.8rem; margin-bottom: 8px;">
+                            <span>Current Monthly Retainer</span>
+                            <strong id="retainer-val">$10,000</strong>
+                        </div>
+                        <input type="range" min="5000" max="50000" step="1000" value="10000" style="width:100%;" oninput="updateROI()">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size: 0.8rem; margin-bottom: 8px;">
+                            <span>Nexus Efficiency Buffer</span>
+                            <strong id="buffer-val">25%</strong>
+                        </div>
+                        <input type="range" min="10" max="80" step="5" value="25" style="width:100%;" oninput="updateROI()">
+                    </div>
+                    <div style="background: rgba(16,185,129,0.1); padding: 16px; border-radius: 12px; border: 1px solid var(--success);">
+                        <div style="font-size: 0.6rem; color: var(--success); font-weight: 800; text-transform: uppercase;">Estimated Profit Lift</div>
+                        <div id="profit-calc" style="font-size: 2rem; font-weight: 800; color: #fff;">$2,500 <small style="font-size: 0.8rem; opacity: 0.6;">/mo per client</small></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="glass-card">
                 <div class="memo-grid">
-                    <div class="deal-col">
-                        <div class="memo-heading">Operational Leverage</div>
-                        <div class="memo-row"><span>Human Toil Redux</span> <strong class="val-success">-82%</strong></div>
-                        <div class="memo-row"><span>Ingestion Latency</span> <strong class="val-success">400ms</strong></div>
-                        <div class="memo-row"><span>Researcher FTEs</span> <strong class="val-success">0.0</strong></div>
-                    </div>
-                    <div class="deal-col">
-                        <div class="memo-heading">Capital Efficiency</div>
-                        <div class="memo-row"><span>Retention Lift</span> <strong>+40%</strong></div>
-                        <div class="memo-row"><span>Meeting Yield</span> <strong>3.2x</strong></div>
-                        <div class="memo-row"><span>Client Net Margin</span> <strong class="val-success">+25%</strong></div>
-                    </div>
                     <div class="deal-col">
                         <div class="memo-heading">The Nexus Split</div>
                         <div class="memo-row"><span>Platform OpEx</span> <strong>Fixed Fee</strong></div>
@@ -390,14 +442,31 @@
             setTimeout(() => t.style.opacity = '0', 3000);
         }
 
+        function updateROI() {
+            const ranges = document.querySelectorAll('input[type="range"]');
+            const retainer = parseInt(ranges[0].value);
+            const buffer = parseInt(ranges[1].value);
+            
+            document.getElementById('retainer-val').innerText = `$${retainer.toLocaleString()}`;
+            document.getElementById('buffer-val').innerText = `${buffer}%`;
+            
+            const lift = retainer * (buffer / 100);
+            document.getElementById('profit-calc').innerHTML = `$${lift.toLocaleString()} <small style="font-size: 0.8rem; opacity: 0.6;">/mo per client</small>`;
+        }
+
+        function runAudit() {
+            const input = document.getElementById('strategy-input').value;
+            addAuditLine(`USER_PROTOCOL_INITIATED: Target = "${input}"`);
+            pulseRefinery();
+        }
+
         const auditData = [
-            "INGESTING: r/cybersecurity intent signals...",
-            "RESOLVING: 124 Job Change Triggers detected.",
-            "ENRICHING: Basin::Nexus proprietary audit layers...",
-            "REFINING: Gemini 2.5 Pro resolving intent...",
-            "SUCCESS: 12 High-Confidence signals identified.",
-            "DRAFTING: Personalized briefs generated.",
-            "ROUTING: Lead pushed to Silicon Signal CRM."
+            "INGESTING: Marketplace signals for target persona...",
+            "RESOLVING: Digital footprints and intent spikes...",
+            "ENRICHING: Resolving LinkedIn identity to corporate email...",
+            "REFINING: Gemini 2.5 Pro building context-aware brief...",
+            "DOMINATING: Competitive latency reduced to 400ms...",
+            "FINALIZED: High-signal dossier ready for outreach."
         ];
 
         function addAuditLine(text) {
@@ -419,7 +488,6 @@
             const interval = setInterval(() => {
                 if(i < auditData.length) {
                     addAuditLine(auditData[i]);
-                    // Create temporary particles
                     const p = document.createElement('div');
                     p.className = 'pulse-particle';
                     p.style.top = (40 + Math.random()*20) + '%';
@@ -451,6 +519,8 @@
             const tag = document.querySelector('.nav-tag');
             tag.style.color = (tag.style.color === 'white') ? 'var(--gold)' : 'white';
         }, 5000);
+        
+        updateROI();
     </script>
 </body>
 </html>
