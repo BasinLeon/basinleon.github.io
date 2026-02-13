@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 THE NEXUS // SILICON SIGNAL ARCHITECT HUD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --glass: rgba(13, 13, 22, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #6366F1;
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.15);
+            --text-heading: #FFFFFF;
+            --text-body: #CBD5E1;
+            --text-muted: #64748B;
+            --success: #10B981;
+            --danger: #FF4D4D;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+        }
+
+        /* PREMIUM NAV */
+        .nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-brand { display: flex; align-items: center; gap: 16px; }
+        .nav-logo { font-weight: 800; font-size: 1.5rem; color: #fff; letter-spacing: -1px; }
+        .nav-logo span { color: var(--gold); }
+        .nav-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--gold-glow);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* LAYOUT */
+        .page-wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 32px;
+        }
+
+        .main-deck { display: flex; flex-direction: column; gap: 32px; }
+
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
+        }
+
+        /* REFINERY VISUALIZATION */
+        .viz-container {
+            height: 440px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, transparent 70%);
+        }
+
+        .hub-core {
+            width: 200px; height: 200px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+        .hub-core:hover { transform: scale(1.08); border-color: #fff; box-shadow: 0 0 50px var(--gold-glow); }
+        .hub-core h3 { color: #fff; font-size: 1rem; font-weight: 800; letter-spacing: 2px; }
+        .hub-core p { color: var(--gold); font-size: 0.6rem; font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+        
+        .orbit {
+            position: absolute;
+            width: 340px; height: 340px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+            animation: spin 40s linear infinite;
+        }
+        .orbit-outer { width: 480px; height: 480px; opacity: 0.5; animation-direction: reverse; }
+
+        .node {
+            position: absolute;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+        }
+        /* Specific Positions */
+        .n-in-1 { top: 15%; left: 10%; }
+        .n-in-2 { top: 48%; left: 0%; }
+        .n-in-3 { top: 80%; left: 10%; }
+        .n-out-1 { top: 15%; right: 10%; border-color: var(--success); }
+        .n-out-2 { top: 48%; right: 0%; border-color: var(--success); }
+        .n-out-3 { top: 80%; right: 10%; border-color: var(--success); }
+
+        .pulse-particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0;
+            animation: move-particle 3s infinite linear;
+        }
+
+        /* DEAL MEMO DATA */
+        .memo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .memo-heading {
+            font-size: 0.7rem; font-weight: 800; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+        }
+        .memo-row {
+            padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; font-size: 0.95rem;
+        }
+        .memo-row span { color: var(--text-muted); }
+        .memo-row strong { color: #fff; font-weight: 600; }
+        .memo-row .val-success { color: var(--success); }
+
+        /* SIDELAY: PRESENTATION NOTES */
+        .side-panel { display: flex; flex-direction: column; gap: 24px; }
+        .note-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .note-header {
+            font-size: 0.65rem; font-weight: 800; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .note-header::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 10px var(--gold); }
+        .note-content { font-size: 0.9rem; color: var(--text-body); line-height: 1.6; }
+        .note-content b { color: #fff; font-weight: 700; }
+        .note-content i { color: var(--accent); font-style: normal; font-weight: 600; }
+
+        /* BUTTONS */
+        .btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn:hover { border-color: #fff; transform: translateY(-2px); }
+        .btn-gold { background: var(--gold); color: #000; border-color: var(--gold); }
+        .btn-gold:hover { background: #fff; border-color: #fff; color: #000; }
+
+        /* ANIMATIONS */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes move-particle {
+            0% { transform: translate(-200px, 0); opacity: 0; }
+            30% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translate(240px, 0); opacity: 0; }
+        }
+
+        /* PRINT OVERRIDES for "EXPORT_PDF" */
+        @media print {
+            .nav, .side-panel, .sim-controls { display: none !important; }
+            body { background: #fff; color: #000; }
+            .glass-card { box-shadow: none; border: 1px solid #ddd; background: #fff !important; }
+            .hub-core { border-color: #000 !important; color: #000 !important; }
+            .hub-core h3, .hub-core p, .node, .memo-row strong { color: #000 !important; }
+            .memo-row span { color: #666 !important; }
+        }
+
+        /* FEEDBACK TOAST */
+        #toast {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            background: var(--success); color: #fff; padding: 12px 24px;
+            border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            opacity: 0; transition: opacity 0.4s; z-index: 2000;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.3);
+        }
+
+        @media (max-width: 1100px) {
+            .page-wrapper { grid-template-columns: 1fr; }
+            .side-panel { grid-row: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="toast">✅ SIGNAL SENT VIA AIRDROP</div>
+
+    <div class="nav">
+        <div class="nav-brand">
+            <div class="nav-logo">BASIN<span>::NEXUS</span></div>
+            <div class="nav-tag">MBA_OPERATIONAL_BLUEPRINT_V4</div>
+        </div>
+        <div style="display:flex; gap:16px;">
+            <button class="btn" onclick="window.print()">
+                <span>📄</span> EXPORT_PDF
+            </button>
+            <button class="btn btn-gold" onclick="showToast()">
+                <span>🚀</span> AIRDROP_BREIF
+            </button>
+        </div>
+    </div>
+
+    <div class="page-wrapper">
+        
+        <!-- LEFT SECT: THE ARCHITECT'S DECK -->
+        <div class="main-deck">
+            
+            <!-- VISUAL 1: THE CORE ARCHITECTURE -->
+            <div class="glass-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 40px;">
+                    <div>
+                        <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: -1px;">Signal Refinery Architecture</h2>
+                        <p style="font-size: 1rem; color: var(--text-muted);">The engine powering Silicon Nexus</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--success);">ARCHITECTURE: DETERMINISTIC</div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold);">LOC_AUDIT: 690,000+</div>
+                    </div>
+                </div>
+
+                <div class="viz-container" id="viz">
+                    <div class="orbit"></div>
+                    <div class="orbit orbit-outer"></div>
+
+                    <div class="hub-core" onclick="pulseRefinery()">
+                        <h3>REFINERY</h3>
+                        <p>GEMINI 1.5 PRO</p>
+                        <div style="margin-top: 10px; font-size: 1.2rem;">🛡️</div>
+                    </div>
+
+                    <!-- INPUT NODES -->
+                    <div class="node n-in-1">🛰️ Reddit Scrapers</div>
+                    <div class="node n-in-2">🛰️ Job Change API</div>
+                    <div class="node n-in-3">🛰️ GitHub Audit</div>
+
+                    <!-- OUTPUT NODES -->
+                    <div class="node n-out-1">💎 High-Confidence Lead</div>
+                    <div class="node n-out-2">📝 Brief & Draft Outreach</div>
+                    <div class="node n-out-3">💰 Meeting Confirmed</div>
+
+                    <!-- PARTICLES -->
+                    <div class="pulse-particle" style="top:50%; animation-delay: 0s;"></div>
+                    <div class="pulse-particle" style="top:45%; animation-delay: 1.5s;"></div>
+                    <div class="pulse-particle" style="top:55%; animation-delay: 0.8s;"></div>
+                </div>
+
+                <div style="margin-top: 40px; display:flex; gap:24px; justify-content:center;">
+                    <button class="btn" style="border-color: var(--gold-glow); color: var(--gold);" onclick="pulseRefinery()">RUN_REFINERY_SIMULATION</button>
+                </div>
+            </div>
+
+            <!-- VISUAL 2: THE DEAL ECONOMICS -->
+            <div class="glass-card">
+                <div class="memo-grid">
+                    <div class="deal-col">
+                        <div class="memo-heading">Operational Leverage</div>
+                        <div class="memo-row"><span>Human Toil Redux</span> <strong class="val-success">-82%</strong></div>
+                        <div class="memo-row"><span>Ingestion Latency</span> <strong class="val-success">400ms</strong></div>
+                        <div class="memo-row"><span>Researcher FTEs</span> <strong class="val-success">0.0</strong></div>
+                    </div>
+                    <div class="deal-col">
+                        <div class="memo-heading">Capital Efficiency</div>
+                        <div class="memo-row"><span>Retention Lift</span> <strong>+40%</strong></div>
+                        <div class="memo-row"><span>Meeting Yield</span> <strong>3.2x</strong></div>
+                        <div class="memo-row"><span>Client Net Margin</span> <strong class="val-success">+25%</strong></div>
+                    </div>
+                    <div class="deal-col">
+                        <div class="memo-heading">The Nexus Split</div>
+                        <div class="memo-row"><span>Platform OpEx</span> <strong>Fixed Fee</strong></div>
+                        <div class="memo-row"><span>Strategic Upside</span> <strong>Success Share</strong></div>
+                        <div class="memo-row"><span>Model Duration</span> <strong>90-Day Loop</strong></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SECT: LEON'S PERSUASION TRACKS -->
+        <div class="side-panel">
+            
+            <div class="note-card">
+                <div class="note-header">THE ARCHITECT FRAME</div>
+                <div class="note-content">
+                    "Fulfillment at most agencies scales linearly with <b>human toil</b>. My work is about removing that constraint. I’ve built a <i>Deterministic Refinery</i> that ingests market noise and refines it into dollars."
+                </div>
+            </div>
+
+            <div class="note-card">
+                <div class="note-header">THE "CODE MOAT"</div>
+                <div class="note-content">
+                    "A Silicon Signal client shouldn't just get a list. They get an <b>Engineering Pipeline</b>. I have 690k lines of logic resolving identity and intent before any SDR touches a lead."
+                </div>
+            </div>
+
+            <div class="note-card" style="border-color: var(--gold);">
+                <div class="note-header">THE 400MS DELTA</div>
+                <div class="note-content">
+                    "While your competitors are spending 48 hours cleaning CSVs, <b>Nexus identifies the signal</b>, enriches the brief, and drafts the personalized outreach in <i>400 milliseconds</i>."
+                </div>
+            </div>
+
+            <div class="note-card">
+                <div class="note-header">THE MBA PARTNERSHIP</div>
+                <div class="note-content">
+                    "I want to white-label this back-end for you. You own the <b>Brand</b> and the <b>Client</b>; I own the <b>Signal Integrity</b>. We drop your COGS by 80% and split the performance lift."
+                </div>
+            </div>
+
+            <div class="note-card">
+                <div class="note-header">CLAY VS. NEXUS</div>
+                <div class="note-content">
+                    "Clay is a great workbench. Nexus is the <b>Factory</b>. I’m giving you the <i>Proprietary IP</i> that Clay hasn’t modularized yet."
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function pulseRefinery() {
+            const hub = document.querySelector('.hub-core');
+            hub.style.transform = 'scale(1.2) rotate(5deg)';
+            hub.style.boxShadow = '0 0 100px rgba(212, 175, 55, 0.4)';
+            
+            // Create temporary particles
+            for(let i=0; i<8; i++) {
+                const p = document.createElement('div');
+                p.className = 'pulse-particle';
+                p.style.top = (40 + Math.random()*20) + '%';
+                p.style.left = '35%';
+                p.style.animationDuration = (1 + Math.random()) + 's';
+                p.style.opacity = '1';
+                document.getElementById('viz').appendChild(p);
+                setTimeout(() => p.remove(), 2000);
+            }
+
+            setTimeout(() => {
+                hub.style.transform = 'scale(1.08) rotate(0deg)';
+                hub.style.boxShadow = '0 0 30px var(--gold-glow)';
+            }, 6000);
+        }
+
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 3000);
+        }
+
+        // 11:11 Pulse logic
+        setInterval(() => {
+            const tag = document.querySelector('.nav-tag');
+            tag.style.color = (tag.style.color === 'white') ? 'var(--gold)' : 'white';
+        }, 5000);
+    </script>
+</body>
+</html>
