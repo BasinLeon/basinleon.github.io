@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ EXECUTION CONSOLE // REVENUE ORCHESTRATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07070B;
+            --glass: rgba(15, 15, 25, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #3B82F6;
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.15);
+            --success: #10B981;
+            --text-main: #E2E8F0;
+            --text-dim: #94A3B8;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* GRID BACKGROUND */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* HEADER */
+        .header {
+            height: 70px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(7, 7, 11, 0.9);
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+        }
+        .brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        .brand span { color: var(--gold); }
+        .system-status {
+            display: flex;
+            gap: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+        .status-item { display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+        /* MAIN LAYOUT */
+        .console-wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px;
+            height: calc(100vh - 70px);
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            grid-template-rows: 150px 1fr 180px;
+            gap: 20px;
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* METRICS BAR (TOP) */
+        .metrics-card {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .metric { text-align: center; }
+        .metric-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .metric-value { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .metric-delta { font-size: 0.7rem; color: var(--success); font-family: 'JetBrains Mono', monospace; }
+
+        /* AGENT ORCHESTRATION (CENTER) */
+        .orch-center {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        }
+        .agent-map {
+            position: relative;
+            width: 500px;
+            height: 500px;
+        }
+        .core-node {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120px; height: 120px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.8);
+            z-index: 10;
+            box-shadow: 0 0 40px var(--gold-glow);
+        }
+        .core-node h3 { font-size: 0.8rem; letter-spacing: 2px; font-family: 'Orbitron', sans-serif; }
+        
+        .agent-node {
+            position: absolute;
+            width: 100px; height: 100px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        .agent-node:hover { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
+        .agent-node.active { border-color: var(--success); box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+        .agent-node i { font-size: 1.5rem; margin-bottom: 8px; }
+        .agent-node span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; text-align: center; }
+
+        /* AGENT POSITIONS */
+        .a1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .a2 { top: 50%; right: 0; transform: translateY(-50%); }
+        .a3 { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .a4 { top: 50%; left: 0; transform: translateY(-50%); }
+
+        /* SIDE PANELS */
+        .panel-heading {
+            font-size: 0.7rem; color: var(--gold); font-weight: 800; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 24px; display: flex; justify-content: space-between;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15); padding-bottom: 8px;
+        }
+        .feed-item {
+            padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.02);
+            margin-bottom: 12px; border: 1px solid var(--glass-border);
+            font-size: 0.8rem;
+        }
+        .feed-meta { font-family: 'JetBrains Mono'; font-size: 0.6rem; color: var(--accent); margin-bottom: 4px; }
+
+        /* EXECUTION LOG (BOTTOM) */
+        .exec-log {
+            grid-column: 1 / -1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            background: #000;
+            border: 1px solid #1a1a1a;
+            padding: 16px;
+            overflow-y: hidden;
+            display: flex; flex-direction: column-reverse;
+        }
+        .log-entry { margin-bottom: 4px; display: flex; gap: 12px; }
+        .log-ts { color: #444; }
+        .log-p { color: var(--gold); }
+
+        /* BUTTONS */
+        .btn-deploy {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .btn-deploy:hover { background: #fff; transform: scale(1.02); }
+
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <header class="header">
+        <div class="brand">BASIN<span>::CONSOLEX</span></div>
+        <div class="system-status">
+            <div class="status-item"><div class="status-dot"></div> AGENT_NET: ACTIVE</div>
+            <div class="status-item" style="color: var(--gold);">UPTIME: 1,424h</div>
+            <div class="status-item">LATENCY: 42ms</div>
+        </div>
+    </header>
+
+    <main class="console-wrapper">
+        
+        <!-- TOP METRICS -->
+        <div class="glass-panel metrics-card">
+            <div class="metric">
+                <div class="metric-label">Aggregated Revenue Lift</div>
+                <div class="metric-value">$842k</div>
+                <div class="metric-delta">↑ 12.4% vs Prev Month</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Human Toil Offset</div>
+                <div class="metric-value">2,140</div>
+                <div class="metric-delta">Saved Man-Hours</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Lead Velocity</div>
+                <div class="metric-value">3.4x</div>
+                <div class="metric-delta">Conversion Spikes</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">High-Value Capture</div>
+                <div class="metric-value">92%</div>
+                <div class="metric-delta">Target Accuracy</div>
+            </div>
+        </div>
+
+        <!-- LEFT PANEL: PIPELINE FEED -->
+        <div class="glass-panel" style="grid-row: 2;">
+            <div class="panel-heading">ORCHESTRATION_QUEUE <span>42_ACTIVE</span></div>
+            <div class="feed-item">
+                <div class="feed-meta">ROUTING // SECURE_MC</div>
+                Strategic brief generated for VP of Engineering at SecureMC Global.
+            </div>
+            <div class="feed-item">
+                <div class="feed-meta">SIGNAL_INGESTION // RSA_EVENT</div>
+                14 high-intent job changes detected at Crowdstrike.
+            </div>
+            <div class="feed-item">
+                <div class="feed-meta">NEGOTIATION_LOG // TALSMART</div>
+                Rev-share structure validated. Launch protocol pending cost audit.
+            </div>
+            <button class="btn-deploy" onclick="deployPilot()">DEPLOY_OPERATIONAL_PILOT</button>
+        </div>
+
+        <!-- CENTER: AGENT MAP -->
+        <div class="glass-panel orch-center">
+            <div class="agent-map">
+                <div class="core-node">
+                    <h3>ORCHESTRA</h3>
+                    <div style="font-size: 0.6rem; margin-top: 4px; color: var(--gold);">v4.2.1</div>
+                </div>
+
+                <div class="agent-node a1" id="agent-web">
+                    <span>🏗️ Web Architect</span>
+                </div>
+                <div class="agent-node a2" id="agent-outreach">
+                    <span>📧 Outreach Core</span>
+                </div>
+                <div class="agent-node a3" id="agent-sentinel">
+                    <span>🛡️ Negotiation Sentinel</span>
+                </div>
+                <div class="agent-node a4" id="agent-defender">
+                    <span>⚔️ Interview Defender</span>
+                </div>
+
+                <!-- SVG CONNECTIONS -->
+                <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;">
+                    <line x1="250" y1="250" x2="250" y2="50" stroke="rgba(212,175,55,0.2)" stroke-width="1" />
+                    <line x1="250" y1="250" x2="450" y2="250" stroke="rgba(212,175,55,0.2)" stroke-width="1" />
+                    <line x1="250" y1="250" x2="250" y2="450" stroke="rgba(212,175,55,0.2)" stroke-width="1" />
+                    <line x1="250" y1="250" x2="50" y2="250" stroke="rgba(212,175,55,0.2)" stroke-width="1" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: SYSTEM TELEMETRY -->
+        <div class="glass-panel" style="grid-row: 2;">
+            <div class="panel-heading">AGENT_HEALTH_AUDIT</div>
+            <div style="margin-bottom: 24px;">
+                <div style="display:flex; justify-content:space-between; font-size: 0.7rem; margin-bottom: 8px;">
+                    <span>NEURAL_LOAD</span>
+                    <span>62%</span>
+                </div>
+                <div style="width:100%; height:4px; background:rgba(255,255,255,0.05); border-radius:2px;">
+                    <div style="width:62%; height:100%; background:var(--accent); border-radius:2px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 24px;">
+                <div style="display:flex; justify-content:space-between; font-size: 0.7rem; margin-bottom: 8px;">
+                    <span>SIGNAL_RESOLUTION_ACCURACY</span>
+                    <span>98.4%</span>
+                </div>
+                <div style="width:100%; height:4px; background:rgba(255,255,255,0.05); border-radius:2px;">
+                    <div style="width:98%; height:100%; background:var(--success); border-radius:2px;"></div>
+                </div>
+            </div>
+            
+            <div class="panel-heading">LATEST_PILOT_STATS</div>
+            <div class="feed-item" style="border-left: 2px solid var(--gold);">
+                <div style="font-weight: 800;">Silicon Nexus</div>
+                <div style="font-size: 0.65rem; color: var(--text-dim);">Revenue share model active. 12 briefs generated today.</div>
+            </div>
+        </div>
+
+        <!-- BOTTOM: LOG -->
+        <div class="glass-panel exec-log" id="log-container">
+            <!-- Entries will be added here -->
+        </div>
+
+    </main>
+
+    <script>
+        function addLog(text) {
+            const log = document.getElementById('log-container');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const ts = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            entry.innerHTML = `<span class="log-ts">[${ts}]</span> <span class="log-p">></span> <span>${text}</span>`;
+            log.prepend(entry);
+            if (log.children.length > 20) log.lastChild.remove();
+        }
+
+        const agentIds = ['agent-web', 'agent-outreach', 'agent-sentinel', 'agent-defender'];
+        
+        function deployPilot() {
+            addLog("DEPLOYMENT_PROTOCOL_INITIATED: Spawning Orchestration Thread...");
+            
+            let delay = 0;
+            agentIds.forEach((id, index) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    el.classList.add('active');
+                    el.style.transform = 'scale(1.1)';
+                    addLog(`AGENT_ACTIVATED: ${el.innerText.trim()} resolving task segment...`);
+                    
+                    setTimeout(() => {
+                        el.classList.remove('active');
+                        el.style.transform = 'scale(1.0)';
+                    }, 2000);
+                }, delay);
+                delay += 800;
+            });
+
+            setTimeout(() => {
+                addLog("PILOT_STATUS: SUCCESS // Revenue Pipeline Hardened.");
+            }, delay + 2000);
+        }
+
+        // Random log blips
+        setInterval(() => {
+            const messages = [
+                "PING: Agent response latency sub-50ms.",
+                "CHECK: Neural weights re-calibrated for intent extraction.",
+                "AUDIT: LOC_AUDIT status verified (700,000+).",
+                "MONITOR: Whale signals detected from Level 1 accounts.",
+                "SYNC: CRM handshake successful."
+            ];
+            addLog(messages[Math.floor(Math.random() * messages.length)]);
+        }, 5000);
+
+        // Initial logs
+        addLog("SYSTEM_BOOT: Basin::ConsoleX v4.2.1 initialized.");
+        addLog("PROTOCOL: Awaiting operational input...");
+    </script>
+</body>
+</html>
