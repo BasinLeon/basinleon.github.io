@@ -254,7 +254,7 @@
                 <span>📄</span> EXPORT_PDF
             </button>
             <button class="btn btn-gold" onclick="showToast()">
-                <span>🚀</span> AIRDROP_BREIF
+                <span>🚀</span> AIRDROP_BRIEF
             </button>
         </div>
     </div>
@@ -273,7 +273,7 @@
                     </div>
                     <div style="text-align: right;">
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--success);">ARCHITECTURE: DETERMINISTIC</div>
-                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold);">LOC_AUDIT: 690,000+</div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold);">LOC_AUDIT: 700,000+</div>
                     </div>
                 </div>
 
@@ -283,7 +283,7 @@
 
                     <div class="hub-core" onclick="pulseRefinery()">
                         <h3>REFINERY</h3>
-                        <p>GEMINI 1.5 PRO</p>
+                        <p>GEMINI 2.5 PRO</p>
                         <div style="margin-top: 10px; font-size: 1.2rem;">🛡️</div>
                     </div>
 
@@ -305,6 +305,13 @@
 
                 <div style="margin-top: 40px; display:flex; gap:24px; justify-content:center;">
                     <button class="btn" style="border-color: var(--gold-glow); color: var(--gold);" onclick="pulseRefinery()">RUN_REFINERY_SIMULATION</button>
+                </div>
+
+                <!-- LIVE AUDIT TRAIL -->
+                <div id="audit-trail" style="margin-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; height: 100px; overflow-y: hidden; border: 1px solid var(--glass-border);">
+                    <div id="audit-lines">
+                        > SYSTEM_IDLE: Awaiting pulse...
+                    </div>
                 </div>
             </div>
 
@@ -377,33 +384,66 @@
     </div>
 
     <script>
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 3000);
+        }
+
+        const auditData = [
+            "INGESTING: r/cybersecurity intent signals...",
+            "RESOLVING: 124 Job Change Triggers detected.",
+            "ENRICHING: Basin::Nexus proprietary audit layers...",
+            "REFINING: Gemini 2.5 Pro resolving intent...",
+            "SUCCESS: 12 High-Confidence signals identified.",
+            "DRAFTING: Personalized briefs generated.",
+            "ROUTING: Lead pushed to Silicon Signal CRM."
+        ];
+
+        function addAuditLine(text) {
+            const lines = document.getElementById('audit-lines');
+            const div = document.createElement('div');
+            div.style.marginBottom = '4px';
+            div.innerHTML = `<span style="color: var(--gold)">></span> ${text}`;
+            lines.prepend(div);
+            if (lines.children.length > 5) lines.lastChild.remove();
+        }
+
         function pulseRefinery() {
             const hub = document.querySelector('.hub-core');
             hub.style.transform = 'scale(1.2) rotate(5deg)';
             hub.style.boxShadow = '0 0 100px rgba(212, 175, 55, 0.4)';
+            hub.querySelector('h3').innerText = "PROCESSING";
             
-            // Create temporary particles
-            for(let i=0; i<8; i++) {
-                const p = document.createElement('div');
-                p.className = 'pulse-particle';
-                p.style.top = (40 + Math.random()*20) + '%';
-                p.style.left = '35%';
-                p.style.animationDuration = (1 + Math.random()) + 's';
-                p.style.opacity = '1';
-                document.getElementById('viz').appendChild(p);
-                setTimeout(() => p.remove(), 2000);
-            }
+            let i = 0;
+            const interval = setInterval(() => {
+                if(i < auditData.length) {
+                    addAuditLine(auditData[i]);
+                    // Create temporary particles
+                    const p = document.createElement('div');
+                    p.className = 'pulse-particle';
+                    p.style.top = (40 + Math.random()*20) + '%';
+                    p.style.left = '35%';
+                    p.style.animationDuration = '1s';
+                    p.style.opacity = '1';
+                    document.getElementById('viz').appendChild(p);
+                    setTimeout(() => p.remove(), 1000);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    hub.querySelector('h3').innerText = "COMPLETE";
+                    hub.style.borderColor = "var(--success)";
+                    setTimeout(() => {
+                        hub.querySelector('h3').innerText = "REFINERY";
+                        hub.style.borderColor = "var(--gold)";
+                    }, 3000);
+                }
+            }, 800);
 
             setTimeout(() => {
                 hub.style.transform = 'scale(1.08) rotate(0deg)';
                 hub.style.boxShadow = '0 0 30px var(--gold-glow)';
             }, 6000);
-        }
-
-        function showToast() {
-            const t = document.getElementById('toast');
-            t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 3000);
         }
 
         // 11:11 Pulse logic
