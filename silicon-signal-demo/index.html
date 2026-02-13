@@ -106,6 +106,17 @@
             padding: 32px;
             position: relative;
             box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
+
+        /* NEW: HEATMAP OVERLAY */
+        .heatmap-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* REFINERY VISUALIZATION */
@@ -297,7 +308,8 @@
             
             <!-- VISUAL 1: THE CORE ARCHITECTURE -->
             <div class="glass-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 40px;">
+                <div class="heatmap-bg"></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 40px; position:relative; z-index:2;">
                     <div>
                         <h2 style="font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: -1px;">Signal Refinery Architecture</h2>
                         <p style="font-size: 1rem; color: var(--text-muted);">The engine powering Silicon Nexus</p>
@@ -305,10 +317,11 @@
                     <div style="text-align: right;">
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--success);">ARCHITECTURE: DETERMINISTIC</div>
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold);">LOC_AUDIT: 700,000+</div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-muted); margin-top: 4px;">UPTIME: 99.99%</div>
                     </div>
                 </div>
 
-                <div class="viz-container" id="viz">
+                <div class="viz-container" id="viz" style="position:relative; z-index:2;">
                     <div class="orbit"></div>
                     <div class="orbit orbit-outer"></div>
 
@@ -328,13 +341,27 @@
                     <div class="node n-out-2">📝 Brief & Draft Outreach</div>
                     <div class="node n-out-3">💰 Meeting Confirmed</div>
 
-                    <!-- PARTICLES -->
-                    <div class="pulse-particle" style="top:50%; animation-delay: 0s;"></div>
-                    <div class="pulse-particle" style="top:45%; animation-delay: 1.5s;"></div>
-                    <div class="pulse-particle" style="top:55%; animation-delay: 0.8s;"></div>
+                    <!-- ANALYTICS STRIP -->
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; position:relative; z-index:2;">
+                    <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--glass-border);">
+                        <div style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Signals_Resolved</div>
+                        <div style="font-size:1.1rem; color:#fff; font-weight:800; font-family:'JetBrains Mono';">12.4k</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--glass-border);">
+                        <div style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Latency_Delta</div>
+                        <div style="font-size:1.1rem; color:var(--success); font-weight:800; font-family:'JetBrains Mono';">-1.2s</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--glass-border);">
+                        <div style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Agent_Efficiency</div>
+                        <div style="font-size:1.1rem; color:var(--gold); font-weight:800; font-family:'JetBrains Mono';">94.2%</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--glass-border);">
+                        <div style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Thread_Count</div>
+                        <div style="font-size:1.1rem; color:var(--accent); font-weight:800; font-family:'JetBrains Mono';">1,024</div>
+                    </div>
                 </div>
 
-                <div class="card-controls">
+                <div class="card-controls" style="position:relative; z-index:2;">
                     <div class="input-group">
                         <span class="input-label">REAL-TIME_STRATEGY_INPUT</span>
                         <input type="text" class="input-field" id="strategy-input" placeholder="Enter target company or persona..." value="Founders at B2B Agencies">
@@ -345,13 +372,14 @@
                 </div>
 
                 <!-- LIVE AUDIT TRAIL -->
-                <div id="audit-trail" style="margin-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; height: 100px; overflow-y: hidden; border: 1px solid var(--glass-border);">
+                <div id="audit-trail" style="margin-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; height: 120px; overflow-y: hidden; border: 1px solid var(--glass-border); position:relative; z-index:2;">
                     <div id="audit-lines">
                         > SYSTEM_IDLE: Awaiting pulse...
                     </div>
                 </div>
             </div>
 
+            <!-- ROI DYNAMICS MODELER -->
             <div class="glass-card">
                 <div class="memo-heading">ROI DYNAMICS MODELER</div>
                 <div style="display:flex; flex-direction:column; gap:20px;">
@@ -420,10 +448,10 @@
                 </div>
             </div>
 
-            <div class="note-card">
-                <div class="note-header">CLAY VS. NEXUS</div>
-                <div class="note-content">
-                    "Clay is a great workbench. Nexus is the <b>Factory</b>. I’m giving you the <i>Proprietary IP</i> that Clay hasn’t modularized yet."
+            <div class="note-card" style="background:rgba(16,185,129,0.05); border-color:var(--success);">
+                <div class="note-header" style="color:var(--success);">THE FINAL OUTPUT</div>
+                <div class="note-content" id="output-monolith" style="opacity: 0.5;">
+                    "Once the Refinery resolves, the output isn't a row in a sheet—it's a <b>High-Fidelity Strategic Dossier</b>. I don't just find a lead; I build the <i>Argument</i> for them to hire you."
                 </div>
             </div>
 
@@ -486,17 +514,24 @@
                     addAuditLine(auditData[i]);
                     const p = document.createElement('div');
                     p.className = 'pulse-particle';
-                    p.style.top = (40 + Math.random()*20) + '%';
+                    p.style.top = (30 + Math.random()*40) + '%';
                     p.style.left = '35%';
-                    p.style.animationDuration = '1s';
+                    p.style.animationDuration = '0.8s';
                     p.style.opacity = '1';
+                    p.style.backgroundColor = (i % 2 === 0) ? 'var(--gold)' : 'var(--accent)';
                     document.getElementById('viz').appendChild(p);
-                    setTimeout(() => p.remove(), 1000);
+                    setTimeout(() => p.remove(), 800);
                     i++;
                 } else {
                     clearInterval(interval);
                     hub.querySelector('h3').innerText = "COMPLETE";
                     hub.style.borderColor = "var(--success)";
+                    document.getElementById('output-monolith').style.opacity = "1";
+                    document.getElementById('output-monolith').style.transition = "all 1s ease";
+                    document.getElementById('output-monolith').innerHTML = `
+                        <div style="font-family:'JetBrains Mono'; color:var(--success); border-bottom:1px solid rgba(16,185,129,0.2); padding-bottom:8px; margin-bottom:8px;">SIGNAL_RESOLVED // TARGETING_LIVE</div>
+                        "Generated 12 briefs for <b>${document.getElementById('strategy-input').value}</b>. Signals indicate high intent on Substack & GitHub. ROI buffer at 45% verified."
+                    `;
                     setTimeout(() => {
                         hub.querySelector('h3').innerText = "REFINERY";
                         hub.style.borderColor = "var(--gold)";
