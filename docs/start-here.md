@@ -6,7 +6,9 @@ permalink: /start-here/
 
 # Start Here
 
-Welcome. This site is my canonical journal for GTM systems, revenue architecture, and AI-assisted operator workflows.
+Welcome. This site is my canonical journal for two lanes:
+- operator writing (GTM systems, revenue architecture, AI workflows)
+- personal/literary writing (memory, reflection, and voice-led essays)
 
 If you are new, use this path:
 
@@ -14,7 +16,8 @@ If you are new, use this path:
 2. Review the [Top 20 First](/top-20/) idea priorities.
 3. Browse [Topics](/topics/) based on your role.
 4. Use the [Editorial OS](/editorial-os/) for the publish + distribution loop.
-5. Use the [Share Kit](/share/) if you want to pass this to your team.
+5. Explore the [Literary Lane](/literary/) for personal writing.
+6. Use the [Share Kit](/share/) if you want to pass this to your team.
 
 ## Who This Is For
 

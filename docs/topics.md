@@ -53,3 +53,15 @@ Focus:
 Suggested reads:
 - [Start Here](/start-here/)
 - [100 Writing Ideas](/ideas/)
+
+## Personal + Literary
+
+Focus:
+- reflective essays
+- memory-driven scenes
+- identity and inner life writing
+- voice-first creative nonfiction
+
+Suggested reads:
+- [Literary Lane](/literary/)
+- [Literary Ideas](/literary-ideas/)
