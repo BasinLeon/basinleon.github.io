@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      The 10 Most Valuable AI Learning Repositories on GitHub | Leon Basin
+    </title>
+    <meta
+      name="description"
+      content="A curated list of the top GitHub repositories for mastering AI, from LLMs from scratch to agentic workflows."
+    />
+    <link
+      rel="canonical"
+      href="https://basinleon.github.io/blog/posts/10-valuable-ai-learning-repositories.html"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="The 10 Most Valuable AI Learning Repositories on GitHub"
+    />
+    <meta
+      property="og:description"
+      content="The essential list of GitHub repositories that will actually make you better at AI."
+    />
+    <meta
+      property="og:image"
+      content="https://basinleon.github.io/assets/img/ai-learning-repos-header.png"
+    />
+    <meta
+      property="og:url"
+      content="https://basinleon.github.io/blog/posts/10-valuable-ai-learning-repositories.html"
+    />
+    <meta property="og:type" content="article" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="The 10 Most Valuable AI Learning Repositories on GitHub"
+    />
+    <meta
+      name="twitter:description"
+      content="The essential list of GitHub repositories that will actually make you better at AI."
+    />
+    <meta
+      name="twitter:image"
+      content="https://basinleon.github.io/assets/img/ai-learning-repos-header.png"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold-primary: #d4af37;
+        --gold-light: #ffd700;
+        --gold-border: rgba(212, 175, 55, 0.3);
+        --bg-deep: #050508;
+        --bg-card: #0a0a0f;
+        --text-primary: #f0e6d3;
+        --text-secondary: #8b8573;
+        --text-muted: #5a584f;
+        --accent: #22d3ee;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(180deg, #050508 0%, #0a0a0f 100%);
+        color: var(--text-primary);
+        line-height: 1.8;
+        min-height: 100vh;
+      }
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(5, 5, 8, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--gold-border);
+        padding: 16px 24px;
+      }
+      .nav-container {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-logo {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1rem;
+        color: var(--gold-primary);
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+      .nav-links a {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .nav-links a:hover {
+        color: var(--gold-primary);
+      }
+      article {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 120px 24px 80px;
+      }
+      .post-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(1.4rem, 4vw, 2.2rem);
+        color: var(--gold-primary);
+        margin-bottom: 24px;
+        line-height: 1.3;
+      }
+      h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.3rem;
+        color: var(--gold-primary);
+        margin: 48px 0 24px;
+        letter-spacing: 1px;
+        border-bottom: 1px solid var(--gold-border);
+        padding-bottom: 8px;
+        display: inline-block;
+      }
+      p {
+        margin-bottom: 20px;
+        color: var(--text-secondary);
+      }
+      .repo-card {
+        background: var(--bg-card);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 32px;
+        transition: all 0.3s ease;
+      }
+      .repo-card:hover {
+        border-color: var(--gold-primary);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 48px rgba(212, 175, 55, 0.1);
+      }
+      .repo-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+      .repo-name {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.1rem;
+        color: var(--gold-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .repo-stars {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        background: rgba(212, 175, 55, 0.05);
+        padding: 4px 12px;
+        border-radius: 4px;
+      }
+      .repo-desc {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+      }
+      .repo-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        text-decoration: none;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85rem;
+        transition: color 0.3s ease;
+      }
+      .repo-link:hover {
+        color: #fff;
+      }
+      .featured-repo {
+        border: 2px solid var(--gold-primary);
+        background: linear-gradient(45deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+      }
+      .featured-badge {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.6rem;
+        background: var(--gold-primary);
+        color: #000;
+        padding: 2px 8px;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: inline-block;
+      }
+      .back-link {
+        display: inline-block;
+        margin-top: 48px;
+        padding: 12px 24px;
+        border: 1px solid var(--gold-border);
+        border-radius: 8px;
+        color: var(--gold-primary);
+        text-decoration: none;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        transition: background 0.3s ease;
+      }
+      .back-link:hover {
+        background: rgba(212, 175, 55, 0.1);
+      }
+      @media (max-width: 600px) {
+        article { padding: 100px 16px 60px; }
+        .repo-card { padding: 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/" class="nav-logo">BASIN::NEXUS</a>
+        <div class="nav-links">
+          <a href="/blog">Blog</a>
+          <a href="/case-studies">Case Studies</a>
+          <a href="/tools">Tools</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <article>
+      <div class="post-meta">Resource Guide • 8 min read • February 2026</div>
+
+      <h1>The 10 Most Valuable AI Learning Repositories on GitHub</h1>
+
+      <p>
+        I analyzed the top GitHub repositories where Jupyter Notebooks (.ipynb) are the primary format and filtered out pure hype, keeping only the most practical, structured learning resources.
+      </p>
+
+      <p>
+        Here are the 10 repositories that will actually make you better at AI, plus one specialized resource for the "Agent-Native" era.
+      </p>
+
+      <div class="repo-card featured-repo">
+        <span class="featured-badge">Featured Specialization</span>
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/system-prompts-and-models-of-ai-tools" class="repo-name">BasinLeon/system-prompts-and-models-of-ai-tools</a>
+        </div>
+        <p class="repo-desc">
+          Professional-grade collection of system prompts, agent tools, and model configurations for modern AI development environments (Cursor, Windsurf, Trae, etc.). The definitive map for anyone building with agentic workflows.
+        </p>
+        <a href="https://github.com/BasinLeon/system-prompts-and-models-of-ai-tools" class="repo-link">View Repository →</a>
+      </div>
+
+      <h2>The Core Curriculum</h2>
+
+      <!-- Repo 1 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/generative-ai-for-beginners" class="repo-name">BasinLeon/generative-ai-for-beginners</a>
+          <span class="repo-stars">~105k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Full repo for Leon’s curated Generative AI course with Jupyter notebooks and lessons on building GenAI apps.
+        </p>
+        <a href="https://github.com/BasinLeon/generative-ai-for-beginners" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 2 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/LLMs-from-scratch" class="repo-name">BasinLeon/LLMs-from-scratch</a>
+          <span class="repo-stars">~83k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Educational implementation of GPT-style LLMs from scratch (code + notebooks).
+        </p>
+        <a href="https://github.com/BasinLeon/LLMs-from-scratch" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 3 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/ai-agents-for-beginners" class="repo-name">BasinLeon/ai-agents-for-beginners</a>
+          <span class="repo-stars">~49k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Course on building agentic AI systems, tools, memory, planning, and workflows.
+        </p>
+        <a href="https://github.com/BasinLeon/ai-agents-for-beginners" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 4 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/ML-For-Beginners" class="repo-name">BasinLeon/ML-For-Beginners</a>
+          <span class="repo-stars">~83k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Classic machine learning fundamentals curriculum (26 lessons).
+        </p>
+        <a href="https://github.com/BasinLeon/ML-For-Beginners" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 5 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/openai-cookbook" class="repo-name">BasinLeon/openai-cookbook</a>
+          <span class="repo-stars">~71k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Official OpenAI API examples, production-ready patterns, recipes, and demos in notebooks.
+        </p>
+        <a href="https://github.com/BasinLeon/openai-cookbook" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 6 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/Python-100-Days" class="repo-name">BasinLeon/Python-100-Days</a>
+          <span class="repo-stars">~177k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Intensive Python learning roadmap with 100 days of exercises/notebooks.
+        </p>
+        <a href="https://github.com/BasinLeon/Python-100-Days" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 7 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/llm-app" class="repo-name">BasinLeon/llm-app</a>
+          <span class="repo-stars">~54k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          RAG templates and real-world deployable LLM apps (prod-ready pipelines).
+        </p>
+        <a href="https://github.com/BasinLeon/llm-app" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 8 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/PythonDataScienceHandbook" class="repo-name">BasinLeon/PythonDataScienceHandbook</a>
+          <span class="repo-stars">~46k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Foundational data science notebook collection (NumPy, Pandas, Matplotlib, Scikit-Learn).
+        </p>
+        <a href="https://github.com/BasinLeon/PythonDataScienceHandbook" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 9 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/stable-diffusion" class="repo-name">BasinLeon/stable-diffusion</a>
+          <span class="repo-stars">~72k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Original Stable Diffusion text-to-image model code (excellent learning material).
+        </p>
+        <a href="https://github.com/BasinLeon/stable-diffusion" class="repo-link">View Repository →</a>
+      </div>
+
+      <!-- Repo 10 -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <a href="https://github.com/BasinLeon/segment-anything" class="repo-name">BasinLeon/segment-anything</a>
+          <span class="repo-stars">~53k ⭐</span>
+        </div>
+        <p class="repo-desc">
+          Meta’s Segment Anything Model (SAM) for interactive image segmentation.
+        </p>
+        <a href="https://github.com/BasinLeon/segment-anything" class="repo-link">View Repository →</a>
+      </div>
+
+      <div class="closing-line">
+        <p>The signal is in the execution, not just the architecture.</p>
+      </div>
+
+      <a href="/blog" class="back-link">← Back to Blog</a>
+    </article>
+  </body>
+</html>

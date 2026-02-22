@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BASIN::AI Learning Navigator | Structured AI Curriculum</title>
+<meta name="description" content="An interactive AI learning path built on top of 10 curated GitHub repositories. Navigate from Python fundamentals to agentic workflows." />
+<link rel="canonical" href="https://basinleon.github.io/ai/" />
+<meta property="og:title" content="BASIN::AI Learning Navigator" />
+<meta property="og:description" content="Master AI from fundamentals to agentic workflows. Built by Leon Basin." />
+<meta property="og:url" content="https://basinleon.github.io/ai/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --gold: #d4af37;
+  --gold-light: #ffd700;
+  --gold-dim: rgba(212,175,55,0.15);
+  --gold-border: rgba(212,175,55,0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34,211,238,0.1);
+  --green: #10b981;
+  --green-dim: rgba(16,185,129,0.1);
+  --red: #ef4444;
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --bg: #050508;
+  --bg-card: #0a0a12;
+  --bg-elevated: #0f0f1a;
+  --text: #f0e6d3;
+  --text-sec: #8b8573;
+  --text-muted: #5a584f;
+  --radius: 12px;
+  --font-display: 'Orbitron', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(212,175,55,0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(34,211,238,0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(5,5,8,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 14px 24px;
+}
+.nav-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+.nav-logo { font-family:var(--font-display); font-size:0.95rem; color:var(--gold); text-decoration:none; letter-spacing:2px; }
+.nav-logo span { color:var(--cyan); }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { font-family:var(--font-display); font-size:0.65rem; color:var(--text-sec); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+.nav-links a:hover { color:var(--gold); }
+
+.hero {
+  position: relative; z-index:1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 120px 24px 60px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-mono); font-size:0.7rem;
+  color: var(--cyan); background: var(--cyan-dim);
+  border: 1px solid rgba(34,211,238,0.2);
+  padding: 4px 16px; border-radius: 20px;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.hero p { color:var(--text-sec); max-width:640px; margin:0 auto 32px; font-size:1.05rem; }
+
+/* Stats Strip */
+.stats-strip {
+  display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-value {
+  font-family: var(--font-mono); font-size:1.8rem; font-weight:700;
+  color: var(--text);
+}
+.stat-label {
+  font-size: 0.7rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+
+/* Filter Tabs */
+.filter-bar {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 40px; position: relative; z-index: 1;
+}
+.filter-btn {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  background: transparent; color: var(--text-sec);
+  border: 1px solid var(--gold-border); border-radius: 6px;
+  padding: 6px 16px; cursor: pointer;
+  transition: all 0.3s; letter-spacing: 0.5px;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.filter-btn.active {
+  background: var(--gold-dim); border-color: var(--gold); color: var(--gold);
+}
+
+/* Dependency Graph */
+.dep-graph {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto 60px;
+  padding: 0 24px;
+}
+.dep-graph h2 {
+  font-family: var(--font-display); font-size: 1.1rem; color: var(--gold);
+  text-align: center; margin-bottom: 24px; letter-spacing: 1px;
+}
+.graph-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.graph-node {
+  background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: var(--radius);
+  padding: 16px; text-align:center; cursor: pointer;
+  transition: all 0.3s; position: relative;
+}
+.graph-node:hover {
+  border-color: var(--gold); transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(212,175,55,0.1);
+}
+.graph-node.completed { border-color: var(--green); }
+.graph-node.completed::after {
+  content: '✓'; position: absolute; top: 8px; right: 10px;
+  color: var(--green); font-size: 0.8rem; font-weight: 700;
+}
+.graph-node.active { border-color: var(--cyan); box-shadow: 0 0 20px var(--cyan-dim); }
+.graph-level {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.graph-title {
+  font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--text); font-weight: 500;
+}
+.graph-stars {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: var(--gold); margin-top: 4px;
+}
+
+/* Repo Cards */
+.cards-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+.repo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.repo-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.repo-card:hover::before { opacity: 1; }
+.repo-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(212,175,55,0.08);
+}
+.repo-card.featured {
+  border: 2px solid var(--gold);
+  background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 60%);
+}
+.repo-card.hidden { display: none; }
+
+.card-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 12px;
+}
+.card-level {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  padding: 3px 10px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+}
+.card-level.fundamentals { background: var(--green-dim); color: var(--green); }
+.card-level.intermediate { background: var(--cyan-dim); color: var(--cyan); }
+.card-level.advanced { background: var(--purple-dim); color: var(--purple); }
+.card-level.specialization { background: var(--gold-dim); color: var(--gold); }
+
+.card-stars {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+}
+
+.card-title {
+  font-family: var(--font-mono); font-size: 1rem;
+  color: var(--gold); margin-bottom: 8px; font-weight: 600;
+}
+.card-title a { color: inherit; text-decoration: none; }
+.card-title a:hover { text-decoration: underline; }
+
+.card-desc {
+  font-size: 0.9rem; color: var(--text-sec); margin-bottom: 16px; line-height: 1.7;
+}
+
+.card-curriculum {
+  list-style: none; padding: 0; margin-bottom: 16px;
+}
+.card-curriculum li {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+  padding: 5px 0 5px 18px; position: relative;
+  border-bottom: 1px solid rgba(212,175,55,0.06);
+}
+.card-curriculum li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 0.7rem;
+}
+.card-curriculum li:last-child { border-bottom: none; }
+
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.card-tag {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text-muted); padding: 2px 8px; border-radius: 3px;
+}
+
+.card-actions { display: flex; gap: 10px; align-items: center; }
+.card-btn {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  padding: 8px 16px; border-radius: 6px;
+  text-decoration: none; transition: all 0.3s;
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer; border: none;
+}
+.card-btn.primary {
+  background: var(--gold-dim); color: var(--gold);
+  border: 1px solid var(--gold-border);
+}
+.card-btn.primary:hover {
+  background: var(--gold); color: #000;
+}
+.card-btn.secondary {
+  background: transparent; color: var(--text-sec);
+  border: 1px solid var(--gold-border);
+}
+.card-btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Prompt Analyzer Section */
+.analyzer-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.analyzer-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+.analyzer-title {
+  font-family: var(--font-display); font-size: 1.1rem;
+  color: var(--gold); margin-bottom: 8px;
+}
+.analyzer-subtitle {
+  color: var(--text-sec); font-size: 0.9rem; margin-bottom: 24px;
+}
+.prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 24px;
+}
+.prompt-chip {
+  background: var(--bg-elevated); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 12px 14px;
+  cursor: pointer; transition: all 0.3s;
+  text-align: center;
+}
+.prompt-chip:hover { border-color: var(--gold-border); transform: translateY(-1px); }
+.prompt-chip.selected { border-color: var(--gold); background: var(--gold-dim); }
+.prompt-chip-name {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--text); font-weight: 500;
+}
+.prompt-chip-count {
+  font-size: 0.6rem; color: var(--text-muted); margin-top: 2px;
+}
+.prompt-detail {
+  background: #000; border: 1px solid var(--gold-border); border-radius: 8px;
+  padding: 20px; font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--text-sec); line-height: 1.7; max-height: 300px; overflow-y: auto;
+  display: none;
+}
+.prompt-detail.visible { display: block; }
+.prompt-detail .key { color: var(--cyan); }
+.prompt-detail .val { color: var(--green); }
+.prompt-detail .comment { color: var(--text-muted); font-style: italic; }
+
+/* Progress Tracker */
+.progress-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.progress-bar-outer {
+  background: var(--bg-card); border: 1px solid var(--gold-border);
+  border-radius: 8px; padding: 20px;
+}
+.progress-label {
+  display: flex; justify-content: space-between; margin-bottom: 10px;
+}
+.progress-label span:first-child {
+  font-family: var(--font-display); font-size: 0.8rem; color: var(--gold); letter-spacing: 1px;
+}
+.progress-label span:last-child {
+  font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); font-weight: 700;
+}
+.progress-track {
+  height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--gold), var(--cyan));
+  border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+/* Footer */
+.footer {
+  text-align: center; padding: 32px 24px;
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);
+  border-top: 1px solid var(--gold-border);
+  position: relative; z-index: 1;
+}
+.footer a { color: var(--gold); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .hero { padding: 100px 16px 40px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .graph-container { grid-template-columns: repeat(2, 1fr); }
+  .stats-strip { gap: 16px; }
+  .prompt-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">BASIN<span>::</span>AI</a>
+    <div class="nav-links">
+      <a href="/blog">Blog</a>
+      <a href="/case-studies">Impact</a>
+      <a href="/tools">Tools</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Interactive Learning Navigator</div>
+  <h1>Master AI From Fundamentals to Agentic Workflows</h1>
+  <p>A structured curriculum built on top of 10 curated GitHub repositories. Track your progress, understand dependencies, and learn what matters — not what's trending.</p>
+</section>
+
+<section class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-value" id="total-stars">794k+</div>
+    <div class="stat-label">Combined Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">11</div>
+    <div class="stat-label">Repositories</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">4</div>
+    <div class="stat-label">Learning Tiers</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="progress-pct">0%</div>
+    <div class="stat-label">Completed</div>
+  </div>
+</section>
+
+<!-- Progress Bar -->
+<section class="progress-section">
+  <div class="progress-bar-outer">
+    <div class="progress-label">
+      <span>CURRICULUM PROGRESS</span>
+      <span id="progress-text">0 / 11 Repositories</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All Repos</button>
+  <button class="filter-btn" data-filter="fundamentals">Fundamentals</button>
+  <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+  <button class="filter-btn" data-filter="advanced">Advanced</button>
+  <button class="filter-btn" data-filter="specialization">Specialization</button>
+</div>
+
+<!-- Dependency Graph -->
+<section class="dep-graph">
+  <h2>⬡ Learning Dependency Map</h2>
+  <div class="graph-container" id="graph-container"></div>
+</section>
+
+<!-- Repo Cards -->
+<section class="cards-section">
+  <div class="cards-grid" id="cards-grid"></div>
+</section>
+
+<!-- Prompt Architecture Analyzer -->
+<section class="analyzer-section">
+  <div class="analyzer-panel">
+    <div class="analyzer-title">🧠 Prompt Architecture Analyzer</div>
+    <div class="analyzer-subtitle">Extracted from <a href="https://github.com/BasinLeon/system-prompts-and-models-of-ai-tools" style="color:var(--cyan);text-decoration:none;">BasinLeon/system-prompts-and-models-of-ai-tools</a> — compare how different AI coding agents are architected.</div>
+    <div class="prompt-grid" id="prompt-grid"></div>
+    <div class="prompt-detail" id="prompt-detail"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>Built by <a href="/">Leon Basin</a> • BASIN::NEXUS AI Division</div>
+  <div style="margin-top:4px;">Curated from repositories with 794k+ combined GitHub stars</div>
+</footer>
+
+<script>
+// ===== DATA LAYER =====
+const REPOS = [
+  {
+    id: 'python-100-days',
+    name: 'BasinLeon/Python-100-Days',
+    url: 'https://github.com/BasinLeon/Python-100-Days',
+    stars: '177k',
+    level: 'fundamentals',
+    tier: 1,
+    title: 'Python Mastery: 100 Days',
+    desc: 'The foundational Python curriculum. 100 days of structured exercises and notebooks covering everything from syntax to web scraping to data analysis. This is prerequisite zero.',
+    curriculum: ['Days 1-15: Core Python syntax & data structures', 'Days 16-30: Object-oriented programming', 'Days 31-50: Web scraping & APIs', 'Days 51-75: Data analysis with Pandas', 'Days 76-100: Machine learning basics'],
+    tags: ['python', 'fundamentals', 'exercises', 'notebooks'],
+    prereqs: [],
+    unlocks: ['python-ds-handbook', 'ml-beginners', 'genai-beginners']
+  },
+  {
+    id: 'python-ds-handbook',
+    name: 'BasinLeon/PythonDataScienceHandbook',
+    url: 'https://github.com/BasinLeon/PythonDataScienceHandbook',
+    stars: '46k',
+    level: 'fundamentals',
+    tier: 1,
+    title: 'Data Science Handbook',
+    desc: 'The canonical reference for NumPy, Pandas, Matplotlib, and Scikit-Learn. Every notebook is a production-ready tutorial. Required before touching any ML codebase.',
+    curriculum: ['NumPy: N-dimensional array operations', 'Pandas: DataFrames & time series', 'Matplotlib: Publication-quality visualization', 'Scikit-Learn: ML model pipelines'],
+    tags: ['numpy', 'pandas', 'matplotlib', 'scikit-learn'],
+    prereqs: ['python-100-days'],
+    unlocks: ['ml-beginners', 'llms-from-scratch']
+  },
+  {
+    id: 'ml-beginners',
+    name: 'BasinLeon/ML-For-Beginners',
+    url: 'https://github.com/BasinLeon/ML-For-Beginners',
+    stars: '83k',
+    level: 'intermediate',
+    tier: 2,
+    title: 'Machine Learning Fundamentals',
+    desc: 'Microsoft\'s 26-lesson ML curriculum. Covers classical ML (regression, classification, clustering, NLP, time series) before you touch deep learning. The "eat your vegetables" of AI education.',
+    curriculum: ['Regression & classification models', 'Clustering & dimensionality reduction', 'Natural Language Processing basics', 'Time series forecasting', 'Reinforcement learning intro'],
+    tags: ['machine-learning', 'classification', 'nlp', 'clustering'],
+    prereqs: ['python-100-days', 'python-ds-handbook'],
+    unlocks: ['genai-beginners', 'llms-from-scratch']
+  },
+  {
+    id: 'genai-beginners',
+    name: 'BasinLeon/generative-ai-for-beginners',
+    url: 'https://github.com/BasinLeon/generative-ai-for-beginners',
+    stars: '105k',
+    level: 'intermediate',
+    tier: 2,
+    title: 'Generative AI: Full Course',
+    desc: '21 lessons covering the full GenAI stack: prompt engineering, RAG, vector databases, function calling, fine-tuning, and building production apps. The bridge from classical ML to modern AI.',
+    curriculum: ['Lessons 1-5: LLM fundamentals & prompt engineering', 'Lessons 6-8: Building text/chat/search apps', 'Lessons 9-13: Image gen, function calling, security', 'Lessons 14-16: LLMOps, RAG, open-source models', 'Lessons 17-21: AI agents, fine-tuning, SLMs'],
+    tags: ['genai', 'prompt-engineering', 'rag', 'function-calling'],
+    prereqs: ['python-100-days'],
+    unlocks: ['openai-cookbook', 'llm-app', 'ai-agents-beginners']
+  },
+  {
+    id: 'openai-cookbook',
+    name: 'BasinLeon/openai-cookbook',
+    url: 'https://github.com/BasinLeon/openai-cookbook',
+    stars: '71k',
+    level: 'intermediate',
+    tier: 2,
+    title: 'OpenAI Cookbook: Production Patterns',
+    desc: 'Official production-ready API patterns. Embeddings, structured outputs, function calling, assistants API, and real-world recipes. The difference between demo code and shipping code.',
+    curriculum: ['Embeddings & semantic search', 'Structured outputs & JSON mode', 'Function calling patterns', 'Assistants API & threads', 'Rate limiting & cost optimization'],
+    tags: ['openai', 'api', 'embeddings', 'production'],
+    prereqs: ['genai-beginners'],
+    unlocks: ['llm-app', 'ai-agents-beginners']
+  },
+  {
+    id: 'llms-from-scratch',
+    name: 'BasinLeon/LLMs-from-scratch',
+    url: 'https://github.com/BasinLeon/LLMs-from-scratch',
+    stars: '83k',
+    level: 'advanced',
+    tier: 3,
+    title: 'Build LLMs From Scratch',
+    desc: 'The deepest cut. Implement a GPT-style LLM from raw Python: tokenization, attention mechanisms, pretraining, fine-tuning for classification, and instruction following. After this, you understand the machine.',
+    curriculum: ['Ch 2: Working with text data & BPE tokenization', 'Ch 3: Coding multi-head attention from scratch', 'Ch 4: Implementing GPT architecture', 'Ch 5: Pretraining on unlabeled data', 'Ch 6-7: Fine-tuning for classification & instructions', 'Bonus: Llama 3.2, Qwen3, Gemma 3 from scratch'],
+    tags: ['transformers', 'attention', 'pretraining', 'fine-tuning', 'deep-learning'],
+    prereqs: ['python-ds-handbook', 'ml-beginners'],
+    unlocks: ['stable-diffusion', 'segment-anything']
+  },
+  {
+    id: 'llm-app',
+    name: 'BasinLeon/llm-app',
+    url: 'https://github.com/BasinLeon/llm-app',
+    stars: '54k',
+    level: 'advanced',
+    tier: 3,
+    title: 'Production RAG & LLM Apps',
+    desc: 'Real-world deployable RAG templates and LLM pipelines. This is where theory meets infrastructure — building apps that actually work in production with real data and real latency constraints.',
+    curriculum: ['RAG pipeline architecture', 'Document parsing & chunking strategies', 'Vector store integration', 'Streaming & real-time pipelines', 'Production deployment patterns'],
+    tags: ['rag', 'production', 'pipelines', 'deployment'],
+    prereqs: ['genai-beginners', 'openai-cookbook'],
+    unlocks: ['ai-agents-beginners']
+  },
+  {
+    id: 'stable-diffusion',
+    name: 'BasinLeon/stable-diffusion',
+    url: 'https://github.com/BasinLeon/stable-diffusion',
+    stars: '72k',
+    level: 'advanced',
+    tier: 3,
+    title: 'Stable Diffusion: Model Code',
+    desc: 'The original text-to-image model implementation. Study how diffusion models, U-Nets, and CLIP encoders work together. Excellent learning material for understanding generative vision models.',
+    curriculum: ['Latent diffusion architecture', 'U-Net denoising network', 'CLIP text encoder integration', 'Sampling & inference', 'Model conditioning'],
+    tags: ['diffusion', 'image-generation', 'computer-vision', 'deep-learning'],
+    prereqs: ['llms-from-scratch'],
+    unlocks: ['segment-anything']
+  },
+  {
+    id: 'segment-anything',
+    name: 'BasinLeon/segment-anything',
+    url: 'https://github.com/BasinLeon/segment-anything',
+    stars: '53k',
+    level: 'advanced',
+    tier: 3,
+    title: 'Segment Anything (SAM)',
+    desc: 'Meta\'s interactive image segmentation model. The architecture behind zero-shot visual understanding. Pairs with Stable Diffusion to complete your vision AI education.',
+    curriculum: ['Vision Transformer (ViT) encoder', 'Prompt-based segmentation', 'Zero-shot transfer learning', 'Interactive mask generation', 'ONNX export for deployment'],
+    tags: ['segmentation', 'vision-transformer', 'computer-vision', 'zero-shot'],
+    prereqs: ['llms-from-scratch'],
+    unlocks: ['system-prompts']
+  },
+  {
+    id: 'ai-agents-beginners',
+    name: 'BasinLeon/ai-agents-for-beginners',
+    url: 'https://github.com/BasinLeon/ai-agents-for-beginners',
+    stars: '49k',
+    level: 'specialization',
+    tier: 4,
+    title: 'AI Agents: Agentic Workflows',
+    desc: 'The frontier. Agentic design patterns, tool use, RAG agents, multi-agent systems, metacognition, MCP/A2A protocols, context engineering, and memory management. This is the "Agent Native" era.',
+    curriculum: ['Agentic design patterns & frameworks', 'Tool use & function calling agents', 'Agentic RAG & planning patterns', 'Multi-agent orchestration', 'MCP, A2A & agentic protocols', 'Context engineering & memory management'],
+    tags: ['agents', 'mcp', 'multi-agent', 'tool-use', 'agentic'],
+    prereqs: ['genai-beginners', 'openai-cookbook', 'llm-app'],
+    unlocks: ['system-prompts']
+  },
+  {
+    id: 'system-prompts',
+    name: 'BasinLeon/system-prompts-and-models-of-ai-tools',
+    url: 'https://github.com/BasinLeon/system-prompts-and-models-of-ai-tools',
+    stars: '★',
+    level: 'specialization',
+    tier: 4,
+    featured: true,
+    title: 'System Prompts & Agent Architectures',
+    desc: 'The definitive map. Extracted system prompts, tool schemas, and agent configurations from every major AI coding environment (Cursor, Windsurf, Devin, Claude Code, Antigravity, and more). The capstone for anyone building agentic systems.',
+    curriculum: ['Cursor: Agent prompt v2.0 + tool schemas', 'Claude Code: Full system prompt + tools', 'Devin AI: DeepWiki + agent loop', 'Manus: Multi-module agent architecture', 'Windsurf, Trae, Lovable: Prompt patterns', '40+ AI tools catalogued'],
+    tags: ['system-prompts', 'agent-architecture', 'cursor', 'claude', 'mcp'],
+    prereqs: ['ai-agents-beginners'],
+    unlocks: []
+  }
+];
+
+// Prompt architecture data extracted from the system-prompts repo
+const PROMPT_TOOLS = [
+  { name: 'Cursor', tools: 10, patterns: ['ReAct loop', 'Todo tracking', 'Notebook editing', 'Memory system', 'Multi-tool parallel'], category: 'IDE Agent' },
+  { name: 'Claude Code', tools: 8, patterns: ['Bash execution', 'File editing', 'Web search', 'MCP integration', 'Structured thinking'], category: 'CLI Agent' },
+  { name: 'Devin AI', tools: 12, patterns: ['Full autonomy', 'Browser use', 'Shell access', 'DeepWiki reasoning', 'Multi-step planning'], category: 'Autonomous Agent' },
+  { name: 'Windsurf', tools: 7, patterns: ['Cascade flow', 'Context awareness', 'File operations', 'Terminal control'], category: 'IDE Agent' },
+  { name: 'Lovable', tools: 6, patterns: ['Component generation', 'Supabase integration', 'Design system', 'Iterative refinement'], category: 'App Builder' },
+  { name: 'Manus', tools: 9, patterns: ['Module system', 'Browser automation', 'Code execution', 'File management', 'Multi-agent'], category: 'Autonomous Agent' },
+  { name: 'Antigravity', tools: 15, patterns: ['Browser subagent', 'Image generation', 'MCP servers', 'Multi-file editing', 'Skill system'], category: 'IDE Agent' },
+  { name: 'v0', tools: 5, patterns: ['Component generation', 'Shadcn integration', 'React patterns', 'Tailwind styling'], category: 'App Builder' },
+  { name: 'Replit', tools: 7, patterns: ['Full-stack gen', 'Database setup', 'Deployment', 'Package management'], category: 'Cloud IDE' },
+  { name: 'Trae', tools: 6, patterns: ['Builder mode', 'Chat mode', 'File context', 'Terminal integration'], category: 'IDE Agent' },
+  { name: 'Kiro', tools: 4, patterns: ['Spec mode', 'Vibe mode', 'Mode classifier', 'Requirements extraction'], category: 'IDE Agent' },
+  { name: 'Amp', tools: 3, patterns: ['Thread management', 'YAML config', 'Model routing (Claude/GPT)'], category: 'IDE Agent' }
+];
+
+// ===== STATE =====
+let completedRepos = JSON.parse(localStorage.getItem('basin_ai_completed') || '[]');
+
+// ===== RENDER FUNCTIONS =====
+function renderGraph() {
+  const container = document.getElementById('graph-container');
+  const tiers = [1, 2, 3, 4];
+  const tierLabels = { 1: 'Tier 1: Fundamentals', 2: 'Tier 2: Intermediate', 3: 'Tier 3: Advanced', 4: 'Tier 4: Specialization' };
+
+  container.innerHTML = REPOS.map(repo => {
+    const isCompleted = completedRepos.includes(repo.id);
+    const preDone = repo.prereqs.every(p => completedRepos.includes(p));
+    const isActive = !isCompleted && preDone;
+    return `
+      <div class="graph-node ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}"
+           onclick="toggleComplete('${repo.id}')" title="${repo.title}">
+        <div class="graph-level">Tier ${repo.tier}</div>
+        <div class="graph-title">${repo.name.split('/')[1]}</div>
+        <div class="graph-stars">${repo.stars} ⭐</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderCards(filter = 'all') {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = REPOS.map(repo => {
+    const isHidden = filter !== 'all' && repo.level !== filter;
+    const isCompleted = completedRepos.includes(repo.id);
+    return `
+      <div class="repo-card ${repo.featured ? 'featured' : ''} ${isHidden ? 'hidden' : ''}" data-level="${repo.level}">
+        <div class="card-header">
+          <span class="card-level ${repo.level}">${repo.level}</span>
+          <span class="card-stars">${repo.stars} ⭐</span>
+        </div>
+        <div class="card-title"><a href="${repo.url}" target="_blank">${repo.name}</a></div>
+        <div class="card-desc">${repo.desc}</div>
+        <ul class="card-curriculum">
+          ${repo.curriculum.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+        <div class="card-tags">
+          ${repo.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
+        <div class="card-actions">
+          <a href="${repo.url}" target="_blank" class="card-btn primary">View Repo →</a>
+          <button class="card-btn secondary" onclick="toggleComplete('${repo.id}')">
+            ${isCompleted ? '✓ Completed' : 'Mark Complete'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPromptGrid() {
+  const grid = document.getElementById('prompt-grid');
+  grid.innerHTML = PROMPT_TOOLS.map((tool, idx) => `
+    <div class="prompt-chip" onclick="showPromptDetail(${idx})" id="prompt-chip-${idx}">
+      <div class="prompt-chip-name">${tool.name}</div>
+      <div class="prompt-chip-count">${tool.tools} tools • ${tool.category}</div>
+    </div>
+  `).join('');
+}
+
+function showPromptDetail(idx) {
+  const tool = PROMPT_TOOLS[idx];
+  const detail = document.getElementById('prompt-detail');
+
+  document.querySelectorAll('.prompt-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById(`prompt-chip-${idx}`).classList.add('selected');
+
+  detail.innerHTML = `
+    <div style="margin-bottom:12px;">
+      <span class="key">agent:</span> <span class="val">${tool.name}</span>
+      <span class="comment"> // ${tool.category}</span>
+    </div>
+    <div style="margin-bottom:8px;">
+      <span class="key">tools_count:</span> <span class="val">${tool.tools}</span>
+    </div>
+    <div style="margin-bottom:12px;">
+      <span class="key">architecture_patterns:</span>
+    </div>
+    ${tool.patterns.map(p => `<div style="padding-left:16px;">- <span class="val">${p}</span></div>`).join('')}
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--gold-border);">
+      <span class="comment">// Full prompt extracted in <a href="https://github.com/BasinLeon/system-prompts-and-models-of-ai-tools" style="color:var(--cyan);" target="_blank">BasinLeon/system-prompts-and-models-of-ai-tools</a></span>
+    </div>
+  `;
+  detail.classList.add('visible');
+}
+
+function updateProgress() {
+  const total = REPOS.length;
+  const done = completedRepos.length;
+  const pct = Math.round((done / total) * 100);
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${done} / ${total} Repositories`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function toggleComplete(repoId) {
+  if (completedRepos.includes(repoId)) {
+    completedRepos = completedRepos.filter(id => id !== repoId);
+  } else {
+    completedRepos.push(repoId);
+  }
+  localStorage.setItem('basin_ai_completed', JSON.stringify(completedRepos));
+  renderGraph();
+  renderCards(document.querySelector('.filter-btn.active').dataset.filter);
+  updateProgress();
+}
+
+// ===== FILTER LOGIC =====
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.filter);
+  });
+});
+
+// ===== INIT =====
+renderGraph();
+renderCards();
+renderPromptGrid();
+updateProgress();
+</script>
+
+<!-- NEXUS Intelligence Bot -->
+<script src="../widgets/leon-logic-bot.js?v=2.0"></script>
+</body>
+</html>
