@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Vision GTM Architecture — BASIN::NEXUS Case Study</title>
+    <meta name="description" content="Case study: Building GTM architecture for computer vision security platform. Signal-based revenue systems, deployment strategy, and automation layers.">
+    <link rel="canonical" href="https://basinleon.github.io/ai/ambient.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Computer Vision GTM Architecture — BASIN::NEXUS Case Study">
+    <meta property="og:description" content="Case study: Building GTM architecture for computer vision security platform. Signal-based revenue systems, deployment strategy, and automation layers.">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    <meta property="og:url" content="https://basinleon.github.io/ai/ambient.html">
+    <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050508;
+            --bg-card: #0a0a0c;
+            --bg-elevated: #13131a;
+            --gold-primary: #D4AF37;
+            --gold-light: #f4d166;
+            --gold-border: rgba(212, 175, 55, 0.3);
+            --text-primary: #e8e8e8;
+            --text-secondary: #a8a8b0;
+            --text-muted: #6a6a70;
+            --green: #22c55e;
+            --cyan: #06b6d4;
+            --red: #ef4444;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* SLIDE CONTAINER */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* NAVIGATION */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-primary);
+            padding: 12px 24px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold-primary);
+            color: var(--bg-deep);
+            border-color: var(--gold-primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            z-index: 1000;
+        }
+
+        /* SLIDE 1: TITLE */
+        .title-slide {
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .title-slide .author {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 60px;
+        }
+
+        .title-slide .version {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SLIDE 2: PROBLEM */
+        .problem-slide {
+            max-width: 1400px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .problem-column {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            padding: 40px;
+        }
+
+        .problem-column.red {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .problem-column.green {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .problem-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .problem-column.red h3 { color: var(--red); }
+        .problem-column.green h3 { color: var(--green); }
+
+        .problem-column ul {
+            list-style: none;
+            font-size: 0.85rem;
+            line-height: 2;
+        }
+
+        .problem-column li::before {
+            content: "→ ";
+            color: var(--gold-primary);
+            margin-right: 8px;
+        }
+
+        .quote {
+            margin-top: 60px;
+            padding: 30px;
+            border-left: 4px solid var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* SLIDE 3: BRIDGE */
+        .bridge-slide {
+            max-width: 1400px;
+        }
+
+        .bridge-comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .bridge-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+        }
+
+        .bridge-row.ambient { border-color: rgba(6, 182, 212, 0.5); }
+        .bridge-row.nexus { border-color: rgba(212, 175, 55, 0.5); }
+
+        .bridge-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            min-width: 120px;
+        }
+
+        .bridge-flow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            font-size: 1.1rem;
+        }
+
+        .bridge-arrow {
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+        }
+
+        .diagram {
+            margin-top: 40px;
+            padding: 40px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--gold-border);
+        }
+
+        .layer {
+            padding: 30px;
+            margin: 20px 0;
+            background: var(--bg-card);
+            border-left: 4px solid var(--gold-primary);
+        }
+
+        .layer.layer-1 { border-color: var(--cyan); }
+        .layer.layer-2 { border-color: var(--gold-primary); }
+        .layer.layer-3 { border-color: var(--green); }
+
+        .layer-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .layer-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* SLIDE 4: ECONOMICS */
+        .economics-slide {
+            max-width: 1600px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            font-size: 0.8rem;
+        }
+
+        thead {
+            background: var(--bg-elevated);
+        }
+
+        th {
+            padding: 20px;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.7rem;
+            border-bottom: 2px solid var(--gold-primary);
+        }
+
+        th:first-child { color: var(--gold-primary); }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:last-child {
+            background: rgba(212, 175, 55, 0.08);
+            border-bottom: 2px solid var(--gold-primary);
+        }
+
+        tr:last-child td {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .delta-green {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .bifurcation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .bifurcation-column {
+            background: var(--bg-card);
+            padding: 30px;
+            border: 1px solid var(--gold-border);
+        }
+
+        .bifurcation-column.machine { border-color: rgba(6, 182, 212, 0.5); }
+        .bifurcation-column.human { border-color: rgba(212, 175, 55, 0.5); }
+
+        .bifurcation-column h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .bifurcation-column.machine h4 { color: var(--cyan); }
+        .bifurcation-column.human h4 { color: var(--gold-primary); }
+
+        .bifurcation-column ul {
+            list-style: none;
+            font-size: 0.75rem;
+            line-height: 2;
+        }
+
+        .bifurcation-column li::before {
+            content: "→ ";
+            margin-right: 8px;
+        }
+
+        .bifurcation-column.machine li::before { color: var(--cyan); }
+        .bifurcation-column.human li::before { color: var(--gold-primary); }
+
+        /* SLIDE 5: DEPLOYMENT */
+        .deployment-slide {
+            max-width: 1400px;
+        }
+
+        .gantt {
+            margin: 40px 0;
+        }
+
+        .gantt-row {
+            margin: 30px 0;
+            padding: 30px;
+            background: var(--bg-card);
+            border-left: 4px solid var(--gold-primary);
+        }
+
+        .gantt-row.month-1 { border-color: var(--cyan); }
+        .gantt-row.month-2 { border-color: var(--gold-primary); }
+        .gantt-row.month-3 { border-color: var(--green); }
+
+        .gantt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .gantt-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .gantt-row.month-1 .gantt-title { color: var(--cyan); }
+        .gantt-row.month-2 .gantt-title { color: var(--gold-primary); }
+        .gantt-row.month-3 .gantt-title { color: var(--green); }
+
+        .gantt-deliverable {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .gantt-desc {
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .close-statement {
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold-border);
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold-primary);
+        }
+
+        /* COMMON */
+        .slide-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: var(--gold-primary);
+        }
+
+        .slide-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        /* KEYNOTE MODE */
+        body.keynote-mode {
+            cursor: none;
+        }
+
+        .keynote-instructions {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / 5
+    </div>
+
+    <div class="slide-container" id="slideContainer">
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active" data-slide="1">
+            <div class="version">CASE STUDY v1.0</div>
+            <div class="title-slide">
+                <h1>DEPLOYMENT STRATEGY</h1>
+                <p class="subtitle">Building the Signal Refinery for Computer Vision Security GTM</p>
+                <p class="author">
+                    Leon Basin, MBA<br>
+                    Revenue Architect • BASIN::NEXUS v10.0<br>
+                    <span style="color: var(--gold-primary);">Pro Bono Case Study</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: PROBLEM -->
+        <div class="slide" data-slide="2">
+            <h2 class="slide-title">THE PROBLEM</h2>
+            <p class="slide-subtitle">Dictionary vs. Signal</p>
+
+            <div class="problem-grid">
+                <div class="problem-column red">
+                    <h3>The Dictionary</h3>
+                    <ul>
+                        <li>CRMs store data but don't interpret it</li>
+                        <li>40+ hrs/week spent mining for intent</li>
+                        <li>24-48 hour gap between signal and action</li>
+                        <li>SDRs are "human search engines"</li>
+                        <li>PMMs deliver dictionaries, not signals</li>
+                    </ul>
+                </div>
+
+                <div class="problem-column green">
+                    <h3>The Signal</h3>
+                    <ul>
+                        <li>LLM Reasoning Agent scores every signal</li>
+                        <li>>0.8 score = immediate human handoff</li>
+                        <li>5 words, not a dictionary</li>
+                        <li>n8n orchestrates Slack/CRM sync</li>
+                        <li>Humans only touch high-probability leads</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quote">
+                "Most teams solve GTM with headcount. I solve it with architecture."
+            </div>
+        </div>
+
+        <!-- SLIDE 3: BRIDGE -->
+        <div class="slide" data-slide="3">
+            <h2 class="slide-title">THE AMBIENT BRIDGE</h2>
+            <p class="slide-subtitle">Same Architecture, Different Data</p>
+
+            <div class="bridge-comparison">
+                <div class="bridge-row ambient">
+                    <span class="bridge-label">Computer Vision Security</span>
+                    <div class="bridge-flow">
+                        <span>Video Noise</span>
+                        <span class="bridge-arrow">→</span>
+                        <span>AI Refinery</span>
+                        <span class="bridge-arrow">→</span>
+                        <span style="color: var(--cyan);">Security Threat</span>
+                    </div>
+                </div>
+
+                <div class="bridge-row nexus">
+                    <span class="bridge-label">Basin::Nexus</span>
+                    <div class="bridge-flow">
+                        <span>Market Noise</span>
+                        <span class="bridge-arrow">→</span>
+                        <span>AI Refinery</span>
+                        <span class="bridge-arrow">→</span>
+                        <span style="color: var(--gold-primary);">Revenue Signal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagram">
+                <div class="layer layer-1">
+                    <div class="layer-title" style="color: var(--cyan);">LAYER 1 (TOP) — INGESTION</div>
+                    <div class="layer-desc">
+                        Apollo API • LinkedIn Scraper • GitHub Webhooks • Funding Alerts<br>
+                        <strong>50k signals/day ingested</strong>
+                    </div>
+                </div>
+
+                <div class="layer layer-2">
+                    <div class="layer-title" style="color: var(--gold-primary);">LAYER 2 (MIDDLE) — REFINERY 🔥</div>
+                    <div class="layer-desc">
+                        Gemini/GPT-4 Reasoning Agent<br>
+                        >0.8 = HOT (immediate handoff) | 0.5-0.8 = WARM (nurture) | <0.5 = COLD (archive)<br>
+                        <strong>"Is this noise or pre-incident indicator?"</strong>
+                    </div>
+                </div>
+
+                <div class="layer layer-3">
+                    <div class="layer-title" style="color: var(--green);">LAYER 3 (BOTTOM) — HANDOFF</div>
+                    <div class="layer-desc">
+                        HIGH-SIGNAL SDR → Strategic Brief via Slack/n8n → The Meeting<br>
+                        AUTOMATED NURTURE → Email Sequence → CRM Archive
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote">
+                "This is the Refinery. Most companies skip this layer. That's why reps burn out—they're processing raw sewage."
+            </div>
+        </div>
+
+        <!-- SLIDE 4: ECONOMICS -->
+        <div class="slide" data-slide="4">
+            <h2 class="slide-title">UNIT ECONOMICS</h2>
+            <p class="slide-subtitle">Traditional vs. Bifurcated Model</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>METRIC</th>
+                        <th>TRADITIONAL SDR</th>
+                        <th>BIFURCATED (NEXUS)</th>
+                        <th>DELTA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Team Size</td>
+                        <td>10 SDRs ($800k OTE)</td>
+                        <td>1 GTM Eng + 3 SDRs ($560k)</td>
+                        <td class="delta-green">-70% headcount</td>
+                    </tr>
+                    <tr>
+                        <td>Manual Work (weekly)</td>
+                        <td>400 hrs (40 × 10)</td>
+                        <td>30 hrs (10 × 3)</td>
+                        <td class="delta-green">-92% toil</td>
+                    </tr>
+                    <tr>
+                        <td>Signal→Outreach</td>
+                        <td>24-48 hours</td>
+                        <td><5 minutes</td>
+                        <td class="delta-green">-99.7% latency</td>
+                    </tr>
+                    <tr>
+                        <td>Qualified Meetings/Mo</td>
+                        <td>100 (10/SDR)</td>
+                        <td>150 (50/SDR)</td>
+                        <td class="delta-green">+50% output</td>
+                    </tr>
+                    <tr>
+                        <td>Cost Per Meeting</td>
+                        <td>$670</td>
+                        <td>$211</td>
+                        <td class="delta-green">-68% CAC</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annual Cost</strong></td>
+                        <td>$804k baseline</td>
+                        <td>$380k total</td>
+                        <td class="delta-green"><strong>$424K SAVED</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="bifurcation-grid">
+                <div class="bifurcation-column machine">
+                    <h4>The Machine Handles</h4>
+                    <ul>
+                        <li>Signal detection (GitHub, LinkedIn, funding)</li>
+                        <li>LLM-powered ICP scoring</li>
+                        <li>Contextual enrichment via Clay</li>
+                        <li>Initial outreach (low-complexity)</li>
+                        <li>CRM sync and data normalization</li>
+                    </ul>
+                </div>
+
+                <div class="bifurcation-column human">
+                    <h4>The Human Handles</h4>
+                    <ul>
+                        <li>Executive ghostwriting</li>
+                        <li>Complex objection handling</li>
+                        <li>Multi-threaded deal navigation</li>
+                        <li>Trust-building and closing</li>
+                        <li>High-stakes meeting orchestration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quote">
+                "Code is the new revenue capacity. Headcount is no longer a proxy for growth."
+                <div style="font-size: 0.7rem; margin-top: 10px; color: var(--text-muted);">
+                    — Series A Cybersecurity Implementation: 160% Pipeline Growth, Zero Additional Headcount
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: DEPLOYMENT -->
+        <div class="slide" data-slide="5">
+            <h2 class="slide-title">30-60-90 DEPLOYMENT</h2>
+            <p class="slide-subtitle">The Roadmap</p>
+
+            <div class="gantt">
+                <div class="gantt-row month-1">
+                    <div class="gantt-header">
+                        <div class="gantt-title">Month 1: Audit the Signal Pipeline</div>
+                        <div class="gantt-deliverable">DELIVERABLE: Friction Report</div>
+                    </div>
+                    <div class="gantt-desc">
+                        Map current signal-to-CRM flow • Interview reps: Where do leads die? •
+                        Identify latency leaks (research, data entry, handoffs) • Shadow 10 discovery calls
+                    </div>
+                </div>
+
+                <div class="gantt-row month-2">
+                    <div class="gantt-header">
+                        <div class="gantt-title">Month 2: Build the Refinery (Pilot)</div>
+                        <div class="gantt-deliverable">DELIVERABLE: Pilot Metrics</div>
+                    </div>
+                    <div class="gantt-desc">
+                        Select 1 vertical (e.g., Critical Infrastructure) • Pilot with 2 reps •
+                        Build LLM scoring agent for that ICP • Test: Does the scoring surface real signal?
+                    </div>
+                </div>
+
+                <div class="gantt-row month-3">
+                    <div class="gantt-header">
+                        <div class="gantt-title">Month 3: Scale the Velocity</div>
+                        <div class="gantt-deliverable">DELIVERABLE: Full Deployment</div>
+                    </div>
+                    <div class="gantt-desc">
+                        Expand Refinery to all verticals • Full bifurcation: 1 GTM Eng + Optimized SDR team •
+                        Replace brute-force prospecting with architecture • Continuous improvement: Weekly signal quality reviews
+                    </div>
+                </div>
+            </div>
+
+            <div class="close-statement">
+                "I don't do learning tours. I do deployment.<br>
+                I want to build the Signal Refinery that makes Ambient's sales team<br>
+                the most efficient in the industry."
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <div class="keynote-instructions">
+        Press SPACE or → to advance • ESC to exit fullscreen • F for fullscreen
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+
+            if (n > totalSlides) { currentSlide = totalSlides; }
+            if (n < 1) { currentSlide = 1; }
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+
+            document.getElementById('currentSlide').textContent = currentSlide;
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = (currentSlide === 1);
+            document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+            if (e.key === 'f' || e.key === 'F') {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    document.documentElement.requestFullscreen();
+                }
+            }
+            if (e.key === 'Escape') {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Click to advance (optional)
+        document.querySelector('.slide-container').addEventListener('click', (e) => {
+            if (e.target.classList.contains('slide')) {
+                nextSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
