@@ -12,6 +12,15 @@
         (function () {
             var host = window.location.hostname;
             if (host !== "writing.basinleon.com") return;
+            if (window.location.protocol !== "https:") {
+                window.location.replace(
+                    "https://writing.basinleon.com" +
+                    window.location.pathname +
+                    window.location.search +
+                    window.location.hash
+                );
+                return;
+            }
             if (window.location.pathname.startsWith("/docs")) return;
             var target = "/docs" + (window.location.pathname === "/" ? "/" : window.location.pathname);
             window.location.replace(target + window.location.search + window.location.hash);
