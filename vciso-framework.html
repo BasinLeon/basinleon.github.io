@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vCISO Compact Async Framework | Basin & Associates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0a0c;
+            --bg-card: #141417;
+            --text-main: #e4e4e7;
+            --text-dim: #a1a1aa;
+            --accent: #f97316; /* Safety Orange */
+            --accent-glow: rgba(249, 115, 22, 0.2);
+            --border: #27272a;
+            --grid-color: rgba(39, 39, 42, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 2px 2px, var(--grid-color) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            margin-bottom: 4rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 2rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        header p {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .card h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .card p {
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        code-block {
+            display: block;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            border-left: 2px solid var(--border);
+            margin-top: 1rem;
+            color: #cbd5e1;
+        }
+
+        .object-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .label { color: var(--text-dim); }
+        .value { color: white; display: block; margin-top: 0.2rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        th {
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .priority-matrix {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .formula {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            color: white;
+            padding: 2rem;
+            background: #000;
+            border: 1px dashed var(--accent);
+        }
+
+        .wedge-box {
+            background: linear-gradient(135deg, #141417 0%, #1a1a1e 100%);
+            border: 2px solid var(--accent);
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+            font-size: 0.7rem;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            margin-top: 6rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        .step-flow {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            z-index: 2;
+        }
+
+        .step-num {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: 700;
+        }
+
+        .step-flow::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Compact vCISO Framework</h1>
+            <p>Decision-Grade Control Mapping & Evidence Continuity</p>
+        </header>
+
+        <div class="grid">
+            <!-- 1. Canonical Object -->
+            <div class="card">
+                <h2>01. SOURCE OF TRUTH</h2>
+                <h3>Canonical Control Object</h3>
+                <p>Decoupling core security requirements from individual framework line-items to maintain evidence persistence.</p>
+                <div class="object-meta">
+                    <div class="meta-item"><span class="label">UID</span><span class="value">BASIN-CTRL-015</span></div>
+                    <div class="meta-item"><span class="label">NAMESPACE</span><span class="value">Access Governance</span></div>
+                </div>
+                <code>- Requirement: MFA Enforced for Admins<br>
+- Validation: API Check (Boolean)<br>
+- Frameworks: [NIST, SOC2, ISO]<br>
+- Owner: Identity Lead</code>
+            </div>
+
+            <!-- 2. Mapping Logic -->
+            <div class="card">
+                <h2>02. TRANSLATION LAYER</h2>
+                <h3>Framework Crosswalk</h3>
+                <p>Mapping internal controls to external standards for multi-audit efficiency.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>NIST</th>
+                            <th>SOC2</th>
+                            <th>ISO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Assets</td>
+                            <td>ID.AM</td>
+                            <td>CC6.1</td>
+                            <td>A.5.9</td>
+                        </tr>
+                        <tr>
+                            <td>Access</td>
+                            <td>PR.AC</td>
+                            <td>CC6.2</td>
+                            <td>A.5.15</td>
+                        </tr>
+                        <tr>
+                            <td>Protect</td>
+                            <td>PR.DS</td>
+                            <td>CC6.7</td>
+                            <td>A.5.10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3. Evidence Continuity -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>03. THE LOOP</h2>
+                <h3>Evidence Continuity Pattern</h3>
+                <p>Moving from point-in-time checklists to continuous evidence flow.</p>
+                <div class="step-flow">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <h4>CAPTURE</h4>
+                        <span class="meta-item">Technical Ingestion</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <h4>VALIDATE</h4>
+                        <span class="meta-item">AI/Human Oversight</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <h4>ATTACH</h4>
+                        <span class="meta-item">Control Linking</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <h4>ATTEST</h4>
+                        <span class="meta-item">Decision Signature</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Prioritization -->
+            <div class="card">
+                <h2>04. STRATEGIC FOCUS</h2>
+                <h3>Remediation Rubric</h3>
+                <p>Calculating urgency based on exploitability and business impact.</p>
+                <div class="formula">
+                    (R × 0.4) + (E × 0.4) + (B × 0.2)
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim);">
+                    R = Risk Score | E = Exploitability | B = Biz Impact
+                </div>
+            </div>
+
+            <!-- 5. Decision Grade Output -->
+            <div class="card wedge-box">
+                <div class="badge">DECISION-GRADE OUTPUT</div>
+                <h3>Sample Gap Analysis</h3>
+                <p>The "Outbound Wedge" artifact designed to trigger remediation urgency.</p>
+                <code-block style="color: #fb923c;">
+                    [CRITICAL DRIFT DETECTED]<br>
+                    - Gap: 40% Admin MFA Coverage<br>
+                    - Framework Impact: NIST PR.AA-01 / SOC2 CC6.1<br>
+                    - Exploitability: HIGH (Credential Stuffing)<br>
+                    - Business Risk: Loss of Enterprise Trust<br>
+                    - Action: Enforce Policy via SDK V2.1
+                </code-block>
+            </div>
+        </div>
+
+        <footer>
+            Prepared for Raj @ Basin & Associates | &copy; 2026 BASIN::NEXUS
+        </footer>
+    </div>
+</body>
+</html>
