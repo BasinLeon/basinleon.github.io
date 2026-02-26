@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESCOPE // GTM Architecture Proposal | Leon Basin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #05080f;
+            --bg-surface: #0c1120;
+            --bg-card: #111827;
+            --border-subtle: rgba(59, 130, 246, 0.12);
+            --border-glow: rgba(59, 130, 246, 0.25);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --accent: #3b82f6;
+            --accent-bright: #60a5fa;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.08);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.1);
+            --cyan: #22d3ee;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top accent line */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--cyan), var(--accent), transparent);
+            z-index: 100;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 32px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 120px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .logo-block h1 {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .logo-block h1 span {
+            color: var(--accent-bright);
+        }
+
+        .logo-block .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pill {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            background: var(--success-glow);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+        }
+
+        /* ─── ALERT BAR ─── */
+        .alert-bar {
+            background: var(--danger-glow);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-left: 3px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
+            color: #fca5a5;
+            line-height: 1.6;
+        }
+
+        .alert-bar strong {
+            color: var(--danger);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+
+        /* ─── METRIC STRIP ─── */
+        .metric-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .metric {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 20px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .metric:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .metric::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .metric:hover::before { opacity: 1; }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* ─── PANELS ─── */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .panel:hover {
+            border-color: var(--border-glow);
+        }
+
+        .panel-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-bright);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        /* ─── LIST ITEMS ─── */
+        .intel-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .intel-list li {
+            position: relative;
+            padding: 12px 0 12px 24px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.06);
+        }
+
+        .intel-list li:last-child { border-bottom: none; }
+
+        .intel-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .intel-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ─── ARCHITECTURE DIAGRAM ─── */
+        .arch-diagram {
+            background: #000000;
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: var(--text-muted);
+            overflow-x: auto;
+            white-space: pre;
+            position: relative;
+        }
+
+        .arch-diagram::before {
+            content: 'SYSTEM ARCHITECTURE';
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            opacity: 0.5;
+        }
+
+        .arch-diagram .node {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .arch-diagram .pipe {
+            color: var(--accent-bright);
+        }
+
+        .arch-diagram .action {
+            color: var(--cyan);
+        }
+
+        .arch-diagram .result {
+            color: var(--success);
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .footer .sig {
+            margin-top: 8px;
+            color: #1e293b;
+            font-size: 0.65rem;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 16px; }
+            .metric-strip { grid-template-columns: repeat(2, 1fr); }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body::before, body::after { display: none; }
+            .wrapper { padding: 20px; }
+            .panel:hover { border-color: var(--border-subtle); box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo-block">
+            <h1>DESCOPE<span>::</span>GTM_OS</h1>
+            <div class="subtitle">Technical GTM & Customer Success Architecture Proposal — Leon Basin</div>
+        </div>
+        <div class="status-pill">● Full-Time Candidate</div>
+    </div>
+
+    <!-- ALERT -->
+    <div class="alert-bar">
+        <strong>Friction Point:</strong> Enterprise IAM deals (Passkeys, SSO, MCP Server Auth) stall during the POC phase because developers hit API implementation roadblocks. Customer Success needs automated, real-time visibility to intervene before Net Revenue Retention (NRR) degrades.
+    </div>
+
+    <!-- METRICS -->
+    <div class="metric-strip">
+        <div class="metric">
+            <div class="metric-value">1,000+</div>
+            <div class="metric-label">Orgs in Production</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">8</div>
+            <div class="metric-label">Co-Founders (Demisto Mafia)</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">$88M</div>
+            <div class="metric-label">Total Funding (Seed)</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">CSE</div>
+            <div class="metric-label">Open Role (Bay Area)</div>
+        </div>
+    </div>
+
+    <!-- COMPANY INTEL -->
+    <div class="panel">
+        <div class="panel-title">Company Intelligence: Descope</div>
+        <ul class="intel-list">
+            <li><strong>Origin:</strong> 8 co-founders with 30+ years of shared enterprise security history. They founded <strong>Sentrigo</strong> (acquired by McAfee, 2011), then <strong>Demisto</strong> (acquired by Palo Alto Networks for <strong>$560M</strong>, 2019). At PANW, they scaled <strong>Cortex XSOAR</strong> from scratch to hypergrowth. Descope is their third company together.</li>
+            <li><strong>The Thesis:</strong> "Building customer authentication in-house always started as a sprint and ended in an unwanted marathon." Descope is a no-code/low-code CIAM platform that decouples auth flows from the application codebase entirely — iterate on authentication without redeploying the app.</li>
+            <li><strong>Product:</strong> Drag-and-drop auth flows (Passkeys, Magic Links, SSO, Social Login, MFA, Biometrics). SDKs, REST APIs, and a visual flow builder. Recently launched <strong>Agentic Identity Hub</strong> for AI agent auth and <strong>MCP Server Auth</strong> via Python SDK.</li>
+            <li><strong>Funding:</strong> $53M seed (2023), extended to <strong>$88M total</strong> (2025). Investors include <strong>George Kurtz</strong> (CEO, CrowdStrike), <strong>Assaf Rappaport</strong> (CEO, Wiz), <strong>John Thompson</strong> (Lead Director, Microsoft), <strong>Bipul Sinha</strong> (CEO, Rubrik), and <strong>Nir Polak</strong> (Co-Founder, Exabeam).</li>
+            <li><strong>Culture:</strong> "All of us are engineers. Yes, even the CRO." Guiding principles: <em>Build in public, Ship fast and slow, Every customer matters, Embrace the espresso.</em></li>
+        </ul>
+    </div>
+
+    <!-- TWO COLUMNS -->
+    <div class="grid-2">
+        <div class="panel">
+            <div class="panel-title">Operator Experience</div>
+            <ul class="intel-list">
+                <li><strong>Fudo Security (Zero-Trust PAM):</strong> Sr. Manager, Strategic CS. Built technical onboarding playbooks for complex identity & access management products. Generated $424K+ in operational headcount savings by converting high-friction auth deployments into automated workflows.</li>
+                <li><strong>SurveyMonkey:</strong> Enterprise Business Development. Navigated multi-stakeholder enterprise deals where HIPAA, SOC2, and IT security reviews were the primary barriers to close.</li>
+                <li><strong>Sanho Corporation:</strong> CS Manager. Built automated feedback loops for massive product launches ($3.1M+), turning chaotic customer telemetry into actionable engineering intelligence.</li>
+                <li><strong>Basin Consulting:</strong> GTM Architect. Build Python data pipelines to scrape, score, and route intent signals from unstructured data to CRM/Slack endpoints in real time.</li>
+            </ul>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Target Role: Customer Success Engineer</div>
+            <ul class="intel-list">
+                <li><strong>The Bridge:</strong> I act as the connective tissue between Engineering, Sales, and the customer's development team during complex enterprise IAM and Agentic Auth rollouts.</li>
+                <li><strong>Telemetry Engineering:</strong> I write the Python webhooks and signal logic to track API usage spikes, errors, or stalled implementations — routing them instantly to the CS org.</li>
+                <li><strong>MCP Auth Expertise:</strong> I actively build and deploy Model Context Protocol (MCP) Python servers. I understand the exact friction points your Agentic Identity Hub solves.</li>
+                <li><strong>Full-Cycle Operator:</strong> I've closed enterprise deals and managed strategic accounts. I can run the CS play and engineer the playbook simultaneously.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="panel">
+        <div class="panel-title">Proposed Internal Architecture</div>
+        <div class="arch-diagram">
+<span class="node">[ DEVELOPER ACTIVITY ]</span>  <span class="pipe">──►</span> Descope Free Tier & API Usage
+        │
+<span class="action">   (Python Telemetry Webhooks configured by Leon)</span>
+        ▼
+<span class="node">[ SIGNAL ROUTER ]</span>       <span class="pipe">──►</span> Detects: API Errors, Stalled Implementations, Upsell Triggers
+        │
+<span class="action">   (Automated Logic layered on top of CS Playbooks)</span>
+        ▼
+<span class="node">[ DESCOPE CS TEAM ]</span>     <span class="pipe">──►</span> Gets Instant Payload in Slack / Salesforce
+        │
+<span class="result">   (CSM reaches out with a precise technical fix BEFORE the developer churns)</span>
+        </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="panel">
+        <div class="panel-title">Strategic Discussion — High-Leverage Questions</div>
+        <ul class="intel-list">
+            <li><strong>Post-Sales Structure:</strong> Given your background leading CS at Palo Alto Networks (Cortex) and Demisto, how are you structuring the post-sales motion at Descope? Are your CSMs highly technical, or are you prioritizing product-led-growth onboarding?</li>
+            <li><strong>Signal Orchestration:</strong> How are you currently orchestrating deployment signals internally? When an enterprise developer hits an implementation roadblock, is that instantly routing to CS/Sales, or is it still manual?</li>
+            <li><strong>Agentic Identity:</strong> I saw you recently launched identity providers for AI agents and Python MCP servers. Having built my own MCP architectures, what is the biggest friction point teams have when deploying agentic auth?</li>
+        </ul>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        [ END OF INTERNAL PROPOSAL ] — Ready for deployment discussion next week.
+        <div class="sig">DEMISTO_MAFIA(8) // PALO_ALTO_NETWORKS::CORTEX // CYBERARK_COMPETITOR_SET // TARGET_INIT</div>
+    </div>
+
+</div>
+
+</body>
+</html>
