@@ -455,7 +455,7 @@
                 <div class="nav-item" data-tab="2" onclick="switchTab(2)"><span>🛰️</span> Signal Feed</div>
                 <div class="nav-item" data-tab="3" onclick="switchTab(3)"><span>📦</span> Payload Vault</div>
                 <div class="nav-item" data-tab="4" onclick="switchTab(4)"><span>📂</span> Historical</div>
-                <div class="nav-item" data-tab="5" onclick="switchTab(5)" style="border-left-color: var(--pink);"><span>🔥</span> Lead Database <span style="font-size:0.55rem;background:var(--pink);color:#fff;padding:2px 6px;border-radius:4px;margin-left:auto;">1K</span></div>
+                <div class="nav-item" data-tab="5" onclick="switchTab(5)" style="border-left-color: var(--pink);"><span>🧠</span> Ops Vault <span style="font-size:0.55rem;background:var(--pink);color:#fff;padding:2px 6px;border-radius:4px;margin-left:auto;" id="opsVaultBadge">0</span></div>
             </nav>
 
             <div class="sidebar-section">
@@ -669,11 +669,11 @@
 
                 <section class="lead-grid-wrap">
                     <div class="lead-grid-bar">
-                        <div class="lead-count" id="leadCount">LOCAL LEADS: 0</div>
-                        <input id="leadSearchInput" class="lead-search" type="text" placeholder="Search imported leads (company, contact, stage, source)...">
-                        <button id="leadPrevBtn" class="lead-page-btn">Prev</button>
-                        <button id="leadNextBtn" class="lead-page-btn">Next</button>
-                        <div class="lead-count" id="leadPageInfo">PAGE 0 / 0</div>
+                        <div class="lead-count" id="leadQuickCount">LOCAL LEADS: 0</div>
+                        <input id="leadQuickSearchInput" class="lead-search" type="text" placeholder="Search imported leads (company, contact, stage, source)...">
+                        <button id="leadQuickPrevBtn" class="lead-page-btn">Prev</button>
+                        <button id="leadQuickNextBtn" class="lead-page-btn">Next</button>
+                        <div class="lead-count" id="leadQuickPageInfo">PAGE 0 / 0</div>
                     </div>
                     <div class="lead-row head">
                         <div>Company</div>
@@ -684,7 +684,7 @@
                         <div>Source</div>
                         <div>Score</div>
                     </div>
-                    <div id="leadRowsMount"></div>
+                    <div id="leadQuickRowsMount"></div>
                 </section>
             </div>
 
@@ -820,19 +820,46 @@
                 </div>
             </div>
 
-            <!-- LEAD DATABASE PANEL -->
+            <!-- OPS VAULT PANEL -->
             <div class="data-grid-container" id="panel-5">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        <button class="hud-btn" onclick="filterLeads('all')" id="fAll" style="background:var(--accent);">ALL</button>
-                        <button class="hud-btn" onclick="filterLeads('P1')" id="fP1">P1</button>
-                        <button class="hud-btn" onclick="filterLeads('P2')" id="fP2">P2</button>
-                        <button class="hud-btn" onclick="filterLeads('P3')" id="fP3">P3</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <button class="hud-btn" id="importLeadsBtn">Import Leads CSV</button>
+                        <button class="hud-btn" id="importContactsBtn">Import Contacts CSV</button>
+                        <button class="hud-btn" id="importHiringBtn">Import Hiring Managers CSV</button>
+                        <button class="hud-btn" id="importInteractionsBtn">Import Interactions CSV</button>
+                        <button class="hud-btn" id="importArtifactsBtn">Import Artifacts JSON</button>
+                        <input id="leadsCsvInput" type="file" accept=".csv" style="display:none;">
+                        <input id="contactsCsvInput" type="file" accept=".csv" style="display:none;">
+                        <input id="hiringCsvInput" type="file" accept=".csv" style="display:none;">
+                        <input id="interactionsCsvInput" type="file" accept=".csv" style="display:none;">
+                        <input id="artifactsJsonInput" type="file" accept=".json" style="display:none;">
                     </div>
-                    <div style="font-family:'JetBrains Mono';font-size:0.7rem;color:var(--text-secondary);">Showing <span id="leadCount">0</span> leads</div>
+                    <div style="font-family:'JetBrains Mono';font-size:0.7rem;color:var(--text-secondary);">Unified Records: <span id="hubTotalCount">0</span></div>
                 </div>
-                <div id="leadGrid"></div>
-                <div id="leadPager" style="display:flex;gap:8px;justify-content:center;margin-top:20px;"></div>
+                <div style="display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-bottom:12px;">
+                    <div class="tel-node"><span class="tel-label">LEADS</span><span class="tel-val" id="countLeads">0</span></div>
+                    <div class="tel-node"><span class="tel-label">CONTACTS</span><span class="tel-val" id="countContacts">0</span></div>
+                    <div class="tel-node"><span class="tel-label">HIRING</span><span class="tel-val" id="countHiring">0</span></div>
+                    <div class="tel-node"><span class="tel-label">INTERACTIONS</span><span class="tel-val" id="countInteractions">0</span></div>
+                    <div class="tel-node"><span class="tel-label">ARTIFACTS</span><span class="tel-val" id="countArtifacts">0</span></div>
+                </div>
+                <div class="lead-grid-bar">
+                    <input id="hubSearchInput" class="lead-search" type="text" placeholder="Search all imported data (name, company, email, phone, stage, source, notes)...">
+                    <button id="hubPrevBtn" class="lead-page-btn">Prev</button>
+                    <button id="hubNextBtn" class="lead-page-btn">Next</button>
+                    <div class="lead-count" id="hubPageInfo">PAGE 0 / 0</div>
+                </div>
+                <div class="lead-row head">
+                    <div>Dataset</div>
+                    <div>Name / Company</div>
+                    <div>Stage</div>
+                    <div>Email</div>
+                    <div>Phone</div>
+                    <div>Source</div>
+                    <div>Score</div>
+                </div>
+                <div id="hubRowsMount"></div>
             </div>
         </main>
 
@@ -858,12 +885,21 @@
             filteredLeads: [],
             leadPage: 1,
             leadPageSize: 120,
+            contacts: [],
+            hiringManagers: [],
+            interactions: [],
+            artifacts: [],
+            hubRows: [],
+            hubFilteredRows: [],
+            hubPage: 1,
+            hubPageSize: 80,
             commands: [
                 { id: 'goto-destiny', name: 'Jump to Destiny Map', key: '1', action: () => switchTab(0) },
                 { id: 'goto-arena', name: 'Jump to Arena Intel', key: '2', action: () => switchTab(1) },
                 { id: 'goto-signal', name: 'Jump to Signal Feed', key: '3', action: () => switchTab(2) },
                 { id: 'goto-vault', name: 'Jump to Payload Vault', key: '4', action: () => switchTab(3) },
                 { id: 'goto-history', name: 'Jump to Historical', key: '5', action: () => switchTab(4) },
+                { id: 'goto-ops-vault', name: 'Jump to Ops Vault', key: '6', action: () => switchTab(5) },
                 { id: 'focus-replit', name: 'Focus Replit Node', key: 'R', action: () => jumpToNode('replit') },
                 { id: 'focus-nimbly', name: 'Focus Go Nimbly Node', key: 'G', action: () => jumpToNode('go-nimbly') },
                 { id: 'focus-descope', name: 'Focus Descope Node', key: 'D', action: () => jumpToNode('descope') },
@@ -892,6 +928,27 @@
             };
         }
 
+        function mapGenericRecord(record, dataset) {
+            const get = (...keys) => {
+                for (const key of keys) {
+                    if (record[key] != null && String(record[key]).trim() !== '') return String(record[key]).trim();
+                }
+                return '';
+            };
+            return {
+                dataset,
+                name: get('full_name', 'name', 'Name', 'contact_name', 'Contact Name', 'manager_name', 'Hiring Manager'),
+                company: get('company', 'Company', 'account_name', 'Account Name'),
+                stage: get('pipeline_stage', 'Pipeline Stage', 'stage', 'Stage'),
+                email: get('email', 'Email', 'work_email', 'Work Email'),
+                phone: get('phone', 'Phone', 'mobile', 'Mobile'),
+                source: get('source', 'Source', 'channel', 'Channel'),
+                score: get('engagement_score', 'Engagement Score', 'intent_score', 'Intent Score'),
+                title: get('title', 'Title', 'job_title', 'Job Title'),
+                notes: get('notes', 'Notes', 'activity', 'Activity')
+            };
+        }
+
         function escapeHtml(value) {
             return String(value || '').replace(/[&<>"']/g, (c) => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -910,6 +967,18 @@
             });
         }
 
+        function parseCsvGeneric(text, dataset) {
+            const lines = text.replace(/\r\n/g, '\n').split('\n').filter(Boolean);
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map((h) => h.trim());
+            return lines.slice(1).map((line) => {
+                const cols = line.split(',');
+                const row = {};
+                headers.forEach((h, i) => { row[h] = cols[i] || ''; });
+                return mapGenericRecord(row, dataset);
+            });
+        }
+
         function applyLeadFilter() {
             const q = (document.getElementById('leadSearchInput').value || '').toLowerCase().trim();
             state.filteredLeads = !q ? [...state.leads] : state.leads.filter((lead) =>
@@ -921,7 +990,7 @@
         }
 
         function renderLeadGrid() {
-            const mount = document.getElementById('leadRowsMount');
+            const mount = document.getElementById('leadQuickRowsMount');
             const total = state.filteredLeads.length;
             const totalPages = Math.max(1, Math.ceil(total / state.leadPageSize));
             if (state.leadPage > totalPages) state.leadPage = totalPages;
@@ -940,10 +1009,65 @@
                 </div>
             `).join('');
 
-            document.getElementById('leadCount').textContent = `LOCAL LEADS: ${total.toLocaleString()}`;
-            document.getElementById('leadPageInfo').textContent = `PAGE ${state.leadPage} / ${totalPages}`;
-            document.getElementById('leadPrevBtn').disabled = state.leadPage <= 1;
-            document.getElementById('leadNextBtn').disabled = state.leadPage >= totalPages;
+            document.getElementById('leadQuickCount').textContent = `LOCAL LEADS: ${total.toLocaleString()}`;
+            document.getElementById('leadQuickPageInfo').textContent = `PAGE ${state.leadPage} / ${totalPages}`;
+            document.getElementById('leadQuickPrevBtn').disabled = state.leadPage <= 1;
+            document.getElementById('leadQuickNextBtn').disabled = state.leadPage >= totalPages;
+        }
+
+        function rebuildHubRows() {
+            state.hubRows = [
+                ...state.leads.map((r) => mapGenericRecord(r, 'Lead')),
+                ...state.contacts.map((r) => mapGenericRecord(r, 'Contact')),
+                ...state.hiringManagers.map((r) => mapGenericRecord(r, 'Hiring Manager')),
+                ...state.interactions.map((r) => mapGenericRecord(r, 'Interaction')),
+                ...state.artifacts.map((r) => mapGenericRecord(r, 'Artifact'))
+            ];
+            state.hubFilteredRows = [...state.hubRows];
+            state.hubPage = 1;
+            document.getElementById('countLeads').textContent = String(state.leads.length);
+            document.getElementById('countContacts').textContent = String(state.contacts.length);
+            document.getElementById('countHiring').textContent = String(state.hiringManagers.length);
+            document.getElementById('countInteractions').textContent = String(state.interactions.length);
+            document.getElementById('countArtifacts').textContent = String(state.artifacts.length);
+            document.getElementById('hubTotalCount').textContent = String(state.hubRows.length);
+            document.getElementById('opsVaultBadge').textContent = String(state.hubRows.length);
+            renderHubRows();
+        }
+
+        function applyHubFilter() {
+            const q = (document.getElementById('hubSearchInput').value || '').toLowerCase().trim();
+            state.hubFilteredRows = !q ? [...state.hubRows] : state.hubRows.filter((row) =>
+                [row.dataset, row.name, row.company, row.stage, row.email, row.phone, row.source, row.score, row.title, row.notes]
+                    .join(' ').toLowerCase().includes(q)
+            );
+            state.hubPage = 1;
+            renderHubRows();
+        }
+
+        function renderHubRows() {
+            const mount = document.getElementById('hubRowsMount');
+            const total = state.hubFilteredRows.length;
+            const totalPages = Math.max(1, Math.ceil(total / state.hubPageSize));
+            if (state.hubPage > totalPages) state.hubPage = totalPages;
+            const start = (state.hubPage - 1) * state.hubPageSize;
+            const rows = state.hubFilteredRows.slice(start, start + state.hubPageSize);
+
+            mount.innerHTML = rows.map((row) => `
+                <div class="lead-row">
+                    <div>${escapeHtml(row.dataset || '—')}</div>
+                    <div>${escapeHtml([row.name, row.company, row.title].filter(Boolean).join(' // ') || '—')}</div>
+                    <div>${escapeHtml(row.stage || '—')}</div>
+                    <div>${escapeHtml(row.email || '—')}</div>
+                    <div>${escapeHtml(row.phone || '—')}</div>
+                    <div>${escapeHtml(row.source || '—')}</div>
+                    <div>${escapeHtml(row.score || '—')}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('hubPageInfo').textContent = `PAGE ${state.hubPage} / ${totalPages}`;
+            document.getElementById('hubPrevBtn').disabled = state.hubPage <= 1;
+            document.getElementById('hubNextBtn').disabled = state.hubPage >= totalPages;
         }
 
         // --- TABS ---
@@ -1072,15 +1196,55 @@
             state.filteredLeads = [...state.leads];
             state.leadPage = 1;
             renderLeadGrid();
+            rebuildHubRows();
         });
-        document.getElementById('leadSearchInput').addEventListener('input', applyLeadFilter);
-        document.getElementById('leadPrevBtn').addEventListener('click', () => {
+        document.getElementById('leadQuickSearchInput').addEventListener('input', applyLeadFilter);
+        document.getElementById('leadQuickPrevBtn').addEventListener('click', () => {
             if (state.leadPage > 1) state.leadPage -= 1;
             renderLeadGrid();
         });
-        document.getElementById('leadNextBtn').addEventListener('click', () => {
+        document.getElementById('leadQuickNextBtn').addEventListener('click', () => {
             state.leadPage += 1;
             renderLeadGrid();
+        });
+        const bindCsvImport = (btnId, inputId, targetKey, label) => {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            btn.addEventListener('click', () => input.click());
+            input.addEventListener('change', async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const text = await file.text();
+                state[targetKey] = parseCsvGeneric(text, label);
+                rebuildHubRows();
+            });
+        };
+        bindCsvImport('importLeadsBtn', 'leadsCsvInput', 'leads', 'Lead');
+        bindCsvImport('importContactsBtn', 'contactsCsvInput', 'contacts', 'Contact');
+        bindCsvImport('importHiringBtn', 'hiringCsvInput', 'hiringManagers', 'Hiring Manager');
+        bindCsvImport('importInteractionsBtn', 'interactionsCsvInput', 'interactions', 'Interaction');
+        document.getElementById('importArtifactsBtn').addEventListener('click', () => document.getElementById('artifactsJsonInput').click());
+        document.getElementById('artifactsJsonInput').addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const text = await file.text();
+            try {
+                const parsed = JSON.parse(text);
+                const arr = Array.isArray(parsed) ? parsed : [parsed];
+                state.artifacts = arr.map((row) => mapGenericRecord(row, 'Artifact'));
+                rebuildHubRows();
+            } catch (_) {
+                alert('Invalid JSON artifact file.');
+            }
+        });
+        document.getElementById('hubSearchInput').addEventListener('input', applyHubFilter);
+        document.getElementById('hubPrevBtn').addEventListener('click', () => {
+            if (state.hubPage > 1) state.hubPage -= 1;
+            renderHubRows();
+        });
+        document.getElementById('hubNextBtn').addEventListener('click', () => {
+            state.hubPage += 1;
+            renderHubRows();
         });
         document.addEventListener('click', (e) => { if (state.paletteOpen && !e.target.closest('#commandPalette')) closePalette(); });
 
@@ -1090,6 +1254,7 @@
             switchTab(state.activeTab);
             if (state.expandedRow) toggleDetail(state.expandedRow, false);
             renderLeadGrid();
+            rebuildHubRows();
         };
     </script>
 </body>
