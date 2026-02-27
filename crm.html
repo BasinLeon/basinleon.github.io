@@ -8,17 +8,19 @@
     <style>
     :root {
         --bg: #030308;
-        --surface: rgba(15, 18, 26, 0.7);
-        --surface-opaque: #0f121a;
+        --surface: rgba(10, 12, 18, 0.6);
+        --surface-deep: #050510;
         --border: rgba(255, 255, 255, 0.08);
-        --accent: #6366f1; /* Electric Indigo */
-        --cyan: #06b6d4;   
-        --gold: #f59e0b;
-        --green: #10b981;
-        --red: #ef4444;
+        --accent: #818cf8; /* Indigo-400 for premium feel */
+        --accent-glow: rgba(129, 140, 248, 0.4);
+        --cyan: #22d3ee;   
+        --cyan-glow: rgba(34, 211, 238, 0.4);
+        --gold: #fbbf24;
+        --green: #34d399;
+        --red: #f87171;
         --text-primary: #f8fafc;
         --text-secondary: #94a3b8;
-        --glass-blur: blur(20px);
+        --glass-blur: blur(24px);
     }
 
     * { margin:0; padding:0; box-sizing: border-box; }
@@ -32,11 +34,20 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        background-image: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
+        /* PREMIUM MESH GRADIENT BACKGROUND */
+        background-image: 
+            radial-gradient(circle at 10% 10%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 50% 90%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
     }
 
     h1, h2, h3, .nav-logo { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
     .space-mono, code { font-family: 'JetBrains Mono', monospace; }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
 
     /* --- LAYOUT ENGINE --- */
     .app-window {
@@ -44,7 +55,7 @@
         grid-template-columns: 320px 1fr;
         grid-template-rows: 60px 1fr;
         height: 100vh;
-        background: var(--bg);
+        background: transparent;
     }
 
     .workspace-sidebar {
@@ -53,8 +64,8 @@
         border-right: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        padding: 24px;
-        background: rgba(10, 12, 18, 0.98); 
+        padding: 32px 24px;
+        background: rgba(5, 5, 10, 0.9); 
         backdrop-filter: var(--glass-blur);
         overflow-y: auto;
         z-index: 50;
@@ -66,25 +77,31 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        background: var(--bg);
+        background: transparent;
     }
 
     .workspace-header {
-        padding: 16px 30px;
+        padding: 16px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid var(--border);
-        background: rgba(3, 3, 8, 0.9);
-        backdrop-filter: blur(10px);
+        background: rgba(3, 3, 8, 0.85);
+        backdrop-filter: blur(16px);
         z-index: 40;
     }
 
     .data-grid-container {
         flex: 1;
         overflow-y: auto;
-        padding: 24px 30px;
+        padding: 32px 40px;
         display: none; 
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .data-grid-container.active {
@@ -92,36 +109,55 @@
     }
 
     /* --- SIDEBAR NAV --- */
-    .sidebar-section { margin-bottom: 32px; }
-    .sidebar-title { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 18px; font-weight: 900; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+    .sidebar-section { margin-bottom: 40px; }
+    .sidebar-title { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; font-weight: 900; opacity: 0.6; }
 
     .nav-item {
-        padding: 12px 16px;
-        margin-bottom: 4px;
-        border-radius: 6px;
+        padding: 12px 18px;
+        margin-bottom: 6px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.75rem;
         font-weight: 600;
         color: var(--text-secondary);
-        transition: all 0.2s;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
+        border: 1px solid transparent;
     }
 
-    .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
+    .nav-item:hover { 
+        background: rgba(255,255,255,0.03); 
+        color: #fff; 
+        border-color: rgba(255,255,255,0.05);
+    }
+
     .nav-item.active { 
-        background: rgba(99, 102, 241, 0.1); 
+        background: linear-gradient(90deg, rgba(129, 140, 248, 0.15), rgba(129, 140, 248, 0.02)); 
         color: #fff; 
         border-left: 3px solid var(--accent);
+        box-shadow: inset 0 0 20px rgba(129, 140, 248, 0.05);
     }
 
     .protocol-card {
-        padding: 12px;
-        background: rgba(239, 68, 68, 0.05);
-        border: 1px dashed var(--red);
-        border-radius: 8px;
-        margin-bottom: 12px;
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(248, 113, 113, 0.08), transparent);
+        border: 1px solid rgba(248, 113, 113, 0.2);
+        border-radius: 12px;
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .protocol-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(248, 113, 113, 0.1), transparent);
+        background-size: 200% 100%;
+        animation: shimmer 4s infinite linear;
+        pointer-events: none;
     }
 
     /* --- SEARCH & TELEMETRY --- */
@@ -133,74 +169,100 @@
 
     .search-bar {
         width: 100%;
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.02);
         border: 1px solid var(--border);
-        border-radius: 100px;
-        padding: 10px 15px 10px 45px;
+        border-radius: 10px;
+        padding: 12px 20px 12px 48px;
         color: white;
+        font-size: 0.85rem;
         font-family: 'Inter', sans-serif;
         outline: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .search-bar:focus {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--accent-glow);
     }
 
     .search-icon {
         position: absolute;
-        left: 18px;
+        left: 20px;
         top: 50%;
         transform: translateY(-50%);
         color: var(--text-secondary);
+        opacity: 0.5;
     }
 
-    .compact-telemetry {
-        display: flex;
-        gap: 24px;
-    }
+    .tel-node { display: flex; align-items: baseline; gap: 10px; padding: 4px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border); }
+    .tel-label { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+    .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: #fff; }
 
-    .tel-node { display: flex; align-items: baseline; gap: 8px; }
-    .tel-label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; }
-    .tel-val { font-size: 0.85rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-
-    /* --- DENSE ROWS (OPERATOR TIER) --- */
+    /* --- PREMIUM DENSE ROWS --- */
     .dense-row {
         display: grid;
-        grid-template-columns: 180px 2fr 120px 80px 120px;
+        grid-template-columns: 200px 2fr 140px 100px 140px;
         align-items: center;
-        padding: 14px 18px;
-        background: rgba(255,255,255,0.02);
+        padding: 16px 24px;
+        background: rgba(15, 18, 26, 0.4);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        margin-bottom: 6px;
-        font-size: 0.75rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 12px;
+        margin-bottom: 8px;
+        font-size: 0.8rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(8px);
     }
 
     .dense-row:hover {
         background: rgba(255,255,255,0.05);
-        border-color: rgba(99, 102, 241, 0.4);
-        transform: translateX(4px);
+        border-color: var(--accent-glow);
+        transform: scale(1.005) translateX(4px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px rgba(129, 140, 248, 0.1);
     }
 
-    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.85rem; }
-    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 15px; }
-    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--cyan); }
-    .row-yield { font-weight: 800; color: var(--green); font-size: 0.7rem; }
+    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 20px; font-weight: 500; }
+    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--cyan); letter-spacing: 0.02em; font-weight: 600; }
+    .row-prob { font-weight: 800; font-family: 'Outfit'; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .row-prob::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .row-yield { font-weight: 800; font-size: 0.75rem; color: var(--green); display: flex; flex-direction: column; gap: 4px; }
 
     .yield-bar {
-        height: 4px;
+        height: 6px;
         background: rgba(255,255,255,0.05);
-        border-radius: 10px;
-        margin-top: 4px;
+        border-radius: 100px;
         overflow: hidden;
-        width: 80px;
+        width: 100px;
+        border: 1px solid rgba(255,255,255,0.03);
     }
 
     .yield-fill {
         height: 100%;
-        background: var(--green);
-        box-shadow: 0 0 8px var(--green);
+        background: linear-gradient(90deg, var(--green), #6ee7b7);
+        box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
+        border-radius: 100px;
     }
 
+    /* --- PREMIUM BADGES --- */
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 100px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .pill-active { background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.2); color: var(--cyan); }
+    .pill-kill { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2); color: var(--red); }
+    .pill-gold { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); color: var(--gold); }
+
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -208,47 +270,48 @@
     <div class="app-window">
         <!-- OPERATOR SIDEBAR -->
         <aside class="workspace-sidebar">
-            <div class="nav-logo" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 35px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px;">
-                <div style="width: 14px; height: 14px; background: var(--accent); border-radius: 2px;"></div>
+            <div class="nav-logo" style="font-size: 1.6rem; font-weight: 900; color: #fff; margin-bottom: 48px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 14px;">
+                <div style="width: 20px; height: 20px; background: linear-gradient(135deg, var(--accent), var(--cyan)); border-radius: 4px; box-shadow: 0 0 15px var(--accent-glow);"></div>
                 BASIN::NEXUS
             </div>
             
             <div class="sidebar-section">
-                <div class="sidebar-title">WORKSTATION</div>
+                <div class="sidebar-title">OPERATIONS</div>
                 <div class="nav-item active" onclick="switchTab(0)">
-                    <span>📡</span> Destiny Map
+                    <span style="font-size: 1.1rem;">📡</span> Destiny Map
                 </div>
                 <div class="nav-item" onclick="switchTab(1)">
-                    <span>👥</span> Arena Intel
+                    <span style="font-size: 1.1rem;">👥</span> Arena Intel
                 </div>
                 <div class="nav-item" onclick="switchTab(2)">
-                    <span>🛰️</span> Signal Feed
+                    <span style="font-size: 1.1rem;">🛰️</span> Signal Feed
                 </div>
                 <div class="nav-item" onclick="switchTab(3)">
-                    <span>📦</span> Payload Vault
+                    <span style="font-size: 1.1rem;">📦</span> Payload Vault
                 </div>
                 <div class="nav-item" onclick="switchTab(4)">
-                    <span>📂</span> Historical
+                    <span style="font-size: 1.1rem;">📂</span> Historical
                 </div>
             </div>
 
             <div class="sidebar-section">
                 <div class="sidebar-title">TERMINAL PROTOCOLS</div>
                 <div class="protocol-card">
-                    <div style="font-size: 0.55rem; color: var(--red); font-weight: 800; text-transform: uppercase;">T4: CLOSE OR KILL</div>
-                    <div style="font-size: 0.65rem; color: #f1f5f9; margin-top: 5px; line-height: 1.4;">If Stage 4 node > 5 days without pulse → Mandatory Archival.</div>
+                    <div style="font-size: 0.6rem; color: var(--red); font-weight: 900; text-transform: uppercase;">T4: CLOSE OR KILL</div>
+                    <div style="font-size: 0.7rem; color: #fff; margin-top: 8px; line-height: 1.4; opacity: 0.9;">If node idle > 5 days → Auto-Archival Triggered.</div>
                 </div>
-                <div style="padding: 10px; background: rgba(6, 182, 212, 0.03); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 6px;">
-                    <div style="font-size: 0.55rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">SIGNAL: ASSET YIELD</div>
-                    <div style="font-size: 0.65rem; color: #f1f5f9; margin-top: 5px;">Conversion track active for SPEAR audits.</div>
+                <div style="padding: 16px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), transparent); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 12px;">
+                    <div style="font-size: 0.6rem; color: var(--cyan); font-weight: 900; text-transform: uppercase;">ASSET YIELD TELEMETRY</div>
+                    <div style="font-size: 0.7rem; color: #fff; margin-top: 8px; opacity: 0.9;">Conversion tracking active for active SPEAR audits.</div>
                 </div>
             </div>
 
             <div class="sidebar-section" style="margin-top: auto;">
-                <div class="sidebar-title">TELEMETRY_V3.1</div>
-                <div style="font-size: 0.6rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 1.8;">
-                    NODE_GRAVITY: MAX // [A-72H ACTIVE]<br>
-                    SIGNAL: STABLE 98.4%
+                <div class="sidebar-title">SYSTEM STATUS</div>
+                <div style="font-size: 0.6rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 2;">
+                    <span style="color: var(--green);">●</span> NODE_GRAVITY: MAX <br>
+                    <span style="color: var(--green);">●</span> SIGNAL: 98.4% STABLE<br>
+                    VERSION: 4.0.ALPHA
                 </div>
             </div>
         </aside>
@@ -264,18 +327,18 @@
                     <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430K</span></div>
                     <div class="tel-node"><span class="tel-label">ARENA:</span><span class="tel-val" style="color: var(--cyan);">4 ACTIVE</span></div>
                 </div>
-                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono';">
-                    2026-02-27 // 10:50 PST<br>
-                    [T4_PROTOCOL_ACTIVE]
+                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono'; letter-spacing: 0.05em; line-height: 1.4;">
+                    2026-02-27 // 11:05 PST<br>
+                    <span style="color: var(--red);">T4_PROTOCOL_ACTIVE</span>
                 </div>
             </header>
 
             <!-- PANELS -->
             <div class="data-grid-container active" id="panel-0">
-                <div class="dense-row" style="background: transparent; border-color: transparent; border-bottom: 2px solid var(--border); border-radius: 0; color: var(--text-secondary); font-weight: 800; font-size: 0.65rem; text-transform: uppercase;">
+                <div class="dense-row" style="background: transparent; border-color: transparent; border-bottom: 2px solid var(--border); border-radius: 0; color: var(--text-secondary); font-weight: 900; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">
                     <div>Target Node</div>
-                    <div>Terminal Action / Next Pulse</div>
-                    <div>Strategy / Role</div>
+                    <div>Executive Pulse / Next Action</div>
+                    <div>Strategic Role</div>
                     <div>Prob.</div>
                     <div>Asset Yield</div>
                 </div>
@@ -284,7 +347,7 @@
                     <div class="row-entity">REPLIT</div>
                     <div class="row-action">Final Schedule Lock // Final Loop Prep</div>
                     <div class="row-meta">Founding Enterprise</div>
-                    <div class="row-meta" style="color: var(--green);">95%</div>
+                    <div class="row-prob" style="color: var(--green);">95%</div>
                     <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
                 </div>
 
@@ -292,7 +355,7 @@
                     <div class="row-entity">GO NIMBLY</div>
                     <div class="row-action">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
                     <div class="row-meta">RevOps Architect</div>
-                    <div class="row-meta" style="color: var(--gold);">60%</div>
+                    <div class="row-prob" style="color: var(--gold);">60%</div>
                     <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
                 </div>
 
@@ -300,7 +363,7 @@
                     <div class="row-entity">DESCOPE</div>
                     <div class="row-action">Monday follow-up // HM Discovery HUD</div>
                     <div class="row-meta">Success Engineer</div>
-                    <div class="row-meta" style="color: var(--cyan);">75%</div>
+                    <div class="row-prob" style="color: var(--cyan);">75%</div>
                     <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
                 </div>
 
@@ -308,7 +371,7 @@
                     <div class="row-entity">RAJ (vCISO HUB)</div>
                     <div class="row-action">Mandatory contract signing loop execution</div>
                     <div class="row-meta">Consulting Pilot</div>
-                    <div class="row-meta" style="color: var(--green);">100%</div>
+                    <div class="row-prob" style="color: var(--green);">100%</div>
                     <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
                 </div>
             </div>
@@ -318,15 +381,15 @@
                     <div class="row-entity">Ghazi Masood</div>
                     <div class="row-action">CRO @ Replit</div>
                     <div class="row-meta">Target Anchor</div>
-                    <div class="row-meta">92 INTENT</div>
-                    <div class="row-yield" style="color: var(--cyan);">T1_PRIMARY</div>
+                    <div class="row-prob">92 INTENT</div>
+                    <div class="row-yield" style="color: var(--cyan);"><span class="status-pill pill-active">PRIMARY_T1</span></div>
                 </div>
                 <div class="dense-row" data-search="gilad shriki descope founder">
                     <div class="row-entity">Gilad Shriki</div>
                     <div class="row-action">Founder @ Descope</div>
                     <div class="row-meta">Target Anchor</div>
-                    <div class="row-meta">78 INTENT</div>
-                    <div class="row-yield" style="color: var(--cyan);">T1_PRIMARY</div>
+                    <div class="row-prob">78 INTENT</div>
+                    <div class="row-yield" style="color: var(--cyan);"><span class="status-pill pill-active">PRIMARY_T1</span></div>
                 </div>
             </div>
 
@@ -335,8 +398,8 @@
                     <div class="row-entity">Roboflow Pivot</div>
                     <div class="row-action">GTM Expansion Signal detected // Naveen</div>
                     <div class="row-meta">High Intensity</div>
-                    <div class="row-meta">STRIKE</div>
-                    <div class="row-yield" style="color: var(--gold);">REFINED</div>
+                    <div class="row-prob" style="color: var(--gold);">SIGNAL</div>
+                    <div class="row-yield" style="color: var(--gold);"><span class="status-pill pill-gold">REFINED</span></div>
                 </div>
             </div>
 
@@ -345,8 +408,8 @@
                     <div class="row-entity">vCISO Hub</div>
                     <div class="row-action">Master GTM Delivery Kit v3.0</div>
                     <div class="row-meta">Master Kit</div>
-                    <div class="row-meta">90% CAP</div>
-                    <div class="row-yield">ACTIVE</div>
+                    <div class="row-prob">90% CAP</div>
+                    <div class="row-yield"><span class="status-pill">ACTIVE</span></div>
                 </div>
             </div>
 
@@ -355,15 +418,15 @@
                     <div class="row-entity" style="color: var(--text-secondary);">TREDENCE</div>
                     <div class="row-action">Dropped: Methodology mismatch // Adrenaline Leak</div>
                     <div class="row-meta">Archive</div>
-                    <div class="row-meta" style="color: var(--red);">T4_KILL</div>
-                    <div class="row-yield" style="color: var(--red);">EXCLUDED</div>
+                    <div class="row-prob" style="color: var(--red);">T4_KILL</div>
+                    <div class="row-yield" style="color: var(--red);"><span class="status-pill pill-kill">EXCLUDED</span></div>
                 </div>
                 <div class="dense-row" data-search="cyngular archived low yield">
                     <div class="row-entity" style="color: var(--text-secondary);">Cyngular</div>
                     <div class="row-action">Brief Delivered // Status: Archived</div>
                     <div class="row-meta">Archive</div>
-                    <div class="row-meta">-</div>
-                    <div class="row-yield">ARCHIVED</div>
+                    <div class="row-prob" style="color: var(--text-secondary);">-</div>
+                    <div class="row-yield"><span class="status-pill">ARCHIVED</span></div>
                 </div>
             </div>
         </main>
@@ -393,6 +456,14 @@
                 const text = row.dataset.search + row.innerText.toLowerCase();
                 row.style.display = text.includes(query) ? 'grid' : 'none';
             });
+        });
+
+        // Hotkey: Command+K (Focus search)
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
         });
     </script>
 </body>
