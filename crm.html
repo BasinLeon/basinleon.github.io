@@ -123,7 +123,7 @@
         <div class="nav-item" onclick="switchPanel(1)" id="n1"><div class="nav-left"><span>🛰️</span> Signal Feed</div></div>
         <div class="nav-item active" onclick="switchPanel(2)" id="n2">
             <div class="nav-left"><span>🧠</span> Ops Vault</div>
-            <span class="badge">7,584</span>
+            <span class="badge">44,928</span>
         </div>
 
         <div class="sidebar-label" style="margin-top:20px;">Velocity Flow</div>
@@ -133,6 +133,12 @@
         </div>
         <div class="nav-item" onclick="switchPanel(4)" id="n4"><div class="nav-left"><span>🎯</span> Pipeline</div></div>
         <div class="nav-item" onclick="switchPanel(5)" id="n5"><div class="nav-left"><span>📡</span> Interview Radar</div></div>
+
+        <div class="sidebar-label" style="margin-top:20px;">Intelligence</div>
+        <div class="nav-item" onclick="switchPanel(6)" id="n6"><div class="nav-left"><span>🏢</span> Companies</div><span class="badge">312</span></div>
+        <div class="nav-item" onclick="switchPanel(7)" id="n7"><div class="nav-left"><span>🏭</span> Industries</div><span class="badge">10</span></div>
+        <div class="nav-item" onclick="switchPanel(8)" id="n8"><div class="nav-left"><span>👔</span> Seniority</div><span class="badge">8</span></div>
+        <div class="nav-item" onclick="switchPanel(9)" id="n9"><div class="nav-left"><span>📊</span> Analytics</div></div>
 
         <div class="demo-box">
             <div class="demo-title">⚠ Demo Mode</div>
@@ -181,8 +187,16 @@
         <div class="panel active" id="panel-2" style="display:flex;flex-direction:column;overflow:hidden;">
             <div class="ops-meta">
                 <div style="color:var(--green);font-weight:900;">🧬 SEMANTIC RADAR ACTIVE</div>
-                <div>LOCAL LEADS: <b style="color:#fff;" id="nodeCount">7,584</b></div>
-                <div style="color:var(--green);font-size:.6rem;">7,584 Ollama vectors • nomic-embed-text</div>
+                <div>LOCAL LEADS: <b style="color:#fff;" id="nodeCount">44,928</b></div>
+                <div style="color:var(--green);font-size:.6rem;">44,928 Ollama vectors • nomic-embed-text</div>
+            </div>
+            <!-- HOT / WARM / COLD filter pills -->
+            <div style="display:flex;gap:7px;align-items:center;padding:10px 36px 0;flex-wrap:wrap;">
+                <span style="font-family:'JetBrains Mono';font-size:.55rem;color:var(--text-secondary);letter-spacing:1px;">FILTER:</span>
+                <button id="fpAll" onclick="demoFilter('all')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--accent);background:rgba(129,140,248,.15);color:#fff;transition:.2s;">All</button>
+                <button onclick="demoFilter('hot');showToast('🔥 HOT nodes: 18,271')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--red);background:transparent;color:var(--red);transition:.2s;">🔥 HOT 80%+</button>
+                <button onclick="demoFilter('warm');showToast('🌡 WARM nodes: 19,803')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);transition:.2s;">🌡 WARM 60–80%</button>
+                <button onclick="demoFilter('cold');showToast('❄ COLD nodes: 6,854')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--text-secondary);background:transparent;color:var(--text-secondary);transition:.2s;">❄ COLD &lt;60%</button>
             </div>
             <div class="lead-row" style="background:transparent;border:none;cursor:default;opacity:.35;font-weight:900;font-size:.58rem;text-transform:uppercase;letter-spacing:2px;margin:0 36px 10px;pointer-events:none;">
                 <div>Dataset</div><div>Name</div><div>Stage</div><div>Email</div><div>Phone</div><div>🤝 Intro</div><div>Score</div>
@@ -237,12 +251,46 @@
             <div class="vel-title">📡 Interview Radar — Target Companies</div>
             <div class="radar-grid" id="radarGrid"></div>
         </div>
+
+        <!-- PANEL 6: COMPANIES (demo) -->
+        <div class="panel" id="panel-6" style="padding:20px 36px;overflow-y:auto;">
+            <div class="vel-title">🏢 Company Intelligence</div>
+            <div style="color:var(--text-secondary);font-size:.72rem;margin-bottom:16px;">Top companies by node count — demo data</div>
+            <div id="demoCos"></div>
+        </div>
+
+        <!-- PANEL 7: INDUSTRIES (demo) -->
+        <div class="panel" id="panel-7" style="padding:20px 36px;overflow-y:auto;">
+            <div class="vel-title">🏭 Industry Intelligence</div>
+            <div id="demoInds"></div>
+        </div>
+
+        <!-- PANEL 8: SENIORITY (demo) -->
+        <div class="panel" id="panel-8" style="padding:20px 36px;overflow-y:auto;">
+            <div class="vel-title">👔 Seniority Intelligence</div>
+            <div id="demoSen"></div>
+        </div>
+
+        <!-- PANEL 9: ANALYTICS (demo) -->
+        <div class="panel" id="panel-9" style="padding:20px 36px;overflow-y:auto;">
+            <div class="vel-title">📊 CRM Analytics Dashboard</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:#fff;">44,928</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Total Nodes</div></div>
+                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">100%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Vectorized</div></div>
+                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">78%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Avg Conv Prob</div></div>
+                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--cyan);">18,271</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">HOT Nodes (80%+)</div></div>
+            </div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;">
+                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Industries</div>
+                ${[['RevOps / GTM',12800],['SaaS / Cloud',9200],['AI / LLM',7400],['CRM / Sales',6100],['Cybersecurity',4800],['Consulting',4120]].map(([n,c])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:130px;color:#fff;font-weight:600;">${n}</div><div style="flex:1;"><div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--cyan));width:${Math.round(c/12800*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';">${c.toLocaleString()}</div></div>`).join('')}
+            </div>
+        </div>
     </main>
 
     <footer style="grid-row:3;grid-column:2;padding:0 36px;border-top:1px solid var(--border);background:#000;display:flex;align-items:center;gap:36px;">
         <div class="ticker-item">● DEMO_MODE <b style="color:var(--gold)">PUBLIC PREVIEW</b></div>
         <div class="ticker-item">● SEMANTIC_RADAR <b style="color:var(--green)">100% VECTORIZED</b></div>
-        <div class="ticker-item">● VAULT_SIZE <b>163MB · 7,584 NODES</b></div>
+        <div class="ticker-item">● VAULT_SIZE <b>44,928 NODES</b></div>
         <div class="ticker-item">● LOCAL_FIRST <b>100% PRIVATE</b></div>
     </footer>
 </div>
@@ -373,7 +421,10 @@ function buildRadar() {
 
 function switchPanel(idx) {
     document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
-    for(let i=0;i<6;i++){const el=document.getElementById(`n${i}`); if(el) el.classList.toggle('active',i===idx);}
+    for(let i=0;i<10;i++){const el=document.getElementById(`n${i}`); if(el) el.classList.toggle('active',i===idx);}
+    if(idx===6) buildDemoCos();
+    if(idx===7) buildDemoInds();
+    if(idx===8) buildDemoSen();
 }
 function showToast(msg){
     const t=document.getElementById('toast');
@@ -381,6 +432,26 @@ function showToast(msg){
     setTimeout(()=>t.style.display='none',3200);
 }
 document.addEventListener('keydown',e=>{if(e.shiftKey&&e.key.toLowerCase()==='p') showToast('🕶️ Privacy shield (demo mode — no real PII here)');});
+
+function demoFilter(t){
+    if(t==='hot') filtered=DEMO_NODES.filter(n=>n.score>=80);
+    else if(t==='warm') filtered=DEMO_NODES.filter(n=>n.score>=60&&n.score<80);
+    else if(t==='cold') filtered=DEMO_NODES.filter(n=>n.score<60);
+    else filtered=[...DEMO_NODES];
+    renderTable();
+}
+
+// Demo intelligence panels
+const DEMO_COS=[{n:'Replit',c:28,s:94},{n:'Go Nimbly',c:24,s:99},{n:'Descope',c:19,s:86},{n:'HubSpot',c:47,s:90},{n:'Gong',c:31,s:82},{n:'Salesforce',c:89,s:76},{n:'Outreach',c:22,s:91}];
+const DEMO_INDS=[{n:'RevOps / GTM',c:12800,s:83},{n:'SaaS / Cloud',c:9200,s:77},{n:'AI / LLM',c:7400,s:88},{n:'CRM / Sales',c:6100,s:74},{n:'Cybersecurity',c:4800,s:81},{n:'Consulting',c:4120,s:79}];
+const DEMO_SEN=[{n:'⭐ C-Suite / Founder',c:3240,s:91},{n:'⭐ VP',c:7180,s:87},{n:'⭐ Head / Director',c:9420,s:83},{n:'Manager / Lead',c:11200,s:74},{n:'Senior IC',c:8310,s:71},{n:'Individual Contributor',c:5578,s:65}];
+function coCard(name,count,score){
+    const sc=score>=80?'var(--green)':score>=65?'var(--gold)':'var(--red)';
+    return `<div style="background:rgba(15,18,26,.5);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'" onclick="showToast('🏢 Demo: ${name} — ${count} contacts')"><div><div style="font-family:'Outfit';font-weight:900;color:#fff;font-size:.95rem;">${name}</div><div style="font-size:.68rem;color:var(--text-secondary);margin-top:3px;">${count.toLocaleString()} contacts in vault</div></div><div style="font-family:'Outfit';font-weight:900;font-size:1.3rem;color:${sc}">${score}%</div></div>`;
+}
+function buildDemoCos(){document.getElementById('demoCos').innerHTML=DEMO_COS.map(c=>coCard(c.n,c.c,c.s)).join('');}
+function buildDemoInds(){document.getElementById('demoInds').innerHTML=DEMO_INDS.map(c=>coCard(c.n,c.c,c.s)).join('');}
+function buildDemoSen(){document.getElementById('demoSen').innerHTML=DEMO_SEN.map(c=>coCard(c.n,c.c,c.s)).join('');}
 
 window.onload=()=>{
     renderTable();
