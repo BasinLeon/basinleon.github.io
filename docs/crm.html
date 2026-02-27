@@ -1466,13 +1466,68 @@
         });
         document.addEventListener('click', (e) => { if (state.paletteOpen && !e.target.closest('#commandPalette')) closePalette(); });
 
+        // --- PERSISTENCE LAYER ---
+        const STORAGE_KEYS = { leads: 'nxVaultLeads', contacts: 'nxVaultContacts', hiringManagers: 'nxVaultHiring', interactions: 'nxVaultInteractions', artifacts: 'nxVaultArtifacts' };
+
+        function persistState() {
+            try {
+                for (const [key, storageKey] of Object.entries(STORAGE_KEYS)) {
+                    if (state[key] && state[key].length > 0) {
+                        localStorage.setItem(storageKey, JSON.stringify(state[key]));
+                    }
+                }
+            } catch (e) { console.warn('Persist failed (storage full?):', e); }
+        }
+
+        function restoreState() {
+            let restored = 0;
+            for (const [key, storageKey] of Object.entries(STORAGE_KEYS)) {
+                try {
+                    const raw = localStorage.getItem(storageKey);
+                    if (raw) {
+                        state[key] = JSON.parse(raw);
+                        restored += state[key].length;
+                    }
+                } catch (e) { console.warn('Restore failed for', key, e); }
+            }
+            return restored;
+        }
+
+        // Auto-persist after every import
+        const _origRebuild = rebuildHubRows;
+        rebuildHubRows = function() { _origRebuild(); persistState(); };
+
+        async function autoLoadPriorityLeads() {
+            // Only auto-load if no leads are cached yet
+            if (state.leads.length > 0) return;
+            try {
+                const res = await fetch('crm_leads.json');
+                if (!res.ok) return;
+                const data = await res.json();
+                const mapped = data.map(r => mapGenericRecord(r, 'Lead'));
+                state.leads = mapped;
+                rebuildHubRows();
+                console.log('✅ Auto-loaded', data.length, 'priority leads from crm_leads.json');
+            } catch (e) { console.log('No crm_leads.json available for auto-load'); }
+        }
+
         // --- BOOTSTRAP ---
-        window.onload = () => {
+        window.onload = async () => {
             document.querySelectorAll('.loading-screen, #loading-screen, .splash-screen, [data-loader]').forEach(el => el.remove());
             switchTab(state.activeTab);
             if (state.expandedRow) toggleDetail(state.expandedRow, false);
+
+            // Restore persisted data first
+            const restoredCount = restoreState();
+            if (restoredCount > 0) {
+                console.log('📦 Restored', restoredCount, 'records from localStorage');
+                rebuildHubRows();
+            }
+
             renderLeadGrid();
-            rebuildHubRows();
+            if (state.leads.length === 0 && state.hubRows.length === 0) {
+                await autoLoadPriorityLeads();
+            }
             setHubView('all');
         };
     </script>
