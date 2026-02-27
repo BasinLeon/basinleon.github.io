@@ -11,7 +11,7 @@
         --surface: rgba(10, 12, 18, 0.6);
         --surface-deep: #050510;
         --border: rgba(255, 255, 255, 0.08);
-        --accent: #818cf8; /* Indigo-400 for premium feel */
+        --accent: #818cf8; 
         --accent-glow: rgba(129, 140, 248, 0.4);
         --cyan: #22d3ee;   
         --cyan-glow: rgba(34, 211, 238, 0.4);
@@ -34,7 +34,6 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        /* PREMIUM MESH GRADIENT BACKGROUND */
         background-image: 
             radial-gradient(circle at 10% 10%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
             radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
@@ -49,13 +48,11 @@
         100% { background-position: 200% 0; }
     }
 
-    /* --- LAYOUT ENGINE --- */
     .app-window {
         display: grid;
         grid-template-columns: 320px 1fr;
         grid-template-rows: 60px 1fr;
         height: 100vh;
-        background: transparent;
     }
 
     .workspace-sidebar {
@@ -77,7 +74,6 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        background: transparent;
     }
 
     .workspace-header {
@@ -104,9 +100,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .data-grid-container.active {
-        display: block;
-    }
+    .data-grid-container.active { display: block; }
 
     /* --- SIDEBAR NAV --- */
     .sidebar-section { margin-bottom: 40px; }
@@ -127,17 +121,11 @@
         border: 1px solid transparent;
     }
 
-    .nav-item:hover { 
-        background: rgba(255,255,255,0.03); 
-        color: #fff; 
-        border-color: rgba(255,255,255,0.05);
-    }
-
+    .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
     .nav-item.active { 
         background: linear-gradient(90deg, rgba(129, 140, 248, 0.15), rgba(129, 140, 248, 0.02)); 
         color: #fff; 
         border-left: 3px solid var(--accent);
-        box-shadow: inset 0 0 20px rgba(129, 140, 248, 0.05);
     }
 
     .protocol-card {
@@ -150,23 +138,8 @@
         overflow: hidden;
     }
 
-    .protocol-card::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(248, 113, 113, 0.1), transparent);
-        background-size: 200% 100%;
-        animation: shimmer 4s infinite linear;
-        pointer-events: none;
-    }
-
     /* --- SEARCH & TELEMETRY --- */
-    .search-container {
-        position: relative;
-        flex: 1;
-        max-width: 500px;
-    }
-
+    .search-container { position: relative; flex: 1; max-width: 500px; }
     .search-bar {
         width: 100%;
         background: rgba(255, 255, 255, 0.02);
@@ -179,25 +152,12 @@
         outline: none;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    .search-bar:focus {
-        background: rgba(255, 255, 255, 0.04);
-        border-color: var(--accent);
-        box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .search-icon {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-secondary);
-        opacity: 0.5;
-    }
+    .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+    .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); opacity: 0.5; }
 
     .tel-node { display: flex; align-items: baseline; gap: 10px; padding: 4px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border); }
     .tel-label { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
-    .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: #fff; }
+    .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
 
     /* --- PREMIUM DENSE ROWS --- */
     .dense-row {
@@ -212,54 +172,51 @@
         font-size: 0.8rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         backdrop-filter: blur(8px);
+        cursor: pointer;
     }
 
     .dense-row:hover {
         background: rgba(255,255,255,0.05);
         border-color: var(--accent-glow);
         transform: scale(1.005) translateX(4px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px rgba(129, 140, 248, 0.1);
     }
 
-    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; letter-spacing: -0.01em; }
-    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 20px; font-weight: 500; }
-    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--cyan); letter-spacing: 0.02em; font-weight: 600; }
+    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; }
+    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 20px; }
+    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--cyan); font-weight: 600; }
     .row-prob { font-weight: 800; font-family: 'Outfit'; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 6px; }
     .row-prob::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-    .row-yield { font-weight: 800; font-size: 0.75rem; color: var(--green); display: flex; flex-direction: column; gap: 4px; }
+    .yield-bar { height: 6px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; width: 100px; margin-top: 4px; }
+    .yield-fill { height: 100%; background: linear-gradient(90deg, var(--green), #6ee7b7); box-shadow: 0 0 12px rgba(52, 211, 153, 0.4); }
 
-    .yield-bar {
-        height: 6px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 100px;
-        overflow: hidden;
-        width: 100px;
-        border: 1px solid rgba(255,255,255,0.03);
-    }
-
-    .yield-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--green), #6ee7b7);
-        box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
-        border-radius: 100px;
-    }
-
-    /* --- PREMIUM BADGES --- */
-    .status-pill {
-        padding: 4px 10px;
-        border-radius: 100px;
-        font-size: 0.65rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-
+    .status-pill { padding: 4px 10px; border-radius: 100px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
     .pill-active { background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.2); color: var(--cyan); }
     .pill-kill { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2); color: var(--red); }
-    .pill-gold { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); color: var(--gold); }
+
+    /* EXPANDED SECTION DATA */
+    .row-detail {
+        display: none;
+        padding: 0 24px 16px 24px;
+        margin-top: -12px;
+        margin-bottom: 12px;
+        background: rgba(15, 18, 26, 0.2);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 12px 12px;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .row-detail.active { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .detail-item b { color: #fff; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px; }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -268,30 +225,19 @@
 <body>
 
     <div class="app-window">
-        <!-- OPERATOR SIDEBAR -->
         <aside class="workspace-sidebar">
-            <div class="nav-logo" style="font-size: 1.6rem; font-weight: 900; color: #fff; margin-bottom: 48px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 14px;">
+            <div class="nav-logo" style="font-size: 1.6rem; font-weight: 900; color: #fff; margin-bottom: 48px; display: flex; align-items: center; gap: 14px;">
                 <div style="width: 20px; height: 20px; background: linear-gradient(135deg, var(--accent), var(--cyan)); border-radius: 4px; box-shadow: 0 0 15px var(--accent-glow);"></div>
                 BASIN::NEXUS
             </div>
             
             <div class="sidebar-section">
                 <div class="sidebar-title">OPERATIONS</div>
-                <div class="nav-item active" onclick="switchTab(0)">
-                    <span style="font-size: 1.1rem;">📡</span> Destiny Map
-                </div>
-                <div class="nav-item" onclick="switchTab(1)">
-                    <span style="font-size: 1.1rem;">👥</span> Arena Intel
-                </div>
-                <div class="nav-item" onclick="switchTab(2)">
-                    <span style="font-size: 1.1rem;">🛰️</span> Signal Feed
-                </div>
-                <div class="nav-item" onclick="switchTab(3)">
-                    <span style="font-size: 1.1rem;">📦</span> Payload Vault
-                </div>
-                <div class="nav-item" onclick="switchTab(4)">
-                    <span style="font-size: 1.1rem;">📂</span> Historical
-                </div>
+                <div class="nav-item active" onclick="switchTab(0)"><span>📡</span> Destiny Map</div>
+                <div class="nav-item" onclick="switchTab(1)"><span>👥</span> Arena Intel</div>
+                <div class="nav-item" onclick="switchTab(2)"><span>🛰️</span> Signal Feed</div>
+                <div class="nav-item" onclick="switchTab(3)"><span>📦</span> Payload Vault</div>
+                <div class="nav-item" onclick="switchTab(4)"><span>📂</span> Historical</div>
             </div>
 
             <div class="sidebar-section">
@@ -311,12 +257,11 @@
                 <div style="font-size: 0.6rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 2;">
                     <span style="color: var(--green);">●</span> NODE_GRAVITY: MAX <br>
                     <span style="color: var(--green);">●</span> SIGNAL: 98.4% STABLE<br>
-                    VERSION: 4.0.ALPHA
+                    VERSION: 4.1.BETA
                 </div>
             </div>
         </aside>
 
-        <!-- MAIN WORKSPACE -->
         <main class="workspace-main">
             <header class="workspace-header">
                 <div class="search-container">
@@ -327,13 +272,12 @@
                     <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430K</span></div>
                     <div class="tel-node"><span class="tel-label">ARENA:</span><span class="tel-val" style="color: var(--cyan);">4 ACTIVE</span></div>
                 </div>
-                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono'; letter-spacing: 0.05em; line-height: 1.4;">
-                    2026-02-27 // 11:05 PST<br>
+                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono';">
+                    2026-02-27 // 11:15 PST<br>
                     <span style="color: var(--red);">T4_PROTOCOL_ACTIVE</span>
                 </div>
             </header>
 
-            <!-- PANELS -->
             <div class="data-grid-container active" id="panel-0">
                 <div class="dense-row" style="background: transparent; border-color: transparent; border-bottom: 2px solid var(--border); border-radius: 0; color: var(--text-secondary); font-weight: 900; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">
                     <div>Target Node</div>
@@ -343,90 +287,102 @@
                     <div>Asset Yield</div>
                 </div>
 
-                <div class="dense-row" data-search="replit anchor founding enterprise">
+                <!-- REPLIT -->
+                <div class="dense-row" data-search="replit anchor founding enterprise" onclick="toggleDetail('detail-replit')">
                     <div class="row-entity">REPLIT</div>
                     <div class="row-action">Final Schedule Lock // Final Loop Prep</div>
                     <div class="row-meta">Founding Enterprise</div>
                     <div class="row-prob" style="color: var(--green);">95%</div>
                     <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
                 </div>
+                <div class="row-detail" id="detail-replit">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Nudge sent to Emily (Recruiter). Ghazi (CRO) validated technical proof via Nexus Hub.</div>
+                        <div class="detail-item"><b>Next Protocol</b>[T1] Hold position until lock. Prepare "Revenue-as-Engineering" track for final.</div>
+                    </div>
+                </div>
 
-                <div class="dense-row" data-search="go nimbly revops architect interview locked">
+                <!-- GO NIMBLY -->
+                <div class="dense-row" data-search="go nimbly revops architect interview locked" onclick="toggleDetail('detail-nimbly')">
                     <div class="row-entity">GO NIMBLY</div>
                     <div class="row-action">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
                     <div class="row-meta">RevOps Architect</div>
                     <div class="row-prob" style="color: var(--gold);">60%</div>
                     <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
                 </div>
+                <div class="row-detail" id="detail-nimbly">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Kristen Santiago meeting scheduled. Josh Kasim (TA) confirmed technical sync requirement.</div>
+                        <div class="detail-item"><b>Next Protocol</b>[STRIKE] Deploy "Clay Consultant" POV audit 24h prior to interview.</div>
+                    </div>
+                </div>
 
-                <div class="dense-row" data-search="descope success engineer security">
+                <!-- DESCOPE -->
+                <div class="dense-row" data-search="descope success engineer security" onclick="toggleDetail('detail-descope')">
                     <div class="row-entity">DESCOPE</div>
                     <div class="row-action">Monday follow-up // HM Discovery HUD</div>
                     <div class="row-meta">Success Engineer</div>
                     <div class="row-prob" style="color: var(--cyan);">75%</div>
                     <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
                 </div>
+                <div class="row-detail" id="detail-descope">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Meeting with Gilad (Founder) completed. Product-market fit signal acquired.</div>
+                        <div class="detail-item"><b>Next Protocol</b>[NURTURE] Ship Monday follow-up with AgentBar execution payload.</div>
+                    </div>
+                </div>
 
-                <div class="dense-row" data-search="raj vciso hub contract signing">
+                <!-- RAJ -->
+                <div class="dense-row" data-search="raj vciso hub contract signing" onclick="toggleDetail('detail-raj')">
                     <div class="row-entity">RAJ (vCISO HUB)</div>
                     <div class="row-action">Mandatory contract signing loop execution</div>
                     <div class="row-meta">Consulting Pilot</div>
                     <div class="row-prob" style="color: var(--green);">100%</div>
                     <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
                 </div>
+                <div class="row-detail" id="detail-raj">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>vCISO Master Framework v3.1 delivered. Payment rail verification active.</div>
+                        <div class="detail-item"><b>Next Protocol</b>[CLOSE] Signature expected < 48h. Transition to "Delivery Mode".</div>
+                    </div>
+                </div>
             </div>
 
+            <!-- OTHER HIDDEN PANELS (SYMBOLS) -->
             <div class="data-grid-container" id="panel-1">
-                <div class="dense-row" data-search="ghazi masood replit cro">
+                <div class="dense-row">
                     <div class="row-entity">Ghazi Masood</div>
                     <div class="row-action">CRO @ Replit</div>
-                    <div class="row-meta">Target Anchor</div>
-                    <div class="row-prob">92 INTENT</div>
-                    <div class="row-yield" style="color: var(--cyan);"><span class="status-pill pill-active">PRIMARY_T1</span></div>
-                </div>
-                <div class="dense-row" data-search="gilad shriki descope founder">
-                    <div class="row-entity">Gilad Shriki</div>
-                    <div class="row-action">Founder @ Descope</div>
-                    <div class="row-meta">Target Anchor</div>
-                    <div class="row-prob">78 INTENT</div>
-                    <div class="row-yield" style="color: var(--cyan);"><span class="status-pill pill-active">PRIMARY_T1</span></div>
+                    <div class="row-meta">92 INTENT</div>
+                    <div>-</div>
+                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
                 </div>
             </div>
-
             <div class="data-grid-container" id="panel-2">
-                <div class="dense-row" data-search="roboflow Naveeen joseph nelson signal">
+                <div class="dense-row">
                     <div class="row-entity">Roboflow Pivot</div>
                     <div class="row-action">GTM Expansion Signal detected // Naveen</div>
                     <div class="row-meta">High Intensity</div>
-                    <div class="row-prob" style="color: var(--gold);">SIGNAL</div>
-                    <div class="row-yield" style="color: var(--gold);"><span class="status-pill pill-gold">REFINED</span></div>
+                    <div>-</div>
+                    <div class="row-yield"><span class="status-pill pill-gold">REFINED</span></div>
                 </div>
             </div>
-
             <div class="data-grid-container" id="panel-3">
-                <div class="dense-row" data-search="vciso master framework nist soc2">
+                <div class="dense-row">
                     <div class="row-entity">vCISO Hub</div>
                     <div class="row-action">Master GTM Delivery Kit v3.0</div>
-                    <div class="row-meta">Master Kit</div>
-                    <div class="row-prob">90% CAP</div>
+                    <div class="row-meta">90% CAP</div>
+                    <div>-</div>
                     <div class="row-yield"><span class="status-pill">ACTIVE</span></div>
                 </div>
             </div>
-
             <div class="data-grid-container" id="panel-4">
-                <div class="dense-row" data-search="tredence excluded methodology mismatch">
+                <div class="dense-row">
                     <div class="row-entity" style="color: var(--text-secondary);">TREDENCE</div>
                     <div class="row-action">Dropped: Methodology mismatch // Adrenaline Leak</div>
-                    <div class="row-meta">Archive</div>
-                    <div class="row-prob" style="color: var(--red);">T4_KILL</div>
-                    <div class="row-yield" style="color: var(--red);"><span class="status-pill pill-kill">EXCLUDED</span></div>
-                </div>
-                <div class="dense-row" data-search="cyngular archived low yield">
-                    <div class="row-entity" style="color: var(--text-secondary);">Cyngular</div>
-                    <div class="row-action">Brief Delivered // Status: Archived</div>
-                    <div class="row-meta">Archive</div>
-                    <div class="row-prob" style="color: var(--text-secondary);">-</div>
-                    <div class="row-yield"><span class="status-pill">ARCHIVED</span></div>
+                    <div class="row-meta">T4_KILL</div>
+                    <div>-</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">EXCLUDED</span></div>
                 </div>
             </div>
         </main>
@@ -434,36 +390,28 @@
 
     <script>
         function switchTab(index) {
-            const navItems = document.querySelectorAll('.nav-item');
-            const panels = document.querySelectorAll('.data-grid-container');
-            
-            navItems.forEach((item, i) => {
-                if (i === index) item.classList.add('active');
-                else item.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-item').forEach((item, i) => i === index ? item.classList.add('active') : item.classList.remove('active'));
+            document.querySelectorAll('.data-grid-container').forEach((panel, i) => i === index ? panel.classList.add('active') : panel.classList.remove('active'));
+        }
 
-            panels.forEach((panel, i) => {
-                if (i === index) panel.classList.add('active');
-                else panel.classList.remove('active');
-            });
+        function toggleDetail(id) {
+            const el = document.getElementById(id);
+            const isActive = el.classList.contains('active');
+            document.querySelectorAll('.row-detail').forEach(d => d.classList.remove('active')); // Accordion style
+            if (!isActive) el.classList.add('active');
         }
 
         const searchInput = document.getElementById('globalSearch');
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('.dense-row[data-search]');
-            rows.forEach(row => {
+            document.querySelectorAll('.dense-row[data-search]').forEach(row => {
                 const text = row.dataset.search + row.innerText.toLowerCase();
                 row.style.display = text.includes(query) ? 'grid' : 'none';
             });
         });
 
-        // Hotkey: Command+K (Focus search)
         document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                searchInput.focus();
-            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
         });
     </script>
 </body>
