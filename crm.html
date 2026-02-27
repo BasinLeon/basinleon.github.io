@@ -7,20 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
-        --bg: #020205;
-        --surface: rgba(10, 12, 18, 0.45);
-        --surface-opaque: #0a0c12;
-        --border: rgba(255, 255, 255, 0.05);
-        --accent: #818cf8; /* Softer Indigo */
-        --cyan: #22d3ee;   /* Vibrant Cyan */
-        --gold: #fbbf24;
-        --green: #34d399;
-        --red: #f87171;
-        --text-primary: #f1f5f9;
+        --bg: #030308;
+        --surface: rgba(15, 18, 26, 0.7);
+        --surface-opaque: #0f121a;
+        --border: rgba(255, 255, 255, 0.08);
+        --accent: #6366f1; /* Electric Indigo */
+        --cyan: #06b6d4;   
+        --gold: #f59e0b;
+        --green: #10b981;
+        --red: #ef4444;
+        --text-primary: #f8fafc;
         --text-secondary: #94a3b8;
-        --gold-glow: rgba(251, 191, 36, 0.15);
-        --accent-glow: rgba(129, 140, 248, 0.2);
-        --cyan-glow: rgba(34, 211, 238, 0.2);
         --glass-blur: blur(20px);
     }
 
@@ -29,57 +26,109 @@
     body {
         background-color: var(--bg);
         color: var(--text-primary);
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.6;
         height: 100vh;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        background-image: 
-            radial-gradient(circle at 20% 20%, rgba(129, 140, 248, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 80% 80%, rgba(34, 211, 238, 0.03) 0%, transparent 40%);
+        background-image: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
     }
 
     h1, h2, h3, .nav-logo { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
     .space-mono, code { font-family: 'JetBrains Mono', monospace; }
 
-    /* --- AGENTIC GLASS BACKGROUND --- */
-    body::before {
-        content: '';
-        position: fixed;
-        top: -50%; left: -50%;
-        width: 200%; height: 200%;
-        background: radial-gradient(ellipse at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-                    radial-gradient(ellipse at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%),
-                    radial-gradient(ellipse at 50% 50%, rgba(71, 85, 105, 0.02) 0%, transparent 60%);
-        pointer-events: none;
-        z-index: -1;
-        animation: bgPulse 15s ease-in-out infinite alternate;
+    /* --- LAYOUT ENGINE --- */
+    .app-window {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 60px 1fr;
+        height: 100vh;
+        background: var(--bg);
     }
 
-    @keyframes bgPulse {
-        from { opacity: 0.6; transform: scale(1) translate(0, 0); }
-        to { opacity: 0.9; transform: scale(1.05) translate(20px, 10px); }
+    .workspace-sidebar {
+        grid-row: 1 / 3;
+        grid-column: 1;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        background: rgba(10, 12, 18, 0.98); 
+        backdrop-filter: var(--glass-blur);
+        overflow-y: auto;
+        z-index: 50;
     }
 
-    /* --- NAVIGATION OVERLAY --- */
-    .top-nav {
+    .workspace-main {
+        grid-row: 1 / 3;
+        grid-column: 2;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg);
+    }
+
+    .workspace-header {
+        padding: 16px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: rgba(3, 3, 8, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 40;
+    }
+
+    .data-grid-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px 30px;
+        display: none; 
+    }
+
+    .data-grid-container.active {
+        display: block;
+    }
+
+    /* --- SIDEBAR NAV --- */
+    .sidebar-section { margin-bottom: 32px; }
+    .sidebar-title { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 18px; font-weight: 900; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+
+    .nav-item {
+        padding: 12px 16px;
+        margin-bottom: 4px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        transition: all 0.2s;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 15px 30px;
-        background: rgba(10, 10, 15, 0.8);
-        border-bottom: 1px solid var(--border);
-        -webkit-backdrop-filter: var(--glass-blur);
-        backdrop-filter: var(--glass-blur);
-        z-index: 100;
+        gap: 12px;
     }
 
+    .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
+    .nav-item.active { 
+        background: rgba(99, 102, 241, 0.1); 
+        color: #fff; 
+        border-left: 3px solid var(--accent);
+    }
+
+    .protocol-card {
+        padding: 12px;
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px dashed var(--red);
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    /* --- SEARCH & TELEMETRY --- */
     .search-container {
         position: relative;
         flex: 1;
         max-width: 500px;
-        margin: 0 30px;
     }
 
     .search-bar {
@@ -91,13 +140,6 @@
         color: white;
         font-family: 'Inter', sans-serif;
         outline: none;
-        transition: all 0.3s;
-    }
-
-    .search-bar:focus {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
     }
 
     .search-icon {
@@ -106,454 +148,107 @@
         top: 50%;
         transform: translateY(-50%);
         color: var(--text-secondary);
-        font-size: 0.9rem;
     }
 
-    /* --- NAVIGATION TABS --- */
-    .nav-tabs {
+    .compact-telemetry {
         display: flex;
-        gap: 10px;
-        padding: 0 30px;
-        margin-top: -1px;
-        background: rgba(10, 10, 15, 0.8);
-        border-bottom: 1px solid var(--border);
-        -webkit-backdrop-filter: var(--glass-blur);
-        backdrop-filter: var(--glass-blur);
-        z-index: 90;
+        gap: 24px;
     }
 
-    .tab {
-        padding: 12px 20px;
-        cursor: pointer;
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--text-secondary);
-        transition: all 0.3s;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        position: relative;
-        opacity: 0.6;
-    }
+    .tel-node { display: flex; align-items: baseline; gap: 8px; }
+    .tel-label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; }
+    .tel-val { font-size: 0.85rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
 
-    .tab:hover { color: #fff; opacity: 1; }
-
-    .tab.active {
-        color: #fff;
-        opacity: 1;
-        text-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    .tab.active::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 20px;
-        right: 20px;
-        height: 2px;
-        background: var(--accent);
-        box-shadow: 0 0 10px var(--accent-glow);
-        animation: pulseTab 3s infinite;
-    }
-
-    @keyframes pulseTab {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-    }
-
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.5); opacity: 0.5; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* --- CARD DATA MODEL --- */
-    .telemetry-bar {
-        display: flex;
-        gap: 30px;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .telemetry-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .telemetry-label {
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--text-secondary);
-    }
-
-    .telemetry-value {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #fff;
-        font-family: 'Space Mono', monospace;
-    }
-
-    .card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 20px;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        -webkit-backdrop-filter: var(--glass-blur);
-        backdrop-filter: var(--glass-blur);
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .card:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-        transform: scale(1.005) translateY(-2px);
-        background: rgba(15, 18, 26, 0.6);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
-    }
-
-    /* --- SPLASH SCREEN --- */
-    #splash-screen {
-        position: fixed;
-        inset: 0;
-        background: #000;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 1s ease-out, visibility 1s;
-    }
-
-    #splash-screen.hidden {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .splash-logo {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #fff;
-        letter-spacing: 4px;
-        margin-bottom: 20px;
-        position: relative;
-    }
-
-    .splash-logo::after {
-        content: "";
-        position: absolute;
-        bottom: -10px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-        animation: logoLine 2s infinite;
-    }
-
-    @keyframes logoLine {
-        0% { transform: scaleX(0); opacity: 0; }
-        50% { transform: scaleX(1); opacity: 1; }
-        100% { transform: scaleX(0); opacity: 0; }
-    }
-
-    .splash-status {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.7rem;
-        color: var(--cyan);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-
-    .shimmer {
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-        background-size: 200% 100%;
-        animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-    }
-
-    .card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        opacity: 0;
-        transition: opacity 0.4s;
-    }
-
-    .card:hover::before { opacity: 0.6; }
-
-    .card-metrics {
+    /* --- DENSE ROWS (OPERATOR TIER) --- */
+    .dense-row {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin: 12px 0;
-        padding: 12px;
-        background: rgba(0,0,0,0.2);
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.03);
+        grid-template-columns: 180px 2fr 120px 80px 120px;
+        align-items: center;
+        padding: 14px 18px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 6px;
+        font-size: 0.75rem;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-        .metric-item {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
+    .dense-row:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateX(4px);
+    }
 
-        .metric-label {
-            font-size: 0.55rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.85rem; }
+    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 15px; }
+    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--cyan); }
+    .row-yield { font-weight: 800; color: var(--green); font-size: 0.7rem; }
 
-        .metric-value {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #fff;
-            font-family: 'Space Mono', monospace;
-        }
+    .yield-bar {
+        height: 4px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        margin-top: 4px;
+        overflow: hidden;
+        width: 80px;
+    }
 
-        .activity-block {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+    .yield-fill {
+        height: 100%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+    }
 
-        .activity-grid {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 15px;
-            font-size: 0.72rem;
-            margin-bottom: 6px;
-        }
-
-        .activity-date {
-            color: var(--text-secondary);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-        }
-
-        .activity-text {
-            color: #d1d5db;
-        }
-
-        .action-required {
-            background: rgba(239, 68, 68, 0.1);
-            border-left: 3px solid var(--red);
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            color: #fff;
-        }
-
-        .verification-badge {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
-
-        .v-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-        }
-
-        .v-verified { background: var(--green); box-shadow: 0 0 5px var(--green); }
-        .v-pending { background: var(--gold); }
-        .v-local { background: var(--text-secondary); }
-
-        .detail-label {
-            margin-top: 10px;
-            margin-bottom: 4px;
-            font-size: 0.58rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .card-subtitle {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            font-family: 'Space Mono', monospace;
-            opacity: 0.8;
-        }
-
-        /* --- LAYOUT ENGINE --- */
-        .content-area {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* --- PACKED WORKSTATION LAYOUT --- */
-        .app-window {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            grid-template-rows: 60px 1fr;
-            height: 100vh;
-            background: var(--bg);
-            color: var(--text-primary);
-        }
-
-        .workspace-sidebar {
-            grid-row: 1 / 3;
-            grid-column: 1;
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            background: rgba(10, 12, 18, 0.95); /* More opaque for visibility */
-            backdrop-filter: var(--glass-blur);
-            overflow-y: auto;
-        }
-
-        .workspace-main {
-            grid-row: 1 / 3;
-            grid-column: 2;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background: var(--bg);
-        }
-
-        .workspace-header {
-            padding: 16px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: rgba(2, 2, 5, 0.7);
-        }
-
-        .data-grid-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 30px;
-        }
-
-        .compact-telemetry {
-            display: flex;
-            gap: 24px;
-            padding: 12px 0;
-        }
-
-        .tel-node {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-
-        .tel-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; }
-        .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-
-        /* --- DENSE ROWS (APOLLO STYLE) --- */
-        .dense-row {
-            display: grid;
-            grid-template-columns: 180px 2fr 1fr 100px 120px;
-            align-items: center;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 4px;
-            font-size: 0.75rem;
-            transition: all 0.2s;
-        }
-
-        .dense-row:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(129, 140, 248, 0.3);
-            transform: translateX(4px);
-        }
-
-        .row-entity { font-weight: 700; color: var(--text-primary); }
-        .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .row-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--cyan); }
-
-        .sidebar-section { margin-bottom: 32px; }
-        .sidebar-title { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 800; }
-
-        .focus-item {
-            padding: 12px;
-            background: rgba(251, 191, 36, 0.05);
-            border-left: 2px solid var(--gold);
-            border-radius: 4px;
-            margin-bottom: 8px;
-        }
-        .focus-item.locked { border-color: var(--cyan); background: rgba(34, 211, 238, 0.05); }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
     </style>
 </head>
-<body class="shimmer">
-
-    <!-- SPLASH SCREEN -->
-    <div id="splash-screen">
-        <div class="splash-logo">BASIN::NEXUS</div>
-        <div class="splash-status" id="splash-text">INITIALIZING QUANTUM PIPELINE...</div>
-    </div>
+<body>
 
     <div class="app-window">
-        <!-- FIXED SIDEBAR -->
+        <!-- OPERATOR SIDEBAR -->
         <aside class="workspace-sidebar">
-            <div class="nav-logo" style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 30px; letter-spacing: 2px;">BASIN::NEXUS</div>
+            <div class="nav-logo" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 35px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 14px; height: 14px; background: var(--accent); border-radius: 2px;"></div>
+                BASIN::NEXUS
+            </div>
             
             <div class="sidebar-section">
-                <div class="sidebar-title">NAVIGATION</div>
-                <div class="tab active" onclick="switchTab(0)" style="padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border);">Destiny Map (Pipeline)</div>
-                <div class="tab" onclick="switchTab(1)" style="padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border);">Network Intel</div>
-                <div class="tab" onclick="switchTab(2)" style="padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border);">Intelligence Feed</div>
-                <div class="tab" onclick="switchTab(3)" style="padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border);">Asset Vault</div>
-            </div>
-
-            <div class="sidebar-section">
-                <div class="sidebar-title">EXECUTION RULES</div>
-                <div class="focus-item locked" style="border: 1px dashed var(--cyan); background: rgba(34, 211, 238, 0.05); padding: 10px; border-radius: 6px; margin-bottom: 10px;">
-                    <div style="font-size: 0.55rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">T1: ANCHOR RULE</div>
-                    <div style="font-size: 0.7rem; color: #f1f5f9; margin-top: 4px;">If idle > 72h → Mandatory Technical Insight.</div>
+                <div class="sidebar-title">WORKSTATION</div>
+                <div class="nav-item active" onclick="switchTab(0)">
+                    <span>📡</span> Destiny Map
                 </div>
-                <div class="focus-item" style="border: 1px dashed var(--gold); background: rgba(251, 191, 36, 0.05); padding: 10px; border-radius: 6px; margin-bottom: 10px;">
-                    <div style="font-size: 0.55rem; color: var(--gold); font-weight: 800; text-transform: uppercase;">T2: CASH RULE</div>
-                    <div style="font-size: 0.7rem; color: #f1f5f9; margin-top: 4px;">If Stabilizer exists → Next step &lt; 48h.</div>
+                <div class="nav-item" onclick="switchTab(1)">
+                    <span>👥</span> Arena Intel
                 </div>
-                <div class="focus-item" style="border: 1px dashed var(--text-secondary); background: rgba(255, 255, 255, 0.02); padding: 10px; border-radius: 6px;">
-                    <div style="font-size: 0.55rem; color: var(--text-secondary); font-weight: 800; text-transform: uppercase;">T3: ENERGY COST</div>
-                    <div style="font-size: 0.7rem; color: #f1f5f9; margin-top: 4px;">If > 3/5 → Auto-demote to Monitor.</div>
+                <div class="nav-item" onclick="switchTab(2)">
+                    <span>🛰️</span> Signal Feed
+                </div>
+                <div class="nav-item" onclick="switchTab(3)">
+                    <span>📦</span> Payload Vault
+                </div>
+                <div class="nav-item" onclick="switchTab(4)">
+                    <span>📂</span> Historical
                 </div>
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">QUICK LOGS</div>
-                <div style="font-size: 0.7rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 1.8;">
-                    - LINKEDIN: ARCHITECT_GLASS<br>
-                    - NABEEL: DISPATCHED<br>
-                    - EMILY: DISPATCHED<br>
-                    - RAJ: DELIVERED
+                <div class="sidebar-title">TERMINAL PROTOCOLS</div>
+                <div class="protocol-card">
+                    <div style="font-size: 0.55rem; color: var(--red); font-weight: 800; text-transform: uppercase;">T4: CLOSE OR KILL</div>
+                    <div style="font-size: 0.65rem; color: #f1f5f9; margin-top: 5px; line-height: 1.4;">If Stage 4 node > 5 days without pulse → Mandatory Archival.</div>
+                </div>
+                <div style="padding: 10px; background: rgba(6, 182, 212, 0.03); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 6px;">
+                    <div style="font-size: 0.55rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">SIGNAL: ASSET YIELD</div>
+                    <div style="font-size: 0.65rem; color: #f1f5f9; margin-top: 5px;">Conversion track active for SPEAR audits.</div>
                 </div>
             </div>
 
             <div class="sidebar-section" style="margin-top: auto;">
-                <div class="sidebar-title">SYSTEM_TELEMETRY</div>
-                <div style="font-size: 0.65rem; color: var(--cyan); font-family: 'JetBrains Mono';">
-                    NODE_V: 3.0.2<br>
-                    DRIFT_CORRECTION: ACTIVE<br>
-                    SIGNAL_STRENGTH: 98.4%
+                <div class="sidebar-title">TELEMETRY_V3.1</div>
+                <div style="font-size: 0.6rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 1.8;">
+                    NODE_GRAVITY: MAX // [A-72H ACTIVE]<br>
+                    SIGNAL: STABLE 98.4%
                 </div>
             </div>
         </aside>
@@ -561,759 +256,144 @@
         <!-- MAIN WORKSPACE -->
         <main class="workspace-main">
             <header class="workspace-header">
-                <div class="search-container" style="margin: 0; max-width: 400px;">
+                <div class="search-container">
                     <span class="search-icon">🔍</span>
-                    <input type="text" class="search-bar" placeholder="Command (/) or Search (K)..." id="globalSearch">
+                    <input type="text" class="search-bar" placeholder="Command (/) or Global Search (K)..." id="globalSearch">
                 </div>
                 <div class="compact-telemetry">
                     <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430K</span></div>
-                    <div class="tel-node"><span class="tel-label">SNIPER:</span><span class="tel-val" style="color: var(--gold);">$850K</span></div>
-                    <div class="tel-node"><span class="tel-label">INTERVIEWS:</span><span class="tel-val" style="color: var(--cyan);">3</span></div>
+                    <div class="tel-node"><span class="tel-label">ARENA:</span><span class="tel-val" style="color: var(--cyan);">4 ACTIVE</span></div>
                 </div>
-                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary);">
-                    2026-02-27 // 10:37 PST<br>
-                    [A-72H RULE ACTIVE]
+                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono';">
+                    2026-02-27 // 10:50 PST<br>
+                    [T4_PROTOCOL_ACTIVE]
                 </div>
             </header>
 
-            <div class="data-grid-container">
-                <!-- LOGIC BLOCK (SMALLER) -->
-                <div style="padding: 16px; border: 1px solid var(--accent-glow); border-radius: 12px; background: rgba(129, 140, 248, 0.03); margin-bottom: 24px;">
-                    <h3 style="font-size: 0.75rem; color: var(--accent); margin-bottom: 8px; font-weight: 800;">🚀 THE LOGIC OF THE SYSTEM (CASE STUDY)</h3>
-                    <p style="font-size: 0.7rem; color: var(--text-secondary); line-height: 1.5; max-width: 800px;">
-                        This design mirrors <strong>Clay/Apollo</strong> workflows: high-density decisioning. Every row represents a node where I have allocated focus time. The goal is zero "drift"—every node must have a clear 72h next step or be archived.
-                    </p>
-                </div>
-            <!-- 🧱 ANCHORS: IDENTITY DEFINING -->
-                <!-- TABLE HEADERS -->
+            <!-- PANELS -->
+            <div class="data-grid-container active" id="panel-0">
                 <div class="dense-row" style="background: transparent; border-color: transparent; border-bottom: 2px solid var(--border); border-radius: 0; color: var(--text-secondary); font-weight: 800; font-size: 0.65rem; text-transform: uppercase;">
-                    <div>Entity / Node</div>
-                    <div>Next Action Pulse</div>
-                    <div>Strategy</div>
+                    <div>Target Node</div>
+                    <div>Terminal Action / Next Pulse</div>
+                    <div>Strategy / Role</div>
                     <div>Prob.</div>
-                    <div>Status</div>
+                    <div>Asset Yield</div>
                 </div>
 
-                <!-- GO NIMBLY -->
-                <div class="dense-row" data-search="go nimbly kristen santiago clay first interview architect locked">
-                    <div class="row-entity">GO NIMBLY</div>
-                    <div class="row-action">Pre-interview technical breakdown // prep talk tracks </div>
-                    <div class="row-meta">RevOps Architect</div>
-                    <div class="row-meta" style="color: var(--gold);">60%</div>
-                    <span class="badge" style="background: rgba(34, 211, 238, 0.1); color: var(--cyan);">LOCKED</span>
-                </div>
-                
-                <!-- REPLIT -->
-                <div class="dense-row" data-search="replit ghazi replit anchor career defining gravity await sync">
+                <div class="dense-row" data-search="replit anchor founding enterprise">
                     <div class="row-entity">REPLIT</div>
-                    <div class="row-action">Await recruiter sync // Schedule final loop lock</div>
+                    <div class="row-action">Final Schedule Lock // Final Loop Prep</div>
                     <div class="row-meta">Founding Enterprise</div>
                     <div class="row-meta" style="color: var(--green);">95%</div>
-                    <span class="badge" style="background: rgba(129, 140, 248, 0.1); color: var(--accent);">ANCHOR</span>
+                    <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
                 </div>
 
-                <!-- DESCOPE -->
-                <div class="dense-row" data-search="descope gilad anchor career defining workspace verified">
+                <div class="dense-row" data-search="go nimbly revops architect interview locked">
+                    <div class="row-entity">GO NIMBLY</div>
+                    <div class="row-action">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
+                    <div class="row-meta">RevOps Architect</div>
+                    <div class="row-meta" style="color: var(--gold);">60%</div>
+                    <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
+                </div>
+
+                <div class="dense-row" data-search="descope success engineer security">
                     <div class="row-entity">DESCOPE</div>
-                    <div class="row-action">Monday follow-up w/ execution narrative AgentBar</div>
-                    <div class="row-meta">Success Eng</div>
-                    <div class="row-meta" style="color: var(--cyan);">70%</div>
-                    <span class="badge" style="background: rgba(129, 140, 248, 0.1); color: var(--accent);">ANCHOR</span>
+                    <div class="row-action">Monday follow-up // HM Discovery HUD</div>
+                    <div class="row-meta">Success Engineer</div>
+                    <div class="row-meta" style="color: var(--cyan);">75%</div>
+                    <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
                 </div>
 
-                <div style="margin: 24px 0 12px 0; font-size: 0.6rem; color: var(--gold); font-weight: 800; letter-spacing: 2px;">💰 CASH FLOW NODES</div>
-
-                <!-- RAJ -->
-                <div class="dense-row" data-search="raj vciso hub cash supporting income await sync">
-                    <div class="row-entity">RAJ // vCISO HUB</div>
-                    <div class="row-action">Execute mandatory contract signing loop</div>
-                    <div class="row-meta">Consulting</div>
+                <div class="dense-row" data-search="raj vciso hub contract signing">
+                    <div class="row-entity">RAJ (vCISO HUB)</div>
+                    <div class="row-action">Mandatory contract signing loop execution</div>
+                    <div class="row-meta">Consulting Pilot</div>
                     <div class="row-meta" style="color: var(--green);">100%</div>
-                    <span class="badge" style="background: rgba(251, 191, 36, 0.1); color: var(--gold);">CASH</span>
+                    <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
                 </div>
+            </div>
 
-                <!-- SOURABH -->
-                <div class="dense-row" data-search="sourabh panoptic cash supporting income workspace verified">
-                    <div class="row-entity">PANOPTIC</div>
-                    <div class="row-action">Run discovery pilot for first Agency Client</div>
-                    <div class="row-meta">Technical Advisor</div>
-                    <div class="row-meta" style="color: var(--red);">30%</div>
-                    <span class="badge" style="background: rgba(251, 191, 36, 0.1); color: var(--gold);">CASH</span>
+            <div class="data-grid-container" id="panel-1">
+                <div class="dense-row" data-search="ghazi masood replit cro">
+                    <div class="row-entity">Ghazi Masood</div>
+                    <div class="row-action">CRO @ Replit</div>
+                    <div class="row-meta">Target Anchor</div>
+                    <div class="row-meta">92 INTENT</div>
+                    <div class="row-yield" style="color: var(--cyan);">T1_PRIMARY</div>
                 </div>
+                <div class="dense-row" data-search="gilad shriki descope founder">
+                    <div class="row-entity">Gilad Shriki</div>
+                    <div class="row-action">Founder @ Descope</div>
+                    <div class="row-meta">Target Anchor</div>
+                    <div class="row-meta">78 INTENT</div>
+                    <div class="row-yield" style="color: var(--cyan);">T1_PRIMARY</div>
+                </div>
+            </div>
 
-                <div style="margin: 24px 0 12px 0; font-size: 0.6rem; color: var(--cyan); font-weight: 800; letter-spacing: 2px;">🎯 SNIPER LIST</div>
+            <div class="data-grid-container" id="panel-2">
+                <div class="dense-row" data-search="roboflow Naveeen joseph nelson signal">
+                    <div class="row-entity">Roboflow Pivot</div>
+                    <div class="row-action">GTM Expansion Signal detected // Naveen</div>
+                    <div class="row-meta">High Intensity</div>
+                    <div class="row-meta">STRIKE</div>
+                    <div class="row-yield" style="color: var(--gold);">REFINED</div>
+                </div>
+            </div>
 
-                <!-- ROBOFLOW -->
-                <div class="dense-row" data-search="roboflow head of gtm systems strategy joseph nelson kate wagner">
-                    <div class="row-entity">Roboflow</div>
-                    <div class="row-action">Direct founder approach (Naveen) // "GTM Architect"</div>
-                    <div class="row-meta">GTM Systems</div>
+            <div class="data-grid-container" id="panel-3">
+                <div class="dense-row" data-search="vciso master framework nist soc2">
+                    <div class="row-entity">vCISO Hub</div>
+                    <div class="row-action">Master GTM Delivery Kit v3.0</div>
+                    <div class="row-meta">Master Kit</div>
+                    <div class="row-meta">90% CAP</div>
+                    <div class="row-yield">ACTIVE</div>
+                </div>
+            </div>
+
+            <div class="data-grid-container" id="panel-4">
+                <div class="dense-row" data-search="tredence excluded methodology mismatch">
+                    <div class="row-entity" style="color: var(--text-secondary);">TREDENCE</div>
+                    <div class="row-action">Dropped: Methodology mismatch // Adrenaline Leak</div>
+                    <div class="row-meta">Archive</div>
+                    <div class="row-meta" style="color: var(--red);">T4_KILL</div>
+                    <div class="row-yield" style="color: var(--red);">EXCLUDED</div>
+                </div>
+                <div class="dense-row" data-search="cyngular archived low yield">
+                    <div class="row-entity" style="color: var(--text-secondary);">Cyngular</div>
+                    <div class="row-action">Brief Delivered // Status: Archived</div>
+                    <div class="row-meta">Archive</div>
                     <div class="row-meta">-</div>
-                    <span class="badge">SIGNAL</span>
-                </div>
-
-                <!-- ONELEET -->
-                <div class="dense-row" data-search="oneleet gtm revops engineer bryan onel koby conrad cybersecurity">
-                    <div class="row-entity">Oneleet</div>
-                    <div class="row-action">vCISO framing // Security systems nudge</div>
-                    <div class="row-meta">RevOps Eng</div>
-                    <div class="row-meta">-</div>
-                    <span class="badge">SECURITY</span>
-                </div>
-
-                <!-- CONFIDO -->
-                <div class="dense-row" data-search="confido founding gtm engineer justin hunter nyc ai finance">
-                    <div class="row-entity">Confido</div>
-                    <div class="row-action">Direct CEO nudge // Nexus Pilot proposal</div>
-                    <div class="row-meta">GTM Engineer</div>
-                    <div class="row-meta">-</div>
-                    <span class="badge" style="background: rgba(129, 140, 248, 0.1); color: var(--accent);">STRIKE</span>
+                    <div class="row-yield">ARCHIVED</div>
                 </div>
             </div>
         </main>
     </div>
 
-            <!-- 🎯 SNIPER: STRIKE LIST -->
-            <div style="margin-bottom: 30px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid var(--cyan); padding-bottom: 10px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="background: var(--cyan); color: #000; padding: 2px 8px; font-weight: 900; font-size: 0.7rem; border-radius: 4px;">🎯 SNIPER</span>
-                        <h3 style="font-size: 0.9rem; color: #fff;">STRIKE LIST // High-Leverage Opportunity Upside</h3>
-                    </div>
-                </div>
-
-                <div class="card" data-search="roboflow head of gtm systems strategy joseph nelson kate wagner">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: var(--cyan); font-size: 1.1rem; margin-bottom: 0;">Roboflow</h2>
-                            <div class="card-subtitle">Head of GTM Systems & Strategy // Kate Wagner // $160k+ OTE</div>
-                        </div>
-                        <span class="badge" style="background: rgba(6, 182, 212, 0.1); color: var(--cyan); border: 1px solid var(--cyan-glow);">🎯 HIGH SIGNAL</span>
-                    </div>
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Play:</span>
-                            <span class="activity-text">Direct founder approach (Joseph Nelson). Narrative: "Founding GTM Architect".</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" data-search="oneleet gtm revops engineer bryan onel koby conrad cybersecurity">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0;">Oneleet</h2>
-                            <div class="card-subtitle">GTM/RevOps Engineer // Bryan Onel (CEO) // $150k+</div>
-                        </div>
-                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--accent); border: 1px solid var(--accent-glow);">🛡️ SECURITY FIT</span>
-                    </div>
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Play:</span>
-                            <span class="activity-text">Leverage vCISO/Security background. Frame as "Systems Engineer for Growth".</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" data-search="confido founding gtm engineer justin hunter nyc ai finance">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Confido</h2>
-                            <div class="card-subtitle">Founding GTM Engineer // Justin Hunter (CEO) // AI Finance</div>
-                        </div>
-                        <span class="badge" style="background: rgba(255, 255, 255, 0.1); color: var(--accent); border: 1px solid var(--accent-glow);">📍 STRIKE ACTIVE</span>
-                    </div>
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Feb 26:</span>
-                            <span class="activity-text">Speculative Audit Delivered. 2-week Nexus Pilot proposed.</span>
-                        </div>
-                        <div class="activity-grid">
-                            <span class="activity-date">Play:</span>
-                            <span class="activity-text">Direct CEO nudge via YC/Confido specific HUD. Focus on "Post-Series A Scale."</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" data-search="tavus pocus revops lead gtm systems">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Tavus / Pocus / Traba</h2>
-                            <div class="card-subtitle">RevOps Lead // GTM Systems // Aggregate Tier-2</div>
-                        </div>
-                    </div>
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Status:</span>
-                            <span class="activity-text">Monitoring for high-signal entry points. Monitoring Signal Loss threads.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ⚡ ENERGY: EXPLORATORY -->
-            <div style="margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--text-secondary); padding-bottom: 10px;">
-                    <span style="background: var(--text-secondary); color: #000; padding: 2px 8px; font-weight: 900; font-size: 0.7rem; border-radius: 4px;">⚡ ENERGY</span>
-                    <h3 style="font-size: 0.9rem; color: #fff;">EXPLORATORY // Curiosity & Adrenaline</h3>
-                </div>
-
-                <div class="card" data-search="ether ai energy exploratory adrenaline high burn">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0;">ETHER AI</h2>
-                            <div class="card-subtitle">Partnership Lead // Monitoring // Adrenaline Only</div>
-                        </div>
-                        <span class="badge" style="background: rgba(148, 163, 184, 0.1); color: var(--text-secondary); border: 1px solid var(--text-secondary);">⚡ ENERGY</span>
-                    </div>
-
-                    <div class="card-metrics" style="margin-top: 5px;">
-                        <div class="metric-item">
-                            <span class="metric-label">Probability</span>
-                            <span class="metric-value">20%</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Energy Cost</span>
-                            <span class="metric-value">5 / 5</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Signal Decay</span>
-                            <span class="metric-value" style="color: var(--red);">HIGH BURN</span>
-                        </div>
-                    </div>
-
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Feb 25:</span>
-                            <span class="activity-text">Drafting partnership brief. Discussion only.</span>
-                        </div>
-                        <div class="activity-grid">
-                            <span class="activity-date">Next Pulse:</span>
-                            <span class="activity-text" style="color: var(--red);">NO TECHNICAL ALLOCATION ALLOWED.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" data-search="delve energy exploratory founder karun delve">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                        <div>
-                            <h2 style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0;">DELVE</h2>
-                            <div class="card-subtitle">Founder Intro // Auto-Demoted // Stalled</div>
-                        </div>
-                        <span class="badge" style="background: rgba(148, 163, 184, 0.1); color: var(--text-secondary); border: 1px solid var(--text-secondary);">⚡ ENERGY</span>
-                    </div>
-
-                    <div class="card-metrics" style="margin-top: 5px;">
-                        <div class="metric-item">
-                            <span class="metric-label">Probability</span>
-                            <span class="metric-value">15%</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Energy Cost</span>
-                            <span class="metric-value">4 / 5</span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Signal Decay</span>
-                            <span class="metric-value" style="color: var(--red);">STALLED</span>
-                        </div>
-                    </div>
-
-                    <div class="activity-block">
-                        <div class="activity-grid">
-                            <span class="activity-date">Feb 25:</span>
-                            <span class="activity-text">CEO touchpoint delayed. Signal loss detected.</span>
-                        </div>
-                        <div class="activity-grid">
-                            <span class="activity-date">Next Pulse:</span>
-                            <span class="activity-text">System-triggered demotion to Monitor Mode.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="scroll-panel" id="panel-contacts" style="display: none;">
-            <!-- CONTACTS & LEADS -->
-            <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-                <h3 style="font-size: 0.9rem; color: var(--accent);">HIGH-VALUE CONNECTIONS // Identity Nodes</h3>
-            </div>
-            
-            <div class="card" data-search="ghazi masood replit cro enterprise scaling">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Ghazi Masood</h2>
-                        <div class="card-subtitle">CRO @ Replit // Identity Anchor // Tier 1</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 0.55rem; color: var(--cyan); letter-spacing: 1px; font-weight: 900; text-transform: uppercase;">INTENT_SCORE</div>
-                        <div style="font-size: 1.2rem; font-weight: 800; color: var(--cyan); font-family: 'Space Mono', monospace; line-height: 1;">92</div>
-                    </div>
-                </div>
-
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Signal:</span>
-                        <span class="activity-text">Signal-Driven Execution + Horizon Organic TCO Brief delivered.</span>
-                    </div>
-                    <div class="activity-grid">
-                        <span class="activity-date">Next:</span>
-                        <span class="activity-text">Monday morning confirmation nudge. "Revenue-as-Engineering" frame.</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card" data-search="gilad shriki descope founder engineer identity">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Gilad Shriki</h2>
-                        <div class="card-subtitle">Co-Founder @ Descope // Identity Anchor // Tier 1</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 0.55rem; color: var(--cyan); letter-spacing: 1px; font-weight: 900; text-transform: uppercase;">INTENT_SCORE</div>
-                        <div style="font-size: 1.2rem; font-weight: 800; color: var(--cyan); font-family: 'Space Mono', monospace; line-height: 1;">78</div>
-                    </div>
-                </div>
-
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Signal:</span>
-                        <span class="activity-text">Intro HUD delivered. B2B induction discovery lock.</span>
-                    </div>
-                    <div class="activity-grid">
-                        <span class="activity-date">Next:</span>
-                        <span class="activity-text">Technical review with Engineering team (Prep active).</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="nabeel khan angel investor portfolio referral">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Nabeel Khan</h2>
-                        <div class="card-subtitle">Angel Investor // Portfolio Access Node // Key Referral</div>
-                    </div>
-                    <span class="badge badge-green">VERIFIED</span>
-                </div>
-
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Status:</span>
-                        <span class="activity-text">Key Referral Dispatched. Sync active (Gmail/LinkedIn).</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="karun kaushik delve ceo founder architect">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Karun Kaushik</h2>
-                        <div class="card-subtitle">CEO @ Delve // Sniper Target // Stalled</div>
-                    </div>
-                    <span class="badge badge-gold">SNIPER</span>
-                </div>
-                
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Signal:</span>
-                        <span class="activity-text">CEO touchpoint delayed. Signal loss detected.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="jassi singh talsmart jassi singh partnership">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Jassi Singh</h2>
-                        <div class="card-subtitle">Chairman @ TalSmart // Active Pilot Partner // $50k → 50/50 on $250k</div>
-                    </div>
-                    <span class="badge badge-blue">PILOT ACTIVE</span>
-                </div>
-                
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Deal:</span>
-                        <span class="activity-text">$50k first revenue (100% Leon), then 50/50 profit split on $250k+.</span>
-                    </div>
-                    <div class="activity-grid">
-                        <span class="activity-date">Status:</span>
-                        <span class="activity-text">Joint GTM pilot active. Signal refinery integration testing.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="paul m cyngular paul m paul m cyngular">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Paul M</h2>
-                        <div class="card-subtitle">GTM @ Cyngular // Historical Trace // Local Archive</div>
-                    </div>
-                    <span class="badge badge-gold">TRACE</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="sourabh asawa panoptic analytics sourabh asawa">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Sourabh Asawa</h2>
-                        <div class="card-subtitle">CEO @ Panoptic // Strategic Pilot // Strategic Role Alignment</div>
-                    </div>
-                    <span class="badge badge-blue">PILOT</span>
-                </div>
-                
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Signal:</span>
-                        <span class="activity-text">Discovery script 80% complete. Pilot nodes active.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="emily gleeson replit recruiting talent emily gleeson">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Emily Gleeson</h2>
-                        <div class="card-subtitle">Recruiting @ Replit // Relationship Managed // Gatekeeper</div>
-                    </div>
-                    <span class="badge badge-gold">MANAGED</span>
-                </div>
-                
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Status:</span>
-                        <span class="activity-text">Interview Loop Managed. Maintaining persistent signal.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="scroll-panel" id="panel-intelligence" style="display: none;">
-            <!-- INTELLIGENCE FEED -->
-            <div class="card" data-search="nabeel referral portfolio diagnostic audit audit intro">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: var(--green); font-size: 1.1rem; margin-bottom: 0;">Signal: Portfolio Referral Pivot</h2>
-                        <div class="card-subtitle">Nabeel Khan // Diagnostic Audit Frame // Tactical</div>
-                    </div>
-                    <span class="badge badge-green">CAPTURED</span>
-                </div>
-
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Play:</span>
-                        <span class="activity-text">Switch from "Applying" to "Auditing" for portfolio founders.</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🛰️ SNIPER INTELLIGENCE // REFINERY OUTPUT -->
-            <div style="margin: 20px 0 15px 0; border-bottom: 1px solid var(--cyan); padding-bottom: 8px;">
-                <h3 style="font-size: 0.8rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 1px;">🛰️ SNIPER INTELLIGENCE // REFINERY OUTPUT</h3>
-            </div>
-
-            <div class="card" data-search="roboflow joseph nelson computer vision gtm strategy">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Signal: Roboflow Vision Pivot</h2>
-                        <div class="card-subtitle">Source: Public Alpha // CEO Joseph Nelson // Computer Vision Hub</div>
-                    </div>
-                    <span class="badge badge-blue">REFINED</span>
-                </div>
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Intel:</span>
-                        <span class="activity-text">Rapid GTM expansion. "Head of" role indicates transition from founder-led sales to systems-led growth. High leverage for automation architects.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="oneleet bryan onel managed security security as code">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Signal: Oneleet Managed Security</h2>
-                        <div class="card-subtitle">Source: Hiring Pulse // Bryan Onel (CEO) // Security as Code</div>
-                    </div>
-                    <span class="badge badge-blue">REFINED</span>
-                </div>
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Intel:</span>
-                        <span class="activity-text">Series A momentum. Pivoting from manual pentesting to managed security platform. Critical need for GTM systems that can handle "Security Service" complexity.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="confido justin hunter ai finance post-series a">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Signal: Confido AI Finance Scale</h2>
-                        <div class="card-subtitle">Source: YC Feed // Justin Hunter (CEO) // Post-Series A</div>
-                    </div>
-                    <span class="badge badge-blue">REFINED</span>
-                </div>
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Intel:</span>
-                        <span class="activity-text">Founding GTM Engineer role reports to CEO. Looking for "Phase 0 to Phase 1" scale architect. High equity upside for first systems hire.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card" data-search="replit organic tco model weaponized sales weaponized">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Replit: Organic TCO Model</h2>
-                        <div class="card-subtitle">Technique: "Signal-Driven Execution" // Horizon Organic TCO model</div>
-                    </div>
-                    <span class="badge badge-blue">TALK TRACK</span>
-                </div>
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Status:</span>
-                        <span class="activity-text">Briefing finalized. Ready for CRO deployment.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" data-search="yuliya fomina cmm track 2 async feedback async">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Yuliya: Track #2 Async Plan</h2>
-                        <div class="card-subtitle">Diagnostic: Architecture Review // Paid Advisory Prep</div>
-                    </div>
-                    <span class="badge badge-gold">STRATEGY</span>
-                </div>
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Next:</span>
-                        <span class="activity-text">Deliver async feedback via Loom. Schedule Week 2 lock.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card" data-search="operator hud sourabh mercenary revenue diagnostics">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0;">Play: Mercenary Wedge HUD</h2>
-                        <div class="card-subtitle">Sourabh Asawa // Strategic Intervention // Asset Ready</div>
-                    </div>
-                    <span class="badge badge-blue">10 AM LOCK</span>
-                </div>
-
-                <div class="activity-block">
-                    <div class="activity-grid">
-                        <span class="activity-date">Asset:</span>
-                        <span class="activity-text">PORTFOLIO_PILOT.html (Verified). Discovery lock active.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="scroll-panel" id="panel-assets" style="display: none;">
-            <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 0.9rem; color: var(--accent);">MASTER ARTIFACTS & DEAL KITS // Knowledge Nodes</h3>
-                <span class="badge badge-blue">14 NODES MOUNTED</span>
-            </div>
-
-            <!-- 🛡️ SECURITY & COMPLIANCE -->
-            <div style="margin-bottom: 15px; font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">🛡️ SECURITY & COMPLIANCE</div>
-            <div class="card" data-search="vciso framework nist soc2 iso master asset">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">vCISO Master Framework</h2>
-                        <div class="card-subtitle">Path: 00_LEON_BASIN_MASTER_ASSETS/VCISO_NIST_SOC2_ISO_.../framework_doc.md</div>
-                    </div>
-                    <span class="badge badge-green">MASTER</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="vciso framework dashboard nist soc2 iso">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">vCISO Framework Dashboard</h2>
-                        <div class="card-subtitle">Path: 00_LEON_BASIN_MASTER_ASSETS/DASHBOARD_PREVIEW/framework_dashboard.html</div>
-                    </div>
-                    <span class="badge badge-blue">READY</span>
-                </div>
-            </div>
-
-            <!-- 📦 ACTIVE DEAL KITS -->
-            <div style="margin: 20px 0 15px 0; font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">📦 ACTIVE DEAL KITS</div>
-            <div class="card" data-search="descope gilad battle card kit">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0;">Descope: Gilad Battle Card</h2>
-                        <div class="card-subtitle">Path: 05_DEAL_KITS/DESCOPE_GILAD_BATTLE_CARD.md</div>
-                    </div>
-                    <span class="badge badge-blue">ACTIVE</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="raj battle card vciso strategy deal kit">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: var(--gold); font-size: 1.1rem; margin-bottom: 0;">Raj: vCISO Battle Card</h2>
-                        <div class="card-subtitle">Path: 05_DEAL_KITS/RAJ_BATTLE_CARD.md</div>
-                    </div>
-                    <span class="badge badge-gold">ACTIVE</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="raj resource request strategy kit">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: var(--gold); font-size: 1.1rem; margin-bottom: 0;">Raj: Resource Request Strategy</h2>
-                        <div class="card-subtitle">Path: 05_DEAL_KITS/RAJ_RESOURCE_REQUEST_STRATEGY.md</div>
-                    </div>
-                    <span class="badge badge-gold">ACTIVE</span>
-                </div>
-            </div>
-
-            <!-- 🚀 GTM STRATEGY & PLAYBOOKS -->
-            <div style="margin: 20px 0 15px 0; font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">🚀 GTM STRATEGY & PLAYBOOKS</div>
-            <div class="card" data-search="founding gtm systems playbook weaponized sales">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Playbook: Founding GTM Systems</h2>
-                        <div class="card-subtitle">Path: 00_LEON_BASIN_MASTER_ASSETS/STRATEGY_PLAYBOOKS/GTM_Systems_Founding.md</div>
-                    </div>
-                    <span class="badge badge-blue">PRECISION</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="operator framework template pack">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Template: Operator Framework Pack</h2>
-                        <div class="card-subtitle">Path: 05_DEAL_KITS/OPERATOR_FRAMEWORK_TEMPLATE_PACK/</div>
-                    </div>
-                    <span class="badge badge-blue">TEMPLATE</span>
-                </div>
-            </div>
-
-            <!-- 📑 CORE UTILITIES -->
-            <div style="margin: 20px 0 15px 0; font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">📑 CORE UTILITIES</div>
-            <div class="card" data-search="agentbar local ai monitor">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">AgentBar // System Utility</h2>
-                        <div class="card-subtitle">Path: AI_LEARNING/agentbar.html // Status: Internal</div>
-                    </div>
-                    <span class="badge badge-blue">STABLE</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="scroll-panel" id="panel-history" style="display: none;">
-            <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-                <h3 style="font-size: 0.9rem; color: var(--gold);">ARCHIVED OPS // Q4-Q1 Telemetry</h3>
-            </div>
-
-            <div class="card" data-search="google gen ai bd lead Elaine">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                    <div>
-                        <h2 style="color: #fff; font-size: 1.1rem; margin-bottom: 0;">Google (Gen AI)</h2>
-                        <div class="card-subtitle">Role: BD Lead // Status: HM Review Stall // Feb 2026</div>
-                    </div>
-                    <span class="badge badge-gold">PAUSED</span>
-                </div>
-            </div>
-
-            <div class="card" data-search="cyngular dir gtm ops paul m">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
-                <!-- LEGACY / HISTORICAL (DENSE) -->
-                <div style="margin: 24px 0 12px 0; font-size: 0.6rem; color: var(--text-secondary); font-weight: 800; letter-spacing: 2px;">📂 HISTORICAL TELEMETRY</div>
-
-                <div class="dense-row" data-search="cyngular dir gtm ops paul m">
-                    <div class="row-entity">Cyngular</div>
-                    <div class="row-action">Brief Delivered // Status: Archived</div>
-                    <div class="row-meta">Dir GTM Ops</div>
-                    <div class="row-meta">-</div>
-                    <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: var(--gold);">VOLUME</span>
-                </div>
-
-                <div class="dense-row" data-search="bell tower revenue architect audit">
-                    <div class="row-entity">Bell Tower</div>
-                    <div class="row-action">Audit Delivered // Outcome: Validation</div>
-                    <div class="row-meta">Rev Architect</div>
-                    <div class="row-meta">-</div>
-                    <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: var(--gold);">CLOSED</span>
-                </div>
-
-                <div class="dense-row" data-search="31+ archived accounts nvidia campfire lunos glean liveramp">
-                    <div class="row-entity">LEGACY AGGREGATE</div>
-                    <div class="row-action">31+ Targets // Nexus Signal Refinery Baseline</div>
-                    <div class="row-meta">Historical Trace</div>
-                    <div class="row-meta">-</div>
-                    <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: var(--gold);">HISTORICAL</span>
-                </div>
-
-            </div> <!-- End of Data Grid Container -->
-        </main> <!-- End of Main Workspace -->
-    </div> <!-- End of App Window -->
-
     <script>
-        // TAB SWITCHING LOGIC
         function switchTab(index) {
-            const tabs = document.querySelectorAll('.tab');
-            const panels = document.querySelectorAll('.content-area > .scroll-panel');
+            const navItems = document.querySelectorAll('.nav-item');
+            const panels = document.querySelectorAll('.data-grid-container');
             
-            tabs.forEach((tab, i) => {
-                if (i === index) tab.classList.add('active');
-                else tab.classList.remove('active');
+            navItems.forEach((item, i) => {
+                if (i === index) item.classList.add('active');
+                else item.classList.remove('active');
             });
 
             panels.forEach((panel, i) => {
-                if (i === index) panel.style.display = 'block';
-                else panel.style.display = 'none';
+                if (i === index) panel.classList.add('active');
+                else panel.classList.remove('active');
             });
         }
 
-        // CLIENT-SIDE SEARCH ENGINE
         const searchInput = document.getElementById('globalSearch');
-        const emptyState = document.getElementById('empty-search');
-
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.card[data-search]');
-            let visibleCount = 0;
-            
-            cards.forEach(card => {
-                const searchString = card.dataset.search.toLowerCase();
-                const textContent = card.innerText.toLowerCase();
-                
-                if (searchString.includes(query) || textContent.includes(query)) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+            const rows = document.querySelectorAll('.dense-row[data-search]');
+            rows.forEach(row => {
+                const text = row.dataset.search + row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? 'grid' : 'none';
             });
-
-            if (visibleCount === 0 && query !== "") {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
         });
-
-        // SPLASH SCREEN SEQUENCE
-        const splash = document.getElementById('splash-screen');
-        const splashText = document.getElementById('splash-text');
-        const states = [
-            "SCANNING NODES...",
-            "CALIBRATING SIGNAL DECAY...",
-            "ORCHESTRATING THE ARENA...",
-            "SYSTEM READY."
-        ];
-        
-        let stateIdx = 0;
-        const interval = setInterval(() => {
-            if(stateIdx < states.length) {
-                splashText.textContent = states[stateIdx];
-                stateIdx++;
-            } else {
-                clearInterval(interval);
-                splash.classList.add('hidden');
-            }
-        }, 600);
     </script>
-
 </body>
 </html>
