@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::NEXUS // REVENUE COMMAND CENTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --bg: #030308;
+        --surface: rgba(10, 12, 18, 0.6);
+        --surface-deep: #050510;
+        --border: rgba(255, 255, 255, 0.08);
+        --accent: #818cf8; 
+        --accent-glow: rgba(129, 140, 248, 0.2);
+        --cyan: #22d3ee;   
+        --cyan-glow: rgba(34, 211, 238, 0.2);
+        --gold: #fbbf24;
+        --green: #34d399;
+        --red: #f87171;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --glass-blur: blur(24px);
+    }
+
+    * { margin:0; padding:0; box-sizing: border-box; }
+
+    html, body {
+        min-height: 100%;
+        background-color: #030308;
+    }
+
+    body {
+        background-color: var(--bg);
+        color: var(--text-primary);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        background-image: 
+            radial-gradient(circle at 10% 10%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 50% 90%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
+    }
+
+    /* hard-disable any legacy preload/loader layer */
+    .loading-screen, #loading-screen, .splash-screen, [data-loader], [data-loading-screen] {
+        display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
+    }
+
+    h1, h2, h3, .nav-logo { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+    .space-mono, code { font-family: 'JetBrains Mono', monospace; }
+
+    /* --- LAYOUT ENGINE --- */
+    .app-window {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 60px 1fr 30px; /* Added Ticker row */
+        min-height: 100vh;
+    }
+
+    .workspace-sidebar {
+        grid-row: 1 / 4;
+        grid-column: 1;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        padding: 32px 24px;
+        background: rgba(5, 5, 10, 0.9); 
+        backdrop-filter: var(--glass-blur);
+        overflow-y: auto;
+        z-index: 50;
+    }
+
+    .workspace-main {
+        grid-row: 1 / 3;
+        grid-column: 2;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .workspace-header {
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: rgba(3, 3, 8, 0.85);
+        backdrop-filter: blur(16px);
+        z-index: 40;
+    }
+
+    /* --- DECISION LAYER --- */
+    .decision-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+        padding: 12px 40px;
+        background: rgba(255,255,255,0.02);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .decision-node {
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: rgba(15, 18, 26, 0.4);
+        border: 1px solid var(--border);
+        font-size: 0.72rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: 0.2s;
+    }
+    .decision-node:hover { border-color: rgba(255,255,255,0.2); background: rgba(15, 18, 26, 0.6); }
+
+    .decision-label { font-weight: 900; font-family: 'Outfit'; text-transform: uppercase; letter-spacing: 1px; }
+    .decision-val { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+
+    .data-grid-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px 40px;
+        display: none; 
+        animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .data-grid-container.active { display: block; }
+    .data-grid-container:not(.active) .row-detail { display: none !important; }
+
+    /* --- SIDEBAR NAV --- */
+    .sidebar-section { margin-bottom: 32px; }
+    .sidebar-title { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px; font-weight: 900; opacity: 0.6; }
+
+    .nav-item {
+        padding: 12px 16px;
+        margin-bottom: 4px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid transparent;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .nav-item.active { 
+        background: linear-gradient(90deg, rgba(129, 140, 248, 0.18), rgba(129, 140, 248, 0.04)); 
+        color: #fff; 
+        border-left: 4px solid var(--accent);
+        box-shadow: 10px 0 30px rgba(129, 140, 248, 0.1);
+    }
+
+    .protocol-card {
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(248, 113, 113, 0.08), rgba(248, 113, 113, 0.02));
+        border: 1px solid rgba(248, 113, 113, 0.2);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+    .protocol-card::after {
+        content: ''; position: absolute; top:0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        animation: cardShimmer 4s infinite;
+    }
+    @keyframes cardShimmer { 100% { left: 200%; } }
+
+    /* --- SEARCH & TELEMETRY --- */
+    .search-container { position: relative; flex: 1; max-width: 480px; }
+    .search-bar {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px 12px 46px;
+        color: white;
+        font-size: 0.82rem;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: all 0.3s;
+    }
+    .search-bar:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 20px rgba(129, 140, 248, 0.1); }
+    .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); opacity: 0.5; font-size: 1rem; }
+
+    .compact-telemetry { display: flex; gap: 20px; }
+    .tel-node { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border); transition: 0.2s; }
+    .tel-node:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+    .tel-label { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 1000; letter-spacing: 1.5px; }
+    .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+
+    /* --- PREMIUM DENSE ROWS --- */
+    .dense-row {
+        display: grid;
+        grid-template-columns: 180px 2fr 130px 80px 130px;
+        align-items: center;
+        padding: 16px 24px;
+        background: rgba(15, 18, 26, 0.5);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 8px;
+        font-size: 0.8rem;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        backdrop-filter: blur(12px);
+        cursor: pointer;
+        position: relative;
+        outline: none;
+    }
+
+    .dense-row:hover, .dense-row:focus {
+        background: rgba(255,255,255,0.07);
+        border-color: var(--accent-glow);
+        transform: scale(1.005) translateX(4px);
+    }
+
+    .dense-row.expanded {
+        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+        border-color: var(--accent); background: rgba(129, 140, 248, 0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; }
+    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 16px; font-weight: 500; font-family: 'Inter'; }
+    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.68rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .row-prob { font-weight: 800; font-family: 'Outfit'; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .row-prob::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+
+    .yield-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; width: 100px; margin-top: 5px; }
+    .yield-fill { height: 100%; background: linear-gradient(90deg, var(--green), #6ee7b7); box-shadow: 0 0 12px rgba(52, 211, 153, 0.4); }
+
+    .status-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+    .pill-active { background: rgba(34, 211, 238, 0.12); border-color: rgba(34, 211, 238, 0.25); color: var(--cyan); }
+    .pill-kill { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+
+    /* --- EXPANDED DETAIL --- */
+    .row-detail {
+        display: none;
+        padding: 24px;
+        margin-top: -8px;
+        margin-bottom: 20px;
+        background: rgba(10, 12, 18, 0.7);
+        border: 1px solid var(--accent);
+        border-top: none;
+        border-radius: 0 0 14px 14px;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        animation: detailSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    @keyframes detailSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .row-detail.active { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
+    .detail-item b { color: #fff; display: block; margin-bottom: 10px; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 2.5px; opacity: 0.7; font-weight: 900; }
+    .detail-text { line-height: 1.6; color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 0.85rem; }
+
+    /* --- ACTION HUD --- */
+    .action-hud { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+    .hud-btn {
+        padding: 8px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.03); color: #fff; font-size: 0.65rem; font-weight: 700;
+        cursor: pointer; transition: 0.2s; text-transform: uppercase; font-family: 'JetBrains Mono';
+        display: flex; align-items: center; gap: 8px;
+    }
+    .hud-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .hud-btn.primary { background: var(--accent); border-color: var(--accent); }
+    .hud-btn.primary:hover { filter: brightness(1.2); }
+
+    /* --- COMMAND PALETTE --- */
+    #commandPalette {
+        position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+        width: 100%; max-width: 550px;
+        background: rgba(5, 5, 10, 0.98); backdrop-filter: blur(40px);
+        border: 1px solid var(--accent); border-radius: 16px;
+        box-shadow: 0 30px 90px rgba(0,0,0,0.9), 0 0 50px rgba(129, 140, 248, 0.15);
+        z-index: 1000; display: none;
+        animation: palettePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes palettePop { from { opacity: 0; transform: translate(-50%, -20px) scale(0.95); } }
+
+    .palette-input {
+        width: 100%; padding: 20px 24px; background: transparent; border: none;
+        border-bottom: 1px solid var(--border); color: #fff; font-family: 'Outfit';
+        font-size: 1.1rem; outline: none;
+    }
+    .palette-list { max-height: 400px; overflow-y: auto; padding: 10px; }
+    .palette-item {
+        padding: 12px 18px; border-radius: 8px; cursor: pointer;
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 0.9rem; transition: 0.15s; font-weight: 500;
+    }
+    .palette-item:hover, .palette-item.selected { background: rgba(129, 140, 248, 0.2); color: #fff; transform: translateX(5px); }
+    .palette-key { font-family: 'JetBrains Mono'; font-size: 0.65rem; background: rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 5px; opacity: 0.7; border: 1px solid rgba(255,255,255,0.1); }
+
+    /* --- TICKER --- */
+    .nexus-ticker {
+        grid-row: 3; grid-column: 2;
+        background: rgba(5, 5, 10, 0.9); border-top: 1px solid var(--border);
+        display: flex; align-items: center; padding: 0 40px; font-family: 'JetBrains Mono';
+        font-size: 0.6rem; color: var(--text-secondary); overflow: hidden; white-space: nowrap;
+    }
+    .ticker-content { display: inline-block; animation: tickerScroll 40s linear infinite; }
+    @keyframes tickerScroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
+    .ticker-item b { color: var(--cyan); }
+
+    /* --- MOBILE RESPONSIVE --- */
+    @media (max-width: 900px) {
+        .app-window { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+        .workspace-sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; flex-direction: row; padding: 0 16px; overflow-y: hidden; background: rgba(5, 5, 10, 0.98); border-top: 1px solid var(--border); border-right: none; }
+        .nav-logo, .sidebar-title, .protocol-card, .sidebar-section:not(:first-of-type) { display: none !important; }
+        .sidebar-section { margin-bottom: 0; display: flex; align-items: center; justify-content: space-around; width: 100%; }
+        .nav-item { padding: 10px; margin-bottom: 0; flex-direction: column; gap: 4px; font-size: 0.6rem; border-left: none; border-bottom: 3px solid transparent; }
+        .nav-item.active { background: transparent; border-bottom: 3px solid var(--accent); box-shadow: none; border-left: none; }
+        .nav-item span { font-size: 1.3rem; }
+        .workspace-main { padding-bottom: 65px; height: 100vh; }
+        .decision-strip { grid-template-columns: 1fr; padding: 12px 20px; }
+        .dense-row { grid-template-columns: 1fr auto; padding: 14px 18px; }
+        .row-action, .row-meta, .row-yield { display: none; }
+        .row-entity { font-size: 0.9rem; }
+        .detail-grid { grid-template-columns: 1fr; gap: 20px; }
+        .nexus-ticker { display: none; }
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- COMMAND PALETTE -->
+    <div id="commandPalette">
+        <input type="text" class="palette-input" placeholder="Jump to node, action, or protocol..." id="paletteInput">
+        <div class="palette-list" id="paletteList"></div>
+    </div>
+
+    <div class="app-window">
+        <!-- SIDEBAR -->
+        <aside class="workspace-sidebar">
+            <div class="nav-logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px; font-weight: 800; font-size: 1.1rem; color: #fff;">
+                <div style="width: 24px; height: 24px; background: linear-gradient(135deg, var(--accent), var(--cyan)); border-radius: 6px; box-shadow: 0 0 20px var(--accent-glow);"></div>
+                BASIN::NEXUS
+            </div>
+            
+            <nav class="sidebar-section">
+                <div class="sidebar-title">OPERATIONS</div>
+                <div class="nav-item active" data-tab="0" onclick="switchTab(0)"><span>📡</span> Destiny Map</div>
+                <div class="nav-item" data-tab="1" onclick="switchTab(1)"><span>👥</span> Arena Intel</div>
+                <div class="nav-item" data-tab="2" onclick="switchTab(2)"><span>🛰️</span> Signal Feed</div>
+                <div class="nav-item" data-tab="3" onclick="switchTab(3)"><span>📦</span> Payload Vault</div>
+                <div class="nav-item" data-tab="4" onclick="switchTab(4)"><span>📂</span> Historical</div>
+            </nav>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">TERMINAL PROTOCOLS</div>
+                <div class="protocol-card">
+                    <div style="font-size: 0.62rem; color: var(--red); font-weight: 900; text-transform: uppercase;">T4: CLOSE OR KILL</div>
+                    <div style="font-size: 0.72rem; color: #fff; margin-top: 10px; line-height: 1.5; opacity: 0.9;">If node idle > 5 days → Auto-Archival logic triggered.</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section" style="margin-top: auto;">
+                <div class="sidebar-title">SYSTEM_STATUS</div>
+                <div style="font-size: 0.65rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 2.2;">
+                    <span style="color: var(--green);">●</span> GRAVITY: OPTIMAL <br>
+                    <span style="color: var(--cyan);">●</span> THROUGHPUT: 1.2M/s<br>
+                    <span style="color: var(--gold);">●</span> VER: 4.3.ELITE
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="workspace-main">
+            <header class="workspace-header">
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-bar" placeholder="Command (/) or Search (K)..." id="globalSearch">
+                </div>
+                <div class="compact-telemetry">
+                    <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430,000</span></div>
+                    <div class="tel-node"><span class="tel-label">INTENT:</span><span class="tel-val" style="color: var(--cyan);">HIGH ALPHA</span></div>
+                </div>
+                <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 1.4;">
+                    2026-02-27 // 11:32 PST<br>
+                    <span style="color: var(--green);">ENCRYPTION_STABLE</span>
+                </div>
+            </header>
+
+            <!-- DECISION LAYER -->
+            <div class="decision-strip">
+                <div class="decision-node">
+                    <span class="decision-label" style="color: var(--green);">NOW</span>
+                    <span class="decision-val">REPLIT: Ghazi Prep // Schedule Final</span>
+                </div>
+                <div class="decision-node">
+                    <span class="decision-label" style="color: var(--gold);">NEXT</span>
+                    <span class="decision-val">GO NIMBLY: Tech Prep HUD Audit</span>
+                </div>
+                <div class="decision-node">
+                    <span class="decision-label" style="color: var(--red);">STUCK</span>
+                    <span class="decision-val">RAJ: Payment Rail Signature Wait</span>
+                </div>
+            </div>
+
+            <!-- PANELS -->
+            <div class="data-grid-container active" id="panel-0">
+                <div class="dense-row header-row" style="background: transparent; border: none; cursor: default; margin-bottom: 12px; opacity: 0.4; pointer-events: none;">
+                    <div>Target Node</div>
+                    <div>Action Pulse</div>
+                    <div>Role</div>
+                    <div>Prob.</div>
+                    <div>Asset Yield</div>
+                </div>
+
+                <!-- REPLIT -->
+                <div class="dense-row" tabindex="0" data-node="replit" onclick="toggleDetail('detail-replit', true)">
+                    <div class="row-entity">REPLIT</div>
+                    <div class="row-action">Final Schedule Lock // Final Loop Prep</div>
+                    <div class="row-meta">Founding Enterprise</div>
+                    <div class="row-prob" style="color: var(--green);">95%</div>
+                    <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
+                </div>
+                <div class="row-detail" id="detail-replit">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Nudge sent to Emily. Ghazi (CRO) validated technical proof via Nexus Hub. Final interview loop sequencing active.</div>
+                        <div class="detail-item">
+                            <b>Protocol HUD</b>
+                            <div class="action-hud">
+                                <button class="hud-btn primary">Deploy SPEAR Audit</button>
+                                <button class="hud-btn">Log Nudge</button>
+                                <button class="hud-btn">Open Deal Kit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GO NIMBLY -->
+                <div class="dense-row" tabindex="0" data-node="go-nimbly" onclick="toggleDetail('detail-nimbly', true)">
+                    <div class="row-entity">GO NIMBLY</div>
+                    <div class="row-action">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
+                    <div class="row-meta">RevOps Architect</div>
+                    <div class="row-prob" style="color: var(--gold);">60%</div>
+                    <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
+                </div>
+                <div class="row-detail" id="detail-nimbly">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Kristen Santiago meeting scheduled. Josh Kasim (TA) confirmed technical sync requirement. High-priority audit pending.</div>
+                        <div class="detail-item">
+                            <b>Protocol HUD</b>
+                            <div class="action-hud">
+                                <button class="hud-btn primary">Ship Audit Payload</button>
+                                <button class="hud-btn">Prep Narrative</button>
+                                <button class="hud-btn">Archive Node</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESCOPE -->
+                <div class="dense-row" tabindex="0" data-node="descope" onclick="toggleDetail('detail-descope', true)">
+                    <div class="row-entity">DESCOPE</div>
+                    <div class="row-action">Monday follow-up // HM Discovery HUD</div>
+                    <div class="row-meta">Success Engineer</div>
+                    <div class="row-prob" style="color: var(--cyan);">75%</div>
+                    <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
+                </div>
+                <div class="row-detail" id="detail-descope">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>Meeting with Gilad (Founder) completed. Product-market fit signal acquired. Follow-up sequence locked.</div>
+                        <div class="detail-item">
+                            <b>Protocol HUD</b>
+                            <div class="action-hud">
+                                <button class="hud-btn primary">Nurture Strike</button>
+                                <button class="hud-btn">Open Arena intel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAJ -->
+                <div class="dense-row" tabindex="0" data-node="raj" onclick="toggleDetail('detail-raj', true)">
+                    <div class="row-entity">RAJ (vCISO HUB)</div>
+                    <div class="row-action">Mandatory contract signing loop execution</div>
+                    <div class="row-meta">Consulting Pilot</div>
+                    <div class="row-prob" style="color: var(--green);">100%</div>
+                    <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
+                </div>
+                <div class="row-detail" id="detail-raj">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Velocity Pulse</b>vCISO Master Framework v3.1 delivered. Payment rail verification active. Signature expected in < 24h.</div>
+                        <div class="detail-item">
+                            <b>Protocol HUD</b>
+                            <div class="action-hud">
+                                <button class="hud-btn primary">Close Node</button>
+                                <button class="hud-btn">Verify Signature</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTHER PANELS -->
+            <div class="data-grid-container" id="panel-1">
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-ghazi', true)">
+                    <div class="row-entity">GHAZI MASOOD</div>
+                    <div class="row-action">CRO // Technical Buyer</div>
+                    <div class="row-meta">REPLIT</div>
+                    <div class="row-prob" style="color: var(--green);">98%</div>
+                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
+                </div>
+                <div class="row-detail" id="stake-ghazi">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Persona Intel</b>High technical ceiling. Focused on internal developer velocity. Validated SPEAR Audit.</div>
+                        <div class="detail-item"><b>Engagement</b>Active pulse. Responds to [REVENUE_ENGINEERING] narrative.</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-gilad', true)">
+                    <div class="row-entity">GILAD SHRIKI</div>
+                    <div class="row-action">Founder // HM discovery</div>
+                    <div class="row-meta">DESCOPE</div>
+                    <div class="row-prob" style="color: var(--cyan);">78%</div>
+                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
+                </div>
+                <div class="row-detail" id="stake-gilad">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Persona Intel</b>Strategic visionary. Looking for "Agentic Identity" leadership.</div>
+                        <div class="detail-item"><b>Engagement</b>Met on Tuesday. Follow-up sequence locked for Monday AM.</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-kristen', true)">
+                    <div class="row-entity">KRISTEN SANTIAGO</div>
+                    <div class="row-action">Ops Leader // Technical Sync</div>
+                    <div class="row-meta">GO NIMBLY</div>
+                    <div class="row-prob" style="color: var(--gold);">82%</div>
+                    <div class="row-yield"><span class="status-pill">EVALUATING</span></div>
+                </div>
+                <div class="row-detail" id="stake-kristen">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Persona Intel</b>Process-oriented. Focused on Salesforce data cleanliness and RevOps architecture.</div>
+                        <div class="detail-item"><b>Engagement</b>Mar 2 Interview scheduled. Josh Kasim (TA) providing back-channel signal.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-grid-container" id="panel-2">
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-roboflow', true)">
+                    <div class="row-entity">ROBOFLOW PIVOT</div>
+                    <div class="row-action">GTM Expansion Signal // Naveen</div>
+                    <div class="row-meta">HIGH INTENSITY</div>
+                    <div class="row-prob" style="color: var(--cyan);">SIGNAL</div>
+                    <div class="row-yield"><span class="status-pill pill-active">SIGNAL_ALPHA</span></div>
+                </div>
+                <div class="row-detail" id="signal-roboflow">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Signal Detail</b>Detected increase in LinkedIn hiring for "Solution Engineering" + "Growth Ops" via Naveen's profile.</div>
+                        <div class="detail-item"><b>Action Trigger</b>Initiate "Ghost Outreach" via Signal Scout Pro.</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-descope-b', true)">
+                    <div class="row-entity">DESCOPE FUNDING</div>
+                    <div class="row-action">Series B expansion rumors // Venture Intel</div>
+                    <div class="row-meta">MEDIUM ALPHA</div>
+                    <div class="row-prob" style="color: var(--gold);">RUMOR</div>
+                    <div class="row-yield"><span class="status-pill">MONITORING</span></div>
+                </div>
+            </div>
+
+            <div class="data-grid-container" id="panel-3">
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-ciso', true)">
+                    <div class="row-entity">vCISO HUB v3.1</div>
+                    <div class="row-action">Master GTM Delivery Kit // RAJ Node</div>
+                    <div class="row-meta">90% CAP</div>
+                    <div class="row-prob" style="color: var(--green);">READY</div>
+                    <div class="row-yield"><span class="status-pill">PROD_LOCKED</span></div>
+                </div>
+                <div class="row-detail" id="payload-ciso">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Artifact Contents</b>- Master Hub Framework<br>- Pricing Geometry v2<br>- Contract Signature Rail Access</div>
+                        <div class="detail-item"><b>Usage History</b>Deployed to RAJ node. Signature pending.</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-spear', true)">
+                    <div class="row-entity">SPEAR AUDIT v2</div>
+                    <div class="row-action">Standard Technical Proof Payload</div>
+                    <div class="row-meta">92% CAP</div>
+                    <div class="row-prob" style="color: var(--cyan);">ACTIVE</div>
+                    <div class="row-yield"><span class="status-pill">REFINED</span></div>
+                </div>
+            </div>
+
+            <div class="data-grid-container" id="panel-4">
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-tredence', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">TREDENCE</div>
+                    <div class="row-action">Dropped: Methodology mismatch // Adrenaline Leak</div>
+                    <div class="row-meta">T4_KILL_CONFIRMED</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
+                </div>
+                <div class="row-detail" id="hist-tredence">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Kill Rationale</b>Node idle > 5 days. Decision: Methodology mismatch. Focus shifted to Replit alpha.</div>
+                        <div class="detail-item"><b>Archival Date</b>2026-02-25 // 14:20 PST</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-buyersight', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">BUYERSIGHT</div>
+                    <div class="row-action">Dropped: Market timing // No technical depth</div>
+                    <div class="row-meta">EXCLUDED</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">DE-LEVERAGED</span></div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-campfire', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">CAMPFIRE</div>
+                    <div class="row-action">Archived: Low intensity follow-up loop</div>
+                    <div class="row-meta">DROPPED</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">AUTO_KILL</span></div>
+                </div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-ratul', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">RATUL AI</div>
+                    <div class="row-action">Dropped: Founder mismatch // Identity Leak</div>
+                    <div class="row-meta">T4_TERMINATED</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">EXCLUDED</span></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TICKER -->
+        <footer class="nexus-ticker">
+            <div class="ticker-content">
+                <span class="ticker-item">● NODE_SYNC [REPLIT] <b>PENDING FINAL</b> [1m ago]</span>
+                <span class="ticker-item">● SIGNAL_ACQ [ROBOFLOW] <b>HIGH_INTENT</b> [4m ago]</span>
+                <span class="ticker-item">● ARCHIVE_AUTO [TREDENCE] <b>KILL_EXEC</b> [12m ago]</span>
+                <span class="ticker-item">● PIPELINE_YIELD <b>94.2%</b> [SYSTEM_AVG]</span>
+                <span class="ticker-item">● HUB_HEARTBEAT <b>STABLE</b> [NEXUS v4.3]</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- CORE STATE ---
+        const state = {
+            activeTab: parseInt(localStorage.getItem('nexus_tab')) || 0,
+            expandedRow: localStorage.getItem('nexus_row') || null,
+            paletteOpen: false,
+            commands: [
+                { id: 'goto-destiny', name: 'Jump to Destiny Map', key: '1', action: () => switchTab(0) },
+                { id: 'goto-arena', name: 'Jump to Arena Intel', key: '2', action: () => switchTab(1) },
+                { id: 'goto-signal', name: 'Jump to Signal Feed', key: '3', action: () => switchTab(2) },
+                { id: 'goto-vault', name: 'Jump to Payload Vault', key: '4', action: () => switchTab(3) },
+                { id: 'goto-history', name: 'Jump to Historical', key: '5', action: () => switchTab(4) },
+                { id: 'focus-replit', name: 'Focus Replit Node', key: 'R', action: () => jumpToNode('replit') },
+                { id: 'focus-nimbly', name: 'Focus Go Nimbly Node', key: 'G', action: () => jumpToNode('go-nimbly') },
+                { id: 'focus-descope', name: 'Focus Descope Node', key: 'D', action: () => jumpToNode('descope') },
+                { id: 'action-audit', name: 'Deploy SPEAR Audit', key: 'S', action: () => alert('Deploying Audit...') },
+                { id: 'action-nudge', name: 'Log Protocol Nudge', key: 'N', action: () => alert('Logging Nudge...') }
+            ]
+        };
+
+        // --- TABS ---
+        function switchTab(index) {
+            state.activeTab = index;
+            localStorage.setItem('nexus_tab', index);
+            document.querySelectorAll('.nav-item').forEach((item, i) => i === index ? item.classList.add('active') : item.classList.remove('active'));
+            document.querySelectorAll('.data-grid-container').forEach((panel, i) => i === index ? panel.classList.add('active') : panel.classList.remove('active'));
+            document.querySelectorAll('.row-detail').forEach(d => d.classList.remove('active'));
+            document.querySelectorAll('.dense-row').forEach(r => r.classList.remove('expanded'));
+            closePalette();
+        }
+
+        // --- INTERACTIVE ROWS ---
+        function toggleDetail(id, shouldSave = true) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const row = el.previousElementSibling;
+            if (!row || !row.classList.contains('dense-row')) return;
+            const isActive = el.classList.contains('active');
+
+            document.querySelectorAll('.row-detail').forEach(d => { d.classList.remove('active'); d.previousElementSibling.classList.remove('expanded'); });
+
+            if (!isActive) {
+                el.classList.add('active'); row.classList.add('expanded');
+                if (shouldSave) { state.expandedRow = id; localStorage.setItem('nexus_row', id); }
+            } else {
+                if (shouldSave) { state.expandedRow = null; localStorage.removeItem('nexus_row'); }
+            }
+        }
+
+        function jumpToNode(nodeId) {
+            switchTab(0);
+            const targetRow = document.querySelector(`[data-node="${nodeId}"]`);
+            if (targetRow) { targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' }); targetRow.click(); }
+        }
+
+        // --- COMMAND PALETTE ---
+        function openPalette() {
+            state.paletteOpen = true;
+            const palette = document.getElementById('commandPalette');
+            palette.style.display = 'block';
+            document.getElementById('paletteInput').focus();
+            renderPaletteItems();
+        }
+
+        function closePalette() { state.paletteOpen = false; document.getElementById('commandPalette').style.display = 'none'; }
+
+        function renderPaletteItems(filter = '') {
+            const list = document.getElementById('paletteList');
+            list.innerHTML = '';
+            const filtered = state.commands.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
+            filtered.forEach((cmd, idx) => {
+                const item = document.createElement('div');
+                item.className = 'palette-item' + (idx === 0 ? ' selected' : '');
+                item.innerHTML = `<span>${cmd.name}</span> <span class="palette-key">${cmd.key}</span>`;
+                item.onclick = cmd.action;
+                list.appendChild(item);
+            });
+        }
+
+        // --- KEYBOARD ENGINE ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (state.paletteOpen) closePalette();
+                else {
+                    document.querySelectorAll('.row-detail').forEach(d => d.classList.remove('active'));
+                    document.querySelectorAll('.dense-row').forEach(r => r.classList.remove('expanded'));
+                    localStorage.removeItem('nexus_row');
+                }
+            }
+
+            if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key === 'k')) && !state.paletteOpen && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault(); openPalette();
+            }
+
+            if (state.paletteOpen) {
+                const items = document.querySelectorAll('.palette-item');
+                let selectedIdx = Array.from(items).findIndex(i => i.classList.contains('selected'));
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    items[selectedIdx].classList.remove('selected');
+                    selectedIdx = (selectedIdx + 1) % items.length;
+                    items[selectedIdx].classList.add('selected');
+                    items[selectedIdx].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    items[selectedIdx].classList.remove('selected');
+                    selectedIdx = (selectedIdx - 1 + items.length) % items.length;
+                    items[selectedIdx].classList.add('selected');
+                    items[selectedIdx].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    items[selectedIdx].click();
+                }
+            } else if (document.activeElement.classList.contains('dense-row')) {
+                // Row navigation
+                const rows = Array.from(document.querySelectorAll('.data-grid-container.active .dense-row[tabindex="0"]'));
+                let idx = rows.indexOf(document.activeElement);
+                if (e.key === 'ArrowDown' && idx < rows.length - 1) { e.preventDefault(); rows[idx+1].focus(); }
+                if (e.key === 'ArrowUp' && idx > 0) { e.preventDefault(); rows[idx-1].focus(); }
+                if (e.key === 'Enter') { document.activeElement.click(); }
+            }
+        });
+
+        const searchInput = document.getElementById('globalSearch');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.dense-row[data-node]').forEach(row => {
+                const matches = row.innerText.toLowerCase().includes(query);
+                row.style.display = matches ? 'grid' : 'none';
+                const detail = row.nextElementSibling;
+                if (detail && detail.classList.contains('row-detail')) {
+                    if (!matches) { detail.classList.remove('active'); row.classList.remove('expanded'); }
+                }
+            });
+        });
+
+        document.getElementById('paletteInput').addEventListener('input', (e) => renderPaletteItems(e.target.value));
+        document.addEventListener('click', (e) => { if (state.paletteOpen && !e.target.closest('#commandPalette')) closePalette(); });
+
+        // --- BOOTSTRAP ---
+        window.onload = () => {
+            document.querySelectorAll('.loading-screen, #loading-screen, .splash-screen, [data-loader]').forEach(el => el.remove());
+            switchTab(state.activeTab);
+            if (state.expandedRow) toggleDetail(state.expandedRow, false);
+        };
+    </script>
+</body>
+</html>
