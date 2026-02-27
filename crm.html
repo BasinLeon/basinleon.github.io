@@ -7,19 +7,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
-        --bg: #030308;
+        --bg: #020206;
         --surface: rgba(10, 12, 18, 0.6);
         --surface-deep: #050510;
-        --border: rgba(255, 255, 255, 0.08);
-        --accent: #818cf8; 
-        --accent-glow: rgba(129, 140, 248, 0.2);
-        --cyan: #22d3ee;   
-        --cyan-glow: rgba(34, 211, 238, 0.2);
-        --gold: #fbbf24;
-        --green: #34d399;
-        --red: #f87171;
+        --border: rgba(255, 255, 255, 0.1);
+        --accent: #a78bfa;
+        --accent-glow: rgba(167, 139, 250, 0.5);
+        --cyan: #00f0ff;
+        --cyan-glow: rgba(0, 240, 255, 0.5);
+        --gold: #ffe14d;
+        --green: #00ffaa;
+        --red: #ff4d6a;
+        --pink: #ff3ecf;
+        --orange: #ff8c42;
         --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
+        --text-secondary: #a0aec0;
         --glass-blur: blur(24px);
     }
 
@@ -41,9 +43,10 @@
         display: flex;
         flex-direction: column;
         background-image: 
-            radial-gradient(circle at 10% 10%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
-            radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 50% 90%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
+            radial-gradient(circle at 10% 10%, rgba(167, 139, 250, 0.12) 0%, transparent 45%),
+            radial-gradient(circle at 90% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+            radial-gradient(circle at 50% 90%, rgba(255, 62, 207, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 140, 66, 0.04) 0%, transparent 35%);
     }
 
     /* hard-disable any legacy preload/loader layer */
@@ -194,7 +197,7 @@
         outline: none;
         transition: all 0.3s;
     }
-    .search-bar:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 20px rgba(129, 140, 248, 0.1); }
+    .search-bar:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 24px rgba(129, 140, 248, 0.35); }
     .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); opacity: 0.5; font-size: 1rem; }
 
     .compact-telemetry { display: flex; gap: 20px; }
@@ -202,6 +205,18 @@
     .tel-node:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
     .tel-label { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 1000; letter-spacing: 1.5px; }
     .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .lead-import-btn {
+        padding: 7px 11px;
+        border-radius: 8px;
+        border: 1px solid rgba(31, 228, 255, 0.38);
+        background: rgba(31, 228, 255, 0.08);
+        color: var(--cyan);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+    }
+    .lead-import-btn:hover { background: rgba(31, 228, 255, 0.16); }
 
     /* --- PREMIUM DENSE ROWS --- */
     .dense-row {
@@ -235,6 +250,27 @@
 
     .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; }
     .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 16px; font-weight: 500; font-family: 'Inter'; }
+    .action-main { color: #dbe6ff; font-weight: 600; }
+    .action-meta {
+        margin-top: 6px;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+    .meta-chip {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.03em;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.04);
+        border-radius: 999px;
+        padding: 2px 7px;
+        color: #dbe6ff;
+    }
+    .chip-value { color: var(--gold); border-color: rgba(255, 212, 73, 0.4); background: rgba(255, 212, 73, 0.08); }
+    .chip-stage { color: var(--cyan); border-color: rgba(31, 228, 255, 0.42); background: rgba(31, 228, 255, 0.08); }
+    .chip-risk { color: var(--pink); border-color: rgba(255, 92, 225, 0.42); background: rgba(255, 92, 225, 0.08); }
     .row-meta { font-family: 'JetBrains Mono'; font-size: 0.68rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .row-prob { font-weight: 800; font-family: 'Outfit'; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 8px; }
     .row-prob::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
@@ -245,6 +281,45 @@
     .status-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
     .pill-active { background: rgba(34, 211, 238, 0.12); border-color: rgba(34, 211, 238, 0.25); color: var(--cyan); }
     .pill-kill { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+    .lead-grid-wrap {
+        margin-top: 18px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        background: rgba(8, 12, 20, 0.58);
+        border-radius: 12px;
+    }
+    .lead-grid-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .lead-count { font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; color: var(--cyan); }
+    .lead-search {
+        min-width: 260px; flex: 1; background: rgba(0,0,0,0.35);
+        border: 1px solid var(--border); border-radius: 8px; color: #fff;
+        font-size: 0.72rem; padding: 8px 10px; outline: none;
+    }
+    .lead-page-btn {
+        border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: #d5e2ff;
+        border-radius: 8px; padding: 6px 10px; font-size: 0.66rem; cursor: pointer;
+    }
+    .lead-page-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .lead-row {
+        display: grid;
+        grid-template-columns: 160px 1.6fr 110px 120px 130px 120px 90px;
+        gap: 10px;
+        font-size: 0.68rem;
+        padding: 9px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.02);
+        margin-bottom: 6px;
+    }
+    .lead-row.head {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+        font-weight: 800;
+        background: transparent;
+        border-color: transparent;
+    }
+    .lead-row > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     /* --- EXPANDED DETAIL --- */
     .row-detail {
@@ -268,6 +343,20 @@
     .detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
     .detail-item b { color: #fff; display: block; margin-bottom: 10px; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 2.5px; opacity: 0.7; font-weight: 900; }
     .detail-text { line-height: 1.6; color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 0.85rem; }
+    .timeline {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+    }
+    .timeline-row {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.66rem;
+        color: #bdd2f5;
+    }
+    .timeline-ts { color: var(--text-secondary); min-width: 62px; }
 
     /* --- ACTION HUD --- */
     .action-hud { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
@@ -334,6 +423,8 @@
         .row-action, .row-meta, .row-yield { display: none; }
         .row-entity { font-size: 0.9rem; }
         .detail-grid { grid-template-columns: 1fr; gap: 20px; }
+        .lead-row { grid-template-columns: 1fr; }
+        .lead-row.head { display: none; }
         .nexus-ticker { display: none; }
     }
 
@@ -364,6 +455,7 @@
                 <div class="nav-item" data-tab="2" onclick="switchTab(2)"><span>🛰️</span> Signal Feed</div>
                 <div class="nav-item" data-tab="3" onclick="switchTab(3)"><span>📦</span> Payload Vault</div>
                 <div class="nav-item" data-tab="4" onclick="switchTab(4)"><span>📂</span> Historical</div>
+                <div class="nav-item" data-tab="5" onclick="switchTab(5)" style="border-left-color: var(--pink);"><span>🔥</span> Lead Database <span style="font-size:0.55rem;background:var(--pink);color:#fff;padding:2px 6px;border-radius:4px;margin-left:auto;">1K</span></div>
             </nav>
 
             <div class="sidebar-section">
@@ -394,6 +486,8 @@
                 <div class="compact-telemetry">
                     <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430,000</span></div>
                     <div class="tel-node"><span class="tel-label">INTENT:</span><span class="tel-val" style="color: var(--cyan);">HIGH ALPHA</span></div>
+                    <button class="lead-import-btn" id="loadLeadsBtn">LOAD 37K CSV</button>
+                    <input id="leadsFileInput" type="file" accept=".csv" style="display:none;">
                 </div>
                 <div style="font-size: 0.65rem; text-align: right; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 1.4;">
                     2026-02-27 // 11:32 PST<br>
@@ -419,25 +513,40 @@
 
             <!-- PANELS -->
             <div class="data-grid-container active" id="panel-0">
-                <div class="dense-row header-row" style="background: transparent; border: none; cursor: default; margin-bottom: 12px; opacity: 0.4; pointer-events: none;">
+                <div class="dense-row header-row" style="background: transparent; border: none; cursor: default; margin-bottom: 12px; opacity: 0.55; pointer-events: none;">
                     <div>Target Node</div>
                     <div>Action Pulse</div>
                     <div>Role</div>
                     <div>Prob.</div>
-                    <div>Asset Yield</div>
+                    <div>Score / Status</div>
                 </div>
 
                 <!-- REPLIT -->
                 <div class="dense-row" tabindex="0" data-node="replit" onclick="toggleDetail('detail-replit', true)">
                     <div class="row-entity">REPLIT</div>
-                    <div class="row-action">Final Schedule Lock // Final Loop Prep</div>
+                    <div class="row-action">
+                        <div class="action-main">Final Schedule Lock // Final Loop Prep</div>
+                        <div class="action-meta">
+                            <span class="meta-chip chip-value">$180k</span>
+                            <span class="meta-chip chip-stage">Proposal</span>
+                            <span class="meta-chip">Last: Feb 27</span>
+                            <span class="meta-chip">Next: Feb 28</span>
+                            <span class="meta-chip">Src: Referral</span>
+                        </div>
+                    </div>
                     <div class="row-meta">Founding Enterprise</div>
                     <div class="row-prob" style="color: var(--green);">95%</div>
                     <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
                 </div>
                 <div class="row-detail" id="detail-replit">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Nudge sent to Emily. Ghazi (CRO) validated technical proof via Nexus Hub. Final interview loop sequencing active.</div>
+                        <div class="detail-item"><b>Velocity Pulse</b>Nudge sent to Emily. Ghazi (CRO) validated technical proof via Nexus Hub. Final interview loop sequencing active.
+                            <div class="timeline">
+                                <div class="timeline-row"><span class="timeline-ts">08:22</span><span>Email opened by Ghazi (2x)</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">09:05</span><span>Deck clicked: SPEAR Audit v2</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">10:41</span><span>Reply: "final loop timing works"</span></div>
+                            </div>
+                        </div>
                         <div class="detail-item">
                             <b>Protocol HUD</b>
                             <div class="action-hud">
@@ -452,14 +561,29 @@
                 <!-- GO NIMBLY -->
                 <div class="dense-row" tabindex="0" data-node="go-nimbly" onclick="toggleDetail('detail-nimbly', true)">
                     <div class="row-entity">GO NIMBLY</div>
-                    <div class="row-action">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
+                    <div class="row-action">
+                        <div class="action-main">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
+                        <div class="action-meta">
+                            <span class="meta-chip chip-value">$125k</span>
+                            <span class="meta-chip chip-stage">Qualification</span>
+                            <span class="meta-chip">Last: Feb 26</span>
+                            <span class="meta-chip">Next: Mar 1</span>
+                            <span class="meta-chip">Src: Apollo</span>
+                        </div>
+                    </div>
                     <div class="row-meta">RevOps Architect</div>
                     <div class="row-prob" style="color: var(--gold);">60%</div>
                     <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
                 </div>
                 <div class="row-detail" id="detail-nimbly">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Kristen Santiago meeting scheduled. Josh Kasim (TA) confirmed technical sync requirement. High-priority audit pending.</div>
+                        <div class="detail-item"><b>Velocity Pulse</b>Kristen Santiago meeting scheduled. Josh Kasim (TA) confirmed technical sync requirement. High-priority audit pending.
+                            <div class="timeline">
+                                <div class="timeline-row"><span class="timeline-ts">07:10</span><span>Reply from Josh: "sync required"</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">11:30</span><span>Interview invite accepted</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">13:42</span><span>Clay enrichment: intent spike +14</span></div>
+                            </div>
+                        </div>
                         <div class="detail-item">
                             <b>Protocol HUD</b>
                             <div class="action-hud">
@@ -474,14 +598,29 @@
                 <!-- DESCOPE -->
                 <div class="dense-row" tabindex="0" data-node="descope" onclick="toggleDetail('detail-descope', true)">
                     <div class="row-entity">DESCOPE</div>
-                    <div class="row-action">Monday follow-up // HM Discovery HUD</div>
+                    <div class="row-action">
+                        <div class="action-main">Monday follow-up // HM Discovery HUD</div>
+                        <div class="action-meta">
+                            <span class="meta-chip chip-value">$95k</span>
+                            <span class="meta-chip chip-stage">Discovery</span>
+                            <span class="meta-chip">Last: Feb 25</span>
+                            <span class="meta-chip">Next: Mar 3</span>
+                            <span class="meta-chip">Src: LinkedIn</span>
+                        </div>
+                    </div>
                     <div class="row-meta">Success Engineer</div>
                     <div class="row-prob" style="color: var(--cyan);">75%</div>
                     <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
                 </div>
                 <div class="row-detail" id="detail-descope">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Meeting with Gilad (Founder) completed. Product-market fit signal acquired. Follow-up sequence locked.</div>
+                        <div class="detail-item"><b>Velocity Pulse</b>Meeting with Gilad (Founder) completed. Product-market fit signal acquired. Follow-up sequence locked.
+                            <div class="timeline">
+                                <div class="timeline-row"><span class="timeline-ts">Mon</span><span>Founder call completed (28m)</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">Tue</span><span>Loom viewed to 92%</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">Wed</span><span>No reply yet, cadence armed</span></div>
+                            </div>
+                        </div>
                         <div class="detail-item">
                             <b>Protocol HUD</b>
                             <div class="action-hud">
@@ -495,14 +634,29 @@
                 <!-- RAJ -->
                 <div class="dense-row" tabindex="0" data-node="raj" onclick="toggleDetail('detail-raj', true)">
                     <div class="row-entity">RAJ (vCISO HUB)</div>
-                    <div class="row-action">Mandatory contract signing loop execution</div>
+                    <div class="row-action">
+                        <div class="action-main">Mandatory contract signing loop execution</div>
+                        <div class="action-meta">
+                            <span class="meta-chip chip-value">$30k</span>
+                            <span class="meta-chip chip-stage">Close</span>
+                            <span class="meta-chip">Last: Feb 27</span>
+                            <span class="meta-chip chip-risk">Risk: Med</span>
+                            <span class="meta-chip">Src: Direct</span>
+                        </div>
+                    </div>
                     <div class="row-meta">Consulting Pilot</div>
                     <div class="row-prob" style="color: var(--green);">100%</div>
                     <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
                 </div>
                 <div class="row-detail" id="detail-raj">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>vCISO Master Framework v3.1 delivered. Payment rail verification active. Signature expected in < 24h.</div>
+                        <div class="detail-item"><b>Velocity Pulse</b>vCISO Master Framework v3.1 delivered. Payment rail verification active. Signature expected in < 24h.
+                            <div class="timeline">
+                                <div class="timeline-row"><span class="timeline-ts">09:20</span><span>Contract opened</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">09:34</span><span>Legal comment added</span></div>
+                                <div class="timeline-row"><span class="timeline-ts">11:14</span><span>Waiting on signature rail</span></div>
+                            </div>
+                        </div>
                         <div class="detail-item">
                             <b>Protocol HUD</b>
                             <div class="action-hud">
@@ -512,13 +666,33 @@
                         </div>
                     </div>
                 </div>
+
+                <section class="lead-grid-wrap">
+                    <div class="lead-grid-bar">
+                        <div class="lead-count" id="leadCount">LOCAL LEADS: 0</div>
+                        <input id="leadSearchInput" class="lead-search" type="text" placeholder="Search imported leads (company, contact, stage, source)...">
+                        <button id="leadPrevBtn" class="lead-page-btn">Prev</button>
+                        <button id="leadNextBtn" class="lead-page-btn">Next</button>
+                        <div class="lead-count" id="leadPageInfo">PAGE 0 / 0</div>
+                    </div>
+                    <div class="lead-row head">
+                        <div>Company</div>
+                        <div>Contact / Title</div>
+                        <div>Stage</div>
+                        <div>Deal Value</div>
+                        <div>Last / Next</div>
+                        <div>Source</div>
+                        <div>Score</div>
+                    </div>
+                    <div id="leadRowsMount"></div>
+                </section>
             </div>
 
             <!-- OTHER PANELS -->
             <div class="data-grid-container" id="panel-1">
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-ghazi', true)">
                     <div class="row-entity">GHAZI MASOOD</div>
-                    <div class="row-action">CRO // Technical Buyer</div>
+                    <div class="row-action">CRO // Technical Buyer<div class="action-meta"><span class="meta-chip">1,200 emp</span><span class="meta-chip">Series B</span><span class="meta-chip">Stack: SFDC + Segment</span><span class="meta-chip">Engagement: 96</span></div></div>
                     <div class="row-meta">REPLIT</div>
                     <div class="row-prob" style="color: var(--green);">98%</div>
                     <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
@@ -532,7 +706,7 @@
 
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-gilad', true)">
                     <div class="row-entity">GILAD SHRIKI</div>
-                    <div class="row-action">Founder // HM discovery</div>
+                    <div class="row-action">Founder // HM discovery<div class="action-meta"><span class="meta-chip">420 emp</span><span class="meta-chip">Series C</span><span class="meta-chip">Stack: HubSpot + Clay</span><span class="meta-chip">Engagement: 78</span></div></div>
                     <div class="row-meta">DESCOPE</div>
                     <div class="row-prob" style="color: var(--cyan);">78%</div>
                     <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
@@ -546,7 +720,7 @@
 
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-kristen', true)">
                     <div class="row-entity">KRISTEN SANTIAGO</div>
-                    <div class="row-action">Ops Leader // Technical Sync</div>
+                    <div class="row-action">Ops Leader // Technical Sync<div class="action-meta"><span class="meta-chip">150 emp</span><span class="meta-chip">Growth</span><span class="meta-chip">Stack: Salesforce + Apollo</span><span class="meta-chip">Engagement: 82</span></div></div>
                     <div class="row-meta">GO NIMBLY</div>
                     <div class="row-prob" style="color: var(--gold);">82%</div>
                     <div class="row-yield"><span class="status-pill">EVALUATING</span></div>
@@ -645,6 +819,21 @@
                     <div class="row-yield"><span class="status-pill pill-kill">EXCLUDED</span></div>
                 </div>
             </div>
+
+            <!-- LEAD DATABASE PANEL -->
+            <div class="data-grid-container" id="panel-5">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <button class="hud-btn" onclick="filterLeads('all')" id="fAll" style="background:var(--accent);">ALL</button>
+                        <button class="hud-btn" onclick="filterLeads('P1')" id="fP1">P1</button>
+                        <button class="hud-btn" onclick="filterLeads('P2')" id="fP2">P2</button>
+                        <button class="hud-btn" onclick="filterLeads('P3')" id="fP3">P3</button>
+                    </div>
+                    <div style="font-family:'JetBrains Mono';font-size:0.7rem;color:var(--text-secondary);">Showing <span id="leadCount">0</span> leads</div>
+                </div>
+                <div id="leadGrid"></div>
+                <div id="leadPager" style="display:flex;gap:8px;justify-content:center;margin-top:20px;"></div>
+            </div>
         </main>
 
         <!-- TICKER -->
@@ -665,6 +854,10 @@
             activeTab: parseInt(localStorage.getItem('nexus_tab')) || 0,
             expandedRow: localStorage.getItem('nexus_row') || null,
             paletteOpen: false,
+            leads: [],
+            filteredLeads: [],
+            leadPage: 1,
+            leadPageSize: 120,
             commands: [
                 { id: 'goto-destiny', name: 'Jump to Destiny Map', key: '1', action: () => switchTab(0) },
                 { id: 'goto-arena', name: 'Jump to Arena Intel', key: '2', action: () => switchTab(1) },
@@ -678,6 +871,80 @@
                 { id: 'action-nudge', name: 'Log Protocol Nudge', key: 'N', action: () => alert('Logging Nudge...') }
             ]
         };
+
+        function mapLead(record) {
+            const get = (...keys) => {
+                for (const key of keys) {
+                    if (record[key] != null && String(record[key]).trim() !== '') return String(record[key]).trim();
+                }
+                return '';
+            };
+            return {
+                company: get('company', 'Company', 'account_name', 'Account Name'),
+                contact: get('full_name', 'Full Name', 'name', 'Name', 'contact_name', 'Contact Name'),
+                title: get('title', 'Title', 'job_title', 'Job Title'),
+                stage: get('pipeline_stage', 'Pipeline Stage', 'stage', 'Stage'),
+                value: get('deal_value', 'Deal Value', 'amount', 'Amount', 'Estimated Value'),
+                lastTouch: get('last_touch', 'Last Touch', 'last_contacted', 'Last Contacted'),
+                nextAction: get('next_action_date', 'Next Action Date', 'next_step', 'Next Step'),
+                source: get('source', 'Source', 'channel', 'Channel'),
+                score: get('engagement_score', 'Engagement Score', 'intent_score', 'Intent Score')
+            };
+        }
+
+        function escapeHtml(value) {
+            return String(value || '').replace(/[&<>"']/g, (c) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function parseCsv(text) {
+            const lines = text.replace(/\r\n/g, '\n').split('\n').filter(Boolean);
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map((h) => h.trim());
+            return lines.slice(1).map((line) => {
+                const cols = line.split(',');
+                const row = {};
+                headers.forEach((h, i) => { row[h] = cols[i] || ''; });
+                return mapLead(row);
+            });
+        }
+
+        function applyLeadFilter() {
+            const q = (document.getElementById('leadSearchInput').value || '').toLowerCase().trim();
+            state.filteredLeads = !q ? [...state.leads] : state.leads.filter((lead) =>
+                [lead.company, lead.contact, lead.title, lead.stage, lead.source, lead.value, lead.score]
+                    .join(' ').toLowerCase().includes(q)
+            );
+            state.leadPage = 1;
+            renderLeadGrid();
+        }
+
+        function renderLeadGrid() {
+            const mount = document.getElementById('leadRowsMount');
+            const total = state.filteredLeads.length;
+            const totalPages = Math.max(1, Math.ceil(total / state.leadPageSize));
+            if (state.leadPage > totalPages) state.leadPage = totalPages;
+
+            const start = (state.leadPage - 1) * state.leadPageSize;
+            const pageRows = state.filteredLeads.slice(start, start + state.leadPageSize);
+            mount.innerHTML = pageRows.map((lead) => `
+                <div class="lead-row">
+                    <div>${escapeHtml(lead.company || '—')}</div>
+                    <div>${escapeHtml([lead.contact, lead.title].filter(Boolean).join(' // ') || '—')}</div>
+                    <div>${escapeHtml(lead.stage || '—')}</div>
+                    <div>${escapeHtml(lead.value || '—')}</div>
+                    <div>${escapeHtml([lead.lastTouch, lead.nextAction].filter(Boolean).join(' → ') || '—')}</div>
+                    <div>${escapeHtml(lead.source || '—')}</div>
+                    <div>${escapeHtml(lead.score || '—')}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('leadCount').textContent = `LOCAL LEADS: ${total.toLocaleString()}`;
+            document.getElementById('leadPageInfo').textContent = `PAGE ${state.leadPage} / ${totalPages}`;
+            document.getElementById('leadPrevBtn').disabled = state.leadPage <= 1;
+            document.getElementById('leadNextBtn').disabled = state.leadPage >= totalPages;
+        }
 
         // --- TABS ---
         function switchTab(index) {
@@ -795,6 +1062,26 @@
         });
 
         document.getElementById('paletteInput').addEventListener('input', (e) => renderPaletteItems(e.target.value));
+        const leadsFileInput = document.getElementById('leadsFileInput');
+        document.getElementById('loadLeadsBtn').addEventListener('click', () => leadsFileInput.click());
+        leadsFileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const text = await file.text();
+            state.leads = parseCsv(text);
+            state.filteredLeads = [...state.leads];
+            state.leadPage = 1;
+            renderLeadGrid();
+        });
+        document.getElementById('leadSearchInput').addEventListener('input', applyLeadFilter);
+        document.getElementById('leadPrevBtn').addEventListener('click', () => {
+            if (state.leadPage > 1) state.leadPage -= 1;
+            renderLeadGrid();
+        });
+        document.getElementById('leadNextBtn').addEventListener('click', () => {
+            state.leadPage += 1;
+            renderLeadGrid();
+        });
         document.addEventListener('click', (e) => { if (state.paletteOpen && !e.target.closest('#commandPalette')) closePalette(); });
 
         // --- BOOTSTRAP ---
@@ -802,6 +1089,7 @@
             document.querySelectorAll('.loading-screen, #loading-screen, .splash-screen, [data-loader]').forEach(el => el.remove());
             switchTab(state.activeTab);
             if (state.expandedRow) toggleDetail(state.expandedRow, false);
+            renderLeadGrid();
         };
     </script>
 </body>
