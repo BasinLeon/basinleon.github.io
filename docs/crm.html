@@ -837,6 +837,29 @@
                     </div>
                     <div style="font-family:'JetBrains Mono';font-size:0.7rem;color:var(--text-secondary);">Unified Records: <span id="hubTotalCount">0</span></div>
                 </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                    <button class="hud-btn" id="viewAllBtn">All</button>
+                    <button class="hud-btn" id="viewStaleBtn">Stale 14d</button>
+                    <button class="hud-btn" id="viewDueBtn">Due 7d</button>
+                    <button class="hud-btn" id="viewPriorityBtn">High Priority</button>
+                    <button class="hud-btn" id="openPasteDumpBtn">Paste Phone Dump</button>
+                </div>
+                <div id="mappingPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
+                    <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">HEADER MAPPING</div>
+                    <div id="mappingFields" style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:8px;"></div>
+                    <div style="margin-top:10px;display:flex;gap:8px;">
+                        <button class="hud-btn primary" id="applyMappingBtn">Apply Mapping</button>
+                        <button class="hud-btn" id="cancelMappingBtn">Cancel</button>
+                    </div>
+                </div>
+                <div id="pasteDumpPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
+                    <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">PASTE CONTACT DUMP (one line per contact)</div>
+                    <textarea id="pasteDumpInput" style="width:100%;min-height:110px;background:rgba(0,0,0,0.35);color:#fff;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:0.72rem;"></textarea>
+                    <div style="margin-top:10px;display:flex;gap:8px;">
+                        <button class="hud-btn primary" id="importDumpBtn">Import Dump</button>
+                        <button class="hud-btn" id="closeDumpBtn">Close</button>
+                    </div>
+                </div>
                 <div style="display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-bottom:12px;">
                     <div class="tel-node"><span class="tel-label">LEADS</span><span class="tel-val" id="countLeads">0</span></div>
                     <div class="tel-node"><span class="tel-label">CONTACTS</span><span class="tel-val" id="countContacts">0</span></div>
@@ -893,6 +916,10 @@
             hubFilteredRows: [],
             hubPage: 1,
             hubPageSize: 80,
+            hubView: 'all',
+            rawImports: {},
+            activeMappingDataset: null,
+            currentMappings: {},
             commands: [
                 { id: 'goto-destiny', name: 'Jump to Destiny Map', key: '1', action: () => switchTab(0) },
                 { id: 'goto-arena', name: 'Jump to Arena Intel', key: '2', action: () => switchTab(1) },
@@ -940,6 +967,9 @@
                 name: get('full_name', 'name', 'Name', 'contact_name', 'Contact Name', 'manager_name', 'Hiring Manager'),
                 company: get('company', 'Company', 'account_name', 'Account Name'),
                 stage: get('pipeline_stage', 'Pipeline Stage', 'stage', 'Stage'),
+                value: get('deal_value', 'Deal Value', 'amount', 'Amount', 'Estimated Value'),
+                lastTouch: get('last_touch', 'Last Touch', 'last_contacted', 'Last Contacted'),
+                nextAction: get('next_action_date', 'Next Action Date', 'next_step', 'Next Step'),
                 email: get('email', 'Email', 'work_email', 'Work Email'),
                 phone: get('phone', 'Phone', 'mobile', 'Mobile'),
                 source: get('source', 'Source', 'channel', 'Channel'),
@@ -949,6 +979,102 @@
             };
         }
 
+        function parseCsvRecords(text) {
+            const rows = [];
+            let row = [];
+            let field = '';
+            let i = 0;
+            let inQuotes = false;
+            while (i < text.length) {
+                const ch = text[i];
+                const next = text[i + 1];
+                if (ch === '"') {
+                    if (inQuotes && next === '"') {
+                        field += '"';
+                        i += 2;
+                        continue;
+                    }
+                    inQuotes = !inQuotes;
+                    i += 1;
+                    continue;
+                }
+                if (ch === ',' && !inQuotes) {
+                    row.push(field);
+                    field = '';
+                    i += 1;
+                    continue;
+                }
+                if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                    if (ch === '\r' && next === '\n') i += 1;
+                    row.push(field);
+                    if (row.some((v) => String(v).trim() !== '')) rows.push(row);
+                    row = [];
+                    field = '';
+                    i += 1;
+                    continue;
+                }
+                field += ch;
+                i += 1;
+            }
+            row.push(field);
+            if (row.some((v) => String(v).trim() !== '')) rows.push(row);
+            return rows;
+        }
+
+        function inferMapping(headers) {
+            const map = {};
+            const findHeader = (patterns) => headers.find((h) => patterns.some((p) => h.toLowerCase().includes(p))) || '';
+            map.name = findHeader(['name', 'contact']);
+            map.company = findHeader(['company', 'account']);
+            map.title = findHeader(['title', 'role', 'position']);
+            map.email = findHeader(['email']);
+            map.phone = findHeader(['phone', 'mobile', 'cell']);
+            map.stage = findHeader(['stage', 'pipeline']);
+            map.value = findHeader(['deal', 'amount', 'value']);
+            map.lastTouch = findHeader(['last touch', 'last_contact', 'last contacted']);
+            map.nextAction = findHeader(['next action', 'next step', 'due']);
+            map.source = findHeader(['source', 'channel']);
+            map.score = findHeader(['score', 'intent']);
+            map.industry = findHeader(['industry']);
+            map.notes = findHeader(['note', 'activity', 'conversation']);
+            return map;
+        }
+
+        function normalizeWithMapping(rawRows, mapping, dataset) {
+            return rawRows.map((r) => mapGenericRecord({
+                Name: mapping.name ? r[mapping.name] : '',
+                Company: mapping.company ? r[mapping.company] : '',
+                Title: mapping.title ? r[mapping.title] : '',
+                Email: mapping.email ? r[mapping.email] : '',
+                Phone: mapping.phone ? r[mapping.phone] : '',
+                Stage: mapping.stage ? r[mapping.stage] : '',
+                Source: mapping.source ? r[mapping.source] : '',
+                'Intent Score': mapping.score ? r[mapping.score] : '',
+                'Deal Value': mapping.value ? r[mapping.value] : '',
+                'Last Touch': mapping.lastTouch ? r[mapping.lastTouch] : '',
+                'Next Action Date': mapping.nextAction ? r[mapping.nextAction] : '',
+                Notes: mapping.notes ? r[mapping.notes] : '',
+                Industry: mapping.industry ? r[mapping.industry] : ''
+            }, dataset));
+        }
+
+        function openMappingScreen(dataset, headers) {
+            state.activeMappingDataset = dataset;
+            const panel = document.getElementById('mappingPanel');
+            const fields = document.getElementById('mappingFields');
+            const mapping = state.currentMappings[dataset] || inferMapping(headers);
+            state.currentMappings[dataset] = mapping;
+            const keys = ['name', 'company', 'title', 'email', 'phone', 'stage', 'value', 'lastTouch', 'nextAction', 'source', 'score', 'industry', 'notes'];
+            fields.innerHTML = keys.map((k) => {
+                const options = ['<option value="">(none)</option>'].concat(headers.map((h) => `<option value="${escapeHtml(h)}"${mapping[k] === h ? ' selected' : ''}>${escapeHtml(h)}</option>`));
+                return `<label style="display:flex;flex-direction:column;gap:4px;font-size:0.62rem;color:#bcd2f7;text-transform:uppercase;">
+                    ${k}
+                    <select data-map-key="${k}" style="background:#0a1020;color:#fff;border:1px solid var(--border);border-radius:6px;padding:5px;">${options.join('')}</select>
+                </label>`;
+            }).join('');
+            panel.style.display = 'block';
+        }
+
         function escapeHtml(value) {
             return String(value || '').replace(/[&<>"']/g, (c) => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -956,11 +1082,10 @@
         }
 
         function parseCsv(text) {
-            const lines = text.replace(/\r\n/g, '\n').split('\n').filter(Boolean);
-            if (lines.length < 2) return [];
-            const headers = lines[0].split(',').map((h) => h.trim());
-            return lines.slice(1).map((line) => {
-                const cols = line.split(',');
+            const matrix = parseCsvRecords(text);
+            if (matrix.length < 2) return [];
+            const headers = matrix[0].map((h) => String(h).trim());
+            return matrix.slice(1).map((cols) => {
                 const row = {};
                 headers.forEach((h, i) => { row[h] = cols[i] || ''; });
                 return mapLead(row);
@@ -968,11 +1093,10 @@
         }
 
         function parseCsvGeneric(text, dataset) {
-            const lines = text.replace(/\r\n/g, '\n').split('\n').filter(Boolean);
-            if (lines.length < 2) return [];
-            const headers = lines[0].split(',').map((h) => h.trim());
-            return lines.slice(1).map((line) => {
-                const cols = line.split(',');
+            const matrix = parseCsvRecords(text);
+            if (matrix.length < 2) return [];
+            const headers = matrix[0].map((h) => String(h).trim());
+            return matrix.slice(1).map((cols) => {
                 const row = {};
                 headers.forEach((h, i) => { row[h] = cols[i] || ''; });
                 return mapGenericRecord(row, dataset);
@@ -980,13 +1104,33 @@
         }
 
         function applyLeadFilter() {
-            const q = (document.getElementById('leadSearchInput').value || '').toLowerCase().trim();
+            const q = (document.getElementById('leadQuickSearchInput').value || '').toLowerCase().trim();
             state.filteredLeads = !q ? [...state.leads] : state.leads.filter((lead) =>
                 [lead.company, lead.contact, lead.title, lead.stage, lead.source, lead.value, lead.score]
                     .join(' ').toLowerCase().includes(q)
             );
             state.leadPage = 1;
             renderLeadGrid();
+        }
+
+        function parsePhoneDump(text) {
+            const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+            return lines.map((line) => {
+                const emailMatch = line.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+                const phoneMatch = line.match(/(\+?\d[\d\s().-]{7,}\d)/);
+                const cleanedName = line
+                    .replace(emailMatch ? emailMatch[0] : '', '')
+                    .replace(phoneMatch ? phoneMatch[0] : '', '')
+                    .replace(/\s{2,}/g, ' ')
+                    .trim();
+                return mapGenericRecord({
+                    Name: cleanedName || line,
+                    Email: emailMatch ? emailMatch[0] : '',
+                    Phone: phoneMatch ? phoneMatch[0] : '',
+                    Source: 'Phone Dump',
+                    Notes: line
+                }, 'Contact');
+            });
         }
 
         function renderLeadGrid() {
@@ -1037,7 +1181,21 @@
 
         function applyHubFilter() {
             const q = (document.getElementById('hubSearchInput').value || '').toLowerCase().trim();
-            state.hubFilteredRows = !q ? [...state.hubRows] : state.hubRows.filter((row) =>
+            const base = state.hubRows.filter((row) => {
+                const last = row.lastTouch ? Date.parse(row.lastTouch) : NaN;
+                const next = row.nextAction ? Date.parse(row.nextAction) : NaN;
+                const now = Date.now();
+                const daysSinceLast = Number.isFinite(last) ? (now - last) / 86400000 : 0;
+                const daysToNext = Number.isFinite(next) ? (next - now) / 86400000 : 999;
+                const score = Number(row.score || 0);
+                const value = Number(String(row.value || '').replace(/[^0-9.]/g, '')) || 0;
+                const priority = score * 0.6 + value / 10000 - daysToNext * 2;
+                if (state.hubView === 'stale') return daysSinceLast >= 14;
+                if (state.hubView === 'due') return daysToNext <= 7;
+                if (state.hubView === 'priority') return priority >= 60;
+                return true;
+            });
+            state.hubFilteredRows = !q ? base : base.filter((row) =>
                 [row.dataset, row.name, row.company, row.stage, row.email, row.phone, row.source, row.score, row.title, row.notes]
                     .join(' ').toLowerCase().includes(q)
             );
@@ -1068,6 +1226,42 @@
             document.getElementById('hubPageInfo').textContent = `PAGE ${state.hubPage} / ${totalPages}`;
             document.getElementById('hubPrevBtn').disabled = state.hubPage <= 1;
             document.getElementById('hubNextBtn').disabled = state.hubPage >= totalPages;
+        }
+
+        function setHubView(view) {
+            state.hubView = view;
+            applyHubFilter();
+            const pairs = [
+                ['viewAllBtn', 'all'],
+                ['viewStaleBtn', 'stale'],
+                ['viewDueBtn', 'due'],
+                ['viewPriorityBtn', 'priority']
+            ];
+            pairs.forEach(([id, key]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.style.background = key === view ? 'var(--accent)' : 'rgba(255,255,255,0.03)';
+            });
+        }
+
+        function startMappedCsvImport(inputId, datasetKey, datasetLabel) {
+            const input = document.getElementById(inputId);
+            input.click();
+            input.onchange = async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const text = await file.text();
+                const matrix = parseCsvRecords(text);
+                if (matrix.length < 2) return;
+                const headers = matrix[0].map((h) => String(h).trim());
+                const rawRows = matrix.slice(1).map((cols) => {
+                    const row = {};
+                    headers.forEach((h, i) => { row[h] = cols[i] || ''; });
+                    return row;
+                });
+                state.rawImports[datasetKey] = { headers, rawRows, label: datasetLabel };
+                openMappingScreen(datasetKey, headers);
+            };
         }
 
         // --- TABS ---
@@ -1207,22 +1401,10 @@
             state.leadPage += 1;
             renderLeadGrid();
         });
-        const bindCsvImport = (btnId, inputId, targetKey, label) => {
-            const btn = document.getElementById(btnId);
-            const input = document.getElementById(inputId);
-            btn.addEventListener('click', () => input.click());
-            input.addEventListener('change', async (e) => {
-                const file = e.target.files && e.target.files[0];
-                if (!file) return;
-                const text = await file.text();
-                state[targetKey] = parseCsvGeneric(text, label);
-                rebuildHubRows();
-            });
-        };
-        bindCsvImport('importLeadsBtn', 'leadsCsvInput', 'leads', 'Lead');
-        bindCsvImport('importContactsBtn', 'contactsCsvInput', 'contacts', 'Contact');
-        bindCsvImport('importHiringBtn', 'hiringCsvInput', 'hiringManagers', 'Hiring Manager');
-        bindCsvImport('importInteractionsBtn', 'interactionsCsvInput', 'interactions', 'Interaction');
+        document.getElementById('importLeadsBtn').addEventListener('click', () => startMappedCsvImport('leadsCsvInput', 'leads', 'Lead'));
+        document.getElementById('importContactsBtn').addEventListener('click', () => startMappedCsvImport('contactsCsvInput', 'contacts', 'Contact'));
+        document.getElementById('importHiringBtn').addEventListener('click', () => startMappedCsvImport('hiringCsvInput', 'hiringManagers', 'Hiring Manager'));
+        document.getElementById('importInteractionsBtn').addEventListener('click', () => startMappedCsvImport('interactionsCsvInput', 'interactions', 'Interaction'));
         document.getElementById('importArtifactsBtn').addEventListener('click', () => document.getElementById('artifactsJsonInput').click());
         document.getElementById('artifactsJsonInput').addEventListener('change', async (e) => {
             const file = e.target.files && e.target.files[0];
@@ -1236,6 +1418,42 @@
             } catch (_) {
                 alert('Invalid JSON artifact file.');
             }
+        });
+        document.getElementById('applyMappingBtn').addEventListener('click', () => {
+            const datasetKey = state.activeMappingDataset;
+            if (!datasetKey || !state.rawImports[datasetKey]) return;
+            const mapping = {};
+            document.querySelectorAll('#mappingFields select[data-map-key]').forEach((sel) => {
+                mapping[sel.dataset.mapKey] = sel.value || '';
+            });
+            state.currentMappings[datasetKey] = mapping;
+            const normalized = normalizeWithMapping(state.rawImports[datasetKey].rawRows, mapping, state.rawImports[datasetKey].label);
+            state[datasetKey] = normalized;
+            document.getElementById('mappingPanel').style.display = 'none';
+            rebuildHubRows();
+        });
+        document.getElementById('cancelMappingBtn').addEventListener('click', () => {
+            document.getElementById('mappingPanel').style.display = 'none';
+            state.activeMappingDataset = null;
+        });
+        document.getElementById('viewAllBtn').addEventListener('click', () => setHubView('all'));
+        document.getElementById('viewStaleBtn').addEventListener('click', () => setHubView('stale'));
+        document.getElementById('viewDueBtn').addEventListener('click', () => setHubView('due'));
+        document.getElementById('viewPriorityBtn').addEventListener('click', () => setHubView('priority'));
+        document.getElementById('openPasteDumpBtn').addEventListener('click', () => {
+            document.getElementById('pasteDumpPanel').style.display = 'block';
+        });
+        document.getElementById('closeDumpBtn').addEventListener('click', () => {
+            document.getElementById('pasteDumpPanel').style.display = 'none';
+        });
+        document.getElementById('importDumpBtn').addEventListener('click', () => {
+            const text = document.getElementById('pasteDumpInput').value || '';
+            if (!text.trim()) return;
+            const imported = parsePhoneDump(text);
+            state.contacts = state.contacts.concat(imported);
+            document.getElementById('pasteDumpInput').value = '';
+            document.getElementById('pasteDumpPanel').style.display = 'none';
+            rebuildHubRows();
         });
         document.getElementById('hubSearchInput').addEventListener('input', applyHubFilter);
         document.getElementById('hubPrevBtn').addEventListener('click', () => {
@@ -1255,6 +1473,7 @@
             if (state.expandedRow) toggleDetail(state.expandedRow, false);
             renderLeadGrid();
             rebuildHubRows();
+            setHubView('all');
         };
     </script>
 </body>
