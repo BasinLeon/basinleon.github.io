@@ -274,16 +274,7 @@
         <!-- PANEL 9: ANALYTICS (demo) -->
         <div class="panel" id="panel-9" style="padding:20px 36px;overflow-y:auto;">
             <div class="vel-title">📊 CRM Analytics Dashboard</div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:#fff;">44,928</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Total Nodes</div></div>
-                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">100%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Vectorized</div></div>
-                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">78%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Avg Conv Prob</div></div>
-                <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--cyan);">18,271</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">HOT Nodes (80%+)</div></div>
-            </div>
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;">
-                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Industries</div>
-                ${[['RevOps / GTM',12800],['SaaS / Cloud',9200],['AI / LLM',7400],['CRM / Sales',6100],['Cybersecurity',4800],['Consulting',4120]].map(([n,c])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:130px;color:#fff;font-weight:600;">${n}</div><div style="flex:1;"><div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--cyan));width:${Math.round(c/12800*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';">${c.toLocaleString()}</div></div>`).join('')}
-            </div>
+            <div id="analyticsDemo"></div>
         </div>
     </main>
 
@@ -425,6 +416,7 @@ function switchPanel(idx) {
     if(idx===6) buildDemoCos();
     if(idx===7) buildDemoInds();
     if(idx===8) buildDemoSen();
+    if(idx===9) buildDemoAnalytics();
 }
 function showToast(msg){
     const t=document.getElementById('toast');
@@ -452,6 +444,33 @@ function coCard(name,count,score){
 function buildDemoCos(){document.getElementById('demoCos').innerHTML=DEMO_COS.map(c=>coCard(c.n,c.c,c.s)).join('');}
 function buildDemoInds(){document.getElementById('demoInds').innerHTML=DEMO_INDS.map(c=>coCard(c.n,c.c,c.s)).join('');}
 function buildDemoSen(){document.getElementById('demoSen').innerHTML=DEMO_SEN.map(c=>coCard(c.n,c.c,c.s)).join('');}
+function buildDemoAnalytics(){
+    const IND=[['RevOps / GTM',12800],['SaaS / Cloud',9200],['AI / LLM',7400],['CRM / Sales',6100],['Cybersecurity',4800],['Consulting',4120]];
+    const SEN=[['C-Suite / Founder',3240,91],['VP',7180,87],['Head / Director',9420,83],['Manager / Lead',11200,74],['Senior IC',8310,71]];
+    const max=IND[0][1];
+    document.getElementById('analyticsDemo').innerHTML=`
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:#fff;">44,928</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Total Nodes</div></div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">100%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Vectorized</div></div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">78%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Avg Conv Prob</div></div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--cyan);">18,271</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">HOT Nodes (80%+)</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
+                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Industries</div>
+                ${IND.map(([n,c])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:110px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n}</div><div style="flex:1;"><div style="height:7px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--cyan));width:${Math.round(c/max*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.65rem;">${c.toLocaleString()}</div></div>`).join('')}
+            </div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
+                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Seniority Breakdown</div>
+                ${SEN.map(([n,c,s])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:110px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n}</div><div style="flex:1;"><div style="height:7px;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--green));width:${Math.round(c/11200*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.65rem;">${c.toLocaleString()}</div></div>`).join('')}
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">18,271</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x1F525; HOT (80%+)</div></div>
+            <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">19,803</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x1F321; WARM (60&#x2013;80%)</div></div>
+            <div style="background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--text-secondary);">6,854</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x2744; COLD (&lt;60%)</div></div>
+        </div>`;
+}
 
 window.onload=()=>{
     renderTable();
