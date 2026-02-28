@@ -337,12 +337,13 @@
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                         <button class="hud-btn velocity" onclick="fetchAllRSS()" style="font-size:.6rem; padding:6px 14px;">↻ Refresh Signals</button>
                         <button class="hud-btn" onclick="fetchAllJobBoards()" style="font-size:.6rem; padding:6px 14px; border-color:var(--green); color:var(--green);">💼 Refresh Jobs</button>
+                        <button class="hud-btn" onclick="fetchAllXSignals()" style="font-size:.6rem; padding:6px 14px; border-color:#1DA1F2; color:#1DA1F2;">𝕏 Refresh X</button>
                         <div class="filter-pills" style="padding:0;">
                             <button class="fpill active" onclick="filterSignals('all', this)">All</button>
                             <button class="fpill hot" onclick="filterSignals('alpha', this)">High Alpha</button>
                             <button class="fpill warm" onclick="filterSignals('funding', this)">Funding</button>
                             <button class="fpill" style="border-color:var(--green); color:var(--green);" onclick="filterSignals('hiring', this)">Hiring</button>
-                            <button class="fpill" style="border-color:var(--accent); color:var(--accent);" onclick="filterSignals('remote', this)">Remote</button>
+                            <button class="fpill" style="border-color:#1DA1F2; color:#1DA1F2;" onclick="filterSignals('x', this)">X Posts</button>
                             <button class="fpill" style="border-color:var(--cyan); color:var(--cyan);" onclick="filterSignals('startup', this)">Startup</button>
                         </div>
                     </div>
@@ -1420,6 +1421,58 @@ async function parseJobRSS(xml, board) {
     }
 }
 
+async function fetchAllXSignals() {
+    showToast('𝕏 Scanning X for keywords: RevOps, Replit, GTM...');
+    const keywords = ['RevOps hiring', 'Replit funding', 'vCISO fractional', 'GTM AI startup'];
+    const proxy = 'https://api.allorigins.win/get?url=';
+    
+    for (const q of keywords) {
+        try {
+            // Simulated search via Nitter or other open proxies since direct X is closed
+            const searchUrl = `https://nitter.net/search?f=tweets&q=${encodeURIComponent(q)}&since=1d`;
+            const r = await fetch(proxy + encodeURIComponent(searchUrl));
+            const d = await r.json();
+            parseXSignals(d.contents, q);
+        } catch (e) {
+            console.warn(`X scan failed for: ${q}`, e);
+        }
+    }
+    buildSignalFeed();
+}
+
+function parseXSignals(html, query) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const tweets = Array.from(doc.querySelectorAll('.timeline-item')).slice(0, 5);
+    
+    tweets.forEach(async t => {
+        const text = t.querySelector('.tweet-content')?.textContent || '';
+        const user = t.querySelector('.username')?.textContent || 'anonymous';
+        const link = 'https://x.com' + (t.querySelector('.tweet-link')?.getAttribute('href') || '');
+        const timeStr = t.querySelector('.tweet-date a')?.getAttribute('title') || 'Just now';
+        
+        if (liveSignals.find(s => s.desc === text)) return;
+
+        let sig = {
+            id: 'x-' + Math.random().toString(36).substr(2, 9),
+            title: `𝕏 Signal: @${user}`,
+            type: query.toUpperCase().includes('HIRING') ? 'HIRING' : query.toUpperCase().includes('FUNDING') ? 'FUNDING' : 'NEWS',
+            source: 'X_MONITOR',
+            badge: '𝕏',
+            badgeColor: '#1DA1F2',
+            priority: query.toUpperCase().includes('ALPHA') ? 'ALPHA' : 'MEDIUM',
+            time: 'Recent',
+            desc: text,
+            url: link,
+            category: 'x'
+        };
+
+        // Run AI classification if online
+        sig = await classifyWithOllama(sig);
+        liveSignals.unshift(sig);
+    });
+}
+
 function filterSignals(type, btn) {
     document.querySelectorAll('.signal-feed-wrap .fpill').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
@@ -1431,6 +1484,7 @@ function filterSignals(type, btn) {
             : type === 'alpha' ? c.classList.contains('alpha')
             : type === 'funding' ? c.dataset.type?.includes('FUNDING')
             : type === 'hiring' ? c.dataset.type?.includes('HIRING')
+            : type === 'x' ? c.dataset.source?.includes('𝕏')
             : type === 'remote' ? c.dataset.source?.includes('REMOTE')
             : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP'))
             : true;
