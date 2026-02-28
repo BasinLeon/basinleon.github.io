@@ -155,13 +155,13 @@
             <div class="tel-pill"><span class="tel-label">Nodes</span><span class="tel-val" style="color:var(--green)">7,584</span></div>
             <button class="hud-btn gold" onclick="switchPanel(3);showToast('⚡ Daily Cadence generated')">⚡ TODAY'S 5</button>
             <div class="mode-toggle">
-                <button class="mode-btn" onclick="showToast('💼 Revenue Mode')">💼 Revenue</button>
-                <button class="mode-btn active-velocity">🚀 Velocity</button>
+                <button class="mode-btn" id="modeRev" onclick="handleModeSwitch('revenue')">💼 Revenue</button>
+                <button class="mode-btn active-velocity" id="modeVel" onclick="handleModeSwitch('velocity')">🚀 Velocity</button>
             </div>
             <div id="systemClock" class="clock-block">—</div>
         </header>
 
-        <div class="demo-banner">🔒 DEMO MODE — private vault data replaced with synthetic nodes &nbsp;|&nbsp; Real system: localhost:8000/BASIN_NEXUS_CRM.html</div>
+        <div class="demo-banner" id="lockBanner">🔒 DEMO MODE — private vault data replaced with synthetic nodes &nbsp;|&nbsp; Real system: localhost:8000/BASIN_NEXUS_CRM.html</div>
 
         <div class="decision-strip">
             <div class="decision-node" onclick="showToast('Filtering CONTACTED nodes…')">
@@ -287,6 +287,46 @@
 </div>
 
 <script>
+let isUnlocked = false;
+let currentMode = 'velocity';
+
+function handleModeSwitch(m) {
+    if (!isUnlocked) {
+        const code = prompt("ENTER OPERATOR ACCESS CODE:");
+        if (code === "23") {
+            unlockSystem();
+            currentMode = m;
+            updateModeUI();
+        } else if (code !== null) {
+            showToast("❌ ACCESS DENIED: INVALID PROTOCOL");
+        }
+        return;
+    }
+    currentMode = m;
+    updateModeUI();
+    showToast(`${m==='revenue'?'💼 REVENUE':'🚀 VELOCITY'} MODE ACTIVE`);
+}
+
+function unlockSystem() {
+    isUnlocked = true;
+    document.getElementById('lockBanner').style.display = 'none';
+    document.querySelectorAll('.demo-box').forEach(el => el.style.opacity = '0.3');
+    document.querySelector('.sys-status').innerHTML = '<span class="pulse" style="background:var(--cyan)">●</span> OPERATOR_STATUS: VERIFIED';
+    document.getElementById('nodeCount').style.color = 'var(--cyan)';
+    document.querySelectorAll('.ticker-item b').forEach(el => {
+        if (el.textContent === 'PUBLIC PREVIEW') el.textContent = 'COMMANDER';
+        if (el.textContent === 'PUBLIC PREVIEW') el.style.color = 'var(--cyan)';
+    });
+    showToast("✅ ACCESS GRANTED: WELCOME OPERATOR 23");
+    renderTable();
+    buildCadence();
+}
+
+function updateModeUI() {
+    document.getElementById('modeRev').classList.toggle('active-revenue', currentMode==='revenue');
+    document.getElementById('modeVel').classList.toggle('active-velocity', currentMode==='velocity');
+}
+
 // Demo data — synthetic, no real contacts
 const DEMO_NODES = [
     {name:'Sarah Chen',company:'Replit',role:'Head of Customer Success',email:'s.chen@[redacted]',phone:'[demo]',status:'NOW',score:97,intro:88,type:'lead'},
@@ -324,12 +364,14 @@ function renderTable() {
         const row=document.createElement('div');
         row.className='lead-row';
         const wiColor = n.intro>=70?'rgba(52,211,153,.8)':n.intro>=50?'rgba(251,191,36,.8)':'rgba(148,163,184,.5)';
+        const displayEmail = isUnlocked ? n.email.replace('[redacted]', 'basinleon.com') : n.email;
+        const displayPhone = isUnlocked ? "+1 (510) 555-0123" : n.phone;
         row.innerHTML=`
             <div style="color:var(--accent);font-weight:900;font-family:'Outfit';text-transform:uppercase;font-size:.62rem;">${n.type}</div>
             <div style="color:#fff;font-weight:800;font-family:'Outfit';font-size:.88rem;">${n.name}<div style="font-size:.65rem;color:var(--text-secondary);font-weight:400;">${n.role}</div></div>
             <div><span class="status-pill ${pillClass(n.status)}">${n.status}</span></div>
-            <div style="font-size:.75rem;">${n.email}</div>
-            <div style="font-family:'JetBrains Mono';font-size:.68rem;">${n.phone}</div>
+            <div style="font-size:.75rem;">${displayEmail}</div>
+            <div style="font-family:'JetBrains Mono';font-size:.68rem;">${displayPhone}</div>
             <div><span class="intro-score" style="background:rgba(52,211,153,.08);border:1px solid ${wiColor};color:${wiColor}">🤝 ${n.intro}%</span></div>
             <div style="color:${scoreColor(n.score)};font-weight:900;font-family:'Outfit';font-size:.92rem;">${n.score}%</div>`;
         row.onclick=()=>showToast(`🔍 Demo: ${n.name} @ ${n.company}`);
@@ -476,6 +518,7 @@ window.onload=()=>{
     renderTable();
     buildCadence();
     buildRadar();
+    updateModeUI();
     setInterval(()=>{
         const n=new Date();
         document.getElementById('systemClock').innerHTML=`${n.toISOString().split('T')[0]} // ${n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} PST<br><span style="color:var(--green)">DEMO_STABLE</span>`;
