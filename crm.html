@@ -344,6 +344,8 @@
                             <button class="fpill warm" onclick="filterSignals('funding', this)">Funding</button>
                             <button class="fpill" style="border-color:var(--green); color:var(--green);" onclick="filterSignals('hiring', this)">Hiring</button>
                             <button class="fpill" style="border-color:#1DA1F2; color:#1DA1F2;" onclick="filterSignals('x', this)">X Posts</button>
+                            <button class="fpill" style="border-color:#FF6600; color:#FF6600;" onclick="filterSignals('hn', this)">HN</button>
+                            <button class="fpill" style="border-color:#6c5ce7; color:#6c5ce7;" onclick="filterSignals('indeed', this)">Indeed</button>
                             <button class="fpill" style="border-color:var(--cyan); color:var(--cyan);" onclick="filterSignals('startup', this)">Startup</button>
                         </div>
                     </div>
@@ -585,7 +587,7 @@ function kwScore(node, tokens) {
 // Vault Load
 // ─────────────────────────────────────────────────────────────────
 async function loadVault() {
-    showToast('🔒 Synchronizing 163MB Vector Vault…');
+    showToast('🔒 Synchronizing LeonOS Private Vault (44,928 leads)...');
     try {
         // Try lite vault first (metadata only, much faster)
         let r = await fetch('./11_DATA_FEEDS/local_nexus_lite.json', {cache:'no-store'});
@@ -1179,24 +1181,22 @@ let liveSignals = [...SIGNAL_MOCK];
 const JOB_BOARD_SOURCES = [
     // Startup-first boards
     { name: 'YC Jobs: RevOps', url: 'https://www.ycombinator.com/jobs.rss?role=revops', badge: 'YC', color: 'var(--green)' },
-    { name: 'YC Jobs: Customer Success', url: 'https://www.ycombinator.com/jobs.rss?role=customer-success', badge: 'YC', color: 'var(--green)' },
     { name: 'YC Jobs: GTM', url: 'https://www.ycombinator.com/jobs.rss?role=go-to-market', badge: 'YC', color: 'var(--green)' },
     // Product Hunt Jobs
     { name: 'Product Hunt: RevOps', url: 'https://www.producthunt.com/jobs/rss?query=revops', badge: 'PH⛤', color: '#DA552F' },
-    { name: 'Product Hunt: GTM', url: 'https://www.producthunt.com/jobs/rss?query=go-to-market', badge: 'PH⛤', color: '#DA552F' },
     { name: 'Product Hunt: vCISO', url: 'https://www.producthunt.com/jobs/rss?query=vCISO', badge: 'PH⛤', color: '#DA552F' },
     // Remote boards
     { name: 'RemoteOK RevOps', url: 'https://remoteok.com/remote-revops-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
-    { name: 'RemoteOK: Customer Success', url: 'https://remoteok.com/remote-customer-success-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
+    { name: 'RemoteOK: vCISO', url: 'https://remoteok.com/remote-security-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
     { name: 'We Work Remotely: RevOps', url: 'https://weworkremotely.com/remote-revops-jobs.rss', badge: 'WWR', color: 'var(--cyan)' },
     { name: 'Startup.jobs RevOps', url: 'https://startup.jobs/rss?query=revops', badge: 'STARTUP', color: 'var(--accent)' },
-    { name: 'Startup.jobs vCISO', url: 'https://startup.jobs/rss?query=vciso', badge: 'STARTUP', color: 'var(--accent)' },
-    // Community boards
-    { name: 'Reddit r/forhire', url: 'https://www.reddit.com/r/forhire/.rss?sort=new', badge: 'REDDIT', color: '#FF4500' },
-    { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: '#FF4500' },
-    { name: 'HN Hiring', url: 'https://hnrss.org/newest?q=hiring+RevOps+OR+GTM+OR+%22Customer+Success%22', badge: 'HN', color: 'var(--gold)' },
-    // Wellfound/AngelList
-    { name: 'Wellfound: RevOps', url: 'https://wellfound.com/jobs?keywords=RevOps&location=Remote&rss=1', badge: 'WTFD', color: 'var(--pink)' }
+    // Community & Aggregators
+    { name: 'HN Hiring', url: 'https://hnhiring.com/rss', badge: 'HN', color: '#FF6600' },
+    { name: 'HN Who Is Hiring', url: 'https://hnrss.org/newest?q=who+is+hiring+RevOps+OR+GTM', badge: 'HN', color: '#FF6600' },
+    { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: 'REDDIT', color: '#FF4500' },
+    // Indeed Scraper (Proxy-based)
+    { name: 'Indeed: RevOps', url: 'https://www.indeed.com/jobs?q=RevOps&l=Remote', badge: 'INDEED', color: '#6c5ce7', type: 'SCRAPE' },
+    { name: 'Indeed: vCISO', url: 'https://www.indeed.com/jobs?q=vCISO', badge: 'INDEED', color: '#6c5ce7', type: 'SCRAPE' }
 ];
 
 async function classifyWithOllama(sig) {
@@ -1366,13 +1366,50 @@ async function fetchAllJobBoards() {
         try {
             const r = await fetch(proxy + encodeURIComponent(board.url));
             const d = await r.json();
-            await parseJobRSS(d.contents, board);
+            if (board.type === 'SCRAPE') {
+                await parseIndeedHTML(d.contents, board);
+            } else {
+                await parseJobRSS(d.contents, board);
+            }
         } catch (e) {
             console.warn(`Job board failed: ${board.name}`, e);
         }
     }
     buildSignalFeed();
     showToast(`✓ Job scan complete // ${liveSignals.filter(s=>s.category==='job').length} hiring signals`);
+}
+
+async function parseIndeedHTML(html, board) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const jobs = Array.from(doc.querySelectorAll('.job_seen_beacon')).slice(0, 5);
+    
+    for (const j of jobs) {
+        const title = j.querySelector('.jobTitle')?.textContent || '';
+        const company = j.querySelector('.companyName')?.textContent || '';
+        const location = j.querySelector('.companyLocation')?.textContent || '';
+        const snippet = j.querySelector('.job-snippet')?.textContent || '';
+        const link = 'https://www.indeed.com' + (j.querySelector('a')?.getAttribute('href') || '');
+
+        if (liveSignals.find(s => s.title.includes(title) && s.desc.includes(company))) continue;
+
+        let sig = {
+            id: 'indeed-' + Math.random().toString(36).substr(2,9),
+            title: `Indeed Hiring: ${title} at ${company}`,
+            type: 'HIRING',
+            source: 'INDEED',
+            priority: 'MEDIUM',
+            time: 'Recent',
+            desc: `${location} // ${snippet}`,
+            url: link,
+            intentScore: 50,
+            badge: 'INDEED',
+            badgeColor: board.color,
+            category: 'job'
+        };
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
+    }
 }
 
 async function parseJobRSS(xml, board) {
@@ -1411,8 +1448,14 @@ async function parseJobRSS(xml, board) {
 }
 
 async function fetchAllXSignals() {
-    showToast('𝕏 Scanning X for keywords: RevOps, Replit, GTM...');
-    const keywords = ['RevOps hiring', 'Replit funding', 'vCISO fractional', 'GTM AI startup'];
+    showToast('𝕏 Scanning X for keywords: RevOps, Replit, vCISO, GTM AI...');
+    const keywords = [
+        '"RevOps hiring" OR "Revenue Operations hiring" OR "GTM hiring" min_faves:5',
+        'Replit "funding" OR "Series" OR "hiring"',
+        'vCISO OR "fractional vCISO"',
+        '"GTM AI" OR "SaaS startup hiring"',
+        '"Customer Success hiring" VP OR Head OR Director'
+    ];
     const proxy = 'https://api.allorigins.win/get?url=';
     
     for (const q of keywords) {
@@ -1476,26 +1519,40 @@ function filterSignals(type, btn) {
             : type === 'funding' ? c.dataset.type?.includes('FUNDING')
             : type === 'hiring' ? c.dataset.type?.includes('HIRING')
             : type === 'x' ? c.dataset.source?.includes('𝕏')
-            : type === 'remote' ? c.dataset.source?.includes('REMOTE')
-            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP'))
+            : type === 'hn' ? c.dataset.source?.includes('HN')
+            : type === 'indeed' ? c.dataset.source?.includes('INDEED')
+            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN'))
             : true;
         c.style.display = show ? '' : 'none';
     });
 }
 window.addSignal = function(data) {
     console.log('%c🛰️ NEXUS_INCOMING_SIGNAL: Protocol 23 verified','color:var(--cyan);font-weight:bold;');
-    const sig = {
-        id: 'external-' + Date.now(),
-        ...data,
-        priority: data.priority || 'MEDIUM',
-        time: 'Just now'
-    };
-    liveSignals.unshift(sig);
-    if (document.getElementById('panel-1').classList.contains('active')) {
-        buildSignalFeed();
-    }
-    showToast(`Incoming Signal: ${sig.title}`);
-    return { status: "signal_added", timestamp: new Date().toISOString() };
+    // Wrap in async to allow Ollama classification on foreign inputs
+    (async () => {
+        let sig = {
+            id: 'external-' + Date.now(),
+            title: data.title || 'Incoming Signal',
+            type: data.type || 'NEWS',
+            source: data.source || 'WEBHOOK',
+            priority: data.priority || 'MEDIUM',
+            time: 'Just now',
+            desc: data.summary || data.desc || '',
+            url: data.url || '#',
+            intentScore: data.intentScore || 50,
+            category: data.category || 'external'
+        };
+        
+        // If it's a raw signal from n8n/Ollama, use it as is. 
+        // If it's messy, try to refine it.
+        if (!data.summary) sig = await classifyWithOllama(sig);
+        
+        liveSignals.unshift(sig);
+        if (document.getElementById('panel-1').classList.contains('active')) {
+            buildSignalFeed();
+        }
+        showToast(`🛰️ SIGNAL_CAPTURED: ${sig.title.slice(0,25)}...`);
+    })();
 };
 
 function buildDestinyMap() {
