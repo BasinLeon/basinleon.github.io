@@ -349,6 +349,8 @@
                             <button class="fpill" style="border-color:#00e5ff; color:#00e5ff;" onclick="filterSignals('wwr', this)">WWR</button>
                             <button class="fpill" style="border-color:var(--accent); color:var(--accent);" onclick="filterSignals('startup_jobs', this)">Startup Jobs</button>
                             <button class="fpill" style="border-color:var(--gold); color:var(--gold);" onclick="filterSignals('levels', this)">Levels.fyi</button>
+                            <button class="fpill" style="border-color:#e84393; color:#e84393;" onclick="filterSignals('gtmfund', this)">GTM Fund</button>
+                            <button class="fpill" style="border-color:#55efc4; color:#55efc4;" onclick="filterSignals('aitink', this)">AI Tinkerers</button>
                         </div>
                     </div>
                 </div>
@@ -1204,6 +1206,9 @@ const JOB_BOARD_SOURCES = [
     { name: 'Levels.fyi: RevOps', url: 'https://www.levels.fyi/jobs?role=revops&location=remote', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
     { name: 'Levels.fyi: CS', url: 'https://www.levels.fyi/jobs?role=customer-success', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
     { name: 'Levels.fyi: Sales', url: 'https://www.levels.fyi/jobs?role=sales', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
+    // Specialized Ecosystems (Scraped)
+    { name: 'GTM Fund Jobs', url: 'https://jobs.gtmfund.com/jobs', badge: 'GTM FUND', color: '#e84393', type: 'GTM_SCRAPE' },
+    { name: 'AI Tinkerers Jobs', url: 'https://aitinkerers.org/jobs', badge: 'AI TINK', color: '#55efc4', type: 'AITINK_SCRAPE' },
     // Community & Aggregators
     { name: 'HN Hiring', url: 'https://hnhiring.com/rss', badge: 'HN', color: '#FF6600' },
     { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: 'REDDIT', color: '#FF4500' },
@@ -1382,6 +1387,10 @@ async function fetchAllJobBoards() {
                 await parseIndeedHTML(d.contents, board);
             } else if (board.type === 'LEVELS_SCRAPE') {
                 await parseLevelsHTML(d.contents, board);
+            } else if (board.type === 'GTM_SCRAPE') {
+                await parseGTMFundHTML(d.contents, board);
+            } else if (board.type === 'AITINK_SCRAPE') {
+                await parseAITinkHTML(d.contents, board);
             } else {
                 await parseJobRSS(d.contents, board);
             }
@@ -1421,6 +1430,73 @@ async function parseLevelsHTML(html, board) {
             url: link,
             intentScore: 70,
             badge: 'LEVELS',
+            badgeColor: board.color,
+            category: 'job'
+        };
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
+    }
+}
+
+async function parseGTMFundHTML(html, board) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Robust selectors for common board layouts (Pallet/jobboard.io)
+    const cards = Array.from(doc.querySelectorAll('.job-list-item, .job-item, article, .job, .posting')).slice(0, 5);
+    
+    for (const card of cards) {
+        const title = card.querySelector('.title, h3, h2, a')?.textContent?.trim() || 'GTM Role';
+        const company = card.querySelector('.company, h4, .subtitle')?.textContent?.trim() || 'Portfolio Company';
+        const location = card.querySelector('.location, .meta, .text-sm')?.textContent?.trim() || 'Remote / Hybrid';
+        const link = card.querySelector('a')?.href || board.url;
+
+        if (liveSignals.find(s => s.title.includes(title) && s.desc.includes(company))) continue;
+
+        let sig = {
+            id: 'gtm-' + Math.random().toString(36).substr(2,9),
+            title: `GTM Fund Hiring: ${title} at ${company}`,
+            type: 'HIRING',
+            source: 'GTM FUND',
+            priority: 'HIGH',
+            time: 'Just now',
+            desc: `Portfolio Company // ${location}`,
+            url: link,
+            intentScore: 85,
+            badge: 'GTM FUND',
+            badgeColor: board.color,
+            category: 'job'
+        };
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
+    }
+}
+
+async function parseAITinkHTML(html, board) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    const cards = Array.from(doc.querySelectorAll('.job-card, .border, article, .p-4, .job-listing')).slice(0, 5);
+    
+    for (const card of cards) {
+        const title = card.querySelector('.font-bold, h3, a')?.textContent?.trim() || 'AI Engineering Role';
+        const company = card.querySelector('.text-gray-600, .company-name, h4')?.textContent?.trim() || 'AI Startup';
+        const location = card.querySelector('.location, .text-sm')?.textContent?.trim() || 'Remote / Hybrid';
+        const link = card.querySelector('a')?.href || board.url;
+
+        if (liveSignals.find(s => s.title.includes(title))) continue;
+
+        let sig = {
+            id: 'aitink-' + Math.random().toString(36).substr(2,9),
+            title: `AI Tinkerers Hiring: ${title} at ${company}`,
+            type: 'HIRING',
+            source: 'AI TINK',
+            priority: 'HIGH',
+            time: 'Just now',
+            desc: `AI / Engineering role // ${location}`,
+            url: link,
+            intentScore: 80,
+            badge: 'AI TINK',
             badgeColor: board.color,
             category: 'job'
         };
@@ -1575,7 +1651,9 @@ function filterSignals(type, btn) {
             : type === 'wwr' ? c.dataset.source?.includes('WWR')
             : type === 'startup_jobs' ? c.dataset.source?.includes('STARTUP')
             : type === 'levels' ? c.dataset.source?.includes('LEVELS')
-            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN') || c.dataset.source?.includes('WWR'))
+            : type === 'gtmfund' ? c.dataset.source?.includes('GTM FUND')
+            : type === 'aitink' ? c.dataset.source?.includes('AI TINK')
+            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN') || c.dataset.source?.includes('WWR') || c.dataset.source?.includes('GTM FUND') || c.dataset.source?.includes('AI TINK'))
             : true;
         c.style.display = show ? '' : 'none';
     });
