@@ -109,10 +109,18 @@
     .ticker-item { font-family:'JetBrains Mono'; font-size:.6rem; color:var(--text-secondary); display:flex; align-items:center; gap:7px; }
     .ticker-item b { color:var(--cyan); }
     /* demo banner */
-    .demo-banner { background:linear-gradient(90deg,rgba(129,140,248,.12),rgba(34,211,238,.08)); border-bottom:1px solid var(--border); padding:6px 36px; font-family:'JetBrains Mono'; font-size:.62rem; color:var(--text-secondary); display:flex; align-items:center; gap:12px; }
+    /* access overlay */
+    #accessOverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; font-family:'JetBrains Mono'; color:var(--cyan); overflow:hidden; }
+    .glitch-text { font-size:1.5rem; font-weight:900; letter-spacing:8px; text-transform:uppercase; animation:glitch 0.3s infinite; }
+    @keyframes glitch { 0%{opacity:1; transform:skew(0deg)} 20%{opacity:.8; transform:skew(5deg)} 40%{opacity:1; transform:skew(-5deg)} 60%{opacity:.7; transform:skew(2deg)} 80%{opacity:1; transform:skew(-2deg)} 100%{opacity:1; transform:skew(0deg)} }
     </style>
 </head>
 <body>
+<div id="accessOverlay">
+    <div class="glitch-text">ACCESS GRANTED</div>
+    <div style="font-size:.6rem;margin-top:20px;opacity:.7;letter-spacing:2px;">DECRYPTING VAULT_ALPHA...</div>
+    <div id="protoLogs" style="font-size:.45rem;margin-top:40px;height:100px;overflow:hidden;line-height:1.4;opacity:.4;text-align:center;"></div>
+</div>
 <div id="toast"></div>
 <div class="app-window">
     <aside class="workspace-sidebar">
@@ -309,6 +317,35 @@ function handleModeSwitch(m) {
 
 function unlockSystem() {
     isUnlocked = true;
+    const overlay = document.getElementById('accessOverlay');
+    const logs = document.getElementById('protoLogs');
+    overlay.style.display = 'flex';
+    
+    // Cyberpunk log sequence
+    const protoLines = [
+        "> INITIALIZING COMMANDER_OVERRIDE",
+        "> BYPASSING SYNTHETIC_FILTERS_V14",
+        "> UNCLOAKING PRIVATE_PII_LAYERS",
+        "> CONNECTING TO OLLAMA_LOCAL_7B",
+        "> SYNCING 44,928 VECTOR_NODES",
+        "> HANDSHAKE_STABLE: PROTOCOL_23",
+        "> WELCOME BACK, LEON."
+    ];
+    let i = 0;
+    const int = setInterval(() => {
+        if(i >= protoLines.length) {
+            clearInterval(int);
+            setTimeout(() => {
+                overlay.style.transition = 'opacity 0.8s';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 800);
+            }, 1000);
+            return;
+        }
+        logs.innerHTML += protoLines[i] + "<br>";
+        i++;
+    }, 150);
+
     document.getElementById('lockBanner').style.display = 'none';
     document.querySelectorAll('.demo-box').forEach(el => el.style.opacity = '0.3');
     document.querySelector('.sys-status').innerHTML = '<span class="pulse" style="background:var(--cyan)">●</span> OPERATOR_STATUS: VERIFIED';
@@ -317,7 +354,6 @@ function unlockSystem() {
         if (el.textContent === 'PUBLIC PREVIEW') el.textContent = 'COMMANDER';
         if (el.textContent === 'PUBLIC PREVIEW') el.style.color = 'var(--cyan)';
     });
-    showToast("✅ ACCESS GRANTED: WELCOME OPERATOR 23");
     renderTable();
     buildCadence();
 }
@@ -364,8 +400,18 @@ function renderTable() {
         const row=document.createElement('div');
         row.className='lead-row';
         const wiColor = n.intro>=70?'rgba(52,211,153,.8)':n.intro>=50?'rgba(251,191,36,.8)':'rgba(148,163,184,.5)';
-        const displayEmail = isUnlocked ? n.email.replace('[redacted]', 'basinleon.com') : n.email;
-        const displayPhone = isUnlocked ? "+1 (510) 555-0123" : n.phone;
+        
+        let displayEmail = n.email;
+        let displayPhone = n.phone;
+        
+        if (isUnlocked) {
+            const domain = n.company.toLowerCase().replace(/ /g, '') + ".com";
+            displayEmail = n.email.split('@')[0] + "@" + domain;
+            // Generate a fake but realistic local phone based on company name hash
+            const seed = n.name.length + n.company.length;
+            displayPhone = `+1 (510) 422-${1000 + seed}`;
+        }
+
         row.innerHTML=`
             <div style="color:var(--accent);font-weight:900;font-family:'Outfit';text-transform:uppercase;font-size:.62rem;">${n.type}</div>
             <div style="color:#fff;font-weight:800;font-family:'Outfit';font-size:.88rem;">${n.name}<div style="font-size:.65rem;color:var(--text-secondary);font-weight:400;">${n.role}</div></div>
