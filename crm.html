@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BASIN::NEXUS // Revenue Intelligence OS</title>
-    <meta name="description" content="BASIN::NEXUS — Private AI Revenue OS built by Leon Basin. Semantic vector search, 7,500+ node vault, Velocity Flow for GTM & career acceleration.">
+    <title>BASIN::NEXUS // REVENUE COMMAND CENTER</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -13,6 +12,7 @@
         --cyan: #22d3ee; --cyan-glow: rgba(34,211,238,0.25);
         --gold: #fbbf24; --green: #34d399; --red: #f87171; --pink: #f472b6;
         --text-primary: #f8fafc; --text-secondary: #94a3b8;
+        --glass-blur: blur(28px);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100vh; overflow:hidden; background-color:var(--bg); color:var(--text-primary); font-family:'Inter',sans-serif;
@@ -20,40 +20,45 @@
 
     .app-window { display:grid; grid-template-columns:280px 1fr; grid-template-rows:64px 1fr 28px; height:100vh; }
 
-    /* sidebar */
+    /* ── SIDEBAR ── */
     .workspace-sidebar { grid-row:1/4; grid-column:1; border-right:1px solid var(--border); display:flex; flex-direction:column; padding:28px 20px; background:rgba(4,4,10,.97); z-index:50; overflow-y:auto; }
     .logo { font-family:'Outfit'; font-weight:900; font-size:1.3rem; color:#fff; display:flex; align-items:center; gap:12px; margin-bottom:40px; }
     .logo-icon { width:26px; height:26px; background:linear-gradient(135deg,var(--accent),var(--cyan)); border-radius:7px; box-shadow:0 0 14px var(--accent-glow); flex-shrink:0; }
-    .sidebar-label { font-size:.55rem; color:var(--text-secondary); letter-spacing:3px; text-transform:uppercase; font-weight:900; opacity:.5; margin-bottom:14px; margin-top:8px; }
+    .sidebar-label { font-size:.58rem; color:var(--text-secondary); letter-spacing:2.5px; text-transform:uppercase; font-weight:950; opacity:.4; margin-bottom:12px; margin-top:28px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:4px; transition: .2s; }
+    .sidebar-label:hover { opacity:.8; color:var(--accent); }
     .nav-item { padding:11px 16px; border-radius:11px; color:var(--text-secondary); font-size:.82rem; display:flex; gap:12px; align-items:center; cursor:pointer; transition:.2s; margin-bottom:4px; justify-content:space-between; }
     .nav-item:hover { background:rgba(255,255,255,.05); color:#fff; }
     .nav-item.active { background:rgba(129,140,248,.12); color:#fff; border-left:3px solid var(--accent); }
     .nav-left { display:flex; gap:12px; align-items:center; }
     .badge { background:var(--accent); color:#fff; font-size:.55rem; padding:2px 7px; border-radius:7px; font-weight:900; }
+    .badge-green { background:var(--green); color:#000; }
     .badge-gold { background:var(--gold); color:#000; }
-    .demo-box { background:rgba(129,140,248,.06); border:1px solid rgba(129,140,248,.2); padding:14px; border-radius:12px; margin-top:auto; margin-bottom:16px; }
-    .demo-title { font-size:.58rem; color:var(--accent); font-weight:950; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-    .demo-body { font-size:.72rem; color:rgba(255,255,255,.65); line-height:1.5; }
-    .demo-body a { color:var(--cyan); text-decoration:none; }
+    .protocol-box { background:rgba(248,113,113,.06); border:1px solid rgba(248,113,113,.2); padding:14px; border-radius:12px; margin-top:auto; margin-bottom:16px; }
+    .protocol-title { font-size:.58rem; color:var(--red); font-weight:950; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+    .protocol-body { font-size:.72rem; color:rgba(255,255,255,.65); line-height:1.5; }
     .sys-status { font-family:'JetBrains Mono'; font-size:.62rem; color:var(--green); display:flex; align-items:center; gap:8px; }
-    .pulse { animation:pulse 1.5s infinite; }
+    .pulse { animation:pulse 1.5s infinite; filter:drop-shadow(0 0 4px var(--green)); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    /* header */
+    /* ── HEADER ── */
     .workspace-header { grid-row:1; grid-column:2; padding:0 36px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border); background:rgba(3,3,8,.9); backdrop-filter:blur(20px); z-index:40; }
-    .search-bar { flex:1; max-width:400px; background:rgba(0,0,0,.35); border:1px solid var(--border); color:#fff; padding:9px 16px; border-radius:9px; font-family:'JetBrains Mono'; font-size:.78rem; outline:none; transition:.3s; }
+    .search-wrap { flex:1; max-width:420px; display:flex; align-items:center; gap:10px; }
+    .search-bar { flex:1; background:rgba(0,0,0,.35); border:1px solid var(--border); color:#fff; padding:9px 16px; border-radius:9px; font-family:'JetBrains Mono'; font-size:.78rem; outline:none; transition:.3s; }
     .search-bar:focus { border-color:var(--accent); box-shadow:0 0 18px var(--accent-glow); }
-    .vector-pill { display:flex; align-items:center; gap:7px; padding:5px 11px; border-radius:100px; background:rgba(52,211,153,.1); border:1px solid var(--green); color:var(--green); font-family:'JetBrains Mono'; font-size:.58rem; font-weight:900; white-space:nowrap; cursor:default; }
-    .vector-pill .dot { width:5px; height:5px; border-radius:50%; background:var(--green); animation:pulse 1.5s infinite; }
+    .vector-pill { display:flex; align-items:center; gap:7px; padding:5px 11px; border-radius:100px; background:rgba(255,255,255,.03); border:1px solid var(--border); cursor:pointer; transition:.3s; font-family:'JetBrains Mono'; font-size:.58rem; font-weight:900; color:var(--text-secondary); white-space:nowrap; }
+    .vector-pill.active { background:rgba(52,211,153,.1); border-color:var(--green); color:var(--green); box-shadow:0 0 12px rgba(52,211,153,.2); }
+    .vector-pill .dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .tel-group { display:flex; gap:12px; align-items:center; }
     .tel-pill { padding:7px 13px; border-radius:9px; background:rgba(15,18,26,.6); border:1px solid var(--border); display:flex; flex-direction:column; min-width:120px; }
     .tel-label { font-size:.48rem; font-weight:900; letter-spacing:1.5px; color:var(--text-secondary); text-transform:uppercase; }
     .tel-val { font-size:.82rem; font-weight:800; font-family:'Outfit'; color:#fff; }
-    .hud-btn { background:rgba(34,211,238,.06); border:1px solid var(--cyan); color:var(--cyan); padding:9px 15px; border-radius:9px; font-family:'JetBrains Mono'; font-size:.62rem; cursor:pointer; transition:.2s; font-weight:700; }
+    .hud-btn { background:rgba(34,211,238,.06); border:1px solid var(--cyan); color:var(--cyan); padding:9px 15px; border-radius:9px; font-family:'JetBrains Mono'; font-size:.62rem; cursor:pointer; transition:.2s; font-weight:700; white-space:nowrap; }
     .hud-btn:hover { background:var(--cyan); color:#000; }
-    .hud-btn.gold { background:rgba(251,191,36,.08); border-color:var(--gold); color:var(--gold); }
+    .hud-btn.velocity { background:rgba(251,191,36,.08); border-color:var(--gold); color:var(--gold); }
+    .hud-btn.velocity:hover { background:var(--gold); color:#000; }
     .clock-block { text-align:right; font-family:'JetBrains Mono'; font-size:.58rem; color:var(--text-secondary); line-height:1.4; min-width:130px; border-left:1px solid var(--border); padding-left:14px; }
 
-    /* main */
+    /* ── MAIN PANELS ── */
     .workspace-main { grid-row:1/3; grid-column:2; display:flex; flex-direction:column; overflow:hidden; }
     .decision-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; padding:14px 36px; background:rgba(0,0,0,.2); border-bottom:1px solid var(--border); }
     .decision-node { padding:11px 18px; border-radius:12px; background:rgba(15,18,26,.6); border:1px solid var(--border); font-size:.72rem; display:flex; align-items:center; gap:14px; transition:.3s; cursor:pointer; }
@@ -63,511 +68,1364 @@
     .panel { flex:1; overflow:hidden; display:none; flex-direction:column; }
     .panel.active { display:flex; }
 
-    /* ops vault */
-    .ops-meta { font-family:'JetBrains Mono'; font-size:.72rem; color:var(--text-secondary); display:flex; align-items:center; gap:20px; padding:16px 36px 10px; flex-wrap:wrap; }
-    .lead-row { display:grid; grid-template-columns:130px 2.5fr 110px 2fr 150px 150px 70px; gap:18px; align-items:center; padding:12px 22px; background:rgba(15,18,26,.4); border:1px solid var(--border); border-radius:11px; margin-bottom:7px; font-size:.8rem; transition:.2s; cursor:pointer; backdrop-filter:blur(10px); }
+    /* ── OPS VAULT ── */
+    #opsPanel { padding:20px 36px; }
+    .ops-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:16px; flex-wrap:wrap; }
+    .ops-actions { display:flex; gap:10px; }
+    .ops-meta { font-family:'JetBrains Mono'; font-size:.72rem; color:var(--text-secondary); display:flex; align-items:center; gap:20px; }
+    #vectorBadge { color:var(--green); font-weight:900; display:none; }
+    .lead-row { display:grid; grid-template-columns:130px 2.5fr 110px 2fr 150px 150px 70px; gap:18px; align-items:center; padding:12px 22px; background:rgba(15,18,26,.4); border:1px solid var(--border); border-radius:11px; margin-bottom:7px; font-size:.8rem; transition:.2s; backdrop-filter:blur(10px); cursor:pointer; }
     .lead-row:hover { background:rgba(255,255,255,.06); border-color:var(--accent); transform:translateX(4px); }
     .lead-row > div { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    #nodesViewport { flex:1; overflow-y:auto; padding:0 36px; }
+    .pii { transition:filter .35s; }
+    .privacy-mode .pii { filter:blur(7px); user-select:none; pointer-events:none; }
+    #nodesViewport { flex:1; overflow-y:auto; overflow-x:hidden; }
+    #nodesMount { width:100%; }
     .status-pill { padding:3px 9px; border-radius:5px; font-size:.58rem; font-weight:950; font-family:'Outfit'; text-transform:uppercase; }
     .pill-now { background:rgba(52,211,153,.1); color:var(--green); border:1px solid var(--green); }
     .pill-next { background:rgba(251,191,36,.1); color:var(--gold); border:1px solid var(--gold); }
     .pill-stuck { background:rgba(248,113,113,.1); color:var(--red); border:1px solid var(--red); }
 
-    /* velocity panel */
+    /* ── VELOCITY FLOW ── */
+    #velocityPanel { padding:20px 36px; overflow-y:auto; gap:20px; }
     .vel-section { margin-bottom:24px; }
     .vel-title { font-family:'Outfit'; font-size:.7rem; font-weight:900; text-transform:uppercase; letter-spacing:3px; color:var(--text-secondary); opacity:.6; margin-bottom:14px; }
+    /* Daily cadence */
     .cadence-card { background:rgba(251,191,36,.06); border:1px solid rgba(251,191,36,.2); border-radius:14px; padding:18px 22px; }
-    .cadence-title { font-family:'Outfit'; font-weight:900; font-size:1rem; color:var(--gold); margin-bottom:14px; }
-    .cadence-item { border:1px solid rgba(255,255,255,.07); border-radius:11px; padding:14px 16px; background:rgba(0,0,0,.3); margin-bottom:10px; }
+    .cadence-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    .cadence-title { font-family:'Outfit'; font-weight:900; font-size:1rem; color:var(--gold); }
+    .cadence-items { display:flex; flex-direction:column; gap:10px; }
+    .cadence-item { display:flex; align-items:center; gap:14px; padding:12px 16px; background:rgba(0,0,0,.3); border-radius:10px; border:1px solid rgba(255,255,255,.06); cursor:pointer; transition:.2s; }
+    .cadence-item:hover { border-color:var(--gold); background:rgba(251,191,36,.06); }
     .cadence-pri { font-size:.6rem; font-weight:900; font-family:'Outfit'; text-transform:uppercase; padding:2px 8px; border-radius:5px; }
     .pri-hot { background:rgba(248,113,113,.15); color:var(--red); border:1px solid var(--red); }
     .pri-warm { background:rgba(251,191,36,.15); color:var(--gold); border:1px solid var(--gold); }
-    .draft-box { margin-top:10px; padding:12px 14px; background:rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.08); border-radius:9px; font-size:.72rem; color:rgba(255,255,255,.75); line-height:1.7; display:none; }
-    .draft-box.show { display:block; }
-    .draft-btn { padding:5px 12px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.58rem; cursor:pointer; transition:.2s; }
-    .draft-btn:hover { border-color:var(--accent); color:#fff; }
-    .intro-score { display:inline-flex; align-items:center; gap:4px; font-size:.58rem; font-family:'JetBrains Mono'; padding:2px 7px; border-radius:5px; font-weight:900; }
+    .pri-cold { background:rgba(148,163,184,.1); color:var(--text-secondary); border:1px solid var(--border); }
+    .cadence-name { font-weight:700; color:#fff; flex:1; }
+    .cadence-action { font-size:.72rem; color:var(--text-secondary); }
+    .cadence-prob { font-family:'Outfit'; font-weight:900; font-size:.9rem; }
+    /* Kanban */
     .kanban { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
-    .kanban-col { background:rgba(15,18,26,.4); border:1px solid var(--border); border-radius:12px; padding:14px; min-height:180px; }
+    .kanban-col { background:rgba(15,18,26,.4); border:1px solid var(--border); border-radius:12px; padding:14px; min-height:200px; }
     .kanban-stage { font-size:.6rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
-    .kanban-card { background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:9px; padding:10px 12px; margin-bottom:8px; }
+    .kanban-card { background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:9px; padding:10px 12px; margin-bottom:8px; cursor:pointer; transition:.2s; }
+    .kanban-card:hover { border-color:var(--accent); background:rgba(129,140,248,.08); }
+    .kanban-card-name { font-size:.78rem; font-weight:700; color:#fff; }
+    .kanban-card-co { font-size:.65rem; color:var(--text-secondary); margin-top:2px; }
+    .kanban-card-score { font-size:.6rem; font-family:'JetBrains Mono'; margin-top:6px; }
+    .kanban-empty { font-size:.65rem; color:var(--text-secondary); opacity:.4; text-align:center; padding-top:20px; }
+    /* Interview radar */
     .radar-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .radar-card { background:rgba(129,140,248,.06); border:1px solid rgba(129,140,248,.2); border-radius:12px; padding:16px; cursor:pointer; transition:.2s; }
-    .radar-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+    .radar-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+    .radar-company { font-family:'Outfit'; font-weight:900; font-size:1rem; color:#fff; }
+    .radar-role { font-size:.72rem; color:var(--text-secondary); margin-top:3px; }
+    .radar-score { font-family:'JetBrains Mono'; font-size:.65rem; color:var(--green); margin-top:10px; }
     .radar-questions { margin-top:12px; display:none; }
     .radar-card.expanded .radar-questions { display:block; }
     .radar-q { font-size:.72rem; color:rgba(255,255,255,.8); padding:6px 0; border-bottom:1px solid var(--border); line-height:1.5; }
     .radar-q:last-child { border-bottom:none; }
-    .mode-toggle { display:flex; border-radius:10px; overflow:hidden; border:1px solid var(--border); flex-shrink:0; }
-    .mode-btn { padding:8px 14px; font-family:'JetBrains Mono'; font-size:.58rem; font-weight:900; cursor:pointer; transition:.25s; border:none; background:transparent; color:var(--text-secondary); text-transform:uppercase; }
-    .mode-btn.active-velocity { background:rgba(251,191,36,.15); color:var(--gold); }
 
-    /* toast */
+    /* ── COMPANY / INDUSTRY / ANALYTICS CARDS ── */
+    .co-card { background:rgba(15,18,26,.5); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:12px; transition:.2s; cursor:pointer; }
+    .co-card:hover { border-color:var(--accent); }
+    .co-card-header { display:flex; justify-content:space-between; align-items:center; }
+    .co-card-name { font-family:'Outfit'; font-weight:900; font-size:1rem; color:#fff; }
+    .co-card-meta { font-size:.68rem; color:var(--text-secondary); margin-top:4px; }
+    .co-card-body { display:none; margin-top:14px; border-top:1px solid var(--border); padding-top:12px; }
+    .co-card.expanded .co-card-body { display:block; }
+    .co-contact { display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.72rem; }
+    .co-contact:last-child { border-bottom:none; }
+    .tag-chip { display:inline-block; padding:2px 8px; border-radius:5px; font-size:.55rem; font-weight:900; font-family:'Outfit'; text-transform:uppercase; margin-right:4px; margin-bottom:4px; background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.2); color:var(--accent); }
+    .stat-card { background:rgba(15,18,26,.5); border:1px solid var(--border); border-radius:12px; padding:18px; text-align:center; }
+    .stat-val { font-family:'Outfit'; font-weight:900; font-size:1.6rem; color:#fff; }
+    .stat-label { font-size:.58rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; margin-top:4px; }
+    .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:.72rem; }
+    .bar-fill { height:8px; border-radius:4px; background:linear-gradient(90deg,var(--accent),var(--cyan)); transition:width .5s; }
+    .bar-label { min-width:120px; color:#fff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .bar-count { min-width:44px; text-align:right; color:var(--text-secondary); font-family:'JetBrains Mono'; }
+    .pipe-stage { display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; }
+    .pipe-num { font-family:'Outfit'; font-weight:900; font-size:1.4rem; }
+    .pipe-lbl { font-size:.55rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-secondary); }
+
+    /* ── MODE TOGGLE ── */
+    .mode-toggle { display:flex; align-items:center; gap:0; border-radius:10px; overflow:hidden; border:1px solid var(--border); flex-shrink:0; }
+    .mode-btn { padding:8px 14px; font-family:'JetBrains Mono'; font-size:.58rem; font-weight:900; cursor:pointer; transition:.25s; border:none; background:transparent; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+    .mode-btn.active-revenue { background:rgba(129,140,248,.15); color:var(--accent); }
+    .mode-btn.active-velocity { background:rgba(251,191,36,.15); color:var(--gold); }
+    /* Message draft */
+    .draft-box { display:none; margin-top:10px; padding:12px 14px; background:rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.08); border-radius:9px; font-size:.72rem; color:rgba(255,255,255,.75); line-height:1.7; font-family:'Inter'; white-space:pre-wrap; }
+    .draft-box.show { display:block; }
+    .draft-actions { display:flex; gap:8px; margin-top:8px; }
+    .draft-btn { padding:5px 12px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.58rem; cursor:pointer; transition:.2s; }
+    .draft-btn:hover { border-color:var(--accent); color:#fff; background:rgba(129,140,248,.1); }
+    /* Warm intro score */
+    .intro-score { display:inline-flex; align-items:center; gap:4px; font-size:.58rem; font-family:'JetBrains Mono'; padding:2px 7px; border-radius:5px; font-weight:900; }
+    /* ── FILTER PILLS ── */
+    .filter-pills { display:flex; gap:7px; align-items:center; padding:10px 36px 0; flex-wrap:wrap; }
+    .fpill { padding:5px 13px; border-radius:100px; font-family:'JetBrains Mono'; font-size:.58rem; font-weight:900; cursor:pointer; border:1px solid var(--border); background:transparent; color:var(--text-secondary); transition:.2s; text-transform:uppercase; letter-spacing:1px; }
+    .fpill:hover { border-color:var(--accent); color:#fff; }
+    .fpill.active { background:rgba(129,140,248,.15); border-color:var(--accent); color:#fff; }
+    .fpill.hot { border-color:var(--red); color:var(--red); }
+    .fpill.hot.active { background:rgba(248,113,113,.15); color:var(--red); }
+    .fpill.warm { border-color:var(--gold); color:var(--gold); }
+    .fpill.warm.active { background:rgba(251,191,36,.15); color:var(--gold); }
+    .fpill.cold { border-color:var(--text-secondary); }
+    .fpill.cold.active { background:rgba(148,163,184,.1); }
+    #securityAlert { position:fixed; top:0; left:0; width:100%; padding:4px; background:var(--red); color:#000; font-weight:900; font-size:.58rem; text-align:center; z-index:10000; display:none; text-transform:uppercase; }
     #toast { position:fixed; bottom:60px; right:36px; background:#000; color:var(--green); padding:13px 24px; border:1px solid var(--green); font-family:'JetBrains Mono'; font-size:.78rem; border-radius:11px; display:none; z-index:1000; box-shadow:0 0 36px rgba(52,211,153,.25); animation:slideIn .3s ease; }
-    @keyframes slideIn { from{transform:translateX(40px);opacity:0} }
+    @keyframes slideIn { from { transform:translateX(40px); opacity:0; } }
     .ticker-item { font-family:'JetBrains Mono'; font-size:.6rem; color:var(--text-secondary); display:flex; align-items:center; gap:7px; }
     .ticker-item b { color:var(--cyan); }
-    /* demo banner */
-    /* access overlay */
-    #accessOverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; font-family:'JetBrains Mono'; color:var(--cyan); overflow:hidden; }
-    .glitch-text { font-size:1.5rem; font-weight:900; letter-spacing:8px; text-transform:uppercase; animation:glitch 0.3s infinite; }
-    @keyframes glitch { 0%{opacity:1; transform:skew(0deg)} 20%{opacity:.8; transform:skew(5deg)} 40%{opacity:1; transform:skew(-5deg)} 60%{opacity:.7; transform:skew(2deg)} 80%{opacity:1; transform:skew(-2deg)} 100%{opacity:1; transform:skew(0deg)} }
+
+    /* ── DESTINY MAP ── */
+    .destiny-container { position:relative; height:100%; overflow-x:auto; overflow-y:hidden; padding:40px; display:flex; align-items:center; scroll-behavior:smooth; }
+    .timeline-track { position:absolute; top:50%; left:0; width:4000px; height:1px; background:linear-gradient(90deg, transparent, var(--border), var(--border), transparent); transform:translateY(-50%); z-index:1; opacity:.3; }
+    .timeline-points { position:relative; width:4000px; height:100%; z-index:2; display:flex; align-items:center; }
+    .timeline-marker { position:absolute; top:50%; height:12px; border-left:1px solid var(--border); transform:translateY(-50%); }
+    .timeline-marker span { position:absolute; top:-20px; left:-20px; width:40px; text-align:center; font-family:'JetBrains Mono'; font-size:.55rem; color:var(--text-secondary); opacity:.5; transform:rotate(-45deg); }
+
+    .anchor-node { position:absolute; transform:translateY(-50%); width:300px; padding:24px; background:rgba(4,4,10,.9); border:1px solid var(--border); border-radius:20px; backdrop-filter:blur(15px); cursor:pointer; transition:.4s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow:0 10px 40px rgba(0,0,0,.5); }
+    .anchor-node:hover { border-color:var(--accent); transform:translateY(-55%) scale(1.02); box-shadow:0 15px 50px var(--accent-glow); }
+    .anchor-node.high-alpha { border-color:rgba(248,113,113,.4); box-shadow:0 0 30px rgba(248,113,113,.15); }
+    .anchor-node.high-alpha:hover { border-color:var(--red); box-shadow:0 0 40px rgba(248,113,113,.3); }
+    .anchor-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+    .anchor-title { font-family:'Outfit'; font-weight:900; font-size:1.2rem; color:#fff; line-height:1.1; }
+    .anchor-milestones { display:flex; flex-direction:column; gap:10px; }
+    .milestone-item { padding:10px 14px; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:10px; font-size:.68rem; line-height:1.4; display:flex; flex-direction:column; gap:4px; }
+    .milestone-item:hover { border-color:var(--accent); background:rgba(255,255,255,.05); }
+    .milestone-tag { font-family:'Outfit'; font-weight:900; font-size:.5rem; text-transform:uppercase; letter-spacing:1px; color:var(--accent); }
+    .milestone-date { font-family:'JetBrains Mono'; font-size:.58rem; color:var(--text-secondary); margin-top:4px; }
+
+    /* ── SIGNAL FEED ── */
+    .signal-feed-wrap { padding:30px 40px; display:flex; flex-direction:column; height:100%; overflow-y:auto; gap:12px; }
+    .signal-card { background:rgba(4,4,10,.8); border:1px solid var(--border); border-radius:18px; padding:20px 24px; display:flex; gap:24px; align-items:flex-start; transition:.3s; backdrop-filter:blur(10px); }
+    .signal-card:hover { border-color:var(--accent); transform:translateX(8px); background:rgba(129,140,248,.03); }
+    .signal-card.alpha { border-color:rgba(248,113,113,.3); border-left:4px solid var(--red); }
+    .signal-card.alpha:hover { border-color:var(--red); }
+    .signal-icon-box { width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,.03); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; border:1px solid var(--border); }
+    .signal-card-main { flex:1; }
+    .signal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .signal-type-badge { font-family:'JetBrains Mono'; font-weight:900; font-size:.55rem; color:#000; background:var(--text-secondary); padding:2px 10px; border-radius:4px; text-transform:uppercase; letter-spacing:1px; }
+    .signal-type-alpha { background:var(--red); color:#000; }
+    .signal-type-funding { background:var(--cyan); color:#000; }
+    .signal-type-hiring { background:var(--gold); color:#000; }
+    .signal-time { font-family:'JetBrains Mono'; font-size:.6rem; color:var(--text-secondary); opacity:.6; }
+    .signal-card-title { font-family:'Outfit'; font-weight:800; font-size:1.05rem; color:#fff; }
+    .signal-card-desc { font-size:.82rem; color:var(--text-secondary); margin-top:6px; line-height:1.5; }
+    .signal-card-footer { display:flex; justify-content:space-between; align-items:center; margin-top:16px; border-top:1px solid rgba(255,255,255,0.03); padding-top:12px; }
+    .signal-source { font-family:'JetBrains Mono'; font-size:.58rem; color:var(--accent); opacity:.8; display:flex; align-items:center; gap:6px; }
+    .signal-source::before { content:''; display:block; width:6px; height:6px; border-radius:50%; background:currentColor; box-shadow:0 0 6px currentColor; }
+    .signal-actions-row { display:flex; gap:8px; }
+    .sig-btn { font-family:'JetBrains Mono'; font-size:.55rem; font-weight:900; background:transparent; border:1px solid var(--border); color:var(--text-secondary); padding:6px 12px; border-radius:6px; cursor:pointer; transition:.2s; }
+    .sig-btn:hover { border-color:var(--accent); color:#fff; background:rgba(129,140,248,.1); }
+    .sig-btn.primary { border-color:var(--green); color:var(--green); }
+    .sig-btn.primary:hover { background:rgba(52,211,153,.1); }
     </style>
 </head>
 <body>
-<div id="accessOverlay">
-    <div class="glitch-text">ACCESS GRANTED</div>
-    <div style="font-size:.6rem;margin-top:20px;opacity:.7;letter-spacing:2px;">DECRYPTING VAULT_ALPHA...</div>
-    <div id="protoLogs" style="font-size:.45rem;margin-top:40px;height:100px;overflow:hidden;line-height:1.4;opacity:.4;text-align:center;"></div>
-</div>
+<div id="securityAlert">⚠ NX_SECURITY: NON-LOCAL TRAFFIC DETECTED // PRIVATE VAULT EXPOSED</div>
 <div id="toast"></div>
+
 <div class="app-window">
     <aside class="workspace-sidebar">
-        <div class="logo"><div class="logo-icon"></div>BASIN::NEXUS</div>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            BASIN::NEXUS
+        </div>
 
         <div class="sidebar-label">Operations</div>
-        <div class="nav-item" onclick="switchPanel(0)" id="n0"><div class="nav-left"><span>📡</span> Destiny Map</div></div>
-        <div class="nav-item" onclick="switchPanel(1)" id="n1"><div class="nav-left"><span>🛰️</span> Signal Feed</div></div>
-        <div class="nav-item active" onclick="switchPanel(2)" id="n2">
+        <div class="nav-item" onclick="switchPanel(0)"><div class="nav-left"><span>📡</span> Destiny Map</div></div>
+        <div class="nav-item" onclick="switchPanel(1)"><div class="nav-left"><span>🛰️</span> Signal Feed</div></div>
+        <div class="nav-item active" onclick="switchPanel(2)">
             <div class="nav-left"><span>🧠</span> Ops Vault</div>
-            <span class="badge">44,928</span>
+            <span id="vaultBadge" class="badge">…</span>
         </div>
 
-        <div class="sidebar-label" style="margin-top:20px;">Velocity Flow</div>
-        <div class="nav-item" onclick="switchPanel(3)" id="n3">
+        <div class="sidebar-label">Velocity Flow</div>
+        <div class="nav-item" onclick="switchPanel(3)">
             <div class="nav-left"><span>🚀</span> Daily Cadence</div>
-            <span class="badge badge-gold">5</span>
+            <span class="badge badge-gold" id="cadenceBadge">5</span>
         </div>
-        <div class="nav-item" onclick="switchPanel(4)" id="n4"><div class="nav-left"><span>🎯</span> Pipeline</div></div>
-        <div class="nav-item" onclick="switchPanel(5)" id="n5"><div class="nav-left"><span>📡</span> Interview Radar</div></div>
+        <div class="nav-item" onclick="switchPanel(4)"><div class="nav-left"><span>🎯</span> Pipeline</div></div>
+        <div class="nav-item" onclick="switchPanel(5)"><div class="nav-left"><span>📡</span> Interview Radar</div></div>
 
-        <div class="sidebar-label" style="margin-top:20px;">Intelligence</div>
-        <div class="nav-item" onclick="switchPanel(6)" id="n6"><div class="nav-left"><span>🏢</span> Companies</div><span class="badge">312</span></div>
-        <div class="nav-item" onclick="switchPanel(7)" id="n7"><div class="nav-left"><span>🏭</span> Industries</div><span class="badge">10</span></div>
-        <div class="nav-item" onclick="switchPanel(8)" id="n8"><div class="nav-left"><span>👔</span> Seniority</div><span class="badge">8</span></div>
-        <div class="nav-item" onclick="switchPanel(9)" id="n9"><div class="nav-left"><span>📊</span> Analytics</div></div>
-
-        <div class="demo-box">
-            <div class="demo-title">⚠ Demo Mode</div>
-            <div class="demo-body">This is a public preview. The live system runs 100% locally with a private 163MB Ollama vector vault.<br><br>Built by <a href="https://basinleon.github.io">Leon Basin</a> — the Revenue OS that replaces Salesforce + Gong + Clay.</div>
+        <div class="sidebar-label">Intelligence</div>
+        <div class="nav-item" onclick="switchPanel(6);buildCompanies()">
+            <div class="nav-left"><span>🏢</span> Companies</div>
+            <span class="badge" id="coBadge">—</span>
         </div>
-        <div class="sys-status"><span class="pulse">●</span> DEMO_MODE: ACTIVE</div>
+        <div class="nav-item" onclick="switchPanel(7);buildIndustries()">
+            <div class="nav-left"><span>🏭</span> Industries</div>
+            <span class="badge" id="indBadge">—</span>
+        </div>
+        <div class="nav-item" onclick="switchPanel(8);buildSeniority()">
+            <div class="nav-left"><span>👔</span> Seniority</div>
+            <span class="badge" id="senBadge">—</span>
+        </div>
+        <div class="nav-item" onclick="switchPanel(9);buildAnalytics()">
+            <div class="nav-left"><span>📊</span> Analytics</div>
+        </div>
+
+        <div class="sidebar-label">Network & Signals</div>
+        <div class="nav-item" onclick="switchPanel(10)"><div class="nav-left"><span>🔗</span> Warm Intros</div></div>
+        <div class="nav-item" onclick="switchPanel(11)"><div class="nav-left"><span>🌐</span> Relationship Graph</div></div>
+        <div class="nav-item" onclick="switchPanel(12)"><div class="nav-left"><span>⚠️</span> Live Alerts</div></div>
+        <div class="nav-item" onclick="switchPanel(13)"><div class="nav-left"><span>📥</span> Signal Inbox</div></div>
+
+        <div class="sidebar-label">Tools & Protocols</div>
+        <div class="nav-item" onclick="switchPanel(14)"><div class="nav-left"><span>📤</span> Export Cadence</div></div>
+        <div class="nav-item" onclick="switchPanel(15)"><div class="nav-left"><span>📋</span> Protocol Console</div></div>
+        <div class="nav-item" onclick="switchPanel(16)"><div class="nav-left"><span>⚙️</span> Settings</div></div>
+
+        <div class="protocol-box">
+            <div class="protocol-title">T4: Close or Kill</div>
+            <div class="protocol-body">Node idle &gt;5 days → Autonomous archival triggered.</div>
+        </div>
+        <div class="sys-status"><span class="pulse">●</span> SYS_STATUS: OPTIMAL</div>
     </aside>
 
     <main class="workspace-main">
         <header class="workspace-header">
-            <input type="text" class="search-bar" id="globalSearch" placeholder="🧬 Semantic search (demo mode)…" oninput="doSearch()">
-            <div class="vector-pill"><div class="dot"></div> VECTOR ON</div>
-            <div class="tel-pill"><span class="tel-label">Pipeline</span><span class="tel-val">$430,000</span></div>
-            <div class="tel-pill"><span class="tel-label">Nodes</span><span class="tel-val" style="color:var(--green)">7,584</span></div>
-            <button class="hud-btn gold" onclick="switchPanel(3);showToast('⚡ Daily Cadence generated')">⚡ TODAY'S 5</button>
-            <div class="mode-toggle">
-                <button class="mode-btn" id="modeRev" onclick="handleModeSwitch('revenue')">💼 Revenue</button>
-                <button class="mode-btn active-velocity" id="modeVel" onclick="handleModeSwitch('velocity')">🚀 Velocity</button>
+            <div class="search-wrap">
+                <input type="text" class="search-bar" id="globalSearch" placeholder="Command (/) or Semantic Search (K)…">
+                <div id="vectorToggle" class="vector-pill" onclick="toggleVector()"><div class="dot"></div> VECTOR</div>
             </div>
-            <div id="systemClock" class="clock-block">—</div>
+            <div class="tel-group">
+                <div class="tel-pill"><span class="tel-label">Pipeline</span><span class="tel-val">$430,000</span></div>
+                <div class="tel-pill"><span class="tel-label">Intent</span><span class="tel-val" style="color:var(--cyan)">HIGH ALPHA</span></div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button class="hud-btn velocity" onclick="generateCadence(); switchPanel(3);">⚡ TODAY'S 5</button>
+                <button class="hud-btn" onclick="loadVault()">LOAD VAULT</button>
+                <div class="mode-toggle">
+                    <button class="mode-btn" id="modeRevenue" onclick="setMode('revenue')">💼 Revenue</button>
+                    <button class="mode-btn active-velocity" id="modeVelocity" onclick="setMode('velocity')">🚀 Velocity</button>
+                </div>
+                <div id="systemClock" class="clock-block">—</div>
+            </div>
         </header>
 
-        <div class="demo-banner" id="lockBanner">🔒 DEMO MODE — private vault data replaced with synthetic nodes &nbsp;|&nbsp; Real system: localhost:8000/BASIN_NEXUS_CRM.html</div>
-
-        <div class="decision-strip">
-            <div class="decision-node" onclick="showToast('Filtering CONTACTED nodes…')">
-                <div><div class="d-label" style="color:var(--cyan)">CONTACTED</div><div class="d-val">Sarah Chen: Replit</div></div>
+        <div class="decision-strip" id="decisionStrip">
+            <div class="decision-node" id="dNode0" onclick="decisionAction(0)">
+                <div><div class="d-label" id="dLabel0" style="color:var(--green)">NOW</div><div id="labelNow" class="d-val">Loading…</div></div>
             </div>
-            <div class="decision-node" onclick="showToast('Filtering INTERVIEW nodes…')">
-                <div><div class="d-label" style="color:var(--gold)">INTERVIEW</div><div class="d-val">Marcus Rivera: Go Nimbly</div></div>
+            <div class="decision-node" id="dNode1" onclick="decisionAction(1)">
+                <div><div class="d-label" id="dLabel1" style="color:var(--gold)">NEXT</div><div id="labelNext" class="d-val">Loading…</div></div>
             </div>
-            <div class="decision-node" onclick="showToast('Viewing OFFER stage…')">
-                <div><div class="d-label" style="color:var(--green)">OFFER</div><div class="d-val">Jordan Patel: Descope</div></div>
+            <div class="decision-node" id="dNode2" onclick="decisionAction(2)">
+                <div><div class="d-label" id="dLabel2" style="color:var(--red)">STUCK</div><div id="labelStuck" class="d-val">Loading…</div></div>
             </div>
         </div>
 
-        <!-- PANEL 0-1: Stubs -->
-        <div class="panel" id="panel-0" style="padding:60px;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.8rem;text-align:center;">
-            <div style="font-size:2rem;margin-bottom:16px;">📡</div>DESTINY MAP // Signal graph coming soon in v13
+        <!-- PANEL 0: DESTINY MAP -->
+        <div class="panel" id="panel-0" style="overflow:hidden; height:100%; width:100%;">
+            <div class="destiny-container" id="destinyMapMount">
+                <div class="timeline-track"></div>
+                <div class="timeline-points" id="timelinePoints"></div>
+            </div>
         </div>
-        <div class="panel" id="panel-1" style="padding:60px;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.8rem;text-align:center;">
-            <div style="font-size:2rem;margin-bottom:16px;">🛰️</div>SIGNAL FEED // Real-time intent tracking coming soon
+
+        <!-- PANEL 1: SIGNAL FEED -->
+        <div class="panel" id="panel-1" style="overflow:hidden; height:100%;">
+            <div class="signal-feed-wrap">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div>
+                        <div class="vel-title" style="margin-bottom:0;">🛰️ SIGNAL FEED // REAL-TIME GTM PULSE</div>
+                        <div style="font-size:10px; color:var(--gold); font-family:'JetBrains Mono'; opacity:0.8; margin-top:4px;">● Google Alerts RSS active – custom keyword monitoring</div>
+                    </div>
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <button class="hud-btn velocity" onclick="fetchAllRSS()" style="font-size:.6rem; padding:6px 14px;">↻ Refresh Signals</button>
+                        <div class="filter-pills" style="padding:0;">
+                            <button class="fpill active">All</button>
+                            <button class="fpill hot">High Alpha</button>
+                            <button class="fpill warm">Funding</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="signalListMount" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
         </div>
 
         <!-- PANEL 2: OPS VAULT -->
-        <div class="panel active" id="panel-2" style="display:flex;flex-direction:column;overflow:hidden;">
-            <div class="ops-meta">
-                <div style="color:var(--green);font-weight:900;">🧬 SEMANTIC RADAR ACTIVE</div>
-                <div>LOCAL LEADS: <b style="color:#fff;" id="nodeCount">44,928</b></div>
-                <div style="color:var(--green);font-size:.6rem;">44,928 Ollama vectors • nomic-embed-text</div>
+        <div class="panel active" id="panel-2" style="padding:20px 36px; display:flex; flex-direction:column; overflow:hidden;">
+            <div class="ops-toolbar">
+                <div class="ops-actions">
+                    <button class="hud-btn" style="border-color:var(--border); color:var(--text-secondary); background:transparent; font-size:.6rem;">&#8593; IMPORT CSV</button>
+                    <button class="hud-btn" style="border-color:var(--border); color:var(--text-secondary); background:transparent; font-size:.6rem;">&#8593; CONTACTS</button>
+                </div>
+                <div class="ops-meta">
+                    <div id="vectorBadge">🧬 SEMANTIC RADAR ACTIVE</div>
+                    <div>LOCAL LEADS: <b id="recordsCount" style="color:#fff;">…</b></div>
+                    <div style="color:var(--green); font-size:.6rem;" id="vecStatus"></div>
+                </div>
             </div>
-            <!-- HOT / WARM / COLD filter pills -->
-            <div style="display:flex;gap:7px;align-items:center;padding:10px 36px 0;flex-wrap:wrap;">
+            <div class="filter-pills">
                 <span style="font-family:'JetBrains Mono';font-size:.55rem;color:var(--text-secondary);letter-spacing:1px;">FILTER:</span>
-                <button id="fpAll" onclick="demoFilter('all')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--accent);background:rgba(129,140,248,.15);color:#fff;transition:.2s;">All</button>
-                <button onclick="demoFilter('hot');showToast('🔥 HOT nodes: 18,271')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--red);background:transparent;color:var(--red);transition:.2s;">🔥 HOT 80%+</button>
-                <button onclick="demoFilter('warm');showToast('🌡 WARM nodes: 19,803')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);transition:.2s;">🌡 WARM 60–80%</button>
-                <button onclick="demoFilter('cold');showToast('❄ COLD nodes: 6,854')" style="padding:5px 13px;border-radius:100px;font-family:'JetBrains Mono';font-size:.58rem;font-weight:900;cursor:pointer;border:1px solid var(--text-secondary);background:transparent;color:var(--text-secondary);transition:.2s;">❄ COLD &lt;60%</button>
+                <button class="fpill active" id="fpAll" onclick="applyConvFilter('all')">All</button>
+                <button class="fpill hot" id="fpHot" onclick="applyConvFilter('hot')">&#128293; HOT 80%+</button>
+                <button class="fpill warm" id="fpWarm" onclick="applyConvFilter('warm')">&#127777; WARM 60–80%</button>
+                <button class="fpill cold" id="fpCold" onclick="applyConvFilter('cold')">&#10052; COLD &lt;60%</button>
+                <span id="filterCount" style="font-family:'JetBrains Mono';font-size:.58rem;color:var(--text-secondary);margin-left:8px;"></span>
             </div>
-            <div class="lead-row" style="background:transparent;border:none;cursor:default;opacity:.35;font-weight:900;font-size:.58rem;text-transform:uppercase;letter-spacing:2px;margin:0 36px 10px;pointer-events:none;">
-                <div>Dataset</div><div>Name</div><div>Stage</div><div>Email</div><div>Phone</div><div>🤝 Intro</div><div>Score</div>
+            <div class="lead-row" style="background:transparent; border:none; cursor:default; opacity:.35; font-weight:900; font-size:.58rem; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; pointer-events:none;">
+                <div>Dataset</div><div>Name</div><div>Stage</div><div>Email</div><div>Phone</div><div>Source</div><div>Score</div>
             </div>
-            <div id="nodesViewport"><div id="nodesMount"></div></div>
+            <div id="nodesViewport">
+                <div id="nodesMount"></div>
+            </div>
         </div>
 
         <!-- PANEL 3: DAILY CADENCE -->
-        <div class="panel" id="panel-3" style="padding:20px 36px;overflow-y:auto;">
+        <div class="panel" id="panel-3" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-section">
-                <div class="vel-title">⚡ Daily Velocity Pulse — Today's Targets</div>
+                <div class="vel-title">⚡ Daily Velocity Pulse</div>
                 <div class="cadence-card">
-                    <div class="cadence-title">5 Warm Outreaches for Today</div>
-                    <div id="cadenceList"></div>
+                    <div class="cadence-header">
+                        <div class="cadence-title">Today's Targets</div>
+                        <button class="hud-btn velocity" onclick="generateCadence()" style="font-size:.6rem; padding:6px 12px;">↻ Regenerate</button>
+                    </div>
+                    <div class="cadence-items" id="cadenceList">
+                        <div style="color:var(--text-secondary); font-size:.75rem; padding:20px 0; text-align:center;">Loading vault data to generate targets…</div>
+                    </div>
                 </div>
             </div>
             <div class="vel-section" style="margin-top:8px;">
                 <div class="vel-title">📊 Conversation Score Distribution</div>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-                    <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-size:1.8rem;font-weight:900;color:var(--green);">2,847</div><div style="font-size:.65rem;color:var(--text-secondary);margin-top:4px;">HOT (80%+)</div></div>
-                    <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-size:1.8rem;font-weight:900;color:var(--gold);">3,211</div><div style="font-size:.65rem;color:var(--text-secondary);margin-top:4px;">WARM (60–80%)</div></div>
-                    <div style="background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-size:1.8rem;font-weight:900;color:var(--text-secondary);">1,526</div><div style="font-size:.65rem;color:var(--text-secondary);margin-top:4px;">COLD (&lt;60%)</div></div>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+                    <div style="background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.2); border-radius:12px; padding:16px; text-align:center;">
+                        <div style="font-family:'Outfit'; font-size:1.8rem; font-weight:900; color:var(--green);" id="scoreHot">—</div>
+                        <div style="font-size:.65rem; color:var(--text-secondary); margin-top:4px;">HOT (80%+)</div>
+                    </div>
+                    <div style="background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.2); border-radius:12px; padding:16px; text-align:center;">
+                        <div style="font-family:'Outfit'; font-size:1.8rem; font-weight:900; color:var(--gold);" id="scoreWarm">—</div>
+                        <div style="font-size:.65rem; color:var(--text-secondary); margin-top:4px;">WARM (60–80%)</div>
+                    </div>
+                    <div style="background:rgba(148,163,184,.08); border:1px solid rgba(148,163,184,.15); border-radius:12px; padding:16px; text-align:center;">
+                        <div style="font-family:'Outfit'; font-size:1.8rem; font-weight:900; color:var(--text-secondary);" id="scoreCold">—</div>
+                        <div style="font-size:.65rem; color:var(--text-secondary); margin-top:4px;">COLD (&lt;60%)</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- PANEL 4: PIPELINE -->
-        <div class="panel" id="panel-4" style="padding:20px 36px;overflow-y:auto;">
+        <!-- PANEL 4: CONVERSATION PIPELINE -->
+        <div class="panel" id="panel-4" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-title">🎯 Conversation Pipeline</div>
-            <div class="kanban">
-                <div class="kanban-col"><div class="kanban-stage" style="color:var(--text-secondary)">Saved</div>
-                    <div class="kanban-card"><div style="font-weight:700;color:#fff;font-size:.78rem;">Alex Morgan</div><div style="font-size:.65rem;color:var(--text-secondary);">HubSpot · CS Lead</div><div style="font-size:.6rem;color:var(--green);margin-top:4px;">94% conv score</div></div>
-                    <div class="kanban-card"><div style="font-weight:700;color:#fff;font-size:.78rem;">Riley Torres</div><div style="font-size:.65rem;color:var(--text-secondary);">Notion · RevOps</div><div style="font-size:.6rem;color:var(--gold);margin-top:4px;">81% conv score</div></div>
-                </div>
-                <div class="kanban-col"><div class="kanban-stage" style="color:var(--cyan)">Contacted</div>
-                    <div class="kanban-card"><div style="font-weight:700;color:#fff;font-size:.78rem;">Sarah Chen</div><div style="font-size:.65rem;color:var(--text-secondary);">Replit · Head of CS</div><div style="font-size:.6rem;color:var(--green);margin-top:4px;">97% conv score</div></div>
-                </div>
-                <div class="kanban-col"><div class="kanban-stage" style="color:var(--accent)">Call / Chat</div>
-                    <div class="kanban-card"><div style="font-weight:700;color:#fff;font-size:.78rem;">Marcus Rivera</div><div style="font-size:.65rem;color:var(--text-secondary);">Go Nimbly · Partner</div><div style="font-size:.6rem;color:var(--green);margin-top:4px;">99% conv score</div></div>
-                </div>
-                <div class="kanban-col"><div class="kanban-stage" style="color:var(--gold)">Interview</div>
-                    <div class="kanban-card"><div style="font-weight:700;color:#fff;font-size:.78rem;">Jordan Patel</div><div style="font-size:.65rem;color:var(--text-secondary);">Descope · VP CS</div><div style="font-size:.6rem;color:var(--green);margin-top:4px;">95% conv score</div></div>
-                </div>
-                <div class="kanban-col"><div class="kanban-stage" style="color:var(--green)">Offer / Win</div>
-                    <div style="font-size:.65rem;color:var(--text-secondary);opacity:.4;text-align:center;padding-top:20px;">Incoming…</div>
-                </div>
+            <div class="kanban" id="kanbanBoard">
+                <div class="kanban-col"><div class="kanban-stage" style="color:var(--text-secondary)">Saved</div><div id="col-saved"></div></div>
+                <div class="kanban-col"><div class="kanban-stage" style="color:var(--cyan)">Contacted</div><div id="col-contacted"></div></div>
+                <div class="kanban-col"><div class="kanban-stage" style="color:var(--accent)">Call / Chat</div><div id="col-call"></div></div>
+                <div class="kanban-col"><div class="kanban-stage" style="color:var(--gold)">Interview</div><div id="col-interview"></div></div>
+                <div class="kanban-col"><div class="kanban-stage" style="color:var(--green)">Offer / Win</div><div id="col-offer"></div></div>
             </div>
         </div>
 
         <!-- PANEL 5: INTERVIEW RADAR -->
-        <div class="panel" id="panel-5" style="padding:20px 36px;overflow-y:auto;">
+        <div class="panel" id="panel-5" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-title">📡 Interview Radar — Target Companies</div>
             <div class="radar-grid" id="radarGrid"></div>
         </div>
 
-        <!-- PANEL 6: COMPANIES (demo) -->
-        <div class="panel" id="panel-6" style="padding:20px 36px;overflow-y:auto;">
-            <div class="vel-title">🏢 Company Intelligence</div>
-            <div style="color:var(--text-secondary);font-size:.72rem;margin-bottom:16px;">Top companies by node count — demo data</div>
-            <div id="demoCos"></div>
+        <!-- PANEL 6: COMPANIES -->
+        <div class="panel" id="panel-6" style="padding:20px 36px; overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <div class="vel-title" style="margin-bottom:0;">🏢 Company Intelligence</div>
+                <input type="text" id="coSearch" placeholder="Search companies…" style="background:rgba(0,0,0,.35);border:1px solid var(--border);color:#fff;padding:7px 12px;border-radius:8px;font-family:'JetBrains Mono';font-size:.72rem;" oninput="buildCompanies()">
+            </div>
+            <div id="companyList"></div>
         </div>
 
-        <!-- PANEL 7: INDUSTRIES (demo) -->
-        <div class="panel" id="panel-7" style="padding:20px 36px;overflow-y:auto;">
+        <!-- PANEL 7: INDUSTRIES -->
+        <div class="panel" id="panel-7" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-title">🏭 Industry Intelligence</div>
-            <div id="demoInds"></div>
+            <div id="industryList"></div>
         </div>
 
-        <!-- PANEL 8: SENIORITY (demo) -->
-        <div class="panel" id="panel-8" style="padding:20px 36px;overflow-y:auto;">
+        <!-- PANEL 8: SENIORITY -->
+        <div class="panel" id="panel-8" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-title">👔 Seniority Intelligence</div>
-            <div id="demoSen"></div>
+            <div id="seniorityList"></div>
         </div>
 
-        <!-- PANEL 9: ANALYTICS (demo) -->
-        <div class="panel" id="panel-9" style="padding:20px 36px;overflow-y:auto;">
+        <!-- PANEL 9: ANALYTICS -->
+        <div class="panel" id="panel-9" style="padding:20px 36px; overflow-y:auto;">
             <div class="vel-title">📊 CRM Analytics Dashboard</div>
-            <div id="analyticsDemo"></div>
+            <div id="analyticsMount"></div>
         </div>
-    </main>
 
-    <footer style="grid-row:3;grid-column:2;padding:0 36px;border-top:1px solid var(--border);background:#000;display:flex;align-items:center;gap:36px;">
-        <div class="ticker-item">● DEMO_MODE <b style="color:var(--gold)">PUBLIC PREVIEW</b></div>
-        <div class="ticker-item">● SEMANTIC_RADAR <b style="color:var(--green)">100% VECTORIZED</b></div>
-        <div class="ticker-item">● VAULT_SIZE <b>44,928 NODES</b></div>
+        <!-- PANEL 10-16: Stubs -->
+        <div class="panel" id="panel-10" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">🔗</div>WARM INTROS // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-11" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">🌐</div>RELATIONSHIP GRAPH // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-12" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">⚠️</div>LIVE ALERTS // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-13" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">📥</div>SIGNAL INBOX // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-14" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">📤</div>EXPORT CADENCE // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-15" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">📋</div>PROTOCOL CONSOLE // Coming soon — Protocol 23
+        </div>
+        <div class="panel" id="panel-16" style="padding:60px; color:var(--text-secondary); font-family:'JetBrains Mono'; font-size:.8rem; text-align:center;">
+            <div style="font-size:3rem;margin-bottom:16px;">⚙️</div>SETTINGS // Coming soon — Protocol 23
+        </div>
+
+    <footer style="grid-row:3; grid-column:2; padding:0 36px; border-top:1px solid var(--border); background:#000; display:flex; align-items:center; gap:36px;">
+        <div class="ticker-item">● NODE_SYNC [LIVE] <b id="tickerCount">…</b></div>
+        <div class="ticker-item">● SEMANTIC_RADAR <b style="color:var(--green)" id="tickerVector">LOADING</b></div>
+        <div class="ticker-item">● VELOCITY_FLOW <b style="color:var(--gold)">ACTIVE</b></div>
         <div class="ticker-item">● LOCAL_FIRST <b>100% PRIVATE</b></div>
     </footer>
 </div>
 
 <script>
-let isUnlocked = false;
-let currentMode = 'velocity';
-
-function handleModeSwitch(m) {
-    if (!isUnlocked) {
-        const code = prompt("ENTER OPERATOR ACCESS CODE:");
-        if (code === "23") {
-            unlockSystem();
-            currentMode = m;
-            updateModeUI();
-        } else if (code !== null) {
-            showToast("❌ ACCESS DENIED: INVALID PROTOCOL");
-        }
-        return;
+// ─────────────────────────────────────────────────────────────────
+// NexusNode + State
+// ─────────────────────────────────────────────────────────────────
+class NexusNode {
+    constructor(d) {
+        this.id = d.id; this.type = d.type || 'lead';
+        this.name = d.name || 'Unknown Entity'; this.company = d.company || '';
+        this.email = d.email || '—'; this.phone = d.phone || '—';
+        this.role = d.role || ''; this.industry = d.industry || '';
+        this.intentScore = +d.intentScore || 65;
+        this.status = d.status || 'NEXT';
+        this.source = 'Signal Refinery';
+        this.embedding = d.embedding || [];
+        // Conversation probability: intentScore + random variance, seeded by id
+        this.convProb = Math.min(99, Math.max(30, this.intentScore + (parseInt(this.id.slice(-2), 16) % 20 - 10)));
     }
-    currentMode = m;
-    updateModeUI();
-    showToast(`${m==='revenue'?'💼 REVENUE':'🚀 VELOCITY'} MODE ACTIVE`);
 }
 
-function unlockSystem() {
-    isUnlocked = true;
-    const overlay = document.getElementById('accessOverlay');
-    const logs = document.getElementById('protoLogs');
-    overlay.style.display = 'flex';
-    
-    // Cyberpunk log sequence
-    const protoLines = [
-        "> INITIALIZING COMMANDER_OVERRIDE",
-        "> BYPASSING SYNTHETIC_FILTERS_V14",
-        "> UNCLOAKING PRIVATE_PII_LAYERS",
-        "> CONNECTING TO OLLAMA_LOCAL_7B",
-        "> SYNCING 44,928 VECTOR_NODES",
-        "> HANDSHAKE_STABLE: PROTOCOL_23",
-        "> WELCOME BACK, LEON."
-    ];
-    let i = 0;
-    const int = setInterval(() => {
-        if(i >= protoLines.length) {
-            clearInterval(int);
-            setTimeout(() => {
-                overlay.style.transition = 'opacity 0.8s';
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.style.display = 'none', 800);
-            }, 1000);
-            return;
-        }
-        logs.innerHTML += protoLines[i] + "<br>";
-        i++;
-    }, 150);
+let allNodes = [], filteredNodes = [], vectorMode = false, privacyMode = false, vectorsReady = 0;
+let searchDebounce, kanbanData = { saved:[], contacted:[], call:[], interview:[], offer:[] };
+let currentMode = 'velocity'; // 'revenue' | 'velocity'
+const ROW_BATCH = 50;
 
-    document.getElementById('lockBanner').style.display = 'none';
-    document.querySelectorAll('.demo-box').forEach(el => el.style.opacity = '0.3');
-    document.querySelector('.sys-status').innerHTML = '<span class="pulse" style="background:var(--cyan)">●</span> OPERATOR_STATUS: VERIFIED';
-    document.getElementById('nodeCount').style.color = 'var(--cyan)';
-    document.querySelectorAll('.ticker-item b').forEach(el => {
-        if (el.textContent === 'PUBLIC PREVIEW') el.textContent = 'COMMANDER';
-        if (el.textContent === 'PUBLIC PREVIEW') el.style.color = 'var(--cyan)';
-    });
-    renderTable();
-    buildCadence();
-}
-
-function updateModeUI() {
-    document.getElementById('modeRev').classList.toggle('active-revenue', currentMode==='revenue');
-    document.getElementById('modeVel').classList.toggle('active-velocity', currentMode==='velocity');
-}
-
-// Demo data — synthetic, no real contacts
-const DEMO_NODES = [
-    {name:'Sarah Chen',company:'Replit',role:'Head of Customer Success',email:'s.chen@[redacted]',phone:'[demo]',status:'NOW',score:97,intro:88,type:'lead'},
-    {name:'Marcus Rivera',company:'Go Nimbly',role:'Partner & GTM Lead',email:'m.rivera@[redacted]',phone:'[demo]',status:'NOW',score:99,intro:94,type:'lead'},
-    {name:'Jordan Patel',company:'Descope',role:'VP Customer Success',email:'j.patel@[redacted]',phone:'[demo]',status:'NEXT',score:95,intro:76,type:'lead'},
-    {name:'Alex Morgan',company:'HubSpot',role:'CS Lead, Startup Segment',email:'a.morgan@[redacted]',phone:'[demo]',status:'NEXT',score:94,intro:82,type:'lead'},
-    {name:'Taylor Okonkwo',company:'Gong',role:'RevOps Director',email:'t.okonkwo@[redacted]',phone:'[demo]',status:'NEXT',score:91,intro:79,type:'lead'},
-    {name:'Riley Torres',company:'Notion',role:'Revenue Operations',email:'r.torres@[redacted]',phone:'[demo]',status:'NEXT',score:81,intro:65,type:'lead'},
-    {name:'Casey Nakamura',company:'Linear',role:'VP of Sales',email:'c.nakamura@[redacted]',phone:'[demo]',status:'STUCK',score:78,intro:58,type:'lead'},
-    {name:'Morgan Ellis',company:'Salesforce',role:'Customer Success Manager',email:'m.ellis@[redacted]',phone:'[demo]',status:'NEXT',score:88,intro:72,type:'lead'},
-    {name:'Devon Walsh',company:'Outreach',role:'GTM Strategy Lead',email:'d.walsh@[redacted]',phone:'[demo]',status:'NOW',score:93,intro:85,type:'lead'},
-    {name:'Quinn Abara',company:'Lattice',role:'Director of CS',email:'q.abara@[redacted]',phone:'[demo]',status:'NEXT',score:86,intro:70,type:'lead'},
-    {name:'Blake Soto',company:'Replit',role:'Enterprise CS Manager',email:'b.soto@[redacted]',phone:'[demo]',status:'NEXT',score:82,intro:77,type:'lead'},
-    {name:'Cameron Lin',company:'Go Nimbly',role:'Fractional RevOps Lead',email:'c.lin@[redacted]',phone:'[demo]',status:'NOW',score:97,intro:91,type:'lead'},
-    {name:'Avery Johnson',company:'Descope',role:'Implementation Engineer',email:'a.johnson@[redacted]',phone:'[demo]',status:'NEXT',score:74,intro:61,type:'lead'},
-    {name:'Skyler Park',company:'Gong',role:'CS Enablement',email:'s.park@[redacted]',phone:'[demo]',status:'STUCK',score:69,intro:54,type:'lead'},
-    {name:'Harper Diaz',company:'HubSpot',role:'Solution Architect',email:'h.diaz@[redacted]',phone:'[demo]',status:'NEXT',score:87,intro:73,type:'lead'},
+// ─────────────────────────────────────────────────────────────────
+// Mode Toggle (Revenue ↔ Velocity)
+// ─────────────────────────────────────────────────────────────────
+const DECISION_REVENUE = [
+    {label:'NOW',color:'var(--green)',action:()=>filterStatus('NOW')},
+    {label:'NEXT',color:'var(--gold)',action:()=>filterStatus('NEXT')},
+    {label:'STUCK',color:'var(--red)',action:()=>filterStatus('STUCK')}
 ];
-
-// Fill to 50 for convincing render
-while(DEMO_NODES.length < 50) {
-    const src = DEMO_NODES[DEMO_NODES.length % 15];
-    DEMO_NODES.push({...src, name:`[Private Node ${DEMO_NODES.length}]`, email:'[vault-only]', score:Math.round(60+Math.random()*38), intro:Math.round(50+Math.random()*45)});
+const DECISION_VELOCITY = [
+    {label:'CONTACTED',color:'var(--cyan)',action:()=>switchPanel(4)},
+    {label:'INTERVIEW',color:'var(--gold)',action:()=>switchPanel(4)},
+    {label:'OFFER',color:'var(--green)',action:()=>switchPanel(4)}
+];
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeRevenue').className = 'mode-btn' + (mode==='revenue'?' active-revenue':'');
+    document.getElementById('modeVelocity').className = 'mode-btn' + (mode==='velocity'?' active-velocity':'');
+    const defs = mode==='revenue' ? DECISION_REVENUE : DECISION_VELOCITY;
+    defs.forEach((d,i)=>{
+        document.getElementById(`dLabel${i}`).textContent = d.label;
+        document.getElementById(`dLabel${i}`).style.color = d.color;
+    });
+    const velItems = document.querySelectorAll('.sidebar-label');
+    if(velItems[1]) velItems[1].style.opacity = mode==='velocity'?'1':'.4';
+    showToast(mode==='velocity'?'🚀 Velocity Mode — Career Acceleration Active':'💼 Revenue Mode — GTM Intelligence Active');
+    if(mode==='velocity') switchPanel(4);
+}
+function decisionAction(i) {
+    const defs = currentMode==='revenue' ? DECISION_REVENUE : DECISION_VELOCITY;
+    if(defs[i]) defs[i].action();
 }
 
-let filtered = [...DEMO_NODES];
+// ─────────────────────────────────────────────────────────────────
+// Warm Intro Score (0–100): combines semantic similarity to top
+// consulting contacts + role seniority + intentScore
+// ─────────────────────────────────────────────────────────────────
+const WARM_ANCHORS = ['replit','go nimbly','descope','consulting','customer success','revenue ops','gtm'];
+function warmIntroScore(node) {
+    const meta = `${node.name} ${node.company} ${node.role}`.toLowerCase();
+    let base = node.intentScore * 0.4;
+    WARM_ANCHORS.forEach(a=>{ if(meta.includes(a)) base += 12; });
+    const seniority = /vp|head|director|chief|cto|cso|cro|partner|founder/.test(meta) ? 15 : /manager|lead|principal|senior/.test(meta) ? 8 : 0;
+    return Math.min(99, Math.round(base + seniority));
+}
 
-function scoreColor(s){ return s>80?'var(--green)':s>65?'var(--gold)':'var(--red)'; }
-function pillClass(s){ return s==='NOW'?'pill-now':s==='NEXT'?'pill-next':'pill-stuck'; }
+// ─────────────────────────────────────────────────────────────────
+// Security
+// ─────────────────────────────────────────────────────────────────
+if (!['localhost','127.0.0.1'].includes(window.location.hostname)) {
+    document.getElementById('securityAlert').style.display = 'block';
+}
 
+// ─────────────────────────────────────────────────────────────────
+// Cosine Similarity + TF-IDF
+// ─────────────────────────────────────────────────────────────────
+function cosineSim(A, B) {
+    if (!A?.length || !B?.length || A.length !== B.length) return 0;
+    let dot=0,mA=0,mB=0;
+    for (let i=0;i<A.length;i++){dot+=A[i]*B[i];mA+=A[i]*A[i];mB+=B[i]*B[i];}
+    const d=Math.sqrt(mA)*Math.sqrt(mB);
+    return d===0?0:dot/d;
+}
+function kwScore(node, tokens) {
+    const m=`${node.name} ${node.company} ${node.role} ${node.industry} ${node.email}`.toLowerCase();
+    return tokens.reduce((s,t)=>s+(m.includes(t)?1+(m.split(t).length-2)*.3:0),0);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Vault Load
+// ─────────────────────────────────────────────────────────────────
+async function loadVault() {
+    showToast('🔒 Synchronizing 163MB Vector Vault…');
+    try {
+        const r = await fetch('./11_DATA_FEEDS/local_nexus_data.json', {cache:'no-store'});
+        if (!r.ok) throw new Error('Not found');
+        const data = await r.json();
+        allNodes = data.nodes.map(n => new NexusNode(n));
+        window.nexusNodes = allNodes;
+        filteredNodes = allNodes;
+        vectorsReady = allNodes.filter(n=>n.embedding?.some(v=>v!==0)).length;
+        updateUI();
+        showToast(`🧬 ${allNodes.length.toLocaleString()} Nodes · ${vectorsReady.toLocaleString()} Vectors · READY`);
+        console.log('%c🔥 BASIN::NEXUS VECTOR RADAR ONLINE — type anything to feel the intelligence','color:#34d399;font-size:14px;font-weight:bold;');
+        buildVelocityFlow();
+    } catch(e) {
+        console.warn('Vault not found, using demo data');
+        allNodes = Array(64).fill(0).map((_,i)=>new NexusNode({id:`demo${i}`,name:`Demo Node ${i}`,company:'Nexus AI',email:'demo@nexus.local',status:['NOW','NEXT','STUCK'][i%3]}));
+        filteredNodes = allNodes;
+        updateUI();
+        buildVelocityFlow();
+    }
+}
+
+function updateUI() {
+    const cnt = allNodes.length.toLocaleString();
+    document.getElementById('vaultBadge').textContent = cnt;
+    document.getElementById('recordsCount').textContent = cnt;
+    document.getElementById('tickerCount').textContent = cnt + ' NODES';
+    const pct = Math.round(vectorsReady/allNodes.length*100);
+    document.getElementById('tickerVector').textContent = vectorsReady>0?`${pct}% VECTORIZED`:'KEYWORD MODE';
+    document.getElementById('vecStatus').textContent = vectorsReady>0?`🧬 ${vectorsReady.toLocaleString()} real vectors`:'';
+    const now=allNodes.find(n=>n.status==='NOW'), next=allNodes.find(n=>n.status==='NEXT'), stuck=allNodes.find(n=>n.status==='STUCK');
+    if(now) document.getElementById('labelNow').textContent=`${now.name}: ${now.company}`;
+    if(next) document.getElementById('labelNext').textContent=`${next.name}: ${next.company}`;
+    if(stuck) document.getElementById('labelStuck').textContent=`${stuck.name}: ${stuck.company}`;
+    renderTable();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Table Render (infinite scroller)
+// ─────────────────────────────────────────────────────────────────
 function renderTable() {
     const m = document.getElementById('nodesMount');
-    m.innerHTML='';
-    filtered.forEach(n=>{
-        const row=document.createElement('div');
-        row.className='lead-row';
-        const wiColor = n.intro>=70?'rgba(52,211,153,.8)':n.intro>=50?'rgba(251,191,36,.8)':'rgba(148,163,184,.5)';
-        
-        let displayEmail = n.email;
-        let displayPhone = n.phone;
-        
-        if (isUnlocked) {
-            const domain = n.company.toLowerCase().replace(/ /g, '') + ".com";
-            displayEmail = n.email.split('@')[0] + "@" + domain;
-            // Generate a fake but realistic local phone based on company name hash
-            const seed = n.name.length + n.company.length;
-            displayPhone = `+1 (510) 422-${1000 + seed}`;
-        }
-
-        row.innerHTML=`
-            <div style="color:var(--accent);font-weight:900;font-family:'Outfit';text-transform:uppercase;font-size:.62rem;">${n.type}</div>
-            <div style="color:#fff;font-weight:800;font-family:'Outfit';font-size:.88rem;">${n.name}<div style="font-size:.65rem;color:var(--text-secondary);font-weight:400;">${n.role}</div></div>
-            <div><span class="status-pill ${pillClass(n.status)}">${n.status}</span></div>
-            <div style="font-size:.75rem;">${displayEmail}</div>
-            <div style="font-family:'JetBrains Mono';font-size:.68rem;">${displayPhone}</div>
-            <div><span class="intro-score" style="background:rgba(52,211,153,.08);border:1px solid ${wiColor};color:${wiColor}">🤝 ${n.intro}%</span></div>
-            <div style="color:${scoreColor(n.score)};font-weight:900;font-family:'Outfit';font-size:.92rem;">${n.score}%</div>`;
-        row.onclick=()=>showToast(`🔍 Demo: ${n.name} @ ${n.company}`);
-        m.appendChild(row);
-    });
+    m.innerHTML = '';
+    filteredNodes.slice(0,100).forEach(n=>m.appendChild(createRow(n)));
 }
+function createRow(node) {
+    const row = document.createElement('div');
+    row.className = 'lead-row';
+    const sc = node.intentScore>75?'var(--green)':node.intentScore>50?'var(--gold)':'var(--red)';
+    const pc = node.status==='NOW'?'pill-now':node.status==='NEXT'?'pill-next':'pill-stuck';
+    const wi = warmIntroScore(node);
+    const wiColor = wi>=70?'rgba(52,211,153,.8)':wi>=50?'rgba(251,191,36,.8)':'rgba(148,163,184,.5)';
+    // In velocity mode, show conv prob + warm intro instead of source + score
+    const col6 = currentMode==='velocity'
+        ? `<span class="intro-score" style="background:rgba(52,211,153,.08);border:1px solid ${wiColor};color:${wiColor}">🤝 ${wi}%</span>`
+        : `<div style="color:var(--text-secondary);opacity:.55;font-size:.58rem;letter-spacing:1px;">${node.source}</div>`;
+    const col7 = currentMode==='velocity'
+        ? `<div style="color:var(--gold);font-weight:900;font-family:'Outfit';font-size:.88rem;">${node.convProb}%</div>`
+        : `<div style="color:${sc};font-weight:900;font-family:'Outfit';font-size:.92rem;">${node.intentScore}%</div>`;
+    row.innerHTML=`
+        <div style="color:var(--accent);font-weight:900;font-family:'Outfit';text-transform:uppercase;font-size:.62rem;">${node.type}</div>
+        <div style="color:#fff;font-weight:800;font-family:'Outfit';font-size:.88rem;">${node.name}${node.role?`<div style="font-size:.65rem;color:var(--text-secondary);font-weight:400;margin-top:1px;">${node.role}</div>`:''}</div>
+        <div><span class="status-pill ${pc}">${node.status}</span></div>
+        <div class="pii" style="font-size:.75rem;">${node.email}</div>
+        <div class="pii" style="font-family:'JetBrains Mono';font-size:.68rem;">${node.phone}</div>
+        ${col6}
+        ${col7}`;
+    row.onclick=()=>openNodeDetail(node);
+    return row;
+}
+document.getElementById('nodesViewport').onscroll=function(e){
+    const {scrollTop,scrollHeight,clientHeight}=e.target;
+    if(scrollTop+clientHeight>=scrollHeight-200){
+        const cur=document.getElementById('nodesMount').children.length;
+        if(cur<filteredNodes.length) filteredNodes.slice(cur,cur+ROW_BATCH).forEach(n=>document.getElementById('nodesMount').appendChild(createRow(n)));
+    }
+};
 
-function doSearch() {
-    const q=document.getElementById('globalSearch').value.toLowerCase();
-    filtered = q ? DEMO_NODES.filter(n=>`${n.name} ${n.company} ${n.role}`.toLowerCase().includes(q)) : [...DEMO_NODES];
-    document.getElementById('nodeCount').textContent = filtered.length.toLocaleString();
+// ─────────────────────────────────────────────────────────────────
+// HOT / WARM / COLD Quick Filter
+// ─────────────────────────────────────────────────────────────────
+let activeConvFilter = 'all';
+function applyConvFilter(tier) {
+    activeConvFilter = tier;
+    ['fpAll','fpHot','fpWarm','fpCold'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.classList.remove('active');
+    });
+    const map={all:'fpAll',hot:'fpHot',warm:'fpWarm',cold:'fpCold'};
+    if(map[tier]) document.getElementById(map[tier])?.classList.add('active');
+    if(tier==='all') filteredNodes=[...allNodes];
+    else if(tier==='hot') filteredNodes=allNodes.filter(n=>n.convProb>=80);
+    else if(tier==='warm') filteredNodes=allNodes.filter(n=>n.convProb>=60&&n.convProb<80);
+    else if(tier==='cold') filteredNodes=allNodes.filter(n=>n.convProb<60);
+    const fc=document.getElementById('filterCount');
+    if(fc&&tier!=='all') fc.textContent=`${filteredNodes.length.toLocaleString()} nodes`;
+    else if(fc) fc.textContent='';
     renderTable();
 }
 
-// Daily cadence items
-const CADENCE = [
-    {name:'Marcus Rivera',co:'Go Nimbly',prob:99,intro:94,pri:'pri-hot',label:'🔥 HOT',draft:"Marcus — your GTM consulting work at Go Nimbly stood out. I've spent 5 months building a signal-first Revenue OS that's outperforming Salesforce + Clay for outbound. Would love 15 min to compare notes — thoughts?"},
-    {name:'Sarah Chen',co:'Replit',prob:97,intro:88,pri:'pri-hot',label:'🔥 HOT',draft:"Hey Sarah, CS leadership at an AI-native company in this market is rare. I'm exploring my next move in CS/RevOps and Replit keeps coming up as the most interesting signal. Open to a quick call?"},
-    {name:'Devon Walsh',co:'Outreach',prob:93,intro:85,pri:'pri-hot',label:'🔥 HOT',draft:"Devon — saw your GTM strategy work at Outreach. My background: operator who's been building AI CRM infra that surfaces intent signals 10x faster than standard CRM tools. Worth 15 min?"},
-    {name:'Jordan Patel',co:'Descope',prob:95,intro:76,pri:'pri-warm',label:'🌡 WARM',draft:"Jordan, identity + CS at Descope is a fascinating intersection. I've been building tooling that maps implementation friction to churn risk — think there's overlap with what you're solving. Open to compare?"},
-    {name:'Alex Morgan',co:'HubSpot',prob:94,intro:82,pri:'pri-warm',label:'🌡 WARM',draft:"Alex — startup CS motion at HubSpot scale is exactly the layer I've been studying. Would love to share some of what I've found building GTM infrastructure for early-stage teams. 15 min?"},
-];
-function buildCadence() {
-    const list=document.getElementById('cadenceList');
+// ─────────────────────────────────────────────────────────────────
+// Seniority inference + PANEL 10
+// ─────────────────────────────────────────────────────────────────
+function inferSeniority(node) {
+    const r=(node.role||'').toLowerCase();
+    if(/\b(ceo|cto|cro|cso|coo|cfo|chief|founder|co-founder)\b/.test(r)) return 'C-Suite / Founder';
+    if(/\b(vp|vice president|v\.p\.)\b/.test(r)) return 'VP';
+    if(/\b(head|director|sr\. director|senior director)\b/.test(r)) return 'Head / Director';
+    if(/\b(manager|lead|principal|senior manager)\b/.test(r)) return 'Manager / Lead';
+    if(/\b(senior|sr\.)\b/.test(r)) return 'Senior IC';
+    if(/\b(engineer|analyst|specialist|associate|consultant)\b/.test(r)) return 'Individual Contributor';
+    if(r.length > 0) return 'Other';
+    return 'Unknown';
+}
+
+function buildSeniority() {
+    if(!allNodes.length) return;
+    const TIER_ORDER=['C-Suite / Founder','VP','Head / Director','Manager / Lead','Senior IC','Individual Contributor','Other','Unknown'];
+    const map={};
+    allNodes.forEach(n=>{
+        const tier=inferSeniority(n);
+        if(!map[tier]) map[tier]={name:tier,nodes:[],companies:new Set()};
+        map[tier].nodes.push(n);
+        if(n.company) map[tier].companies.add(n.company);
+    });
+    // Sort by predefined tier order
+    const entries=TIER_ORDER.map(t=>map[t]).filter(Boolean);
+    const list=document.getElementById('seniorityList');
+    if(!list) return;
     list.innerHTML='';
-    CADENCE.forEach((c,i)=>{
-        const did=`d${i}`;
-        const el=document.createElement('div');
-        el.className='cadence-item';
-        el.innerHTML=`
-            <div style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="document.getElementById('${did}').classList.toggle('show')">
-                <span class="cadence-pri ${c.pri}">${c.label}</span>
-                <div style="flex:1"><div style="font-weight:700;color:#fff;">${c.name} <span style="font-weight:400;font-size:.7rem;color:var(--text-secondary);">@ ${c.co}</span></div>
-                <div style="font-size:.7rem;color:var(--text-secondary);">🤝 Intro ${c.intro}%</div></div>
-                <div style="font-family:'Outfit';font-weight:900;color:${c.prob>=80?'var(--green)':'var(--gold)'};">${c.prob}%</div>
-                <span style="font-size:.6rem;color:var(--text-secondary);">▼ draft</span>
+    entries.forEach(tier=>{
+        const avgScore=Math.round(tier.nodes.reduce((s,n)=>s+(currentMode==='velocity'?n.convProb:n.intentScore),0)/tier.nodes.length);
+        const topCos=[...tier.companies].slice(0,5);
+        const topContacts=tier.nodes.sort((a,b)=>b.convProb-a.convProb).slice(0,5);
+        const sc=avgScore>=80?'var(--green)':avgScore>=65?'var(--gold)':'var(--red)';
+        const isBoss=/C-Suite|VP|Head/.test(tier.name);
+        const card=document.createElement('div');
+        card.className='co-card';
+        if(isBoss) card.style.borderColor='rgba(251,191,36,.25)';
+        card.innerHTML=`
+            <div class="co-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div>
+                    <div class="co-card-name">${isBoss?'⭐ ':''}${tier.name}</div>
+                    <div class="co-card-meta">${tier.nodes.length.toLocaleString()} contacts &middot; ${tier.companies.size} companies</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-family:'Outfit';font-weight:900;font-size:1.3rem;color:${sc}">${avgScore}%</div>
+                    <div style="font-size:.55rem;color:var(--text-secondary);">AVG SCORE</div>
+                </div>
             </div>
-            <div class="draft-box" id="${did}">${c.draft}
-                <div style="display:flex;gap:8px;margin-top:8px;">
-                    <button class="draft-btn" onclick="navigator.clipboard.writeText('${c.draft.replace(/'/g,"\\'").replace(/\n/g,' ')}');showToast('📋 Copied!')">📋 Copy</button>
-                    <button class="draft-btn" onclick="showToast('✅ ${c.name} → Contacted')">✅ Log Contacted</button>
-                    <button class="draft-btn" onclick="window.open('https://linkedin.com/search/results/people/?keywords=${encodeURIComponent(c.name+' '+c.co)}')">🔗 LinkedIn</button>
+            <div class="co-card-body">
+                <div style="font-size:.6rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px;">Top Companies</div>
+                <div style="margin-bottom:12px;">${topCos.map(c=>`<span class="tag-chip" style="cursor:pointer;" onclick="filterToCompany('${c.replace(/'/g,'')}');showToast('Filtering: ${c.replace(/'/g,'')}')">${c}</span>`).join('')}</div>
+                <div style="font-size:.6rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px;">Hottest Contacts</div>
+                ${topContacts.map(n=>`<div class="co-contact"><span style="color:#fff;font-weight:600;">${n.name}</span><span style="color:var(--text-secondary);font-size:.65rem;">${n.company||'—'}</span><span style="color:${n.convProb>=80?'var(--green)':'var(--gold)'};font-family:'JetBrains Mono';font-size:.65rem;">${n.convProb}%</span></div>`).join('')}
+                <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                    <button class="draft-btn" onclick="filterBySeniority('${tier.name}')" style="color:var(--cyan);border-color:var(--cyan);">&#x1F9E0; Filter Vault</button>
+                    <button class="draft-btn" onclick="addTopToday(null,'${tier.name}')" style="color:var(--gold);border-color:var(--gold);">&#x26A1; Add to Cadence</button>
                 </div>
             </div>`;
+        list.appendChild(card);
+    });
+    // update badge
+    const senBadge=document.getElementById('senBadge');
+    if(senBadge) senBadge.textContent=entries.length;
+}
+function filterBySeniority(tier) {
+    filteredNodes=allNodes.filter(n=>inferSeniority(n)===tier);
+    renderTable(); switchPanel(2);
+    showToast(`\ud83d\udc54 ${tier}: ${filteredNodes.length.toLocaleString()} nodes`);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Search (Vector + Keyword)
+// ─────────────────────────────────────────────────────────────────
+function toggleVector() {
+    vectorMode=!vectorMode;
+    document.getElementById('vectorToggle').classList.toggle('active',vectorMode);
+    document.getElementById('vectorBadge').style.display=vectorMode?'block':'none';
+    showToast(vectorMode?'🧬 Semantic Radar Online':'🔍 Keyword Mode Active');
+    doSearch();
+}
+function doSearch() {
+    const raw=document.getElementById('globalSearch').value, q=raw.toLowerCase().trim();
+    const tokens=q.split(/\s+/).filter(Boolean), badge=document.getElementById('vectorBadge');
+    if(!q){filteredNodes=allNodes;if(badge)badge.style.display='none';renderTable();return;}
+    let scored;
+    if(vectorMode&&vectorsReady>0){
+        const anchor=allNodes.find(x=>x.embedding?.some(v=>v!==0)&&tokens.some(t=>x.name.toLowerCase().includes(t)||x.company.toLowerCase().includes(t)));
+        scored=allNodes.map(n=>{
+            const sv=anchor&&n.embedding?.some(v=>v!==0)?cosineSim(n.embedding,anchor.embedding):0;
+            const kv=kwScore(n,tokens)/(tokens.length+1);
+            return{node:n,score:sv*.55+kv*.45};
+        }).sort((a,b)=>b.score-a.score);
+    } else {
+        scored=allNodes.map(n=>({node:n,score:kwScore(n,tokens)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+    }
+    const res=scored.filter(x=>x.score>0).slice(0,500);
+    filteredNodes=res.length>0?res.map(x=>x.node):allNodes.filter(n=>n.name.toLowerCase().includes(q)||n.email.toLowerCase().includes(q));
+    if(badge&&q){
+        const avg=res.length>0?(res.slice(0,10).reduce((s,x)=>s+x.score,0)/Math.min(10,res.length)).toFixed(2):0;
+        badge.textContent=`🧬 ${filteredNodes.length.toLocaleString()} matches for "${raw}" (score ${avg})`;
+        badge.style.display='block';
+    }
+    renderTable();
+}
+document.getElementById('globalSearch').addEventListener('input',()=>{clearTimeout(searchDebounce);searchDebounce=setTimeout(doSearch,300);});
+function filterStatus(s){filteredNodes=allNodes.filter(n=>n.status===s);renderTable();switchPanel(2);}
+
+// ─────────────────────────────────────────────────────────────────
+// Velocity Flow Engine
+// ─────────────────────────────────────────────────────────────────
+const TARGET_COMPANIES = ['Replit','Go Nimbly','Descope','Salesforce','HubSpot','Gong','Outreach','Notion','Linear','Lattice'];
+const ACTIONS = ['Send personalized LinkedIn DM','Comment on recent post','Email with value hook','Request informational call','Send Loom video intro','Drop voice memo'];
+
+function draftMessage(node) {
+    const co = node.company || 'your company';
+    const role = node.role || 'your role';
+    const templates = [
+        `Hey ${node.name.split(' ')[0]}, I noticed ${co}'s been expanding its CS motion — I've spent the last few months building out GTM infrastructure for early-stage teams and think there's a genuine overlap. Would 15 min be worth it?`,
+        `${node.name.split(' ')[0]} — your work on ${role.toLowerCase()} at ${co} stood out to me. I'm exploring my next move in CS/RevOps and would love to hear how your team thinks about [specific signal]. Open to a quick call?`,
+        `Hi ${node.name.split(' ')[0]}, long shot but a strong one — I'm a CS operator who's been in the room closing enterprise deals and building signal-first GTM systems. ${co} keeps coming up on my radar. Worth 15 min?`,
+        `${node.name.split(' ')[0]}, I've been following ${co}'s momentum. My background: 5 months building a private AI CRM that surfaces revenue signals better than Salesforce. Think that overlaps with what you're building at ${co}?`,
+    ];
+    return templates[Math.floor(Math.random()*templates.length)];
+}
+
+function buildVelocityFlow() {
+    generateCadence();
+    buildKanban();
+    buildRadar();
+    buildScoreDistrib();
+    // Badge counts ready immediately
+    const cos = new Set(allNodes.map(n=>n.company).filter(Boolean));
+    const inds = new Set(allNodes.map(n=>inferIndustry(n)).filter(Boolean));
+    const coBadge = document.getElementById('coBadge');
+    const indBadge = document.getElementById('indBadge');
+    if(coBadge) coBadge.textContent = cos.size;
+    if(indBadge) indBadge.textContent = inds.size;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Industry inference helper
+// ─────────────────────────────────────────────────────────────────
+function inferIndustry(node) {
+    if(node.industry && node.industry !== 'Unknown') return node.industry;
+    const m = `${node.company} ${node.role}`.toLowerCase();
+    if(/security|cyber|soc|identity|auth|descope|okta|crowdstrike|siem/.test(m)) return 'Cybersecurity';
+    if(/replit|ai|ml|llm|gpt|openai|anthropic|vector|embed/.test(m)) return 'AI / LLM';
+    if(/revops|revenue ops|gtm|nimbly|gong|outreach|salesloft/.test(m)) return 'RevOps / GTM';
+    if(/saas|software|platform|cloud/.test(m)) return 'SaaS / Cloud';
+    if(/consult|advisory|partner|fractional/.test(m)) return 'Consulting';
+    if(/sales|hubspot|salesforce|crm/.test(m)) return 'CRM / Sales';
+    if(/market|demand|growth|seo|content/.test(m)) return 'Marketing';
+    if(/product|pm|roadmap|notion|linear/.test(m)) return 'Product';
+    if(/data|analytics|bi|tableau|looker/.test(m)) return 'Data / BI';
+    if(/finance|fintech|payments|stripe/.test(m)) return 'FinTech';
+    return 'Other';
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PANEL 7: Company Intelligence Cards
+// ─────────────────────────────────────────────────────────────────
+function buildCompanies() {
+    if(!allNodes.length) return;
+    const q = (document.getElementById('coSearch')?.value||'').toLowerCase();
+    // Group by company
+    const map = {};
+    allNodes.forEach(n=>{
+        const co = (n.company||'Unknown').trim();
+        if(!map[co]) map[co]={name:co,nodes:[]};
+        map[co].nodes.push(n);
+    });
+    let entries = Object.values(map)
+        .filter(c=>!q||c.name.toLowerCase().includes(q))
+        .sort((a,b)=>b.nodes.length-a.nodes.length)
+        .slice(0,30);
+    const list = document.getElementById('companyList');
+    list.innerHTML='';
+    entries.forEach(c=>{
+        const avgScore = Math.round(c.nodes.reduce((s,n)=>s+(currentMode==='velocity'?n.convProb:n.intentScore),0)/c.nodes.length);
+        const top5 = c.nodes.sort((a,b)=>b.convProb-a.convProb).slice(0,5);
+        const tags = [...new Set(c.nodes.map(n=>inferIndustry(n)))].slice(0,3);
+        const sc = avgScore>=80?'var(--green)':avgScore>=65?'var(--gold)':'var(--red)';
+        const card = document.createElement('div');
+        card.className='co-card';
+        card.innerHTML=`
+            <div class="co-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div>
+                    <div class="co-card-name">${c.name}</div>
+                    <div class="co-card-meta">${c.nodes.length} contacts in vault &middot; ${tags.map(t=>`<span class="tag-chip">${t}</span>`).join('')}</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-family:'Outfit';font-weight:900;font-size:1.3rem;color:${sc}">${avgScore}%</div>
+                    <div style="font-size:.55rem;color:var(--text-secondary);">${currentMode==='velocity'?'CONV PROB':'INTENT'}</div>
+                </div>
+            </div>
+            <div class="co-card-body">
+                <div style="font-size:.6rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px;">Top Contacts</div>
+                ${top5.map(n=>`<div class="co-contact"><span style="color:#fff;font-weight:600;">${n.name}</span><span style="color:var(--text-secondary);font-size:.65rem;">${n.role||'—'}</span><span style="color:${n.convProb>=80?'var(--green)':'var(--gold)'};font-family:'JetBrains Mono';font-size:.65rem;">${n.convProb}%</span></div>`).join('')}
+                <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                    <button class="draft-btn" onclick="filterToCompany('${c.name.replace(/'/g,'')}');showToast('🧠 Vault filtered: ${c.name.replace(/'/g,'')}')" style="color:var(--cyan);border-color:var(--cyan);">🧠 Filter Vault</button>
+                    <button class="draft-btn" onclick="addTopToday('${c.name.replace(/'/g,'')}')" style="color:var(--gold);border-color:var(--gold);">⚡ Add to Cadence</button>
+                    <button class="draft-btn" onclick="window.open('https://www.crunchbase.com/organization/${encodeURIComponent(c.name)}')">📈 Crunchbase</button>
+                    <button class="draft-btn" onclick="window.open('https://news.google.com/search?q=${encodeURIComponent(c.name)}')">📰 News</button>
+                </div>
+            </div>`;
+        list.appendChild(card);
+    });
+    if(!entries.length) list.innerHTML='<div style="color:var(--text-secondary);font-size:.75rem;padding:20px 0;">No companies found.</div>';
+}
+function filterToCompany(co) {
+    filteredNodes = allNodes.filter(n=>(n.company||'').toLowerCase().includes(co.toLowerCase()));
+    renderTable(); switchPanel(3);
+}
+function addTopToday(co) {
+    const top = allNodes.filter(n=>(n.company||'').toLowerCase().includes(co.toLowerCase())).sort((a,b)=>b.convProb-a.convProb).slice(0,3);
+    top.forEach(n=>addToKanban(n,'contacted'));
+    switchPanel(4); generateCadence();
+    showToast(`⚡ ${top.length} ${co} contacts added to cadence`);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PANEL 8: Industry Intelligence Cards
+// ─────────────────────────────────────────────────────────────────
+function buildIndustries() {
+    if(!allNodes.length) return;
+    const map = {};
+    allNodes.forEach(n=>{
+        const ind = inferIndustry(n);
+        if(!map[ind]) map[ind]={name:ind,nodes:[],companies:new Set()};
+        map[ind].nodes.push(n);
+        if(n.company) map[ind].companies.add(n.company);
+    });
+    const entries = Object.values(map).sort((a,b)=>b.nodes.length-a.nodes.length).slice(0,15);
+    const list = document.getElementById('industryList');
+    list.innerHTML='';
+    entries.forEach(ind=>{
+        const avgScore = Math.round(ind.nodes.reduce((s,n)=>s+(currentMode==='velocity'?n.convProb:n.intentScore),0)/ind.nodes.length);
+        const topCos = [...ind.companies].slice(0,5);
+        const topContacts = ind.nodes.sort((a,b)=>b.convProb-a.convProb).slice(0,5);
+        const sc=avgScore>=80?'var(--green)':avgScore>=65?'var(--gold)':'var(--red)';
+        const card=document.createElement('div');
+        card.className='co-card';
+        card.innerHTML=`
+            <div class="co-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div>
+                    <div class="co-card-name">${ind.name}</div>
+                    <div class="co-card-meta">${ind.nodes.length.toLocaleString()} contacts &middot; ${ind.companies.size} companies</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-family:'Outfit';font-weight:900;font-size:1.3rem;color:${sc}">${avgScore}%</div>
+                    <div style="font-size:.55rem;color:var(--text-secondary);">AVG SCORE</div>
+                </div>
+            </div>
+            <div class="co-card-body">
+                <div style="font-size:.6rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px;">Top Companies</div>
+                <div style="margin-bottom:12px;">${topCos.map(c=>`<span class="tag-chip" style="cursor:pointer;" onclick="filterToCompany('${c.replace(/'/g,'')}')">${c}</span>`).join('')}</div>
+                <div style="font-size:.6rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px;">Hottest Contacts</div>
+                ${topContacts.map(n=>`<div class="co-contact"><span style="color:#fff;font-weight:600;">${n.name}</span><span style="color:var(--text-secondary);font-size:.65rem;">${n.company||'—'}</span><span style="color:${n.convProb>=80?'var(--green)':'var(--gold)'};font-family:'JetBrains Mono';font-size:.65rem;">${n.convProb}%</span></div>`).join('')}
+                <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                    <button class="draft-btn" onclick="filterToIndustry('${ind.name}');showToast('Vault filtered: ${ind.name}')" style="color:var(--cyan);border-color:var(--cyan);">🧠 Filter Vault</button>
+                    <button class="draft-btn" onclick="window.open('https://news.google.com/search?q=${encodeURIComponent(ind.name+' industry 2026')}')">📰 Industry News</button>
+                </div>
+            </div>`;
+        list.appendChild(card);
+    });
+}
+function filterToIndustry(ind) {
+    filteredNodes = allNodes.filter(n=>inferIndustry(n)===ind);
+    renderTable(); switchPanel(3);
+    showToast(`🏭 Vault filtered: ${ind} (${filteredNodes.length} nodes)`);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PANEL 9: Analytics Dashboard
+// ─────────────────────────────────────────────────────────────────
+function buildAnalytics() {
+    if(!allNodes.length) return;
+    const mount = document.getElementById('analyticsMount');
+    const total = allNodes.length;
+    const vecPct = vectorsReady>0?Math.round(vectorsReady/total*100):0;
+    const avgProb = Math.round(allNodes.reduce((s,n)=>s+n.convProb,0)/total);
+    const hot = allNodes.filter(n=>n.convProb>=80).length;
+    const warm = allNodes.filter(n=>n.convProb>=60&&n.convProb<80).length;
+    const cold = allNodes.filter(n=>n.convProb<60).length;
+    // Top industries
+    const indMap={};
+    allNodes.forEach(n=>{const i=inferIndustry(n);indMap[i]=(indMap[i]||0)+1;});
+    const topInds=Object.entries(indMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const maxInd=topInds[0]?.[1]||1;
+    // Top companies
+    const coMap={};
+    allNodes.forEach(n=>{if(n.company){coMap[n.company]=(coMap[n.company]||0)+1;}});
+    const topCos=Object.entries(coMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const maxCo=topCos[0]?.[1]||1;
+    // Pipeline
+    const pipe=kanbanData;
+    mount.innerHTML=`
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+            <div class="stat-card"><div class="stat-val">${total.toLocaleString()}</div><div class="stat-label">Total Nodes</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:var(--green)">${vecPct}%</div><div class="stat-label">Vectorized</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:var(--gold)">${avgProb}%</div><div class="stat-label">Avg Conv Prob</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:var(--cyan)">${hot.toLocaleString()}</div><div class="stat-label">HOT Nodes (80%+)</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
+                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Industries</div>
+                ${topInds.map(([n,c])=>`<div class="bar-row"><div class="bar-label">${n}</div><div style="flex:1;"><div class="bar-fill" style="width:${Math.round(c/maxInd*100)}%"></div></div><div class="bar-count">${c.toLocaleString()}</div></div>`).join('')}
+            </div>
+            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
+                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Companies</div>
+                ${topCos.map(([n,c])=>`<div class="bar-row"><div class="bar-label">${n}</div><div style="flex:1;"><div class="bar-fill" style="width:${Math.round(c/maxCo*100)}%;background:linear-gradient(90deg,var(--cyan),var(--green));"></div></div><div class="bar-count">${c.toLocaleString()}</div></div>`).join('')}
+            </div>
+        </div>
+        <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;">
+            <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Conversation Pipeline Health</div>
+            <div style="display:flex;gap:0;">
+                <div class="pipe-stage"><div class="pipe-num" style="color:var(--text-secondary)">${(pipe.saved||[]).length}</div><div class="pipe-lbl">Saved</div></div>
+                <div style="align-self:center;color:var(--border);font-size:1.2rem;">&rsaquo;</div>
+                <div class="pipe-stage"><div class="pipe-num" style="color:var(--cyan)">${(pipe.contacted||[]).length}</div><div class="pipe-lbl">Contacted</div></div>
+                <div style="align-self:center;color:var(--border);font-size:1.2rem;">&rsaquo;</div>
+                <div class="pipe-stage"><div class="pipe-num" style="color:var(--accent)">${(pipe.call||[]).length}</div><div class="pipe-lbl">Call</div></div>
+                <div style="align-self:center;color:var(--border);font-size:1.2rem;">&rsaquo;</div>
+                <div class="pipe-stage"><div class="pipe-num" style="color:var(--gold)">${(pipe.interview||[]).length}</div><div class="pipe-lbl">Interview</div></div>
+                <div style="align-self:center;color:var(--border);font-size:1.2rem;">&rsaquo;</div>
+                <div class="pipe-stage"><div class="pipe-num" style="color:var(--green)">${(pipe.offer||[]).length}</div><div class="pipe-lbl">Offer</div></div>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div class="stat-card"><div class="stat-val" style="color:var(--green)">${hot.toLocaleString()}</div><div class="stat-label">🔥 HOT (80%+)</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:var(--gold)">${warm.toLocaleString()}</div><div class="stat-label">🌡 WARM (60–80%)</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:var(--text-secondary)">${cold.toLocaleString()}</div><div class="stat-label">❄ COLD (&lt;60%)</div></div>
+        </div>`;
+}
+
+function generateCadence() {
+    if(!allNodes.length) return;
+    const top = [...allNodes].sort((a,b)=>b.convProb-a.convProb).slice(0,10);
+    const list = document.getElementById('cadenceList');
+    list.innerHTML = '';
+    top.forEach((node,i)=>{
+        const pri = node.convProb>=80?'pri-hot':node.convProb>=65?'pri-warm':'pri-cold';
+        const priLabel = node.convProb>=80?'🔥 HOT':node.convProb>=65?'🌡 WARM':'❄ COLD';
+        const action = ACTIONS[i%ACTIONS.length];
+        const wi = warmIntroScore(node);
+        const draft = draftMessage(node);
+        const draftId = `draft-${i}-${Date.now()}`;
+        const el = document.createElement('div');
+        el.style.cssText = 'border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:14px 16px;background:rgba(0,0,0,.3);margin-bottom:10px;transition:.2s;';
+        el.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="this.parentElement.querySelector('.draft-box').classList.toggle('show')">
+                <span class="cadence-pri ${pri}">${priLabel}</span>
+                <div style="flex:1">
+                    <div style="font-weight:700;color:#fff;font-size:.85rem;">${node.name} <span style="color:var(--text-secondary);font-weight:400;font-size:.7rem;">@ ${node.company||'Unknown'}</span></div>
+                    <div style="font-size:.7rem;color:var(--text-secondary);margin-top:2px;">${node.role||action} &middot; <span style="color:var(--green)">🤝 Intro ${wi}%</span></div>
+                </div>
+                <div style="font-family:'Outfit';font-weight:900;font-size:.95rem;color:${node.convProb>=80?'var(--green)':node.convProb>=65?'var(--gold)':'var(--text-secondary)'}">${node.convProb}%</div>
+                <span style="font-size:.6rem;color:var(--text-secondary);user-select:none;">▼ draft</span>
+            </div>
+            <div class="draft-box" id="${draftId}">${draft}<div class="draft-actions">
+                <button class="draft-btn" onclick="navigator.clipboard.writeText(document.getElementById('${draftId}').firstChild?.nodeValue?.trim()||'');showToast('📋 Copied!')">📋 Copy</button>
+                <button class="draft-btn" onclick="addToKanban(allNodes.find(n=>n.id==='${node.id}'),'contacted');showToast('✅ ${node.name.replace(/'/g,'')} → Contacted');this.style.color='var(--green)'">✅ Log Contacted</button>
+                <button class="draft-btn" onclick="window.open('https://linkedin.com/search/results/people/?keywords=${encodeURIComponent(node.name+' '+(node.company||''))}')">🔗 LinkedIn</button>
+                <button class="draft-btn" onclick="window.open('https://x.com/search?q=${encodeURIComponent(node.name)}')">𝕏 X</button>
+            </div></div>`;
         list.appendChild(el);
+    });
+    document.getElementById('cadenceBadge').textContent = Math.min(10, top.length);
+}
+
+function buildKanban() {
+    // Pre-seed with NOW nodes → call, high-score NEXT → contacted, STUCK → interview
+    kanbanData.saved = allNodes.filter(n=>n.intentScore>70&&n.status==='NEXT').slice(0,3);
+    kanbanData.contacted = allNodes.filter(n=>n.status==='NOW').slice(0,2);
+    kanbanData.call = allNodes.filter(n=>n.intentScore>80).slice(0,1);
+    renderKanban();
+}
+function addToKanban(node, col) {
+    if(!kanbanData[col]) kanbanData[col]=[];
+    if(!kanbanData[col].find(n=>n.id===node.id)) { kanbanData[col].push(node); renderKanban(); }
+}
+function renderKanban() {
+    ['saved','contacted','call','interview','offer'].forEach(col=>{
+        const el=document.getElementById(`col-${col}`);
+        if(!el) return;
+        el.innerHTML='';
+        const nodes=kanbanData[col]||[];
+        if(!nodes.length){el.innerHTML='<div class="kanban-empty">Drop nodes here</div>';return;}
+        nodes.forEach(n=>{
+            const c=document.createElement('div');
+            c.className='kanban-card';
+            c.innerHTML=`<div class="kanban-card-name">${n.name}</div><div class="kanban-card-co">${n.company||'—'}</div><div class="kanban-card-score" style="color:var(--green)">${n.convProb}% conv prob</div>`;
+            el.appendChild(c);
+        });
     });
 }
 
-// Interview Radar
-const RADAR_DATA = [
-    {co:'Replit',contacts:2,score:97,qs:['How does Replit measure CS velocity for AI-native products?','What does enterprise onboarding look like at current scale?','How do you balance PLG + enterprise motions?','What signals indicate a team is ready to expand?','How does the CS team collaborate with product on retention?']},
-    {co:'Go Nimbly',contacts:2,score:99,qs:['What RevOps motions are most broken for mid-market?','How do you scope a fractional GTM engagement?','What does your ideal CS hire look like in 2026?','How do you charge differently for implementation vs consulting?','What triggers most client expansions?']},
-    {co:'Descope',contacts:2,score:84,qs:['How does identity management intersect with revenue motions?','What triggers most identity vendor switches?','How do you position passkeys vs traditional MFA?','How does the CS team handle SOC2 requirements for clients?','What does enterprise onboarding look like at Descope?']},
-    {co:'HubSpot',contacts:2,score:90,qs:['What does CS motion look like for startup-segment accounts?','How do you define customer health at HubSpot scale?','What\'s the biggest GTM challenge for SMB?','How does RevOps coordinate across CS and Sales?','What does the handoff from Sales to CS look like?']},
-    {co:'Gong',contacts:2,score:80,qs:['How does Gong use its own product for internal CS motions?','What signals predict churn at the Gong customer base?','How do you measure conversation intelligence ROI?','What does the enterprise CS playbook look like?','How is Gong positioning against AI-native competitors?']},
-    {co:'Outreach',contacts:1,score:93,qs:['How does Outreach define GTM strategy in 2026?','What does the CS motion look like for enterprise accounts?','How do you measure outbound effectiveness?','What signals tell you a deal is at risk?','How is Outreach adapting to AI-native sales workflows?']},
-];
 function buildRadar() {
     const grid=document.getElementById('radarGrid');
-    RADAR_DATA.forEach(t=>{
+    if(!grid) return;
+    grid.innerHTML='';
+    const targets = TARGET_COMPANIES.slice(0,6).map(co=>{
+        // Pull REAL contacts from vault matching this company
+        const nodes = allNodes.filter(n=>n.company?.toLowerCase().includes(co.toLowerCase()));
+        const avgScore = nodes.length>0 ? Math.round(nodes.reduce((s,n)=>s+n.convProb,0)/nodes.length) : 68;
+        const topContacts = nodes.sort((a,b)=>b.convProb-a.convProb).slice(0,4);
+        return {co, nodes, avgScore, topContacts};
+    });
+    targets.forEach(t=>{
         const card=document.createElement('div');
         card.className='radar-card';
+        const qs=generatePrepQuestions(t.co);
+        const contactHTML = t.topContacts.length>0
+            ? t.topContacts.map(n=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:.7rem;"><span style="color:#fff;font-weight:600;">${n.name}</span><span style="color:var(--text-secondary);">${n.role||'—'}</span><span style="color:var(--green);font-family:'JetBrains Mono';">${n.convProb}%</span></div>`).join('')
+            : '<div style="font-size:.7rem;color:var(--text-secondary);padding:8px 0;">No contacts in vault yet — add CSVs to 11_DATA_FEEDS/</div>';
         card.innerHTML=`
             <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                <div><div style="font-family:'Outfit';font-weight:900;font-size:1rem;color:#fff;">${t.co}</div>
-                <div style="font-size:.72rem;color:var(--text-secondary);margin-top:3px;">${t.contacts} contacts in vault</div></div>
+                <div>
+                    <div class="radar-company">${t.co}</div>
+                    <div class="radar-role">${t.nodes.length} contacts in vault</div>
+                </div>
                 <div style="text-align:right;">
-                    <div style="font-family:'Outfit';font-weight:900;font-size:1.4rem;color:${t.score>=80?'var(--green)':'var(--gold)'};">${t.score}%</div>
+                    <div style="font-family:'Outfit';font-weight:900;font-size:1.4rem;color:${t.avgScore>=75?'var(--green)':t.avgScore>=60?'var(--gold)':'var(--red)'}">${t.avgScore}%</div>
                     <div style="font-size:.55rem;color:var(--text-secondary);">AVG CONV SCORE</div>
                 </div>
             </div>
-            <div class="radar-questions">
+            <div class="radar-questions" style="margin-top:10px;">
+                <div style="font-size:.58rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:6px;">Live Contacts</div>
+                ${contactHTML}
                 <div style="font-size:.58rem;font-weight:900;letter-spacing:1px;color:var(--text-secondary);text-transform:uppercase;margin:10px 0 6px;">Prep Questions</div>
-                ${t.qs.map(q=>`<div class="radar-q">• ${q}</div>`).join('')}
+                ${qs.map(q=>`<div class="radar-q">• ${q}</div>`).join('')}
             </div>`;
         card.onclick=()=>card.classList.toggle('expanded');
         grid.appendChild(card);
     });
 }
 
+function generatePrepQuestions(company) {
+    const map={
+        'Replit':['How does Replit plan to monetize enterprise teams?','What does GTM look like for AI-native companies?','How do you measure Customer Success velocity?','What\'s the onboarding funnel for pro users?','How do you balance developer experience vs enterprise needs?'],
+        'Go Nimbly':['What RevOps motions are most broken in mid-market?','How does GTM consulting charge differently than implementation?','What does your ideal CS hire look like?','How do you scope a fractional engagement?','What signals tell you a client is ready to expand?'],
+        'Descope':['How does identity management intersect with revenue motions?','What triggers most identity vendor switches?','How do you position passkeys vs traditional MFA?','What does enterprise onboarding look like?','How does the CS team handle SOC2 requirements for clients?'],
+    };
+    return map[company]||[
+        `What does the CS motion look like at ${company}?`,
+        `How does ${company} define customer health?`,
+        `What\'s the biggest GTM challenge ${company} faces?`,
+        `How does ${company} handle enterprise onboarding?`,
+        `What does the ideal CS hire look like for ${company}?`,
+    ];
+}
+
+function buildScoreDistrib() {
+    if(!allNodes.length) return;
+    document.getElementById('scoreHot').textContent = allNodes.filter(n=>n.convProb>=80).length.toLocaleString();
+    document.getElementById('scoreWarm').textContent = allNodes.filter(n=>n.convProb>=60&&n.convProb<80).length.toLocaleString();
+    document.getElementById('scoreCold').textContent = allNodes.filter(n=>n.convProb<60).length.toLocaleString();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Node Detail / Scrub Hub
+// ─────────────────────────────────────────────────────────────────
+function openNodeDetail(node) {
+    const q=encodeURIComponent(`${node.name} ${node.company}`);
+    showToast(`🔍 Scrub Hub: ${node.name}`);
+    setTimeout(()=>{
+        window.open(`https://www.linkedin.com/search/results/people/?keywords=${q}`,'_blank');
+        window.open(`https://news.google.com/search?q=${q}`,'_blank');
+    },300);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// UI Helpers
+// ─────────────────────────────────────────────────────────────────
 function switchPanel(idx) {
     document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
-    for(let i=0;i<10;i++){const el=document.getElementById(`n${i}`); if(el) el.classList.toggle('active',i===idx);}
-    if(idx===6) buildDemoCos();
-    if(idx===7) buildDemoInds();
-    if(idx===8) buildDemoSen();
-    if(idx===9) buildDemoAnalytics();
+    document.querySelectorAll('.nav-item').forEach((n,i)=>n.classList.toggle('active',i===idx));
+    
+    if(idx === 0) buildDestinyMap();
+    if(idx === 1) buildSignalFeed();
 }
-function showToast(msg){
+
+const SIGNAL_MOCK = [
+    {id:1, title:'Replit // Series B Round Detected', type:'FUNDING', source:'C-BASE', priority:'ALPHA', time:'2h ago', desc:'Replit has raised $XXM in Series B lead by Andreessen Horowitz. Strategic signal for infrastructure expansion.'},
+    {id:4, title:'Raj // Signature Pending Alert', type:'SYSTEM', source:'DOCUSIGN', priority:'ALPHA', time:'12h ago', desc:'Payment rail signature for vCISO HUB expansion has been seen but not signed. Nudge required.'}
+];
+
+let liveSignals = [...SIGNAL_MOCK];
+
+const RSS_SOURCES = [
+    { name: 'Replit Blog', url: 'https://replit.com/blog/rss.xml', type: 'PRODUCT' },
+    { name: 'TechCrunch SaaS', url: 'https://techcrunch.com/tag/saas/feed/', type: 'FUNDING' },
+    { name: 'SaaStr', url: 'https://www.saastr.com/feed/', type: 'GTM' },
+    { name: 'Crunchbase Funding', url: 'https://news.crunchbase.com/feed/', type: 'FUNDING' },
+    { name: 'HubSpot', url: 'https://blog.hubspot.com/blog/rss.xml', type: 'MARKETING' },
+    { name: 'Salesforce Ben', url: 'https://www.salesforceben.com/feed/', type: 'CRM' },
+    // Google Alert Monitoring (Custom Keywords)
+    { name: 'Google Alert: RevOps Hiring', url: 'https://www.google.com/alerts/feeds/1234567/REVOPS', type: 'HIRING' },
+    { name: 'Google Alert: Replit Funding', url: 'https://www.google.com/alerts/feeds/1234567/REPLIT', type: 'FUNDING' },
+    { name: 'Google Alert: GTM AI Strategy', url: 'https://www.google.com/alerts/feeds/1234567/GTM_AI', type: 'STRATEGY' },
+    { name: 'Google Alert: vCISO Market', url: 'https://www.google.com/alerts/feeds/1234567/vCISO', type: 'CONSULTING' }
+];
+
+async function classifyWithOllama(sig) {
+    if (localStorage.getItem('OLLAMA_OFFLINE') === 'true') return sig;
+
+    const prompt = `Classify this RSS item as a BASIN::NEXUS signal for a RevOps/GTM CRM.
+    Node Vault Context: 44,928 leads.
+    Item: Title: ${sig.title}, Desc: ${sig.desc}
+    
+    Output ONLY valid JSON:
+    {
+        "title": "${sig.title}",
+        "summary": "2-sentence strategic summary",
+        "priority": "HIGH ALPHA" | "MEDIUM" | "LOW",
+        "signalType": "Funding" | "Hiring" | "Product Launch" | "Competitor Move" | "News",
+        "relatedCompany": "Name or null",
+        "intentScore": 0-100
+    }`;
+
+    try {
+        const r = await fetch('http://localhost:11434/api/generate', {
+            method: 'POST',
+            body: JSON.stringify({
+                model: 'llama3.1:8b',
+                prompt: prompt,
+                stream: false,
+                format: 'json'
+            })
+        });
+        const d = await r.json();
+        const ai = JSON.parse(d.response);
+        
+        return {
+            ...sig,
+            title: ai.title || sig.title,
+            desc: ai.summary || sig.desc,
+            priority: ai.priority === 'HIGH ALPHA' ? 'ALPHA' : ai.priority,
+            type: ai.signalType?.toUpperCase() || sig.type,
+            intentScore: ai.intentScore,
+            relatedCompany: ai.relatedCompany
+        };
+    } catch (e) {
+        console.warn('Ollama classification failed - falling back to rule-based logic.');
+        return sig;
+    }
+}
+
+async function fetchAllRSS() {
+    showToast('🛰️ Scanning 10+ High-Signal RSS Feeds...');
+    const proxy = 'https://api.allorigins.win/get?url=';
+    
+    // Check if Ollama is accessible
+    try {
+        await fetch('http://localhost:11434/api/tags');
+        localStorage.setItem('OLLAMA_OFFLINE', 'false');
+        showToast('🧠 NEXUS_AI: Ollama active // Classifying signals...');
+    } catch (e) {
+        localStorage.setItem('OLLAMA_OFFLINE', 'true');
+        showToast('⚠️ NEXUS_AI: Ollama offline // Using rule-based logic');
+    }
+
+    for (const source of RSS_SOURCES) {
+        try {
+            const r = await fetch(proxy + encodeURIComponent(source.url));
+            const d = await r.json();
+            await parseRSS(d.contents, source);
+        } catch (e) {
+            console.warn(`Failed to fetch ${source.name}`, e);
+        }
+    }
+    buildSignalFeed();
+}
+
+async function parseRSS(xml, source) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'text/xml');
+    const items = Array.from(doc.querySelectorAll('item')).slice(0, 3);
+    
+    for (const item of items) {
+        const title = item.querySelector('title')?.textContent || '';
+        const desc = item.querySelector('description')?.textContent.replace(/<[^>]*>/g, '').slice(0, 200) + '...' || '';
+        const link = item.querySelector('link')?.textContent || '#';
+        const date = new Date(item.querySelector('pubDate')?.textContent || Date.now());
+        
+        // Avoid duplicates early
+        if (liveSignals.find(s => s.title === title)) continue;
+
+        const isAlpha = /funding|raised|round|hired|join|series|acquisition/i.test(title + desc);
+        
+        let sig = {
+            id: 'rss-' + Math.random().toString(36).substr(2, 9),
+            title: title,
+            type: source.type,
+            source: source.name.toUpperCase(),
+            priority: isAlpha ? 'ALPHA' : 'MEDIUM',
+            time: formatTime(date),
+            desc: desc,
+            url: link,
+            intentScore: isAlpha ? 85 : 40
+        };
+        
+        // Run AI classification
+        sig = await classifyWithOllama(sig);
+        
+        liveSignals.unshift(sig);
+    }
+}
+
+function formatTime(date) {
+    const hours = Math.round((new Date() - date) / 36e5);
+    return hours <= 0 ? 'Just now' : hours < 24 ? `${hours}h ago` : `${Math.round(hours/24)}d ago`;
+}
+
+function buildSignalFeed() {
+    const mount = document.getElementById('signalListMount');
+    if(!mount) return;
+    mount.innerHTML = '';
+    
+    liveSignals.sort((a,b) => (a.priority === 'ALPHA' ? -1 : 1)).forEach(sig => {
+        const card = document.createElement('div');
+        card.className = `signal-card ${sig.priority==='ALPHA'?'alpha':''}`;
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            if (e.target.tagName !== 'BUTTON') window.open(sig.url || '#', '_blank');
+        };
+
+        const icon = sig.type==='FUNDING'?'💰':sig.type==='HIRING'?'👔':sig.type==='PRODUCT'?'🚀':sig.type==='SYSTEM'?'⚡':'🛰️';
+        
+        card.innerHTML = `
+            <div class="signal-icon-box">${icon}</div>
+            <div class="signal-card-main">
+                <div class="signal-header">
+                    <div style="display:flex; gap:6px; align-items:center;">
+                        <span class="signal-type-badge ${sig.priority==='ALPHA'?'signal-type-alpha':sig.type==='FUNDING'?'signal-type-funding':sig.type==='HIRING'?'signal-type-hiring':''}">
+                            ${sig.type} ${sig.priority==='ALPHA'?'// HIGH ALPHA':''}
+                        </span>
+                        ${sig.intentScore ? `<span style="font-family:'JetBrains Mono'; font-size:.5rem; color:var(--cyan); border:1px solid var(--cyan); padding:1px 5px; border-radius:3px; font-weight:900;">INTENT: ${sig.intentScore}</span>` : ''}
+                    </div>
+                    <span class="signal-time">${sig.time}</span>
+                </div>
+                <div class="signal-card-title">${sig.title}</div>
+                ${sig.relatedCompany ? `<div style="font-family:'Outfit'; font-size:.65rem; color:var(--accent); font-weight:900; margin-top:2px; text-transform:uppercase; letter-spacing:1px;">Target: ${sig.relatedCompany}</div>` : ''}
+                <div class="signal-card-desc">${sig.desc}</div>
+                <div class="signal-card-footer">
+                    <div class="signal-source" style="${sig.source.includes('GOOGLE ALERT') ? 'color:var(--gold);' : ''}">
+                        ${sig.source} INTEGRATION // STATUS: ${localStorage.getItem('OLLAMA_OFFLINE')==='true'?'VERIFIED':'AI_ENRICHED'}
+                    </div>
+                    <div class="signal-actions-row">
+                        <button class="sig-btn primary" onclick="event.stopPropagation(); showToast('Action logged: Nudge sent')">NUDGE</button>
+                        <button class="sig-btn" onclick="event.stopPropagation(); showToast('Target added to daily cadence')">ADD TO CADENCE</button>
+                        <button class="sig-btn" onclick="event.stopPropagation(); showToast('Scrubbing data...')">SCRUB</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        mount.appendChild(card);
+    });
+}
+
+// External Webhook Listener (for n8n/Node-RED)
+window.addSignal = function(data) {
+    console.log('%c🛰️ NEXUS_INCOMING_SIGNAL: Protocol 23 verified','color:var(--cyan);font-weight:bold;');
+    const sig = {
+        id: 'external-' + Date.now(),
+        ...data,
+        priority: data.priority || 'MEDIUM',
+        time: 'Just now'
+    };
+    liveSignals.unshift(sig);
+    if (document.getElementById('panel-1').classList.contains('active')) {
+        buildSignalFeed();
+    }
+    showToast(`Incoming Signal: ${sig.title}`);
+    return { status: "signal_added", timestamp: new Date().toISOString() };
+};
+
+function buildDestinyMap() {
+    const mount = document.getElementById('timelinePoints');
+    if(!mount) return;
+    mount.innerHTML = '';
+    
+    // Create time markers
+    for(let i=0; i<4000; i+=250) {
+        const marker = document.createElement('div');
+        marker.className = 'timeline-marker';
+        marker.style.left = `${i}px`;
+        const dateOffset = Math.floor((i-1000)/100);
+        const d = new Date(); d.setDate(d.getDate() + dateOffset);
+        marker.innerHTML = `<span>${d.toLocaleDateString([],{month:'short',day:'numeric'})}</span>`;
+        mount.appendChild(marker);
+    }
+
+    const anchors = [
+        {name:'REPLIT', x: 800, alpha:true, milestones:[{tag:'STRATEGY',val:'Founding Enterprise Plan', date:'Mar 12'},{tag:'TECH',val:'Auth Migration Audit', date:'Mar 15'}]},
+        {name:'GO NIMBLY', x: 1400, alpha:true, milestones:[{tag:'GTM',val:'Tech Prep HUD Audit', date:'Mar 25'},{tag:'CONTRACT',val:'Signature Waiting', date:'Apr 02'}]},
+        {name:'DESCOPE', x: 2100, alpha:false, milestones:[{tag:'IMPLEMENT',val:'CS Spec Finalization', date:'Apr 18'},{tag:'QBR',val:'Inaugural Review', date:'Jun 04'}]},
+        {name:'RAJ (vCISO)', x: 2800, alpha:true, milestones:[{tag:'PAYMENT',val:'Signature Rail Wait', date:'May 10'},{tag:'LAUNCH',val:'vCISO HUB LIVE', date:'May 22'}]}
+    ];
+
+    anchors.forEach(a => {
+        const node = document.createElement('div');
+        node.className = `anchor-node ${a.alpha?'high-alpha':''}`;
+        node.style.left = `${a.x}px`;
+        node.style.top = `${50 + (Math.random()*40-20)}%`;
+        
+        node.innerHTML = `
+            <div class="anchor-header">
+                <div class="anchor-title">${a.name}</div>
+                ${a.alpha?'<span style="color:var(--red);font-size:.5rem;font-weight:950;letter-spacing:1px;">ALPHA</span>':''}
+            </div>
+            <div class="anchor-milestones">
+                ${a.milestones.map(m => `
+                    <div class="milestone-item">
+                        <span class="milestone-tag">${m.tag}</span>
+                        <span>${m.val}</span>
+                        <div class="milestone-date">${m.date} // T-MINUS ${Math.floor(Math.random()*20)} DAYS</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        node.onclick = () => {
+            showToast(`Zooming to ${a.name} vault data...`);
+            setTimeout(()=>switchPanel(2), 500);
+        };
+        mount.appendChild(node);
+    });
+}
+function showToast(msg) {
     const t=document.getElementById('toast');
     t.textContent=msg; t.style.display='block';
-    setTimeout(()=>t.style.display='none',3200);
+    setTimeout(()=>t.style.display='none',3500);
 }
-document.addEventListener('keydown',e=>{if(e.shiftKey&&e.key.toLowerCase()==='p') showToast('🕶️ Privacy shield (demo mode — no real PII here)');});
-
-function demoFilter(t){
-    if(t==='hot') filtered=DEMO_NODES.filter(n=>n.score>=80);
-    else if(t==='warm') filtered=DEMO_NODES.filter(n=>n.score>=60&&n.score<80);
-    else if(t==='cold') filtered=DEMO_NODES.filter(n=>n.score<60);
-    else filtered=[...DEMO_NODES];
-    renderTable();
-}
-
-// Demo intelligence panels
-const DEMO_COS=[{n:'Replit',c:28,s:94},{n:'Go Nimbly',c:24,s:99},{n:'Descope',c:19,s:86},{n:'HubSpot',c:47,s:90},{n:'Gong',c:31,s:82},{n:'Salesforce',c:89,s:76},{n:'Outreach',c:22,s:91}];
-const DEMO_INDS=[{n:'RevOps / GTM',c:12800,s:83},{n:'SaaS / Cloud',c:9200,s:77},{n:'AI / LLM',c:7400,s:88},{n:'CRM / Sales',c:6100,s:74},{n:'Cybersecurity',c:4800,s:81},{n:'Consulting',c:4120,s:79}];
-const DEMO_SEN=[{n:'⭐ C-Suite / Founder',c:3240,s:91},{n:'⭐ VP',c:7180,s:87},{n:'⭐ Head / Director',c:9420,s:83},{n:'Manager / Lead',c:11200,s:74},{n:'Senior IC',c:8310,s:71},{n:'Individual Contributor',c:5578,s:65}];
-function coCard(name,count,score){
-    const sc=score>=80?'var(--green)':score>=65?'var(--gold)':'var(--red)';
-    return `<div style="background:rgba(15,18,26,.5);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'" onclick="showToast('🏢 Demo: ${name} — ${count} contacts')"><div><div style="font-family:'Outfit';font-weight:900;color:#fff;font-size:.95rem;">${name}</div><div style="font-size:.68rem;color:var(--text-secondary);margin-top:3px;">${count.toLocaleString()} contacts in vault</div></div><div style="font-family:'Outfit';font-weight:900;font-size:1.3rem;color:${sc}">${score}%</div></div>`;
-}
-function buildDemoCos(){document.getElementById('demoCos').innerHTML=DEMO_COS.map(c=>coCard(c.n,c.c,c.s)).join('');}
-function buildDemoInds(){document.getElementById('demoInds').innerHTML=DEMO_INDS.map(c=>coCard(c.n,c.c,c.s)).join('');}
-function buildDemoSen(){document.getElementById('demoSen').innerHTML=DEMO_SEN.map(c=>coCard(c.n,c.c,c.s)).join('');}
-function buildDemoAnalytics(){
-    const IND=[['RevOps / GTM',12800],['SaaS / Cloud',9200],['AI / LLM',7400],['CRM / Sales',6100],['Cybersecurity',4800],['Consulting',4120]];
-    const SEN=[['C-Suite / Founder',3240,91],['VP',7180,87],['Head / Director',9420,83],['Manager / Lead',11200,74],['Senior IC',8310,71]];
-    const max=IND[0][1];
-    document.getElementById('analyticsDemo').innerHTML=`
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:#fff;">44,928</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Total Nodes</div></div>
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">100%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Vectorized</div></div>
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">78%</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">Avg Conv Prob</div></div>
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--cyan);">18,271</div><div style="font-size:.58rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;">HOT Nodes (80%+)</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
-                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Top Industries</div>
-                ${IND.map(([n,c])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:110px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n}</div><div style="flex:1;"><div style="height:7px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--cyan));width:${Math.round(c/max*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.65rem;">${c.toLocaleString()}</div></div>`).join('')}
-            </div>
-            <div style="background:rgba(15,18,26,.5);border:1px solid var(--border);border-radius:12px;padding:18px;">
-                <div style="font-size:.62rem;font-weight:900;letter-spacing:2px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;">Seniority Breakdown</div>
-                ${SEN.map(([n,c,s])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;"><div style="min-width:110px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n}</div><div style="flex:1;"><div style="height:7px;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--green));width:${Math.round(c/11200*100)}%;"></div></div><div style="min-width:44px;text-align:right;color:var(--text-secondary);font-family:'JetBrains Mono';font-size:.65rem;">${c.toLocaleString()}</div></div>`).join('')}
-            </div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-            <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--green);">18,271</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x1F525; HOT (80%+)</div></div>
-            <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--gold);">19,803</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x1F321; WARM (60&#x2013;80%)</div></div>
-            <div style="background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:'Outfit';font-weight:900;font-size:1.6rem;color:var(--text-secondary);">6,854</div><div style="font-size:.6rem;color:var(--text-secondary);margin-top:4px;">&#x2744; COLD (&lt;60%)</div></div>
-        </div>`;
-}
+document.addEventListener('keydown',e=>{
+    if(e.shiftKey&&e.key.toLowerCase()==='p'){
+        privacyMode=!privacyMode;
+        document.body.classList.toggle('privacy-mode',privacyMode);
+        showToast(privacyMode?'🕶️ PRIVACY SHIELD ON':'👁 Privacy Off');
+    }
+});
 
 window.onload=()=>{
-    renderTable();
-    buildCadence();
-    buildRadar();
-    updateModeUI();
+    loadVault();
     setInterval(()=>{
         const n=new Date();
-        document.getElementById('systemClock').innerHTML=`${n.toISOString().split('T')[0]} // ${n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} PST<br><span style="color:var(--green)">DEMO_STABLE</span>`;
+        document.getElementById('systemClock').innerHTML=`${n.toISOString().split('T')[0]} // ${n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} PST<br><span style="color:var(--green)">ENCRYPTION_STABLE</span>`;
     },1000);
 };
 </script>
