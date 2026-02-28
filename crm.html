@@ -346,6 +346,7 @@
                             <button class="fpill" style="border-color:#1DA1F2; color:#1DA1F2;" onclick="filterSignals('x', this)">X Posts</button>
                             <button class="fpill" style="border-color:#FF6600; color:#FF6600;" onclick="filterSignals('hn', this)">HN</button>
                             <button class="fpill" style="border-color:#6c5ce7; color:#6c5ce7;" onclick="filterSignals('indeed', this)">Indeed</button>
+                            <button class="fpill" style="border-color:#00e5ff; color:#00e5ff;" onclick="filterSignals('wwr', this)">WWR</button>
                             <button class="fpill" style="border-color:var(--cyan); color:var(--cyan);" onclick="filterSignals('startup', this)">Startup</button>
                         </div>
                     </div>
@@ -1185,10 +1186,14 @@ const JOB_BOARD_SOURCES = [
     // Product Hunt Jobs
     { name: 'Product Hunt: RevOps', url: 'https://www.producthunt.com/jobs/rss?query=revops', badge: 'PH⛤', color: '#DA552F' },
     { name: 'Product Hunt: vCISO', url: 'https://www.producthunt.com/jobs/rss?query=vCISO', badge: 'PH⛤', color: '#DA552F' },
+    // We Work Remotely
+    { name: 'WWR: RevOps', url: 'https://weworkremotely.com/remote-revops-jobs.rss', badge: 'WWR', color: '#00e5ff' },
+    { name: 'WWR: Customer Success', url: 'https://weworkremotely.com/remote-customer-success-jobs.rss', badge: 'WWR', color: '#00e5ff' },
+    { name: 'WWR: Sales/GTM', url: 'https://weworkremotely.com/remote-sales-jobs.rss', badge: 'WWR', color: '#00e5ff' },
+    { name: 'WWR: Security/vCISO', url: 'https://weworkremotely.com/remote-security-jobs.rss', badge: 'WWR', color: '#00e5ff' },
     // Remote boards
     { name: 'RemoteOK RevOps', url: 'https://remoteok.com/remote-revops-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
     { name: 'RemoteOK: vCISO', url: 'https://remoteok.com/remote-security-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
-    { name: 'We Work Remotely: RevOps', url: 'https://weworkremotely.com/remote-revops-jobs.rss', badge: 'WWR', color: 'var(--cyan)' },
     { name: 'Startup.jobs RevOps', url: 'https://startup.jobs/rss?query=revops', badge: 'STARTUP', color: 'var(--accent)' },
     { name: 'Startup.jobs vCISO', url: 'https://startup.jobs/rss?query=vciso', badge: 'STARTUP', color: 'var(--accent)' },
     // Seniority & Salary Intelligence
@@ -1224,7 +1229,7 @@ async function classifyJobWithOllama(sig) {
             method: 'POST',
             body: JSON.stringify({
                 model: 'llama3.1:8b',
-                prompt: `BASIN::NEXUS Job Classifier. Output JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":string,"company":string,"location":string,"seniority":"VP"|"Head"|"Director"|"Manager"|"IC"|null,"roleType":"RevOps"|"Customer Success"|"GTM"|"vCISO"|"Sales"|"Other","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","intentScore":0-100,"summary":"2-sentence"}\nHIGH ALPHA=VP/Head/Director in RevOps/CS/GTM/vCISO`,
+                prompt: `Classify job posting as BASIN::NEXUS signal. JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":"title","company":"company","location":"city/remote/unknown","seniority":"VP"|"Head"|"Director"|"Manager"|null,"roleType":"RevOps"|"CS"|"GTM"|"vCISO"|"Other","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","score":0-100,"summary":"2-sentence"}`,
                 stream: false, format: 'json'
             })
         });
@@ -1528,7 +1533,8 @@ function filterSignals(type, btn) {
             : type === 'x' ? c.dataset.source?.includes('𝕏')
             : type === 'hn' ? c.dataset.source?.includes('HN')
             : type === 'indeed' ? c.dataset.source?.includes('INDEED')
-            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN'))
+            : type === 'wwr' ? c.dataset.source?.includes('WWR')
+            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN') || c.dataset.source?.includes('WWR'))
             : true;
         c.style.display = show ? '' : 'none';
     });
