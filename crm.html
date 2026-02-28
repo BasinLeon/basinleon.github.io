@@ -347,7 +347,8 @@
                             <button class="fpill" style="border-color:#FF6600; color:#FF6600;" onclick="filterSignals('hn', this)">HN</button>
                             <button class="fpill" style="border-color:#6c5ce7; color:#6c5ce7;" onclick="filterSignals('indeed', this)">Indeed</button>
                             <button class="fpill" style="border-color:#00e5ff; color:#00e5ff;" onclick="filterSignals('wwr', this)">WWR</button>
-                            <button class="fpill" style="border-color:var(--cyan); color:var(--cyan);" onclick="filterSignals('startup', this)">Startup</button>
+                            <button class="fpill" style="border-color:var(--accent); color:var(--accent);" onclick="filterSignals('startup_jobs', this)">Startup Jobs</button>
+                            <button class="fpill" style="border-color:var(--gold); color:var(--gold);" onclick="filterSignals('levels', this)">Levels.fyi</button>
                         </div>
                     </div>
                 </div>
@@ -1191,13 +1192,18 @@ const JOB_BOARD_SOURCES = [
     { name: 'WWR: Customer Success', url: 'https://weworkremotely.com/remote-customer-success-jobs.rss', badge: 'WWR', color: '#00e5ff' },
     { name: 'WWR: Sales/GTM', url: 'https://weworkremotely.com/remote-sales-jobs.rss', badge: 'WWR', color: '#00e5ff' },
     { name: 'WWR: Security/vCISO', url: 'https://weworkremotely.com/remote-security-jobs.rss', badge: 'WWR', color: '#00e5ff' },
+    // Startup Jobs
+    { name: 'StartupJobs: RevOps', url: 'https://startup.jobs/rss?query=revops', badge: 'STARTUP', color: 'var(--accent)' },
+    { name: 'StartupJobs: CS', url: 'https://startup.jobs/rss?query=customer+success', badge: 'STARTUP', color: 'var(--accent)' },
+    { name: 'StartupJobs: GTM', url: 'https://startup.jobs/rss?query=go-to-market', badge: 'STARTUP', color: 'var(--accent)' },
+    { name: 'StartupJobs: vCISO', url: 'https://startup.jobs/rss?query=vCISO', badge: 'STARTUP', color: 'var(--accent)' },
     // Remote boards
     { name: 'RemoteOK RevOps', url: 'https://remoteok.com/remote-revops-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
     { name: 'RemoteOK: vCISO', url: 'https://remoteok.com/remote-security-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
-    { name: 'Startup.jobs RevOps', url: 'https://startup.jobs/rss?query=revops', badge: 'STARTUP', color: 'var(--accent)' },
-    { name: 'Startup.jobs vCISO', url: 'https://startup.jobs/rss?query=vciso', badge: 'STARTUP', color: 'var(--accent)' },
-    // Seniority & Salary Intelligence
-    { name: 'Levels.fyi: RevOps', url: 'https://api.allorigins.win/get?url=https://www.levels.fyi/jobs?q=RevOps', badge: 'LEVELS', color: 'var(--gold)', type: 'SCRAPE' },
+    // Seniority & Salary Intelligence (Scraped)
+    { name: 'Levels.fyi: RevOps', url: 'https://www.levels.fyi/jobs?role=revops&location=remote', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
+    { name: 'Levels.fyi: CS', url: 'https://www.levels.fyi/jobs?role=customer-success', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
+    { name: 'Levels.fyi: Sales', url: 'https://www.levels.fyi/jobs?role=sales', badge: 'LEVELS', color: 'var(--gold)', type: 'LEVELS_SCRAPE' },
     // Community & Aggregators
     { name: 'HN Hiring', url: 'https://hnhiring.com/rss', badge: 'HN', color: '#FF6600' },
     { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: 'REDDIT', color: '#FF4500' },
@@ -1374,6 +1380,8 @@ async function fetchAllJobBoards() {
             const d = await r.json();
             if (board.type === 'SCRAPE') {
                 await parseIndeedHTML(d.contents, board);
+            } else if (board.type === 'LEVELS_SCRAPE') {
+                await parseLevelsHTML(d.contents, board);
             } else {
                 await parseJobRSS(d.contents, board);
             }
@@ -1385,16 +1393,48 @@ async function fetchAllJobBoards() {
     showToast(`✓ Job scan complete // ${liveSignals.filter(s=>s.category==='job').length} hiring signals`);
 }
 
+async function parseLevelsHTML(html, board) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Levels.fyi Job Card Selection (Likely structure based on common job boards)
+    const cards = Array.from(doc.querySelectorAll('div[class*="JobCard"], div[class*="job-item"]')).slice(0, 5);
+    
+    for (const card of cards) {
+        const title = card.querySelector('h3, .title')?.textContent || '';
+        const company = card.querySelector('.company, h4')?.textContent || '';
+        const location = card.querySelector('.location')?.textContent || 'Remote';
+        const salary = card.querySelector('.salary, .compensation')?.textContent || 'Varies';
+        const level = card.querySelector('.level')?.textContent || 'Senior';
+        const link = card.querySelector('a')?.href || '#';
+
+        if (liveSignals.find(s => s.title.includes(title) && s.desc.includes(company))) continue;
+
+        let sig = {
+            id: 'levels-' + Math.random().toString(36).substr(2,9),
+            title: `Levels.fyi Hiring: ${title} at ${company}`,
+            type: 'HIRING',
+            source: 'LEVELS',
+            priority: 'MEDIUM',
+            time: 'Just now',
+            desc: `Level: ${level} // Compensation: ${salary} // ${location}`,
+            url: link,
+            intentScore: 70,
+            badge: 'LEVELS',
+            badgeColor: board.color,
+            category: 'job'
+        };
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
+    }
+}
+
 async function parseIndeedHTML(html, board) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     
-    // Support Indeed and Levels.fyi scraping
-    if (board.badge === 'LEVELS') {
-        // Levels.fyi basic parser stub
-        console.log("LEVELS::SCRAPE initialized");
-    } else {
-        const jobs = Array.from(doc.querySelectorAll('.job_seen_beacon')).slice(0, 5);
+    // Support Indeed scraping (Already implemented in previous v28)
+    const jobs = Array.from(doc.querySelectorAll('.job_seen_beacon')).slice(0, 5);
         for (const j of jobs) {
             const title = j.querySelector('.jobTitle')?.textContent || '';
             const company = j.querySelector('.companyName')?.textContent || '';
@@ -1418,9 +1458,8 @@ async function parseIndeedHTML(html, board) {
                 badgeColor: board.color,
                 category: 'job'
             };
-            sig = await classifyJobWithOllama(sig);
-            liveSignals.unshift(sig);
-        }
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
     }
 }
 
@@ -1534,6 +1573,8 @@ function filterSignals(type, btn) {
             : type === 'hn' ? c.dataset.source?.includes('HN')
             : type === 'indeed' ? c.dataset.source?.includes('INDEED')
             : type === 'wwr' ? c.dataset.source?.includes('WWR')
+            : type === 'startup_jobs' ? c.dataset.source?.includes('STARTUP')
+            : type === 'levels' ? c.dataset.source?.includes('LEVELS')
             : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP') || c.dataset.source?.includes('HN') || c.dataset.source?.includes('WWR'))
             : true;
         c.style.display = show ? '' : 'none';
