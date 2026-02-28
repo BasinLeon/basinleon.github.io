@@ -334,12 +334,16 @@
                         <div class="vel-title" style="margin-bottom:0;">🛰️ SIGNAL FEED // REAL-TIME GTM PULSE</div>
                         <div style="font-size:10px; color:var(--gold); font-family:'JetBrains Mono'; opacity:0.8; margin-top:4px;">● Google Alerts RSS active – custom keyword monitoring</div>
                     </div>
-                    <div style="display:flex; gap:12px; align-items:center;">
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                         <button class="hud-btn velocity" onclick="fetchAllRSS()" style="font-size:.6rem; padding:6px 14px;">↻ Refresh Signals</button>
+                        <button class="hud-btn" onclick="fetchAllJobBoards()" style="font-size:.6rem; padding:6px 14px; border-color:var(--green); color:var(--green);">💼 Refresh Jobs</button>
                         <div class="filter-pills" style="padding:0;">
-                            <button class="fpill active">All</button>
-                            <button class="fpill hot">High Alpha</button>
-                            <button class="fpill warm">Funding</button>
+                            <button class="fpill active" onclick="filterSignals('all', this)">All</button>
+                            <button class="fpill hot" onclick="filterSignals('alpha', this)">High Alpha</button>
+                            <button class="fpill warm" onclick="filterSignals('funding', this)">Funding</button>
+                            <button class="fpill" style="border-color:var(--green); color:var(--green);" onclick="filterSignals('hiring', this)">Hiring</button>
+                            <button class="fpill" style="border-color:var(--accent); color:var(--accent);" onclick="filterSignals('remote', this)">Remote</button>
+                            <button class="fpill" style="border-color:var(--cyan); color:var(--cyan);" onclick="filterSignals('startup', this)">Startup</button>
                         </div>
                     </div>
                 </div>
@@ -1170,62 +1174,73 @@ const SIGNAL_MOCK = [
 let liveSignals = [...SIGNAL_MOCK];
 
 const RSS_SOURCES = [
-    { name: 'Replit Blog', url: 'https://replit.com/blog/rss.xml', type: 'PRODUCT' },
-    { name: 'TechCrunch SaaS', url: 'https://techcrunch.com/tag/saas/feed/', type: 'FUNDING' },
-    { name: 'SaaStr', url: 'https://www.saastr.com/feed/', type: 'GTM' },
-    { name: 'Crunchbase Funding', url: 'https://news.crunchbase.com/feed/', type: 'FUNDING' },
-    { name: 'HubSpot', url: 'https://blog.hubspot.com/blog/rss.xml', type: 'MARKETING' },
-    { name: 'Salesforce Ben', url: 'https://www.salesforceben.com/feed/', type: 'CRM' },
-    // Google Alert Monitoring (Custom Keywords)
-    { name: 'Google Alert: RevOps Hiring', url: 'https://www.google.com/alerts/feeds/1234567/REVOPS', type: 'HIRING' },
-    { name: 'Google Alert: Replit Funding', url: 'https://www.google.com/alerts/feeds/1234567/REPLIT', type: 'FUNDING' },
-    { name: 'Google Alert: GTM AI Strategy', url: 'https://www.google.com/alerts/feeds/1234567/GTM_AI', type: 'STRATEGY' },
-    { name: 'Google Alert: vCISO Market', url: 'https://www.google.com/alerts/feeds/1234567/vCISO', type: 'CONSULTING' }
+    // Industry News & Intelligence
+    { name: 'Replit Blog', url: 'https://replit.com/blog/rss.xml', type: 'PRODUCT', category: 'news' },
+    { name: 'TechCrunch SaaS', url: 'https://techcrunch.com/tag/saas/feed/', type: 'FUNDING', category: 'news' },
+    { name: 'SaaStr', url: 'https://www.saastr.com/feed/', type: 'GTM', category: 'news' },
+    { name: 'Crunchbase Funding', url: 'https://news.crunchbase.com/feed/', type: 'FUNDING', category: 'news' },
+    { name: 'HubSpot', url: 'https://blog.hubspot.com/blog/rss.xml', type: 'MARKETING', category: 'news' },
+    { name: 'Salesforce Ben', url: 'https://www.salesforceben.com/feed/', type: 'CRM', category: 'news' },
+    // Google Alert Monitoring (Replace IDs with your real feed IDs from google.com/alerts)
+    { name: 'Google Alert: RevOps Hiring', url: 'https://www.google.com/alerts/feeds/1234567/REVOPS', type: 'HIRING', category: 'alert' },
+    { name: 'Google Alert: Replit Funding', url: 'https://www.google.com/alerts/feeds/1234567/REPLIT', type: 'FUNDING', category: 'alert' },
+    { name: 'Google Alert: GTM AI Strategy', url: 'https://www.google.com/alerts/feeds/1234567/GTM_AI', type: 'STRATEGY', category: 'alert' },
+    { name: 'Google Alert: vCISO Market', url: 'https://www.google.com/alerts/feeds/1234567/vCISO', type: 'CONSULTING', category: 'alert' }
+];
+
+const JOB_BOARD_SOURCES = [
+    // Startup-first boards
+    { name: 'YC Jobs: RevOps', url: 'https://www.ycombinator.com/jobs.rss?role=revops', badge: 'YC', color: 'var(--green)' },
+    { name: 'YC Jobs: Customer Success', url: 'https://www.ycombinator.com/jobs.rss?role=customer-success', badge: 'YC', color: 'var(--green)' },
+    { name: 'YC Jobs: GTM', url: 'https://www.ycombinator.com/jobs.rss?role=go-to-market', badge: 'YC', color: 'var(--green)' },
+    // Remote boards
+    { name: 'RemoteOK RevOps', url: 'https://remoteok.com/remote-revops-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
+    { name: 'RemoteOK: Customer Success', url: 'https://remoteok.com/remote-customer-success-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
+    { name: 'We Work Remotely: RevOps', url: 'https://weworkremotely.com/remote-revops-jobs.rss', badge: 'WWR', color: 'var(--cyan)' },
+    { name: 'Startup.jobs RevOps', url: 'https://startup.jobs/rss?query=revops', badge: 'STARTUP', color: 'var(--accent)' },
+    { name: 'Startup.jobs vCISO', url: 'https://startup.jobs/rss?query=vciso', badge: 'STARTUP', color: 'var(--accent)' },
+    // Community boards
+    { name: 'Reddit r/forhire', url: 'https://www.reddit.com/r/forhire/.rss?sort=new', badge: 'REDDIT', color: '#FF4500' },
+    { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: 'REDDIT', color: '#FF4500' },
+    { name: 'HN Hiring', url: 'https://hnrss.org/newest?q=hiring+RevOps+OR+GTM+OR+%22Customer+Success%22', badge: 'HN', color: 'var(--gold)' },
+    { name: 'Product Hunt Jobs', url: 'https://www.producthunt.com/jobs/rss', badge: 'PH⛤', color: '#DA552F' },
+    // Wellfound/AngelList
+    { name: 'Wellfound: RevOps', url: 'https://wellfound.com/jobs?keywords=RevOps&location=Remote&rss=1', badge: 'WTFD', color: 'var(--pink)' },
+    { name: 'Wellfound: vCISO', url: 'https://wellfound.com/jobs?keywords=vCISO&rss=1', badge: 'WTFD', color: 'var(--pink)' }
 ];
 
 async function classifyWithOllama(sig) {
     if (localStorage.getItem('OLLAMA_OFFLINE') === 'true') return sig;
-
-    const prompt = `Classify this RSS item as a BASIN::NEXUS signal for a RevOps/GTM CRM.
-    Node Vault Context: 44,928 leads.
-    Item: Title: ${sig.title}, Desc: ${sig.desc}
-    
-    Output ONLY valid JSON:
-    {
-        "title": "${sig.title}",
-        "summary": "2-sentence strategic summary",
-        "priority": "HIGH ALPHA" | "MEDIUM" | "LOW",
-        "signalType": "Funding" | "Hiring" | "Product Launch" | "Competitor Move" | "News",
-        "relatedCompany": "Name or null",
-        "intentScore": 0-100
-    }`;
-
     try {
         const r = await fetch('http://localhost:11434/api/generate', {
             method: 'POST',
             body: JSON.stringify({
                 model: 'llama3.1:8b',
-                prompt: prompt,
-                stream: false,
-                format: 'json'
+                prompt: `BASIN::NEXUS Signal Classifier. Output JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":string,"summary":"2-sentence","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","signalType":"Funding"|"Hiring"|"Product"|"Competitor"|"News","relatedCompany":string|null,"intentScore":0-100}\nHIGH ALPHA=funding/major hire/competitor pivot`,
+                stream: false, format: 'json'
             })
         });
         const d = await r.json();
         const ai = JSON.parse(d.response);
-        
-        return {
-            ...sig,
-            title: ai.title || sig.title,
-            desc: ai.summary || sig.desc,
-            priority: ai.priority === 'HIGH ALPHA' ? 'ALPHA' : ai.priority,
-            type: ai.signalType?.toUpperCase() || sig.type,
-            intentScore: ai.intentScore,
-            relatedCompany: ai.relatedCompany
-        };
-    } catch (e) {
-        console.warn('Ollama classification failed - falling back to rule-based logic.');
-        return sig;
-    }
+        return { ...sig, title:ai.title||sig.title, desc:ai.summary||sig.desc, priority:ai.priority==='HIGH ALPHA'?'ALPHA':ai.priority, type:ai.signalType?.toUpperCase()||sig.type, intentScore:ai.intentScore, relatedCompany:ai.relatedCompany };
+    } catch (e) { return sig; }
+}
+
+async function classifyJobWithOllama(sig) {
+    if (localStorage.getItem('OLLAMA_OFFLINE') === 'true') return sig;
+    try {
+        const r = await fetch('http://localhost:11434/api/generate', {
+            method: 'POST',
+            body: JSON.stringify({
+                model: 'llama3.1:8b',
+                prompt: `BASIN::NEXUS Job Classifier. Output JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":string,"company":string,"location":string,"seniority":"VP"|"Head"|"Director"|"Manager"|"IC"|null,"roleType":"RevOps"|"Customer Success"|"GTM"|"vCISO"|"Sales"|"Other","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","intentScore":0-100,"summary":"2-sentence"}\nHIGH ALPHA=VP/Head/Director in RevOps/CS/GTM/vCISO`,
+                stream: false, format: 'json'
+            })
+        });
+        const d = await r.json();
+        const ai = JSON.parse(d.response);
+        return { ...sig, title:`${ai.seniority||''} ${ai.title||sig.title}`.trim(), desc:ai.summary||sig.desc, priority:ai.priority==='HIGH ALPHA'?'ALPHA':ai.priority, intentScore:ai.intentScore, relatedCompany:ai.company };
+    } catch (e) { return sig; }
 }
 
 async function fetchAllRSS() {
@@ -1302,12 +1317,17 @@ function buildSignalFeed() {
     liveSignals.sort((a,b) => (a.priority === 'ALPHA' ? -1 : 1)).forEach(sig => {
         const card = document.createElement('div');
         card.className = `signal-card ${sig.priority==='ALPHA'?'alpha':''}`;
+        card.dataset.type = sig.type;
+        card.dataset.source = sig.badge || sig.source;
         card.style.cursor = 'pointer';
         card.onclick = (e) => {
             if (e.target.tagName !== 'BUTTON') window.open(sig.url || '#', '_blank');
         };
 
-        const icon = sig.type==='FUNDING'?'💰':sig.type==='HIRING'?'👔':sig.type==='PRODUCT'?'🚀':sig.type==='SYSTEM'?'⚡':'🛰️';
+        const icon = sig.category === 'job' ? '💼' : sig.type==='FUNDING'?'💰':sig.type==='HIRING'?'👔':sig.type==='PRODUCT'?'🚀':sig.type==='SYSTEM'?'⚡':'🛰️';
+        const badgeHtml = sig.badge
+            ? `<span style="font-family:'JetBrains Mono';font-size:.45rem;font-weight:900;background:${sig.badgeColor||'var(--accent)'};color:#000;padding:2px 7px;border-radius:3px;letter-spacing:1px;">${sig.badge}</span>`
+            : '';
         
         card.innerHTML = `
             <div class="signal-icon-box">${icon}</div>
@@ -1317,6 +1337,7 @@ function buildSignalFeed() {
                         <span class="signal-type-badge ${sig.priority==='ALPHA'?'signal-type-alpha':sig.type==='FUNDING'?'signal-type-funding':sig.type==='HIRING'?'signal-type-hiring':''}">
                             ${sig.type} ${sig.priority==='ALPHA'?'// HIGH ALPHA':''}
                         </span>
+                        ${badgeHtml}
                         ${sig.intentScore ? `<span style="font-family:'JetBrains Mono'; font-size:.5rem; color:var(--cyan); border:1px solid var(--cyan); padding:1px 5px; border-radius:3px; font-weight:900;">INTENT: ${sig.intentScore}</span>` : ''}
                     </div>
                     <span class="signal-time">${sig.time}</span>
@@ -1340,7 +1361,82 @@ function buildSignalFeed() {
     });
 }
 
-// External Webhook Listener (for n8n/Node-RED)
+async function fetchAllJobBoards() {
+    showToast('💼 Scanning 14 Job Boards // YC, Wellfound, HN, Reddit, RemoteOK...');
+    const proxy = 'https://api.allorigins.win/get?url=';
+    
+    try {
+        await fetch('http://localhost:11434/api/tags');
+        localStorage.setItem('OLLAMA_OFFLINE', 'false');
+    } catch (e) {
+        localStorage.setItem('OLLAMA_OFFLINE', 'true');
+    }
+
+    for (const board of JOB_BOARD_SOURCES) {
+        try {
+            const r = await fetch(proxy + encodeURIComponent(board.url));
+            const d = await r.json();
+            await parseJobRSS(d.contents, board);
+        } catch (e) {
+            console.warn(`Job board failed: ${board.name}`, e);
+        }
+    }
+    buildSignalFeed();
+    showToast(`✓ Job scan complete // ${liveSignals.filter(s=>s.category==='job').length} hiring signals`);
+}
+
+async function parseJobRSS(xml, board) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'text/xml');
+    const items = Array.from(doc.querySelectorAll('item')).slice(0, 4);
+    
+    for (const item of items) {
+        const title = item.querySelector('title')?.textContent || '';
+        const desc = (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g,'').slice(0,180)+'...';
+        const link = item.querySelector('link')?.textContent || '#';
+        const date = new Date(item.querySelector('pubDate')?.textContent || Date.now());
+        
+        if (liveSignals.find(s => s.title === title)) continue;
+        
+        const isSenior = /\bVP\b|\bHead\b|\bDirector\b|\bPrincipal\b/i.test(title);
+        const isRevOps = /RevOps|Revenue Ops|GTM|vCISO|Customer Success/i.test(title+desc);
+        
+        let sig = {
+            id: 'job-' + Math.random().toString(36).substr(2,9),
+            title: title,
+            type: 'HIRING',
+            source: board.name.toUpperCase(),
+            priority: (isSenior && isRevOps) ? 'ALPHA' : isRevOps ? 'MEDIUM' : 'LOW',
+            time: formatTime(date),
+            desc: desc,
+            url: link,
+            intentScore: isSenior ? 88 : isRevOps ? 62 : 35,
+            badge: board.badge,
+            badgeColor: board.color,
+            category: 'job'
+        };
+        sig = await classifyJobWithOllama(sig);
+        liveSignals.unshift(sig);
+    }
+}
+
+function filterSignals(type, btn) {
+    document.querySelectorAll('.signal-feed-wrap .fpill').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    const mount = document.getElementById('signalListMount');
+    if(!mount) return;
+    const all = mount.querySelectorAll('.signal-card');
+    all.forEach(c => {
+        const show = type === 'all' ? true
+            : type === 'alpha' ? c.classList.contains('alpha')
+            : type === 'funding' ? c.dataset.type?.includes('FUNDING')
+            : type === 'hiring' ? c.dataset.type?.includes('HIRING')
+            : type === 'remote' ? c.dataset.source?.includes('REMOTE')
+            : type === 'startup' ? (c.dataset.source?.includes('YC') || c.dataset.source?.includes('PH') || c.dataset.source?.includes('STARTUP'))
+            : true;
+        c.style.display = show ? '' : 'none';
+    });
+}
 window.addSignal = function(data) {
     console.log('%c🛰️ NEXUS_INCOMING_SIGNAL: Protocol 23 verified','color:var(--cyan);font-weight:bold;');
     const sig = {
