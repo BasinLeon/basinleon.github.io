@@ -562,7 +562,7 @@ function warmIntroScore(node) {
 // ─────────────────────────────────────────────────────────────────
 // Security
 // ─────────────────────────────────────────────────────────────────
-if (!['localhost','127.0.0.1'].includes(window.location.hostname)) {
+if (!['localhost', '127.0.0.1'].includes(window.location.hostname) && window.location.protocol !== 'file:') {
     document.getElementById('securityAlert').style.display = 'block';
 }
 
@@ -587,7 +587,9 @@ function kwScore(node, tokens) {
 async function loadVault() {
     showToast('🔒 Synchronizing 163MB Vector Vault…');
     try {
-        const r = await fetch('./11_DATA_FEEDS/local_nexus_data.json', {cache:'no-store'});
+        // Try lite vault first (metadata only, much faster)
+        let r = await fetch('./11_DATA_FEEDS/local_nexus_lite.json', {cache:'no-store'});
+        if (!r.ok) r = await fetch('./11_DATA_FEEDS/local_nexus_data.json', {cache:'no-store'});
         if (!r.ok) throw new Error('Not found');
         const data = await r.json();
         allNodes = data.nodes.map(n => new NexusNode(n));
@@ -1174,26 +1176,15 @@ const SIGNAL_MOCK = [
 
 let liveSignals = [...SIGNAL_MOCK];
 
-const RSS_SOURCES = [
-    // Industry News & Intelligence
-    { name: 'Replit Blog', url: 'https://replit.com/blog/rss.xml', type: 'PRODUCT', category: 'news' },
-    { name: 'TechCrunch SaaS', url: 'https://techcrunch.com/tag/saas/feed/', type: 'FUNDING', category: 'news' },
-    { name: 'SaaStr', url: 'https://www.saastr.com/feed/', type: 'GTM', category: 'news' },
-    { name: 'Crunchbase Funding', url: 'https://news.crunchbase.com/feed/', type: 'FUNDING', category: 'news' },
-    { name: 'HubSpot', url: 'https://blog.hubspot.com/blog/rss.xml', type: 'MARKETING', category: 'news' },
-    { name: 'Salesforce Ben', url: 'https://www.salesforceben.com/feed/', type: 'CRM', category: 'news' },
-    // Google Alert Monitoring (Replace IDs with your real feed IDs from google.com/alerts)
-    { name: 'Google Alert: RevOps Hiring', url: 'https://www.google.com/alerts/feeds/1234567/REVOPS', type: 'HIRING', category: 'alert' },
-    { name: 'Google Alert: Replit Funding', url: 'https://www.google.com/alerts/feeds/1234567/REPLIT', type: 'FUNDING', category: 'alert' },
-    { name: 'Google Alert: GTM AI Strategy', url: 'https://www.google.com/alerts/feeds/1234567/GTM_AI', type: 'STRATEGY', category: 'alert' },
-    { name: 'Google Alert: vCISO Market', url: 'https://www.google.com/alerts/feeds/1234567/vCISO', type: 'CONSULTING', category: 'alert' }
-];
-
 const JOB_BOARD_SOURCES = [
     // Startup-first boards
     { name: 'YC Jobs: RevOps', url: 'https://www.ycombinator.com/jobs.rss?role=revops', badge: 'YC', color: 'var(--green)' },
     { name: 'YC Jobs: Customer Success', url: 'https://www.ycombinator.com/jobs.rss?role=customer-success', badge: 'YC', color: 'var(--green)' },
     { name: 'YC Jobs: GTM', url: 'https://www.ycombinator.com/jobs.rss?role=go-to-market', badge: 'YC', color: 'var(--green)' },
+    // Product Hunt Jobs
+    { name: 'Product Hunt: RevOps', url: 'https://www.producthunt.com/jobs/rss?query=revops', badge: 'PH⛤', color: '#DA552F' },
+    { name: 'Product Hunt: GTM', url: 'https://www.producthunt.com/jobs/rss?query=go-to-market', badge: 'PH⛤', color: '#DA552F' },
+    { name: 'Product Hunt: vCISO', url: 'https://www.producthunt.com/jobs/rss?query=vCISO', badge: 'PH⛤', color: '#DA552F' },
     // Remote boards
     { name: 'RemoteOK RevOps', url: 'https://remoteok.com/remote-revops-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
     { name: 'RemoteOK: Customer Success', url: 'https://remoteok.com/remote-customer-success-jobs.rss', badge: 'REMOTE✓', color: 'var(--cyan)' },
@@ -1202,12 +1193,10 @@ const JOB_BOARD_SOURCES = [
     { name: 'Startup.jobs vCISO', url: 'https://startup.jobs/rss?query=vciso', badge: 'STARTUP', color: 'var(--accent)' },
     // Community boards
     { name: 'Reddit r/forhire', url: 'https://www.reddit.com/r/forhire/.rss?sort=new', badge: 'REDDIT', color: '#FF4500' },
-    { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: 'REDDIT', color: '#FF4500' },
+    { name: 'Reddit r/revops', url: 'https://www.reddit.com/r/revops/.rss', badge: '#FF4500' },
     { name: 'HN Hiring', url: 'https://hnrss.org/newest?q=hiring+RevOps+OR+GTM+OR+%22Customer+Success%22', badge: 'HN', color: 'var(--gold)' },
-    { name: 'Product Hunt Jobs', url: 'https://www.producthunt.com/jobs/rss', badge: 'PH⛤', color: '#DA552F' },
     // Wellfound/AngelList
-    { name: 'Wellfound: RevOps', url: 'https://wellfound.com/jobs?keywords=RevOps&location=Remote&rss=1', badge: 'WTFD', color: 'var(--pink)' },
-    { name: 'Wellfound: vCISO', url: 'https://wellfound.com/jobs?keywords=vCISO&rss=1', badge: 'WTFD', color: 'var(--pink)' }
+    { name: 'Wellfound: RevOps', url: 'https://wellfound.com/jobs?keywords=RevOps&location=Remote&rss=1', badge: 'WTFD', color: 'var(--pink)' }
 ];
 
 async function classifyWithOllama(sig) {
@@ -1432,7 +1421,9 @@ async function fetchAllXSignals() {
             const searchUrl = `https://nitter.net/search?f=tweets&q=${encodeURIComponent(q)}&since=1d`;
             const r = await fetch(proxy + encodeURIComponent(searchUrl));
             const d = await r.json();
-            parseXSignals(d.contents, q);
+            // Handle cases whereproxy returns error or non-JSON
+            if (d.contents) parseXSignals(d.contents, q);
+            else console.warn(`X search returned empty for: ${q}`);
         } catch (e) {
             console.warn(`X scan failed for: ${q}`, e);
         }
