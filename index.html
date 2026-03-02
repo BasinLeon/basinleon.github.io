@@ -65,10 +65,12 @@
             position: fixed;
             top: 0; width: 100%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 4rem; z-index: 1000;
-            background: rgba(249, 246, 241, 0.8);
+            padding: 0 2rem; z-index: 1000;
+            background: rgba(249, 246, 241, 0.7);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-soft);
+            transition: all 0.3s ease;
         }
         .nav-logo { font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 4px; font-size: 1.1rem; text-decoration: none; color: #000; }
         .nav-links { display: flex; gap: 3rem; }
@@ -95,23 +97,25 @@
         }
         .hero h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3.5rem, 10vw, 6.5rem);
+            font-size: clamp(2.8rem, 12vw, 6.5rem);
             font-weight: 900;
-            line-height: 0.95;
-            margin-bottom: 3rem;
+            line-height: 1.0;
+            margin-bottom: 2.5rem;
             color: #000;
-            letter-spacing: -4px;
+            letter-spacing: -2px;
             animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
             animation-delay: 0.1s;
+            padding: 0 0.5rem;
         }
         .hero-subtitle {
-            margin-top: -1.8rem;
+            margin-top: -1.2rem;
             margin-bottom: 2.2rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
+            font-size: clamp(0.7rem, 2.5vw, 0.82rem);
             letter-spacing: 1.4px;
             text-transform: uppercase;
             color: var(--text-dim);
+            padding: 0 1rem;
         }
         .hero .manifesto {
             font-size: 1.4rem;
@@ -302,89 +306,77 @@
         }
 
         @media (max-width: 768px) {
-            nav { padding: 0 1.5rem; height: 70px; }
+            .container { padding: 0 1.2rem; }
+            nav { padding: 0 1.2rem; height: 70px; }
             .nav-links {
                 position: fixed;
-                top: 70px; right: -100%;
-                width: 100%; height: calc(100vh - 70px);
-                background: var(--bg-premium);
+                top: 0; right: -100%;
+                width: 85%; height: 100vh;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
                 flex-direction: column;
-                justify-content: flex-start;
-                padding-top: 3rem;
-                gap: 2rem;
-                transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-                border-top: 1px solid var(--border-soft);
-                z-index: 999;
-                backdrop-filter: blur(20px);
+                justify-content: center;
+                align-items: center;
+                padding: 4rem 2rem;
+                gap: 2.5rem;
+                transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+                box-shadow: -20px 0 60px rgba(0,0,0,0.1);
+                z-index: 1001;
             }
             .nav-links.active { right: 0; }
-            .nav-links a { font-size: 1rem; }
+            .nav-links a { font-size: 1.1rem; color: #000; }
             
+            .hero { padding: 120px 0 50px; }
+            .hero h1 { font-size: clamp(2.6rem, 15vw, 4rem); letter-spacing: -2px; margin-bottom: 1.5rem; }
+            .hero .manifesto { font-size: 1.1rem; line-height: 1.4; margin-bottom: 2.5rem; }
+            .cta-group { flex-direction: column; width: 100%; gap: 1rem; margin-bottom: 3rem; }
+            .btn { width: 100%; justify-content: center; padding: 1rem; }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 3rem; }
+            .stat-card { padding: 2rem 1rem; border-radius: 1.2rem; }
+            .stat-val { font-size: 1.5rem; }
+            .stat-label { font-size: 0.65rem; }
+            
+            .journey-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .journey-card { padding: 2rem 1.5rem; border-radius: 1.5rem; }
+            .job-node { padding-left: 1.5rem; margin-bottom: 2.5rem; }
+            .job-meta { font-size: 1.1rem; }
+            
+            .impact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .impact-card { min-height: auto; padding: 2rem 1.5rem; border-radius: 1.5rem; }
+            
+            .frameworks-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .framework-card { padding: 1.2rem; }
+            
+            .section-label { font-size: 1.2rem; margin-bottom: 2rem; }
+            .footer-links { flex-direction: column; gap: 1.5rem; align-items: center; }
+        }
+
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            gap: 6px; 
+            cursor: pointer;
+            z-index: 1010;
+            width: 30px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #000;
+            transition: 0.3s;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        
+        @media (max-width: 768px) {
             .menu-toggle { display: flex; }
-            .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-            .menu-toggle.active span:nth-child(2) { opacity: 0; }
-            .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-            .hero { padding: 120px 0 60px; }
-            .hero h1 { font-size: clamp(3rem, 15vw, 4.5rem); letter-spacing: -2px; }
-            .hero .manifesto { font-size: 1.15rem; margin-bottom: 3rem; }
-            
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-            .stats-grid.four-cols { grid-template-columns: repeat(2, 1fr); }
-            .stat-card { padding: 2rem 1rem; }
-            .stat-val { font-size: 1.8rem; }
-            
-            .journey-card, .board-card, .impact-card { padding: 2.5rem 1.5rem; }
-            .section-label { font-size: 1.4rem; gap: 1rem; margin-bottom: 2.5rem; }
-            
-            .frameworks-grid, .impact-grid { grid-template-columns: 1fr; }
-            
-            .arch-intro p { font-size: 1.25rem; }
-            
-            .cta-group { flex-direction: column; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; margin-bottom: 4.5rem; }
-            .btn { justify-content: center; width: 100%; }
-            .cta-note { margin-top: -2.8rem; margin-bottom: 3.8rem; }
-
-            .job-node { padding-left: 2rem; }
-            .job-meta { font-size: 1.2rem; }
-            .job-desc { font-size: 1rem; }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .stats-grid.four-cols { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 3.2rem; }
-            .nav-logo { font-size: 0.9rem; letter-spacing: 2px; }
-        }
-
-        /* Helper Classes */
-        .frameworks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 6rem; }
-        .framework-card { background: #fff; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-soft); box-shadow: var(--shadow-premium); overflow: hidden; }
-        .framework-card h4 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; margin-bottom: 1rem; color: var(--gold-primary); letter-spacing: 1px; }
-        .framework-img-container { width: 100%; height: 220px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.8rem; border: 1px solid #eee; }
-        .framework-img { width: 100%; height: 100%; object-fit: contain; transition: 0.3s; }
-        .framework-img:hover { transform: scale(1.05); }
-        .framework-desc { margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.4; }
-
-        .arch-intro { margin-bottom: 6rem; max-width: 800px; }
-        .arch-intro p { font-size: 1.5rem; line-height: 1.5; color: var(--text-dim); }
-
-        .stats-grid.three-cols { grid-template-columns: repeat(3, 1fr); }
-        
-        @media (max-width: 991px) {
-            .stats-grid.three-cols { grid-template-columns: repeat(2, 1fr); }
         }
         
-        @media (max-width: 768px) {
-            .stats-grid.three-cols { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .footer-links { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-            .footer-links a { font-size: 0.8rem; }
-        }
-
-        .menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body>
