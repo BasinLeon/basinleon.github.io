@@ -1,321 +1,728 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Operating Model Diagnostic | Basin & Associates</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Leon Basin | Revenue Architect</title>
+    
+    <!-- Primary SEO -->
+    <meta name="description" content="Leon Basin is a Revenue Architect and GTM Systems Engineer. Ex-Google and SurveyMonkey. Builds AI-assisted revenue systems that convert technical signal into pipeline." />
+    <script>
+        // Route the writing subdomain into the docs hub within the hybrid Pages build.
+        (function () {
+            var host = window.location.hostname;
+            if (host !== "writing.basinleon.com") return;
+            if (window.location.protocol !== "https:") {
+                window.location.replace(
+                    "https://writing.basinleon.com" +
+                    window.location.pathname +
+                    window.location.search +
+                    window.location.hash
+                );
+                return;
+            }
+            if (window.location.pathname.startsWith("/docs")) return;
+            var target = "/docs" + (window.location.pathname === "/" ? "/" : window.location.pathname);
+            window.location.replace(target + window.location.search + window.location.hash);
+        })();
+    </script>
+
+    <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.2);
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
-            --gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --gold-primary: #B8860B;
+            --gold-light: #D4AF37;
+            --gold-soft: rgba(184, 134, 11, 0.08);
+            --bg-premium: #f9f6f1; /* Precise cream from screenshot */
+            --bg-card: #ffffff;
+            --text-main: #000000;
+            --text-dim: #555555;
+            --border-soft: rgba(184, 134, 11, 0.12);
+            --shadow-premium: 0 30px 60px rgba(0,0,0,0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-print-color-adjust: exact;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        img { max-width: 100%; height: auto; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-premium);
+            color: var(--text-main);
             line-height: 1.6;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
         }
 
-        .page {
-            width: 850px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 60px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
-        .page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: var(--gradient);
+        /* --- Global Nav --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 2rem; z-index: 1000;
+            background: rgba(249, 246, 241, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-soft);
+            transition: all 0.3s ease;
         }
+        .nav-logo { font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 4px; font-size: 1.1rem; text-decoration: none; color: #000; }
+        .nav-links { display: flex; gap: 3rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold-primary); }
 
-        header {
-            margin-bottom: 50px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .brand h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand p {
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-
-        .doc-info {
-            text-align: right;
-        }
-
-        .doc-info span {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
+        /* --- Hero Section --- */
         .hero {
-            margin-bottom: 40px;
+            padding: 160px 0 100px;
+            text-align: center;
         }
-
-        .hero h2 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 16px;
+        .hero-badge {
+            display: inline-block;
+            padding: 0.6rem 1.4rem;
+            background: var(--gold-soft);
+            border: 1px solid var(--border-soft);
+            border-radius: 100px;
+            color: var(--gold-primary);
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            animation: pulse 2s infinite;
         }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 90%;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(184, 134, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); }
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-bottom: 40px;
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.8rem, 12vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.0;
+            margin-bottom: 2rem;
+            color: #000;
+            letter-spacing: -2px;
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.1s;
+            padding: 0 0.5rem;
         }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: transform 0.2s;
+        .hero-subtitle {
+            margin-top: -1.2rem;
+            margin-bottom: 2.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.7rem, 2.5vw, 0.82rem);
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            padding: 0 1rem;
         }
-
-        .card h3 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--accent);
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .checklist {
-            list-style: none;
-            margin-top: 12px;
-        }
-
-        .checklist li {
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .checklist li::before {
-            content: '→';
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .score-section {
-            background: var(--gradient);
-            border-radius: 16px;
-            padding: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--bg);
-        }
-
-        .score-content h3 {
-            font-family: 'Outfit', sans-serif;
+        .hero .manifesto {
             font-size: 1.4rem;
-            font-weight: 800;
+            color: var(--text-dim);
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            font-weight: 400;
+            line-height: 1.5;
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.2s;
         }
+        .hero .manifesto strong { color: #000; font-weight: 800; }
 
-        .score-content p {
-            font-weight: 500;
-            opacity: 0.9;
+        /* --- Stats Board --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-bottom: 5rem;
         }
-
-        .score-box {
-            background: var(--bg);
-            color: var(--accent);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .stat-card {
+            background: #fff;
+            padding: 3rem 0.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            text-align: center;
         }
+        .stat-card:hover { transform: translateY(-10px); border-color: var(--gold-primary); }
+        .stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--gold-primary); opacity: 0.4; }
+        .stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.7rem; font-weight: 900; color: var(--gold-primary); display: block; margin-bottom: 0.5rem; white-space: nowrap; }
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 800; }
 
-        footer {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        /* --- CTA Buttons --- */
+        .cta-group { 
+            display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 6rem; 
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+            animation-delay: 0.3s;
         }
-
-        .footer-cta {
-            color: var(--accent);
-            font-weight: 700;
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
             text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-gold { background: var(--gold-primary); color: #fff; border: none; }
+        .btn-gold:hover { background: #000; transform: translateY(-3px); }
+        .btn-outline { border: 2px solid var(--gold-primary); color: var(--gold-primary); background: transparent; }
+        .btn-outline:hover { background: var(--gold-soft); transform: translateY(-3px); }
+        .cta-note {
+            margin-top: -3.5rem;
+            margin-bottom: 4.8rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: var(--text-dim);
         }
 
-        @media print {
-            body { background: white; padding: 0; }
-            .page { 
-                box-shadow: none; 
-                border: none; 
-                width: 100%; 
-                margin: 0;
-                background: white;
-                color: #0f172a;
+        /* --- Journey Section (Matches Screenshot) --- */
+        .section-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 4rem;
+            display: flex; align-items: center; gap: 2rem;
+        }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-soft); }
+
+        .journey-layout {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 8rem;
+        }
+
+        .journey-card {
+            background: #fff;
+            padding: 4rem;
+            border-radius: 2.5rem;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .job-node { position: relative; padding-left: 3rem; margin-bottom: 4rem; }
+        .job-node::before { 
+            content: ''; position: absolute; left: 0; top: 0.5rem;
+            width: 12px; height: 12px; background: var(--gold-primary); border-radius: 50%;
+        }
+        .job-meta { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .job-meta span { color: var(--gold-light); font-weight: 900; text-transform: uppercase; font-size: 0.75rem; vertical-align: middle; margin-left: 10px; }
+        .job-desc { color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; max-width: 600px; }
+
+        .board-card {
+            background: #fdf6ec; /* Beige from screenshot */
+            padding: 4rem 3rem;
+            border-radius: 2.5rem;
+            border: 1px solid rgba(184, 134, 11, 0.1);
+        }
+        .board-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 3rem; letter-spacing: 1px; }
+        .cred-item { margin-bottom: 3rem; }
+        .cred-item h4 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .cred-item p { color: var(--text-dim); font-size: 1rem; }
+
+        /* --- Impact Section --- */
+        .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 8rem; }
+        .impact-card {
+            background: #000; color: #fff;
+            padding: 3.5rem; border-radius: 2rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 380px;
+            transition: 0.4s;
+        }
+        .impact-card:hover { transform: scale(1.02); box-shadow: 0 40px 80px rgba(0,0,0,0.3); }
+        .impact-tag { font-family: 'JetBrains Mono', monospace; color: var(--gold-primary); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 1.5rem; display: block; }
+        .impact-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .impact-card p { color: #aaa; font-size: 1rem; margin-bottom: 2rem; }
+        .impact-metric { border-top: 1px solid #333; padding-top: 1.5rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--gold-light); }
+        .impact-template {
+            list-style: none;
+            margin: 0 0 1.5rem 0;
+            padding: 0;
+            display: grid;
+            gap: 0.6rem;
+        }
+        .impact-template li {
+            font-size: 0.83rem;
+            color: #c8c8c8;
+            line-height: 1.45;
+            border-left: 2px solid rgba(184, 134, 11, 0.3);
+            padding-left: 0.6rem;
+        }
+        .impact-template strong {
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 8rem 0 4rem;
+            border-top: 1px solid var(--border-soft);
+            text-align: center;
+        }
+        .footer-logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 8px; margin-bottom: 2rem; display: block; text-decoration: none; color: #000; }
+        .footer-links { display: flex; justify-content: center; gap: 3rem; margin-bottom: 4rem; }
+        .footer-links a { text-decoration: none; color: var(--text-dim); font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card, .journey-card, .board-card, .impact-card, .framework-card {
+            animation: fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+        }
+
+        .stats-grid .stat-card:nth-child(1) { animation-delay: 0.4s; }
+        .stats-grid .stat-card:nth-child(2) { animation-delay: 0.5s; }
+        .stats-grid .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stats-grid .stat-card:nth-child(4) { animation-delay: 0.7s; }
+        .stats-grid .stat-card:nth-child(5) { animation-delay: 0.8s; }
+
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 5rem; }
+            nav { padding: 0 4rem; }
+        }
+
+        @media (max-width: 991px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .journey-layout { grid-template-columns: 1fr; }
+            .impact-grid { grid-template-columns: repeat(2, 1fr); }
+            .frameworks-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid.four-cols { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 1.2rem; }
+            nav { padding: 0 1.2rem; height: 70px; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 85%; height: 100vh;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 4rem 2rem;
+                gap: 2.5rem;
+                transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+                box-shadow: -20px 0 60px rgba(0,0,0,0.1);
+                z-index: 1001;
             }
-            .page::before { height: 4px; }
-            .card { background: #f8fafc; border: 1px solid #e2e8f0; }
-            h1, h2, h3 { color: #0f172a !important; -webkit-text-fill-color: initial !important; background: none !important; }
-            .brand h1 { -webkit-text-fill-color: #0f172a !important; }
-            .card h3 { color: #0284c7 !important; }
-            .score-section { background: #0f172a !important; color: white !important; }
-            .score-box { background: white !important; color: #0f172a !important; border: 2px solid #0f172a; }
-            .checklist li::before { color: #0284c7 !important; }
-            .text-muted { color: #64748b !important; }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1.1rem; color: #000; }
+            
+            .hero { padding: 120px 0 50px; }
+            .hero h1 { font-size: clamp(2.6rem, 15vw, 4rem); letter-spacing: -2px; margin-bottom: 1.5rem; }
+            .hero .manifesto { font-size: 1.1rem; line-height: 1.4; margin-bottom: 2.5rem; }
+            .cta-group { flex-direction: column; width: 100%; gap: 1rem; margin-bottom: 3rem; }
+            .btn { width: 100%; justify-content: center; padding: 1rem; }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 3rem; }
+            .stat-card { padding: 2rem 1rem; border-radius: 1.2rem; }
+            .stat-val { font-size: 1.5rem; }
+            .stat-label { font-size: 0.65rem; }
+            
+            .journey-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .journey-card { padding: 2rem 1.5rem; border-radius: 1.5rem; }
+            .job-node { padding-left: 1.5rem; margin-bottom: 2.5rem; }
+            .job-meta { font-size: 1.1rem; }
+            
+            .impact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .impact-card { min-height: auto; padding: 2rem 1.5rem; border-radius: 1.5rem; }
+            
+            .frameworks-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .framework-card { padding: 1.2rem; }
+            
+            .section-label { font-size: 1.2rem; margin-bottom: 2rem; }
+            .footer-links { flex-direction: column; gap: 1.5rem; align-items: center; }
         }
 
-        /* Animated micro-interaction for screen view */
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 20px -10px var(--accent-glow);
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            gap: 6px; 
+            cursor: pointer;
+            z-index: 1010;
+            width: 30px;
         }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #000;
+            transition: 0.3s;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+        }
+        
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body>
-    <div class="page">
-        <header>
-            <div class="brand">
-                <h1>BASIN & ASSOCIATES</h1>
-                <p>Enterprise Execution Intelligence</p>
-            </div>
-            <div class="doc-info">
-                <span>Diagnostic Code: COM-X1</span>
-                <span>Category: Operational Integrity</span>
-            </div>
-        </header>
 
-        <section class="hero">
-            <h2>The Commercial Operating Model Diagnostic</h2>
-            <p>A high-status framework for identifying the structural bottlenecks between enterprise strategy and predictable revenue delivery.</p>
-        </section>
-
-        <div class="grid">
-            <div class="card">
-                <h3>1. Operating Rhythm</h3>
-                <p>Is your cadence of execution predictable or reactive?</p>
-                <ul class="checklist">
-                    <li>Fixed meeting taxonomy</li>
-                    <li>Synchronized team reporting</li>
-                    <li>Decision-grade dashboards</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>2. System Symmetry</h3>
-                <p>Do your tools support the workflow, or is the team serving the CRM?</p>
-                <ul class="checklist">
-                    <li>Automated signal routing</li>
-                    <li>Zero-manual entry audits</li>
-                    <li>Cross-functional data sync</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>3. Friction Mapping</h3>
-                <p>Where does high-value effort get lost in administrative noise?</p>
-                <ul class="checklist">
-                    <li>Internal handoff velocity</li>
-                    <li>Approval cycle duration</li>
-                    <li>Strategic work-to-noise ratio</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>4. Revenue Integrity</h3>
-                <p>Is the pipeline a "hope-based" forecast or a mechanical outcome?</p>
-                <ul class="checklist">
-                    <li>Intent-based signal scoring</li>
-                    <li>Relationship architecture depth</li>
-                    <li>Weighted outcome projections</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="score-section">
-            <div class="score-content">
-                <h3>The "Fixer" Perspective</h3>
-                <p>"Complexity is the enemy of execution. Clarity is the requirement for scale."</p>
-            </div>
-            <div class="score-box">9.2</div>
-        </div>
-
-        <footer>
-            <div>
-                <strong>LEON BASIN</strong><br>
-                Commercial Operations & Transformation Director
-            </div>
-            <a href="https://linkedin.com/in/basinleon" class="footer-cta">Schedule a Diagnostic →</a>
-        </footer>
+<nav>
+    <a href="/" class="nav-logo">LEON BASIN</a>
+    <div class="menu-toggle" id="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
+    <div class="nav-links">
+        <a href="#journey">Experience</a>
+        <a href="#architecture">Systems</a>
+        <a href="https://basinleon.github.io/case-studies/">Case Studies</a>
+        <a href="mailto:lbasin23@gmail.com">Contact</a>
+    </div>
+</nav>
+
+<main class="container">
+    
+    <!-- Hero / Manifesto -->
+    <header class="hero">
+        <span class="hero-badge">Now Interviewing: Senior Commercial Operations & Transformation Roles</span>
+        <h1>Revenue Architect & GTM Leader // Built for Scale</h1>
+        <div class="hero-subtitle">Ex-Google + SurveyMonkey // Operator Scaling Predictable Growth Systems</div>
+        <p class="manifesto">
+            I design and operate <strong>Commercial Operating Models</strong> that turn messy buying signals into qualified pipeline.
+            I combine <strong>hands-on implementation</strong> with strategic leadership to align teams, automate revenue operations, and drive enterprise transformation.
+        </p>
+
+        <div class="cta-group">
+            <a href="resume.html" class="btn btn-gold">Hire Me Full-Time</a>
+            <a href="https://calendly.com/lbasin23/30min" class="btn btn-outline" target="_blank">Book GTM Audit</a>
+            <a href="https://basinleon.github.io/case-studies/" class="btn btn-outline">See 3 Case Studies</a>
+        </div>
+        <p class="cta-note">Prefer email first? <a href="mailto:lbasin23@gmail.com" style="color: var(--gold-primary); font-weight: 700;">lbasin23@gmail.com</a></p>
+    </header>
+
+    <section>
+        <h2 class="section-label">Hiring Manager Fast Scan</h2>
+        <div class="stats-grid three-cols">
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">What You Get</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">A builder-operator who can architect GTM systems, implement the workflow, and own measurable pipeline outcomes.</p>
+            </div>
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Where I Fit</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Player-coach GTM Systems Engineer, Revenue Architecture Lead, or RevOps Automation owner from Series A to enterprise.</p>
+            </div>
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">How To Evaluate</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Review the case studies, inspect the system artifacts, then run a 20-minute architecture walkthrough with me.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Metrics -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-val">$30M+</div>
+            <div class="stat-label">PIPELINE INFLUENCED</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">160%</div>
+            <div class="stat-label">YOY GROWTH</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">$300M+</div>
+            <div class="stat-label">PORTFOLIO</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">$424K</div>
+            <div class="stat-label">OPEX SAVINGS</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">700K+</div>
+            <div class="stat-label">R&D LINES</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">10+</div>
+            <div class="stat-label">YEARS BUILDING</div>
+        </div>
+    </section>
+    <section style="margin-top: -3.4rem; margin-bottom: 6rem;">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.6px; text-align: center;">
+            Context: Aggregate outcomes across Google, SurveyMonkey, and Series A cybersecurity systems work (2010–2025). Each case study includes role, timeframe, method, and constraints.
+        </p>
+    </section>
+
+    <!-- Strategic Journey Grid -->
+    <section id="journey">
+        <h2 class="section-label">Experience Snapshot</h2>
+        <div class="journey-layout">
+            <div class="journey-card">
+                <div class="job-node">
+                    <div class="job-meta">Revenue Architect <span>Series A Cybersecurity</span></div>
+                    <p class="job-desc">Built a lead-to-opportunity engine that scaled pipeline to 160% YoY. Replaced manual SDR work with automated qualification and cleaner routing.</p>
+                </div>
+                <div class="job-node">
+                    <div class="job-meta">GTM Systems Leadership <span>Sense (Series D)</span></div>
+                    <p class="job-desc">Owned global revenue systems and outreach architecture. Unified fragmented data layers into one operating view for BD leadership.</p>
+                </div>
+                <div class="job-node">
+                    <div class="job-meta">Enterprise BD Architecture <span>SurveyMonkey</span></div>
+                    <p class="job-desc">Built enterprise discovery workflows for F500 accounts and created technical outreach standards used across teams.</p>
+                </div>
+                <div class="job-node" style="margin-bottom: 0;">
+                    <div class="job-meta">Operations Analyst <span>Google (Shopping Index Operations)</span></div>
+                    <p class="job-desc">Worked inside high-scale internal systems focused on data quality, operational uptime, and process reliability.</p>
+                </div>
+            </div>
+
+            <div class="board-card">
+                <h3>Operator Credentials</h3>
+                <div class="cred-item">
+                    <h4>Executive MBA</h4>
+                    <p>Santa Clara University</p>
+                </div>
+                <div class="cred-item">
+                    <h4>9+ Frameworks</h4>
+                    <p>Published Revenue Models</p>
+                </div>
+                <div class="cred-item" style="margin-bottom: 0;">
+                    <h4>2 Published Books</h4>
+                    <p>Cybersecurity & Storytelling</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Architecture Section -->
+    <section id="architecture">
+        <h2 class="section-label">Systems Portfolio</h2>
+        <div class="arch-intro">
+            <p>
+                I maintain a <strong>production-tested library of automation frameworks</strong> that reduces manual GTM work and improves funnel signal quality. I treat revenue operations like a high-uptime system.
+            </p>
+        </div>
+
+        <!-- Framework Visuals -->
+        <h3 class="section-label" style="display: block; margin-bottom: 3rem;">Engineering Models</h3>
+        <div class="frameworks-grid">
+            <!-- Model 1: Signal Refinery Monitor -->
+            <div class="framework-card">
+                <h4><a href="agentbar.html" style="text-decoration: none; color: inherit;">SIGNAL REFINERY MONITOR [AGENTBAR]</a></h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/signal_refinery_hud_actual_fixed.png?v=3" alt="Actual System Screenshot: AgentBar Monitor" class="framework-img">
+                </div>
+                <p class="framework-desc">Python-native telemetry for real-time intent extraction and cognitive signal routing across the GTM stack.</p>
+            </div>
+
+            <!-- Model 2: Logic Flow -->
+            <div class="framework-card">
+                <h4>AUTONOMOUS LOGIC</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/logic-flow.png" alt="Autonomous Logic Flow" class="framework-img">
+                </div>
+                <p class="framework-desc">Engineering schematics for decision-tree automation and routing.</p>
+            </div>
+
+            <!-- Model 3: Proprietary IP Blueprint -->
+            <div class="framework-card">
+                <h4>PROPRIETARY IP BLUEPRINT</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/final_v4_patent_dark.jpg" alt="Patent Schematic: Revenue Architecture" class="framework-img">
+                </div>
+                <p class="framework-desc">The patented logic framework for signal-to-pipeline conversion.</p>
+            </div>
+
+            <!-- Model 4: Nexus Agents UI -->
+            <div class="framework-card">
+                <h4>NEXUS AGENTS UI</h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/nexus_agents_ui.png" alt="Nexus Agents Orchestration Interface" class="framework-img">
+                </div>
+                <p class="framework-desc">Neural workforce orchestration for autonomous GTM execution.</p>
+            </div>
+
+            <!-- Model 5: Execution Console -->
+            <div class="framework-card">
+                <h4><a href="nexus-console-demo/" style="text-decoration: none; color: inherit;">Execution Console Interface</a></h4>
+                <div class="framework-img-container">
+                    <img src="assets/img/frameworks/execution_console_v2_final.png?v=3" alt="Actual System Screenshot: Execution Console Interface" class="framework-img">
+                </div>
+                <p class="framework-desc">Orchestrating the agents of revenue. Simplifying the complex into deterministic scale.</p>
+            </div>
+
+            <!-- Model 6: AI Project Gallery -->
+            <div class="framework-card">
+                <h4>AI PROJECT GALLERY</h4>
+                <div class="framework-img-container" style="background: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <div style="text-align: center; padding: 2rem;">
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 3rem; color: var(--gold-primary); display: block; margin-bottom: 1rem;">30+</span>
+                        <span style="font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-dim);">END-TO-END PROJECTS</span>
+                    </div>
+                </div>
+                <p class="framework-desc">An R&D playground covering GenAI, Agentic Workflows, and Predictive Analytics.</p>
+            </div>
+        </div>
+
+        <h3 class="section-label" style="display: block; margin-top: 6rem; margin-bottom: 3rem;">Operational Pilots</h3>
+        <div class="stats-grid three-cols">
+            <a href="silicon-signal-demo/" style="text-decoration: none;" class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; color: #000;">Silicon Nexus</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Automated intent extraction & partner infrastructure for GTM agencies. <span style="color: var(--gold-primary); font-weight: 800;">View Live Demo →</span></p>
+            </a>
+            <a href="talsmart-demo/" style="text-decoration: none;" class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; color: #000;">TalSmart Loop</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Neuroscience-backed follow-up engine for technical sales training. <span style="color: var(--gold-primary); font-weight: 800;">View Live Demo →</span></p>
+            </a>
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">Comms Studio</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Persona-targeted messaging that replaces generic scripts with high-fidelity briefs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Impact (Case Studies) -->
+    <section>
+        <h2 class="section-label">Strategic Impact</h2>
+        <div class="impact-grid">
+            <div class="impact-card">
+                <span class="impact-tag">SYSTEMS CONSTRUCTION</span>
+                <h3>Project::Sentinel</h3>
+                <ul class="impact-template">
+                    <li><strong>Problem</strong> Enterprise security demand was buried under noisy prospecting.</li>
+                    <li><strong>Constraints</strong> Lean team, strict ICP, no headcount expansion.</li>
+                    <li><strong>System design</strong> Two-lane signal routing with rule-based qualification workflows.</li>
+                    <li><strong>Results</strong> Built a $2M enterprise pipeline with consistent monthly velocity.</li>
+                    <li><strong>What I’d do differently</strong> Add earlier sales-stage conversion instrumentation.</li>
+                </ul>
+                <div class="impact-metric">160% Pipeline Growth // 77 Mtgs/Mo</div>
+            </div>
+            <div class="impact-card">
+                <span class="impact-tag">SCALE ARCHITECTURE</span>
+                <h3>Project::Delight</h3>
+                <ul class="impact-template">
+                    <li><strong>Problem</strong> One-size routing logic was stalling both enterprise and SMB motions.</li>
+                    <li><strong>Constraints</strong> Existing stack only, no additional hiring budget.</li>
+                    <li><strong>System design</strong> Parallel enterprise/SMB routing lanes with shared governance rules.</li>
+                    <li><strong>Results</strong> Scaled outbound and inbound coverage with zero new headcount.</li>
+                    <li><strong>What I’d do differently</strong> Introduce intent scoring one quarter earlier.</li>
+                </ul>
+                <div class="impact-metric">Bifurcated Routing // Scaled Efficiently</div>
+            </div>
+            <div class="impact-card">
+                <span class="impact-tag">AI SIGNAL OPS</span>
+                <h3>Project::Aurora</h3>
+                <ul class="impact-template">
+                    <li><strong>Problem</strong> Technical briefs took too long and lacked consistent signal quality.</li>
+                    <li><strong>Constraints</strong> High accuracy threshold across complex F500 security accounts.</li>
+                    <li><strong>System design</strong> AI-assisted research pipeline with confidence-gated brief generation.</li>
+                    <li><strong>Results</strong> Achieved 92% intent accuracy with 4x research efficiency.</li>
+                    <li><strong>What I’d do differently</strong> Add tighter feedback loop from closed-lost analysis.</li>
+                </ul>
+                <div class="impact-metric">92% Intent Accuracy // 4x Efficiency</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-label">30 / 60 / 90 Day Plan</h2>
+        <div class="stats-grid three-cols">
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 1-30</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Audit funnel stages, instrument core metrics, map routing and handoff failures, and publish a baseline system scorecard.</p>
+            </div>
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 31-60</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Ship high-impact fixes: routing logic, qualification workflow updates, and SLA visibility to reduce leakage and manual load.</p>
+            </div>
+            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 61-90</h3>
+                <p style="color: var(--text-dim); font-size: 0.95rem;">Scale winning playbooks, train team owners, and lock an operating cadence tied to pipeline quality and conversion velocity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intel & Research Section -->
+    <section id="intel">
+        <h2 class="section-label">Intel & Research</h2>
+        <div class="stats-grid four-cols">
+            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">The Secure Strategist</h3>
+                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">GTM engineering for Security leaders.</p>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+            </a>
+            <a href="https://basinandassociates.substack.com/" style="text-decoration: none;" class="stat-card">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">GTM Engineering</h3>
+                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signals, Systems & Market analysis.</p>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Substack →</span>
+            </a>
+            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Leadership Labyrinth</h3>
+                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Organizational architecture insights.</p>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+            </a>
+            <a href="https://basinleon.github.io/library/" style="text-decoration: none;" class="stat-card">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Technical Library</h3>
+                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signal Ops & GTM Frameworks.</p>
+                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Library →</span>
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <a href="/" class="footer-logo">LEON BASIN</a>
+        <div class="footer-links">
+            <a href="https://linkedin.com/in/leonbasin">LinkedIn</a>
+            <a href="https://calendly.com/lbasin23/30min" target="_blank">Calendar</a>
+            <a href="https://basinleon.github.io/case-studies/">Case Studies</a>
+            <a href="https://basinleon.github.io/library/">Library</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #aaa; letter-spacing: 2px;">
+            &copy; 2026 LEON BASIN | GTM SYSTEMS ARCHITECT
+        </p>
+    </div>
+</footer>
+
+<script>
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+
+    mobileMenu.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+</script>
+
 </body>
 </html>
