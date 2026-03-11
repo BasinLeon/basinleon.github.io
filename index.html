@@ -98,6 +98,14 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
+        .page-section {
+            margin-bottom: 6.5rem;
+        }
+
+        .page-section:last-of-type {
+            margin-bottom: 0;
+        }
+
         body.menu-open {
             overflow: hidden;
         }
@@ -206,7 +214,7 @@
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             gap: 1rem;
-            margin-bottom: 5rem;
+            margin-bottom: 2rem;
         }
         .stat-card {
             background: #fff;
@@ -222,6 +230,50 @@
         .stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--gold-primary); opacity: 0.4; }
         .stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.7rem; font-weight: 900; color: var(--gold-primary); display: block; margin-bottom: 0.5rem; white-space: nowrap; }
         .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 800; }
+
+        .value-card-grid {
+            margin-bottom: 0;
+        }
+
+        .value-card {
+            padding: 2.4rem 2rem;
+            text-align: left;
+        }
+
+        .value-card h3,
+        .pilot-card h3,
+        .day-plan-card h3,
+        .intel-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #000;
+            line-height: 1.45;
+        }
+
+        .value-card p,
+        .pilot-card p,
+        .day-plan-card p,
+        .intel-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .metrics-row {
+            margin-bottom: 1.4rem;
+        }
+
+        .metric-context {
+            max-width: 980px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.6px;
+            line-height: 1.7;
+        }
 
         /* --- CTA Buttons --- */
         .cta-group { 
@@ -259,20 +311,27 @@
         /* --- Journey Section (Matches Screenshot) --- */
         .section-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 2.4vw, 1.8rem);
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 4rem;
-            display: flex; align-items: center; gap: 2rem;
+            letter-spacing: 0.12em;
+            margin-bottom: 2.5rem;
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+            gap: 1.5rem;
         }
-        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-soft); }
+        .section-label::after { content: ''; height: 1px; background: var(--border-soft); }
+
+        .section-subhead {
+            display: block;
+            margin-bottom: 2rem;
+        }
 
         .journey-layout {
             display: grid;
             grid-template-columns: 1.8fr 1fr;
             gap: 2.5rem;
-            margin-bottom: 8rem;
         }
 
         .journey-card {
@@ -304,7 +363,7 @@
         .cred-item p { color: var(--text-dim); font-size: 1rem; }
 
         /* --- Impact Section --- */
-        .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 8rem; }
+        .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         .impact-card {
             background: #000; color: #fff;
             padding: 3.5rem; border-radius: 2rem;
@@ -365,21 +424,96 @@
         }
 
         .arch-intro {
-            max-width: 760px;
-            margin-bottom: 2.25rem;
+            max-width: 820px;
+            margin-bottom: 1.8rem;
         }
 
         .arch-intro p {
             color: var(--text-dim);
-            font-size: 1.1rem;
-            line-height: 1.75;
+            font-size: 1.16rem;
+            line-height: 1.72;
+        }
+
+        .pilot-card,
+        .day-plan-card,
+        .intel-card {
+            padding: 2.2rem 2rem;
+            text-align: left;
+        }
+
+        .intel-card p {
+            font-size: 0.84rem;
+            margin-bottom: 1rem;
+        }
+
+        .intel-link {
+            color: var(--gold-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
         }
 
         .proof-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
-            margin-bottom: 8rem;
+        }
+
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.75rem;
+        }
+
+        .framework-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(253,246,236,0.92));
+            border: 1px solid var(--border-soft);
+            border-radius: 1.8rem;
+            padding: 1.35rem;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.035);
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .framework-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+            border-color: rgba(184, 134, 11, 0.3);
+        }
+
+        .framework-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .framework-img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.2rem;
+            aspect-ratio: 1.25 / 1;
+            background: rgba(0,0,0,0.04);
+            border: 1px solid rgba(184, 134, 11, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .framework-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .framework-desc {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            line-height: 1.65;
+            margin-top: auto;
         }
 
         .proof-card {
@@ -412,7 +546,7 @@
 
         /* --- Footer --- */
         footer {
-            padding: 8rem 0 4rem;
+            padding: 7rem 0 4rem;
             border-top: 1px solid var(--border-soft);
             text-align: center;
         }
@@ -447,6 +581,7 @@
             .proof-grid { grid-template-columns: repeat(2, 1fr); }
             .frameworks-grid { grid-template-columns: repeat(2, 1fr); }
             .stats-grid.four-cols { grid-template-columns: repeat(2, 1fr); }
+            .page-section { margin-bottom: 5.5rem; }
         }
 
         @media (max-width: 768px) {
@@ -537,6 +672,16 @@
             .stat-card { padding: 1.2rem 0.9rem; border-radius: 1.2rem; }
             .stat-val { font-size: 1.25rem; }
             .stat-label { font-size: 0.58rem; letter-spacing: 0.08em; }
+            .value-card,
+            .pilot-card,
+            .day-plan-card,
+            .intel-card { padding: 1.35rem 1.1rem; }
+            .metric-context {
+                font-size: 0.64rem;
+                line-height: 1.65;
+                text-align: left;
+                max-width: none;
+            }
             
             .section-label {
                 font-size: 1.05rem;
@@ -544,8 +689,9 @@
                 gap: 0.8rem;
                 letter-spacing: 0.14em;
             }
+            .page-section { margin-bottom: 4.25rem; }
             .section-stack { gap: 4rem; }
-            .journey-layout { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 4rem; }
+            .journey-layout { grid-template-columns: 1fr; gap: 1rem; }
             .journey-card { padding: 1.4rem 1.1rem; border-radius: 1.4rem; }
             .job-node { padding-left: 1.2rem; margin-bottom: 1.4rem; }
             .job-node::before { width: 9px; height: 9px; top: 0.45rem; }
@@ -675,59 +821,59 @@
         <div class="audience-pill">AI-Native Teams</div>
     </section>
 
-    <section>
+    <section class="page-section">
         <h2 class="section-label">Why Teams Bring Me In</h2>
-        <div class="stats-grid three-cols">
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Build Leverage Before Headcount</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">I build systems that improve execution quality, speed, and signal clarity before the answer becomes hiring more people into broken process.</p>
+        <div class="stats-grid three-cols value-card-grid">
+            <div class="stat-card value-card">
+                <h3>Build Leverage Before Headcount</h3>
+                <p>I build systems that improve execution quality, speed, and signal clarity before the answer becomes hiring more people into broken process.</p>
             </div>
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Bridge GTM and Engineering</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">I work best where sales, RevOps, product, and technical teams need one shared system instead of four different interpretations of the same problem.</p>
+            <div class="stat-card value-card">
+                <h3>Bridge GTM and Engineering</h3>
+                <p>I work best where sales, RevOps, product, and technical teams need one shared system instead of four different interpretations of the same problem.</p>
             </div>
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Legible Under Scrutiny</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">You should not have to guess whether someone can build. Review the case studies, inspect the systems, and decide whether the work holds up.</p>
+            <div class="stat-card value-card">
+                <h3>Legible Under Scrutiny</h3>
+                <p>You should not have to guess whether someone can build. Review the case studies, inspect the systems, and decide whether the work holds up.</p>
             </div>
         </div>
     </section>
 
     <!-- Executive Metrics -->
-    <section class="stats-grid">
-        <div class="stat-card">
+    <section class="page-section">
+        <div class="stats-grid metrics-row">
+            <div class="stat-card">
             <div class="stat-val">$30M+</div>
             <div class="stat-label">PIPELINE INFLUENCED</div>
-        </div>
-        <div class="stat-card">
+            </div>
+            <div class="stat-card">
             <div class="stat-val">160%</div>
             <div class="stat-label">YOY GROWTH</div>
-        </div>
-        <div class="stat-card">
+            </div>
+            <div class="stat-card">
             <div class="stat-val">$300M+</div>
             <div class="stat-label">PORTFOLIO</div>
-        </div>
-        <div class="stat-card">
+            </div>
+            <div class="stat-card">
             <div class="stat-val">$424K</div>
             <div class="stat-label">OPEX SAVINGS</div>
-        </div>
-        <div class="stat-card">
+            </div>
+            <div class="stat-card">
             <div class="stat-val">700K+</div>
             <div class="stat-label">R&D LINES</div>
-        </div>
-        <div class="stat-card">
+            </div>
+            <div class="stat-card">
             <div class="stat-val">10+</div>
             <div class="stat-label">YEARS BUILDING</div>
+            </div>
         </div>
-    </section>
-    <section style="margin-top: -3.4rem; margin-bottom: 6rem;">
-        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.6px; text-align: center;">
+        <p class="metric-context">
             Context: Aggregate outcomes across Google, SurveyMonkey, and Series A cybersecurity systems work (2010–2025). Each case study includes role, timeframe, method, and constraints.
         </p>
     </section>
 
     <!-- Strategic Journey Grid -->
-    <section id="journey">
+    <section class="page-section" id="journey">
         <h2 class="section-label">Operator Track Record</h2>
         <div class="journey-layout">
             <div class="journey-card">
@@ -772,7 +918,7 @@
     </section>
 
     <!-- The Architecture Section -->
-    <section id="architecture">
+    <section class="page-section" id="architecture">
         <h2 class="section-label">Systems Portfolio</h2>
         <div class="arch-intro">
             <p>
@@ -781,7 +927,7 @@
         </div>
 
         <!-- Framework Visuals -->
-        <h3 class="section-label" style="display: block; margin-bottom: 3rem;">Operating Models</h3>
+        <h3 class="section-label section-subhead">Operating Models</h3>
         <div class="frameworks-grid">
             <!-- Model 1: Signal Refinery Monitor -->
             <div class="framework-card">
@@ -841,25 +987,25 @@
             </div>
         </div>
 
-        <h3 class="section-label" style="display: block; margin-top: 6rem; margin-bottom: 3rem;">Operational Pilots</h3>
-        <div class="stats-grid three-cols">
-            <a href="https://basinleon.github.io/case-studies/" style="text-decoration: none;" class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; color: #000;">Silicon Nexus</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Automated intent extraction & partner infrastructure for GTM agencies. <span style="color: var(--gold-primary); font-weight: 800;">See Case Study Layer →</span></p>
+        <h3 class="section-label section-subhead" style="margin-top: 5rem;">Operational Pilots</h3>
+        <div class="stats-grid three-cols value-card-grid">
+            <a href="https://basinleon.github.io/case-studies/" style="text-decoration: none;" class="stat-card pilot-card">
+                <h3>Silicon Nexus</h3>
+                <p>Automated intent extraction & partner infrastructure for GTM agencies. <span style="color: var(--gold-primary); font-weight: 800;">See Case Study Layer →</span></p>
             </a>
-            <a href="https://basinleon.github.io/case-studies/" style="text-decoration: none;" class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; color: #000;">TalSmart Loop</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Neuroscience-backed follow-up engine for technical sales training. <span style="color: var(--gold-primary); font-weight: 800;">See Case Study Layer →</span></p>
+            <a href="https://basinleon.github.io/case-studies/" style="text-decoration: none;" class="stat-card pilot-card">
+                <h3>TalSmart Loop</h3>
+                <p>Neuroscience-backed follow-up engine for technical sales training. <span style="color: var(--gold-primary); font-weight: 800;">See Case Study Layer →</span></p>
             </a>
-            <a href="gtm-architecture-live/" style="text-decoration: none;" class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; color: #000;">GTM Arch Live</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Interactive class model logic, architecture trace, and live decision experiments. <span style="color: var(--gold-primary); font-weight: 800;">View Live Demo →</span></p>
+            <a href="gtm-architecture-live/" style="text-decoration: none;" class="stat-card pilot-card">
+                <h3>GTM Arch Live</h3>
+                <p>Interactive class model logic, architecture trace, and live decision experiments. <span style="color: var(--gold-primary); font-weight: 800;">View Live Demo →</span></p>
             </a>
         </div>
     </section>
 
     <!-- Strategic Impact (Case Studies) -->
-    <section id="case-studies">
+    <section class="page-section" id="case-studies">
         <h2 class="section-label">Case Study Entry Points</h2>
         <div class="arch-intro">
             <p>
@@ -906,25 +1052,25 @@
         </div>
     </section>
 
-    <section>
+    <section class="page-section">
         <h2 class="section-label">What Changes in the First 90 Days</h2>
-        <div class="stats-grid three-cols">
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 1-30</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Audit funnel stages, instrument core metrics, map routing and handoff failures, and publish a baseline system scorecard.</p>
+        <div class="stats-grid three-cols value-card-grid">
+            <div class="stat-card day-plan-card">
+                <h3>Days 1-30</h3>
+                <p>Audit funnel stages, instrument core metrics, map routing and handoff failures, and publish a baseline system scorecard.</p>
             </div>
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 31-60</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Ship high-impact fixes: routing logic, qualification workflow updates, and SLA visibility to reduce leakage and manual load.</p>
+            <div class="stat-card day-plan-card">
+                <h3>Days 31-60</h3>
+                <p>Ship high-impact fixes: routing logic, qualification workflow updates, and SLA visibility to reduce leakage and manual load.</p>
             </div>
-            <div class="stat-card" style="padding: 2.5rem; text-align: left;">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; color: #000;">Days 61-90</h3>
-                <p style="color: var(--text-dim); font-size: 0.95rem;">Scale winning playbooks, train team owners, and lock an operating cadence tied to pipeline quality and conversion velocity.</p>
+            <div class="stat-card day-plan-card">
+                <h3>Days 61-90</h3>
+                <p>Scale winning playbooks, train team owners, and lock an operating cadence tied to pipeline quality and conversion velocity.</p>
             </div>
         </div>
     </section>
 
-    <section id="proof">
+    <section class="page-section" id="proof">
         <h2 class="section-label">Writing, Teaching, and Proof</h2>
         <div class="proof-grid">
             <article class="proof-card">
@@ -946,28 +1092,28 @@
     </section>
 
     <!-- Intel & Research Section -->
-    <section id="intel">
+    <section class="page-section" id="intel">
         <h2 class="section-label">Where the Thinking Lives</h2>
         <div class="stats-grid four-cols">
-            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">The Secure Strategist</h3>
-                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">GTM engineering for Security leaders.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card intel-card">
+                <h3>The Secure Strategist</h3>
+                <p>GTM engineering for Security leaders.</p>
+                <span class="intel-link">LinkedIn →</span>
             </a>
-            <a href="https://basinandassociates.substack.com/" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">GTM Engineering</h3>
-                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signals, Systems & Market analysis.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Substack →</span>
+            <a href="https://basinandassociates.substack.com/" style="text-decoration: none;" class="stat-card intel-card">
+                <h3>GTM Engineering</h3>
+                <p>Signals, systems, and market analysis.</p>
+                <span class="intel-link">Substack →</span>
             </a>
-            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Leadership Labyrinth</h3>
-                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Organizational architecture insights.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">LinkedIn →</span>
+            <a href="https://linkedin.com/in/leonbasin" style="text-decoration: none;" class="stat-card intel-card">
+                <h3>Leadership Labyrinth</h3>
+                <p>Organizational architecture insights.</p>
+                <span class="intel-link">LinkedIn →</span>
             </a>
-            <a href="https://basinleon.github.io/docs/frameworks/" style="text-decoration: none;" class="stat-card">
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 0.5rem; color: #000;">Technical Library</h3>
-                <p style="color: var(--text-dim); font-size: 0.75rem; margin-bottom: 1rem;">Signal Ops & GTM Frameworks.</p>
-                <span style="color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 900;">Framework Library →</span>
+            <a href="https://basinleon.github.io/docs/frameworks/" style="text-decoration: none;" class="stat-card intel-card">
+                <h3>Technical Library</h3>
+                <p>Signal Ops and GTM frameworks.</p>
+                <span class="intel-link">Framework Library →</span>
             </a>
         </div>
     </section>
