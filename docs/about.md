@@ -4,18 +4,20 @@ title: About
 permalink: /about/
 ---
 
-I build AI-assisted GTM systems that convert technical signal into qualified pipeline.
+I build revenue systems, operator workflows, and AI-assisted infrastructure that help teams move with more clarity and less drag.
 
-This blog is where I publish practical writing on:
+I also write and teach through frameworks, field notes, and operating artifacts when a system needs to be understood, not just shipped.
+
+This journal is where I publish practical writing on:
 
 - GTM systems design
 - Revenue operations architecture
 - Signal capture and routing
 - Operator playbooks that ship outcomes
+- The intersection of systems thinking, teaching, writing, and execution
 
 Connect:
 
 - [LinkedIn](https://linkedin.com/in/leonbasin)
 - [Portfolio](https://basinleon.github.io)
 - [Email](mailto:lbasin23@gmail.com)
-
