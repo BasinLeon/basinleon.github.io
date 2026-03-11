@@ -4,8 +4,6 @@ title: Frameworks
 permalink: /frameworks/
 ---
 
-# Writing + Operator Frameworks
-
 This is the consolidated framework library used across my writing, outreach, and publishing system.
 
 ## 1) LinkedIn DM Framework (4 lines)

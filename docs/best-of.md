@@ -4,8 +4,6 @@ title: Best Of
 permalink: /best-of/
 ---
 
-# Best Of
-
 Start with these if you want the clearest read on how I think as an operator.
 
 1. [Why Pipeline Breaks at Interpretation, Not Outreach Volume]({{ '/gtm-systems/revenue-architecture/operator-notes/2026/03/09/why-pipeline-breaks-at-interpretation/' | relative_url }})

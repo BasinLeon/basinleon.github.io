@@ -4,8 +4,6 @@ title: Share Kit
 permalink: /share/
 ---
 
-# Share Kit
-
 Primary site:
 - https://basinleon.github.io/docs/
 

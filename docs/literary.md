@@ -4,8 +4,6 @@ title: Literary
 permalink: /literary/
 ---
 
-# Literary Lane
-
 This is the personal side of my writing.
 
 Alongside systems and operator notes, I also publish reflective, human, and literary work:

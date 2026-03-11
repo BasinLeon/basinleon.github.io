@@ -4,8 +4,6 @@ title: Topics
 permalink: /topics/
 ---
 
-# Topics
-
 ## GTM Systems
 
 Focus:

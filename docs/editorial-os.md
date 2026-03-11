@@ -4,8 +4,6 @@ title: Editorial OS
 permalink: /editorial-os/
 ---
 
-# Editorial + Distribution Operating System
-
 ## Journal-First Model
 
 1. Home base: publish the full canonical post on this site.

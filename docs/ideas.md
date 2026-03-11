@@ -4,8 +4,6 @@ title: 100 Writing Ideas
 permalink: /ideas/
 ---
 
-# 100 Writing Ideas
-
 Priority queue and ready drafts:
 - [Top 20 First]({{ '/top-20/' | relative_url }})
 - First 10 pre-filled drafts are in `docs/_drafts/`

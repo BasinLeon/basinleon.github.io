@@ -4,8 +4,6 @@ title: Start Here
 permalink: /start-here/
 ---
 
-# Start Here
-
 Welcome. This site is the public thinking layer behind my portfolio and operating work.
 
 It has two lanes:

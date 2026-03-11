@@ -4,8 +4,6 @@ title: Top 20 First
 permalink: /top-20/
 ---
 
-# Top 20 First Priority List
-
 Use this as the first publishing sequence from your 100 ideas.
 
 ## Tier 1: Publish First (1-10)
