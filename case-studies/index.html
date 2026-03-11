@@ -252,6 +252,31 @@
             padding: 22px;
         }
 
+        .study-card.featured {
+            position: relative;
+            background:
+                radial-gradient(circle at top right, rgba(214, 170, 73, 0.14), transparent 34%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+            border-color: rgba(214, 170, 73, 0.24);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.26);
+        }
+
+        .study-card.featured::after {
+            content: "Inspectible Artifact";
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(214, 170, 73, 0.14);
+            border: 1px solid rgba(214, 170, 73, 0.28);
+            color: var(--gold);
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
         .study-tag {
             display: inline-flex;
             margin-bottom: 16px;
@@ -278,6 +303,60 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
+        }
+
+        .artifact-panel {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(214, 170, 73, 0.18);
+            background: linear-gradient(180deg, rgba(214, 170, 73, 0.08), rgba(255, 255, 255, 0.02));
+        }
+
+        .artifact-panel strong {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: var(--text);
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .artifact-panel p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        .artifact-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .artifact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(214, 170, 73, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .artifact-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(214, 170, 73, 0.42);
+            background: rgba(214, 170, 73, 0.1);
         }
 
         .study-list {
@@ -418,10 +497,10 @@
             <main class="content">
                 <section class="hero">
                     <div class="hero-panel">
-                        <div class="eyebrow">Proof Layer / Strategic Impact</div>
-                        <h1>Three case studies that show how I redesign GTM motion.</h1>
+                        <div class="eyebrow">Proof Layer / Builder-First GTM Systems</div>
+                        <h1>Three case studies that show how I build and tighten GTM systems.</h1>
                         <p class="hero-copy">
-                            These are compact operating stories, not padded resume bullets. Each one shows the problem, the constraints, the system decision, and the business result. The goal is simple: make the thinking easy to inspect.
+                            These are compact operating stories, not padded resume bullets. Each one shows the problem, the constraints, the system decision, and the business result. One of them also includes a protected blueprint so you can inspect the actual artifact instead of just reading the summary.
                         </p>
                         <div class="hero-actions">
                             <a class="button primary" href="mailto:lbasin23@gmail.com">Request Walkthrough</a>
@@ -438,6 +517,7 @@
                             <li>Problem framing under real constraints</li>
                             <li>System design instead of activity inflation</li>
                             <li>Measured outcomes tied to routing and execution</li>
+                            <li>Inspectable proof when the artifact is shareable</li>
                             <li>Reflection on what I would improve next</li>
                         </ul>
                     </aside>
@@ -492,7 +572,7 @@
                         <div class="metric">Bifurcated Routing / Scaled Efficiently</div>
                     </article>
 
-                    <article class="study-card">
+                    <article class="study-card featured">
                         <div class="study-tag">AI Signal Ops</div>
                         <h3>Project::Aurora</h3>
                         <div class="study-list">
@@ -506,7 +586,7 @@
                             </div>
                             <div class="study-row">
                                 <strong>System Design</strong>
-                                <span>Designed an AI-assisted research pipeline with confidence-gated brief generation and review logic.</span>
+                                <span>Designed an AI-assisted research pipeline with confidence-gated brief generation, operator review logic, and a clearer signal-to-prediction model for high-trust accounts.</span>
                             </div>
                             <div class="study-row">
                                 <strong>Result</strong>
@@ -514,6 +594,14 @@
                             </div>
                         </div>
                         <div class="metric">92% Intent Accuracy / 4x Research Efficiency</div>
+                        <div class="artifact-panel">
+                            <strong>Protected Proof Artifact <span style="color: var(--gold); font-size: 0.75rem; letter-spacing: 0.05em; margin-left: 8px;">[Passcode: RESONANCE]</span></strong>
+                            <p>The Nikolai blueprint (NEXUS SRE-002) is the deeper layer behind this case. It shows the actual architectural spec used to align operators, engineers, and leadership around one signal-to-prediction model.</p>
+                            <div class="artifact-actions">
+                                <a class="artifact-link" style="background: var(--gold); color: #000; border: none; font-weight: 900;" href="../docs/nikolai_signal_blueprint.html">Open Protected Blueprint</a>
+                                <a class="artifact-link" href="../#architecture">Inspect More Systems</a>
+                            </div>
+                        </div>
                     </article>
                 </section>
 
@@ -535,9 +623,10 @@
                     <article class="bottom-panel">
                         <div class="kicker">Next Step</div>
                         <h2>If you want the deeper proof</h2>
-                        <p>The case studies are the entry point. The systems portfolio and operator journal show the machinery underneath: frameworks, lecture models, routing logic, and writing that makes the work easier to pressure-test.</p>
+                        <p>The case studies are the entry point. The systems portfolio and operator journal show the machinery underneath: frameworks, lecture models, routing logic, and protected specs that make the work easier to pressure-test.</p>
                         <div class="hero-actions">
                             <a class="button primary" href="https://basinleon.github.io/#architecture">Inspect Systems</a>
+                            <a class="button" href="https://basinleon.github.io/docs/nikolai_signal_blueprint.html">Open Protected Blueprint</a>
                             <a class="button" href="https://basinleon.github.io/docs/">Read Journal</a>
                             <a class="button" href="mailto:lbasin23@gmail.com">Book Architecture Review</a>
                         </div>
