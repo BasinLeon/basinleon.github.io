@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-description: Executive operator profile for Leon Basin: GTM systems, revenue architecture, execution design, and teaching through practical frameworks.
+description: "Executive operator profile for Leon Basin: GTM systems, revenue architecture, execution design, and teaching through practical frameworks."
 ---
 
 I build GTM operating systems for teams that have outgrown improvisation.
