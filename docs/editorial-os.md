@@ -16,7 +16,7 @@ permalink: /editorial-os/
 
 - Publish here first.
 - On Medium/Substack, include:
-  - "Originally published at https://writing.basinleon.com"
+  - "Originally published at https://basinleon.github.io/docs/"
 - Keep one canonical URL per post.
 
 ## Weekly Distribution Routine

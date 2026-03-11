@@ -32,7 +32,7 @@ Full operating model:
 - Publish full post here first (canonical URL).
 - Republish adapted versions on Medium/Substack.
 - Add this line to every cross-post:
-  - "Originally published at https://writing.basinleon.com"
+  - "Originally published at https://basinleon.github.io/docs/"
 - Keep one canonical URL per article.
 
 ## Weekly Distribution Routine
