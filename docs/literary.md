@@ -23,6 +23,5 @@ Alongside systems and operator notes, I also publish reflective, human, and lite
 
 ## Read Next
 
-- [Literary Ideas](/literary-ideas/)
-- [Start Here](/start-here/)
-
+- [Literary Ideas]({{ '/literary-ideas/' | relative_url }})
+- [Start Here]({{ '/start-here/' | relative_url }})

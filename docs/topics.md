@@ -15,8 +15,8 @@ Focus:
 - stage ownership
 
 Suggested reads:
-- [Top 20 First](/top-20/)
-- [Frameworks](/frameworks/)
+- [Top 20 First]({{ '/top-20/' | relative_url }})
+- [Frameworks]({{ '/frameworks/' | relative_url }})
 
 ## Revenue Architecture
 
@@ -27,8 +27,8 @@ Focus:
 - forecast confidence
 
 Suggested reads:
-- [Frameworks](/frameworks/)
-- [Distribution](/distribution/)
+- [Frameworks]({{ '/frameworks/' | relative_url }})
+- [Distribution]({{ '/distribution/' | relative_url }})
 
 ## AI Workflows
 
@@ -39,8 +39,8 @@ Focus:
 - model and retrieval discipline
 
 Suggested reads:
-- [Frameworks](/frameworks/)
-- [Top 20 First](/top-20/)
+- [Frameworks]({{ '/frameworks/' | relative_url }})
+- [Top 20 First]({{ '/top-20/' | relative_url }})
 
 ## Operator Notes
 
@@ -51,8 +51,8 @@ Focus:
 - writing and communication systems
 
 Suggested reads:
-- [Start Here](/start-here/)
-- [100 Writing Ideas](/ideas/)
+- [Start Here]({{ '/start-here/' | relative_url }})
+- [100 Writing Ideas]({{ '/ideas/' | relative_url }})
 
 ## Personal + Literary
 
@@ -63,5 +63,5 @@ Focus:
 - voice-first creative nonfiction
 
 Suggested reads:
-- [Literary Lane](/literary/)
-- [Literary Ideas](/literary-ideas/)
+- [Literary Lane]({{ '/literary/' | relative_url }})
+- [Literary Ideas]({{ '/literary-ideas/' | relative_url }})

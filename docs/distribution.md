@@ -7,7 +7,7 @@ permalink: /distribution/
 Use this checklist after every post publish.
 
 Full operating model:
-- [Editorial + Distribution Operating System](/editorial-os/)
+- [Editorial + Distribution Operating System]({{ '/editorial-os/' | relative_url }})
 
 ## Indexing Checklist
 

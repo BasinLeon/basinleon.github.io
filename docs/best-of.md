@@ -21,7 +21,7 @@ Top 10 evergreen pieces to start with.
 
 ## Current Live Post
 
-- [Launching the Writing Blog](/writing/2026/02/20/launching-the-writing-blog/)
+- [Launching the Writing Blog]({{ '/writing/2026/02/20/launching-the-writing-blog/' | relative_url }})
 
 ## Build Notes
 

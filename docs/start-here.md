@@ -14,12 +14,12 @@ It has two lanes:
 
 If you are new, use this path:
 
-1. Start with the [Frameworks](/frameworks/) page.
-2. Browse [Topics](/topics/) based on your role.
-3. Review the [Top 20](/top-20/) priority ideas.
-4. Use the [Editorial OS](/editorial-os/) to see the publish + distribution loop.
-5. Explore the [Literary Lane](/literary/) for the personal side.
-6. Use the [Share Kit](/share/) if you want to send this to your team.
+1. Start with the [Frameworks]({{ '/frameworks/' | relative_url }}) page.
+2. Browse [Topics]({{ '/topics/' | relative_url }}) based on your role.
+3. Review the [Top 20]({{ '/top-20/' | relative_url }}) priority ideas.
+4. Use the [Editorial OS]({{ '/editorial-os/' | relative_url }}) to see the publish + distribution loop.
+5. Explore the [Literary Lane]({{ '/literary/' | relative_url }}) for the personal side.
+6. Use the [Share Kit]({{ '/share/' | relative_url }}) if you want to send this to your team.
 
 ## Who This Is For
 

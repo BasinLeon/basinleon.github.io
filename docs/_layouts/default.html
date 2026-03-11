@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% seo %}
+    {% include custom-head.html %}
+  </head>
+  <body>
+    <div class="site-shell">
+      <div class="site-frame">
+        <header>
+          <div class="journal-topbar">
+            <div class="journal-mark">
+              <div class="journal-mark-badge">OS</div>
+              <div class="journal-mark-copy">
+                <a href="{{ '/' | relative_url }}">Leon Basin Operator Journal</a>
+                <span>Public intelligence layer for GTM systems, frameworks, and field notes.</span>
+              </div>
+            </div>
+            <div class="journal-utility">
+              <a class="utility-chip utility-chip--accent" href="https://basinleon.github.io/">Main Portfolio</a>
+              <a class="utility-chip" href="{{ '/frameworks/' | relative_url }}">Framework Library</a>
+              <a class="utility-chip" href="{{ '/start-here/' | relative_url }}">Start Here</a>
+            </div>
+          </div>
+          <nav class="journal-nav" aria-label="Journal navigation">
+            {% for path in site.header_pages %}
+              {% assign page_path = site.pages | where: "path", path | first %}
+              {% if page_path %}
+                <a href="{{ page_path.url | relative_url }}"{% if page.url == page_path.url %} aria-current="page"{% endif %}>{{ page_path.title | escape }}</a>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        </header>
+
+        <main class="journal-main">
+          {{ content }}
+        </main>
+
+        <footer class="site-footer">
+          <div>
+            <strong>Leon Basin Operator Journal</strong>
+            <p>Built for founders, hiring managers, operators, engineers, and readers who want systems thinking they can actually inspect.</p>
+          </div>
+          <div class="footer-links">
+            <a href="https://basinleon.github.io/">Portfolio</a>
+            <a href="https://basinleon.github.io/case-studies/">Case Studies</a>
+            <a href="{{ '/frameworks/' | relative_url }}">Frameworks</a>
+            <a href="https://linkedin.com/in/leonbasin">LinkedIn</a>
+            <a href="mailto:lbasin23@gmail.com">Email</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
