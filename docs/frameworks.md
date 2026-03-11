@@ -2,18 +2,21 @@
 layout: page
 title: Frameworks
 permalink: /frameworks/
+description: Reusable GTM, writing, speaking, and operator frameworks behind Leon Basin's public work.
 ---
 
-This is the consolidated framework library used across my writing, outreach, and publishing system.
+This is the reusable operator library behind the public work.
 
-## 1) LinkedIn DM Framework (4 lines)
+These frameworks are here for one reason: if the work matters, the logic should be reusable. Some of these are GTM models. Some are publishing and communication structures. All of them are built to reduce noise, improve clarity, and make execution easier to run.
+
+## 1) LinkedIn DM Framework (4 Lines)
 
 1. Context: why this person, why now.
 2. Insight: specific problem pattern for their role/stage.
 3. Bridge: relevant proof from a similar context.
 4. Low-friction ask: short call or permission-based follow-up.
 
-Rules:
+Why it works:
 - no links in first message
 - no pressure CTA
 - keep first DM under 70 words when possible
@@ -103,4 +106,4 @@ Principles:
 
 ---
 
-Use this page as the default operating template before drafting or distributing any new post.
+Use this page as the default reference layer before drafting, publishing, routing, or explaining any new system.
