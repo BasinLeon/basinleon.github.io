@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altruist | Hazel GTM Engineer Prep</title>
+    <style>
+        :root {
+            --bg: #f5efe5;
+            --paper: #fffaf4;
+            --ink: #171311;
+            --muted: #655b54;
+            --line: #dfd2c1;
+            --gold: #9b6a2e;
+            --olive: #35594b;
+            --olive-soft: #e4eee9;
+            --rose: #f3e4d8;
+            --shadow: 0 20px 50px rgba(74, 54, 40, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Baskerville, "Iowan Old Style", "Palatino Linotype", serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(155, 106, 46, 0.14), transparent 28%),
+                linear-gradient(180deg, #fbf6ef 0%, var(--bg) 100%);
+        }
+        .wrap {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 28px 18px 56px;
+        }
+        .hero, .panel, .qa-card, .proof-card {
+            background: rgba(255, 250, 244, 0.96);
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+        }
+        .hero {
+            padding: 26px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -10% -45% auto;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(53, 89, 75, 0.10), transparent 68%);
+            pointer-events: none;
+        }
+        .eyebrow, .micro, .chip, .label, button {
+            font-family: "Trebuchet MS", "Avenir Next Condensed", "Segoe UI", sans-serif;
+        }
+        .eyebrow {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(2.4rem, 5vw, 4.8rem);
+            line-height: 0.92;
+            max-width: 10ch;
+        }
+        .hero-copy {
+            max-width: 72ch;
+            color: var(--muted);
+            font-size: 1.04rem;
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+        .hero-grid, .proof-grid, .qa-grid, .bottom-grid {
+            display: grid;
+            gap: 16px;
+        }
+        .hero-grid {
+            grid-template-columns: 1.4fr 1fr;
+            align-items: end;
+        }
+        .chip-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            color: var(--ink);
+            background: rgba(255,255,255,0.74);
+        }
+        .panel {
+            padding: 18px;
+        }
+        .layout {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 18px;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .section-title h2, .section-title h3 {
+            margin: 0;
+            font-size: 1.45rem;
+        }
+        .micro {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            color: var(--gold);
+        }
+        .headline-answer {
+            font-size: 1.3rem;
+            line-height: 1.45;
+            margin: 0 0 10px;
+        }
+        .support {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+        .list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .list li {
+            padding-left: 18px;
+            position: relative;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        .list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--gold);
+        }
+        .proof-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .proof-card {
+            padding: 16px;
+            border-radius: 22px;
+        }
+        .proof-card strong {
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+        .proof-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+        .qa-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .qa-card {
+            padding: 16px;
+        }
+        .qa-card h4 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+        .spoken {
+            font-size: 0.98rem;
+            line-height: 1.65;
+            margin: 0 0 10px;
+        }
+        .short {
+            color: var(--olive);
+            background: var(--olive-soft);
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .bottom-grid {
+            grid-template-columns: 1fr 1fr;
+            margin-top: 16px;
+        }
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.95fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .practice-card {
+            background: linear-gradient(180deg, rgba(53, 89, 75, 0.10), rgba(53, 89, 75, 0.02));
+            border-color: rgba(53, 89, 75, 0.18);
+        }
+        .warn {
+            background: linear-gradient(180deg, rgba(155, 106, 46, 0.12), rgba(155, 106, 46, 0.03));
+        }
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        button {
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+        button.primary {
+            background: var(--olive);
+            color: #fff;
+            border-color: var(--olive);
+        }
+        .sticky-note {
+            position: sticky;
+            top: 18px;
+            align-self: start;
+        }
+        .callout {
+            border-left: 4px solid var(--gold);
+            padding: 12px 14px;
+            background: rgba(243, 228, 216, 0.7);
+            border-radius: 16px;
+            margin-top: 14px;
+        }
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .mini-table {
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .mini-row {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 12px;
+            background: rgba(255,255,255,0.76);
+        }
+        .mini-row .label {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.72rem;
+            margin-bottom: 4px;
+        }
+        .mini-row .value {
+            font-size: 0.96rem;
+            line-height: 1.55;
+        }
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .flash-card {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 14px;
+            background: rgba(255,255,255,0.76);
+        }
+        .flash-card h4 {
+            margin: 0 0 6px;
+            font-size: 0.96rem;
+        }
+        .flash-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 0.92rem;
+        }
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .mode-card {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 14px;
+            background: rgba(255,255,255,0.78);
+        }
+        .mode-card strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        .checklist {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .checklist li {
+            padding: 8px 10px 8px 34px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            position: relative;
+            background: rgba(255,255,255,0.72);
+            color: var(--muted);
+            line-height: 1.45;
+        }
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            color: var(--olive);
+            font-weight: 700;
+        }
+        @media (max-width: 980px) {
+            .layout, .hero-grid, .proof-grid, .qa-grid, .bottom-grid, .top-grid, .flash-grid, .mode-grid {
+                grid-template-columns: 1fr;
+            }
+            .sticky-note {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <section class="hero">
+            <div class="eyebrow">Interview Practice Screen</div>
+            <div class="hero-grid">
+                <div>
+                    <h1>Hazel GTM Engineer</h1>
+                    <p class="hero-copy">
+                        This is the version you can actually use in a real interview. Do not try to sound polished. Sound clear. Sound direct. Sound like someone who has already been doing the work, even if the title on paper was RevOps, GTM Strategy, or Revenue Architect.
+                    </p>
+                    <div class="chip-row">
+                        <div class="chip">Highest-value lane this week</div>
+                        <div class="chip">Speak at 85% speed</div>
+                        <div class="chip">Pause before numbers</div>
+                        <div class="chip">Code + revenue loops</div>
+                        <div class="chip">Builder first, strategist second</div>
+                    </div>
+                </div>
+                <div class="panel practice-card">
+                        <div class="micro">30-second anchor</div>
+                    <p class="headline-answer">
+                        I’ve spent the last few years building the systems under GTM: signals, enrichment, routing, lifecycle logic, and reporting. I may not have had the exact GTM Engineer title, but that has been the job.
+                    </p>
+                    <p class="support">
+                        Hazel makes sense because it sits right at the intersection I like most: product, data, sales, and AI inside a real revenue motion.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="layout">
+            <div style="display:grid; gap:18px;">
+                <div class="top-grid">
+                    <div class="panel practice-card">
+                    <div class="section-title">
+                        <h2>Live Cheat Sheet</h2>
+                        <span class="micro">Look here first</span>
+                    </div>
+                    <div class="callout" style="margin-top:0; margin-bottom:14px;">
+                        <strong>Best positioning for this interview</strong>
+                        You are not pitching yourself as a strategist who also codes. You are pitching yourself as the person who can build and own the commercial system.
+                    </div>
+                    <div class="flash-grid">
+                        <div class="flash-card">
+                            <h4>15 sec opener</h4>
+                                <p>I build GTM systems. I like turning messy commercial inputs into something a team can actually use. Hazel is interesting because it sits right where I’m strongest: product, data, sales, and AI workflows.</p>
+                            </div>
+                            <div class="flash-card">
+                                <h4>Core proof</h4>
+                                <p>Fudo: 160% YoY pipeline growth and about $424K in annual labor savings. Sense: systems behind more than $10M in qualified pipeline.</p>
+                            </div>
+                            <div class="flash-card">
+                                <h4>Positioning line</h4>
+                                <p>I’m newer to the title than the function. The work has already been routing, enrichment, lifecycle logic, instrumentation, and automation.</p>
+                            </div>
+                            <div class="flash-card">
+                                <h4>Close with transfer</h4>
+                                <p>What I’ve done in RevOps and GTM strategy maps well here because Hazel needs someone who can turn business problems into systems that actually hold up.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="section-title">
+                            <h2>Phone vs Camera</h2>
+                            <span class="micro">Mode switch</span>
+                        </div>
+                        <div class="mode-grid">
+                            <div class="mode-card">
+                                <strong>Phone call</strong>
+                                <ul class="checklist">
+                                    <li>Smile while talking. It makes your voice warmer.</li>
+                                    <li>Pause one beat before metrics and tool names.</li>
+                                    <li>Keep answers to 30 to 40 seconds unless asked deeper.</li>
+                                    <li>Say the business problem before the tech stack.</li>
+                                </ul>
+                            </div>
+                            <div class="mode-card">
+                                <strong>On camera</strong>
+                                <ul class="checklist">
+                                    <li>Look at the camera on the final sentence, not the screen.</li>
+                                    <li>Keep shoulders still and let pauses do the work.</li>
+                                    <li>Have one note line per answer, not a paragraph.</li>
+                                    <li>Finish strong instead of trailing into explanation.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-title">
+                        <h2>Your Story</h2>
+                        <span class="micro">Use this first</span>
+                    </div>
+                    <p class="headline-answer">
+                        I come from GTM and RevOps, but the real through-line is systems.
+                    </p>
+                    <ul class="list">
+                        <li>At Fudo, I built a signal-based operating model that drove <strong>160% YoY pipeline growth</strong> and saved roughly <strong>$424K a year</strong> by automating research and routing work.</li>
+                        <li>At Sense, I helped build the outbound and signal infrastructure behind <strong>$10M+ in qualified pipeline</strong>.</li>
+                        <li>Across Basin Consulting, I’ve been building Python-, Clay-, and API-driven GTM workflows that take messy inputs and turn them into real commercial action.</li>
+                        <li>Earlier at Google, I worked in an environment where data integrity and operational discipline actually mattered. That made me comfortable with high-trust systems.</li>
+                    </ul>
+                    <div class="callout">
+                        <strong>The bridge sentence</strong>
+                        Hazel is looking for someone who can translate GTM strategy into systems. That is already how I think about the job.
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-title">
+                        <h2>Why You Fit This Job</h2>
+                        <span class="micro">Match the posting</span>
+                    </div>
+                    <div class="proof-grid">
+                        <div class="proof-card">
+                            <strong>Commercial infrastructure</strong>
+                            <p>You’ve already built routing, enrichment, outbound logic, enablement systems, and attribution layers. That is GTM infrastructure, even if the title was broader.</p>
+                        </div>
+                        <div class="proof-card">
+                            <strong>Code + automation</strong>
+                            <p>Your story is strongest when you talk plainly about Python workflows, APIs, Clay, CRM enrichment, and deterministic logic instead of drifting into “strategy” language.</p>
+                        </div>
+                        <div class="proof-card">
+                            <strong>Cross-functional translation</strong>
+                            <p>You’ve spent years translating between executives, sales teams, technical products, and operators. That maps directly to Hazel’s sales-marketing-product-data intersection.</p>
+                        </div>
+                        <div class="proof-card">
+                            <strong>Early-stage ambiguity</strong>
+                            <p>Hazel wants someone who can build without clean instructions. That is already how you work: find the bottleneck, build the logic, tighten what works.</p>
+                        </div>
+                    </div>
+                    <div class="callout">
+                        <strong>The frequency to hold</strong>
+                        Founder-grade GTM engineer. Legible. Calm. Specific. A builder who understands revenue, not a revenue person borrowing technical language.
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-title">
+                        <h2>Likely Questions</h2>
+                        <span class="micro">Voice-practice ready</span>
+                    </div>
+                    <div class="qa-grid">
+                        <div class="qa-card">
+                            <h4>Tell me about yourself.</h4>
+                            <p class="spoken">I’m a GTM systems builder. I’ve spent the last few years building the infrastructure underneath growth, not just running the motion on top of it. At Fudo I helped build a signal-based operating model that drove 160% pipeline growth and saved about $424K a year through automation. At Sense I helped support systems behind more than $10M in qualified pipeline. More recently I’ve been building Python-, Clay-, and API-driven GTM workflows directly. That’s why Hazel is interesting to me. It’s a systems role.</p>
+                            <div class="short"><strong>20 sec:</strong> I’ve been building the systems under GTM for a while now. Hazel is compelling because that is literally the job.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>Why Altruist and why Hazel?</h4>
+                            <p class="spoken">Two reasons. One, wealth management is a serious category. Trust matters. Precision matters. Two, Hazel still feels early enough that the GTM systems layer actually matters. I’m most useful when a product has traction but the commercial engine still needs to be architected. That’s where I can help most: lead quality, lifecycle logic, rep productivity, instrumentation, and taking manual work out of the system.</p>
+                            <div class="short"><strong>20 sec:</strong> Hazel is early, real, and trust-heavy. That’s exactly where good GTM systems create leverage.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>You haven’t had the exact title GTM Engineer. Why this role now?</h4>
+                            <p class="spoken">That’s fair. I’d answer it directly: the title is newer than the work. The work itself is what I’ve already been doing. I’ve built routing logic, enrichment flows, enablement systems, funnel instrumentation, and AI-assisted GTM workflows in real operating environments. What I like about this role is that the title finally matches the function I’ve been moving toward.</p>
+                            <div class="short"><strong>20 sec:</strong> I’m newer to the title than the function. The work is familiar.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>How technical are you really?</h4>
+                            <p class="spoken">I’m technical enough to build useful systems end to end, especially around automation, enrichment, APIs, CRM extensions, and GTM data flow. I’m strongest in Python-oriented automation, logic design, and connecting tools into a commercial workflow that people actually use. I’m not trying to present myself as a pure product engineer. I’m a GTM operator who can really build.</p>
+                            <div class="short"><strong>20 sec:</strong> I’m technical where it matters for GTM: APIs, automation, CRM logic, and data flow.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>What would you focus on in your first 90 days?</h4>
+                            <p class="spoken">First I’d map the current commercial system end to end: data sources, handoffs, lifecycle stages, enrichment gaps, rep workflows, and where manual work is slowing things down. Then I’d pick one or two high-leverage fixes, probably around signal quality, routing, instrumentation, or rep productivity. By day 90, I’d want productionized improvements that are already reducing friction and giving leadership a cleaner view of the funnel.</p>
+                            <div class="short"><strong>20 sec:</strong> Map the system, find the friction, fix the highest-leverage loop, and make the funnel easier to see.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>How do you work with AEs, marketing, and product?</h4>
+                            <p class="spoken">I usually end up being the translation layer. Sales describes pain in workflow terms. Marketing describes it in funnel terms. Product describes it in systems or event terms. My job is to turn that into shared logic with clear inputs, rules, and outputs. I’ve done that a lot, and honestly it’s one of the parts of the work I enjoy most.</p>
+                            <div class="short"><strong>20 sec:</strong> I translate between functions and turn vague pain into usable operating logic.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>What kind of AI-powered GTM workflows have you actually built?</h4>
+                            <p class="spoken">For me, the right pattern is not just dropping an LLM into a workflow and hoping for magic. I use AI where judgment helps, but I keep the core data quality, routing, and handoff logic deterministic. I’ve used Python, APIs, and tools like Clay to support enrichment, account research, prioritization, and messaging support, but I want those systems tied to clear inputs and measurable outputs. In a regulated category, that matters even more.</p>
+                            <div class="short"><strong>20 sec:</strong> I use AI where judgment helps, but I keep the core commercial logic clean and deterministic.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>How would you support AEs on calls if a technical question comes up?</h4>
+                            <p class="spoken">I’m comfortable stepping in when the question is really about workflow logic, integrations, data movement, or what the system can support operationally. I’m not going to bluff product depth I don’t have, but I can usually clarify what’s possible, what data is needed, and what the downstream workflow would look like. That helps the AE stay credible and keeps the conversation moving.</p>
+                            <div class="short"><strong>20 sec:</strong> I can support the workflow and data side live, and I’m careful not to fake what I don’t know.</div>
+                        </div>
+
+                        <div class="qa-card">
+                            <h4>Why do you think you’d do well in a regulated wealth environment?</h4>
+                            <p class="spoken">I’m drawn to businesses where operational precision matters because bad data and sloppy workflows actually have consequences. My Google experience gave me a strong respect for reliability and process discipline, and a lot of my GTM work has required careful logic around routing, attribution, and handoffs. Hazel is interesting because it combines speed with a category where trust still has to be earned.</p>
+                            <div class="short"><strong>20 sec:</strong> I like high-trust environments because they reward clean systems, not just speed.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sticky-note" style="display:grid; gap:18px;">
+                <div class="panel practice-card">
+                    <div class="section-title">
+                        <h3>If They Push Here</h3>
+                        <span class="micro">Stay calm</span>
+                    </div>
+                    <div class="mini-table">
+                        <div class="mini-row">
+                            <div class="label">Title gap</div>
+                            <div class="value">You can say: “That’s fair. The title is newer for me than the function, but the actual work is not.”</div>
+                        </div>
+                        <div class="mini-row">
+                            <div class="label">Technical depth</div>
+                            <div class="value">You can say: “I’m strongest where code meets commercial workflow: APIs, automation, enrichment, CRM logic, and funnel instrumentation.”</div>
+                        </div>
+                        <div class="mini-row">
+                            <div class="label">Why leave consulting</div>
+                            <div class="value">You can say: “I want to own one system deeply, not just advise around a bunch of systems from the outside.”</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-title">
+                        <h3>What To Emphasize</h3>
+                        <span class="micro">Repeat these</span>
+                    </div>
+                    <ul class="list">
+                        <li><strong>Systems thinker:</strong> say you build the system under GTM, not just the campaigns on top of it.</li>
+                        <li><strong>Builder:</strong> mention Python, Clay, APIs, Salesforce / HubSpot logic, and AI workflows in plain English.</li>
+                        <li><strong>Revenue loop owner:</strong> connect every technical example to pipeline quality, speed, rep leverage, or cleaner decisions.</li>
+                        <li><strong>Regulated comfort:</strong> lightly mention Google ops discipline and why clean systems matter in trust-heavy environments.</li>
+                        <li><strong>Founder-grade framing:</strong> show that you think commercially, but speak like someone who can still open the terminal and wire the system.</li>
+                    </ul>
+                </div>
+
+                <div class="panel warn">
+                    <div class="section-title">
+                        <h3>Do Not Do This</h3>
+                        <span class="micro">Avoid</span>
+                    </div>
+                    <ul class="list">
+                        <li>Don’t say “I built 690,000 lines of code” unless they ask. It sounds inflated and pulls focus off the real point.</li>
+                        <li>Don’t overuse Basin::Nexus language, “signal refinery,” or internal frameworks unless they ask for depth.</li>
+                        <li>Don’t sound like a consultant talking about possibilities. Sound like an operator who can own systems.</li>
+                        <li>Don’t list every tool you’ve ever touched. Lead with the problem, then the system, then the result.</li>
+                    </ul>
+                </div>
+
+                <div class="panel practice-card">
+                    <div class="section-title">
+                        <h3>Questions For Melissa</h3>
+                        <span class="micro">Ask 2-3</span>
+                    </div>
+                    <div class="mini-table">
+                        <div class="mini-row">
+                            <div class="label">Question 1</div>
+                            <div class="value">What are the biggest GTM systems problems Hazel needs this role to solve over the next 6 to 12 months?</div>
+                        </div>
+                        <div class="mini-row">
+                            <div class="label">Question 2</div>
+                            <div class="value">How much of the challenge right now is tooling and data architecture versus process alignment across sales, marketing, and product?</div>
+                        </div>
+                        <div class="mini-row">
+                            <div class="label">Question 3</div>
+                            <div class="value">What would make somebody in this role obviously successful in the first 90 days?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-title">
+                        <h3>Practice Mode</h3>
+                        <span class="micro">Use with voice</span>
+                    </div>
+                    <ul class="list">
+                        <li>Open ChatGPT voice and say: “Interview me for the Hazel GTM Engineer role at Altruist. Keep answers to 45 seconds.”</li>
+                        <li>Use the 4-part structure: <strong>headline → proof → outcome → transfer</strong>.</li>
+                        <li>After each answer, trim 20% of the words and say it again.</li>
+                        <li>If you blank, use this reset: <strong>problem → system → result → why it matters here</strong>.</li>
+                    </ul>
+                    <div class="button-row">
+                        <button class="primary" onclick="copyPrompt()">Copy voice prompt</button>
+                        <button onclick="copyStory()">Copy 30-sec story</button>
+                        <button onclick="copyClosing()">Copy closing answer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const voicePrompt = `Interview me for the Hazel GTM Engineer role at Altruist. Ask one question at a time like a smart recruiter or hiring manager. Keep me honest, push for specifics, and help me answer in 30 to 45 seconds. Focus on GTM systems, Python and API workflows, CRM logic, cross-functional communication, and why I fit Hazel even if my titles were broader than GTM Engineer.`;
+        const shortStory = `I’m a GTM systems builder. Over the last few years I’ve been building the infrastructure underneath growth: signal capture, enrichment, routing, lifecycle logic, and reporting. At Fudo I helped build a signal-based operating model that drove 160% pipeline growth and saved about $424K annually through automation. At Sense I helped support more than $10M in qualified pipeline. That’s why Hazel is compelling to me: it’s a chance to do that work directly inside a product and revenue engine that’s still being built.`;
+        const closingAnswer = `What stands out to me about Hazel is that this role is not just about tools. It is about building the commercial system behind a growing AI product in a trust-heavy industry. That is the kind of work I like most, and I think my background maps well because I know how to connect code, data, and GTM execution in a practical way.`;
+
+        async function copyText(text, label) {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert(label + " copied.");
+            } catch (err) {
+                alert("Clipboard copy failed. You can still copy it manually.");
+            }
+        }
+
+        function copyPrompt() {
+            copyText(voicePrompt, "Voice prompt");
+        }
+
+        function copyStory() {
+            copyText(shortStory, "30-second story");
+        }
+
+        function copyClosing() {
+            copyText(closingAnswer, "Closing answer");
+        }
+    </script>
+</body>
+</html>
