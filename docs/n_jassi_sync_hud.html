@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leon's Command HUD | NBC Partnership Sync</title>
+    <meta name="robots" content="noindex, nofollow">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-obsidian: #0d0d0f;
             --accent-purple: #a78bfa;
             --accent-blue: #3b82f6;
+            --accent-green: #10b981;
             --text-ghost: #94a3b8;
             --text-bright: #f8fafc;
             --border-dim: rgba(255, 255, 255, 0.08);
@@ -41,177 +43,246 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-dim);
+            border-bottom: 2px solid var(--accent-purple);
         }
 
         .status-dot {
             height: 8px;
             width: 8px;
-            background: #10b981;
+            background: var(--accent-green);
             border-radius: 50%;
             display: inline-block;
             margin-right: 8px;
-            box-shadow: 0 0 10px #10b981;
+            box-shadow: 0 0 10px var(--accent-green);
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-dim);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .card h2 {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             color: var(--accent-purple);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .anchor-phrase {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--accent-blue);
-            padding-left: 12px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 16px;
+            line-height: 1.4;
         }
 
         .bullet-list { list-style: none; }
         .bullet-list li {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-ghost);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            align-items: flex-start;
         }
         .bullet-list li b { color: var(--text-bright); }
+        .bullet-list li span.icon { color: var(--accent-purple); font-size: 0.8rem; margin-top: 4px; }
+
+        .infrastructure-chip {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid var(--accent-purple);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .infrastructure-chip .label { font-size: 0.65rem; color: var(--accent-purple); text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 4px; }
+        .infrastructure-chip .val { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-bright); }
+
+        .tactical-box {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
         .neuro-box {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .neuro-node {
+            background: rgba(0,0,0,0.4);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-dim);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .neuro-node:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
+
+        .neuro-node .label { font-size: 0.7rem; color: var(--accent-purple); display: block; font-weight: 800; }
+        .neuro-node .word { font-weight: 800; font-size: 0.9rem; color: #fff; }
+
+        .keyword-shelf {
+            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             margin-top: 10px;
         }
 
-        .neuro-node {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px dashed var(--border-dim);
-            text-align: center;
+        .keyword {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-ghost);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-dim);
+            font-family: 'JetBrains Mono', monospace;
         }
-
-        .neuro-node .label { font-size: 0.65rem; color: var(--accent-purple); display: block; }
-        .neuro-node .word { font-weight: 800; font-size: 0.8rem; }
 
         .footer {
             grid-column: 1 / -1;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-ghost);
             display: flex;
             justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-dim);
         }
 
-        .keyword {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-blue);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
+        .alert-box {
+            border: 1px solid var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
 
-        .emergency {
-            color: var(--danger);
-            font-weight: 800;
-            animation: pulse-red 2s infinite;
-        }
+        .emergency { color: var(--danger); font-weight: 800; text-transform: uppercase; }
 
-        @keyframes pulse-red {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <div class="hud-grid">
         <header>
-            <div style="font-family: 'Outfit'; font-weight: 800; font-size: 1.2rem;">COMMAND::HUD <span style="font-weight: 300; opacity: 0.5;">v1.0</span></div>
-            <div><span class="status-dot"></span> <span style="font-size: 0.8rem; opacity: 0.7;">PARTNERSHIP SYNC | JASSI SINGH</span></div>
+            <div style="font-family: 'Outfit'; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">BASIN::COMMAND <span style="font-weight: 300; opacity: 0.5;">v1.11</span></div>
+            <div>
+                <span class="status-dot"></span> 
+                <span style="font-size: 0.85rem; font-weight: 600; opacity: 0.9; letter-spacing: 1px;">SYNC: JASSI SINGH // NBC LA ARCHITECTURE</span>
+            </div>
         </header>
 
-        <!-- Column 1: The High-Status Positioning -->
+        <!-- Column 1: Strategic & Infrastructure Capabilities -->
         <div class="card">
-            <h2>Strategic Positioning</h2>
+            <h2>The Architect's Frame</h2>
             <div class="anchor-phrase">"We aren't training people; we are deploying intellectual infrastructure."</div>
-            <ul class="bullet-list">
-                <li><span>◈</span> <b>Revenue Architect</b> vs. "Consultant" (Higher Status)</li>
-                <li><span>◈</span> <b>Logical Friction Audit</b>: Finding the 50k/mo leak.</li>
-                <li><span>◈</span> <b>Signal Refinery</b>: Decoupling yield from human burnout.</li>
-                <li><span>◈</span> <b>Deterministic Growth</b>: Removing "Art" from sales.</li>
-            </ul>
             
-            <div style="margin-top: 24px;">
-                <h2>The NBC LA Pivot</h2>
-                <ul class="bullet-list">
-                    <li><span>◈</span> Transition: <b>Linear</b> → <b>Non-Linear/Digital</b>.</li>
-                    <li><span>◈</span> Challenge: <b>21 AEs</b> with legacy linear habits.</li>
-                    <li><span>◈</span> Solution: <b>Digital Sales Playbook</b> (The Engine).</li>
-                </ul>
+            <ul class="bullet-list">
+                <li><span class="icon">◈</span> <b>Revenue Architect:</b> High-status peer positioning vs. "consulting."</li>
+                <li><span class="icon">◈</span> <b>TalSmart Context:</b> We are the delivery engine for the $50K anchor.</li>
+                <li><span class="icon">◈</span> <b>Systemic Diagnostic:</b> Reframing "sales problems" as engineering friction.</li>
+            </ul>
+
+            <div class="stat-grid">
+                <div class="infrastructure-chip">
+                    <span class="label">Network Scout index</span>
+                    <span class="val">44,487 Nodes Loaded</span>
+                </div>
+                <div class="infrastructure-chip">
+                    <span class="label">Target Yield (Q2)</span>
+                    <span class="val">$840,000.00</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h2>Tactical Guardrails: LinkedIn</h2>
+                <div class="tactical-box">
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-bright);">
+                        <b>The Value-Loop:</b> If a node signals "No" on the direct ask, pivot immediately to the video channel. 
+                        <br><br>
+                        <span style="color: var(--accent-blue);">"Understood. I'll steer you to our video channel for now so you have the logic for when the timing shifts."</span>
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- Column 2: The Neurobiological Framework -->
+        <!-- Column 2: The Logic Engine & Proof -->
         <div class="card">
-            <h2>The Tri-Fold Neuro-Engine</h2>
+            <h2>The Revenue Engine Architecture</h2>
             <div class="anchor-phrase">"Solve for the Brain, and the Wallet follows."</div>
             
             <div class="neuro-box">
                 <div class="neuro-node">
                     <span class="label">REPTILIAN</span>
                     <span class="word">INSTINCT</span>
-                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Kill Defenses / Peer Status</p>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Status / Guard</p>
                 </div>
                 <div class="neuro-node">
                     <span class="label">LIMBIC</span>
                     <span class="word">EMOTION</span>
-                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Lure / Future-State</p>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Future-State</p>
                 </div>
                 <div class="neuro-node">
                     <span class="label">NEOCORTEX</span>
                     <span class="word">LOGIC</span>
-                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Proof / ROB Benchmarks</p>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Deterministic ROI</p>
                 </div>
             </div>
 
-            <div style="margin-top: 24px;">
-                <h2>Anchor Keywords</h2>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span class="keyword">Structural Diagnostic</span>
+            <div style="margin-top: 25px;">
+                <h2>Core Architecture Keywords</h2>
+                <div class="keyword-shelf">
+                    <span class="keyword">Signal Refinery</span>
                     <span class="keyword">Decision Velocity</span>
-                    <span class="keyword">Systemic Stabilizer</span>
-                    <span class="keyword">Logic-Leak</span>
-                    <span class="keyword">Non-Linear Discovery</span>
+                    <span class="keyword">Logic Leak</span>
+                    <span class="keyword">Structural Diagnostic</span>
+                    <span class="keyword">Strike Actuator</span>
                 </div>
             </div>
 
-            <div style="margin-top: 24px; border: 1px solid var(--danger); padding: 12px; border-radius: 8px;">
-                <h2 style="color: var(--danger); margin-bottom: 8px;">The "Trap" to Avoid</h2>
-                <p style="font-size: 0.8rem; color: var(--text-ghost);">Don't let the call drift into <span class="emergency">"Training Services."</span> Force the conversation back to <span style="color: var(--text-bright);">BUILDING INFRASTRUCTURE</span>.</p>
+            <div class="alert-box">
+                <h2 style="color: var(--danger);">The "Trap" to Avoid</h2>
+                <p style="font-size: 0.85rem; color: var(--text-ghost); line-height: 1.5;">
+                    Never let the conversation drift into <span class="emergency">"Training Services."</span> 
+                    If they talk "Behavior," you talk <span style="color: var(--text-bright);">"Infrastructure."</span>
+                    If they talk "Coaching," you talk <span style="color: var(--accent-blue);">"Deterministic ROI Benchmarks."</span>
+                </p>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <h2 style="color: var(--accent-green);">Airtight Verification</h2>
+                <p style="font-size: 0.75rem; color: var(--text-ghost); font-family: 'JetBrains Mono';">
+                    Simulator v1.11 Active (96 Opps / 12 Days). <br>
+                    Logic Leaks identified. 50k/mo Friction target locked.
+                </p>
             </div>
         </div>
 
         <div class="footer">
-            <span>[ SYSTEM READY FOR JASSI SYNC ]</span>
-            <span>LOC: BASIN_ASSOCIATES_LA // 2026-03-12</span>
+            <span>[ SYSTEM READY // BASIN::NEXUS // 11:11 ENCODING ]</span>
+            <span>LOC: BASIN_ASSOCIATES_LA // 2026-03-12_23:32</span>
         </div>
     </div>
 </body>
