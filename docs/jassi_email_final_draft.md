@@ -2,7 +2,7 @@ Jassi,
 
 I took a look at Version 1. It’s solid. I’ve also put together a refactored version (below) that I recommend we look at -- It positions us as Revenue Architects fixing a structural transition by pushing the 'Status' higher, which I think better justifies our anchor price.
 
-I also built a working model to show you what this actually looks like in practice. You can toggle between "Traditional Training" and "Revenue Architecture" to see how the logic loops we're building actually shift the revenue yield for a team like NBC:
+I also built a working simulation of the revenue system to show you what this actually looks like in practice. You can toggle between "Traditional Training" and "Revenue Architecture" to see how the logic loops we're building actually shift the revenue yield for a team like NBC:
 
 [Interactive Revenue Architecture Simulator](https://writing.basinleon.com/revenue_architecture_simulator.html)
 
