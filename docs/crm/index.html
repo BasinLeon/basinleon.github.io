@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basin Career Pipeline</title>
+  <meta name="description" content="Public career pipeline dashboard for Leon Basin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbf4e8;
+      --panel: rgba(255, 252, 247, 0.86);
+      --panel-strong: #fffaf2;
+      --line: rgba(145, 94, 44, 0.18);
+      --text: #2e2418;
+      --muted: #7b6957;
+      --gold: #b7791f;
+      --rose: #b75d69;
+      --green: #2f855a;
+      --shadow: 0 24px 60px rgba(88, 53, 24, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 232, 199, 0.88), transparent 32%),
+        radial-gradient(circle at top right, rgba(255, 211, 226, 0.5), transparent 28%),
+        linear-gradient(180deg, #fff9f0 0%, #f7ecdb 44%, #f4e6d3 100%);
+      padding: 22px 16px 44px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(183, 121, 31, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(183, 121, 31, 0.04) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 85%);
+    }
+
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      padding: 24px 24px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -40px;
+      top: -80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(183, 121, 31, 0.18), transparent 68%);
+    }
+
+    .eyebrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    h1 {
+      margin-top: 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 0.9;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      max-width: 720px;
+    }
+
+    .hero-copy {
+      margin-top: 10px;
+      max-width: 760px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .hero-meta {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.62);
+      padding: 6px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .kpi-grid, .two-col, .three-col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .two-col { grid-template-columns: 1.15fr 0.85fr; }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      padding: 16px 16px 14px;
+    }
+
+    .panel h2 {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .kpi {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px;
+      min-height: 104px;
+    }
+
+    .kpi-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .kpi-value {
+      margin-top: 8px;
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .kpi-note {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .list, .task-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .card {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 11px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .title {
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .status {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      white-space: nowrap;
+      background: rgba(255,255,255,0.7);
+      color: var(--text);
+    }
+
+    .status.applied, .status.target, .status.scheduled, .status.interview { color: var(--gold); }
+    .status.todo { color: var(--gold); }
+    .status.waiting { color: var(--rose); }
+    .status.done, .status.sent { color: var(--green); }
+
+    .task-meta {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    .section-note {
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .small-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: auto;
+      max-height: 520px;
+      background: var(--panel-strong);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(145, 94, 44, 0.10);
+      vertical-align: top;
+      font-size: 0.76rem;
+    }
+
+    .table th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #f8efdf;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .table tbody tr:nth-child(even) td {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .table-primary {
+      font-weight: 800;
+    }
+
+    .table-secondary {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.68rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding-top: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .kpi-grid,
+      .two-col,
+      .three-col,
+      .small-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 20px 18px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">BasinLeon / Career Pipeline</div>
+      <h1 id="pageTitle">Career Momentum, Public View</h1>
+      <p class="hero-copy" id="focusLine">Loading public pipeline...</p>
+      <div class="hero-meta">
+        <div class="pill" id="modePill">Mode</div>
+        <div class="pill" id="updatedPill">Updated</div>
+        <div class="pill">Public-safe share view</div>
+      </div>
+    </section>
+
+    <section class="kpi-grid" id="kpiGrid"></section>
+
+    <section class="two-col">
+      <div class="panel">
+        <h2>Execution Rhythm</h2>
+        <p class="section-note">Current priorities split into daily execution, weekly commitments, and monthly outcomes.</p>
+        <div class="three-col">
+          <div>
+            <h2>Today</h2>
+            <div class="task-list" id="todayList"></div>
+          </div>
+          <div>
+            <h2>This Week</h2>
+            <div class="task-list" id="weekList"></div>
+          </div>
+          <div>
+            <h2>This Month</h2>
+            <div class="task-list" id="monthList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Stage Mix</h2>
+        <p class="section-note">Current company pipeline grouped by stage.</p>
+        <div class="small-grid" id="stageCountGrid"></div>
+        <div class="card" style="margin-top:14px;">
+          <div class="title">Historical Context</div>
+          <div class="sub" id="historicalSummary">Loading historical summary...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="panel">
+        <h2>Active Interviews</h2>
+        <p class="section-note">Live interview and serious conversation snapshot.</p>
+        <div class="list" id="interviewList"></div>
+      </div>
+      <div class="panel">
+        <h2>Communities</h2>
+        <p class="section-note">Public-safe communities and organizations supporting the search motion.</p>
+        <div class="list" id="orgList"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Tracked Companies</h2>
+      <p class="section-note">Active target companies, interview nodes, and recent applications.</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Stage</th>
+            </tr>
+          </thead>
+          <tbody id="companyList"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer-note">Sanitized public dashboard generated from the private Career OS.</div>
+  </main>
+
+  <script src="../career_dashboard_public.js"></script>
+  <script>
+    const dashboard = window.__CAREER_DASHBOARD__ || {};
+
+    function esc(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function statusClass(value) {
+      return String(value || "tracked").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    }
+
+    function renderCards(id, items, builder) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!items || !items.length) {
+        el.innerHTML = '<div class="card"><div class="sub">Nothing loaded yet.</div></div>';
+        return;
+      }
+      el.innerHTML = items.map(builder).join("");
+    }
+
+    document.getElementById("pageTitle").textContent = dashboard.title || "Basin Career Pipeline";
+    document.getElementById("focusLine").textContent = dashboard.focus || "Public pipeline view.";
+    document.getElementById("modePill").textContent = dashboard.mode || "Active";
+    document.getElementById("updatedPill").textContent = `Updated ${dashboard.lastUpdated || "recently"}`;
+
+    renderCards("kpiGrid", dashboard.stats || [], (item) => `
+      <div class="kpi">
+        <div class="kpi-label">${esc(item.label)}</div>
+        <div class="kpi-value">${esc(item.value)}</div>
+        <div class="kpi-note">${esc(item.note || "")}</div>
+      </div>
+    `);
+
+    function taskCard(item) {
+      return `
+        <div class="card">
+          <div class="card-top">
+            <div class="title">${esc(item.tag || "Task")}</div>
+            <div class="status ${statusClass(item.status)}">${esc(item.status || "todo")}</div>
+          </div>
+          <div class="sub">${esc(item.text || "")}</div>
+          <div class="task-meta">
+            <span>${esc(item.due || "Open")}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    renderCards("todayList", dashboard.today || [], taskCard);
+    renderCards("weekList", dashboard.week || [], taskCard);
+    renderCards("monthList", dashboard.month || [], taskCard);
+
+    const stageCounts = Object.entries(dashboard.stageCounts || {});
+    renderCards("stageCountGrid", stageCounts.map(([stage, count]) => ({ stage, count })), (item) => `
+      <div class="card">
+        <div class="card-top">
+          <div class="title">${esc(item.stage)}</div>
+          <div class="status ${statusClass(item.stage)}">${esc(item.count)}</div>
+        </div>
+      </div>
+    `);
+
+    const historical = dashboard.historicalSummary || {};
+    document.getElementById("historicalSummary").textContent =
+      `${historical.count || 0} prior items tracked across ${((historical.labels || []).join(", ")) || "historical stages"}.`;
+
+    renderCards("interviewList", dashboard.interviews || [], (item) => `
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <div class="title">${esc(item.company)}</div>
+            <div class="sub">${esc(item.role)}</div>
+          </div>
+          <div class="status ${statusClass(item.stage)}">${esc(item.stage)}</div>
+        </div>
+        <div class="sub">${esc(item.nextStep || "Next step to be defined.")}</div>
+      </div>
+    `);
+
+    renderCards("orgList", dashboard.organizations || [], (item) => `
+      <div class="card">
+        <div class="card-top">
+          <div class="title">${esc(item.organization)}</div>
+          <div class="status">${esc(item.kind)}</div>
+        </div>
+        <div class="sub">${esc(item.detail || "")}</div>
+      </div>
+    `);
+
+    const companies = (dashboard.companies || []).slice().sort((a, b) => {
+      const rank = { Interview: 0, Scheduled: 1, Applied: 2, Target: 3 };
+      return (rank[a.stage] ?? 99) - (rank[b.stage] ?? 99) || String(a.company).localeCompare(String(b.company));
+    });
+    const companyEl = document.getElementById("companyList");
+    companyEl.innerHTML = companies.map((item) => `
+      <tr>
+        <td><span class="table-primary">${esc(item.company)}</span></td>
+        <td>${esc(item.role)}</td>
+        <td><span class="status ${statusClass(item.stage)}">${esc(item.stage)}</span></td>
+      </tr>
+    `).join("");
+  </script>
+</body>
+</html>

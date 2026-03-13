@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BASIN::NEXUS // REVENUE COMMAND CENTER</title>
+    <title>BASIN::NEXUS // CAREER COMMAND CENTER</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
-        --bg: #020206;
-        --surface: rgba(10, 12, 18, 0.6);
-        --surface-deep: #050510;
-        --border: rgba(255, 255, 255, 0.1);
-        --accent: #a78bfa;
-        --accent-glow: rgba(167, 139, 250, 0.5);
-        --cyan: #00f0ff;
-        --cyan-glow: rgba(0, 240, 255, 0.5);
-        --gold: #ffe14d;
-        --green: #00ffaa;
-        --red: #ff4d6a;
-        --pink: #ff3ecf;
-        --orange: #ff8c42;
-        --text-primary: #f8fafc;
-        --text-secondary: #a0aec0;
+        --bg: #fdfbf7; /* Warm Ivory */
+        --surface: rgba(255, 255, 255, 0.82);
+        --surface-deep: #f3f1ed;
+        --border: rgba(133, 77, 14, 0.12); /* Subtle Bronze Border */
+        --accent: #854d0e; /* Deep Bronze */
+        --accent-glow: rgba(133, 77, 14, 0.08);
+        --cyan: #0891b2; 
+        --cyan-glow: rgba(8, 145, 178, 0.08);
+        --gold: #b45309;
+        --green: #15803d;
+        --red: #b91c1c;
+        --pink: #be185d;
+        --orange: #c2410c;
+        --text-primary: #111827; /* Deep Charcoal */
+        --text-secondary: #4b5563; /* Slate Gray */
         --glass-blur: blur(24px);
     }
 
@@ -29,7 +29,7 @@
 
     html, body {
         min-height: 100%;
-        background-color: #030308;
+        background-color: #f8f3ea;
     }
 
     body {
@@ -43,10 +43,9 @@
         display: flex;
         flex-direction: column;
         background-image: 
-            radial-gradient(circle at 10% 10%, rgba(167, 139, 250, 0.12) 0%, transparent 45%),
-            radial-gradient(circle at 90% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 50% 90%, rgba(255, 62, 207, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(255, 140, 66, 0.04) 0%, transparent 35%);
+            radial-gradient(circle at 12% 12%, rgba(133, 77, 14, 0.04) 0%, transparent 40%),
+            radial-gradient(circle at 86% 10%, rgba(8, 145, 178, 0.04) 0%, transparent 38%),
+            linear-gradient(135deg, #fdfbf7 0%, #f7f3ed 100%);
     }
 
     /* hard-disable any legacy preload/loader layer */
@@ -72,7 +71,7 @@
         display: flex;
         flex-direction: column;
         padding: 32px 24px;
-        background: rgba(5, 5, 10, 0.9); 
+        background: rgba(253, 251, 247, 0.98);
         backdrop-filter: var(--glass-blur);
         overflow-y: auto;
         z-index: 50;
@@ -93,7 +92,7 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid var(--border);
-        background: rgba(3, 3, 8, 0.85);
+        background: rgba(255, 255, 255, 0.6);
         backdrop-filter: blur(16px);
         z-index: 40;
     }
@@ -104,25 +103,26 @@
         grid-template-columns: 1fr 1fr 1fr;
         gap: 12px;
         padding: 12px 40px;
-        background: rgba(255,255,255,0.02);
+        background: rgba(0, 0, 0, 0.01);
         border-bottom: 1px solid var(--border);
     }
 
     .decision-node {
         padding: 10px 16px;
         border-radius: 8px;
-        background: rgba(15, 18, 26, 0.4);
+        background: #fff;
         border: 1px solid var(--border);
         font-size: 0.72rem;
         display: flex;
         align-items: center;
         gap: 12px;
         transition: 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .decision-node:hover { border-color: rgba(255,255,255,0.2); background: rgba(15, 18, 26, 0.6); }
+    .decision-node:hover { border-color: var(--accent); background: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
 
-    .decision-label { font-weight: 900; font-family: 'Outfit'; text-transform: uppercase; letter-spacing: 1px; }
-    .decision-val { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+    .decision-label { font-weight: 900; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 1.5px; }
+    .decision-val { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; font-family: 'Inter', sans-serif; }
 
     .data-grid-container {
         flex: 1;
@@ -159,12 +159,12 @@
         border: 1px solid transparent;
     }
 
-    .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .nav-item:hover { background: rgba(0,0,0,0.03); color: var(--text-primary); }
     .nav-item.active { 
-        background: linear-gradient(90deg, rgba(129, 140, 248, 0.18), rgba(129, 140, 248, 0.04)); 
-        color: #fff; 
-        border-left: 4px solid var(--accent);
-        box-shadow: 10px 0 30px rgba(129, 140, 248, 0.1);
+        background: linear-gradient(90deg, rgba(133, 77, 14, 0.08), transparent); 
+        color: var(--text-primary); 
+        border-left: 3px solid var(--accent);
+        box-shadow: 4px 0 16px rgba(133, 77, 14, 0.04);
     }
 
     .protocol-card {
@@ -187,24 +187,24 @@
     .search-container { position: relative; flex: 1; max-width: 480px; }
     .search-bar {
         width: 100%;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.52);
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 12px 16px 12px 46px;
-        color: white;
+        color: var(--text-primary);
         font-size: 0.82rem;
         font-family: 'Inter', sans-serif;
         outline: none;
         transition: all 0.3s;
     }
-    .search-bar:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 24px rgba(129, 140, 248, 0.35); }
+    .search-bar:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 24px rgba(133, 77, 14, 0.08); }
     .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); opacity: 0.5; font-size: 1rem; }
 
     .compact-telemetry { display: flex; gap: 20px; }
-    .tel-node { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border); transition: 0.2s; }
-    .tel-node:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+    .tel-node { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; background: #fff; border-radius: 8px; border: 1px solid var(--border); transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .tel-node:hover { border-color: var(--accent); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
     .tel-label { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 1000; letter-spacing: 1.5px; }
-    .tel-val { font-size: 0.9rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .tel-val { font-size: 0.8rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--text-primary); }
     .lead-import-btn {
         padding: 7px 11px;
         border-radius: 8px;
@@ -217,6 +217,600 @@
         cursor: pointer;
     }
     .lead-import-btn:hover { background: rgba(31, 228, 255, 0.16); }
+    .career-shell {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+    .career-os-clean {
+        display: grid;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+    .career-topbar {
+        display: grid;
+        grid-template-columns: 1.2fr 0.95fr;
+        gap: 14px;
+    }
+    .career-clean-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 15px 17px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    .career-clean-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+    .career-clean-title h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+    }
+    .career-clean-title p {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        max-width: 680px;
+    }
+    .career-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .career-stat-box {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 11px 12px;
+        background: #fffdfa;
+    }
+    .career-stat-box .label {
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-secondary);
+    }
+    .career-stat-box .value {
+        margin-top: 6px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.32rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .career-task-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .career-task-col {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 11px;
+        background: #fffdfa;
+    }
+    .career-task-col h4,
+    .career-side-section h4 {
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+    }
+    .career-simple-list {
+        display: grid;
+        gap: 8px;
+    }
+    .career-simple-item {
+        border: 1px solid rgba(133, 77, 14, 0.10);
+        border-radius: 12px;
+        padding: 8px 9px;
+        background: #fff;
+    }
+    .career-simple-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+    .career-simple-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+    }
+    .career-simple-text {
+        font-size: 0.73rem;
+        color: var(--text-primary);
+        line-height: 1.42;
+    }
+    .career-simple-meta {
+        margin-top: 8px;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.56rem;
+        color: var(--text-secondary);
+    }
+    .career-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.85fr);
+        gap: 14px;
+        align-items: start;
+    }
+    .career-filter-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+    .career-filter-btn {
+        border: 1px solid var(--border);
+        background: #fffdfa;
+        color: var(--text-secondary);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.66rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+    }
+    .career-filter-btn.active {
+        background: rgba(133, 77, 14, 0.08);
+        border-color: rgba(133, 77, 14, 0.25);
+        color: var(--accent);
+    }
+    .career-table-wrap {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fffdfa;
+        max-height: 620px;
+        overflow: auto;
+    }
+    .career-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .career-table th,
+    .career-table td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid rgba(133, 77, 14, 0.08);
+        vertical-align: top;
+    }
+    .career-table th {
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--text-secondary);
+        background: #faf5ec;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    .career-table td {
+        font-size: 0.72rem;
+        color: var(--text-primary);
+        background: #fffdfa;
+    }
+    .career-table tbody tr:nth-child(even) td {
+        background: #fffaf1;
+    }
+    .career-table tbody tr:hover td {
+        background: #fff7ea;
+    }
+    .career-cell-primary {
+        font-weight: 700;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.9rem;
+    }
+    .career-cell-secondary {
+        margin-top: 4px;
+        color: var(--text-secondary);
+        line-height: 1.45;
+        font-size: 0.7rem;
+    }
+    .career-stage {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #fff;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+    .career-side-rail {
+        display: grid;
+        gap: 12px;
+        position: sticky;
+        top: 0;
+        max-height: calc(100vh - 170px);
+        overflow: auto;
+        padding-right: 2px;
+    }
+    .career-side-section {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 11px;
+        background: #fffdfa;
+    }
+    .career-side-list {
+        display: grid;
+        gap: 8px;
+    }
+    .career-side-item {
+        border: 1px solid rgba(133, 77, 14, 0.10);
+        border-radius: 12px;
+        padding: 8px 9px;
+        background: #fff;
+    }
+    .career-side-item .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .career-side-item .meta {
+        margin-top: 5px;
+        font-size: 0.7rem;
+        line-height: 1.45;
+        color: var(--text-secondary);
+    }
+    .career-empty {
+        padding: 16px;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        color: var(--text-secondary);
+        font-size: 0.74rem;
+        background: #fffdfa;
+    }
+    .career-utility {
+        margin-top: 10px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.82);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.03);
+        overflow: hidden;
+    }
+    .career-utility summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.74rem;
+        color: var(--text-secondary);
+        user-select: none;
+    }
+    .career-utility summary::-webkit-details-marker {
+        display: none;
+    }
+    .career-utility-meta {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+    }
+    .career-utility-body {
+        padding: 0 16px 14px;
+    }
+    #panel-5 {
+        padding: 14px 22px 22px;
+    }
+    .career-hero {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 14px;
+    }
+    .career-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    .career-card h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+    }
+    .career-kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+    .career-kpi {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .career-kpi .label {
+        font-size: 0.56rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-secondary);
+    }
+    .career-kpi .value {
+        margin-top: 8px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .priority-stack,
+    .network-grid,
+    .interview-list,
+    .command-log {
+        display: grid;
+        gap: 10px;
+    }
+    .priority-columns {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .priority-column {
+        padding: 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .priority-column .mini-label {
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+    }
+    .priority-list {
+        list-style: none;
+        display: grid;
+        gap: 8px;
+    }
+    .priority-list li {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 12px;
+        background: #fffdfa;
+        border: 1px solid var(--border);
+        font-size: 0.78rem;
+        color: var(--text-primary);
+        line-height: 1.45;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .priority-list li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(133, 77, 14, 0.08);
+    }
+    .todo-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .todo-main {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .todo-text {
+        flex: 1;
+        font-weight: 500;
+    }
+    .todo-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .priority-list .tag {
+        flex-shrink: 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.62rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        color: var(--accent);
+        background: rgba(13, 148, 136, 0.05);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .todo-status, .todo-owner, .todo-due {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.58rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 1px solid var(--border);
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+    }
+    .todo-status.status-todo { color: var(--accent); border-color: var(--accent); background: rgba(13, 148, 136, 0.05); }
+    .todo-status.status-sent { color: var(--green); border-color: var(--green); background: rgba(21, 128, 61, 0.05); }
+    .todo-status.status-waiting { color: #d97706; border-color: #d97706; background: rgba(217, 119, 6, 0.05); }
+    .todo-status.status-done { opacity: 0.6; text-decoration: line-through; }
+    .todo-body {
+        color: var(--text-primary);
+    }
+    .career-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .info-panel {
+        padding: 14px;
+        border-radius: 14px;
+        background: #fffdfa;
+        border: 1px solid var(--border);
+    }
+    .info-panel h4 {
+        font-size: 0.66rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+    }
+    .compact-list {
+        display: grid;
+        gap: 8px;
+    }
+    .compact-item {
+        padding: 12px 13px;
+        border-radius: 12px;
+        background: #fdfbf7;
+        border: 1px solid rgba(180, 83, 9, 0.12);
+    }
+    .compact-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .compact-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .compact-meta {
+        margin-top: 4px;
+        font-size: 0.7rem;
+        line-height: 1.45;
+        color: var(--text-secondary);
+    }
+    .empty-note {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        padding: 12px;
+        border-radius: 12px;
+        background: #fdfbf7;
+        border: 1px dashed var(--border);
+    }
+    .interview-item,
+    .network-card,
+    .command-item {
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #fdfbf7;
+    }
+    .interview-top,
+    .command-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .interview-company,
+    .network-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .interview-meta,
+    .network-meta,
+    .command-meta {
+        margin-top: 6px;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+    .stage-pill,
+    .count-pill {
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 0.56rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 800;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        white-space: nowrap;
+    }
+    .network-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .network-list {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+    }
+    .network-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 0.72rem;
+        color: var(--text-primary);
+    }
+    .network-line span:last-child {
+        color: var(--text-secondary);
+        text-align: right;
+    }
+    .career-section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .career-section-title p {
+        font-size: 0.68rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+    .command-item {
+        display: grid;
+        gap: 6px;
+    }
+    @media (max-width: 1200px) {
+        .career-topbar,
+        .career-layout,
+        .career-task-strip,
+        .career-stat-grid,
+        .career-hero,
+        .priority-columns,
+        .network-grid,
+        .career-split,
+        .career-kpis {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    @media (max-width: 860px) {
+        .career-topbar,
+        .career-layout,
+        .career-task-strip,
+        .career-stat-grid,
+        .career-hero,
+        .priority-columns,
+        .network-grid,
+        .career-split,
+        .career-kpis {
+            grid-template-columns: 1fr;
+        }
+    }
 
     /* --- PREMIUM DENSE ROWS --- */
     .dense-row {
@@ -224,7 +818,7 @@
         grid-template-columns: 180px 2fr 130px 80px 130px;
         align-items: center;
         padding: 16px 24px;
-        background: rgba(15, 18, 26, 0.5);
+        background: rgba(255, 255, 255, 0.62);
         border: 1px solid var(--border);
         border-radius: 12px;
         margin-bottom: 8px;
@@ -248,9 +842,9 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
-    .row-entity { font-weight: 800; color: #fff; font-family: 'Outfit'; font-size: 0.95rem; }
-    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 16px; font-weight: 500; font-family: 'Inter'; }
-    .action-main { color: #dbe6ff; font-weight: 600; }
+    .row-entity { font-weight: 800; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 0.95rem; }
+    .row-action { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 16px; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .action-main { color: var(--text-primary); font-weight: 600; font-family: 'Inter', sans-serif; }
     .action-meta {
         margin-top: 6px;
         display: flex;
@@ -262,17 +856,17 @@
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.58rem;
         letter-spacing: 0.03em;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        background: rgba(0,0,0,0.02);
         border-radius: 999px;
-        padding: 2px 7px;
-        color: #dbe6ff;
+        padding: 2px 8px;
+        color: var(--text-secondary);
     }
-    .chip-value { color: var(--gold); border-color: rgba(255, 212, 73, 0.4); background: rgba(255, 212, 73, 0.08); }
-    .chip-stage { color: var(--cyan); border-color: rgba(31, 228, 255, 0.42); background: rgba(31, 228, 255, 0.08); }
-    .chip-risk { color: var(--pink); border-color: rgba(255, 92, 225, 0.42); background: rgba(255, 92, 225, 0.08); }
-    .row-meta { font-family: 'JetBrains Mono'; font-size: 0.68rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    .row-prob { font-weight: 800; font-family: 'Outfit'; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .chip-value { color: var(--gold); border-color: rgba(180, 83, 9, 0.2); background: rgba(180, 83, 9, 0.05); }
+    .chip-stage { color: var(--cyan); border-color: rgba(8, 145, 178, 0.2); background: rgba(8, 145, 178, 0.05); }
+    .chip-risk { color: var(--pink); border-color: rgba(190, 24, 93, 0.2); background: rgba(190, 24, 93, 0.05); }
+    .row-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .row-prob { font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
     .row-prob::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
 
     .yield-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; width: 100px; margin-top: 5px; }
@@ -325,16 +919,16 @@
     .row-detail {
         display: none;
         padding: 24px;
-        margin-top: -8px;
+        margin-top: -10px;
         margin-bottom: 20px;
-        background: rgba(10, 12, 18, 0.7);
+        background: #fff;
         border: 1px solid var(--accent);
         border-top: none;
         border-radius: 0 0 14px 14px;
         font-size: 0.82rem;
         color: var(--text-secondary);
         animation: detailSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
     }
 
     @keyframes detailSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -354,29 +948,30 @@
         align-items: baseline;
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.66rem;
-        color: #bdd2f5;
+        color: var(--text-primary);
     }
     .timeline-ts { color: var(--text-secondary); min-width: 62px; }
 
     /* --- ACTION HUD --- */
     .action-hud { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
     .hud-btn {
-        padding: 8px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
-        background: rgba(255,255,255,0.03); color: #fff; font-size: 0.65rem; font-weight: 700;
-        cursor: pointer; transition: 0.2s; text-transform: uppercase; font-family: 'JetBrains Mono';
+        padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+        background: #fff; color: var(--text-primary); font-size: 0.65rem; font-weight: 700;
+        cursor: pointer; transition: 0.2s; text-transform: uppercase; font-family: 'JetBrains Mono', monospace;
         display: flex; align-items: center; gap: 8px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
-    .hud-btn:hover { background: var(--accent); border-color: var(--accent); }
-    .hud-btn.primary { background: var(--accent); border-color: var(--accent); }
+    .hud-btn:hover { background: #fdfbf7; border-color: var(--accent); }
+    .hud-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .hud-btn.primary:hover { filter: brightness(1.2); }
 
     /* --- COMMAND PALETTE --- */
     #commandPalette {
         position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
         width: 100%; max-width: 550px;
-        background: rgba(5, 5, 10, 0.98); backdrop-filter: blur(40px);
-        border: 1px solid var(--accent); border-radius: 16px;
-        box-shadow: 0 30px 90px rgba(0,0,0,0.9), 0 0 50px rgba(129, 140, 248, 0.15);
+        background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(40px);
+        border: 1px solid var(--border); border-radius: 16px;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.1), 0 0 1px rgba(0,0,0,0.1);
         z-index: 1000; display: none;
         animation: palettePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -384,23 +979,23 @@
 
     .palette-input {
         width: 100%; padding: 20px 24px; background: transparent; border: none;
-        border-bottom: 1px solid var(--border); color: #fff; font-family: 'Outfit';
+        border-bottom: 1px solid var(--border); color: var(--text-primary); font-family: 'Outfit', sans-serif;
         font-size: 1.1rem; outline: none;
     }
     .palette-list { max-height: 400px; overflow-y: auto; padding: 10px; }
     .palette-item {
         padding: 12px 18px; border-radius: 8px; cursor: pointer;
         display: flex; justify-content: space-between; align-items: center;
-        font-size: 0.9rem; transition: 0.15s; font-weight: 500;
+        font-size: 0.9rem; transition: 0.15s; font-weight: 500; color: var(--text-primary);
     }
-    .palette-item:hover, .palette-item.selected { background: rgba(129, 140, 248, 0.2); color: #fff; transform: translateX(5px); }
-    .palette-key { font-family: 'JetBrains Mono'; font-size: 0.65rem; background: rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 5px; opacity: 0.7; border: 1px solid rgba(255,255,255,0.1); }
+    .palette-item:hover, .palette-item.selected { background: rgba(133, 77, 14, 0.08); color: var(--accent); transform: translateX(5px); }
+    .palette-key { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; background: rgba(0,0,0,0.04); padding: 3px 8px; border-radius: 5px; opacity: 0.7; border: 1px solid rgba(0,0,0,0.08); }
 
     /* --- TICKER --- */
     .nexus-ticker {
         grid-row: 3; grid-column: 2;
-        background: rgba(5, 5, 10, 0.9); border-top: 1px solid var(--border);
-        display: flex; align-items: center; padding: 0 40px; font-family: 'JetBrains Mono';
+        background: #fff; border-top: 1px solid var(--border);
+        display: flex; align-items: center; padding: 0 40px; font-family: 'JetBrains Mono', monospace;
         font-size: 0.6rem; color: var(--text-secondary); overflow: hidden; white-space: nowrap;
     }
     .ticker-content { display: inline-block; animation: tickerScroll 40s linear infinite; }
@@ -443,8 +1038,8 @@
     <div class="app-window">
         <!-- SIDEBAR -->
         <aside class="workspace-sidebar">
-            <div class="nav-logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px; font-weight: 800; font-size: 1.1rem; color: #fff;">
-                <div style="width: 24px; height: 24px; background: linear-gradient(135deg, var(--accent), var(--cyan)); border-radius: 6px; box-shadow: 0 0 20px var(--accent-glow);"></div>
+            <div class="nav-logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px; font-weight: 800; font-size: 1.1rem; color: var(--text-primary);">
+                <div style="width: 24px; height: 24px; background: linear-gradient(135deg, var(--accent), var(--cyan)); border-radius: 6px; box-shadow: 0 4px 12px var(--accent-glow);"></div>
                 BASIN::NEXUS
             </div>
             
@@ -455,14 +1050,14 @@
                 <div class="nav-item" data-tab="2" onclick="switchTab(2)"><span>🛰️</span> Signal Feed</div>
                 <div class="nav-item" data-tab="3" onclick="switchTab(3)"><span>📦</span> Payload Vault</div>
                 <div class="nav-item" data-tab="4" onclick="switchTab(4)"><span>📂</span> Historical</div>
-                <div class="nav-item" data-tab="5" onclick="switchTab(5)" style="border-left-color: var(--pink);"><span>🧠</span> Ops Vault <span style="font-size:0.55rem;background:var(--pink);color:#fff;padding:2px 6px;border-radius:4px;margin-left:auto;" id="opsVaultBadge">0</span></div>
+                <div class="nav-item" data-tab="5" onclick="switchTab(5)" style="border-left-color: var(--pink);"><span>🧠</span> Opportunity Tracker <span style="font-size:0.55rem;background:var(--pink);color:#fff;padding:2px 6px;border-radius:4px;margin-left:auto;" id="opsVaultBadge">0</span></div>
             </nav>
 
             <div class="sidebar-section">
                 <div class="sidebar-title">TERMINAL PROTOCOLS</div>
-                <div class="protocol-card">
+                <div class="protocol-card" style="background: rgba(185, 28, 28, 0.03); border-color: rgba(185, 28, 28, 0.1);">
                     <div style="font-size: 0.62rem; color: var(--red); font-weight: 900; text-transform: uppercase;">T4: CLOSE OR KILL</div>
-                    <div style="font-size: 0.72rem; color: #fff; margin-top: 10px; line-height: 1.5; opacity: 0.9;">If node idle > 5 days → Auto-Archival logic triggered.</div>
+                    <div style="font-size: 0.72rem; color: var(--text-primary); margin-top: 10px; line-height: 1.5; opacity: 0.9;">If node idle > 5 days → Auto-Archival logic triggered.</div>
                 </div>
             </div>
 
@@ -470,8 +1065,8 @@
                 <div class="sidebar-title">SYSTEM_STATUS</div>
                 <div style="font-size: 0.65rem; color: var(--text-secondary); font-family: 'JetBrains Mono'; line-height: 2.2;">
                     <span style="color: var(--green);">●</span> GRAVITY: OPTIMAL <br>
-                    <span style="color: var(--cyan);">●</span> THROUGHPUT: 1.2M/s<br>
-                    <span style="color: var(--gold);">●</span> VER: 4.3.ELITE
+                    <span style="color: var(--cyan);">●</span> ACTIVE OPS: <span id="sysActiveOps">0</span><br>
+                    <span style="color: var(--gold);">●</span> FOLLOW-UPS: <span id="sysFollowups">0</span>
                 </div>
             </div>
         </aside>
@@ -484,8 +1079,8 @@
                     <input type="text" class="search-bar" placeholder="Command (/) or Search (K)..." id="globalSearch">
                 </div>
                 <div class="compact-telemetry">
-                    <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val">$430,000</span></div>
-                    <div class="tel-node"><span class="tel-label">INTENT:</span><span class="tel-val" style="color: var(--cyan);">HIGH ALPHA</span></div>
+                    <div class="tel-node"><span class="tel-label">PIPELINE:</span><span class="tel-val" id="headerPipeline">34 apps</span></div>
+                    <div class="tel-node"><span class="tel-label">FOCUS:</span><span class="tel-val" style="color: var(--cyan);" id="headerFocus">Fresh Cycle</span></div>
                     <button class="lead-import-btn" id="loadLeadsBtn">LOAD 37K CSV</button>
                     <input id="leadsFileInput" type="file" accept=".csv" style="display:none;">
                 </div>
@@ -499,171 +1094,90 @@
             <div class="decision-strip">
                 <div class="decision-node">
                     <span class="decision-label" style="color: var(--green);">NOW</span>
-                    <span class="decision-val">REPLIT: Ghazi Prep // Schedule Final</span>
+                    <span class="decision-val">Replit closed out // no movement, archived from active focus</span>
                 </div>
                 <div class="decision-node">
                     <span class="decision-label" style="color: var(--gold);">NEXT</span>
-                    <span class="decision-val">GO NIMBLY: Tech Prep HUD Audit</span>
+                    <span class="decision-val">Go Nimbly closed out // no movement, archive complete</span>
                 </div>
                 <div class="decision-node">
                     <span class="decision-label" style="color: var(--red);">STUCK</span>
-                    <span class="decision-val">RAJ: Payment Rail Signature Wait</span>
+                    <span class="decision-val">Fresh build phase // manager search, network, and divine dashboard reset</span>
                 </div>
             </div>
 
             <!-- PANELS -->
             <div class="data-grid-container active" id="panel-0">
                 <div class="dense-row header-row" style="background: transparent; border: none; cursor: default; margin-bottom: 12px; opacity: 0.55; pointer-events: none;">
-                    <div>Target Node</div>
+                    <div>Focus Lane</div>
                     <div>Action Pulse</div>
-                    <div>Role</div>
-                    <div>Prob.</div>
-                    <div>Score / Status</div>
+                    <div>Type</div>
+                    <div>Heat</div>
+                    <div>Status</div>
                 </div>
-
-                <!-- REPLIT -->
-                <div class="dense-row" tabindex="0" data-node="replit" onclick="toggleDetail('detail-replit', true)">
-                    <div class="row-entity">REPLIT</div>
+                <div class="dense-row" tabindex="0" data-node="manager-lane" onclick="toggleDetail('detail-manager-lane', true)">
+                    <div class="row-entity">MANAGER LANE</div>
                     <div class="row-action">
-                        <div class="action-main">Final Schedule Lock // Final Loop Prep</div>
+                        <div class="action-main">Primary wedge: RevOps Manager / GTM Ops Manager / Sales Ops Manager</div>
                         <div class="action-meta">
-                            <span class="meta-chip chip-value">$180k</span>
-                            <span class="meta-chip chip-stage">Proposal</span>
-                            <span class="meta-chip">Last: Feb 27</span>
-                            <span class="meta-chip">Next: Feb 28</span>
-                            <span class="meta-chip">Src: Referral</span>
+                            <span class="meta-chip chip-stage">Primary</span>
+                            <span class="meta-chip">RevOps 60%</span>
+                            <span class="meta-chip">GTM Ops 25%</span>
+                            <span class="meta-chip">Selective GTM Eng 15%</span>
                         </div>
                     </div>
-                    <div class="row-meta">Founding Enterprise</div>
-                    <div class="row-prob" style="color: var(--green);">95%</div>
-                    <div class="row-yield">94% <div class="yield-bar"><div class="yield-fill" style="width: 94%;"></div></div></div>
+                    <div class="row-meta">Search Strategy</div>
+                    <div class="row-prob" style="color: var(--green);">HOT</div>
+                    <div class="row-yield">ACTIVE <div class="yield-bar"><div class="yield-fill" style="width: 92%;"></div></div></div>
                 </div>
-                <div class="row-detail" id="detail-replit">
+                <div class="row-detail" id="detail-manager-lane">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Nudge sent to Emily. Ghazi (CRO) validated technical proof via Nexus Hub. Final interview loop sequencing active.
-                            <div class="timeline">
-                                <div class="timeline-row"><span class="timeline-ts">08:22</span><span>Email opened by Ghazi (2x)</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">09:05</span><span>Deck clicked: SPEAR Audit v2</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">10:41</span><span>Reply: "final loop timing works"</span></div>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <b>Protocol HUD</b>
-                            <div class="action-hud">
-                                <button class="hud-btn primary">Deploy SPEAR Audit</button>
-                                <button class="hud-btn">Log Nudge</button>
-                                <button class="hud-btn">Open Deal Kit</button>
-                            </div>
-                        </div>
+                        <div class="detail-item"><b>Current Truth</b>This is the live lane. The dashboard should optimize for speed to interviews, not nostalgia for older opportunities.</div>
+                        <div class="detail-item"><b>Next Move</b>Focus applications, recruiter outreach, and warm intros on manager-level operations roles first.</div>
                     </div>
                 </div>
 
-                <!-- GO NIMBLY -->
-                <div class="dense-row" tabindex="0" data-node="go-nimbly" onclick="toggleDetail('detail-nimbly', true)">
-                    <div class="row-entity">GO NIMBLY</div>
+                <div class="dense-row" tabindex="0" data-node="network-build" onclick="toggleDetail('detail-network-build', true)">
+                    <div class="row-entity">NETWORK BUILD</div>
                     <div class="row-action">
-                        <div class="action-main">Mar 2 Interview @ 1:15 PM PST // Tech Prep HUD</div>
+                        <div class="action-main">Build Jewish groups, Jewish contacts, recruiters, and warm intros into one live list</div>
                         <div class="action-meta">
-                            <span class="meta-chip chip-value">$125k</span>
-                            <span class="meta-chip chip-stage">Qualification</span>
-                            <span class="meta-chip">Last: Feb 26</span>
-                            <span class="meta-chip">Next: Mar 1</span>
-                            <span class="meta-chip">Src: Apollo</span>
+                            <span class="meta-chip chip-stage">Critical</span>
+                            <span class="meta-chip">Community</span>
+                            <span class="meta-chip">Warm intros</span>
+                            <span class="meta-chip">Recruiters</span>
                         </div>
                     </div>
-                    <div class="row-meta">RevOps Architect</div>
-                    <div class="row-prob" style="color: var(--gold);">60%</div>
-                    <div class="row-yield">82% <div class="yield-bar"><div class="yield-fill" style="width: 82%;"></div></div></div>
+                    <div class="row-meta">Relationship Engine</div>
+                    <div class="row-prob" style="color: var(--gold);">BUILD</div>
+                    <div class="row-yield">OPEN <div class="yield-bar"><div class="yield-fill" style="width: 76%;"></div></div></div>
                 </div>
-                <div class="row-detail" id="detail-nimbly">
+                <div class="row-detail" id="detail-network-build">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Kristen Santiago meeting scheduled. Josh Kasim (TA) confirmed technical sync requirement. High-priority audit pending.
-                            <div class="timeline">
-                                <div class="timeline-row"><span class="timeline-ts">07:10</span><span>Reply from Josh: "sync required"</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">11:30</span><span>Interview invite accepted</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">13:42</span><span>Clay enrichment: intent spike +14</span></div>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <b>Protocol HUD</b>
-                            <div class="action-hud">
-                                <button class="hud-btn primary">Ship Audit Payload</button>
-                                <button class="hud-btn">Prep Narrative</button>
-                                <button class="hud-btn">Archive Node</button>
-                            </div>
-                        </div>
+                        <div class="detail-item"><b>Current Gap</b>The dashboard structure is ready, but the real names and organizations still need to be loaded into the system.</div>
+                        <div class="detail-item"><b>What To Add</b>Jewish community contacts, orgs, recruiter names, staffing firms, and anyone who can create warm paths into hiring teams.</div>
                     </div>
                 </div>
 
-                <!-- DESCOPE -->
-                <div class="dense-row" tabindex="0" data-node="descope" onclick="toggleDetail('detail-descope', true)">
-                    <div class="row-entity">DESCOPE</div>
+                <div class="dense-row" tabindex="0" data-node="daily-execution" onclick="toggleDetail('detail-daily-execution', true)">
+                    <div class="row-entity">DAILY EXECUTION</div>
                     <div class="row-action">
-                        <div class="action-main">Monday follow-up // HM Discovery HUD</div>
+                        <div class="action-main">Applications, outreach, follow-ups, and proof asset distribution run from Career OS</div>
                         <div class="action-meta">
-                            <span class="meta-chip chip-value">$95k</span>
-                            <span class="meta-chip chip-stage">Discovery</span>
-                            <span class="meta-chip">Last: Feb 25</span>
-                            <span class="meta-chip">Next: Mar 3</span>
-                            <span class="meta-chip">Src: LinkedIn</span>
+                            <span class="meta-chip chip-stage">Today</span>
+                            <span class="meta-chip">8 applications</span>
+                            <span class="meta-chip">8 outreaches</span>
+                            <span class="meta-chip">3 intro asks</span>
                         </div>
                     </div>
-                    <div class="row-meta">Success Engineer</div>
-                    <div class="row-prob" style="color: var(--cyan);">75%</div>
-                    <div class="row-yield">78% <div class="yield-bar"><div class="yield-fill" style="width: 78%;"></div></div></div>
+                    <div class="row-meta">Execution Cadence</div>
+                    <div class="row-prob" style="color: var(--cyan);">LIVE</div>
+                    <div class="row-yield">READY <div class="yield-bar"><div class="yield-fill" style="width: 84%;"></div></div></div>
                 </div>
-                <div class="row-detail" id="detail-descope">
+                <div class="row-detail" id="detail-daily-execution">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>Meeting with Gilad (Founder) completed. Product-market fit signal acquired. Follow-up sequence locked.
-                            <div class="timeline">
-                                <div class="timeline-row"><span class="timeline-ts">Mon</span><span>Founder call completed (28m)</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">Tue</span><span>Loom viewed to 92%</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">Wed</span><span>No reply yet, cadence armed</span></div>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <b>Protocol HUD</b>
-                            <div class="action-hud">
-                                <button class="hud-btn primary">Nurture Strike</button>
-                                <button class="hud-btn">Open Arena intel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RAJ -->
-                <div class="dense-row" tabindex="0" data-node="raj" onclick="toggleDetail('detail-raj', true)">
-                    <div class="row-entity">RAJ (vCISO HUB)</div>
-                    <div class="row-action">
-                        <div class="action-main">Mandatory contract signing loop execution</div>
-                        <div class="action-meta">
-                            <span class="meta-chip chip-value">$30k</span>
-                            <span class="meta-chip chip-stage">Close</span>
-                            <span class="meta-chip">Last: Feb 27</span>
-                            <span class="meta-chip chip-risk">Risk: Med</span>
-                            <span class="meta-chip">Src: Direct</span>
-                        </div>
-                    </div>
-                    <div class="row-meta">Consulting Pilot</div>
-                    <div class="row-prob" style="color: var(--green);">100%</div>
-                    <div class="row-yield">98% <div class="yield-bar"><div class="yield-fill" style="width: 98%;"></div></div></div>
-                </div>
-                <div class="row-detail" id="detail-raj">
-                    <div class="detail-grid">
-                        <div class="detail-item"><b>Velocity Pulse</b>vCISO Master Framework v3.1 delivered. Payment rail verification active. Signature expected in < 24h.
-                            <div class="timeline">
-                                <div class="timeline-row"><span class="timeline-ts">09:20</span><span>Contract opened</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">09:34</span><span>Legal comment added</span></div>
-                                <div class="timeline-row"><span class="timeline-ts">11:14</span><span>Waiting on signature rail</span></div>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <b>Protocol HUD</b>
-                            <div class="action-hud">
-                                <button class="hud-btn primary">Close Node</button>
-                                <button class="hud-btn">Verify Signature</button>
-                            </div>
-                        </div>
+                        <div class="detail-item"><b>Use This Panel For</b>Quick daily orientation. The real detail now lives in Career OS and the manager search files, not in old opportunity cards.</div>
+                        <div class="detail-item"><b>Operator Rule</b>When you tell me what changed, I update the dashboard and the JSON so this remains the single source of truth.</div>
                     </div>
                 </div>
 
@@ -690,199 +1204,368 @@
 
             <!-- OTHER PANELS -->
             <div class="data-grid-container" id="panel-1">
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-ghazi', true)">
-                    <div class="row-entity">GHAZI MASOOD</div>
-                    <div class="row-action">CRO // Technical Buyer<div class="action-meta"><span class="meta-chip">1,200 emp</span><span class="meta-chip">Series B</span><span class="meta-chip">Stack: SFDC + Segment</span><span class="meta-chip">Engagement: 96</span></div></div>
-                    <div class="row-meta">REPLIT</div>
-                    <div class="row-prob" style="color: var(--green);">98%</div>
-                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-recruiters', true)">
+                    <div class="row-entity">RECRUITERS</div>
+                    <div class="row-action">Search firms and independent recruiters to work this week<div class="action-meta"><span class="meta-chip">Greenridge</span><span class="meta-chip">Orama</span><span class="meta-chip">AS Recruitment</span></div></div>
+                    <div class="row-meta">Talent Channel</div>
+                    <div class="row-prob" style="color: var(--green);">ACTIVE</div>
+                    <div class="row-yield"><span class="status-pill pill-active">PUSH</span></div>
                 </div>
-                <div class="row-detail" id="stake-ghazi">
+                <div class="row-detail" id="stake-recruiters">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Persona Intel</b>High technical ceiling. Focused on internal developer velocity. Validated SPEAR Audit.</div>
-                        <div class="detail-item"><b>Engagement</b>Active pulse. Responds to [REVENUE_ENGINEERING] narrative.</div>
+                        <div class="detail-item"><b>Intent</b>Use recruiters for interview velocity, especially in manager-level operations lanes.</div>
+                        <div class="detail-item"><b>Action</b>Keep recruiter messaging concise, manager-positioned, and tied to immediate role fit.</div>
                     </div>
                 </div>
 
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-gilad', true)">
-                    <div class="row-entity">GILAD SHRIKI</div>
-                    <div class="row-action">Founder // HM discovery<div class="action-meta"><span class="meta-chip">420 emp</span><span class="meta-chip">Series C</span><span class="meta-chip">Stack: HubSpot + Clay</span><span class="meta-chip">Engagement: 78</span></div></div>
-                    <div class="row-meta">DESCOPE</div>
-                    <div class="row-prob" style="color: var(--cyan);">78%</div>
-                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY_T1</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-hiring-managers', true)">
+                    <div class="row-entity">HIRING MANAGERS</div>
+                    <div class="row-action">Direct notes after applications to Pinecone, Decagon, Blacksmith, and other live manager targets<div class="action-meta"><span class="meta-chip">Aarti</span><span class="meta-chip">Jesse</span><span class="meta-chip">Max</span></div></div>
+                    <div class="row-meta">Company Side</div>
+                    <div class="row-prob" style="color: var(--gold);">DIRECT</div>
+                    <div class="row-yield"><span class="status-pill">HIGH FIT</span></div>
                 </div>
-                <div class="row-detail" id="stake-gilad">
+                <div class="row-detail" id="stake-hiring-managers">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Persona Intel</b>Strategic visionary. Looking for "Agentic Identity" leadership.</div>
-                        <div class="detail-item"><b>Engagement</b>Met on Tuesday. Follow-up sequence locked for Monday AM.</div>
+                        <div class="detail-item"><b>Rule</b>Every high-fit application should have same-day or next-day outreach to the likely owner.</div>
+                        <div class="detail-item"><b>Message Shape</b>Short note, strong fit line, one likely problem, offer to send the 30-day plan.</div>
                     </div>
                 </div>
 
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-kristen', true)">
-                    <div class="row-entity">KRISTEN SANTIAGO</div>
-                    <div class="row-action">Ops Leader // Technical Sync<div class="action-meta"><span class="meta-chip">150 emp</span><span class="meta-chip">Growth</span><span class="meta-chip">Stack: Salesforce + Apollo</span><span class="meta-chip">Engagement: 82</span></div></div>
-                    <div class="row-meta">GO NIMBLY</div>
-                    <div class="row-prob" style="color: var(--gold);">82%</div>
-                    <div class="row-yield"><span class="status-pill">EVALUATING</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('stake-community', true)">
+                    <div class="row-entity">JEWISH / COMMUNITY</div>
+                    <div class="row-action">Build a live list of Jewish contacts, groups, nonprofits, and warm connectors<div class="action-meta"><span class="meta-chip">Connections</span><span class="meta-chip">Groups</span><span class="meta-chip">Warm intros</span></div></div>
+                    <div class="row-meta">Community Channel</div>
+                    <div class="row-prob" style="color: var(--cyan);">OPEN</div>
+                    <div class="row-yield"><span class="status-pill">BUILD NOW</span></div>
                 </div>
-                <div class="row-detail" id="stake-kristen">
+                <div class="row-detail" id="stake-community">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Persona Intel</b>Process-oriented. Focused on Salesforce data cleanliness and RevOps architecture.</div>
-                        <div class="detail-item"><b>Engagement</b>Mar 2 Interview scheduled. Josh Kasim (TA) providing back-channel signal.</div>
+                        <div class="detail-item"><b>Gap</b>This is the biggest under-built relationship channel in the current search.</div>
+                        <div class="detail-item"><b>Next Step</b>As soon as you send names or organizations, I will add them into Career OS and keep the counts updated.</div>
                     </div>
                 </div>
             </div>
 
             <div class="data-grid-container" id="panel-2">
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-roboflow', true)">
-                    <div class="row-entity">ROBOFLOW PIVOT</div>
-                    <div class="row-action">GTM Expansion Signal // Naveen</div>
-                    <div class="row-meta">HIGH INTENSITY</div>
-                    <div class="row-prob" style="color: var(--cyan);">SIGNAL</div>
-                    <div class="row-yield"><span class="status-pill pill-active">SIGNAL_ALPHA</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-title-discipline', true)">
+                    <div class="row-entity">TITLE DISCIPLINE</div>
+                    <div class="row-action">Ignore broad GTM and growth roles unless they clearly own systems, tooling, analytics, or process<div class="action-meta"><span class="meta-chip">Filter</span><span class="meta-chip">Manager fit</span></div></div>
+                    <div class="row-meta">Signal Rule</div>
+                    <div class="row-prob" style="color: var(--green);">LOCKED</div>
+                    <div class="row-yield"><span class="status-pill pill-active">PRIMARY</span></div>
                 </div>
-                <div class="row-detail" id="signal-roboflow">
+                <div class="row-detail" id="signal-title-discipline">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Signal Detail</b>Detected increase in LinkedIn hiring for "Solution Engineering" + "Growth Ops" via Naveen's profile.</div>
-                        <div class="detail-item"><b>Action Trigger</b>Initiate "Ghost Outreach" via Signal Scout Pro.</div>
+                        <div class="detail-item"><b>What Counts</b>Revenue Operations, GTM Operations, Sales Operations, Revenue Strategy &amp; Ops, and systems-heavy GTM roles.</div>
+                        <div class="detail-item"><b>Why</b>The market is saturated on generic GTM. Narrowing improves reply rate and reduces wasted applications.</div>
                     </div>
                 </div>
 
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-descope-b', true)">
-                    <div class="row-entity">DESCOPE FUNDING</div>
-                    <div class="row-action">Series B expansion rumors // Venture Intel</div>
-                    <div class="row-meta">MEDIUM ALPHA</div>
-                    <div class="row-prob" style="color: var(--gold);">RUMOR</div>
-                    <div class="row-yield"><span class="status-pill">MONITORING</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('signal-company-fit', true)">
+                    <div class="row-entity">COMPANY FIT</div>
+                    <div class="row-action">Prioritize AI, SaaS, security, dev tools, workflow software, and operational transformation firms<div class="action-meta"><span class="meta-chip">Series A-C</span><span class="meta-chip">Bay Area + Remote</span></div></div>
+                    <div class="row-meta">Market Focus</div>
+                    <div class="row-prob" style="color: var(--gold);">TARGETED</div>
+                    <div class="row-yield"><span class="status-pill">HIGH MATCH</span></div>
+                </div>
+                <div class="row-detail" id="signal-company-fit">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Why These Companies</b>Your proof stack maps cleanly to technical products with process pain and measurable revenue ownership.</div>
+                        <div class="detail-item"><b>How To Use</b>Keep these as your search backbone before drifting into vague “strategy” opportunities.</div>
+                    </div>
                 </div>
             </div>
 
             <div class="data-grid-container" id="panel-3">
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-ciso', true)">
-                    <div class="row-entity">vCISO HUB v3.1</div>
-                    <div class="row-action">Master GTM Delivery Kit // RAJ Node</div>
-                    <div class="row-meta">90% CAP</div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-30day', true)">
+                    <div class="row-entity">30-DAY PLAN</div>
+                    <div class="row-action">Reusable revenue systems proof asset for recruiters, hiring managers, and warm intros<div class="action-meta"><span class="meta-chip">Current</span><span class="meta-chip">Manager-level</span></div></div>
+                    <div class="row-meta">Primary Asset</div>
                     <div class="row-prob" style="color: var(--green);">READY</div>
-                    <div class="row-yield"><span class="status-pill">PROD_LOCKED</span></div>
+                    <div class="row-yield"><span class="status-pill">SENDABLE</span></div>
                 </div>
-                <div class="row-detail" id="payload-ciso">
+                <div class="row-detail" id="payload-30day">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Artifact Contents</b>- Master Hub Framework<br>- Pricing Geometry v2<br>- Contract Signature Rail Access</div>
-                        <div class="detail-item"><b>Usage History</b>Deployed to RAJ node. Signature pending.</div>
+                        <div class="detail-item"><b>Use Case</b>After applying, after recruiter outreach, or when a warm intro asks for context.</div>
+                        <div class="detail-item"><b>Message</b>You improve routing, handoffs, visibility, and execution speed without adding headcount.</div>
                     </div>
                 </div>
 
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-spear', true)">
-                    <div class="row-entity">SPEAR AUDIT v2</div>
-                    <div class="row-action">Standard Technical Proof Payload</div>
-                    <div class="row-meta">92% CAP</div>
-                    <div class="row-prob" style="color: var(--cyan);">ACTIVE</div>
-                    <div class="row-yield"><span class="status-pill">REFINED</span></div>
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('payload-positioning', true)">
+                    <div class="row-entity">POSITIONING LINE</div>
+                    <div class="row-action">I build revenue systems that improve pipeline quality, routing, and execution speed without adding headcount<div class="action-meta"><span class="meta-chip">Current</span><span class="meta-chip">Use everywhere</span></div></div>
+                    <div class="row-meta">Core Narrative</div>
+                    <div class="row-prob" style="color: var(--cyan);">LIVE</div>
+                    <div class="row-yield"><span class="status-pill">LOCKED</span></div>
+                </div>
+                <div class="row-detail" id="payload-positioning">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Channels</b>Resume, recruiter notes, hiring manager DMs, referral asks, and the dashboard itself.</div>
+                        <div class="detail-item"><b>Guardrail</b>Do not drift back into vague “architect” language if speed to interviews is the goal right now.</div>
+                    </div>
                 </div>
             </div>
 
             <div class="data-grid-container" id="panel-4">
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-replit', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">REPLIT</div>
+                    <div class="row-action">Closed: no movement // removed from active pipeline</div>
+                    <div class="row-meta">HISTORICAL</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
+                </div>
+                <div class="row-detail" id="hist-replit">
+                    <div class="detail-grid">
+                        <div class="detail-item"><b>Rationale</b>Good conversation, but no longer part of the live operating set.</div>
+                        <div class="detail-item"><b>Rule</b>Keep as proof of traction, not as an active dashboard anchor.</div>
+                    </div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-nimbly', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">GO NIMBLY</div>
+                    <div class="row-action">Closed: no movement // archived from current cycle</div>
+                    <div class="row-meta">HISTORICAL</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-descope', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">DESCOPE</div>
+                    <div class="row-action">Closed: preserve notes, remove from active mental load</div>
+                    <div class="row-meta">HISTORICAL</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
+                </div>
+
+                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-raj', true)">
+                    <div class="row-entity" style="color: var(--text-secondary);">RAJ / VCISO HUB</div>
+                    <div class="row-action">Historical consulting thread // no longer shown as active momentum</div>
+                    <div class="row-meta">HISTORICAL</div>
+                    <div class="row-prob" style="color: var(--red);">0%</div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
+                </div>
+
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-tredence', true)">
                     <div class="row-entity" style="color: var(--text-secondary);">TREDENCE</div>
-                    <div class="row-action">Dropped: Methodology mismatch // Adrenaline Leak</div>
-                    <div class="row-meta">T4_KILL_CONFIRMED</div>
+                    <div class="row-action">Dropped: methodology mismatch // older archive restored for context</div>
+                    <div class="row-meta">LEGACY ARCHIVE</div>
                     <div class="row-prob" style="color: var(--red);">0%</div>
                     <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
                 </div>
                 <div class="row-detail" id="hist-tredence">
                     <div class="detail-grid">
-                        <div class="detail-item"><b>Kill Rationale</b>Node idle > 5 days. Decision: Methodology mismatch. Focus shifted to Replit alpha.</div>
-                        <div class="detail-item"><b>Archival Date</b>2026-02-25 // 14:20 PST</div>
+                        <div class="detail-item"><b>Kill Rationale</b>Methodology mismatch and weak energy return. Restored here so previous archive history is not lost.</div>
+                        <div class="detail-item"><b>Archive Layer</b>Legacy historical context from the earlier command center.</div>
                     </div>
-                </div>
-
-                <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-buyersight', true)">
-                    <div class="row-entity" style="color: var(--text-secondary);">BUYERSIGHT</div>
-                    <div class="row-action">Dropped: Market timing // No technical depth</div>
-                    <div class="row-meta">EXCLUDED</div>
-                    <div class="row-prob" style="color: var(--red);">0%</div>
-                    <div class="row-yield"><span class="status-pill pill-kill">DE-LEVERAGED</span></div>
                 </div>
 
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-campfire', true)">
                     <div class="row-entity" style="color: var(--text-secondary);">CAMPFIRE</div>
-                    <div class="row-action">Archived: Low intensity follow-up loop</div>
-                    <div class="row-meta">DROPPED</div>
+                    <div class="row-action">Archived: low-intensity follow-up loop // older history restored</div>
+                    <div class="row-meta">LEGACY ARCHIVE</div>
                     <div class="row-prob" style="color: var(--red);">0%</div>
-                    <div class="row-yield"><span class="status-pill pill-kill">AUTO_KILL</span></div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
                 </div>
+
                 <div class="dense-row" tabindex="0" onclick="toggleDetail('hist-ratul', true)">
                     <div class="row-entity" style="color: var(--text-secondary);">RATUL AI</div>
-                    <div class="row-action">Dropped: Founder mismatch // Identity Leak</div>
-                    <div class="row-meta">T4_TERMINATED</div>
+                    <div class="row-action">Dropped: founder mismatch // identity leak risk</div>
+                    <div class="row-meta">LEGACY ARCHIVE</div>
                     <div class="row-prob" style="color: var(--red);">0%</div>
-                    <div class="row-yield"><span class="status-pill pill-kill">EXCLUDED</span></div>
+                    <div class="row-yield"><span class="status-pill pill-kill">ARCHIVED</span></div>
                 </div>
             </div>
 
             <!-- OPS VAULT PANEL -->
             <div class="data-grid-container" id="panel-5">
-                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                        <button class="hud-btn" id="importLeadsBtn">Import Leads CSV</button>
-                        <button class="hud-btn" id="importContactsBtn">Import Contacts CSV</button>
-                        <button class="hud-btn" id="importHiringBtn">Import Hiring Managers CSV</button>
-                        <button class="hud-btn" id="importInteractionsBtn">Import Interactions CSV</button>
-                        <button class="hud-btn" id="importArtifactsBtn">Import Artifacts JSON</button>
-                        <input id="leadsCsvInput" type="file" accept=".csv" style="display:none;">
-                        <input id="contactsCsvInput" type="file" accept=".csv" style="display:none;">
-                        <input id="hiringCsvInput" type="file" accept=".csv" style="display:none;">
-                        <input id="interactionsCsvInput" type="file" accept=".csv" style="display:none;">
-                        <input id="artifactsJsonInput" type="file" accept=".json" style="display:none;">
+                <div class="career-os-clean">
+                    <section class="career-topbar">
+                        <div class="career-clean-card">
+                            <div class="career-clean-title">
+                                <div>
+                                    <h3>Opportunity Tracker</h3>
+                                    <p id="careerFocusLine">Simple table for leads, opportunities, follow-ups, and next steps.</p>
+                                </div>
+                                <span class="stage-pill" id="careerModePill">ACTIVE</span>
+                            </div>
+                            <div class="career-stat-grid">
+                                <div class="career-stat-box">
+                                    <div class="label">Active Deals</div>
+                                    <div class="value" id="careerInterviewCount">0</div>
+                                </div>
+                                <div class="career-stat-box">
+                                    <div class="label">Due Today</div>
+                                    <div class="value" id="careerTodayCount">0</div>
+                                </div>
+                                <div class="career-stat-box">
+                                    <div class="label">People</div>
+                                    <div class="value" id="careerNetworkCount">0</div>
+                                </div>
+                                <div class="career-stat-box">
+                                    <div class="label">Follow-Ups</div>
+                                    <div class="value" id="careerFollowupCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="career-clean-card">
+                            <div class="career-clean-title">
+                                <div>
+                                    <h3>Quick View</h3>
+                                    <p>Simple read on open work, pipeline, and what needs attention.</p>
+                                </div>
+                            </div>
+                            <div class="priority-stack" id="careerStatsMount"></div>
+                        </div>
+                    </section>
+
+                    <section class="career-clean-card">
+                        <div class="career-clean-title">
+                            <div>
+                                <h3>What Needs Attention</h3>
+                                <p>Keep today, this week, and this month in one place.</p>
+                            </div>
+                        </div>
+                        <div class="career-task-strip">
+                            <div class="career-task-col">
+                                <h4>Today</h4>
+                                <div class="career-simple-list" id="careerTodayList"></div>
+                            </div>
+                            <div class="career-task-col">
+                                <h4>This Week</h4>
+                                <div class="career-simple-list" id="careerWeekList"></div>
+                            </div>
+                            <div class="career-task-col">
+                                <h4>This Month</h4>
+                                <div class="career-simple-list" id="careerMonthList"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="career-layout">
+                        <div class="career-clean-card">
+                            <div class="career-clean-title">
+                                <div>
+                                    <h3>Opportunity Table</h3>
+                                    <p>Spreadsheet-style tracker for leads, opportunities, people, and archived items.</p>
+                                </div>
+                            </div>
+                            <div class="career-filter-bar">
+                                <button class="career-filter-btn active" id="careerFilterAll">All</button>
+                                <button class="career-filter-btn" id="careerFilterInterviews">Deals</button>
+                                <button class="career-filter-btn" id="careerFilterApplied">Applied</button>
+                                <button class="career-filter-btn" id="careerFilterNetwork">People</button>
+                                <button class="career-filter-btn" id="careerFilterRecruiters">Recruiters</button>
+                                <button class="career-filter-btn" id="careerFilterHistorical">Archive</button>
+                            </div>
+                            <div class="career-table-wrap">
+                                <table class="career-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name / Account</th>
+                                            <th>Type</th>
+                                            <th>Stage</th>
+                                            <th>Last Touch</th>
+                                            <th>Next Step</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="careerTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="career-side-rail">
+                            <div class="career-side-section">
+                                <h4>Active Deals</h4>
+                                <div class="career-side-list" id="careerInterviewList"></div>
+                            </div>
+                            <div class="career-side-section">
+                                <h4>People & Organizations</h4>
+                                <div class="career-side-list" id="careerOrgList"></div>
+                            </div>
+                            <div class="career-side-section">
+                                <h4>Archive</h4>
+                                <div class="career-side-list" id="careerHistoricalList"></div>
+                            </div>
+                            <div class="career-side-section">
+                                <h4>Recent Updates</h4>
+                                <div class="career-side-list" id="careerCommandLog"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <details class="career-utility">
+                    <summary>
+                        <div>
+                            <strong>Import / Add Data</strong>
+                            <div style="margin-top:4px;">Use this area to import CSVs, paste contact dumps, and keep the tracker current.</div>
+                        </div>
+                        <div class="career-utility-meta">Unified Records: <span id="hubTotalCount">0</span></div>
+                    </summary>
+                    <div class="career-utility-body">
+                        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <button class="hud-btn" id="importLeadsBtn">Import Leads CSV</button>
+                                <button class="hud-btn" id="importContactsBtn">Import Contacts CSV</button>
+                                <button class="hud-btn" id="importHiringBtn">Import Hiring Managers CSV</button>
+                                <button class="hud-btn" id="importInteractionsBtn">Import Interactions CSV</button>
+                                <button class="hud-btn" id="importArtifactsBtn">Import Artifacts JSON</button>
+                                <input id="leadsCsvInput" type="file" accept=".csv" style="display:none;">
+                                <input id="contactsCsvInput" type="file" accept=".csv" style="display:none;">
+                                <input id="hiringCsvInput" type="file" accept=".csv" style="display:none;">
+                                <input id="interactionsCsvInput" type="file" accept=".csv" style="display:none;">
+                                <input id="artifactsJsonInput" type="file" accept=".json" style="display:none;">
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                            <button class="hud-btn" id="viewAllBtn">All</button>
+                            <button class="hud-btn" id="viewStaleBtn">Stale 14d</button>
+                            <button class="hud-btn" id="viewDueBtn">Due 7d</button>
+                            <button class="hud-btn" id="viewPriorityBtn">High Priority</button>
+                            <button class="hud-btn" id="openPasteDumpBtn">Paste Phone Dump</button>
+                        </div>
+                        <div id="mappingPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
+                            <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">COLUMN MAPPING</div>
+                            <div id="mappingFields" style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:8px;"></div>
+                            <div style="margin-top:10px;display:flex;gap:8px;">
+                                <button class="hud-btn primary" id="applyMappingBtn">Apply Mapping</button>
+                                <button class="hud-btn" id="cancelMappingBtn">Cancel</button>
+                            </div>
+                        </div>
+                        <div id="pasteDumpPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
+                            <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">PASTE CONTACT DUMP (ONE LINE PER RECORD)</div>
+                            <textarea id="pasteDumpInput" style="width:100%;min-height:110px;background:rgba(0,0,0,0.35);color:#fff;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:0.72rem;"></textarea>
+                            <div style="margin-top:10px;display:flex;gap:8px;">
+                                <button class="hud-btn primary" id="importDumpBtn">Import Dump</button>
+                                <button class="hud-btn" id="closeDumpBtn">Close</button>
+                            </div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-bottom:12px;">
+                            <div class="tel-node"><span class="tel-label">LEADS</span><span class="tel-val" id="countLeads">0</span></div>
+                            <div class="tel-node"><span class="tel-label">CONTACTS</span><span class="tel-val" id="countContacts">0</span></div>
+                            <div class="tel-node"><span class="tel-label">HIRING</span><span class="tel-val" id="countHiring">0</span></div>
+                            <div class="tel-node"><span class="tel-label">INTERACTIONS</span><span class="tel-val" id="countInteractions">0</span></div>
+                            <div class="tel-node"><span class="tel-label">ARTIFACTS</span><span class="tel-val" id="countArtifacts">0</span></div>
+                        </div>
+                        <div class="lead-grid-bar">
+                            <input id="hubSearchInput" class="lead-search" type="text" placeholder="Search everything here (name, company, email, phone, stage, source, notes)...">
+                            <button id="hubPrevBtn" class="lead-page-btn">Prev</button>
+                            <button id="hubNextBtn" class="lead-page-btn">Next</button>
+                            <div class="lead-count" id="hubPageInfo">PAGE 0 / 0</div>
+                        </div>
+                        <div class="lead-row head">
+                            <div>Dataset</div>
+                            <div>Name / Company</div>
+                            <div>Stage</div>
+                            <div>Email</div>
+                            <div>Phone</div>
+                            <div>Source</div>
+                            <div>Score</div>
+                        </div>
+                        <div id="hubRowsMount"></div>
                     </div>
-                    <div style="font-family:'JetBrains Mono';font-size:0.7rem;color:var(--text-secondary);">Unified Records: <span id="hubTotalCount">0</span></div>
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-                    <button class="hud-btn" id="viewAllBtn">All</button>
-                    <button class="hud-btn" id="viewStaleBtn">Stale 14d</button>
-                    <button class="hud-btn" id="viewDueBtn">Due 7d</button>
-                    <button class="hud-btn" id="viewPriorityBtn">High Priority</button>
-                    <button class="hud-btn" id="openPasteDumpBtn">Paste Phone Dump</button>
-                </div>
-                <div id="mappingPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
-                    <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">HEADER MAPPING</div>
-                    <div id="mappingFields" style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:8px;"></div>
-                    <div style="margin-top:10px;display:flex;gap:8px;">
-                        <button class="hud-btn primary" id="applyMappingBtn">Apply Mapping</button>
-                        <button class="hud-btn" id="cancelMappingBtn">Cancel</button>
-                    </div>
-                </div>
-                <div id="pasteDumpPanel" style="display:none;margin-bottom:12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03);">
-                    <div style="font-family:'JetBrains Mono';font-size:0.66rem;color:var(--cyan);margin-bottom:8px;">PASTE CONTACT DUMP (one line per contact)</div>
-                    <textarea id="pasteDumpInput" style="width:100%;min-height:110px;background:rgba(0,0,0,0.35);color:#fff;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:0.72rem;"></textarea>
-                    <div style="margin-top:10px;display:flex;gap:8px;">
-                        <button class="hud-btn primary" id="importDumpBtn">Import Dump</button>
-                        <button class="hud-btn" id="closeDumpBtn">Close</button>
-                    </div>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-bottom:12px;">
-                    <div class="tel-node"><span class="tel-label">LEADS</span><span class="tel-val" id="countLeads">0</span></div>
-                    <div class="tel-node"><span class="tel-label">CONTACTS</span><span class="tel-val" id="countContacts">0</span></div>
-                    <div class="tel-node"><span class="tel-label">HIRING</span><span class="tel-val" id="countHiring">0</span></div>
-                    <div class="tel-node"><span class="tel-label">INTERACTIONS</span><span class="tel-val" id="countInteractions">0</span></div>
-                    <div class="tel-node"><span class="tel-label">ARTIFACTS</span><span class="tel-val" id="countArtifacts">0</span></div>
-                </div>
-                <div class="lead-grid-bar">
-                    <input id="hubSearchInput" class="lead-search" type="text" placeholder="Search all imported data (name, company, email, phone, stage, source, notes)...">
-                    <button id="hubPrevBtn" class="lead-page-btn">Prev</button>
-                    <button id="hubNextBtn" class="lead-page-btn">Next</button>
-                    <div class="lead-count" id="hubPageInfo">PAGE 0 / 0</div>
-                </div>
-                <div class="lead-row head">
-                    <div>Dataset</div>
-                    <div>Name / Company</div>
-                    <div>Stage</div>
-                    <div>Email</div>
-                    <div>Phone</div>
-                    <div>Source</div>
-                    <div>Score</div>
-                </div>
-                <div id="hubRowsMount"></div>
+                </details>
             </div>
         </main>
 
@@ -892,22 +1575,34 @@
                 <span class="ticker-item">● NODE_SYNC [REPLIT] <b>PENDING FINAL</b> [1m ago]</span>
                 <span class="ticker-item">● SIGNAL_ACQ [ROBOFLOW] <b>HIGH_INTENT</b> [4m ago]</span>
                 <span class="ticker-item">● ARCHIVE_AUTO [TREDENCE] <b>KILL_EXEC</b> [12m ago]</span>
-                <span class="ticker-item">● PIPELINE_YIELD <b>94.2%</b> [SYSTEM_AVG]</span>
+                <span class="ticker-item">● PIPELINE_YIELD <b id="tickerPipelineYield">0 active</b> [CAREER_OS]</span>
                 <span class="ticker-item">● HUB_HEARTBEAT <b>STABLE</b> [NEXUS v4.3]</span>
             </div>
         </footer>
     </div>
 
+    <script src="career_dashboard_data.js"></script>
     <script>
         // --- CORE STATE ---
         const state = {
-            activeTab: parseInt(localStorage.getItem('nexus_tab')) || 0,
+            activeTab: 5,
             expandedRow: localStorage.getItem('nexus_row') || null,
             paletteOpen: false,
             leads: [],
             filteredLeads: [],
             leadPage: 1,
             leadPageSize: 120,
+            careerDashboard: {
+                focus: '',
+                mode: 'Active',
+                stats: [],
+                today: [],
+                week: [],
+                month: [],
+                interviews: [],
+                network: {},
+                commandLog: []
+            },
             contacts: [],
             hiringManagers: [],
             interactions: [],
@@ -917,6 +1612,7 @@
             hubPage: 1,
             hubPageSize: 80,
             hubView: 'all',
+            careerView: 'all',
             rawImports: {},
             activeMappingDataset: null,
             currentMappings: {},
@@ -926,7 +1622,7 @@
                 { id: 'goto-signal', name: 'Jump to Signal Feed', key: '3', action: () => switchTab(2) },
                 { id: 'goto-vault', name: 'Jump to Payload Vault', key: '4', action: () => switchTab(3) },
                 { id: 'goto-history', name: 'Jump to Historical', key: '5', action: () => switchTab(4) },
-                { id: 'goto-ops-vault', name: 'Jump to Ops Vault', key: '6', action: () => switchTab(5) },
+                { id: 'goto-career-os', name: 'Jump to Opportunity Tracker', key: '6', action: () => switchTab(5) },
                 { id: 'focus-replit', name: 'Focus Replit Node', key: 'R', action: () => jumpToNode('replit') },
                 { id: 'focus-nimbly', name: 'Focus Go Nimbly Node', key: 'G', action: () => jumpToNode('go-nimbly') },
                 { id: 'focus-descope', name: 'Focus Descope Node', key: 'D', action: () => jumpToNode('descope') },
@@ -1133,6 +1829,269 @@
             });
         }
 
+        function asArray(value) {
+            return Array.isArray(value) ? value : [];
+        }
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        function renderPriorityList(id, items) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = asArray(items).map((item) => `
+                <div class="career-simple-item ${item.status || 'todo'}">
+                    <div class="career-simple-head">
+                        <div class="career-simple-tag">${escapeHtml(item.tag || 'TASK')}</div>
+                        <span class="career-stage">${escapeHtml(item.status || 'todo')}</span>
+                    </div>
+                    <div class="career-simple-text">${escapeHtml(item.text || '')}</div>
+                    <div class="career-simple-meta">
+                        <span>${escapeHtml(item.owner || 'me')}</span>
+                        <span>${escapeHtml(item.due || 'open')}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCompactList(id, items, emptyText) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const rows = asArray(items);
+            if (!rows.length) {
+                el.innerHTML = `<div class="career-empty">${escapeHtml(emptyText || 'Nothing logged yet.')}</div>`;
+                return;
+            }
+            el.innerHTML = rows.map((item) => `
+                <div class="career-side-item">
+                    <div class="career-simple-head">
+                        <div class="title">${escapeHtml(item.name || item.company || item.organization || 'Open Slot')}</div>
+                        <span class="career-stage">${escapeHtml(item.stage || item.status || item.kind || 'tracked')}</span>
+                    </div>
+                    <div class="meta">${escapeHtml(item.role || item.next || item.detail || item.notes || 'Needs next step')}</div>
+                </div>
+            `).join('');
+        }
+
+        function careerRowsForFilter(dashboard, filter) {
+            const network = dashboard.network || {};
+            const rows = [];
+            asArray(dashboard.interviews).forEach((item) => rows.push({
+                name: item.company || 'Unknown',
+                secondary: item.role || '',
+                type: 'Interview',
+                stage: item.stage || 'Open',
+                lastTouch: item.lastTouch || '—',
+                nextStep: item.nextStep || item.notes || '—'
+            }));
+            asArray(dashboard.companies).forEach((item) => rows.push({
+                name: item.company || 'Unknown',
+                secondary: item.role || '',
+                type: 'Company',
+                stage: item.stage || 'Tracked',
+                lastTouch: item.lastTouch || '—',
+                nextStep: item.next || item.notes || item.role || '—'
+            }));
+            asArray(network.recruiters).forEach((item) => rows.push({
+                name: item.name || 'Unknown',
+                secondary: item.role || '',
+                type: 'Recruiter',
+                stage: item.status || 'Tracked',
+                lastTouch: item.lastTouch || '—',
+                nextStep: item.next || 'Needs next action'
+            }));
+            asArray(network.jewishConnections).forEach((item) => rows.push({
+                name: item.name || 'Unknown',
+                secondary: item.angle || '',
+                type: 'Jewish Network',
+                stage: item.status || 'Tracked',
+                lastTouch: item.lastTouch || '—',
+                nextStep: item.next || 'Needs next action'
+            }));
+            asArray(dashboard.organizations).forEach((item) => rows.push({
+                name: item.organization || 'Unknown',
+                secondary: item.detail || '',
+                type: 'Organization',
+                stage: item.kind || 'Community',
+                lastTouch: '—',
+                nextStep: item.detail || 'Tracked'
+            }));
+            asArray(dashboard.historical).forEach((item) => rows.push({
+                name: item.company || item.name || 'Unknown',
+                secondary: item.role || item.detail || '',
+                type: 'Historical',
+                stage: item.stage || 'Historical',
+                lastTouch: '—',
+                nextStep: item.detail || 'Archived'
+            }));
+
+            let filtered = rows;
+            if (filter === 'interviews') filtered = rows.filter((row) => row.type === 'Interview');
+            else if (filter === 'applied') filtered = rows.filter((row) => row.type === 'Company' && /applied/i.test(row.stage));
+            else if (filter === 'network') filtered = rows.filter((row) => row.type === 'Jewish Network' || row.type === 'Organization');
+            else if (filter === 'recruiters') filtered = rows.filter((row) => row.type === 'Recruiter');
+            else if (filter === 'historical') filtered = rows.filter((row) => row.type === 'Historical');
+
+            const typeRank = {
+                'Interview': 0,
+                'Company': 1,
+                'Recruiter': 2,
+                'Jewish Network': 3,
+                'Organization': 4,
+                'Historical': 5
+            };
+            const stageRank = {
+                'Interview': 0,
+                'Scheduled': 1,
+                'Sent': 2,
+                'Applied': 3,
+                'Target': 4,
+                'Queued': 5,
+                'Community': 6,
+                'Organization': 7,
+                'Historical': 8,
+                'Archived': 9,
+                'Rejected': 10
+            };
+            return filtered.sort((a, b) => {
+                const typeDelta = (typeRank[a.type] ?? 99) - (typeRank[b.type] ?? 99);
+                if (typeDelta !== 0) return typeDelta;
+                const stageDelta = (stageRank[a.stage] ?? 99) - (stageRank[b.stage] ?? 99);
+                if (stageDelta !== 0) return stageDelta;
+                return String(a.name).localeCompare(String(b.name));
+            });
+        }
+
+        function renderCareerTable(dashboard) {
+            const body = document.getElementById('careerTableBody');
+            if (!body) return;
+            const rows = careerRowsForFilter(dashboard, state.careerView || 'all');
+            if (!rows.length) {
+                body.innerHTML = `<tr><td colspan="5"><div class="career-empty">No rows in this view yet.</div></td></tr>`;
+                return;
+            }
+            body.innerHTML = rows.map((row) => `
+                <tr>
+                    <td>
+                        <div class="career-cell-primary">${escapeHtml(row.name)}</div>
+                        <div class="career-cell-secondary">${escapeHtml(row.secondary || '')}</div>
+                    </td>
+                    <td>${escapeHtml(row.type)}</td>
+                    <td><span class="career-stage">${escapeHtml(row.stage)}</span></td>
+                    <td>${escapeHtml(row.lastTouch || '—')}</td>
+                    <td>${escapeHtml(row.nextStep || '—')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function setCareerFilter(filter) {
+            state.careerView = filter;
+            const mapping = {
+                careerFilterAll: 'all',
+                careerFilterInterviews: 'interviews',
+                careerFilterApplied: 'applied',
+                careerFilterNetwork: 'network',
+                careerFilterRecruiters: 'recruiters',
+                careerFilterHistorical: 'historical'
+            };
+            Object.entries(mapping).forEach(([id, key]) => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('active', key === filter);
+            });
+            renderCareerTable(state.careerDashboard || {});
+        }
+
+        function renderCareerDashboard() {
+            const dashboard = state.careerDashboard || {};
+            const network = dashboard.network || {};
+            const networkGroups = [
+                { key: 'priorityHiring', fallback: 'hiringManagers', title: 'Priority Accounts' },
+                { key: 'community', fallback: 'jewishGroups', title: 'People & Organizations' },
+                { key: 'recruiters', fallback: 'recruiters', title: 'Recruiters' },
+                { key: 'jewishConnections', fallback: 'warmIntros', title: 'Warm Connections' }
+            ];
+            const activeInterviews = asArray(dashboard.interviews).filter((item) => !/closed|archived|historical/i.test(String(item.stage || '')));
+            const interviewCount = activeInterviews.length;
+            const todayOpen = asArray(dashboard.today).filter((item) => !/done|sent/i.test(String(item.status || '')));
+            const todayCount = todayOpen.length;
+            const networkCount = networkGroups.reduce((sum, group) => sum + asArray(network[group.key] || network[group.fallback]).length, 0);
+            const followupCount = asArray(network.warmIntros).length + asArray(network.recruiters).filter((item) => /follow|due|today/i.test(`${item.next || ''} ${item.status || ''}`)).length;
+            const primaryStat = asArray(dashboard.stats)[0] || {};
+            const focusStat = asArray(dashboard.stats)[2] || {};
+            const companyItems = asArray(dashboard.companies).length ? asArray(dashboard.companies) : asArray(dashboard.interviews).map((item) => ({
+                company: item.company,
+                role: item.role,
+                stage: item.stage
+            }));
+            const orgItems = asArray(dashboard.organizations).length ? asArray(dashboard.organizations) : asArray(network.community);
+            const historicalItems = asArray(dashboard.historical);
+            const careerBadgeCount = interviewCount + todayCount + networkCount + historicalItems.length;
+
+            setText('careerFocusLine', dashboard.focus || 'Simple table for leads, opportunities, and next steps.');
+            setText('careerModePill', String(dashboard.mode || 'Active').toUpperCase());
+            setText('careerInterviewCount', String(interviewCount));
+            setText('careerTodayCount', String(todayCount));
+            setText('careerNetworkCount', String(networkCount));
+            setText('careerFollowupCount', String(followupCount));
+            setText('opsVaultBadge', String(state.hubRows && state.hubRows.length ? state.hubRows.length : careerBadgeCount));
+            setText('headerPipeline', primaryStat.value || `${todayCount} due`);
+            setText('headerFocus', String(dashboard.mode || focusStat.value || 'Active'));
+            setText('sysActiveOps', String(todayCount + interviewCount));
+            setText('sysFollowups', String(followupCount));
+            setText('tickerPipelineYield', `${interviewCount} active`);
+
+            const statsMount = document.getElementById('careerStatsMount');
+            if (statsMount) {
+                statsMount.innerHTML = asArray(dashboard.stats).map((item) => `
+                    <div class="interview-item">
+                        <div class="interview-top">
+                            <div class="interview-company">${escapeHtml(item.label || 'Metric')}</div>
+                            <span class="stage-pill">${escapeHtml(item.value || '')}</span>
+                        </div>
+                        <div class="interview-meta">${escapeHtml(item.note || '')}</div>
+                    </div>
+                `).join('');
+            }
+
+            renderPriorityList('careerTodayList', dashboard.today);
+            renderPriorityList('careerWeekList', dashboard.week);
+            renderPriorityList('careerMonthList', dashboard.month);
+            renderCompactList('careerOrgList', orgItems, 'Add people, organizations, and partner accounts here.');
+            renderCompactList('careerHistoricalList', historicalItems, 'Closed or paused items live here.');
+            setCareerFilter(state.careerView || 'all');
+
+            const interviewList = document.getElementById('careerInterviewList');
+            if (interviewList) {
+                interviewList.innerHTML = asArray(dashboard.interviews).map((item) => `
+                    <div class="career-side-item">
+                        <div class="career-simple-head">
+                            <div class="title">${escapeHtml(item.company || 'Unknown')}</div>
+                            <span class="career-stage">${escapeHtml(item.stage || 'Open')}</span>
+                        </div>
+                        <div class="meta">
+                            ${escapeHtml(item.role || 'Role not set')}<br>
+                            ${escapeHtml(item.nextStep || '—')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const commandLog = document.getElementById('careerCommandLog');
+            if (commandLog) {
+                commandLog.innerHTML = asArray(dashboard.commandLog).map((item) => `
+                    <div class="career-side-item">
+                        <div class="career-simple-head">
+                            <div class="title">${escapeHtml(item.title || 'Update')}</div>
+                            <span class="career-stage">${escapeHtml(item.when || '')}</span>
+                        </div>
+                        <div class="meta">${escapeHtml(item.detail || '')}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
         function renderLeadGrid() {
             const mount = document.getElementById('leadQuickRowsMount');
             const total = state.filteredLeads.length;
@@ -1175,7 +2134,11 @@
             document.getElementById('countInteractions').textContent = String(state.interactions.length);
             document.getElementById('countArtifacts').textContent = String(state.artifacts.length);
             document.getElementById('hubTotalCount').textContent = String(state.hubRows.length);
-            document.getElementById('opsVaultBadge').textContent = String(state.hubRows.length);
+            if (state.hubRows.length) {
+                document.getElementById('opsVaultBadge').textContent = String(state.hubRows.length);
+            } else {
+                renderCareerDashboard();
+            }
             renderHubRows();
         }
 
@@ -1226,6 +2189,21 @@
             document.getElementById('hubPageInfo').textContent = `PAGE ${state.hubPage} / ${totalPages}`;
             document.getElementById('hubPrevBtn').disabled = state.hubPage <= 1;
             document.getElementById('hubNextBtn').disabled = state.hubPage >= totalPages;
+        }
+
+        async function loadCareerDashboard() {
+            if (window.__CAREER_DASHBOARD__) {
+                state.careerDashboard = window.__CAREER_DASHBOARD__;
+                renderCareerDashboard();
+            }
+            try {
+                const res = await fetch('career_dashboard_data.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('career dashboard file missing');
+                state.careerDashboard = await res.json();
+            } catch (e) {
+                console.warn('Career dashboard JSON fetch unavailable, using embedded mirror.');
+            }
+            renderCareerDashboard();
         }
 
         function setHubView(view) {
@@ -1440,6 +2418,12 @@
         document.getElementById('viewStaleBtn').addEventListener('click', () => setHubView('stale'));
         document.getElementById('viewDueBtn').addEventListener('click', () => setHubView('due'));
         document.getElementById('viewPriorityBtn').addEventListener('click', () => setHubView('priority'));
+        document.getElementById('careerFilterAll').addEventListener('click', () => setCareerFilter('all'));
+        document.getElementById('careerFilterInterviews').addEventListener('click', () => setCareerFilter('interviews'));
+        document.getElementById('careerFilterApplied').addEventListener('click', () => setCareerFilter('applied'));
+        document.getElementById('careerFilterNetwork').addEventListener('click', () => setCareerFilter('network'));
+        document.getElementById('careerFilterRecruiters').addEventListener('click', () => setCareerFilter('recruiters'));
+        document.getElementById('careerFilterHistorical').addEventListener('click', () => setCareerFilter('historical'));
         document.getElementById('openPasteDumpBtn').addEventListener('click', () => {
             document.getElementById('pasteDumpPanel').style.display = 'block';
         });
@@ -1525,9 +2509,11 @@
             }
 
             renderLeadGrid();
+            renderCareerDashboard();
             if (state.leads.length === 0 && state.hubRows.length === 0) {
                 await autoLoadPriorityLeads();
             }
+            await loadCareerDashboard();
             setHubView('all');
         };
     </script>

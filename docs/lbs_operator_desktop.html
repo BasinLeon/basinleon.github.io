@@ -38,7 +38,8 @@
                 radial-gradient(circle at top left, rgba(179, 107, 51, 0.18), transparent 22%),
                 radial-gradient(circle at top right, rgba(19, 92, 80, 0.16), transparent 24%),
                 linear-gradient(180deg, #f7f0e5 0%, var(--bg) 48%, var(--bg-deep) 100%);
-            padding: 24px 18px 56px;
+            padding: 14px 14px 28px;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -59,10 +60,11 @@
         }
 
         .wrap {
-            max-width: 1380px;
+            max-width: 1440px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            overflow-x: clip;
         }
 
         .hero,
@@ -76,19 +78,32 @@
 
         .hero {
             position: relative;
-            overflow: hidden;
+            top: auto;
+            z-index: 1;
+            overflow: visible;
             border-radius: var(--radius-xl);
-            padding: 32px;
-            margin-bottom: 18px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 252, 246, 0.92);
+        }
+
+        .hero.is-collapsed {
+            padding-bottom: 12px;
+        }
+
+        .hero.is-collapsed .hero-copy,
+        .hero.is-collapsed .hero-ledger,
+        .hero.is-collapsed .hero-grid {
+            display: none;
         }
 
         .hero::after {
             content: "";
             position: absolute;
-            right: -120px;
-            top: -100px;
-            width: 320px;
-            height: 320px;
+            right: -40px;
+            top: -40px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background:
                 radial-gradient(circle, rgba(19, 92, 80, 0.2) 0%, rgba(19, 92, 80, 0.05) 44%, transparent 65%);
@@ -98,8 +113,53 @@
         .hero-top {
             display: flex;
             justify-content: space-between;
-            gap: 16px;
-            align-items: flex-start;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .hero-intro {
+            display: grid;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .hero-ledger {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            max-width: 780px;
+        }
+
+        .hero-ledger-card {
+            border: 1px solid rgba(19, 92, 80, 0.12);
+            border-radius: 16px;
+            padding: 10px 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(19, 92, 80, 0.05));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+            min-width: 0;
+        }
+
+        .hero-ledger-label {
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            font-size: 0.64rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-2);
+        }
+
+        .hero-ledger-value {
+            margin-top: 4px;
+            font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+            font-size: 0.96rem;
+            letter-spacing: -0.02em;
+            line-height: 1.08;
+        }
+
+        .hero-ledger-copy {
+            margin-top: 3px;
+            font-size: 0.74rem;
+            color: var(--muted);
+            line-height: 1.3;
         }
 
         .eyebrow,
@@ -120,9 +180,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.72rem;
+            font-size: 0.62rem;
             color: var(--accent-2);
-            margin-bottom: 14px;
+            margin-bottom: 6px;
         }
 
         .eyebrow::before {
@@ -142,23 +202,35 @@
         }
 
         h1 {
-            font-size: clamp(2.8rem, 7vw, 5.8rem);
-            max-width: 8ch;
+            font-size: clamp(1.3rem, 2vw, 1.9rem);
+            max-width: none;
         }
 
         .hero-copy {
-            max-width: 76ch;
+            max-width: 58ch;
             color: var(--muted);
-            font-size: 1.02rem;
-            line-height: 1.7;
-            margin: 14px 0 0;
+            font-size: 0.8rem;
+            line-height: 1.35;
+            margin: 4px 0 0;
         }
 
         .hero-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
             justify-content: flex-end;
+            align-items: start;
+            max-width: 620px;
+        }
+
+        .hero-action-group {
+            display: inline-flex;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(56, 43, 31, 0.1);
+            background: rgba(255, 255, 255, 0.42);
+            backdrop-filter: blur(14px);
         }
 
         .button,
@@ -193,23 +265,29 @@
         }
 
         .hero-grid {
-            margin-top: 24px;
+            margin-top: 10px;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-            gap: 18px;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+            gap: 10px;
             align-items: start;
+        }
+
+        .hero-main {
+            display: grid;
+            gap: 8px;
         }
 
         .hero-sidebar {
             display: grid;
-            gap: 12px;
+            gap: 10px;
         }
 
         .focus-band {
             background: linear-gradient(135deg, rgba(19, 92, 80, 0.1), rgba(255, 250, 242, 0.72));
             border: 1px solid rgba(19, 92, 80, 0.16);
-            border-radius: 20px;
-            padding: 16px 18px;
+            border-radius: 18px;
+            padding: 10px 12px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .kicker {
@@ -219,33 +297,35 @@
 
         .focus-band strong {
             display: block;
-            margin-top: 6px;
-            font-size: 1.02rem;
+            margin-top: 4px;
+            font-size: 0.84rem;
+            line-height: 1.35;
         }
 
         .snapshot-note {
-            font-size: 0.84rem;
+            font-size: 0.76rem;
             color: var(--muted);
-            margin-top: 10px;
+            margin-top: 0;
         }
 
         .command-deck,
-        .operator-radar {
-            margin-top: 14px;
+        .operator-radar,
+        .pipeline-intelligence {
             border: 1px solid var(--line);
-            border-radius: 22px;
-            padding: 16px;
+            border-radius: 18px;
+            padding: 10px 12px;
             background:
                 linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(19, 92, 80, 0.05)),
                 rgba(255, 250, 242, 0.88);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
         }
 
         .command-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .command-title,
@@ -255,7 +335,7 @@
         }
 
         .command-title {
-            font-size: 1.08rem;
+            font-size: 0.96rem;
             font-weight: 700;
         }
 
@@ -264,7 +344,7 @@
         .orbit-meta,
         .command-result {
             color: var(--muted);
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .command-row {
@@ -272,6 +352,7 @@
             gap: 10px;
             flex-wrap: wrap;
             align-items: center;
+            margin-top: 10px;
         }
 
         .command-input {
@@ -284,12 +365,12 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-top: 12px;
+            margin-top: 8px;
         }
 
         .command-chip {
             border-radius: 999px;
-            padding: 8px 12px;
+            padding: 7px 10px;
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--line);
             color: var(--ink);
@@ -298,20 +379,108 @@
 
         .command-result {
             min-height: 1.5em;
-            margin-top: 12px;
-            font-size: 0.92rem;
+            margin-top: 8px;
+            font-size: 0.84rem;
         }
 
         .radar-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .intelligence-topline {
+            display: flex;
+            justify-content: space-between;
             gap: 10px;
-            margin-top: 12px;
+            align-items: end;
+        }
+
+        .intelligence-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(19, 92, 80, 0.14);
+            background: rgba(255, 255, 255, 0.76);
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .kpi-card {
+            border-radius: 16px;
+            padding: 10px;
+            border: 1px solid rgba(56, 43, 31, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .kpi-label {
+            font-size: 0.64rem;
+            color: var(--accent-2);
+        }
+
+        .kpi-value {
+            margin-top: 4px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .kpi-copy {
+            margin-top: 4px;
+            font-size: 0.72rem;
+            color: var(--muted);
+            line-height: 1.3;
+        }
+
+        .journey-flow {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .journey-stage {
+            border-radius: 16px;
+            padding: 10px;
+            border: 1px solid rgba(56, 43, 31, 0.1);
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .journey-stage-label {
+            font-size: 0.64rem;
+            color: var(--muted);
+        }
+
+        .journey-stage-value {
+            margin-top: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .journey-stage-copy {
+            margin-top: 4px;
+            font-size: 0.72rem;
+            color: var(--muted);
+            line-height: 1.28;
         }
 
         .radar-card {
             border-radius: 18px;
-            padding: 14px;
+            padding: 10px;
             border: 1px solid rgba(19, 92, 80, 0.14);
             background: rgba(255, 255, 255, 0.78);
         }
@@ -322,67 +491,163 @@
         }
 
         .radar-value {
-            margin-top: 8px;
-            font-size: 1.6rem;
+            margin-top: 6px;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: -0.04em;
         }
 
         .radar-copy {
-            margin-top: 6px;
-            font-size: 0.86rem;
+            margin-top: 4px;
+            font-size: 0.74rem;
             color: var(--muted);
-            line-height: 1.45;
+            line-height: 1.3;
+        }
+
+        .exec-snapshot {
+            border: 1px solid rgba(19, 92, 80, 0.22);
+            background: linear-gradient(135deg, rgba(19, 92, 80, 0.06), rgba(255, 252, 246, 0.96));
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+
+        .exec-snapshot-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .exec-snapshot-eyebrow {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            font-weight: 700;
+        }
+
+        .exec-snapshot-date {
+            font-size: 0.64rem;
+            color: var(--muted);
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+        }
+
+        .exec-snapshot-numbers {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .exec-num {
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(56, 43, 31, 0.08);
+        }
+
+        .exec-num-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .exec-num-label {
+            margin-top: 2px;
+            font-size: 0.58rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .exec-snapshot-body {
+            margin-top: 12px;
+            display: grid;
+            gap: 6px;
+        }
+
+        .exec-insight {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+            align-items: start;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: var(--ink);
+        }
+
+        .exec-insight-icon {
+            font-size: 0.7rem;
+            margin-top: 2px;
+        }
+
+        .exec-snapshot-footer {
+            margin-top: 12px;
+            font-size: 0.68rem;
+            color: var(--muted);
+            font-style: italic;
+            line-height: 1.4;
+            border-top: 1px solid rgba(56, 43, 31, 0.1);
+            padding-top: 10px;
+        }
+
+        .exec-snapshot.is-collapsed .exec-snapshot-numbers,
+        .exec-snapshot.is-collapsed .exec-snapshot-body,
+        .exec-snapshot.is-collapsed .exec-snapshot-footer {
+            display: none;
         }
 
         .mini-stats {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
         }
 
         .mini-stat {
             border: 1px solid var(--line);
             background: rgba(255, 250, 242, 0.76);
             border-radius: 18px;
-            padding: 16px;
-            min-height: 112px;
+            padding: 10px;
+            min-height: 74px;
         }
 
         .mini-stat-label {
-            font-size: 0.68rem;
+            font-size: 0.62rem;
             color: var(--muted);
         }
 
         .mini-stat-value {
-            margin-top: 10px;
-            font-size: 2rem;
+            margin-top: 4px;
+            font-size: 1.18rem;
             font-weight: 700;
             letter-spacing: -0.04em;
         }
 
         .mini-stat-copy {
-            margin-top: 8px;
+            margin-top: 4px;
             color: var(--muted);
-            font-size: 0.88rem;
-            line-height: 1.45;
+            font-size: 0.7rem;
+            line-height: 1.2;
         }
 
         .layout,
         .workspace-shell {
             display: grid;
-            gap: 18px;
+            gap: 12px;
             align-items: start;
         }
 
         .workspace-shell {
             grid-template-columns: minmax(320px, 0.95fr) minmax(380px, 1.08fr) minmax(320px, 0.92fr);
-            min-height: calc(100vh - 238px);
+            min-height: calc(100vh - 178px);
         }
 
         .panel {
             border-radius: var(--radius-lg);
-            padding: 18px;
+            padding: 14px;
         }
 
         .left-pane,
@@ -403,25 +668,83 @@
         }
 
         .right-pane {
-            max-height: calc(100vh - 238px);
+            max-height: calc(100vh - 178px);
             overflow: auto;
             padding-right: 4px;
         }
 
         .panel + .panel {
-            margin-top: 18px;
+            margin-top: 12px;
         }
 
         .section-label {
             font-size: 0.72rem;
             color: var(--accent-2);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .toolbar {
             display: grid;
             gap: 12px;
             margin-bottom: 14px;
+        }
+
+        .rail-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rail-meta {
+            font-size: 0.76rem;
+            color: var(--muted);
+        }
+
+        .lane-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .lane-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--muted);
+            font-size: 0.76rem;
+        }
+
+        .lane-pill.is-active {
+            background: rgba(19, 92, 80, 0.92);
+            color: #f8f3ea;
+            border-color: rgba(19, 92, 80, 0.92);
+            box-shadow: 0 14px 24px rgba(19, 92, 80, 0.18);
+        }
+
+        .lane-pill-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 7px;
+            border-radius: 999px;
+            background: rgba(79, 55, 33, 0.08);
+            color: currentColor;
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            font-size: 0.68rem;
+        }
+
+        .lane-pill.is-active .lane-pill-count {
+            background: rgba(255, 255, 255, 0.14);
         }
 
         .toolbar-row {
@@ -476,58 +799,237 @@
             border: 1px solid var(--line);
             border-radius: 20px;
             overflow-y: auto;
-            overflow-x: auto;
+            overflow-x: hidden;
             background: rgba(255, 250, 242, 0.82);
         }
 
-        table {
-            width: 100%;
-            min-width: 920px;
-            border-collapse: collapse;
+        .record-rail {
+            display: grid;
+            gap: 10px;
+            padding: 12px;
+            min-width: 0;
         }
 
-        th,
-        td {
-            text-align: left;
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--line);
-            vertical-align: top;
+        .record-rail.is-compact {
+            gap: 8px;
         }
 
-        th {
-            font-size: 0.7rem;
-            color: var(--muted);
-            background: rgba(255, 255, 255, 0.66);
-        }
-
-        tbody tr {
-            transition: background 140ms ease, transform 140ms ease;
+        .record-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(247, 240, 229, 0.88));
+            padding: 10px 12px;
             cursor: pointer;
+            transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+            position: relative;
+            min-width: 0;
+            overflow: hidden;
         }
 
-        tbody tr:hover {
-            background: rgba(19, 92, 80, 0.05);
+        .record-card:hover {
+            transform: translateY(-1px);
+            border-color: rgba(19, 92, 80, 0.24);
+            box-shadow: 0 16px 28px rgba(79, 55, 33, 0.08);
         }
 
-        tbody tr.is-priority {
-            background: linear-gradient(90deg, rgba(179, 107, 51, 0.08), transparent 55%);
+        .record-card:focus-visible {
+            outline: none;
+            border-color: rgba(19, 92, 80, 0.38);
+            box-shadow: 0 0 0 4px rgba(19, 92, 80, 0.12);
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        .record-card.is-priority {
+            background:
+                linear-gradient(135deg, rgba(179, 107, 51, 0.12), rgba(255, 250, 242, 0.92));
+        }
+
+        .record-card.is-selected {
+            border-color: rgba(19, 92, 80, 0.38);
+            box-shadow: 0 0 0 3px rgba(19, 92, 80, 0.12);
+            background:
+                linear-gradient(135deg, rgba(19, 92, 80, 0.08), rgba(255, 250, 242, 0.94));
+        }
+
+        .record-head {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 6px 10px;
+            align-items: start;
+            margin-bottom: 4px;
+        }
+
+        .record-meta-row,
+        .record-bottom {
+            display: flex;
+            gap: 10px;
+            align-items: start;
+            justify-content: space-between;
+        }
+
+        .record-meta-row {
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .record-bottom {
+            margin-top: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .record-kicker {
+            font-size: 0.68rem;
+            color: var(--accent-2);
+        }
+
+        .record-stage {
+            flex: 0 0 auto;
+            max-width: 100%;
+        }
+
+        .record-title-row {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .record-primary {
+            min-width: 0;
+        }
+
+        .record-flags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .pin-toggle {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.88);
+            color: var(--muted);
+            border: 1px solid var(--line);
+            box-shadow: none;
+            flex: 0 0 auto;
+        }
+
+        .pin-toggle:hover,
+        .pin-toggle.is-pinned {
+            color: #8a4f25;
+            border-color: rgba(179, 107, 51, 0.3);
+            background: rgba(179, 107, 51, 0.12);
+        }
+
+        .record-next {
+            margin-top: 6px;
+            font-size: 0.84rem;
+            line-height: 1.35;
+            color: var(--ink);
+            overflow-wrap: anywhere;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .record-summary {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+        }
+
+        .record-nav-hint {
+            font-size: 0.68rem;
+            color: var(--muted);
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .record-rail.is-compact .record-card {
+            padding: 8px 10px;
+        }
+
+        .record-rail.is-compact .record-summary {
+            display: none;
+        }
+
+        .record-rail.is-compact .record-kicker {
+            display: none;
+        }
+
+        .record-rail.is-compact .meta {
+            max-width: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .record-rail.is-compact .record-next {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .record-rail.is-compact .record-meta-row {
+            margin-top: 8px;
+        }
+
+        .record-rail.is-compact .record-meta-row .pill:nth-child(2) {
+            display: none;
+        }
+
+        .record-rail.is-compact .record-bottom {
+            margin-top: 6px;
+        }
+
+        .record-rail.is-compact .record-last-touch {
+            display: none;
+        }
+
+        .record-rail.is-compact .record-flags .pill:nth-child(n + 2) {
+            display: none;
+        }
+
+        .record-last-touch {
+            font-size: 0.76rem;
+            color: var(--muted);
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .name {
-            font-size: 1rem;
+            font-size: 0.94rem;
             font-weight: 700;
+            line-height: 1.1;
         }
 
         .meta {
             display: inline-block;
             margin-top: 4px;
             color: var(--muted);
-            font-size: 0.86rem;
-            line-height: 1.45;
+            font-size: 0.8rem;
+            line-height: 1.32;
+            max-width: 32ch;
         }
 
         .notes {
@@ -546,7 +1048,7 @@
             padding: 6px 10px;
             font-size: 0.74rem;
             border: 1px solid transparent;
-            white-space: nowrap;
+            white-space: normal;
         }
 
         .stage {
@@ -617,7 +1119,30 @@
 
         .stack {
             display: grid;
-            gap: 18px;
+            gap: 12px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .panel-toggle {
+            padding: 8px 12px;
+            font-size: 0.72rem;
+            background: rgba(255, 255, 255, 0.74);
+        }
+
+        .panel-body {
+            display: grid;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .panel.is-collapsed .panel-body {
+            display: none;
         }
 
         .orbit-list {
@@ -736,14 +1261,14 @@
 
         .task-list {
             display: grid;
-            gap: 12px;
+            gap: 8px;
         }
 
         .task {
             border: 1px solid var(--line);
             background: rgba(255, 255, 255, 0.72);
-            border-radius: 18px;
-            padding: 14px;
+            border-radius: 16px;
+            padding: 11px 12px;
         }
 
         button.task {
@@ -751,8 +1276,8 @@
             text-align: left;
             display: block;
             background: rgba(255, 255, 255, 0.72);
-            border-radius: 18px;
-            padding: 14px;
+            border-radius: 16px;
+            padding: 11px 12px;
         }
 
         button.task:hover {
@@ -761,21 +1286,31 @@
             transform: translateY(-1px);
         }
 
+        .task-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
         .task-tag {
             font-size: 0.68rem;
             color: var(--accent-2);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
 
         .task-text {
-            margin-top: 8px;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            margin-top: 6px;
+            font-size: 0.9rem;
+            line-height: 1.38;
         }
 
         .task-due {
-            margin-top: 8px;
             color: var(--muted);
-            font-size: 0.83rem;
+            font-size: 0.76rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .drawer-scrim {
@@ -807,8 +1342,8 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 18px;
-            height: calc(100vh - 238px);
+            gap: 12px;
+            height: calc(100vh - 178px);
             overflow: auto;
         }
 
@@ -838,6 +1373,69 @@
             border-radius: 18px;
             padding: 14px;
             background: rgba(255, 255, 255, 0.65);
+        }
+
+        .center-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .center-control-band {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: grid;
+            gap: 8px;
+            padding: 8px 0 10px;
+            margin-top: -2px;
+            background: linear-gradient(180deg, rgba(244, 239, 230, 0.99), rgba(244, 239, 230, 0.95), rgba(244, 239, 230, 0.82), rgba(244, 239, 230, 0));
+            backdrop-filter: blur(14px);
+        }
+
+        .center-action-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .center-action-btn {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--ink);
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        .center-action-btn.is-primary {
+            background: rgba(19, 92, 80, 0.92);
+            border-color: rgba(19, 92, 80, 0.92);
+            color: #f8f3ea;
+        }
+
+        .center-tab {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--muted);
+            font-size: 0.74rem;
+        }
+
+        .center-tab.is-active {
+            background: rgba(19, 92, 80, 0.92);
+            border-color: rgba(19, 92, 80, 0.92);
+            color: #f8f3ea;
+        }
+
+        .center-panel {
+            display: none;
+        }
+
+        .center-panel.is-active {
+            display: block;
         }
 
         .drawer-form {
@@ -910,6 +1508,10 @@
             margin-top: 14px;
         }
 
+        .payload-actions.inline-actions {
+            display: none;
+        }
+
         .payload-copy {
             font-size: 0.92rem;
             color: var(--muted);
@@ -980,10 +1582,62 @@
                 justify-content: flex-start;
             }
 
+            .hero-ledger {
+                grid-template-columns: 1fr;
+                max-width: none;
+            }
+
+            .kpi-grid,
+            .journey-flow,
+            .mini-stats,
+            .radar-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .right-pane,
             .drawer {
                 max-height: none;
                 height: auto;
+            }
+        }
+
+        @media (max-width: 1360px) {
+            .wrap {
+                max-width: 100%;
+            }
+
+            .workspace-shell {
+                grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.06fr);
+                min-height: auto;
+            }
+
+            .right-pane {
+                grid-column: 1 / -1;
+                max-height: none;
+                overflow: visible;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                align-items: start;
+            }
+
+            .right-pane > .panel {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 1260px) {
+            .workspace-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .drawer,
+            .right-pane {
+                max-height: none;
+                height: auto;
+            }
+
+            .right-pane {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
@@ -1009,6 +1663,9 @@
             }
 
             .mini-stats,
+            .kpi-grid,
+            .journey-flow,
+            .right-pane,
             .form-grid,
             .drawer-form {
                 grid-template-columns: 1fr;
@@ -1017,6 +1674,11 @@
             .toolbar-left,
             .toolbar-right {
                 width: 100%;
+            }
+
+            .hero-action-group {
+                width: 100%;
+                justify-content: space-between;
             }
 
             .toolbar {
@@ -1059,6 +1721,7 @@
             .table-shell {
                 border: none;
                 background: transparent;
+                overflow: visible;
             }
 
             tbody {
@@ -1154,6 +1817,18 @@
             .center-pane #closeDrawerBtn {
                 display: inline-flex;
             }
+
+            .center-control-band {
+                position: static;
+                padding: 0;
+                margin-top: 0;
+                background: transparent;
+                backdrop-filter: none;
+            }
+
+            .payload-actions.inline-actions {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -1161,20 +1836,47 @@
     <div class="wrap">
         <section class="hero">
             <div class="hero-top">
-                <div>
+                <div class="hero-intro">
+                    <div>
                     <div class="eyebrow">Basin::Nexus daily workspace</div>
                     <h1>LB's Desk</h1>
                     <p class="hero-copy">A tighter daily console for warm intros, founder lanes, interviews, and fractional revenue moves. This board is built for active decision-making: find the right thread, open the context instantly, and leave the big CRM as the archive instead of the cockpit.</p>
+                    <p class="hero-copy" style="font-size:0.82rem;color:var(--muted);margin-top:4px;">What this does: shows every open conversation and what needs to happen next.</p>
+                    </div>
+                    <div class="hero-ledger" id="heroLedger">
+                        <div class="hero-ledger-card">
+                            <div class="hero-ledger-label">View posture</div>
+                            <div class="hero-ledger-value" id="ledgerViewValue">Open operator view</div>
+                            <div class="hero-ledger-copy" id="ledgerViewCopy">All active lanes in motion.</div>
+                        </div>
+                        <div class="hero-ledger-card">
+                            <div class="hero-ledger-label">Live source</div>
+                            <div class="hero-ledger-value" id="ledgerSourceValue">Embedded snapshot</div>
+                            <div class="hero-ledger-copy" id="ledgerSourceCopy">Local-first workspace with manual override.</div>
+                        </div>
+                        <div class="hero-ledger-card">
+                            <div class="hero-ledger-label">Execution bias</div>
+                            <div class="hero-ledger-value" id="ledgerBiasValue">8 due today</div>
+                            <div class="hero-ledger-copy" id="ledgerBiasCopy">Follow-through beats more surface area.</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="hero-actions">
-                    <button class="primary" id="neuralMapBtn">✨ Neural Map</button>
-                    <button class="primary" id="scoutBtn">🔍 Nexus Scout</button>
-                    <button id="jumpWeekBtn">This Week</button>
-                    <button id="clearLocalBtn">Clear Local Adds</button>
+                    <div class="hero-action-group">
+                        <button id="toggleHeroBtn">Collapse top</button>
+                        <button id="jumpWeekBtn">This Week</button>
+                    </div>
+                    <div class="hero-action-group">
+                        <button class="primary" id="neuralMapBtn">✨ Neural Map</button>
+                        <button class="primary" id="scoutBtn">🔍 Nexus Scout</button>
+                    </div>
+                    <div class="hero-action-group">
+                        <button id="clearLocalBtn">Clear Local Adds</button>
+                    </div>
                 </div>
             </div>
             <div class="hero-grid">
-                <div>
+                <div class="hero-main">
                     <div class="focus-band">
                         <div class="kicker">Operator focus</div>
                         <strong id="focusText"></strong>
@@ -1184,7 +1886,7 @@
                         <div class="command-head">
                             <div>
                                 <div class="kicker">Command deck</div>
-                                <div class="command-title">Run the desk like a notebook with terminal reflexes.</div>
+                                <div class="command-title">Quick actions. Type a name, lane, or command to jump straight there.</div>
                             </div>
                             <button type="button" id="runCommandBtn" class="button-primary">Run</button>
                         </div>
@@ -1205,7 +1907,9 @@
                     </div>
                 </div>
                 <div class="hero-sidebar">
+                    <div class="exec-snapshot" id="execSnapshot"></div>
                     <div class="operator-radar" id="operatorRadar"></div>
+                    <div class="pipeline-intelligence" id="pipelineIntelligence"></div>
                     <div class="mini-stats">
                         <div class="mini-stat">
                             <div class="mini-stat-label">Active Opportunities</div>
@@ -1235,6 +1939,14 @@
         <section class="workspace-shell" id="workspaceShell">
             <div class="panel left-pane">
                 <div class="section-label">Refinery board</div>
+                <div class="rail-topline">
+                    <div class="rail-meta" id="railMeta">0 live lanes</div>
+                    <div class="toolbar-right">
+                        <button type="button" id="densityToggleBtn" class="button-ghost">Compact rail</button>
+                        <div class="record-nav-hint">Arrows move · Enter opens</div>
+                    </div>
+                </div>
+                <div class="lane-tabs" id="laneTabs"></div>
                 <div class="toolbar">
                     <div class="toolbar-row">
                         <div class="toolbar-left">
@@ -1266,24 +1978,13 @@
                     </div>
                 </div>
                 <div class="table-shell">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Account / Contact</th>
-                                <th>Type</th>
-                                <th>Stage</th>
-                                <th>Last Touch</th>
-                                <th>Next Step</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+                    <div class="record-rail" id="recordRail"></div>
                 </div>
                 <div class="empty" id="emptyState" hidden>No matching rows yet.</div>
             </div>
 
             <aside class="drawer center-pane open" id="detailDrawer" aria-hidden="false">
-                <div class="drawer-head">
+                <div class="drawer-head" id="drawerHead">
                     <div>
                         <div class="section-label">Node brief</div>
                         <h2 class="drawer-title" id="drawerTitle">Node detail</h2>
@@ -1292,19 +1993,41 @@
                     <button id="closeDrawerBtn" aria-label="Close detail drawer">Close</button>
                 </div>
 
+                <div id="centerEmptyState" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:48px 24px;text-align:center;color:var(--muted);min-height:300px;">
+                    <div style="font-size:2.4rem;opacity:0.3;">📋</div>
+                    <div style="font-size:0.92rem;font-weight:600;color:var(--ink);">Select a record from the left rail</div>
+                    <div style="font-size:0.78rem;line-height:1.5;max-width:320px;">Click any card to open its brief, draft an outreach, edit fields, or review timeline. Use <kbd style="background:var(--line);padding:2px 6px;border-radius:4px;font-size:0.72rem;">↑</kbd> <kbd style="background:var(--line);padding:2px 6px;border-radius:4px;font-size:0.72rem;">↓</kbd> to navigate.</div>
+                </div>
+
+                <div class="center-control-band">
+                    <div class="center-tabs" id="centerTabs">
+                        <button type="button" class="center-tab is-active" data-center-tab="brief">Brief</button>
+                        <button type="button" class="center-tab" data-center-tab="draft">Draft</button>
+                        <button type="button" class="center-tab" data-center-tab="edit">Edit</button>
+                        <button type="button" class="center-tab" data-center-tab="timeline">Timeline</button>
+                    </div>
+
+                    <div class="center-action-bar" id="centerActionBar"></div>
+                </div>
+
+                <div class="center-panel is-active" data-center-panel="brief">
                 <div class="detail-card">
                     <div class="section-label">Current posture</div>
                     <div id="drawerMeta"></div>
                     <div class="payload" id="detailPayload"></div>
-                    <div class="payload-actions" id="drawerActions"></div>
+                    <div class="payload-actions inline-actions" id="drawerActions"></div>
+                </div>
                 </div>
 
+                <div class="center-panel" data-center-panel="draft">
                 <div class="detail-card" id="outreachComposerCard">
                     <div class="section-label">Outreach composer</div>
                     <div class="payload payload-copy" id="outreachComposer"></div>
-                    <div class="payload-actions" id="composerActions"></div>
+                    <div class="payload-actions inline-actions" id="composerActions"></div>
+                </div>
                 </div>
 
+                <div class="center-panel" data-center-panel="edit">
                 <div class="detail-card" id="drawerEditorCard">
                     <div class="section-label">Edit record</div>
                     <div class="drawer-form" id="drawerEditor">
@@ -1332,6 +2055,14 @@
                             <label class="field-label" for="editNextStep" id="editNextStepLabel">Next step</label>
                             <input id="editNextStep" type="text">
                         </div>
+                        <div>
+                            <label class="field-label" for="editValue" id="editValueLabel">Pipeline Value ($)</label>
+                            <input id="editValue" type="number" min="0" step="1000">
+                        </div>
+                        <div>
+                            <label class="field-label" for="editProbability" id="editProbabilityLabel">Win Probability (%)</label>
+                            <input id="editProbability" type="number" min="0" max="100" step="5">
+                        </div>
                         <div class="full">
                             <label class="field-label" for="editNotes" id="editNotesLabel">Notes</label>
                             <textarea id="editNotes"></textarea>
@@ -1342,32 +2073,54 @@
                         <button type="button" class="button-primary" id="saveRecordBtn">Save updates</button>
                     </div>
                 </div>
+                </div>
 
+                <div class="center-panel" data-center-panel="timeline">
                 <div class="detail-card">
                     <div class="section-label">Recent history</div>
                     <div class="timeline" id="timelineList"></div>
                 </div>
+                </div>
             </aside>
 
             <div class="stack right-pane">
-                <div class="panel">
-                    <div class="section-label">Today stack</div>
-                    <div class="task-list" id="todayList"></div>
+                <div class="panel" data-panel-id="today">
+                    <div class="panel-header">
+                        <div class="section-label">Today stack</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="today">Collapse</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-list" id="todayList"></div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="section-label">People in orbit</div>
-                    <div class="orbit-list" id="peopleOrbit"></div>
+                <div class="panel is-collapsed" data-panel-id="orbit">
+                    <div class="panel-header">
+                        <div class="section-label">People in orbit</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="orbit">Expand</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="orbit-list" id="peopleOrbit"></div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="section-label">Ingest inbox</div>
-                    <div class="form-helper">Imported records land here first so you can review, approve, or dismiss before they enter the live desk.</div>
-                    <div class="ingest-list" id="ingestInbox"></div>
+                <div class="panel is-collapsed" data-panel-id="ingest">
+                    <div class="panel-header">
+                        <div class="section-label">Ingest inbox</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="ingest">Expand</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-helper">Imported records land here first so you can review, approve, or dismiss before they enter the live desk.</div>
+                        <div class="ingest-list" id="ingestInbox"></div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="section-label">Data hub</div>
+                <div class="panel is-collapsed" data-panel-id="data">
+                    <div class="panel-header">
+                        <div class="section-label">Data hub</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="data">Expand</button>
+                    </div>
+                    <div class="panel-body">
                     <div class="data-hub">
                         <div class="form-helper">Import a real JSON or CSV CRM export, keep working locally, and export the current merged workspace whenever you need a handoff.</div>
                         <div class="data-hub-meta">
@@ -1390,10 +2143,15 @@
                             <div id="sourceProfiles" class="form-helper">No saved source profiles yet.</div>
                         </div>
                     </div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="section-label">Quick add</div>
+                <div class="panel is-collapsed" data-panel-id="quickAdd">
+                    <div class="panel-header">
+                        <div class="section-label">Quick add</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="quickAdd">Expand</button>
+                    </div>
+                    <div class="panel-body">
                     <div class="form-helper">New manual rows save locally in this browser, get merged into the board immediately, and remain available after reload.</div>
                     <div class="validation" id="validationMessage" aria-live="polite"></div>
                     <div class="form-grid">
@@ -1429,16 +2187,27 @@
                             <button class="button-primary" id="addRowBtn">Add row to operator board</button>
                         </div>
                     </div>
+                    </div>
                 </div>
 
-                <div class="panel" id="weekSection">
-                    <div class="section-label">This week</div>
-                    <div class="task-list" id="weekList"></div>
+                <div class="panel is-collapsed" id="weekSection" data-panel-id="week">
+                    <div class="panel-header">
+                        <div class="section-label">This week</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="week">Expand</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-list" id="weekList"></div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="section-label">This month</div>
-                    <div class="task-list" id="monthList"></div>
+                <div class="panel is-collapsed" data-panel-id="month">
+                    <div class="panel-header">
+                        <div class="section-label">This month</div>
+                        <button type="button" class="panel-toggle" data-panel-toggle="month">Expand</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-list" id="monthList"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1493,6 +2262,7 @@
                 schemaVersion: DB_SCHEMA_VERSION,
                 sourceModel: structuredClone(EMBEDDED_SOURCE),
                 localRows: [],
+                pinnedRows: [],
                 recordOverrides: {},
                 taskOverrides: {},
                 sourceProfiles: [],
@@ -1514,6 +2284,7 @@
                     month: (source?.month || EMBEDDED_SOURCE.month || []).map(normalizeTaskRecord)
                 },
                 localRows: Array.isArray(fallback.localRows) ? fallback.localRows : [],
+                pinnedRows: Array.isArray(fallback.pinnedRows) ? fallback.pinnedRows : [],
                 recordOverrides: fallback.recordOverrides || {},
                 taskOverrides: fallback.taskOverrides || {},
                 sourceProfiles: Array.isArray(fallback.sourceProfiles) ? fallback.sourceProfiles : [],
@@ -1529,6 +2300,7 @@
             const rawSource = rawWorkspace.sourceModel || rawWorkspace.source || EMBEDDED_SOURCE;
             return createWorkspaceFromSource(rawSource, {
                 localRows: rawWorkspace.localRows || rawWorkspace.rows || [],
+                pinnedRows: rawWorkspace.pinnedRows || [],
                 recordOverrides: rawWorkspace.recordOverrides || rawWorkspace.overrides || {},
                 taskOverrides: rawWorkspace.taskOverrides || {},
                 sourceProfiles: rawWorkspace.sourceProfiles || [],
@@ -1588,6 +2360,8 @@
 
         const state = {
             rows: [],
+            lane: "all",
+            railDensity: "compact",
             filterStage: "all",
             filterType: "all",
             openOnly: true,
@@ -1595,23 +2369,36 @@
             sort: "priority",
             selectedId: "",
             drawerMode: "row",
-            selectedTask: null
+            selectedTask: null,
+            centerTab: "brief",
+            heroExpanded: true,
+            panelStates: {
+                today: true,
+                orbit: false,
+                ingest: false,
+                data: true,
+                quickAdd: true,
+                week: false,
+                month: false
+            }
         };
 
         const focusText = document.getElementById("focusText");
         const snapshotNote = document.getElementById("snapshotNote");
-        const tableBody = document.getElementById("tableBody");
+        const tableBody = document.getElementById("recordRail");
         const emptyState = document.getElementById("emptyState");
         const validationMessage = document.getElementById("validationMessage");
         const drawer = document.getElementById("detailDrawer");
         const drawerScrim = document.getElementById("drawerScrim");
         const drawerActions = document.getElementById("drawerActions");
+        const centerActionBar = document.getElementById("centerActionBar");
         const drawerEditorCard = document.getElementById("drawerEditorCard");
         const drawerValidation = document.getElementById("drawerValidation");
         const sourceName = document.getElementById("sourceName");
         const sourceSummary = document.getElementById("sourceSummary");
         const drawerEditorLabel = document.querySelector("#drawerEditorCard .section-label");
         const commandResult = document.getElementById("commandResult");
+        const heroShell = document.querySelector(".hero");
 
         function localRows() {
             return Array.isArray(workspaceStore.workspace.localRows) ? workspaceStore.workspace.localRows : [];
@@ -1619,6 +2406,15 @@
 
         function saveLocalRows(rows) {
             workspaceStore.workspace.localRows = rows;
+            workspaceStore.save();
+        }
+
+        function pinnedRows() {
+            return Array.isArray(workspaceStore.workspace.pinnedRows) ? workspaceStore.workspace.pinnedRows : [];
+        }
+
+        function savePinnedRows(rows) {
+            workspaceStore.workspace.pinnedRows = rows || [];
             workspaceStore.save();
         }
 
@@ -1682,11 +2478,14 @@
             const lastTouch = row.lastTouch || "";
             const nextStep = row.nextStep || row.next || "";
             const notes = row.notes || row.detail || row.text || "";
+            const pipelineValue = Number.parseFloat(row.pipelineValue || row.value || 0) || 0;
+            const probability = Number.parseFloat(row.probability || 0) || 0;
+            const aiNextAction = row.aiNextAction || "";
             const id = row.id || `${account}::${contact}::${type}`.toLowerCase();
             const history = Array.isArray(row.history) && row.history.length
                 ? row.history
                 : [{ date: lastTouch || "Recent", type: "Context", event: notes || nextStep || "Entry added to board." }];
-            return { account, contact, type, stage, lastTouch, nextStep, notes, id, history, source };
+            return { account, contact, type, stage, lastTouch, nextStep, notes, pipelineValue, probability, aiNextAction, id, history, source };
         }
 
         function normalizeImportedLead(row) {
@@ -1790,8 +2589,9 @@
 
         function updateSourceMeta() {
             const label = sourceModel.sourceLabel || "Embedded workspace snapshot";
+            const stagedCount = ingestInbox().length;
             sourceName.textContent = label;
-            sourceSummary.textContent = `${(sourceModel.opportunities || []).length} source rows · ${sourceModel.lastUpdated || "No timestamp"}`;
+            sourceSummary.textContent = `${(sourceModel.opportunities || []).length} source rows${stagedCount ? ` · ${stagedCount} staged import${stagedCount === 1 ? "" : "s"}` : ""} · ${sourceModel.lastUpdated || "No timestamp"}`;
         }
 
         function renderSourceProfiles() {
@@ -1817,15 +2617,24 @@
 
         function mergeRows(source) {
             const overrides = localOverrides();
-            const base = (source.opportunities || []).map((row) => {
+            const merged = new Map();
+            (source.opportunities || []).forEach((row) => {
                 const normalized = normalizeRow(row, "embedded");
                 if (overrides[normalized.id]) {
-                    return normalizeRow({ ...normalized, ...overrides[normalized.id] }, "override");
+                    merged.set(normalized.id, normalizeRow({ ...normalized, ...overrides[normalized.id] }, "override"));
+                    return;
                 }
-                return normalized;
+                merged.set(normalized.id, normalized);
             });
-            const locals = localRows().map((row) => normalizeRow(row, "local"));
-            return [...base, ...locals];
+            localRows().map((row) => normalizeRow(row, "local")).forEach((row) => {
+                merged.set(row.id, row);
+            });
+            ingestInbox().map((row) => normalizeRow(row, "ingest")).forEach((row) => {
+                if (!merged.has(row.id)) {
+                    merged.set(row.id, row);
+                }
+            });
+            return Array.from(merged.values());
         }
 
         function isOpenStage(stage) {
@@ -1842,7 +2651,54 @@
             return score;
         }
 
+        const laneDefinitions = [
+            {
+                id: "all",
+                label: "All",
+                match: () => true
+            },
+            {
+                id: "interviews",
+                label: "Interviews",
+                match: (row) => /interview/i.test(row.type)
+            },
+            {
+                id: "founders",
+                label: "Founders",
+                match: (row) => /founder intro|warm intro|networking/i.test(row.type) || /founder|ceo|co-founder/i.test(`${row.contact} ${row.notes}`)
+            },
+            {
+                id: "revenue",
+                label: "Revenue",
+                match: (row) => /fractional|consulting|commission partner|platform partner|services|partnership/i.test(row.type)
+            },
+            {
+                id: "waiting",
+                label: "Waiting",
+                match: (row) => /await|follow-up due|signal drop sent|resume sent|blueprint delivered/i.test(row.stage) || /wait|await/i.test(row.nextStep)
+            }
+        ];
+
+        function isPinnedRow(id) {
+            return pinnedRows().includes(id);
+        }
+
+        function togglePinnedRow(id) {
+            const next = isPinnedRow(id)
+                ? pinnedRows().filter((entry) => entry !== id)
+                : [id, ...pinnedRows().filter((entry) => entry !== id)];
+            savePinnedRows(next);
+            refresh();
+        }
+
+        function rowMatchesLane(row, laneId = state.lane) {
+            const lane = laneDefinitions.find((entry) => entry.id === laneId) || laneDefinitions[0];
+            return lane.match(row);
+        }
+
         function compareRows(a, b) {
+            const pinnedDelta = Number(isPinnedRow(b.id)) - Number(isPinnedRow(a.id));
+            if (pinnedDelta !== 0) return pinnedDelta;
             if (state.sort === "account") return a.account.localeCompare(b.account);
             if (state.sort === "recent") return String(b.lastTouch).localeCompare(String(a.lastTouch));
             const priorityDelta = scoreRow(b) - scoreRow(a);
@@ -1853,6 +2709,7 @@
         function filteredRows() {
             return state.rows
                 .filter((row) => {
+                    if (!rowMatchesLane(row)) return false;
                     if (state.openOnly && !isOpenStage(row.stage)) return false;
                     if (state.filterStage !== "all" && row.stage !== state.filterStage) return false;
                     if (state.filterType !== "all" && row.type !== state.filterType) return false;
@@ -2026,13 +2883,24 @@
             document.getElementById("editLastTouchLabel").textContent = "Last touch";
             document.getElementById("editNextStepLabel").textContent = "Next step";
             document.getElementById("editNotesLabel").textContent = "Notes";
+            document.getElementById("editValueLabel").textContent = "Pipeline Value ($)";
+            document.getElementById("editProbabilityLabel").textContent = "Win Probability (%)";
+            
             document.getElementById("editAccount").value = row?.account || "";
             document.getElementById("editContact").value = row?.contact || "";
             document.getElementById("editType").value = row?.type || "";
             document.getElementById("editStage").value = row?.stage || "";
             document.getElementById("editLastTouch").value = row?.lastTouch || "";
             document.getElementById("editNextStep").value = row?.nextStep || "";
+            document.getElementById("editValue").value = row?.pipelineValue || "";
+            document.getElementById("editProbability").value = row?.probability || "";
             document.getElementById("editNotes").value = row?.notes || "";
+            
+            const editValueParent = document.getElementById("editValue").closest("div");
+            if(editValueParent) editValueParent.style.display = "block";
+            const editProbParent = document.getElementById("editProbability").closest("div");
+            if(editProbParent) editProbParent.style.display = "block";
+            
             drawerValidation.textContent = "";
         }
 
@@ -2044,6 +2912,7 @@
             document.getElementById("editLastTouchLabel").textContent = "Due";
             document.getElementById("editNextStepLabel").textContent = "Next step";
             document.getElementById("editNotesLabel").textContent = "Notes";
+            
             document.getElementById("editAccount").value = task?.text || "";
             document.getElementById("editContact").value = task?.contact || "";
             document.getElementById("editType").value = task?.tag || "";
@@ -2051,6 +2920,12 @@
             document.getElementById("editLastTouch").value = task?.due || "";
             document.getElementById("editNextStep").value = task?.nextStep || "";
             document.getElementById("editNotes").value = task?.notes || "";
+            
+            const editValueParent = document.getElementById("editValue").closest("div");
+            if(editValueParent) editValueParent.style.display = "none";
+            const editProbParent = document.getElementById("editProbability").closest("div");
+            if(editProbParent) editProbParent.style.display = "none";
+            
             drawerValidation.textContent = "";
         }
 
@@ -2063,6 +2938,8 @@
                 stage: document.getElementById("editStage").value.trim() || "Open",
                 lastTouch: document.getElementById("editLastTouch").value.trim() || new Date().toISOString().slice(0, 10),
                 nextStep: document.getElementById("editNextStep").value.trim(),
+                pipelineValue: Number.parseFloat(document.getElementById("editValue").value) || 0,
+                probability: Number.parseFloat(document.getElementById("editProbability").value) || 0,
                 notes: document.getElementById("editNotes").value.trim(),
                 history: [{
                     date: new Date().toISOString().slice(0, 10),
@@ -2083,28 +2960,36 @@
             emptyState.hidden = true;
             tableBody.innerHTML = rows.map((row) => {
                 const priority = scoreRow(row) >= 9;
+                const selected = state.drawerMode === "row" && state.selectedId === row.id;
+                const pinned = isPinnedRow(row.id);
                 return `
-                    <tr data-row-id="${escapeHtml(row.id)}" class="${priority ? "is-priority" : ""}">
-                        <td class="row-primary" data-label="Account / Contact">
-                            <div class="name">${escapeHtml(row.account || "Untitled")}</div>
-                            <span class="meta">${escapeHtml(row.contact || "No contact attached")}</span>
-                            <div class="mobile-row-meta">
-                                <span class="mobile-meta-chip"><strong>Type</strong>${escapeHtml(row.type)}</span>
-                                <span class="mobile-meta-chip"><strong>Stage</strong>${escapeHtml(row.stage)}</span>
-                                <span class="mobile-meta-chip"><strong>Touch</strong>${escapeHtml(row.lastTouch || "—")}</span>
+                    <article tabindex="0" data-record-id="${escapeHtml(row.id)}" class="record-card ${priority ? "is-priority" : ""} ${selected ? "is-selected" : ""}">
+                        <div class="record-head">
+                            <div class="record-primary">
+                                <div class="record-kicker">${escapeHtml(row.type || "Opportunity")}</div>
+                                <div class="record-title-row">
+                                    <div class="name">${escapeHtml(row.account || "Untitled")}</div>
+                                    <button type="button" class="pin-toggle ${pinned ? "is-pinned" : ""}" data-row-action="toggle-pin" data-row-id="${escapeHtml(row.id)}" aria-label="${pinned ? "Unpin record" : "Pin record"}">${pinned ? "★" : "☆"}</button>
+                                </div>
+                                <span class="meta">${escapeHtml(row.contact || "No contact attached")}</span>
                             </div>
-                            ${row.notes ? `<div class="notes">${escapeHtml(row.notes)}</div>` : ""}
-                            <div class="row-actions">
-                                <span class="pill">${escapeHtml(row.type)}</span>
-                                <span class="pill">${row.source === "local" ? "Local" : row.source === "override" ? "Override" : "Embedded"}</span>
+                            <span class="${stageTone(row.stage)} record-stage">${escapeHtml(row.stage || "Open")}</span>
+                        </div>
+                        <div class="record-meta-row">
+                            <span class="pill">${escapeHtml(row.type || "Opportunity")}</span>
+                            <span class="pill">Touch ${escapeHtml(row.lastTouch || "—")}</span>
+                        </div>
+                        ${row.notes ? `<div class="record-summary">${escapeHtml(row.notes)}</div>` : ""}
+                        <div class="record-next">${escapeHtml(row.nextStep || "No next move captured yet.")}</div>
+                        <div class="record-bottom">
+                            <div class="record-flags">
+                                ${pinned ? `<span class="pill">Pinned</span>` : ""}
+                                <span class="pill">${escapeHtml(row.stage || "Open")}</span>
                                 ${row.source === "local" ? `<button type="button" data-row-action="delete-local" data-row-id="${escapeHtml(row.id)}">Delete</button>` : ""}
                             </div>
-                        </td>
-                        <td class="row-type row-meta-cell" data-label="Type">${escapeHtml(row.type)}</td>
-                        <td class="row-stage row-meta-cell" data-label="Stage"><span class="${stageTone(row.stage)}">${escapeHtml(row.stage)}</span></td>
-                        <td class="row-touch row-meta-cell" data-label="Last Touch">${escapeHtml(row.lastTouch || "—")}</td>
-                        <td class="row-next" data-label="Next Step"><div class="row-next-copy">${escapeHtml(row.nextStep || "—")}</div></td>
-                    </tr>
+                            <div class="record-last-touch">${escapeHtml(row.lastTouch || "—")}</div>
+                        </div>
+                    </article>
                 `;
             }).join("");
         }
@@ -2119,6 +3004,223 @@
             document.getElementById("statPeople").textContent = String((source.people || []).length || openRows.length);
         }
 
+        function classifyJourney(row) {
+            const stage = String(row.stage || "").toLowerCase();
+            if (/completed|won|closed/.test(stage)) return "closed";
+            if (/working|confirmed|active|hiring manager|credits live|signal drop|blueprint delivered/.test(stage)) return "working";
+            if (/follow-up|sent|delivered|await|resume/.test(stage)) return "awaiting";
+            if (/open/.test(stage)) return "engaged";
+            return "sourced";
+        }
+        function renderExecSnapshot() {
+            const mount = document.getElementById("execSnapshot");
+            if (!mount) return;
+            const rows = state.rows;
+            const total = rows.length || 1;
+            const openRows = rows.filter((row) => isOpenStage(row.stage));
+            const closedRows = rows.filter((row) => classifyJourney(row) === "closed");
+            const closeRate = Math.round((closedRows.length / total) * 100);
+            const nextStepCoverage = Math.round((rows.filter((row) => row.nextStep).length / total) * 100);
+            const highIntent = rows.filter((row) => scoreRow(row) >= 9).length;
+            const totalPipeline = rows.reduce((acc, row) => acc + (row.pipelineValue || 0), 0);
+            const totalWeighted = rows.reduce((acc, row) => acc + ((row.pipelineValue || 0) * (row.probability || 0) / 100), 0);
+
+            let totalAge = 0;
+            let ageCount = 0;
+            rows.forEach(r => {
+                if (r.lastTouch && !/closed|won|done|lost/i.test(r.stage || "")) {
+                    const parsed = Date.parse(r.lastTouch);
+                    if (!Number.isNaN(parsed)) {
+                        const days = (Date.now() - parsed) / (1000 * 60 * 60 * 24);
+                        totalAge += Math.max(0, days);
+                        ageCount++;
+                    }
+                }
+            });
+            const avgAging = ageCount > 0 ? Math.round(totalAge / ageCount) : 0;
+
+            const sourceModel = importedSource() || EMBEDDED_SOURCE;
+            const todayItems = (sourceModel.today || []).filter((item) => !/done|sent/i.test(String(item.status || "")));
+            const dueToday = todayItems.length;
+            const awaitingReply = rows.filter((row) => classifyJourney(row) === "awaiting").length;
+
+            const fmtCurrency = (v) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v);
+            const dateStr = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+
+            const workingWell = [];
+            if (nextStepCoverage >= 90) workingWell.push(`${nextStepCoverage}% next-step coverage`);
+            if (highIntent >= 2) workingWell.push(`${highIntent} high-intent lanes`);
+            if (openRows.length >= 10) workingWell.push(`${openRows.length} active deals in motion`);
+
+            const needsAttention = [];
+            if (awaitingReply >= 3) needsAttention.push(`${awaitingReply} threads awaiting reply`);
+            if (avgAging >= 5) needsAttention.push(`Avg ${avgAging}-day stage aging`);
+            if (closeRate < 15) needsAttention.push(`${closeRate}% close rate — room to convert`);
+
+            const next48h = todayItems.slice(0, 3).map(t => t.text || t.tag || "Task").join(". ");
+
+            mount.innerHTML = `
+                <div class="exec-snapshot-head">
+                    <div>
+                        <div class="exec-snapshot-eyebrow">30-Second Snapshot</div>
+                    </div>
+                    <div class="exec-snapshot-date">${escapeHtml(dateStr)}</div>
+                </div>
+                <div class="exec-snapshot-numbers">
+                    <div class="exec-num">
+                        <div class="exec-num-value">${escapeHtml(String(openRows.length))}</div>
+                        <div class="exec-num-label">Active deals</div>
+                    </div>
+                    <div class="exec-num">
+                        <div class="exec-num-value">${escapeHtml(String(dueToday))}</div>
+                        <div class="exec-num-label">Due today</div>
+                    </div>
+                    <div class="exec-num">
+                        <div class="exec-num-value">${escapeHtml(String(closeRate))}%</div>
+                        <div class="exec-num-label">Close rate</div>
+                    </div>
+                </div>
+                <div class="exec-snapshot-numbers" style="margin-top:6px">
+                    <div class="exec-num">
+                        <div class="exec-num-value">${totalPipeline > 0 ? fmtCurrency(totalPipeline) : "—"}</div>
+                        <div class="exec-num-label">Pipeline</div>
+                    </div>
+                    <div class="exec-num">
+                        <div class="exec-num-value">${totalWeighted > 0 ? fmtCurrency(totalWeighted) : "—"}</div>
+                        <div class="exec-num-label">Weighted</div>
+                    </div>
+                    <div class="exec-num">
+                        <div class="exec-num-value">${avgAging}d</div>
+                        <div class="exec-num-label">Avg aging</div>
+                    </div>
+                </div>
+                <div class="exec-snapshot-body">
+                    ${workingWell.length ? `<div class="exec-insight"><span class="exec-insight-icon">✅</span><span><strong>Working:</strong> ${escapeHtml(workingWell.join(", "))}</span></div>` : ""}
+                    ${needsAttention.length ? `<div class="exec-insight"><span class="exec-insight-icon">⚠️</span><span><strong>Needs attention:</strong> ${escapeHtml(needsAttention.join(", "))}</span></div>` : ""}
+                    ${next48h ? `<div class="exec-insight"><span class="exec-insight-icon">📋</span><span><strong>Next 48h:</strong> ${escapeHtml(next48h)}</span></div>` : ""}
+                </div>
+                <div class="exec-snapshot-footer">
+                    One operator. One system. Measurable pipeline.
+                </div>
+            `;
+        }
+
+        function renderPipelineIntelligence(source) {
+            const mount = document.getElementById("pipelineIntelligence");
+            if (!mount) return;
+            const rows = state.rows;
+            const total = rows.length || 1;
+            const openRows = rows.filter((row) => isOpenStage(row.stage));
+            const closedRows = rows.filter((row) => classifyJourney(row) === "closed");
+            const nextStepCoverage = Math.round((rows.filter((row) => row.nextStep).length / total) * 100);
+            const closeRate = Math.round((closedRows.length / total) * 100);
+            const highIntent = rows.filter((row) => scoreRow(row) >= 9).length;
+            const activeRevenue = openRows.filter((row) => /fractional|consulting|services|commission|partner/i.test(`${row.type} ${row.stage}`)).length;
+            const stageCounts = {
+                sourced: 0,
+                engaged: 0,
+                working: 0,
+                awaiting: 0,
+                closed: 0
+            };
+            rows.forEach((row) => {
+                stageCounts[classifyJourney(row)] += 1;
+            });
+            const engagedBase = stageCounts.engaged + stageCounts.working + stageCounts.awaiting + stageCounts.closed;
+            const executionScore = Math.min(99, Math.round(((nextStepCoverage * 0.55) + ((highIntent / total) * 100 * 0.25) + ((activeRevenue / total) * 100 * 0.2))));
+            
+            const totalPipeline = rows.reduce((acc, row) => acc + (row.pipelineValue || 0), 0);
+            const totalWeighted = rows.reduce((acc, row) => acc + ((row.pipelineValue || 0) * (row.probability || 0) / 100), 0);
+            
+            let totalAge = 0;
+            let ageCount = 0;
+            rows.forEach(r => {
+                if (r.lastTouch && !/closed|won|done|lost/i.test(r.stage || "")) {
+                    const parsed = Date.parse(r.lastTouch);
+                    if (!Number.isNaN(parsed)) {
+                        const days = (Date.now() - parsed) / (1000 * 60 * 60 * 24);
+                        totalAge += Math.max(0, days);
+                        ageCount++;
+                    }
+                }
+            });
+            const avgAging = ageCount > 0 ? Math.round(totalAge / ageCount) : 0;
+
+            mount.innerHTML = `
+                <div class="intelligence-topline">
+                    <div>
+                        <div class="kicker">Pipeline intelligence</div>
+                        <div class="command-title">The part of the story you can point to.</div>
+                    </div>
+                    <div class="intelligence-chip">Desk score ${executionScore}</div>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Completion rate</div>
+                        <div class="kpi-value">${closeRate}%</div>
+                        <div class="kpi-copy">${closedRows.length} closed or completed threads out of ${rows.length} total.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Next-step coverage</div>
+                        <div class="kpi-value">${nextStepCoverage}%</div>
+                        <div class="kpi-copy">How much of the desk already has a concrete next move.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">High-intent lanes</div>
+                        <div class="kpi-value">${highIntent}</div>
+                        <div class="kpi-copy">Rows scoring hot on urgency, specificity, and conversion potential.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Revenue-active mix</div>
+                        <div class="kpi-value">${activeRevenue}</div>
+                        <div class="kpi-copy">Fractional, consulting, partner, and services motions still live.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Pipeline</div>
+                        <div class="kpi-value">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalPipeline)}</div>
+                        <div class="kpi-copy">Raw sum of expected deal value across open opportunities.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Weighted Pipeline</div>
+                        <div class="kpi-value">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalWeighted)}</div>
+                        <div class="kpi-copy">Sum of expected deal value scaled by win probability.</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Avg Stage Aging</div>
+                        <div class="kpi-value">${avgAging} days</div>
+                        <div class="kpi-copy">Average time since last touch on open threads.</div>
+                    </div>
+                </div>
+                <div class="journey-flow">
+                    <div class="journey-stage">
+                        <div class="journey-stage-label">Sourced</div>
+                        <div class="journey-stage-value">${stageCounts.sourced}</div>
+                        <div class="journey-stage-copy">Threads captured but not yet clearly active.</div>
+                    </div>
+                    <div class="journey-stage">
+                        <div class="journey-stage-label">Engaged</div>
+                        <div class="journey-stage-value">${stageCounts.engaged}</div>
+                        <div class="journey-stage-copy">Open lanes where the first real motion exists.</div>
+                    </div>
+                    <div class="journey-stage">
+                        <div class="journey-stage-label">Working</div>
+                        <div class="journey-stage-value">${stageCounts.working}</div>
+                        <div class="journey-stage-copy">Live execution, interviews, active projects, or scheduled motion.</div>
+                    </div>
+                    <div class="journey-stage">
+                        <div class="journey-stage-label">Awaiting</div>
+                        <div class="journey-stage-value">${stageCounts.awaiting}</div>
+                        <div class="journey-stage-copy">Waiting on replies, reviews, or follow-through windows.</div>
+                    </div>
+                    <div class="journey-stage">
+                        <div class="journey-stage-label">Closed</div>
+                        <div class="journey-stage-value">${stageCounts.closed}</div>
+                        <div class="journey-stage-copy">${engagedBase ? Math.round((stageCounts.closed / engagedBase) * 100) : 0}% of engaged lanes have reached a clean outcome.</div>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderTasks(listId, items, scope) {
             const mount = document.getElementById(listId);
             if (!mount) return;
@@ -2129,9 +3231,11 @@
             }
             mount.innerHTML = hydratedItems.map((item, index) => `
                 <button type="button" class="task" data-task-scope="${escapeHtml(scope)}" data-task-index="${index}" data-task-id="${escapeHtml(taskId(scope, index))}">
-                    <div class="task-tag">${escapeHtml(item.tag || "Task")}</div>
+                    <div class="task-top">
+                        <div class="task-tag">${escapeHtml(item.tag || "Task")}</div>
+                        <div class="task-due">${escapeHtml(item.due || "")}</div>
+                    </div>
                     <div class="task-text">${escapeHtml(item.text || "")}</div>
-                    <div class="task-due">${escapeHtml(item.due || "")}</div>
                 </button>
             `).join("");
         }
@@ -2226,6 +3330,7 @@
 
             if (command === "hazel") {
                 state.query = "hazel altruist melissa gokul cecilia";
+                state.lane = "interviews";
                 state.filterType = "all";
                 state.filterStage = "all";
                 state.openOnly = true;
@@ -2239,7 +3344,8 @@
 
             if (command === "founders") {
                 state.query = "";
-                state.filterType = "Founder Intro";
+                state.lane = "founders";
+                state.filterType = "all";
                 state.filterStage = "all";
                 state.openOnly = true;
                 refresh();
@@ -2250,7 +3356,8 @@
 
             if (command === "interviews") {
                 state.query = "";
-                state.filterType = "Interview";
+                state.lane = "interviews";
+                state.filterType = "all";
                 state.filterStage = "all";
                 state.openOnly = true;
                 refresh();
@@ -2260,6 +3367,8 @@
             }
 
             if (command === "today") {
+                state.panelStates.today = true;
+                renderPanelStates();
                 document.getElementById("todayList")?.scrollIntoView({ behavior: "smooth", block: "start" });
                 setCommandMessage("Jumped to today's execution stack.");
                 return;
@@ -2285,6 +3394,7 @@
 
             if (command === "reset") {
                 state.query = "";
+                state.lane = "all";
                 state.filterType = "all";
                 state.filterStage = "all";
                 state.sort = "priority";
@@ -2309,6 +3419,111 @@
             renderSelectOptions("typeFilter", types, "All types");
             document.getElementById("stageFilter").value = state.filterStage;
             document.getElementById("typeFilter").value = state.filterType;
+            document.getElementById("railMeta").textContent = `${filteredRows().length} live lane${filteredRows().length === 1 ? "" : "s"} · ${pinnedRows().length} pinned`;
+            renderLaneTabs();
+        }
+
+        function renderLaneTabs() {
+            const mount = document.getElementById("laneTabs");
+            if (!mount) return;
+            mount.innerHTML = laneDefinitions.map((lane) => {
+                const count = state.rows.filter((row) => {
+                    if (state.openOnly && !isOpenStage(row.stage)) return false;
+                    return rowMatchesLane(row, lane.id);
+                }).length;
+                return `
+                    <button type="button" class="lane-pill ${state.lane === lane.id ? "is-active" : ""}" data-lane-id="${escapeHtml(lane.id)}">
+                        <span>${escapeHtml(lane.label)}</span>
+                        <span class="lane-pill-count">${count}</span>
+                    </button>
+                `;
+            }).join("");
+        }
+
+        function renderRailDensity() {
+            tableBody.classList.toggle("is-compact", state.railDensity === "compact");
+            const toggle = document.getElementById("densityToggleBtn");
+            if (!toggle) return;
+            toggle.textContent = state.railDensity === "compact" ? "Expand rail" : "Compact rail";
+        }
+
+        function renderPanelStates() {
+            document.querySelectorAll("[data-panel-id]").forEach((panel) => {
+                const panelId = panel.dataset.panelId;
+                const isOpen = state.panelStates[panelId] !== false;
+                panel.classList.toggle("is-collapsed", !isOpen);
+                const button = panel.querySelector("[data-panel-toggle]");
+                if (button) button.textContent = isOpen ? "Collapse" : "Expand";
+            });
+        }
+
+        function renderCenterTabs() {
+            document.querySelectorAll("[data-center-tab]").forEach((button) => {
+                button.classList.toggle("is-active", button.dataset.centerTab === state.centerTab);
+            });
+            document.querySelectorAll("[data-center-panel]").forEach((panel) => {
+                panel.classList.toggle("is-active", panel.dataset.centerPanel === state.centerTab);
+            });
+        }
+
+        function selectedTaskData() {
+            if (!state.selectedTask) return null;
+            const { scope, index } = state.selectedTask;
+            return taskList(scope)[index] || null;
+        }
+
+        function renderCenterActionBar() {
+            if (!centerActionBar) return;
+            if (state.drawerMode === "task") {
+                const task = selectedTaskData();
+                const relatedRow = findRelatedRow(task);
+                centerActionBar.innerHTML = `
+                    <button type="button" class="center-action-btn is-primary" data-center-action="copy-task">Copy task</button>
+                    ${relatedRow ? `<button type="button" class="center-action-btn" data-center-action="copy-outreach">Copy outreach</button>` : ""}
+                    ${relatedRow ? `<button type="button" class="center-action-btn" data-center-action="jump-row" data-center-value="${escapeHtml(relatedRow.id)}">Open account</button>` : ""}
+                    <button type="button" class="center-action-btn" data-center-action="tab" data-center-value="edit">Edit task</button>
+                    <button type="button" class="center-action-btn" data-center-action="tab" data-center-value="timeline">Timeline</button>
+                `;
+                return;
+            }
+            const row = rowById(state.selectedId);
+            if (!row) {
+                centerActionBar.innerHTML = "";
+                return;
+            }
+            centerActionBar.innerHTML = `
+                <button type="button" class="center-action-btn is-primary" data-center-action="copy-payload">Copy payload</button>
+                <button type="button" class="center-action-btn" data-center-action="copy-outreach">Copy outreach</button>
+                <button type="button" class="center-action-btn" data-center-action="tab" data-center-value="edit">Edit record</button>
+                <button type="button" class="center-action-btn" data-center-action="tab" data-center-value="timeline">Timeline</button>
+            `;
+        }
+
+        function renderHeroLedger(source) {
+            const visibleRows = filteredRows();
+            const laneLabel = laneDefinitions.find((lane) => lane.id === state.lane)?.label || "All";
+            const selectedRow = state.drawerMode === "row" ? rowById(state.selectedId) : null;
+            const dueToday = taskList("today").filter((item) => !/done|sent/i.test(String(item.status || ""))).length;
+            const sourceLabel = source?.sourceLabel || "Embedded snapshot";
+            const sourceRows = Array.isArray(source?.opportunities) ? source.opportunities.length : 0;
+            const stagedCount = ingestInbox().length;
+
+            document.getElementById("ledgerViewValue").textContent = `${laneLabel} · ${state.openOnly ? "Open only" : "All rows"}`;
+            document.getElementById("ledgerViewCopy").textContent = `${visibleRows.length} visible lane${visibleRows.length === 1 ? "" : "s"}${selectedRow ? ` · locked on ${selectedRow.account}` : ""}.`;
+            document.getElementById("ledgerSourceValue").textContent = sourceLabel;
+            document.getElementById("ledgerSourceCopy").textContent = `${sourceRows} source row${sourceRows === 1 ? "" : "s"}${stagedCount ? ` · ${stagedCount} staged import${stagedCount === 1 ? "" : "s"}` : ""} · ${source.lastUpdated || "Local workspace active"}`;
+            document.getElementById("ledgerBiasValue").textContent = `${dueToday} due today · ${pinnedRows().length} pinned`;
+            document.getElementById("ledgerBiasCopy").textContent = state.drawerMode === "task"
+                ? "Current selection is a live task execution lane."
+                : "Follow-through beats more surface area.";
+        }
+
+        function renderHeroState() {
+            if (!heroShell) return;
+            heroShell.classList.toggle("is-collapsed", !state.heroExpanded);
+            const button = document.getElementById("toggleHeroBtn");
+            if (!button) return;
+            button.textContent = state.heroExpanded ? "Collapse top" : "Expand top";
         }
 
         function toast(message) {
@@ -2334,10 +3549,27 @@
 
         function ensureSelection() {
             if (state.drawerMode === "task" && state.selectedTask) return;
-            const current = rowById(state.selectedId);
+            const rows = filteredRows();
+            const current = rows.find((row) => row.id === state.selectedId);
             if (current) return;
-            const firstRow = filteredRows()[0] || state.rows[0];
+            const firstRow = rows[0] || state.rows[0];
             if (firstRow) openDrawer(firstRow.id);
+        }
+
+        function moveSelection(step) {
+            const rows = filteredRows();
+            if (!rows.length) return;
+            const currentIndex = rows.findIndex((row) => row.id === state.selectedId);
+            const safeIndex = currentIndex === -1 ? 0 : currentIndex;
+            const nextIndex = Math.max(0, Math.min(rows.length - 1, safeIndex + step));
+            const nextRow = rows[nextIndex];
+            if (!nextRow) return;
+            openDrawer(nextRow.id);
+            const card = tableBody.querySelector(`[data-record-id="${CSS.escape(nextRow.id)}"]`);
+            if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                card.focus({ preventScroll: true });
+            }
         }
 
         function openDrawer(id) {
@@ -2346,6 +3578,12 @@
             state.selectedId = id;
             state.drawerMode = "row";
             state.selectedTask = null;
+            state.centerTab = "brief";
+            const centerEmpty = document.getElementById("centerEmptyState");
+            if (centerEmpty) centerEmpty.hidden = true;
+            renderTable();
+            renderCenterTabs();
+            renderCenterActionBar();
             document.querySelector('#detailDrawer .section-label').textContent = "Node brief";
             drawerEditorLabel.textContent = "Edit record";
             document.getElementById("drawerTitle").textContent = row.account || "Node detail";
@@ -2382,6 +3620,10 @@
             state.selectedId = "";
             state.drawerMode = "task";
             state.selectedTask = { scope, index };
+            state.centerTab = "brief";
+            renderTable();
+            renderCenterTabs();
+            renderCenterActionBar();
             const scopeLabel = scope === "today" ? "Today's action" : scope === "week" ? "Weekly action" : "Monthly action";
             const scopeSubtitle = scope === "today" ? "Today" : scope === "week" ? "This week" : "This month";
             document.querySelector('#detailDrawer .section-label').textContent = scopeLabel;
@@ -2427,6 +3669,10 @@
             state.selectedId = "";
             state.selectedTask = null;
             state.drawerMode = "row";
+            state.centerTab = "brief";
+            renderTable();
+            renderCenterTabs();
+            renderCenterActionBar();
             renderDrawerActions([]);
             document.getElementById("composerActions").innerHTML = "";
             drawerEditorCard.hidden = false;
@@ -2462,6 +3708,8 @@
                 }]
             }, "ingest")).map((row) => ({ ...row, sourceLabel: label }));
             saveIngestInbox([...staged, ...ingestInbox()]);
+            state.panelStates.ingest = true;
+            state.rows = mergeRows(sourceModel);
             refresh();
             toast(`Staged ${rows.length} rows from ${label}`);
         }
@@ -2501,6 +3749,7 @@
                 sourceModel,
                 rows: state.rows,
                 localRows: localRows(),
+                pinnedRows: pinnedRows(),
                 recordOverrides: localOverrides(),
                 taskOverrides: localTaskOverrides(),
                 sourceProfiles: sourceProfiles(),
@@ -2584,8 +3833,16 @@
         }
 
         function refresh() {
+            renderHeroState();
+            renderHeroLedger(sourceModel);
             renderFilters();
+            renderRailDensity();
+            renderPanelStates();
+            renderCenterTabs();
+            renderCenterActionBar();
             renderStats(sourceModel);
+            renderExecSnapshot();
+            renderPipelineIntelligence(sourceModel);
             renderPeopleOrbit();
             renderIngestInbox();
             renderRadar();
@@ -2700,39 +3957,99 @@
         function boot() {
             workspaceStore.load();
             setSourceModel(workspaceStore.workspace.sourceModel || structuredClone(EMBEDDED_SOURCE));
+            if (ingestInbox().length) state.panelStates.ingest = true;
             applyCurrentSource();
         }
 
         document.getElementById("searchInput").addEventListener("input", (event) => {
             state.query = event.target.value.trim().toLowerCase();
-            renderTable();
+            refresh();
         });
 
         document.getElementById("stageFilter").addEventListener("change", (event) => {
             state.filterStage = event.target.value;
-            renderTable();
+            refresh();
         });
 
         document.getElementById("typeFilter").addEventListener("change", (event) => {
             state.filterType = event.target.value;
-            renderTable();
+            refresh();
         });
 
         document.getElementById("sortSelect").addEventListener("change", (event) => {
             state.sort = event.target.value;
-            renderTable();
+            refresh();
         });
 
         document.getElementById("showAllBtn").addEventListener("click", () => {
             state.openOnly = false;
-            syncActionButtons();
-            renderTable();
+            refresh();
         });
 
         document.getElementById("showOpenBtn").addEventListener("click", () => {
             state.openOnly = true;
-            syncActionButtons();
-            renderTable();
+            refresh();
+        });
+
+        document.getElementById("densityToggleBtn").addEventListener("click", () => {
+            state.railDensity = state.railDensity === "compact" ? "expanded" : "compact";
+            refresh();
+        });
+
+        document.getElementById("laneTabs").addEventListener("click", (event) => {
+            const button = event.target.closest("[data-lane-id]");
+            if (!button) return;
+            state.lane = button.dataset.laneId || "all";
+            refresh();
+        });
+
+        document.querySelector(".right-pane").addEventListener("click", (event) => {
+            const button = event.target.closest("[data-panel-toggle]");
+            if (!button) return;
+            const panelId = button.dataset.panelToggle;
+            state.panelStates[panelId] = !(state.panelStates[panelId] !== false);
+            renderPanelStates();
+        });
+
+        document.getElementById("centerTabs").addEventListener("click", (event) => {
+            const button = event.target.closest("[data-center-tab]");
+            if (!button) return;
+            state.centerTab = button.dataset.centerTab || "brief";
+            renderCenterTabs();
+        });
+
+        centerActionBar.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-center-action]");
+            if (!button) return;
+            const action = button.dataset.centerAction;
+            const value = button.dataset.centerValue || "";
+            if (action === "tab") {
+                state.centerTab = value || "brief";
+                renderCenterTabs();
+                return;
+            }
+            if (action === "copy-payload") {
+                const row = rowById(state.selectedId);
+                if (!row) return;
+                navigator.clipboard.writeText(generatedPayload(row));
+                toast("Payload copied");
+                return;
+            }
+            if (action === "copy-task") {
+                const task = selectedTaskData();
+                if (!task) return;
+                navigator.clipboard.writeText(task.text || "");
+                toast("Task copied");
+                return;
+            }
+            if (action === "copy-outreach") {
+                navigator.clipboard.writeText(document.getElementById("outreachComposer").textContent);
+                toast("Outreach draft copied");
+                return;
+            }
+            if (action === "jump-row" && value) {
+                openDrawer(value);
+            }
         });
 
         document.getElementById("addRowBtn").addEventListener("click", addRow);
@@ -2753,6 +4070,10 @@
         document.getElementById("exportWorkspaceBtn").addEventListener("click", downloadWorkspaceExport);
         document.getElementById("jumpWeekBtn").addEventListener("click", () => {
             document.getElementById("weekSection").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        document.getElementById("toggleHeroBtn").addEventListener("click", () => {
+            state.heroExpanded = !state.heroExpanded;
+            renderHeroState();
         });
         document.getElementById("runCommandBtn").addEventListener("click", () => {
             executeDeskCommand(document.getElementById("commandInput").value);
@@ -2783,14 +4104,28 @@
         });
 
         tableBody.addEventListener("click", (event) => {
+            const pinButton = event.target.closest("[data-row-action='toggle-pin']");
+            if (pinButton) {
+                togglePinnedRow(pinButton.dataset.rowId);
+                return;
+            }
             const deleteButton = event.target.closest("[data-row-action='delete-local']");
             if (deleteButton) {
                 deleteLocalRow(deleteButton.dataset.rowId);
                 return;
             }
-            const row = event.target.closest("tr[data-row-id]");
+            const row = event.target.closest("[data-record-id]");
             if (!row) return;
-            openDrawer(row.dataset.rowId);
+            openDrawer(row.dataset.recordId);
+        });
+
+        tableBody.addEventListener("keydown", (event) => {
+            const row = event.target.closest("[data-record-id]");
+            if (!row) return;
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openDrawer(row.dataset.recordId);
+            }
         });
 
         document.getElementById("sourceProfiles").addEventListener("click", (event) => {
@@ -2845,7 +4180,7 @@
             }
             if (action === "jump-row") {
                 closeDrawer();
-                const rowNode = tableBody.querySelector(`[data-row-id="${CSS.escape(value)}"]`);
+                const rowNode = tableBody.querySelector(`[data-record-id="${CSS.escape(value)}"]`);
                 if (rowNode) rowNode.scrollIntoView({ behavior: "smooth", block: "center" });
                 window.setTimeout(() => openDrawer(value), 160);
             }
@@ -2862,6 +4197,18 @@
         drawerScrim.addEventListener("click", closeDrawer);
 
         document.addEventListener("keydown", (event) => {
+            const targetTag = event.target?.tagName || "";
+            const isTypingSurface = /INPUT|TEXTAREA|SELECT/.test(targetTag) || event.target?.isContentEditable;
+            if (!isTypingSurface && event.key === "ArrowDown") {
+                event.preventDefault();
+                moveSelection(1);
+                return;
+            }
+            if (!isTypingSurface && event.key === "ArrowUp") {
+                event.preventDefault();
+                moveSelection(-1);
+                return;
+            }
             if (event.key === "Escape") closeDrawer();
         });
 

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::ASSASSIN // MANAGER-LEVEL STRIKE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #ef4444; /* Red for Assassin flow */
+            --accent-dim: rgba(239, 68, 68, 0.15);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-blur: blur(20px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(239, 68, 68, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(239, 68, 68, 0.05) 0%, transparent 40%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .logic-panel {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .logic-panel strong {
+            color: var(--text-primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        @media(min-width: 768px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            grid-column: 1 / -1;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: var(--glass-blur);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+        }
+
+        .target-type {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .payload-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            flex-grow: 1;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .payload-box:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .copy-hint {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+            background: var(--bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--accent);
+        }
+
+        .payload-box:hover .copy-hint {
+            opacity: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <div class="eyebrow">BASIN::ASSASSIN // DIRECT STRIKE</div>
+                <h1>The Manager Pivot</h1>
+            </div>
+            <div style="text-align: right;">
+                <div class="eyebrow" style="color:var(--text-secondary)">STATUS</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #22c55e;">ARMED</div>
+            </div>
+        </header>
+
+        <div class="logic-panel">
+            <strong>The Minh Directive:</strong> Enterprise ATS systems filter for pedigree (Ivy League, etc) at the Director level before the hiring manager ever sees you. <br><br>
+            <strong>The Pivot:</strong> We bypass the ATS. We target <strong>Manager</strong> slots at Series A-C startups. At that stage, a Manager of RevOps owns the entire engine anyway. We lead entirely with <em>Proof of Work</em> (logic, Python, routing). Click any text box below to copy the payload.
+        </div>
+
+        <div class="grid">
+            <h2>Phase 1 // Network Re-Alignment</h2>
+
+            <div class="card">
+                <div class="target-type">TARGET: MINH (Nvidia)</div>
+                <div class="card-title">The Thank You Pivot</div>
+                <div class="payload-box" onclick="copyText(this)">Minh — I can’t thank you enough for the honest feedback today. Most people just give the corporate PR answer, but knowing the University of Phoenix filter was the blocker is incredibly helpful. It actually clarified exactly what I need to do.
+ 
+I am officially pivoting my entire search to Manager-level GTM Systems/RevOps roles at Series B/C startups. I want to be hired for my ability to build the engine (Python, APIs, routing logic), where proof-of-work matters more than a pedigree filter. 
+
+You've been an amazing ally. If you see any hardcore builder/Manager roles cross your desk where they just need someone to get their hands dirty and fix the architecture, let me know. Really appreciate you.
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="target-type">TARGET: RECRUITERS (Michael M., Brooke)</div>
+                <div class="card-title">The Update Strike</div>
+                <div class="payload-box" onclick="copyText(this)">Hey [Name] — updating you on my search parameters. I'm executing a strategic pivot to focus exclusively on Manager-level RevOps and GTM Systems roles. 
+
+I've realized my highest leverage is 0→1 systems building (Python, Clay, routing logic, CRM architecture), and I want to be in the engine room, not just managing politics. I'm targeting Series A/B companies where the GTM system is currently a bottleneck. 
+
+If you have any Manager/Lead tier roles where they desperately need an operator-builder who can harden the infrastructure, let's talk. I have specs ready to show.
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <h2>Phase 2 // The Bypass (Direct Strikes)</h2>
+
+            <div class="card">
+                <div class="target-type">TARGET: CURRENT REVOPS MANAGERS</div>
+                <div class="card-title">The "Builder-to-Builder" Intro</div>
+                <div class="payload-box" onclick="copyText(this)">Hey [Name], I’m a RevOps operator focused heavily on signal-routing and outbound infrastructure. I saw you're leading the GTM systems over at [Company]. 
+
+I’ve been building some interesting 'Signal Engine' logic using Python and Clay to remove inbound data latency, and I’m reaching out to a few peers whose work I respect to trade notes. No pitch, just building my network with other operators who actually build the engine. Open to a 10-min builder sync next week?
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="target-type">TARGET: VP REVOPS / VP SALES</div>
+                <div class="card-title">The Pain Pitch (No Resume)</div>
+                <div class="payload-box" onclick="copyText(this)">Hey [Name] — I saw the open req for the RevOps Manager. 
+
+I’m an operator-builder. At my last node, my systems architecture identified $424k in leakage by fixing routing gaps in the ACV cycle. I specialize in turning fragmented signal into repeatable logic so your reps stop doing manual research and start selling. 
+
+If the current bottleneck is tooling, data architecture, or handoff latency, I have a 1-page spec on the exact routing engine I'd implement in my first 30 days. Let me know if you want to see it.
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Payload Copied</div>
+
+    <script>
+        function copyText(element) {
+            // Get the text but remove the "Copy Content" hint text inside the span
+            const clone = element.cloneNode(true);
+            const hints = clone.getElementsByClassName('copy-hint');
+            while(hints.length > 0) {
+                hints[0].parentNode.removeChild(hints[0]);
+            }
+            const text = clone.innerText.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::HUD // MISSION_CONTROL v5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-strong: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #d97706; /* Bronze */
+            --nexus-gold: #D4AF37;
+            --cyan: #06b6d4;
+            --green: #22c55e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass: blur(25px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(217, 119, 6, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+        }
+
+        .hud-shell { display: grid; grid-template-rows: 60px 1fr 40px; height: 100vh; }
+        header { border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background: rgba(10, 10, 15, 0.8); backdrop-filter: var(--glass); z-index: 100; }
+        .logo { font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 2px; font-size: 0.9rem; color: var(--text-primary); display: flex; align-items: center; gap: 12px; }
+        .nexus-badge { background: #000; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 800; }
+        .nexus-badge span { color: var(--nexus-gold); }
+
+        .status-telemetry { display: flex; gap: 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-secondary); }
+        main { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+
+        .tab-bar { display: flex; gap: 10px; margin-bottom: 10px; }
+        .tab { padding: 12px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; transition: 0.2s; }
+        .tab.active { background: var(--surface-strong); border-color: var(--accent); color: var(--text-primary); box-shadow: 0 0 20px rgba(217, 119, 6, 0.1); }
+
+        .mission-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; backdrop-filter: var(--glass); position: relative; }
+        .panel-title { font-family: 'Outfit', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .panel-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .field { margin-bottom: 20px; }
+        .label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+        .value { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+
+        .question-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .question-item { background: rgba(255, 255, 255, 0.02); border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--text-primary); cursor: pointer; transition: 0.2s; }
+        .question-item:hover { background: rgba(217, 119, 6, 0.08); transform: translateX(5px); }
+
+        /* Follow-up Payloads (The Loop) */
+        .payload-card { background: #000; border: 1px solid var(--nexus-gold); border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; }
+        .payload-card .label { color: var(--nexus-gold); }
+        .payload-text { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #cbd5e1; cursor: pointer; }
+        .payload-text:hover { color: #fff; }
+
+        .sync-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.9rem; margin-top: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2); }
+        .sync-btn:hover { transform: translateY(-2px); background: #f59e0b; }
+
+        footer { border-top: 1px solid var(--border); padding: 0 30px; display: flex; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-secondary); background: rgba(10, 10, 15, 0.9); }
+        .node-pulse { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; box-shadow: 0 0 10px var(--green); }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+
+        #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); background: #d97706; color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; z-index: 1000; display: none; }
+        
+        [data-content] { display: none; }
+        [data-content].active { display: grid; }
+    </style>
+</head>
+<body>
+    <div id="toast">Interaction Logged to Vault</div>
+    <div class="hud-shell">
+        <header>
+            <div class="logo">BASIN::NEXUS // PRESENCE_HUD <div class="nexus-badge">BASIN::<span>NEXUS</span></div></div>
+            <div class="status-telemetry">
+                <div class="tel-item">DATE: <b>MARCH 10, 2026</b></div>
+                <div class="tel-item">OPERATOR: <b>LEON</b></div>
+            </div>
+        </header>
+
+        <main>
+            <div class="tab-bar">
+                <div class="tab active" data-tab="rayan">10:00 AM // RAYAN (Bounty)</div>
+                <div class="tab" data-tab="nikolai">10:30 AM // NIKOLAI (Boardy / TLV)</div>
+            </div>
+
+            <!-- RAYAN MISSION -->
+            <div class="mission-grid active" data-content="rayan">
+                <div class="panel">
+                    <div class="panel-title">Company Context</div>
+                    <div class="field" style="margin-bottom: 24px;">
+                        <div class="label">Bounty.co</div>
+                        <div class="value" style="font-size: 0.85rem; font-weight: 300; color: var(--text-secondary);">An influencer platform that automates User-Generated Content (UGC) for TikTok and Instagram creators. They have massive supply (creators), but need a ruthless outbound engine to sell to brands.</div>
+                    </div>
+
+                    <div class="panel-title">1. The Core Narrative</div>
+                    
+                    <div class="field">
+                        <div class="label">Your Main Angle</div>
+                        <div class="value" style="font-size: 0.95rem; font-weight: 400;">Bounty has an amazing supply of content and creators. The missing piece is the <strong>engine</strong> that distributes it. You are the architect who automates their outbound revenue pipeline.</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Trigger Phrase</div>
+                        <div class="value" style="font-size: 1.1rem; color: var(--accent);">"The Verified Supply Chain"</div>
+                    </div>
+
+                    <div class="panel-title" style="margin-top: 30px;">3. The Hard Stop (10:28 AM)</div>
+                    <div style="background: rgba(217,119,6,0.1); border-left: 3px solid var(--accent); padding: 12px; font-size: 0.85rem; border-radius: 0 8px 8px 0; margin-bottom: 20px;">
+                        <em>"Rayan, I want to be respectful of your time. I have a hard stop at 10:30 for a sync with an operations peer. I'm going to shoot you a quick note later today with my specific take on hardening the Agent-to-Human handoff we discussed. Sound good?"</em>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">2. Conversation Flow & Questions</div>
+                    <div class="question-list">
+                        <div class="question-item"><strong>Diagnose:</strong> "Where precisely does the handoff between your automated systems and your human sales reps break down right now?"</div>
+                        <div class="question-item"><strong>Scale:</strong> "What does your outbound engine need to look like by Q3 to hit your revenue targets?"</div>
+                        <div class="question-item"><strong>Close:</strong> "My first 30 days would be focused entirely on hardening this outbound loop. I'll send you a short spec later today on how I'd approach it."</div>
+                    </div>
+                    
+                    <button class="sync-btn" style="margin-top: 30px;" onclick="copyPayload(document.getElementById('rayan-payload'))">COPY FOLLOW-UP EMAIL</button>
+                    <div id="rayan-payload" style="display:none;">Rayan, great sync. As promised, I'm working on a quick spec for hardening the 'Agent-Human' handoff in the Bounty outbound loop. Will shoot it over soon. Ready to build the engine.</div>
+                </div>
+            </div>
+
+            <!-- NIKOLAI MISSION -->
+            <div class="mission-grid" data-content="nikolai">
+                <div class="panel">
+                    <div class="panel-title">1. The Core Narrative</div>
+                    
+                    <div class="field">
+                        <div class="label">Your Main Angle</div>
+                        <div class="value" style="font-size: 0.95rem; font-weight: 400;">When Israeli (TLV) founders come to the US, they often have incredible technology but zero Go-To-Market (GTM) infrastructure. They struggle to translate their tech into a US sales motion.</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Your Strategic Framing</div>
+                        <div class="value" style="font-size: 0.95rem; font-weight: 400; color: var(--cyan);">Instead of framing this as founders having "bad sales skills" (a people problem), frame it to Nikolai as an <strong style="color:var(--text-primary);">infrastructure problem.</strong> Tell him: <em>"The issue isn't the founders; they simply lack the US Signal Routing infrastructure. They need a system to translate their tech into US pipeline."</em></div>
+                    </div>
+
+                    <div class="panel-title" style="margin-top: 30px;">3. Next Steps / Close</div>
+                    <div style="background: rgba(6,182,212,0.1); border-left: 3px solid var(--cyan); padding: 12px; font-size: 0.85rem; border-radius: 0 8px 8px 0; margin-bottom: 20px;">
+                        <em>"Nikolai, great sync. This US infrastructure gap for Israeli startups is exactly what I solve. I'm going to log our notes and send you a quick framework on how I'd architect a GTM bridge for one of these teams."</em>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">2. Conversation Flow & Questions</div>
+                    <div class="question-list">
+                        <div class="question-item"><strong>Diagnose:</strong> "When Israeli founders come to you, what's breaking first in their US sales motion? Is it getting the right lead data, or is the actual outreach process broken?"</div>
+                        <div class="question-item"><strong>Dig Deeper:</strong> "Are they struggling with capturing intent signals, or is the bottleneck just handoff latency to their AEs?"</div>
+                    </div>
+                    
+                    <button class="sync-btn" style="margin-top: 30px; background: var(--cyan);" onclick="copyPayload(document.getElementById('nikolai-payload'))">COPY FOLLOW-UP LINKEDIN</button>
+                    <div id="nikolai-payload" style="display:none;">Nikolai, great sync. The US infrastructure gap for TLV startups entering the market is exactly the pressure point I focus on. I'll draft that GTM architecture framework we discussed and send it your way shortly.</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>SYSTEM_VOICE: OPTIMAL</div>
+            <div>LOAD_SEQUENCING: READY</div>
+            <div>BASIN::NEXUS v5.1 // MISSION_CONTROL</div>
+        </footer>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('[data-content]');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelector(`[data-content="${target}"]`).classList.add('active');
+            });
+        });
+
+        function copyPayload(el) {
+            navigator.clipboard.writeText(el.innerText);
+            showToast("Follow-up Payload copied to clipboard");
+        }
+
+        function syncInteraction(node, outcome) {
+            showToast(`Syncing ${node} interaction to Global Vault...`);
+            // Intelligence Bridge simulation
+            console.log(`[BASIN::NEXUS] Syncing outcome: ${outcome}`);
+            // In v5.2, this will write to nexus_vault.json via a local node server
+        }
+
+        function showToast(m) {
+            const t = document.getElementById('toast');
+            t.textContent = m; t.style.display="block";
+            setTimeout(() => t.style.display="none", 2000);
+        }
+    </script>
+</body>
+</html>

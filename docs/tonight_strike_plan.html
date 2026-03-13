@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::STRIDOR // TONIGHT'S STRIKE PLAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #d97706; /* Gold/Bronze */
+            --cyan: #06b6d4;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-blur: blur(20px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(217, 119, 6, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(217, 119, 6, 0.3);
+            background: var(--surface-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .company-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .payload-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            text-transform: uppercase;
+        }
+
+        .message-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .message-box:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .copy-hint {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .message-box:hover .copy-hint {
+            opacity: 1;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .bounty-card {
+            border-color: var(--cyan);
+            background: rgba(6, 182, 212, 0.05);
+        }
+        .bounty-card:hover {
+            border-color: var(--cyan);
+        }
+        .bounty-card .eyebrow { color: var(--cyan); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="eyebrow">BASIN::STRIDOR // SYSTEM_STRIKE_LIST</div>
+            <h1>Tonight's Plan of Attack</h1>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">Click any message block to copy for LinkedIn/Email.</p>
+        </header>
+
+        <!-- PHASE 1: TARGET TRIO -->
+        <div class="section">
+            <h2>01 // High-Intent Trio (The Payloads)</h2>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="company-name">EdSights</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Senior RevOps Manager</div>
+                    </div>
+                    <div class="payload-tag">$424k Savings Proof</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "I just applied for the Senior RevOps role and wanted to flag a specific outcome: At my last node, I built a signal-latency tracker that identified $424k in annual leakage by fixing routing gaps in the ACV cycle. EdSights' scale is at the perfect inflection point for this kind of systems-logic. Open to a 10-minute builder-to-builder chat?"
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="company-name">HeyGen</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Revenue Operations Manager</div>
+                    </div>
+                    <div class="payload-tag">Routing Architecture</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "I noticed the RevOps lead role. I’m an operator-builder who specializes in high-fidelity routing architecture. I’ve spent the last cycle perfecting a 'Nexus Hub' logic that removes the friction between inbound signal and GTM action. Given HeyGen’s product velocity, I’d love to show you the 30-day plan for how I’d harden your systems."
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="company-name">Monarch</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Founding GTM Systems Architect</div>
+                    </div>
+                    <div class="payload-tag">Nexus Hub Pitch</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "Reaching out regarding the Founding GTM Architect role. I built the BASIN::NEXUS system to solve for one thing: turning fragmented signal into repeatable revenue. Monarch is building the exact kind of high-leverage infrastructure where my 'Signal Engine' logic delivers the most ROI. I have a 1-page spec on how I’d architect your first 90 days—want to see it?"
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="company-name">Hazel (Altruist)</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">GTM / Product Engineer</div>
+                    </div>
+                    <div class="payload-tag">Sovereign GTM Stack</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "I’ve been tracking Hazel’s infrastructure velocity. I’m a GTM Engineer who builds sovereign systems—moving beyond 'patching' HubSpot to owning the full-funnel enrichment pipeline. I just prototyped a signal-verification engine using community-curated public APIs and a custom nano-LLM for personality-infusion. This is the exact 0→1 technical rigour Hazel needs for your next scale phase. Want to see the spec?"
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 2: RECRUITER PIVOT -->
+        <div class="section">
+            <h2>02 // Recruiter Strike (The Pivot)</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="company-name">Michael Maccariello</div>
+                    <div class="payload-tag">Global Head GTM</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "Michael, updating you on my search: I’m executing a strategic pivot to Manager-level RevOps / GTM Systems roles. My focus is Series A-C AI/SaaS where the system is currently a bottleneck for the sales team. If you have a node in your network looking for an operator who can build the engine rather than just watch the dashboard, let me know."
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="company-name">Brooke Salyer</div>
+                    <div class="payload-tag">Rippling GTM Lead</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "Brooke, checking in on the GTM Systems capacity at Rippling. I’m a RevOps operator focused on 0→1 infrastructure and signal routing. Given Rippling's multi-product complexity, I’d love to trade notes on how you're thinking about GTM Ops headcount for the next quarter. I’m currently prioritizing Manager-level search slots."
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 3: WARM INTROS -->
+        <div class="section">
+            <h2>03 // Signal Follow-Ups</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="company-name">Victor Kovalev</div>
+                    <div class="payload-tag">ScaleAgentic</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "Victor, following up on the Boardy intro. I’m heads-down on RevOps systems architecture right now and would love your take on the 'Sensory System' logic you’re building. Open to a quick sync later this week?"
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="company-name">Scott Martinis</div>
+                    <div class="payload-tag">B2B Catalyst</div>
+                </div>
+                <div class="message-box" onclick="copyText(this)">
+                    "Scott, following up here. I’m building out the 'Nexus Hub' for my next node and would love a builder-to-builder sync to compare notes on context-lake architecture. You free Thursday or Friday?"
+                    <span class="copy-hint">Copy Content</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 4: KILL TASK -->
+        <div class="section">
+            <h2>04 // The Main Node</h2>
+
+            <div class="card bounty-card">
+                <div class="eyebrow">CRITICAL_READY // INTERVIEW_PREP</div>
+                <div class="card-header">
+                    <div class="company-name">Bounty (Rayan Dabbagh)</div>
+                    <div class="payload-tag">Tue 11:30 AM PT</div>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
+                    <strong>Next Action:</strong> Build Presence HUD. <br>
+                    <strong>Bridge Narrative:</strong> "Outbound Automation as Verified Supply."
+                </div>
+            </div>
+        </div>
+        
+        <!-- PHASE 5: TECHNICAL ASSETS -->
+        <div class="section">
+            <h2>05 // Verified Technical Assets</h2>
+            <div class="card" style="border-color: var(--accent); background: rgba(217, 119, 6, 0.05);">
+                <div class="eyebrow" style="color: var(--accent);">SIGNAL_LAKE // public-apis</div>
+                <div class="company-name">1,000+ API Arsenal</div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 8px;">
+                    Multi-signal verification framework. Uses keyless public APIs to verify supply-side data (Polymarket, Government, Finance) without vendor cost.
+                </p>
+            </div>
+            <div class="card" style="border-color: var(--cyan); background: rgba(6, 182, 212, 0.05);">
+                <div class="eyebrow" style="color: var(--cyan);">SOVEREIGN_ENGINE // nanochat</div>
+                <div class="company-name">The $100 Intelligence Engine</div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 8px;">
+                    Custom fine-tuned GPT-2 capability nodes. Designed for personality-infusion and identity-SFT. Total control over weights and routing.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            2026-03-09 // TERMINAL // BASIN LEON CAREER OS v4.3
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Copied to Clipboard</div>
+
+    <script>
+        function copyText(element) {
+            const text = element.innerText.replace('Copy Content', '').trim();
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

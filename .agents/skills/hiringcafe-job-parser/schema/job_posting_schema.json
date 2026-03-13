@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "company_name": {"type": ["string", "null"], "description": "Organization posting the job."},
+    "company_website": {"type": ["string", "null"], "description": "Base website URL (protocol + domain)."},
+    "title": {"type": "string", "description": "Canonical job title (no seniority or location descriptors)."},
+    "category": {
+      "type": ["string", "null"],
+      "description": "High-level function of the role.",
+      "enum": [
+        "Software Development",
+        "Engineering",
+        "Information Technology",
+        "Product Management",
+        "Project and Program Management",
+        "Design",
+        "Data and Analytics",
+        "Sales",
+        "Marketing",
+        "Customer Service",
+        "Business Operations",
+        "Finance and Accounting",
+        "Human Resources",
+        "Legal and Compliance",
+        "Healthcare",
+        "Other"
+      ]
+    },
+    "employment_type": {
+      "type": "string",
+      "description": "Employment commitment.",
+      "enum": ["Full Time", "Part Time", "Contract", "Internship", "Temporary", "Seasonal", "Volunteer"]
+    },
+    "workplace_type": {"type": "string", "description": "Remote/Onsite/Hybrid.", "enum": ["Remote", "Onsite", "Hybrid"]},
+    "locations": {"type": "array", "description": "Free-text location names.", "items": {"type": "string"}},
+    "salary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {"type": ["number", "null"], "description": "Low end of range."},
+        "max": {"type": ["number", "null"], "description": "High end of range."},
+        "currency": {"type": ["string", "null"], "description": "ISO 4217 code (e.g., USD)."},
+        "frequency": {"type": ["string", "null"], "description": "Pay period.", "enum": ["Yearly", "Monthly", "Bi-Weekly", "Weekly", "Daily", "Hourly", null]}
+      },
+      "required": ["min", "max", "currency", "frequency"]
+    },
+    "description_text": {"type": ["string", "null"], "description": "Plain-text job description."},
+    "requirements_summary": {"type": ["string", "null"], "description": "<=250 char summary of explicit requirements."},
+    "skills": {"type": "array", "description": "Normalized tools/skills mentioned.", "items": {"type": "string"}},
+    "experience_min_years": {"type": ["number", "null"], "description": "Minimum years of experience, if stated."},
+    "posted_at": {"type": ["string", "null"], "description": "ISO 8601 date posted, if available."},
+    "apply_url": {"type": ["string", "null"], "description": "Direct application URL, if available."},
+    "source_url": {"type": "string", "description": "Canonical URL of the job posting."},
+    "source_name": {"type": ["string", "null"], "description": "Site/board scraped from."},
+    "language": {"type": ["string", "null"], "description": "ISO 639-1 language code."},
+    "employer_type": {"type": ["string", "null"], "description": "Internal vs external recruiter.", "enum": ["Internal", "External", null]},
+    "job_id": {"type": ["string", "null"], "description": "Publisher/job-board identifier if present."}
+  },
+  "required": ["title", "employment_type", "workplace_type", "source_url"]
+}

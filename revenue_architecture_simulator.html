@@ -386,6 +386,13 @@
                 <div class="nav-item" onclick="showRestricted('diagnostic-led-outreach')"><i>📧</i> diagnostic-led-outreach</div>
                 <div class="nav-item" onclick="showRestricted('voice-calibration-lab')"><i>🎙️</i> voice-calibration-lab</div>
             </div>
+
+            <div style="margin-top: 20px;">
+                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;">Neural Integration</p>
+                <div class="nav-item" onclick="showRestricted('neuro-instinct-guard')"><i>🛡️</i> neuro-instinct-guard</div>
+                <div class="nav-item" onclick="showRestricted('neuro-limbic-resonator')"><i>❤️</i> neuro-limbic-resonator</div>
+                <div class="nav-item" onclick="showRestricted('neuro-logic-validator')"><i>⚖️</i> neuro-logic-validator</div>
+            </div>
         </aside>
 
         <div id="restricted-overlay" class="restricted-overlay">
@@ -537,16 +544,35 @@
                         <span class="log-time">[22:15:04]</span>
                         <span class="log-msg">Detected digital logic-leak in LA sales motion.</span>
                     </div>
-                     <div class="log-entry">
+                    <div class="log-entry">
                         <span class="log-time">[22:15:08]</span>
                         <span class="log-msg">Deploying [revenue-architect-audit] briefing...</span>
+                    </div>
+                    <div class="log-entry" style="border-left-color: #a78bfa">
+                        <span class="log-time">[NEURO]</span>
+                        <span class="log-msg">Agent [neuro-instinct-guard] killing CXO defenses.</span>
                     </div>
                 `;
             }
         }
 
         function showRestricted(moduleName) {
-            document.getElementById('restricted-title').innerText = moduleName + " Restricted";
+            const title = document.getElementById('restricted-title');
+            const msg = document.getElementById('restricted-msg');
+            
+            title.innerText = moduleName + " Restricted";
+            
+            // Specialized messages based on Neurobiological Framework
+            const neuroMsgs = {
+                'neuro-instinct-guard': 'Layer 1 (Reptilian) Defense Shield active. This agent kills the "Vendor Guard" and establishes peer-status before the first touchpoint. Requires <b>Instinctual Key</b>.',
+                'neuro-limbic-resonator': 'Layer 2 (Limbic) Emotional Resonance active. This agent maps the future-state imagination to ensure "Imagination-Led Action" across long sales cycles. Requires <b>Empathy Tokens</b>.',
+                'neuro-logic-validator': 'Layer 3 (Neocortex) Logical Proof active. This agent rules out analytical objections with deterministic ROI benchmarks and industry-scraped statistics. Requires <b>Validation Protocol</b>.',
+                'Intent Dashboard': 'This module requires an active <b>Revenue Architecture Deployment</b> for this workspace. Currently outside of tactical jurisdiction.',
+                'Logic Audit': 'Real-time structural friction detection is locked. Upgrade to <b>Systemic Architecture</b> to surface hidden logic leaks.',
+                'Strike Actuator': 'Deployment of high-status diagnostic lures is restricted. Tactical execution requires an active <b>Signal Refinery</b> license.'
+            };
+
+            msg.innerHTML = neuroMsgs[moduleName] || neuroMsgs['Intent Dashboard'];
             document.getElementById('restricted-overlay').style.display = 'block';
             document.querySelector('.simulator-container').classList.add('blur-bg');
         }

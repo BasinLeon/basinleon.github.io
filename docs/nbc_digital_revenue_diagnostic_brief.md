@@ -1,14 +1,17 @@
 # NBCUniversal :: Digital Revenue Execution Diagnostic Brief
 
-**Prepared for:** NBC4 & Telemundo 52 Sales Leadership  
-**Team:** 21 Account Executives – Los Angeles  
+**Prepared for:** NBC4 & Telemundo 52 Sales Leadership
+**Team:** 21 Account Executives – Los Angeles
 **Timeline Target:** End of Q2 2026
 
 ---
 
-## Context
+### Context
 
-NBCUniversal’s advertising business continues to evolve as revenue shifts from traditional linear models toward digital and non-linear formats. 
+NBCUniversal’s advertising business continues to evolve as revenue shifts from traditional linear models toward digital and non-linear formats.
+- Prospecting Stalls: Traditional linear prospecting is failing to generate meetings for non-linear digital solutions.
+- Mechanical Friction: AEs are accustomed to "selling spots" rather than architecting digital solution frameworks.
+- Growth Target Risk: Without a structural pivot, the Q2 business development targets are at risk.
 
 This transition changes not only the product mix but also the way new business is identified, developed, and closed. Account Executives who previously relied on established relationships and inbound demand are now expected to operate with stronger new business development capabilities in a more competitive digital environment.
 
@@ -18,6 +21,7 @@ Organizations moving from linear to digital advertising models commonly encounte
 
 1.  **Prospecting Confidence**: Reps are less comfortable initiating new digital business conversations.
 2.  **Discovery Depth**: Conversations focus on products rather than uncovering digital marketing objectives.
+- Accelerated digital pipeline growth for Q2.
 3.  **Opportunity Progression**: Deals stall because the sales motion does not match how digital buyers evaluate solutions.
 
 ## Diagnostic Focus Areas
@@ -39,6 +43,13 @@ Strengthen the new business execution capability of NBCUniversal’s digital sal
 
 ## Proposed Engagement
 
+### Engagement Structure
+
+###- Revenue-Gap Diagnostic: Identifying where the current sales motion breaks down in the digital transition.
+- Discovery 2.0: Architecting a non-linear discovery framework for the 21 AEs.
+- Digital Execution Map: A strategic roadmap to hitting growth targets before June 30.
+- Performance Calibration: Aligning individual AE confidence with digital market demands.
+
 ### Phase 1 – Diagnostic Review
 Assessment of current sales workflows and execution patterns.
 
@@ -56,6 +67,6 @@ Following the program, NBCUniversal’s AE team should see:
 - More consistent opportunity advancement
 - Improved closing outcomes for digital deals
 
-## Next Step
+### Next Steps
 
 Following leadership review, TalSmart would schedule a short call to discuss findings and finalize the recommended program structure.
