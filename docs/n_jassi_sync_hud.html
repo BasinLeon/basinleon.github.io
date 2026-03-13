@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leon's Command HUD | NBC Partnership Sync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-obsidian: #0d0d0f;
+            --accent-purple: #a78bfa;
+            --accent-blue: #3b82f6;
+            --text-ghost: #94a3b8;
+            --text-bright: #f8fafc;
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg-obsidian); 
+            color: var(--text-bright); 
+            font-family: 'Inter', sans-serif;
+            padding: 24px;
+            height: 100vh;
+            overflow: hidden;
+            border: 4px solid var(--accent-purple);
+        }
+
+        .hud-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+            height: 100%;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-dim);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-purple);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .anchor-phrase {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 12px;
+        }
+
+        .bullet-list { list-style: none; }
+        .bullet-list li {
+            font-size: 0.9rem;
+            color: var(--text-ghost);
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+        }
+        .bullet-list li b { color: var(--text-bright); }
+
+        .neuro-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .neuro-node {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-dim);
+            text-align: center;
+        }
+
+        .neuro-node .label { font-size: 0.65rem; color: var(--accent-purple); display: block; }
+        .neuro-node .word { font-weight: 800; font-size: 0.8rem; }
+
+        .footer {
+            grid-column: 1 / -1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-ghost);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .keyword {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .emergency {
+            color: var(--danger);
+            font-weight: 800;
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-grid">
+        <header>
+            <div style="font-family: 'Outfit'; font-weight: 800; font-size: 1.2rem;">COMMAND::HUD <span style="font-weight: 300; opacity: 0.5;">v1.0</span></div>
+            <div><span class="status-dot"></span> <span style="font-size: 0.8rem; opacity: 0.7;">PARTNERSHIP SYNC | JASSI SINGH</span></div>
+        </header>
+
+        <!-- Column 1: The High-Status Positioning -->
+        <div class="card">
+            <h2>Strategic Positioning</h2>
+            <div class="anchor-phrase">"We aren't training people; we are deploying intellectual infrastructure."</div>
+            <ul class="bullet-list">
+                <li><span>◈</span> <b>Revenue Architect</b> vs. "Consultant" (Higher Status)</li>
+                <li><span>◈</span> <b>Logical Friction Audit</b>: Finding the 50k/mo leak.</li>
+                <li><span>◈</span> <b>Signal Refinery</b>: Decoupling yield from human burnout.</li>
+                <li><span>◈</span> <b>Deterministic Growth</b>: Removing "Art" from sales.</li>
+            </ul>
+            
+            <div style="margin-top: 24px;">
+                <h2>The NBC LA Pivot</h2>
+                <ul class="bullet-list">
+                    <li><span>◈</span> Transition: <b>Linear</b> → <b>Non-Linear/Digital</b>.</li>
+                    <li><span>◈</span> Challenge: <b>21 AEs</b> with legacy linear habits.</li>
+                    <li><span>◈</span> Solution: <b>Digital Sales Playbook</b> (The Engine).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Column 2: The Neurobiological Framework -->
+        <div class="card">
+            <h2>The Tri-Fold Neuro-Engine</h2>
+            <div class="anchor-phrase">"Solve for the Brain, and the Wallet follows."</div>
+            
+            <div class="neuro-box">
+                <div class="neuro-node">
+                    <span class="label">REPTILIAN</span>
+                    <span class="word">INSTINCT</span>
+                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Kill Defenses / Peer Status</p>
+                </div>
+                <div class="neuro-node">
+                    <span class="label">LIMBIC</span>
+                    <span class="word">EMOTION</span>
+                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Lure / Future-State</p>
+                </div>
+                <div class="neuro-node">
+                    <span class="label">NEOCORTEX</span>
+                    <span class="word">LOGIC</span>
+                    <p style="font-size: 0.6rem; margin-top: 4px; opacity: 0.7;">Proof / ROB Benchmarks</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h2>Anchor Keywords</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span class="keyword">Structural Diagnostic</span>
+                    <span class="keyword">Decision Velocity</span>
+                    <span class="keyword">Systemic Stabilizer</span>
+                    <span class="keyword">Logic-Leak</span>
+                    <span class="keyword">Non-Linear Discovery</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; border: 1px solid var(--danger); padding: 12px; border-radius: 8px;">
+                <h2 style="color: var(--danger); margin-bottom: 8px;">The "Trap" to Avoid</h2>
+                <p style="font-size: 0.8rem; color: var(--text-ghost);">Don't let the call drift into <span class="emergency">"Training Services."</span> Force the conversation back to <span style="color: var(--text-bright);">BUILDING INFRASTRUCTURE</span>.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>[ SYSTEM READY FOR JASSI SYNC ]</span>
+            <span>LOC: BASIN_ASSOCIATES_LA // 2026-03-12</span>
+        </div>
+    </div>
+</body>
+</html>
