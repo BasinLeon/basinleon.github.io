@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basin::Nexus | Revenue Architecture Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .simulator-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 80px 1fr;
+            height: 100vh;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent);
+        }
+
+        /* Header */
+        header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #fff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: rgba(0,0,0,0.4);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .mode-btn {
+            padding: 8px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mode-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Sidebar - Data Rail */
+        .sidebar {
+            padding: 24px;
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+        }
+
+        .nav-item.active {
+            background: var(--glass);
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Main View - The Canvas */
+        .main-view {
+            padding: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            overflow-y: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .stat-card.glow-blue::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        /* Visual Model Area */
+        .visual-model {
+            height: 400px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nodes-container {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .node {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .node i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--accent-blue);
+        }
+
+        .pulse {
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        .flow-line {
+            height: 2px;
+            width: 60px;
+            background: var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flow-particle {
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            background: var(--accent-blue);
+            left: -20%;
+            animation: flow 1.5s infinite linear;
+        }
+
+        @keyframes flow {
+            0% { left: -20%; }
+            100% { left: 100%; }
+        }
+
+        /* Logic Panel (Right) */
+        .logic-panel {
+            background: rgba(10, 10, 12, 0.5);
+            border-left: 1px solid var(--glass-border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .agent-log {
+            font-family: 'Inter', monospace;
+            font-size: 0.75rem;
+            background: rgba(0,0,0,0.4);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry { margin-bottom: 8px; border-left: 2px solid var(--accent-blue); padding-left: 8px; }
+        .log-time { color: var(--accent-blue); opacity: 0.7; }
+        .log-msg { color: var(--text-main); }
+
+        .cta-btn {
+            margin-top: auto;
+            background: var(--accent-blue);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Comparison Toggle Styles */
+        body.training-mode { --accent-blue: #f59e0b; }
+        body.training-mode .node { opacity: 0.5; filter: grayscale(1); }
+        body.training-mode .visual-model::after {
+            content: "SKILL DECAY DETECTED";
+            position: absolute;
+            bottom: 20px;
+            color: var(--danger);
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
+
+    </style>
+</head>
+<body class="architecture-mode">
+    <div class="simulator-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">BASIN::NEXUS</div>
+            <div class="mode-toggle">
+                <div class="mode-btn" id="btn-training" onclick="setMode('training')">TRADITIONAL TRAINING</div>
+                <div class="mode-btn active" id="btn-architecture" onclick="setMode('architecture')">REVENUE ARCHITECTURE</div>
+            </div>
+            <div class="user-meta" style="font-size: 0.8rem; font-weight: 600;">USE CASE: NBC UNIVERSAL</div>
+        </header>
+
+        <!-- Data Rail -->
+        <aside class="sidebar">
+            <div class="nav-item active"><i>◈</i> Signal Refinery</div>
+            <div class="nav-item"><i>◎</i> Intent Dashboard</div>
+            <div class="nav-item"><i>◨</i> Logic Audit</div>
+            <div class="nav-item"><i>⚡</i> Strike Actuator</div>
+            
+            <div style="margin-top: 40px;">
+                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;">Active Agent Skills</p>
+                <div class="nav-item" style="font-size: 0.75rem;">signal-scout-pro</div>
+                <div class="nav-item" style="font-size: 0.75rem;">diagnostic-led-outreach</div>
+                <div class="nav-item" style="font-size: 0.75rem;">voice-calibration-lab</div>
+            </div>
+        </aside>
+
+        <!-- Canvas -->
+        <main class="main-view">
+            <div class="hero-stats">
+                <div class="stat-card glow-blue">
+                    <div class="label" id="label-1">Qualified Opps / Month</div>
+                    <div class="value" id="val-1">164</div>
+                </div>
+                <div class="stat-card glow-blue">
+                    <div class="label" id="label-2">Digital Deal Velocity</div>
+                    <div class="value" id="val-2">8 Days</div>
+                </div>
+                <div class="stat-card glow-blue">
+                    <div class="label" id="label-3">Estimated Q2 Yield</div>
+                    <div class="value" id="val-3">$1.2M</div>
+                </div>
+            </div>
+
+            <div class="visual-model" id="model-canvas">
+                <div class="nodes-container">
+                    <div class="node pulse" id="n1">
+                        <i>📡</i>
+                        <span id="n1-txt">RAW SIGNALS</span>
+                    </div>
+                    <div class="flow-line"><div class="flow-particle"></div></div>
+                    <div class="node" id="n2">
+                        <i>⚙️</i>
+                        <span id="n2-txt">REFINERY ENGINE</span>
+                    </div>
+                    <div class="flow-line"><div class="flow-particle"></div></div>
+                    <div class="node" id="n3">
+                        <i>🧠</i>
+                        <span id="n3-txt">STRATEGIC DISCOVERY</span>
+                    </div>
+                    <div class="flow-line"><div class="flow-particle"></div></div>
+                    <div class="node" id="n4">
+                        <i>💰</i>
+                        <span id="n4-txt">$50K DEAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-area" style="background: var(--glass); padding: 24px; border-radius: 20px; border: 1px solid var(--glass-border);">
+                <h2 id="view-title" font-family="'Outfit'">Revenue Architecture Mode</h2>
+                <p id="view-desc" style="color: var(--text-dim); margin-top: 12px; line-height: 1.6;">
+                    Systemic deployment of the Signal Refinery. We aren't just training the AEs; we are building the infrastructure that identifies digital intent, scores it, and generates high-status discovery routes. The revenue yield is decoupled from human burnout.
+                </p>
+            </div>
+        </main>
+
+        <!-- Logic Panel -->
+        <aside class="logic-panel">
+            <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Operator Feedback Loop</p>
+            <div class="agent-log" id="log">
+                <div class="log-entry">
+                    <span class="log-time">[22:15:01]</span>
+                    <span class="log-msg">Agent [signal-scout-pro] scanning NBC sector...</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">[22:15:04]</span>
+                    <span class="log-msg">Detected digital logic-leak in LA sales motion.</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">[22:15:08]</span>
+                    <span class="log-msg">Deploying [revenue-architect-audit] briefing...</span>
+                </div>
+            </div>
+
+            <div style="background: var(--glass); padding: 16px; border-radius: 12px; border: 1px solid var(--glass-border);">
+                <p style="font-size: 0.65rem; color: var(--text-dim);">LATEST DIAGNOSTIC</p>
+                <p style="font-size: 0.85rem; font-weight: 600; margin-top: 4px;">NBC is losing $50k/month in legacy friction.</p>
+            </div>
+
+            <div class="cta-btn" onclick="alert('Architecture Blueprint Shipped to Jassi Singh.')">SHIP DIAGNOSTIC BRIEF</div>
+        </aside>
+    </div>
+
+    <script>
+        function setMode(mode) {
+            const body = document.body;
+            const btnT = document.getElementById('btn-training');
+            const btnA = document.getElementById('btn-architecture');
+            const title = document.getElementById('view-title');
+            const desc = document.getElementById('view-desc');
+            const log = document.getElementById('log');
+
+            if (mode === 'training') {
+                body.className = 'training-mode';
+                btnT.classList.add('active');
+                btnA.classList.remove('active');
+                title.innerText = "Traditional Sales Training Mode";
+                desc.innerText = "Focused on the individual AE's head. Motivation-based, human-led, and prone to rapid skill decay. The 'Logic Leak' remains because the systems aren't fixed. Yield is capped by AE headcount and manual effort.";
+                
+                // Update stats
+                document.getElementById('val-1').innerText = "12";
+                document.getElementById('val-1').style.color = "var(--danger)";
+                document.getElementById('val-2').innerText = "42 Days";
+                document.getElementById('val-3').innerText = "$120k";
+                
+                // Update nodes
+                document.getElementById('n1-txt').innerText = "MANUAL LOGS";
+                document.getElementById('n2-txt').innerText = "MOTIVATION CALLS";
+                document.getElementById('n3-txt').innerText = "SKILL DECAY";
+                document.getElementById('n4-txt').innerText = "$5K DEAL";
+
+                log.innerHTML = `
+                    <div class="log-entry" style="border-left-color: var(--danger)">
+                        <span class="log-time">[ERR]</span>
+                        <span class="log-msg">Manual outreach threshold exceeded.</span>
+                    </div>
+                    <div class="log-entry" style="border-left-color: var(--warning)">
+                        <span class="log-time">[WRN]</span>
+                        <span class="log-msg">Skill decay detected in 21 AEs.</span>
+                    </div>
+                `;
+            } else {
+                body.className = 'architecture-mode';
+                btnA.classList.add('active');
+                btnT.classList.remove('active');
+                title.innerText = "Revenue Architecture Mode";
+                desc.innerText = "Systemic deployment of the Signal Refinery. We aren't just training the AEs; we are building the infrastructure that identifies digital intent, scores it, and generates high-status discovery routes. The revenue yield is decoupled from human burnout.";
+            
+                // Reset stats
+                document.getElementById('val-1').innerText = "164";
+                document.getElementById('val-1').style.color = "var(--text-main)";
+                document.getElementById('val-2').innerText = "8 Days";
+                document.getElementById('val-3').innerText = "$1.2M";
+
+                // Reset nodes
+                document.getElementById('n1-txt').innerText = "RAW SIGNALS";
+                document.getElementById('n2-txt').innerText = "REFINERY ENGINE";
+                document.getElementById('n3-txt').innerText = "STRATEGIC DISCOVERY";
+                document.getElementById('n4-txt').innerText = "$50K DEAL";
+
+                log.innerHTML = `
+                    <div class="log-entry">
+                        <span class="log-time">[22:15:01]</span>
+                        <span class="log-msg">Agent [signal-scout-pro] scanning NBC sector...</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">[22:15:04]</span>
+                        <span class="log-msg">Detected digital logic-leak in LA sales motion.</span>
+                    </div>
+                     <div class="log-entry">
+                        <span class="log-time">[22:15:08]</span>
+                        <span class="log-msg">Deploying [revenue-architect-audit] briefing...</span>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
