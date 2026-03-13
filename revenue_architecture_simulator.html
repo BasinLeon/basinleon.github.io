@@ -109,12 +109,71 @@
             align-items: center;
             gap: 12px;
             transition: 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.05);
         }
 
         .nav-item.active {
             background: var(--glass);
             color: var(--text-main);
             border: 1px solid var(--glass-border);
+        }
+
+        /* Restricted Tooltip */
+        .restricted-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 10, 12, 0.95);
+            border: 1px solid var(--danger);
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.2);
+            backdrop-filter: blur(10px);
+            min-width: 300px;
+        }
+
+        .restricted-overlay i {
+            font-size: 2rem;
+            color: var(--danger);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .restricted-overlay h3 {
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .restricted-overlay p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .restricted-overlay .close-btn {
+            background: var(--danger);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .blur-bg {
+            filter: blur(5px);
+            pointer-events: none;
         }
 
         /* Main View - The Canvas */
@@ -317,17 +376,24 @@
         <!-- Data Rail -->
         <aside class="sidebar">
             <div class="nav-item active"><i>◈</i> Signal Refinery</div>
-            <div class="nav-item"><i>◎</i> Intent Dashboard</div>
-            <div class="nav-item"><i>◨</i> Logic Audit</div>
-            <div class="nav-item"><i>⚡</i> Strike Actuator</div>
+            <div class="nav-item" onclick="showRestricted('Intent Dashboard')"><i>◎</i> Intent Dashboard</div>
+            <div class="nav-item" onclick="showRestricted('Logic Audit')"><i>◨</i> Logic Audit</div>
+            <div class="nav-item" onclick="showRestricted('Strike Actuator')"><i>⚡</i> Strike Actuator</div>
             
             <div style="margin-top: 40px;">
                 <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;">Active Agent Skills</p>
-                <div class="nav-item" style="font-size: 0.75rem;">signal-scout-pro</div>
-                <div class="nav-item" style="font-size: 0.75rem;">diagnostic-led-outreach</div>
-                <div class="nav-item" style="font-size: 0.75rem;">voice-calibration-lab</div>
+                <div class="nav-item" onclick="showRestricted('signal-scout-pro')"><i>🔍</i> signal-scout-pro</div>
+                <div class="nav-item" onclick="showRestricted('diagnostic-led-outreach')"><i>📧</i> diagnostic-led-outreach</div>
+                <div class="nav-item" onclick="showRestricted('voice-calibration-lab')"><i>🎙️</i> voice-calibration-lab</div>
             </div>
         </aside>
+
+        <div id="restricted-overlay" class="restricted-overlay">
+            <i>🔒</i>
+            <h3 id="restricted-title">Access Restricted</h3>
+            <p id="restricted-msg">This module requires an active <b>Revenue Architecture Deployment</b> for this workspace. Currently outside of tactical jurisdiction.</p>
+            <div class="close-btn" onclick="hideRestricted()">ACKNOWLEDGE</div>
+        </div>
 
         <!-- Canvas -->
         <main class="main-view">
@@ -477,6 +543,17 @@
                     </div>
                 `;
             }
+        }
+
+        function showRestricted(moduleName) {
+            document.getElementById('restricted-title').innerText = moduleName + " Restricted";
+            document.getElementById('restricted-overlay').style.display = 'block';
+            document.querySelector('.simulator-container').classList.add('blur-bg');
+        }
+
+        function hideRestricted() {
+            document.getElementById('restricted-overlay').style.display = 'none';
+            document.querySelector('.simulator-container').classList.remove('blur-bg');
         }
     </script>
 </body>
