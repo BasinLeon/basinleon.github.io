@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basin::Nexus vs Clay | Competitive Architecture Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-obsidian: #0d0d0f;
+            --accent-purple: #a78bfa;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --text-ghost: #94a3b8;
+            --text-bright: #f8fafc;
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+            --clay-orange: #f97316;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg-obsidian); 
+            color: var(--text-bright); 
+            font-family: 'Inter', sans-serif;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-dim);
+            margin-bottom: 40px;
+        }
+
+        .header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-ghost);
+            text-transform: uppercase;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border-dim);
+            margin-bottom: 40px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-ghost);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        #clay-btn.active {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: var(--clay-orange);
+            color: var(--clay-orange);
+        }
+
+        #trajectory-btn.active {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* Container styling */
+        .workspace {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+        }
+
+        .canvas-area {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-dim);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .intel-panel {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-dim);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* Flow elements */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .node {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-dim);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            width: 250px;
+            position: relative;
+        }
+
+        .node-accent-blue { border-bottom: 3px solid var(--accent-blue); }
+        .node-accent-orange { border-bottom: 3px solid var(--clay-orange); }
+        .node-accent-green { border-bottom: 3px solid var(--accent-green); }
+        .node-accent-purple { border-bottom: 3px solid var(--accent-purple); }
+
+        .node h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .node p {
+            font-size: 0.8rem;
+            color: var(--text-ghost);
+            line-height: 1.4;
+        }
+
+        .arrow {
+            width: 2px;
+            height: 40px;
+            background: var(--border-dim);
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            border-width: 5px 5px 0;
+            border-style: solid;
+            border-color: var(--border-dim) transparent transparent transparent;
+        }
+
+        /* Sidebar Stats */
+        .stat-box {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .stat-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-ghost);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .highlight-text {
+            color: var(--accent-blue);
+        }
+
+        .clay-highlight { color: var(--clay-orange); }
+
+        .trajectory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .year-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-dim);
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .year-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            margin-bottom: 16px;
+        }
+
+        .year-list {
+            list-style: none;
+        }
+
+        .year-list li {
+            font-size: 0.85rem;
+            color: var(--text-ghost);
+            margin-bottom: 12px;
+            padding-left: 16px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .year-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <div class="header-title">BASIN::COMMAND <span style="font-weight: 300; opacity: 0.5;">v2.0</span></div>
+            <div class="header-subtitle">Competitive Trajectory Model: Nexus vs Market (Clay)</div>
+        </div>
+        <div style="text-align: right;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent-green);">STATUS: ONLINE</div>
+            <div style="font-size: 0.7rem; color: var(--text-ghost); margin-top: 4px;">LAST SYNC: JASSI / NBC</div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <button class="toggle-btn" id="clay-btn" onclick="setView('clay')">The Market (Clay)</button>
+        <button class="toggle-btn active" id="nexus-btn" onclick="setView('nexus')">Basin::Nexus</button>
+        <button class="toggle-btn" id="trajectory-btn" onclick="setView('trajectory')">3-Year Trajectory</button>
+    </div>
+
+    <div class="workspace">
+        <!-- CANVAS AREA -->
+        <div class="canvas-area">
+            
+            <!-- CLAY VIEW -->
+            <div id="view-clay" style="display: none;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; color: var(--clay-orange); font-size: 1.8rem;">The Data Aggregation Model</h2>
+                    <p style="color: var(--text-ghost); font-size: 0.9rem; margin-top: 10px;">A powerful spreadsheet on steroids. Stops at data generation.</p>
+                </div>
+
+                <div class="flow-container">
+                    <div class="node node-accent-orange">
+                        <h3>Raw Market Signals</h3>
+                        <p>Aggregates 100+ data providers. Scrapes LinkedIn, job boards, and company news.</p>
+                    </div>
+                    
+                    <div class="arrow"></div>
+                    
+                    <div class="node node-accent-orange" style="width: 300px;">
+                        <h3>Enrichment Spreadsheet</h3>
+                        <p>Creates massive tables of raw data. Waterfall enrichment logic applied via formulas.</p>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-row">
+                        <div class="node" style="border-bottom: 1px solid var(--danger);">
+                            <h3 style="color: var(--danger);">Execution Gap</h3>
+                            <p>Clients are handed spreadsheets. They must figure out <i>how</i> to operationalize and sell.</p>
+                        </div>
+                        <div class="node" style="border-bottom: 1px solid var(--danger);">
+                            <h3 style="color: var(--danger);">No Vertical Training</h3>
+                            <p>No coaching, no neurological scoring, no alignment with complex tech sales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEXUS VIEW -->
+            <div id="view-nexus">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; color: var(--accent-blue); font-size: 1.8rem;">The Revenue Operating System</h2>
+                    <p style="color: var(--text-ghost); font-size: 0.9rem; margin-top: 10px;">Proprietary refining, GTM engineering, and structural revenue architecture.</p>
+                </div>
+
+                <div class="flow-container">
+                    <div class="flow-row">
+                        <div class="node node-accent-blue" style="width: 200px;">
+                            <h3>Raw Market Signals</h3>
+                            <p>LinkedIn, Newsletters, Inbox, Job Spikes (The Input)</p>
+                        </div>
+                        <div class="node node-accent-purple" style="width: 200px;">
+                            <h3>Coach Robo Data</h3>
+                            <p>Neurological call scoring & pipeline intelligence</p>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="node node-accent-blue" style="width: 400px; background: rgba(59, 130, 246, 0.1);">
+                        <h3 style="color: var(--accent-blue);">The Signal Refinery (Python)</h3>
+                        <p>Filters raw noise. Scores intent based on target job titles, market conditions, and vertical expertise. Creates "Strategic Discovery" triggers instead of blind spray.</p>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-row">
+                        <div class="node node-accent-green">
+                            <h3>CRM Scout Routing</h3>
+                            <p>Injects refined leads directly into Salesforce/HubSpot seamlessly.</p>
+                        </div>
+                        <div class="node node-accent-green">
+                            <h3>Revenue Architecture</h3>
+                            <p>Combines signals with TalSmart training, stabilizing the human execution layer.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRAJECTORY VIEW -->
+            <div id="view-trajectory" style="display: none;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; color: var(--accent-green); font-size: 1.8rem;">The 3-Year Strategic Trajectory</h2>
+                    <p style="color: var(--text-ghost); font-size: 0.9rem; margin-top: 10px;">How Basin::Nexus evolves to capture the market.</p>
+                </div>
+
+                <div class="trajectory-grid">
+                    <div class="year-card">
+                        <h3>Year 1: GTM Engineering</h3>
+                        <ul class="year-list">
+                            <li>Replace bloated SDR layers with AI Signal Refinery.</li>
+                            <li>Integrate with TalSmart for end-to-end execution.</li>
+                            <li>Prove the model on Enterprise accounts (NBC).</li>
+                            <li>Deploy automated affiliate loops for passive revenue.</li>
+                        </ul>
+                    </div>
+
+                    <div class="year-card">
+                        <h3 style="color: var(--accent-blue);">Year 2: Productized Intelligence</h3>
+                        <ul class="year-list">
+                            <li>Neural Mapping fully automates introductions from massive proprietary network (44k+ leads).</li>
+                            <li>Coach Robo loop feeds real-time objections back into the Refinery.</li>
+                            <li>SaaS spin-off of the proprietary routing infrastructure.</li>
+                        </ul>
+                    </div>
+
+                    <div class="year-card">
+                        <h3 style="color: var(--accent-purple);">Year 3: Revenue Architecture</h3>
+                        <ul class="year-list">
+                            <li>Total collapse of silos (Product, Ops, Marketing, Sales) into one unified OS.</li>
+                            <li>Companies hire "Basin::Nexus" instead of a VP of Sales + RevOps team + SDRs.</li>
+                            <li>The recognized category leader for tech-vertical revenue infrastructure.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR INTEL -->
+        <div class="intel-panel">
+            <h3 style="font-family: 'Outfit', sans-serif; color: #fff; margin-bottom: 24px; font-size: 1.1rem; border-bottom: 1px solid var(--border-dim); padding-bottom: 12px;">Comparative Intel</h3>
+
+            <div id="intel-clay" style="display: none;">
+                <div class="stat-box">
+                    <div class="stat-label">Core Philosophy</div>
+                    <div class="stat-value clay-highlight" style="font-size: 1rem;">Data Aggregation</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">End Deliverable</div>
+                    <div class="stat-value" style="font-size: 1rem; color: #fff;">A giant spreadsheet of enriched contacts.</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Fatal Flaw</div>
+                    <div class="stat-value" style="font-size: 0.9rem; color: var(--text-ghost); font-weight: 400;">
+                        Does not train the humans selling the deal. Does not score call neurology. No operational stabilizing.
+                    </div>
+                </div>
+            </div>
+
+            <div id="intel-nexus">
+                <div class="stat-box">
+                    <div class="stat-label">Core Philosophy</div>
+                    <div class="stat-value highlight-text" style="font-size: 1rem;">Revenue Execution</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">End Deliverable</div>
+                    <div class="stat-value" style="font-size: 1rem; color: #fff;">An operating system bridging signal, CRM, and human execution.</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">The Moat</div>
+                    <div class="stat-value" style="font-size: 0.9rem; color: var(--text-ghost); font-weight: 400;">
+                        Combined with TalSmart, it ensures the humans can actually close the deals the OS generates.
+                    </div>
+                </div>
+            </div>
+
+            <div id="intel-trajectory" style="display: none;">
+                <div class="stat-box">
+                    <div class="stat-label">The Endgame Goal</div>
+                    <div class="stat-value" style="font-size: 1.1rem; color: var(--accent-green);">Singularity.</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Revenue Impact</div>
+                    <div class="stat-value" style="font-size: 0.9rem; color: var(--text-ghost); font-weight: 400;">
+                        Moving from one-off consulting stipends to structural equity and enterprise-wide licensing.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function setView(view) {
+            // Reset buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${view}-btn`).classList.add('active');
+
+            // Reset views
+            document.getElementById('view-clay').style.display = 'none';
+            document.getElementById('view-nexus').style.display = 'none';
+            document.getElementById('view-trajectory').style.display = 'none';
+            
+            // Reset intel
+            document.getElementById('intel-clay').style.display = 'none';
+            document.getElementById('intel-nexus').style.display = 'none';
+            document.getElementById('intel-trajectory').style.display = 'none';
+
+            // Show selected
+            document.getElementById(`view-${view}`).style.display = 'block';
+            document.getElementById(`intel-${view}`).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
