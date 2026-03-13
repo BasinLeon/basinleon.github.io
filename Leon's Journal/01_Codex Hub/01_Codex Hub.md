@@ -10,3 +10,4 @@
 | 2026-03-12 | TalSmart NBC Brief Execution | Antigravity | [[Session - 2026-03-12 - TalSmart NBC Brief Execution]] |
 | 2026-03-12 | LinkedIn Export Import | Codex | [[Session - 2026-03-12 - LinkedIn Export Import]] |
 | 2026-03-12 | TalSmart NBC Final Ship | Antigravity | [[Session - 2026-03-12 - TalSmart NBC Final Ship]] |
+| 2026-03-13 | Basin::Nexus Partnership Execution | Antigravity | [[Session - 2026-03-13 - Basin Nexus Partnership Execution]] |
