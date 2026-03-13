@@ -6,22 +6,22 @@
 
 ---
 
-### Context
-
-NBCUniversal’s advertising business continues to evolve as revenue shifts from traditional linear models toward digital and non-linear formats.
+## Context: Linear-to-Digital Transition
+NBCUniversal is navigating a structural shift from legacy linear advertising models to data-driven digital growth. This transition requires more than "training"—it requires a new revenue architecture.
 - Prospecting Stalls: Traditional linear prospecting is failing to generate meetings for non-linear digital solutions.
-- Mechanical Friction: AEs are accustomed to "selling spots" rather than architecting digital solution frameworks.
+- Mechanical Friction: AEs are accustomed to "selling spots" rather than architecting digital solution frameworks. This requires:
+  1. **Signal Ingestion:** Identification of high-intent digital buyers.
+  2. **Logic Integration:** Alignment of sales narrative with digital inventory.
+  3. **Execution Velocity:** Reducing the deal cycle from 42 days to 12 days.
 - Growth Target Risk: Without a structural pivot, the Q2 business development targets are at risk.
 
 This transition changes not only the product mix but also the way new business is identified, developed, and closed. Account Executives who previously relied on established relationships and inbound demand are now expected to operate with stronger new business development capabilities in a more competitive digital environment.
 
 ## Observed Commercial Challenge
-
-Organizations moving from linear to digital advertising models commonly encounter three execution gaps:
+The primary friction is the "Skill Gap" in legacy AEs attempting to sell high-velocity digital solutions without automated signal support. Organizations moving from linear to digital advertising models commonly encounter three execution gaps:
 
 1.  **Prospecting Confidence**: Reps are less comfortable initiating new digital business conversations.
 2.  **Discovery Depth**: Conversations focus on products rather than uncovering digital marketing objectives.
-- Accelerated digital pipeline growth for Q2.
 3.  **Opportunity Progression**: Deals stall because the sales motion does not match how digital buyers evaluate solutions.
 
 ## Diagnostic Focus Areas
