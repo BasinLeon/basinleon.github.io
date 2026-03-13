@@ -36,6 +36,7 @@ TalSmart proposes a short diagnostic assessment focused on four areas:
 ## Program Objective
 
 Strengthen the new business execution capability of NBCUniversal’s digital sales team by improving:
+
 - Prospecting confidence
 - Discovery effectiveness
 - Opportunity advancement
@@ -45,23 +46,27 @@ Strengthen the new business execution capability of NBCUniversal’s digital sal
 
 ### Engagement Structure
 
-###- Revenue-Gap Diagnostic: Identifying where the current sales motion breaks down in the digital transition.
-- Discovery 2.0: Architecting a non-linear discovery framework for the 21 AEs.
-- Digital Execution Map: A strategic roadmap to hitting growth targets before June 30.
-- Performance Calibration: Aligning individual AE confidence with digital market demands.
+- **Revenue-Gap Diagnostic**: Identifying where the current sales motion breaks down in the digital transition.
+- **Discovery 2.0**: Architecting a non-linear discovery framework for the 21 AEs.
+- **Digital Execution Map**: A strategic roadmap to hitting growth targets before June 30.
+- **Performance Calibration**: Aligning individual AE confidence with digital market demands.
 
 ### Phase 1 – Diagnostic Review
+
 Assessment of current sales workflows and execution patterns.
 
 ### Phase 2 – Targeted Sales Training Workshops
+
 Practical frameworks applied to real NBCUniversal digital sales scenarios.
 
 ### Phase 3 – Reinforcement & Application
+
 Exercises and guidance to ensure consistent adoption across the AE team.
 
 ## Expected Outcomes
 
 Following the program, NBCUniversal’s AE team should see:
+
 - Increased confidence in new business prospecting
 - Stronger discovery conversations
 - More consistent opportunity advancement
