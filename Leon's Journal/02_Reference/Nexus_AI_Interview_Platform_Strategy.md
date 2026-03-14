@@ -55,23 +55,23 @@ Our true differentiator isn't just the AI—it's **The Human Interviewer Marketp
 ## 3. Commercial Alignment (Leon's Role & Engagement Pricing)
 To drive this system, we need structural alignment. The Basin::Nexus engine operates on systemic growth, not random acts of sales. For me to dedicate weekly time to system building, sales outreach, and partnership architecture, I propose three distinct tracks based on our discussion:
 
-### Option A: The Fractional Growth Architect (Base Engine)
+### Option A: The Strategic Growth Architect (Base Engine)
 *Best for a stable, consistent build-out with dedicated pipeline ownership.*
-- **Investment:** $2,000/mo retainer.
+- **Investment:** $3,000/mo retainer.
 - **Scope:** 5 hours/week of deep strategic architecture + Basin::Nexus pipeline and feedback loop builds.
 - **Backend:** 5% revenue line on backend conversions.
 
 ### Option B: The Scaled Output Engine (High Volume)
 *Best for aggressive scaling and multi-channel system building.*
-- **Investment:** $3,500/mo retainer.
-- **Scope:** 10 hours/week dedicated to building closed-loop systems, advanced AI vetting, sales, and scaling the marketplace.
+- **Investment:** $5,000/mo retainer.
+- **Scope:** 10 hours/week dedicated to building closed-loop systems, advanced AI vetting, sales execution, and scaling the marketplace.
 - **Backend:** 5% revenue line on backend conversions.
 
-### Option C: Strategic Partnership & Global Expansion
+### Option C: Strategic Partnership & Board Advisor
 *Best for category dominance, securing international distribution, and full pipeline ownership.*
 - **Positioning:** Head of Strategic Growth / Board Advisor.
-- **Investment:** $5,000/mo operating allocation + aggressive milestone-based Equity (e.g., 2%-5%).
-- **Scope:** Full operational GTM build-out, direct B2B sales execution, scaling the human marketplace, and activating the **Middle East distribution channel** (leveraging my network for MENA region EdTech expansion, sovereign wealth connection, and global university partnerships).
+- **Investment:** $7,500/mo operating allocation + aggressive milestone-based Equity (e.g., 5%-10%).
+- **Scope:** Full operational GTM build-out, direct B2B sales execution, scaling the human marketplace, and activating the **Middle East distribution channel** (leveraging my network for MENA region EdTech expansion, sovereign wealth connections, and global university partnerships).
 - **Backend:** 10% revenue line on strategic regional expansions.
 
 ---
