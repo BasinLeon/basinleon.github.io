@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Ether AI // Architecture Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --panel-bg: rgba(20, 20, 25, 0.7);
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+            --accent-blue: #33CCFF;
+            --accent-green: #33FF66;
+            --accent-amber: #FFB347;
+            --border-color: #2A2A2A;
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            background-image: 
+                linear-gradient(rgba(10, 15, 25, 0.9), rgba(10, 15, 25, 0.9)),
+                radial-gradient(circle at 50% 0%, #1A2436 0%, transparent 50%);
+            min-height: 100vh;
+        }
+        .mono { font-family: var(--font-mono); }
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .status-dot {
+            height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px;
+        }
+        .status-live { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-draft { background-color: var(--accent-amber); box-shadow: 0 0 8px var(--accent-amber); }
+        .cyber-border { border-left: 2px solid var(--accent-blue); }
+        .progress-bar { height: 4px; background: var(--border-color); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+        .progress-fill { height: 100%; background: var(--accent-blue); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8 glass-panel p-4 border-t-2 border-t-[var(--accent-blue)]">
+        <div>
+            <h1 class="text-2xl font-bold tracking-wider">ETHER<span class="text-[var(--accent-blue)]">AI</span></h1>
+            <p class="mono text-xs text-gray-400 mt-1">GTM & ARCHITECTURE DASHBOARD</p>
+        </div>
+        <div class="text-right">
+            <div class="mono text-xs text-[var(--accent-blue)] flex items-center justify-end gap-2">
+                <i class="fas fa-shield-alt"></i> ALLIANCE SECURE
+            </div>
+            <div class="mono text-[10px] text-gray-500 mt-1" id="clock">00:00:00</div>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Team Structure -->
+        <div class="lg:col-span-4 space-y-6">
+            <div class="glass-panel p-5">
+                <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-800 pb-2"><i class="fas fa-sitemap mr-2"></i>Execution Protocol</h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-900/50 p-3 rounded cyber-border">
+                        <div class="font-bold text-sm">Leon (Logic & GTM) + Garrett (AI/Tech)</div>
+                        <div class="mono text-[10px] text-gray-400 mt-1">The Architecture Hub. We build the engine, run the signal routing, and generate the bids.</div>
+                    </div>
+                    <div class="bg-gray-900/50 p-3 rounded border-l-2 border-l-[var(--accent-amber)]">
+                        <div class="font-bold text-sm">Murad & Armen (Physical Execution)</div>
+                        <div class="mono text-[10px] text-gray-400 mt-1">General labor, HVAC, electrical, painting. The domain experts fulfilling the pipeline.</div>
+                    </div>
+                    <div class="bg-gray-900/50 p-3 rounded border-l-2 border-l-indigo-400">
+                        <div class="font-bold text-sm">Ola (Sales Ops)</div>
+                        <div class="mono text-[10px] text-gray-400 mt-1">Executing targeted follow-ups and CRM deployments.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-5">
+                <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-800 pb-2"><i class="fas fa-database mr-2"></i>Data Architecture</h2>
+                <ul class="space-y-3 mono text-xs">
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-[var(--accent-green)] mr-2"></i> Supabase Cloud (Pending Integration)
+                    </li>
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-[var(--accent-green)] mr-2"></i> BuildingConnected Extraction API
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Column: Active Strikes & Docs -->
+        <div class="lg:col-span-8 space-y-6">
+            
+            <div class="glass-panel p-5">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-800 pb-2">
+                    <h2 class="text-xs uppercase tracking-widest text-gray-400"><i class="fas fa-crosshairs mr-2"></i>Active Yield Corridors</h2>
+                    <span class="mono text-[10px] bg-gray-800 px-2 py-1 rounded">LIVE PIPELINE</span>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Corridor 1: Ether AI -->
+                    <div class="bg-gray-900/50 p-4 rounded cyber-border cursor-pointer hover:bg-gray-800/50 transition border border-gray-800">
+                        <div class="flex justify-between">
+                            <span class="font-bold text-sm text-[var(--accent-blue)]">Ether AI - Riverside Medical Center</span>
+                            <span class="mono text-[10px] text-[var(--accent-amber)]"><span class="status-dot status-draft"></span>Draft Generated</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-2">Targeting: Turner Construction. High-stakes HVAC ductwork and MEP installation.</div>
+                        <div class="flex justify-between items-center mono text-[10px] mt-4 pt-3 border-t border-gray-800">
+                            <a href="riverside-medical-proposal.md" target="_blank" class="text-gray-400 hover:text-white"><i class="far fa-file-pdf text-[var(--accent-red)] mr-1"></i> View Draft Proposal</a>
+                            <a href="ether-ai-bidding-model.md" target="_blank" class="text-gray-400 hover:text-white"><i class="fas fa-network-wired mr-1"></i> View Strategic Model</a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-[#111] border border-gray-800 rounded p-4 mt-4">
+                        <div class="mono text-[10px] text-[var(--accent-blue)] mb-1">OLA'S ACTIVE DEPLOYMENT</div>
+                        <div class="font-bold text-sm text-white">Turner Construction Follow-Ups</div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 20%;"></div></div>
+                        <div class="mono text-[10px] text-gray-500 mt-2">Targeting Project Managers & Lead Estimators</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function updateClock() { document.getElementById('clock').innerText = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'; }
+        setInterval(updateClock, 1000); updateClock();
+    </script>
+</body>
+</html>
