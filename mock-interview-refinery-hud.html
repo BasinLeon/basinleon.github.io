@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockThatInterview x Nexus | Interview Intelligence HUD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --accent-blue: #0056d2;
+            --accent-navy: #0f172a;
+            --accent-green: #10b981;
+            --accent-purple: #6366f1;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-light: rgba(0, 0, 0, 0.05);
+            --shadow-premium: 0 10px 25px -5px rgba(0, 86, 210, 0.1), 0 8px 10px -6px rgba(0, 86, 210, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg-canvas); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(0, 86, 210, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(99, 102, 241, 0.03) 0%, transparent 40%);
+        }
+
+        .hud-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+            height: 100%;
+        }
+
+        /* Header */
+        header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--accent-navy);
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .brand {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand span { color: #38bdf8; }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .dot { 
+            width: 10px; height: 10px; background: var(--accent-green); 
+            border-radius: 50%; box-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Signal Analysis */
+        .signal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .signal-card {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            padding: 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .signal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 86, 210, 0.05);
+            border-color: var(--accent-blue);
+        }
+
+        .card-tag { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--accent-blue); font-weight: 700; margin-bottom: 4px; display: block; }
+        .card-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+        .card-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* Main View: The Intelligence Engine */
+        .refinery-view {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .stage-container {
+            flex: 1;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        .engine-node {
+            width: 220px;
+            background: #fff;
+            border: 2px solid var(--border-light);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .engine-node.active {
+            border-color: var(--accent-blue);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 86, 210, 0.08);
+        }
+
+        .node-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+        .node-label { font-size: 0.6rem; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 1px; }
+        .node-val { font-size: 1rem; font-weight: 700; color: var(--accent-navy); }
+
+        .connector {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-blue), transparent);
+            opacity: 0.2;
+        }
+
+        /* Yield Table */
+        .yield-dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .yield-stat {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            text-align: center;
+        }
+
+        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+        .stat-val { font-family: 'JetBrains Mono'; font-size: 1.5rem; font-weight: 800; color: var(--accent-blue); }
+
+        /* Partner Context */
+        .partner-brief {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .brief-card {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .brief-header { font-weight: 800; font-size: 0.8rem; margin-bottom: 12px; color: var(--accent-navy); }
+        .brief-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
+        .brief-item b { color: var(--text-main); }
+
+        /* Footer Controls */
+        .controls {
+            grid-column: 1 / -1;
+            background: var(--accent-navy);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        button.primary { background: var(--accent-blue); color: #fff; }
+        button.primary:hover { background: #0046ab; transform: translateY(-1px); }
+        button.secondary { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        button.secondary:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .system-log {
+            margin-left: auto;
+            font-family: 'JetBrains Mono';
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Metrics Scroll */
+        #logEntries {
+            font-family: 'JetBrains Mono';
+            font-size: 0.65rem;
+            height: 120px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 4px;
+        }
+        .log-line { color: var(--text-muted); display: flex; gap: 8px; }
+        .log-ts { color: var(--accent-blue); }
+    </style>
+</head>
+<body>
+    <div class="hud-grid">
+        <header>
+            <div class="brand">MOCKTHATINTERVIEW <span>x</span> NEXUS</div>
+            <div class="status-badge">
+                <span class="dot"></span>
+                GTM ARCHITECTURE v1.0 // SYNC: AYO, RIDWAN
+            </div>
+        </header>
+
+        <!-- Column 1: Candidate Ingestion -->
+        <aside class="panel">
+            <h2>Signal Discovery</h2>
+            <div class="signal-list">
+                <div class="signal-card">
+                    <span class="card-tag">INGESTION_SOURCE</span>
+                    <div class="card-title">Organic Dev Network</div>
+                    <div class="card-desc">243 active users processed through MVP. 82% Technical/DevOps focus.</div>
+                </div>
+                <div class="signal-card">
+                    <span class="card-tag">CORE_FRICTION</span>
+                    <div class="card-title">The Placeholder Gap</div>
+                    <div class="card-desc">CV optimization is used, but deep interview behavior is the "Logic Gap" for placement.</div>
+                </div>
+            </div>
+
+            <div style="margin-top:auto;">
+                <h2>B2B Target Segments</h2>
+                <div class="brief-card" style="border-left-color: var(--accent-purple);">
+                    <div class="brief-header" style="color: var(--accent-purple);">LANE 1: ACCELERATORS</div>
+                    <div class="brief-item"><b>Goal:</b> 95%+ Placement rate.</div>
+                    <div class="brief-item"><b>Nexus Solve:</b> Structural Assessment as a Service.</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Column 2: The Intelligence Engine -->
+        <main class="panel refinery-view">
+            <h2>GTM Engineering Refinery</h2>
+            
+            <div class="stage-container" id="engineStage">
+                <div class="engine-node" id="nodeCV">
+                    <span class="node-icon">📄</span>
+                    <span class="node-label">PHASE 01</span>
+                    <span class="node-val">CV Intelligence Refinery</span>
+                </div>
+                <div class="connector"></div>
+                <div class="engine-node" id="nodeAI">
+                    <span class="node-icon">🤖</span>
+                    <span class="node-label">PHASE 02</span>
+                    <span class="node-val">AI Behavioral Simulation</span>
+                </div>
+                <div class="connector"></div>
+                <div class="engine-node" id="nodeHuman">
+                    <span class="node-icon">👤</span>
+                    <span class="node-label">PHASE 03</span>
+                    <span class="node-val">Human Expert Calibration</span>
+                </div>
+                <div class="connector"></div>
+                <div class="engine-node" id="nodeHire">
+                    <span class="node-icon">🎯</span>
+                    <span class="node-label">THE OUTCOME</span>
+                    <span class="node-val">Placement Readiness Score</span>
+                </div>
+            </div>
+
+            <div class="yield-dashboard">
+                <div class="yield-stat">
+                    <div class="stat-label">Hire Speed Delta</div>
+                    <div class="stat-val" id="statDelta">-14.2%</div>
+                </div>
+                <div class="yield-stat">
+                    <div class="stat-label">B2B Conversion</div>
+                    <div class="stat-val" id="statConv">2.1%</div>
+                </div>
+                <div class="yield-stat">
+                    <div class="stat-label">Placement Value</div>
+                    <div class="stat-val" id="statValue">$0</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Column 3: Strategic Outcome -->
+        <aside class="panel">
+            <h2>Revenue Architecture</h2>
+            <div class="partner-brief">
+                <div class="brief-card">
+                    <div class="brief-header">AYO // TECHNICAL OPS</div>
+                    <div class="brief-item"><b>Opportunity:</b> Regional Hub Clustering.</div>
+                    <div class="brief-item"><b>Focus:</b> Mapping hiring signals in UK/US markets for senior DevOps roles.</div>
+                </div>
+                <div class="brief-card">
+                    <div class="brief-header">RIDWAN // PRODUCT LEAD</div>
+                    <div class="brief-item"><b>Opportunity:</b> CV-to-Hire Flywheel.</div>
+                    <div class="brief-item"><b>Focus:</b> Turning MVP feedback into a B2B "Trust Layer" for Bootcamps.</div>
+                </div>
+            </div>
+
+            <div style="margin-top:auto;">
+                <h2>System Logs</h2>
+                <div id="logEntries">
+                    <!-- Logs injected here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="primary" onclick="triggerSimulation()">Execute Placement Sprint</button>
+            <button class="secondary" onclick="resetEngine()">Reset Architecture</button>
+            <div class="system-log">
+                [ STATUS: IDLE // CORE READY // NY_LDN_LAGOS ]
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        const nodes = ['nodeCV', 'nodeAI', 'nodeHuman', 'nodeHire'];
+        const candidates = ["Software Eng @ Google", "DevOps Lead @ Fanduel", "Product Designer @ VeloRemit", "Data Analyst @ NHS"];
+        
+        function triggerSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            
+            let phase = 0;
+            const interval = setInterval(() => {
+                if (phase >= nodes.length) {
+                    clearInterval(interval);
+                    isRunning = false;
+                    addLog("Placement readiness archived for batch.");
+                    finalizeMetrics();
+                    return;
+                }
+                
+                pulseNode(nodes[phase]);
+                const candidate = candidates[Math.floor(Math.random()*candidates.length)];
+                addLog(`Processing: ${candidate} through Phase ${phase+1}`);
+                updateStats();
+                phase++;
+            }, 800);
+        }
+
+        function pulseNode(id) {
+            const node = document.getElementById(id);
+            node.classList.add('active');
+            setTimeout(() => node.classList.remove('active'), 500);
+        }
+
+        function addLog(msg) {
+            const container = document.getElementById('logEntries');
+            const entry = document.createElement('div');
+            entry.className = 'log-line';
+            const ts = new Date().toLocaleTimeString('en-GB', { hour12: false, minute: '2-digit', second: '2-digit' });
+            entry.innerHTML = `<span class="log-ts">[${ts}]</span> ${msg}`;
+            container.appendChild(entry);
+        }
+
+        function updateStats() {
+            const delta = (Math.random() * -5 - 15).toFixed(1);
+            const conv = (Math.random() * 2 + 3).toFixed(1);
+            const val = Math.floor(Math.random() * 1000 + 5000);
+            
+            document.getElementById('statDelta').textContent = delta + '%';
+            document.getElementById('statConv').textContent = conv + '%';
+            document.getElementById('statValue').textContent = '£' + val.toLocaleString();
+        }
+
+        function finalizeMetrics() {
+            document.getElementById('statValue').textContent = '£245k Projected';
+            document.getElementById('statConv').textContent = '12.8% Yield';
+        }
+
+        function resetEngine() {
+            document.getElementById('logEntries').innerHTML = '';
+            document.getElementById('statDelta').textContent = '-14.2%';
+            document.getElementById('statConv').textContent = '2.1%';
+            document.getElementById('statValue').textContent = '£0';
+            addLog("System reset. Awaiting new signal ingestion...");
+        }
+
+        // Initial Log
+        addLog("MTI Intelligence Engine initialized...");
+        addLog("Connecting to University segment API...");
+    </script>
+</body>
+</html>
