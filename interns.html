@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Intern Fleet | Autonomous Revenue Sourcing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --card-bg: #141417;
+            --accent-glow: #3b82f6;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .status-badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-glow);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Fleet Grid */
+        .fleet-container {
+            max-width: 1200px;
+            margin: -60px auto 100px;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .agent-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-blue);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+
+        .agent-icon {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+        }
+
+        .agent-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .agent-role {
+            color: var(--accent-glow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .agent-bio {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-book {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-blue);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-book:hover {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 900px) {
+            .fleet-container {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="status-badge">Nexus Intelligence Fleet :: Online</div>
+        <h1>The Intern Fleet</h1>
+        <p class="subtitle">Autonomous execution agents specialized in revenue signals, high-velocity sourcing, and market intelligence.</p>
+    </section>
+
+    <div class="fleet-container">
+        <!-- Prospector -->
+        <div class="agent-card">
+            <div class="agent-icon">🔍</div>
+            <div class="agent-role">Sourcing Agent</div>
+            <div class="agent-name">Nexus::Prospector</div>
+            <p class="agent-bio">Identifies high-value company and startup targets using granular intent signals and technology stacks.</p>
+            <div class="skills-list">
+                <span class="skill-tag">Company Discovery</span>
+                <span class="skill-tag">Technographics</span>
+                <span class="skill-tag">Seed-A Filters</span>
+            </div>
+            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
+        </div>
+
+        <!-- Social Sentinel -->
+        <div class="agent-card">
+            <div class="agent-icon">🛰️</div>
+            <div class="agent-role">Pulse Agent</div>
+            <div class="agent-name">Nexus::Social_Sentinel</div>
+            <p class="agent-bio">Screens social platforms for keyword clusters and sentiment shifts that indicate buying intent.</p>
+            <div class="skills-list">
+                <span class="skill-tag">Social Listening</span>
+                <span class="skill-tag">Creator Discovery</span>
+                <span class="skill-tag">Trend Analysis</span>
+            </div>
+            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
+        </div>
+
+        <!-- Data Architect -->
+        <div class="agent-card">
+            <div class="agent-icon">🏗️</div>
+            <div class="agent-role">Data Ops Agent</div>
+            <div class="agent-name">Nexus::Data_Architect</div>
+            <p class="agent-bio">Verifies, enriches, and structures contact datasets for elite GTM execution and identity resolution.</p>
+            <div class="skills-list">
+                <span class="skill-tag">Lead Enrichment</span>
+                <span class="skill-tag">Email Verification</span>
+                <span class="skill-tag">Identity Mapping</span>
+            </div>
+            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Basin & Associates. Built with Basin::Nexus Architecture.
+    </footer>
+
+</body>
+</html>
