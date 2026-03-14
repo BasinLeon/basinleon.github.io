@@ -26,8 +26,24 @@
             flowchart: {
                 htmlLabels: true,
                 curve: 'basis',
-                padding: 30
-            }
+                padding: 45,
+                rankSpacing: 80,
+                nodeSpacing: 60
+            },
+            themeCSS: `
+                .sectionTitle { font-family: 'Outfit'; font-weight: 700; letter-spacing: 2px; }
+                .cluster rect { fill: rgba(255, 255, 255, 0.03) !important; stroke: rgba(255, 255, 255, 0.1) !important; stroke-width: 1px !important; }
+                .cluster-label span { 
+                    color: rgba(255, 255, 255, 0.4) !important; 
+                    font-size: 11px !important; 
+                    text-transform: uppercase !important; 
+                    letter-spacing: 4px !important; 
+                    font-family: 'Inter', sans-serif !important;
+                    font-weight: 400 !important;
+                    display: block !important;
+                    padding-top: 15px !important;
+                }
+            `
         });
     </script>
     <style>
@@ -88,6 +104,7 @@
             margin-bottom: 20px;
             background: linear-gradient(to right, #ffffff, #94a3b8);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -203,7 +220,9 @@
                     end
 
                     subgraph S2 ["NEXUS INTELLIGENCE LAYER (LEON'S IP)"]
-                        C --> D{Nexus::<br/>Governor}
+                        C --- D2[ ]
+                        style D2 fill:none,stroke:none
+                        D2 --> D{Nexus::<br/>Governor}
                         D --> E[Idempotency<br/>Shield]
                         D --> F[Zero-Storage<br/>PII Guard]
                         E & F --> G[Curation<br/>Engine]
@@ -212,7 +231,9 @@
                     end
 
                     subgraph S3 ["ECONOMIC LAYER (THE CLIENT)"]
-                        H & I --> J[S2Y: Signal-to-Yield<br/>Strategic Report]
+                        H & I --- J2[ ]
+                        style J2 fill:none,stroke:none
+                        J2 --> J[S2Y: Signal-to-Yield<br/>Strategic Report]
                         J --> K[PREMIUM OUTCOME:<br/>$1.2B Target Hub]
                         K --> L[Strategic<br/>Conversion]
                     end
