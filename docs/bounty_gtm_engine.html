@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basin::Nexus | Bounty.ai Operations</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-obsidian: #0d0d0f;
+            --accent-bounty: #22c55e;
+            --accent-purple: #a78bfa;
+            --text-ghost: #94a3b8;
+            --text-bright: #f8fafc;
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg-obsidian); 
+            color: var(--text-bright); 
+            font-family: 'Inter', sans-serif;
+            padding: 24px;
+            height: 100vh;
+            overflow: hidden;
+            border: 4px solid var(--accent-bounty);
+        }
+
+        .hud-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+            height: 100%;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-bounty);
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background: var(--accent-bounty);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px var(--accent-bounty);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-dim);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--accent-bounty);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .anchor-phrase {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--accent-bounty);
+            padding-left: 16px;
+            line-height: 1.4;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .infrastructure-chip {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--accent-bounty);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .infrastructure-chip .label { font-size: 0.65rem; color: var(--accent-bounty); text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 4px; }
+        .infrastructure-chip .val { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-bright); }
+
+        .tactical-box {
+            background: rgba(167, 139, 250, 0.05);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .neuro-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .neuro-node {
+            background: rgba(0,0,0,0.4);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-dim);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .neuro-node:hover { border-color: var(--accent-bounty); background: rgba(34, 197, 94, 0.1); }
+
+        .neuro-node .label { font-size: 0.7rem; color: var(--accent-purple); display: block; font-weight: 800; }
+        .neuro-node .word { font-weight: 800; font-size: 0.9rem; color: #fff; }
+
+        .keyword-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-dim);
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .keyword-card:hover {
+            border-color: var(--accent-bounty);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .footer {
+            grid-column: 1 / -1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-ghost);
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-dim);
+        }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.5);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-ghost);
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-grid">
+        <header>
+            <div style="font-family: 'Outfit'; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">BASIN::COMMAND <span style="font-weight: 300; opacity: 0.5;">v1.2 (BOUNTY)</span></div>
+            <div>
+                <span class="status-dot"></span> 
+                <span style="font-size: 0.85rem; font-weight: 600; opacity: 0.9; letter-spacing: 1px;">AFFILIATE ENGINE // BOUNTY.AI ORCHESTRATION</span>
+            </div>
+        </header>
+
+        <!-- Column 1: The Commercial Engine -->
+        <div class="card">
+            <h2>The Wedge: Outcome-Based Data</h2>
+            <div class="anchor-phrase">"Stop paying SaaS subscriptions for static leads. Pay the swarm for verified outcomes."</div>
+            
+            <p style="font-size: 0.9rem; color: var(--text-ghost); line-height: 1.5; margin-bottom: 20px;">
+                We are transitioning <b>Agency Partners</b> off rigid ZoomInfo/Apollo contracts to <span style="color: var(--accent-bounty);">Bounty.ai</span> agent swarms. We act as the central GTM architects.
+            </p>
+
+            <div class="stat-grid">
+                <div class="infrastructure-chip">
+                    <span class="label">Nexus Credit Bank</span>
+                    <span class="val">$5.00 (Testing Phase)</span>
+                </div>
+                <div class="infrastructure-chip">
+                    <span class="label">Rebate Mechanic (Agreed)</span>
+                    <span class="val">~20% (X/5) of Agency Vol</span>
+                </div>
+            </div>
+
+            <div style="margin-top: auto;">
+                <h2>Tactical Guardrails: Execution</h2>
+                <div class="tactical-box">
+                    <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-bright);">
+                        <b>Phase 1 Swarm:</b> SCU Interns deployed as Operators. Run 3 sourcing sprints using Bounty tokens to benchmark Time-to-Lead and Quality versus manual scraping.
+                        <br><br>
+                        <b>Phase 2 Scaling:</b> Target <span style="color: var(--accent-purple);">Top 3 Current Agencies</span>. Run a pilot showing them lower CPA. Migrate them to Bounty via our affiliate link to activate the rebate flywheel.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2: The Agentic Sub-Swarm Structure -->
+        <div class="card">
+            <h2>The Agent Swarm Architecture</h2>
+            <div class="anchor-phrase">"We manage the system. The swarm executes the labor."</div>
+            
+            <div class="neuro-box">
+                <div class="neuro-node">
+                    <span class="label">LAYER 1</span>
+                    <span class="word">Antigravity</span>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Master Strategy & HUD</p>
+                </div>
+                <div class="neuro-node">
+                    <span class="label">LAYER 2</span>
+                    <span class="word">Nexus_Local</span>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Ollama Privacy Vetting</p>
+                </div>
+                <div class="neuro-node">
+                    <span class="label">LAYER 3</span>
+                    <span class="word">Bounty.ai</span>
+                    <p style="font-size: 0.6rem; opacity: 0.6; margin-top: 4px;">Market Agent Labor</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <h2>Workflow Architecture</h2>
+                <div class="code-block">
+system_flow = {
+    "1_strategy": "Leon architectures the GTM playbook",
+    "2_intent": "Nexus Local Agent (LLaMa3) scrapes hidden intent signals",
+    "3_demand": "SCU Interns build standard Operating Procedures (SOPs)",
+    "4_execution": "Bounty.ai agents fulfill the SOPs for $0.20/lead",
+    "5_yield": "20% rebate funnels back to Nexus to fund outbound operations"
+}
+                </div>
+            </div>
+
+            <div style="margin-top: auto; border: 1px solid var(--accent-bounty); background: rgba(34, 197, 94, 0.05); padding: 16px; border-radius: 10px;">
+                <h2 style="color: var(--accent-bounty); margin-bottom: 5px;">Founder Sync (Pending)</h2>
+                <p style="font-size: 0.85rem; color: var(--text-ghost); line-height: 1.5;">
+                    Action Item: Conclude Intern Test this Friday. Request meeting with <span style="color: #fff;">Shivam, Rayan, & Aashna</span> to finalize the agency onboarding portal structure.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>[ SYSTEM READY // BASIN::NEXUS // 11:11 ENCODING ]</span>
+            <span>LOC: BASIN_ASSOCIATES_LA // 2026-03-13_12:05</span>
+        </div>
+    </div>
+</body>
+</html>

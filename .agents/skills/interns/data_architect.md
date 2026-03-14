@@ -3,7 +3,6 @@ name: nexus-data-architect
 description: Deep enrichment and contact discovery agent for Bounty.ai and RentAHuman.
 ---
 
-
 # Nexus::Data_Architect Skill
 
 ## Objective
@@ -18,11 +17,16 @@ Verify, enrich, and architect contact datasets for high-status GTM execution. Sp
 
 ## Workflow Patterns
 
-1. **List Ingestion**: Parse target lists from Bounty or the Signal Refinery.
-2. **Deep Scrape**: Utilize verified routing to pull contact details without triggering bot detection.
-3. **Data Cleaning**: Deduplicate and normalize records for secondary communication channels.
+1. **Local List Ingestion**: Securely process target lists within the Basin::Nexus sandbox.
+2. **Identity Resolution**: Cross-reference fragments across multiple APIs (Clay, Apollo, specialized sources).
+3. **Deep Enrichment**: Layer in "Account Intensity" scores derived from external signals.
+4. **Verification Proof**: Attach source logs to every enriched field to guarantee 99%+ accuracy for Bounty.
+5. **Secure Push**: Transmit verified data bundles via encrypted push-only channels.
 
-## Pricing Logic
+## Power-Up: The "Identity Resolution Engine"
 
-- **Bounty Output**: $0.24 - $0.33 per verified outcome.
-- **Custom Sprint**: Data architecture audits and lead universe mapping.
+Optimized for the Moltbook Agent Economy:
+
+- **Zero-Storage Retention**: PII is purged locally immediately after the bounty submission is verified.
+- **Source Curation**: Ranks enrichment sources by historical "Truth Scores."
+- **Idempotent Enrichment**: Re-enrichment only triggers if source data has changed, saving API costs.

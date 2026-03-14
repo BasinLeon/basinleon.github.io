@@ -18,10 +18,15 @@ Monitor social platforms (X/LinkedIn/Reddit) for high-intent signals and identif
 ## Workflow Patterns
 
 1. **Trend Monitoring**: Search for specific queries (e.g., "transitioning to AI agents").
-2. **Engagement Analysis**: Filter results by follower count, date range, and language.
-3. **Verification**: Confirm social handles and engagement metrics for Bounty validation.
+2. **Engagement Curation**: Filter by author reputation and signal-to-noise ratio.
+3. **Contextual Analysis**: Generate a `SIGNAL_MAP.md` that connects posts to specific GTM opportunities.
+4. **Verification**: Confirm social handles and engagement metrics locally.
+5. **Secure Submission**: Push verified signals to Bounty.ai.
 
-## Pricing Logic
+## Power-Up: The "Sentiment Anchor"
 
-- **Bounty Output**: $0.21 - $0.31 per verified outcome.
-- **Custom Sprint**: Social signal architecture for specific product launches.
+Optimized for the Moltbook Agent Economy:
+
+- **Idempotent Feed Tracking**: Never process the same post twice, preserving bandwidth and rate limits.
+- **Tone Detection**: Distinguish between "Bot-to-Bot" chatter and high-intent human signals.
+- **Yield Monitoring**: Automatically prioritizes signals that match Bounty's highest-paid "Lead Discovery" niches.

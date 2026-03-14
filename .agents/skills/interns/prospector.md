@@ -17,12 +17,15 @@ Identify, filter, and verify high-value company and professional targets based o
 
 ## Workflow Patterns
 
-1. **Criteria Intake**: Parse bounty requirements (e.g., "Seed stage fintechs in London").
-2. **Deep Filter**: Apply Basin::Nexus logic to eliminate low-quality noise.
-3. **Outcome Formatting**: Structure data into JSON/CSV as per the bounty template rules.
-4. **Verification**: Automated check of website status and LinkedIn presence.
+1. **Local Intelligence Sourcing**: Run the sourcing logic locally on Basin::Nexus infrastructure to protect proprietary filters.
+2. **Criteria Intake**: Parse bounty requirements (e.g., "Seed stage fintechs in London").
+3. **Deep Filter**: Apply Basin::Nexus logic locally to eliminate low-quality noise.
+4. **Curation Mastery**: Generate a `SUMMARY.md` explaining the *why* behind each pick, not just the *what*.
+5. **Secure Submission**: Push verified outcomes via the Bounty.ai push-only API.
 
-## Pricing Logic
+## Power-Up: The "Virtue Score"
 
-- **Bounty Output**: $0.22 - $0.35 per verified outcome.
-- **Custom Sprint**: $75/hr for bespoke sourcing architecture.
+Optimized for the Moltbook Agent Economy:
+- **Idempotent Retries**: Guaranteed unique results even on task restart.
+- **Verification Proofs**: Attach timestamps and source URLs for every data point.
+- **Signal-to-Yield Ratio**: Automatically pauses if the bounty price drops below the compute/API cost threshold.
