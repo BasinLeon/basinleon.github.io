@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTI Sovereign Mirror UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 12px; }
+        .score-ring { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#10b981 var(--score), #e2e8f0 0deg); display: flex; align-items: center; justify-content: center; position: relative; }
+        .score-ring::before { content: ""; position: absolute; inset: 10px; border-radius: 50%; background: white; }
+        .score-value { position: relative; font-size: 2rem; font-weight: 700; color: #1e293b; }
+        .cta-button { transition: all 0.2s ease; }
+        .cta-button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="w-20 lg:w-64 bg-[#0f172a] text-white flex flex-col items-center lg:items-start py-6 border-r border-slate-800 transition-all duration-300">
+        <div class="px-6 w-full mb-10 flex items-center justify-center lg:justify-start">
+            <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center font-bold text-xl mr-3">M</div>
+            <span class="font-bold text-xl hidden lg:block tracking-tight">MockThat<br/>Interview</span>
+        </div>
+        
+        <nav class="w-full flex-grow space-y-2">
+            <a href="#" class="flex items-center w-full px-6 py-3 bg-blue-600/10 text-blue-400 border-l-4 border-blue-500">
+                <i class="fas fa-home w-6 text-center"></i>
+                <span class="ml-4 hidden lg:block font-medium">Placement Hub</span>
+            </a>
+            <a href="#" class="flex items-center w-full px-6 py-3 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fas fa-video w-6 text-center"></i>
+                <span class="ml-4 hidden lg:block font-medium">Interviews</span>
+            </a>
+            <a href="#" class="flex items-center w-full px-6 py-3 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fas fa-chart-line w-6 text-center"></i>
+                <span class="ml-4 hidden lg:block font-medium">Assessments</span>
+            </a>
+            <a href="#" class="flex items-center w-full px-6 py-3 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fas fa-briefcase w-6 text-center"></i>
+                <span class="ml-4 hidden lg:block font-medium">Career Arsenal</span>
+            </a>
+        </nav>
+        
+        <div class="px-6 w-full mt-auto">
+            <div class="flex items-center p-3 bg-slate-800 rounded-lg cursor-pointer">
+                <div class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-sm font-bold">L</div>
+                <div class="ml-3 hidden lg:block overflow-hidden">
+                    <p class="text-sm font-medium truncate">Leon B.</p>
+                    <p class="text-xs text-slate-400 truncate">Pro Account</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
+            <h1 class="text-2xl font-bold text-slate-800">Placement Hub</h1>
+            <div class="flex items-center space-x-4">
+                <div class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-100 flex items-center">
+                    <i class="fas fa-bolt text-yellow-500 mr-2"></i> 12 Credits Available
+                </div>
+                <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm shadow-sm cta-button">
+                    <i class="fas fa-plus mr-2"></i>New Interview
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-6">
+            
+            <!-- Strategic Reframing Banner (Replaces the generic yellow warning) -->
+            <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-xl p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute left-1/2 bottom-0 w-48 h-48 bg-blue-500 opacity-20 rounded-full translate-y-1/2 blur-2xl"></div>
+                
+                <div class="relative z-10 max-w-2xl">
+                    <div class="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-800/50 border border-blue-500/30 text-xs font-semibold tracking-wide text-blue-200 uppercase mb-4">
+                        <i class="fas fa-rocket mr-1.5"></i> Action Required
+                    </div>
+                    <h2 class="text-3xl font-bold mb-3 tracking-tight">Unlock Your Placement Score</h2>
+                    <p class="text-blue-100 mb-6 text-lg">Your profile is currently lacking behavioral data. Complete a 15-minute diagnostic interview to generate your baseline Placement Readiness metric for our hiring partners.</p>
+                    <div class="flex space-x-4">
+                        <button class="bg-white text-blue-900 hover:bg-blue-50 px-6 py-3 rounded-lg font-bold text-sm shadow-lg transition-all transform hover:-translate-y-0.5">
+                            Start Diagnostic <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button class="bg-blue-800 border border-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-sm transition-colors">
+                            Upload CV First
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Metrics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- placement readiness -->
+                <div class="glass-panel p-6 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Placement Readiness</h3>
+                        <p class="text-xs text-slate-400 mb-4">Compared to FAANG baselines</p>
+                        
+                        <div class="flex items-end space-x-2">
+                            <span class="text-3xl font-bold text-slate-800 line-through opacity-50">N/A</span>
+                            <span class="text-sm text-amber-500 font-medium pb-1"><i class="fas fa-lock mr-1"></i>Locked</span>
+                        </div>
+                    </div>
+                    <div class="score-ring" style="--score: 0deg;">
+                        <span class="score-value text-slate-300">--</span>
+                    </div>
+                </div>
+
+                <!-- Technical Calibrations -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Technical Calibrations</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-slate-700">System Design</span>
+                            <span class="text-sm text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Pending</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-slate-700">Algorithms</span>
+                            <span class="text-sm text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Pending</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-slate-700">Communication</span>
+                            <span class="text-sm text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Pending</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Center -->
+                <div class="glass-panel p-6 bg-slate-50 border-dashed border-2">
+                    <div class="h-full flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-blue-600 mb-3">
+                            <i class="fas fa-calendar-alt text-xl"></i>
+                        </div>
+                        <h3 class="text-slate-800 font-semibold mb-1">No Upcoming Interviews</h3>
+                        <p class="text-sm text-slate-500 mb-4 px-4">Stop reading articles. Start practicing. Book a mock interview with the AI Engine now.</p>
+                        <button class="bg-blue-600/10 text-blue-700 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-md font-medium text-sm transition-all border border-blue-200">
+                            Schedule Technical Mock
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- B2B Partner Insights (The Yield) -->
+            <div class="mt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-800">Partner Intelligence</h2>
+                    <a href="#" class="text-sm text-blue-600 font-medium hover:underline">View All Insights</a>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <div class="glass-panel p-6 relative overflow-hidden group hover:border-blue-300 transition-colors cursor-pointer">
+                        <div class="absolute right-[-20px] top-[-20px] text-slate-100 w-32 h-32 opacity-50 group-hover:text-blue-50 transition-colors">
+                            <i class="fas fa-building text-9xl"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded inline-block mb-3">Bootcamp Track</span>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Senior DevOps Engineer</h3>
+                            <p class="text-sm text-slate-600 mb-4">Hiring partners are currently prioritizing candidates who can articulate CI/CD pipeline architecture clearly under pressure.</p>
+                            <div class="flex items-center text-sm font-medium text-blue-600">
+                                Practice this scenario <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 relative overflow-hidden group hover:border-blue-300 transition-colors cursor-pointer">
+                        <div class="absolute right-[-20px] top-[-20px] text-slate-100 w-32 h-32 opacity-50 group-hover:text-blue-50 transition-colors">
+                            <i class="fas fa-bullseye text-9xl"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-100 px-2.5 py-1 rounded inline-block mb-3">Behavioral Focus</span>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">The "Amazon" Culture Baseline</h3>
+                            <p class="text-sm text-slate-600 mb-4">We've updated our AI calibration to strictly map against Amazon's 16 Leadership Principles based on Q1 2026 data.</p>
+                            <div class="flex items-center text-sm font-medium text-blue-600">
+                                Start the Amazon Drill <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
