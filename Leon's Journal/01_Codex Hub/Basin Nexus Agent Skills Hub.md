@@ -91,6 +91,17 @@ This hub documents the transition from **Tactical Execution** (Feb 2026) to **Re
 *   **[workflow-interviewer](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/workflow-interviewer/SKILL.md)**: Turning messy calls into structured agent requirements.
 *   **[dispatching-parallel-agents](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/dispatching-parallel-agents/SKILL.md)**: Collaborative subagent management.
 
+### 🏛️ Outcome Architecture & S2Y Yield
+
+*   **[S2Y (Signal-to-Yield) Framework](file:///Users/basin/Desktop/Basin & Associates 🌍/Leon's Journal/01_Codex Hub/Basin Nexus Agent Skills Hub.md#Phase-4)**: The core logic for converting $0.25 raw signals into $1.2B strategic target hubs.
+*   **Outcome Dashboarding (TryBounty Model)**: Building live, functional HUDs on top of raw platform signals to visualize architecture (e.g., `bounty-nexus-refinery-hud.html`).
+*   **The Logic Gap Audit**: Identifying why agencies churn on commodity data and bridging it with structural "brain" layers.
+
+### 🏟️ Case Studies & Business Logic
+
+*   **[Business Cases & Accolades](file:///Users/basin/Desktop/Basin & Associates 🌍/Leon's Journal/03_Business Cases and Accolades)**: Proved proof-points for deal closing.
+*   **[Agent Skill Stacking Logic](file:///Users/basin/Desktop/Basin & Associates 🌍/Leon's Journal/01_Codex Hub/Agent Skill Stacking Logic.md)**: The "Three-Layer" system for moving from signals to closed revenue.
+
 ---
 
 ## Feedback Loop Protocol
@@ -100,4 +111,4 @@ This hub documents the transition from **Tactical Execution** (Feb 2026) to **Re
 3.  **Revenue Calibration**: Before shipping any proposal, run **revenue-architect-audit** to ensure "Infrastructure" status.
 4.  **Economic Validation**: Map every $0.25 spend to a specific **Target Hub** using **nexus-economic-intelligence**.
 
-Last Updated: 2026-03-13 19:47
+Last Updated: 2026-03-13 20:50
