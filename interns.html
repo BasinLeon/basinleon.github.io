@@ -3,264 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Intern Fleet | Autonomous Revenue Sourcing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <title>Agent Network | Basin::Nexus Governance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0c;
-            --card-bg: #141417;
-            --accent-glow: #3b82f6;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --accent: #2563eb;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            padding-bottom: 100px;
+            line-height: 1.5;
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 80px 0;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            border-bottom: 1px solid var(--border-color);
-            padding: 20px;
+            margin-bottom: -60px;
         }
 
-        .status-badge {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-glow);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            letter-spacing: 1px;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+        .id-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            background: rgba(37, 99, 235, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.5rem;
-            margin-bottom: 16px;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        h1 { font-family: 'Outfit', sans-serif; font-size: 2.8rem; font-weight: 700; margin-bottom: 16px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.7; max-width: 700px; margin: 0 auto; }
 
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-        }
-
-        /* Fleet Grid */
-        .fleet-container {
-            max-width: 1400px;
-            margin: -60px auto 100px;
-            padding: 0 40px;
+        .fleet-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 24px;
+            margin-top: 40px;
         }
 
         .agent-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             padding: 40px;
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .agent-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-glow);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+        .agent-card:hover { border-color: var(--accent); transform: translateY(-4px); }
 
-        .agent-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--gradient-blue);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .agent-card:hover::before {
-            opacity: 1;
-        }
-
-        .agent-icon {
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-        }
-
-        .agent-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-        }
-
-        .agent-role {
-            color: var(--accent-glow);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .agent-bio {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-        }
-
-        .skills-list {
+        .agent-meta {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 32px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
 
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            border: 1px solid var(--border-color);
+        .agent-id { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); }
+        .agent-status { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #10b981; font-weight: 600; }
+
+        .agent-name { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #0f172a; }
+        .agent-role { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
+        
+        .agent-bio { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; height: 3em; }
+
+        .skill-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+        .skill-node { 
+            font-size: 0.7rem; 
+            padding: 4px 10px; 
+            background: #f8fafc; 
+            border: 1px solid var(--border); 
+            border-radius: 4px; 
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .btn-book {
-            display: inline-block;
+        .btn-deploy {
+            display: block;
             width: 100%;
             padding: 14px;
-            background: var(--gradient-blue);
+            background: #1e293b;
             color: white;
             text-align: center;
             text-decoration: none;
-            border-radius: 12px;
+            border-radius: 4px;
             font-weight: 600;
-            transition: opacity 0.2s ease;
-        }
-
-        .btn-book:hover {
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
             font-size: 0.85rem;
+            transition: background 0.2s ease;
         }
 
-        @media (max-width: 900px) {
-            .fleet-container {
-                grid-template-columns: 1fr;
-            }
-            h1 { font-size: 2.5rem; }
-        }
+        .btn-deploy:hover { background: var(--accent); }
+
+        .footer { text-align: center; margin-top: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <div class="status-badge" style="color: var(--accent-green); border-color: var(--accent-green);">Fleet Status: Training Active // Logic Syncing</div>
-        <h1>The Intern Fleet</h1>
-        <p class="subtitle">Autonomous execution agents specialized in revenue signals, high-velocity sourcing, and market intelligence. Currently syncing with the <span style="color:var(--accent-glow);">Nexus::Skill_Architect</span>.</p>
+    <section class="header">
+        <div class="container">
+            <div class="id-label" style="color: white; border: 1px solid rgba(255,255,255,0.2); background: transparent;">Fleet Status: Operational</div>
+            <h1>Neural Sourcing Network</h1>
+            <p class="subtitle">Autonomous agent nodes specialized in predictive market signals, structural lead processing, and institutional revenue architecture.</p>
+        </div>
     </section>
 
-    <div class="fleet-container">
-        <!-- Prospector -->
-        <div class="agent-card">
-            <div class="agent-icon">🔍</div>
-            <div class="agent-role">Sourcing Agent</div>
-            <div class="agent-name">Nexus::Prospector</div>
-            <p class="agent-bio">Identifies high-value company and startup targets using granular intent signals and technology stacks.</p>
-            <div class="skills-list">
-                <span class="skill-tag">Company Discovery</span>
-                <span class="skill-tag">Technographics</span>
-                <span class="skill-tag" style="border-color: var(--accent-green); color: var(--accent-green);">MODERNIZED: Signal Velocity</span>
-                <span class="skill-tag">Power-Up: Virtue Scoring</span>
+    <div class="container">
+        <div class="fleet-grid">
+            <!-- NODE 01 -->
+            <div class="agent-card">
+                <div class="agent-meta">
+                    <div class="agent-id">NODE-PROS-01</div>
+                    <div class="agent-status">&bull; ACTIVE</div>
+                </div>
+                <div class="agent-name">Governor::Prospector</div>
+                <div class="agent-role">Sourcing Intelligence</div>
+                <p class="agent-bio">Identifies institutional-grade targets via technographic intent and signal-velocity triggers.</p>
+                <div class="skill-grid">
+                    <div class="skill-node">Signal Velocity</div>
+                    <div class="skill-node">Technographics</div>
+                    <div class="skill-node">Virtue Scoring</div>
+                </div>
+                <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-deploy">Access Node</a>
             </div>
-            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
+
+            <!-- NODE 02 -->
+            <div class="agent-card">
+                <div class="agent-meta">
+                    <div class="agent-id">NODE-SENT-02</div>
+                    <div class="agent-status">&bull; ACTIVE</div>
+                </div>
+                <div class="agent-name">Governor::Sentinel</div>
+                <div class="agent-role">Intent Surveillance</div>
+                <p class="agent-bio">Monitors cross-platform keyword clusters to detect budget shifts and executive transitions.</p>
+                <div class="skill-grid">
+                    <div class="skill-node">Intent Detection</div>
+                    <div class="skill-node">Cluster Analysis</div>
+                    <div class="skill-node">Idempotent Tracking</div>
+                </div>
+                <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-deploy">Access Node</a>
+            </div>
+
+            <!-- NODE 03 -->
+            <div class="agent-card">
+                <div class="agent-meta">
+                    <div class="agent-id">NODE-ARCH-03</div>
+                    <div class="agent-status">&bull; ACTIVE</div>
+                </div>
+                <div class="agent-name">Governor::Data_Architect</div>
+                <div class="agent-role">Enrichment Governance</div>
+                <p class="agent-bio">Manages identity resolution and data enrichment protocols with high-fidelity truth scoring.</p>
+                <div class="skill-grid">
+                    <div class="skill-node">Identity Mapping</div>
+                    <div class="skill-node">Truth Scoring</div>
+                    <div class="skill-node">PII Governance</div>
+                </div>
+                <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-deploy">Access Node</a>
+            </div>
+
+            <!-- NODE 04 -->
+            <div class="agent-card" style="border-style: dashed;">
+                <div class="agent-meta">
+                    <div class="agent-id">NODE-SKILL-04</div>
+                    <div class="agent-status" style="color: var(--accent);">STAGING</div>
+                </div>
+                <div class="agent-name">Governor::Skill_Architect</div>
+                <div class="agent-role">System Governor</div>
+                <p class="agent-bio">Drafts and deploys new logical protocols based on emerging market signals and GTM friction points.</p>
+                <div class="skill-grid">
+                    <div class="skill-node">Meta-Logic</div>
+                    <div class="skill-node">Yield Optimization</div>
+                    <div class="skill-node">Protocol Scaffolding</div>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); text-align: center;">SYSTEM CLEARANCE REQUIRED</div>
+            </div>
         </div>
 
-        <!-- Social Sentinel -->
-        <div class="agent-card">
-            <div class="agent-icon">🛰️</div>
-            <div class="agent-role">Pulse Agent</div>
-            <div class="agent-name">Nexus::Social_Sentinel</div>
-            <p class="agent-bio">Screens social platforms for keyword clusters and sentiment shifts that indicate buying intent.</p>
-            <div class="skills-list">
-                <span class="skill-tag">Social Listening</span>
-                <span class="skill-tag">Sentiment Anchoring</span>
-                <span class="skill-tag" style="border-color: var(--accent-green); color: var(--accent-green);">MODERNIZED: Intent Detection</span>
-                <span class="skill-tag">Power-Up: Idempotent Tracking</span>
-            </div>
-            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
-        </div>
-
-        <!-- Data Architect -->
-        <div class="agent-card">
-            <div class="agent-icon">🏗️</div>
-            <div class="agent-role">Data Ops Agent</div>
-            <div class="agent-name">Nexus::Data_Architect</div>
-            <p class="agent-bio">Verifies, enriches, and structures contact datasets for elite GTM execution and identity resolution.</p>
-            <div class="skills-list">
-                <span class="skill-tag">Lead Enrichment</span>
-                <span class="skill-tag">Identity Mapping</span>
-                <span class="skill-tag">Power-Up: Zero-Storage PII</span>
-                <span class="skill-tag">Power-Up: Truth-Score Curation</span>
-            </div>
-            <a href="https://rentahuman.ai/humans/927mdCEAwzSMyEXiitzK" class="btn-book">Book via RentAHuman</a>
-        </div>
-
-        <!-- Skill Architect -->
-        <div class="agent-card">
-            <div class="agent-icon">🎨</div>
-            <div class="agent-role">Training Agent</div>
-            <div class="agent-name">Nexus::Skill_Architect</div>
-            <p class="agent-bio">The meta-layer of the fleet. Proposes, drafts, and trains the other interns on new skills based on market signals.</p>
-            <div class="skills-list">
-                <span class="skill-tag">Meta-Logic</span>
-                <span class="skill-tag">Skill Scaffolding</span>
-                <span class="skill-tag">Power-Up: Feedback Sync</span>
-                <span class="skill-tag">Power-Up: Yield Optimization</span>
-            </div>
-            <div class="status-badge" style="margin-top: 10px; font-size: 0.7rem; padding: 4px 8px; width: fit-content;">Internal / Governor Only</div>
+        <div class="footer">
+            BASIN & ASSOCIATES // REVENUE GOVERNANCE UNIT
         </div>
     </div>
-
-    <footer>
-        &copy; 2026 Basin & Associates. Built with Basin::Nexus Architecture.
-    </footer>
 
 </body>
 </html>
