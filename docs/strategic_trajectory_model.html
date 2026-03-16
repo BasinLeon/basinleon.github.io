@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Architecture Model | Basin::Nexus vs. Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --accent-blue: #2563eb;
+            --accent-slate: #475569;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --clay-orange: #ea580c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            padding: 40px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            background: white;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toggle-btn.active {
+            background: var(--bg);
+            border-color: var(--border);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .workspace {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 40px;
+        }
+
+        .canvas-area {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 60px;
+            min-height: 550px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .intel-panel {
+            padding: 24px;
+            border-left: 1px solid var(--border);
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .node {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 6px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .node-nexus { border-top: 4px solid var(--accent-blue); }
+        .node-market { border-top: 4px solid var(--clay-orange); }
+
+        .node h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; margin-bottom: 8px; }
+        .node p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+
+        .arrow { width: 1px; height: 30px; background: var(--border); position: relative; }
+        .arrow::after { content: ''; position: absolute; bottom: 0; left: -3px; border-width: 4px 4px 0; border-style: solid; border-color: var(--border) transparent transparent transparent; }
+
+        .stat-box { margin-bottom: 30px; }
+        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .stat-value { font-size: 1rem; font-weight: 600; color: var(--text-main); }
+
+        .trajectory-grid { display: grid; gap: 24px; }
+        .year-card { padding: 24px; border-bottom: 1px solid var(--border); }
+        .year-card:last-child { border-bottom: none; }
+        .year-card h3 { font-family: 'Outfit', sans-serif; color: var(--accent-blue); margin-bottom: 12px; }
+        .year-list { list-style: none; }
+        .year-list li { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; padding-left: 20px; position: relative; }
+        .year-list li::before { content: '•'; position: absolute; left: 0; color: var(--accent-blue); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">STRATEGIC ARCHITECTURE // v2.0</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted);">REF: BASIN_NEXUS_03.26</div>
+    </header>
+
+    <div class="controls">
+        <button class="toggle-btn" id="clay-btn" onclick="setView('clay')">The Aggregate Model</button>
+        <button class="toggle-btn active" id="nexus-btn" onclick="setView('nexus')">The Nexus OS</button>
+        <button class="toggle-btn" id="trajectory-btn" onclick="setView('trajectory')">3-Year Trajectory</button>
+    </div>
+
+    <div class="workspace">
+        <div class="canvas-area">
+            
+            <!-- CLAY VIEW -->
+            <div id="view-clay" style="display: none;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--clay-orange);">Data Aggregation Tier</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Linear processing of raw market signals.</p>
+                </div>
+
+                <div class="flow-container">
+                    <div class="node node-market">
+                        <h3>Provider Ingestion</h3>
+                        <p>Aggregates baseline signals from public registries and LinkedIn records.</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node node-market">
+                        <h3>Enrichment Table</h3>
+                        <p>Creates extensive spreadsheets. Primary focus on contact volume over execution logic.</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node" style="border: 1px dashed #ef4444;">
+                        <h3 style="color: #ef4444;">Operational Friction</h3>
+                        <p>The client is responsible for the gap between the lead and the revenue outcome.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEXUS VIEW -->
+            <div id="view-nexus">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--accent-blue);">Revenue Operating System</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Structural integration of signal, architecture, and execution.</p>
+                </div>
+
+                <div class="flow-container">
+                    <div class="node node-nexus">
+                        <h3>Signal Refinery</h3>
+                        <p>Proprietary filtering of high-intent triggers (Turnover, Spikes, Regulatory).</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node node-nexus" style="background: #f1f5f9;">
+                        <h3 style="color: var(--accent-blue);">Basin::Nexus Bridge</h3>
+                        <p>Routes intelligence into CRM and triggers a deterministic GTM workflow.</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node node-nexus">
+                        <h3>TalSmart Execution</h3>
+                        <p>The coaching layer ensures the human execution matches the OS precision.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRAJECTORY VIEW -->
+            <div id="view-trajectory" style="display: none;">
+                <div class="trajectory-grid">
+                    <div class="year-card">
+                        <h3>Phase I: Signal Mastery</h3>
+                        <ul class="year-list">
+                            <li>Replace SDR overhead with autonomous refinery logic.</li>
+                            <li>Calibrate output for Enterprise tech environments.</li>
+                        </ul>
+                    </div>
+                    <div class="year-card">
+                        <h3>Phase II: Predictive Intelligence</h3>
+                        <ul class="year-list">
+                            <li>Neural introduction mapping via proprietary network.</li>
+                            <li>Closed-loop feedback from live deal objections.</li>
+                        </ul>
+                    </div>
+                    <div class="year-card">
+                        <h3>Phase III: Revenue Singularity</h3>
+                        <ul class="year-list">
+                            <li>Unified Operating System for Sales, Product, and Marketing.</li>
+                            <li>Basin::Nexus as the institutional category leader.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="intel-panel">
+            <div id="intel-clay" style="display: none;">
+                <div class="stat-box">
+                    <div class="stat-label">Model Type</div>
+                    <div class="stat-value">Commodity Utility</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Critical Gap</div>
+                    <div class="stat-value">Human Performance Decay</div>
+                </div>
+            </div>
+
+            <div id="intel-nexus">
+                <div class="stat-box">
+                    <div class="stat-label">Model Type</div>
+                    <div class="stat-value">Revenue Infrastructure</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">The Moat</div>
+                    <div class="stat-value">End-to-End Determinism</div>
+                </div>
+            </div>
+
+            <div id="intel-trajectory" style="display: none;">
+                <div class="stat-box">
+                    <div class="stat-label">Horizon</div>
+                    <div class="stat-value">2026 – 2029</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Exit Objective</div>
+                    <div class="stat-value">Total Category Capture</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setView(view) {
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${view}-btn`).classList.add('active');
+            ['clay', 'nexus', 'trajectory'].forEach(v => {
+                document.getElementById(`view-${v}`).style.display = 'none';
+                document.getElementById(`intel-${v}`).style.display = 'none';
+            });
+            document.getElementById(`view-${view}`).style.display = 'block';
+            document.getElementById(`intel-${view}`).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
