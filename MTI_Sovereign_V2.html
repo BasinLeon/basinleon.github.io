@@ -401,29 +401,39 @@
     </main>
 
     <script>
-        // Dynamic Signal Feed Simulation
-        const messages = [
-            "Candidate 'J-Doe' secured interview at UserEvidence.",
-            "Poaching Engine detected 14 new signals in Manchester.",
-            "UI Refactor v0.1: Alignment with Placement OS complete.",
-            "Nexus Signal Refinery: Noise reduction filter @ 99.8%.",
-            "M-Interview Credit System: Latency test passed [0.01ms]."
-        ];
-
-        function addSignal() {
+        // Live Signal Data Fetch
+        async function loadSignals() {
             const feed = document.getElementById('signalFeed');
-            const ts = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const msg = messages[Math.floor(Math.random() * messages.length)];
-            
-            const line = document.createElement('div');
-            line.className = 'signal-line';
-            line.innerHTML = `<div class="signal-ts">${ts}</div><div class="signal-msg">${msg}</div>`;
-            
-            feed.prepend(line);
-            if (feed.children.length > 8) feed.lastChild.remove();
+            try {
+                const response = await fetch('mti_signals.json');
+                const data = await response.json();
+                
+                // Clear initial static items
+                feed.innerHTML = '';
+                
+                data.signals.forEach(signal => {
+                    const line = document.createElement('div');
+                    line.className = 'signal-line';
+                    line.style.opacity = '0';
+                    line.style.transition = 'opacity 0.5s ease-in';
+                    
+                    line.innerHTML = `
+                        <div class="signal-ts">${signal.timestamp}</div>
+                        <div class="signal-msg"><b>Target Found:</b> ${signal.title} at <b>${signal.company}</b> [${signal.location}]</div>
+                    `;
+                    
+                    feed.appendChild(line);
+                    setTimeout(() => line.style.opacity = '1', 100);
+                });
+            } catch (error) {
+                console.error('Error fetching signals:', error);
+                feed.innerHTML = '<div class="signal-msg" style="color: var(--accent-red);">Signal Link Lost // Reconnecting...</div>';
+            }
         }
 
-        setInterval(addSignal, 4000);
+        // Initialize Feed
+        window.addEventListener('DOMContentLoaded', loadSignals);
+        setInterval(loadSignals, 30000); // Refresh every 30s
     </script>
 </body>
 </html>
