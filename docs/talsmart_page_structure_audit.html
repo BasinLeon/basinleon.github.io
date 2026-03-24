@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Page Structure Audit | TalSmart Revenue Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f8fafc;
+            --header-bg: #0f172a;
+            --accent: #2563eb;
+            --red: #dc2626;
+            --amber: #d97706;
+            --green: #16a34a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-subtle: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 80px;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 60px;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+
+        .id-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.4);
+            background: transparent;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        h1 { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; }
+        .header-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; opacity: 0.6; }
+
+        .exec-summary {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            max-width: 800px;
+            margin-bottom: 48px;
+            padding-left: 24px;
+            border-left: 3px solid var(--accent);
+            line-height: 1.7;
+        }
+
+        .section-divider {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin: 60px 0 32px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        /* Visitor Journey Flow */
+        .journey-map {
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+
+        .journey-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--header-bg);
+            margin-bottom: 8px;
+        }
+
+        .journey-url {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .journey-flow {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.82rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .flow-step:first-child { border-radius: 6px 0 0 6px; }
+        .flow-step:last-child { border-radius: 0 6px 6px 0; }
+
+        .flow-step.drop-risk {
+            background: #fef2f2;
+            border-color: var(--red);
+        }
+
+        .flow-step.friction {
+            background: #fffbeb;
+            border-color: var(--amber);
+        }
+
+        .flow-step .step-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .flow-step .step-name {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .flow-step.drop-risk .step-name { color: var(--red); }
+        .flow-step.friction .step-name { color: var(--amber); }
+
+        /* Issues */
+        .issue-grid { display: flex; flex-direction: column; gap: 20px; }
+
+        .issue {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 20px 24px;
+            background: white;
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+        }
+
+        .issue-severity {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .severity-high {
+            background: #fef2f2;
+            color: var(--red);
+            border: 1px solid #fecaca;
+        }
+
+        .severity-med {
+            background: #fffbeb;
+            color: var(--amber);
+            border: 1px solid #fde68a;
+        }
+
+        .severity-low {
+            background: #f0fdf4;
+            color: var(--green);
+            border: 1px solid #bbf7d0;
+        }
+
+        .issue-content { flex: 1; }
+
+        .issue-what {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .issue-why {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .issue-fix {
+            font-size: 0.88rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .issue-fix::before {
+            content: "Fix: ";
+            font-weight: 700;
+        }
+
+        /* System-Wide Section */
+        .system-card {
+            background: var(--header-bg);
+            color: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        .system-card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 24px;
+        }
+
+        .system-issue {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .system-issue:last-child { border-bottom: none; }
+
+        .system-issue-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .system-issue-desc {
+            font-size: 0.88rem;
+            opacity: 0.7;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-dot.red { background: #fef2f2; border: 1px solid var(--red); }
+        .legend-dot.amber { background: #fffbeb; border: 1px solid var(--amber); }
+        .legend-dot.white { background: white; border: 1px solid var(--border-subtle); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="id-badge">Protocol // Page Structure Audit</div>
+            <h1>TalSmart: Visitor Journey &amp; Structure Audit</h1>
+            <div class="header-meta">PREPARED BY LEON BASIN // MARCH 23, 2026 // STRUCTURE ONLY, NOT TEXT</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <p class="exec-summary">
+            <strong>Jassi</strong>, this audit is only about page structure, not the words on the page. I went through each page the way a cold visitor would: landing from Google, LinkedIn, or a referral link. What follows are the exact moments where someone gets confused, loses the thread, or leaves. Each one has a specific fix.
+        </p>
+
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot red"></div> Drop-off risk (visitor leaves)</div>
+            <div class="legend-item"><div class="legend-dot amber"></div> Friction point (visitor slows / confused)</div>
+            <div class="legend-item"><div class="legend-dot white"></div> Clean structural step</div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PAGE 1: HOMEPAGE -->
+        <!-- ============================================ -->
+        <div class="section-divider">Page 1 of 5 — Homepage</div>
+
+        <div class="journey-map">
+            <div class="journey-title">Homepage Visitor Journey</div>
+            <a class="journey-url" href="https://talsmart-homepage.netlify.app/" target="_blank">talsmart-homepage.netlify.app</a>
+
+            <div class="journey-flow">
+                <div class="flow-step friction">
+                    <span class="step-label">Section 1</span>
+                    <span class="step-name">Hero — Generic headline</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 2</span>
+                    <span class="step-name">Before / After grid</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 3</span>
+                    <span class="step-name">Cinematic claim</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 4</span>
+                    <span class="step-name">Revenue Execution System (4 cards)</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 5</span>
+                    <span class="step-name">Case studies (search page)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 6</span>
+                    <span class="step-name">Coaches</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 7</span>
+                    <span class="step-name">Testimonials</span>
+                </div>
+                <div class="flow-step drop-risk">
+                    <span class="step-label">Section 8</span>
+                    <span class="step-name">Blog, then footer (dead end)</span>
+                </div>
+            </div>
+
+            <div class="issue-grid">
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">No primary conversion action in the hero</div>
+                        <div class="issue-why">Visitor lands and sees "Structured Sales Growth," which describes the company but doesn't hook anyone. Two CTAs compete ("Start Diagnostic" and "See It In Action") and neither tells the visitor what actually happens when they click.</div>
+                        <div class="issue-fix">One dominant CTA above the fold. The diagnostic is the entry point, so make it the only hero action. Move "See It In Action" down to Section 3 (the cinematic section).</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Page ends on blog articles, no closing conversion</div>
+                        <div class="issue-why">After 8 sections of scrolling, the visitor hits 3 blog teasers and a footer. There is no final call to action. The page just stops.</div>
+                        <div class="issue-fix">End the page with a full-width "Start Your Diagnostic" block (same energy as the hero). Move blog to the nav or a sidebar.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Revenue Execution System cards all link to different pages, no guidance on where to start</div>
+                        <div class="issue-why">The 4-card layout (Diagnostic, Mastery, Coaching, Search) gives equal visual weight to each option. A VP of Sales looking at this doesn't know whether to click the diagnostic or the coaching page first. There is no routing logic.</div>
+                        <div class="issue-fix">Add a line above the grid: "Not sure where to start? Take the 3-minute Revenue-Gap Diagnostic." Make the Diagnostic card larger, bordered, and labeled "Start Here."</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Leadership Search case studies appear before the coaches section</div>
+                        <div class="issue-why">A visitor scrolling down sees executive placement stories before they know who the coaches are. This creates a "wait, is this a recruiting firm?" question mid-page.</div>
+                        <div class="issue-fix">Swap the order: Coaches first, then testimonials, then case studies. Show who you are, then show what they did.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PAGE 2: REVENUE-GAP DIAGNOSTIC -->
+        <!-- ============================================ -->
+        <div class="section-divider">Page 2 of 5 — Revenue-Gap Diagnostic</div>
+
+        <div class="journey-map">
+            <div class="journey-title">Diagnostic Page Visitor Journey</div>
+            <a class="journey-url" href="https://talsmart-revenue-gap-diagnostic.netlify.app/" target="_blank">talsmart-revenue-gap-diagnostic.netlify.app</a>
+
+            <div class="journey-flow">
+                <div class="flow-step">
+                    <span class="step-label">Section 1</span>
+                    <span class="step-name">Hero — "Losing deals at one stage"</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 2</span>
+                    <span class="step-name">4 pain blocks (wall of text)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 3</span>
+                    <span class="step-name">20-min assessment explainer</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 4</span>
+                    <span class="step-name">5-stage breakdown</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 5</span>
+                    <span class="step-name">Report contents (duplicate list)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 6</span>
+                    <span class="step-name">Pricing tiers</span>
+                </div>
+                <div class="flow-step drop-risk">
+                    <span class="step-label">Section 7</span>
+                    <span class="step-name">RES cross-sell, then footer</span>
+                </div>
+            </div>
+
+            <div class="issue-grid">
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">20-minute commitment is the only entry point, too much friction for first touch</div>
+                        <div class="issue-why">A visitor who clicks "Start Your Free Diagnostic" expects 2-3 minutes. When they find out it is 20 questions and 20 minutes, most leave. The page does a good job educating, but there is no fast-track option.</div>
+                        <div class="issue-fix">Add a "3-Minute Quick Scan" (5 questions) as the low-friction entry. The full 20-minute version becomes the "Deep Diagnostic," positioned as the upgrade after they have already started.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">"What's inside your diagnostic report" lists the same items twice</div>
+                        <div class="issue-why">The same 5 report components appear as a checklist and then again as expanded cards right below it. The visitor reads the same thing twice. Looks like a copy-paste error.</div>
+                        <div class="issue-fix">Keep one format. The expanded cards are better. Cut the checklist.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Pricing tiers look identical, Free vs Team difference is invisible</div>
+                        <div class="issue-why">The Individual (free) and Team (paid) tiers have nearly the same feature list. The real differences are buried in small text. A VP scanning fast can not tell why they would pay for the team version.</div>
+                        <div class="issue-fix">Make the Team tier the visual default (larger, highlighted border). Use a side-by-side comparison table so the VP can scan the difference in 5 seconds.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">PDF report delivered via email = dead end</div>
+                        <div class="issue-why">Visitor finishes the diagnostic and gets a PDF in their inbox. They open it once, skim it, close it. There is no reason for them to come back to TalSmart after that.</div>
+                        <div class="issue-fix">Supplement the PDF with a live dashboard at a unique URL. The visitor can share it with their VP. Each gap on the dashboard links directly to the Mastery module that fixes it, so the upsell path is built into the deliverable.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PAGE 3: TECH SALES MASTERY -->
+        <!-- ============================================ -->
+        <div class="section-divider">Page 3 of 5 — Tech Sales Mastery Program</div>
+
+        <div class="journey-map">
+            <div class="journey-title">Tech Sales Mastery Visitor Journey</div>
+            <a class="journey-url" href="https://talsmart-tech-sales-mastery.netlify.app/" target="_blank">talsmart-tech-sales-mastery.netlify.app</a>
+
+            <div class="journey-flow">
+                <div class="flow-step">
+                    <span class="step-label">Section 1</span>
+                    <span class="step-name">Hero — "Stop losing deals"</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 2</span>
+                    <span class="step-name">Why MEDDIC isn't enough</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 3</span>
+                    <span class="step-name">5-stage curriculum (long scroll)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 4</span>
+                    <span class="step-name">Cinematic claim</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 5</span>
+                    <span class="step-name">Tri-fold framework</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 6</span>
+                    <span class="step-name">Before/After table (4+4)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 7</span>
+                    <span class="step-name">Testimonials</span>
+                </div>
+                <div class="flow-step drop-risk">
+                    <span class="step-label">Section 8</span>
+                    <span class="step-name">Pricing, case studies, blog</span>
+                </div>
+            </div>
+
+            <div class="issue-grid">
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">5-stage curriculum is one long vertical scroll with no navigation</div>
+                        <div class="issue-why">All 5 stages (Prospecting through Negotiation) stack vertically with 6 sub-items each. That is 30+ line items in a single scroll. A VP scanning this page will lose patience around Stage 3. There is no way to jump to the stage they care about.</div>
+                        <div class="issue-fix">Convert to tabs or an accordion. Clicking "Discovery" expands only that stage. Default to Stage 1 open. Show 2-3 outcomes per tab, not the full syllabus.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">$20 entry price and $400 full program compete in the same visual space</div>
+                        <div class="issue-why">The hero says "Start with Prospecting, $20." Stages 2-5 each say "Get All 5 Stages, $400." Both prices appear in the curriculum section before pricing has been framed. The visitor sees "$400" before they understand what they are getting.</div>
+                        <div class="issue-fix">Pull pricing out of the curriculum cards entirely. Keep it only in the dedicated pricing section. Curriculum cards use "Explore Stage" links. The pricing section anchors the $20 trial as the obvious starting point.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">No connection between "I took the diagnostic" and "which stage should I buy"</div>
+                        <div class="issue-why">A visitor coming from the Diagnostic page already has their gap data. But the Mastery page does not acknowledge that. There is no bridge saying "Your diagnostic found Discovery as your gap, here is the module that fixes it."</div>
+                        <div class="issue-fix">Add a banner at the top: "Already taken the Revenue-Gap Diagnostic? Your report shows which stages to start with." This ties the two pages together and makes the funnel feel like one system.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Case study links point nowhere</div>
+                        <div class="issue-why">Three case study teasers ("Read Case Study") all link back to the current page. The visitor clicks, nothing happens. It looks broken.</div>
+                        <div class="issue-fix">Build the actual case study pages, or remove the links and embed the proof inline (stats, pull quotes, no click required).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PAGE 4: SALES EXECUTION COACHING -->
+        <!-- ============================================ -->
+        <div class="section-divider">Page 4 of 5 — Sales Execution Coaching</div>
+
+        <div class="journey-map">
+            <div class="journey-title">Coaching Page Visitor Journey</div>
+            <a class="journey-url" href="https://talsmart-sales-execution-coaching.netlify.app/" target="_blank">talsmart-sales-execution-coaching.netlify.app</a>
+
+            <div class="journey-flow">
+                <div class="flow-step">
+                    <span class="step-label">Section 1</span>
+                    <span class="step-name">Hero — "They don't run it"</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 2</span>
+                    <span class="step-name">Training doesn't stick (why)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 3</span>
+                    <span class="step-name">3-layer coaching model</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 4</span>
+                    <span class="step-name">Engagement detail (6 blocks)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 5</span>
+                    <span class="step-name">4-step process</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 6</span>
+                    <span class="step-name">Case studies + results</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 7</span>
+                    <span class="step-name">Coach bios</span>
+                </div>
+                <div class="flow-step drop-risk">
+                    <span class="step-label">Section 8</span>
+                    <span class="step-name">Testimonials, CTA, footer</span>
+                </div>
+            </div>
+
+            <div class="issue-grid">
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">No pricing, no packaging, visitor cannot self-qualify</div>
+                        <div class="issue-why">The Mastery page shows $20 / $400. The Coaching page shows nothing. A VP reading this has no idea whether coaching costs $5K or $50K. The only action is "Book a Discovery Call," which asks for a calendar commitment before the visitor knows if coaching is even in their budget.</div>
+                        <div class="issue-fix">Add a "Starting at" range or tiered packaging ("Single Rep Coaching, $X/mo" vs "Full Team, Custom"). Let the visitor self-qualify before asking them to book time.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Engagement detail section (6 blocks) reads like a contract, not a selling page</div>
+                        <div class="issue-why">"Competency Gap Audit," "Weekly Deal Reviews," "Bi-Weekly Rep Coaching," "Adoption Tracking," "Manager Programme," "Executive Reviews." These 6 blocks describe internal mechanics. The visitor does not need to know the cadence. They need to know what changes.</div>
+                        <div class="issue-fix">Restructure around 3 outcomes: (1) "Your reps execute consistently" (2) "Your managers actually coach" (3) "Your pipeline becomes predictable." Put the process detail behind a "How it works" accordion.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Coach bios appear after case studies, credibility sequence is backwards</div>
+                        <div class="issue-why">The visitor reads about "Top 5% Globally" and "34% shorter deal cycles" but does not know who did it yet. By the time they scroll to the coach bios, the connection is gone.</div>
+                        <div class="issue-fix">Put coach bios before case studies. Show who they are first, then what they did, then what clients said about it.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PAGE 5: REVENUE LEADERSHIP SEARCH -->
+        <!-- ============================================ -->
+        <div class="section-divider">Page 5 of 5 — Revenue Leadership Search</div>
+
+        <div class="journey-map">
+            <div class="journey-title">Leadership Search Visitor Journey</div>
+            <a class="journey-url" href="https://talsmart-leadership-search.netlify.app/" target="_blank">talsmart-leadership-search.netlify.app</a>
+
+            <div class="journey-flow">
+                <div class="flow-step">
+                    <span class="step-label">Section 1</span>
+                    <span class="step-name">Hero — "The right leader"</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 2</span>
+                    <span class="step-name">3 hiring mistakes</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 3</span>
+                    <span class="step-name">6 role types (long list)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 4</span>
+                    <span class="step-name">5-step process</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 5</span>
+                    <span class="step-name">No-risk guarantee</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 6</span>
+                    <span class="step-name">Placement results</span>
+                </div>
+                <div class="flow-step">
+                    <span class="step-label">Section 7</span>
+                    <span class="step-name">Search team bios</span>
+                </div>
+                <div class="flow-step friction">
+                    <span class="step-label">Section 8</span>
+                    <span class="step-name">Brief form + FAQ</span>
+                </div>
+            </div>
+
+            <div class="issue-grid">
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">6 role types all look the same, no filtering</div>
+                        <div class="issue-why">CRO, VP of Sales, Head of GTM, VP RevOps, Director Enterprise Sales, Regional VP all appear as identical cards. A visitor looking for a CRO scrolls past 5 irrelevant roles. Feels like a generic recruiter listing, not a curated search.</div>
+                        <div class="issue-fix">Feature the top 2 roles (CRO, VP of Sales) with full descriptions. Condense the other 4 into a "We also place:" row. Or add a tab/filter.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-high">Walk-Away</div>
+                    <div class="issue-content">
+                        <div class="issue-what">This page is completely disconnected from the other 4 pages</div>
+                        <div class="issue-why">Zero references to the Diagnostic, Mastery, or Coaching pages. A visitor from Google searching "executive search" has no idea TalSmart does anything else. A visitor who came from the homepage does not see how Search connects back to the rest of the system.</div>
+                        <div class="issue-fix">Add a strip above the footer: "The Revenue Execution System" showing all 4 components with "You are here: Leadership Search" highlighted. Every sub-page should have this indicator.</div>
+                    </div>
+                </div>
+
+                <div class="issue">
+                    <div class="issue-severity severity-med">Confusion</div>
+                    <div class="issue-content">
+                        <div class="issue-what">Search Brief form buried below a long FAQ section</div>
+                        <div class="issue-why">The main conversion action ("Submit Your Search Brief") sits below 8+ FAQ answers. By the time someone scrolls that far, they have either already left or forgotten what they came to do.</div>
+                        <div class="issue-fix">Put the brief form above the FAQ. The flow should be: Process, Guarantee, Results, "Ready? Submit Your Brief," then FAQ for anyone who still has questions.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SYSTEM-WIDE STRUCTURAL ISSUES -->
+        <!-- ============================================ -->
+        <div class="system-card">
+            <h2>System-Wide Structural Issues (All 5 Pages)</h2>
+
+            <div class="system-issue">
+                <div class="system-issue-title">1. No persistent "Revenue Execution System" navigation bar</div>
+                <div class="system-issue-desc">Every sub-page feels like its own standalone website. A visitor on the Coaching page has no idea it is step 3 of a 4-part system. Add a sticky sub-nav or breadcrumb: Diagnostic / Mastery / Coaching / Search.</div>
+            </div>
+
+            <div class="system-issue">
+                <div class="system-issue-title">2. No cross-page "Next Step" bridging</div>
+                <div class="system-issue-desc">Each page ends at its own footer. There is nothing like "Done with the Diagnostic? Your next step is Tech Sales Mastery." The pages do not move the visitor forward. They just end.</div>
+            </div>
+
+            <div class="system-issue">
+                <div class="system-issue-title">3. Footer nav links point to the current page or placeholder anchors</div>
+                <div class="system-issue-desc">Several footer links (About, Coaches, Framework, Advisory) redirect to the same page the visitor is already on, or go to "#". This looks broken. Every link needs to either work or be removed before launch.</div>
+            </div>
+
+            <div class="system-issue">
+                <div class="system-issue-title">4. No urgency or scarcity structures on any page</div>
+                <div class="system-issue-desc">No seat limits, no cohort deadlines, no "3 coaching slots left this quarter." Every CTA says the same thing: take your time. Enterprise buyers move faster when there is a constraint.</div>
+            </div>
+
+            <div class="system-issue">
+                <div class="system-issue-title">5. Mobile scroll depth is extreme</div>
+                <div class="system-issue-desc">The Mastery and Coaching pages are 15+ screen-heights on mobile. Without accordions, tabs, or collapsible sections, a mobile visitor will leave before they ever reach the CTA. The structure needs to compress on smaller screens.</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            BASIN &amp; ASSOCIATES // STRUCTURE AUDIT V1.0
+        </div>
+    </div>
+
+</body>
+</html>
