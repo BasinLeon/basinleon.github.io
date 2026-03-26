@@ -16,3 +16,4 @@
 | 2026-03-13 | AI Interview Platform Strategy | Antigravity | [[Nexus_AI_Interview_Platform_Strategy]] |
 | 2026-03-13 | Career Accolades & Metric Wins | Antigravity | [[Career_Accolades_And_Wins]] |
 | 2026-03-13 | Meeting Sync: Mock That Interview Demo | Antigravity | [[Meeting_Mock_That_Interview_Demo]] |
+| 2026-03-24 | NBC Proposal and Market Skills | Antigravity | [[Session - 2026-03-24 - NBC Proposal and Market Skills]] |
