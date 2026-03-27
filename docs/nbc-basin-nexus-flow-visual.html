@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NBC Activation Flow Visual | Leon Basin</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f6f1e8;
+            --paper: rgba(255, 255, 255, 0.82);
+            --paper-strong: #fffdf8;
+            --ink: #111216;
+            --muted: #5e626d;
+            --gold: #b8860b;
+            --gold-bright: #d4af37;
+            --gold-soft: rgba(184, 134, 11, 0.12);
+            --line: rgba(184, 134, 11, 0.18);
+            --line-ink: rgba(17, 18, 22, 0.08);
+            --shadow: 0 24px 56px rgba(17, 18, 22, 0.06);
+            --aqua: #0db6b3;
+            --slate: #1b1f2d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Outfit", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.12), transparent 22%),
+                radial-gradient(circle at 88% 12%, rgba(13, 182, 179, 0.10), transparent 18%),
+                linear-gradient(180deg, #faf6ef 0%, var(--cream) 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(17,18,22,0.022) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(17,18,22,0.022) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: radial-gradient(circle at center, black 44%, transparent 92%);
+        }
+
+        .shell {
+            width: min(1420px, calc(100vw - 42px));
+            margin: 28px auto;
+            padding: 26px;
+            border-radius: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            background: rgba(255, 250, 242, 0.72);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .topbar,
+        .hero,
+        .system-board,
+        .model-grid {
+            margin-bottom: 18px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .topbar-mark {
+            font-family: "Inter", sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--gold);
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.62);
+        }
+
+        .chip-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.55);
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.64rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+        }
+
+        .hero-card,
+        .hero-side,
+        .system-board,
+        .model-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.72);
+            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,250,242,0.92));
+            box-shadow: var(--shadow);
+        }
+
+        .hero-card,
+        .hero-side {
+            padding: 28px 28px 24px;
+        }
+
+        .label {
+            display: inline-flex;
+            margin-bottom: 16px;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .hero-card h1 {
+            margin: 0 0 14px;
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(2.9rem, 5vw, 4.6rem);
+            font-weight: 800;
+            line-height: 0.92;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            max-width: 10ch;
+        }
+
+        .hero-card h1 span {
+            color: var(--gold);
+            display: block;
+        }
+
+        .hero-card p,
+        .hero-side p,
+        .model-card p,
+        .board-copy p {
+            color: var(--muted);
+            line-height: 1.62;
+            font-size: 0.94rem;
+            font-family: "Inter", sans-serif;
+        }
+
+        .mini-proof-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .mini-proof {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(17,18,22,0.06);
+        }
+
+        .mini-proof strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.94rem;
+        }
+
+        .mini-proof span {
+            color: var(--muted);
+            font-size: 0.84rem;
+            line-height: 1.48;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 14px;
+            align-content: start;
+        }
+
+        .hero-side-panel {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 252, 247, 0.96);
+            border: 1px solid var(--line);
+        }
+
+        .hero-side-panel h2 {
+            margin: 0 0 8px;
+            font-family: "Inter", sans-serif;
+            font-size: 1.18rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .system-board {
+            padding: 26px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(252,247,239,0.96));
+        }
+
+        .board-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 22px;
+        }
+
+        .board-head h2 {
+            margin: 0 0 8px;
+            font-family: "Orbitron", sans-serif;
+            font-size: 1.72rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .flow-legend {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .legend-pill {
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.92);
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.56rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .flow-visual {
+            padding: 22px 16px 16px;
+            border-radius: 26px;
+            background:
+                linear-gradient(rgba(17,18,22,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(17,18,22,0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,242,233,0.98));
+            background-size: 32px 32px, 32px 32px, auto;
+            border: 1px solid rgba(17,18,22,0.06);
+            overflow-x: auto;
+        }
+
+        .flow-svg {
+            width: 100%;
+            min-width: 1200px;
+            display: block;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .model-card {
+            padding: 16px 16px 18px;
+        }
+
+        .model-card h3 {
+            margin: 0 0 14px;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.86rem;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .card-frame {
+            min-height: 200px;
+            border-radius: 20px;
+            border: 1px solid rgba(17,18,22,0.08);
+            background: linear-gradient(180deg, rgba(17,18,22,0.02), rgba(255,255,255,0.55));
+            display: grid;
+            place-items: center;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .card-frame.light {
+            background: linear-gradient(180deg, rgba(184,134,11,0.05), rgba(255,255,255,0.75));
+        }
+
+        .card-note {
+            margin: 14px 0 0;
+        }
+
+        .hud-shell,
+        .lecture-shell,
+        .console-shell,
+        .blueprint-shell,
+        .logic-shell,
+        .spec-shell {
+            position: relative;
+            width: 100%;
+            height: 176px;
+            border-radius: 18px;
+        }
+
+        .hud-shell,
+        .lecture-shell,
+        .console-shell,
+        .blueprint-shell {
+            background:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+                #121726;
+            background-size: 14px 14px, 14px 14px, auto;
+        }
+
+        .logic-shell,
+        .spec-shell {
+            background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(246,239,226,0.92));
+            border: 1px solid rgba(17,18,22,0.08);
+        }
+
+        .ring {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.45);
+            box-shadow: 0 0 0 18px rgba(212,175,55,0.05);
+            inset: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .rail {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.22), transparent);
+        }
+
+        .node {
+            position: absolute;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-family: "Inter", sans-serif;
+            font-size: 0.58rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #cad1db;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .node.gold {
+            color: #f1d77d;
+            border-color: rgba(212,175,55,0.22);
+        }
+
+        .site-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-top: 18px;
+            border-top: 1px solid rgba(17,18,22,0.08);
+            color: var(--muted);
+            font-family: "Inter", sans-serif;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1160px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .model-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .board-head {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .flow-legend {
+                justify-content: start;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .shell {
+                width: min(100vw - 20px, 100%);
+                margin: 10px auto;
+                padding: 14px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-card,
+            .hero-side,
+            .system-board,
+            .model-card {
+                border-radius: 22px;
+            }
+
+            .hero-card h1 {
+                font-size: 2.5rem;
+            }
+
+            .mini-proof-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="topbar">
+            <div class="topbar-mark">NBC Revenue Activation Visual // Basin::Nexus</div>
+            <div class="chip-row">
+                <div class="chip">Layer 1 Signal Refinery</div>
+                <div class="chip">Layer 2 Logic Gates</div>
+                <div class="chip">Layer 3 Execution Layer</div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <article class="hero-card">
+                <div class="label">NBC Post-Training Activation</div>
+                <h1>NBC::<span>Activation Flow</span></h1>
+                <p>This is the visual operating flow behind the NBC post-training layer. It captures demand, cleans the signal, checks what is real, and routes the right opportunities into action for the sales team.</p>
+                <div class="mini-proof-grid">
+                    <div class="mini-proof">
+                        <strong>Capture</strong>
+                        <span>Pull in buyer movement, market changes, intent activity, and inbound interest around digital demand.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Rules</strong>
+                        <span>Clean the records, score them, and apply simple logic so weak signals do not waste AE time.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Route</strong>
+                        <span>Send the right record to the right rep or operator with the next step attached.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Learn</strong>
+                        <span>Track what moved forward, what stalled, and feed that back into the routing rules.</span>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="hero-side">
+                <section class="hero-side-panel">
+                    <div class="label">Why This Matters</div>
+                    <h2>NBC needs activation, not more delay.</h2>
+                    <p>Training improves rep skill, but it does not fix slow intake, weak qualification, or handoff gaps. This visual shows the missing layer between signal and sales action.</p>
+                </section>
+                <section class="hero-side-panel">
+                    <div class="label">Core Translation</div>
+                    <h2>The system decides what deserves attention now.</h2>
+                    <p>The point is not more leads. The point is knowing what to ignore, what to review, and what to route fast while intent is still live.</p>
+                </section>
+            </aside>
+        </section>
+
+        <section class="system-board">
+            <div class="board-head">
+                <div class="board-copy">
+                    <div class="label">System Flow</div>
+                    <h2>How the NBC activation layer works.</h2>
+                    <p>Signals come in, get cleaned, pass through rules, and move into a queue only if they are worth acting on for the NBC team.</p>
+                </div>
+                <div class="flow-legend">
+                    <div class="legend-pill">01 Ingest</div>
+                    <div class="legend-pill">02 Refine</div>
+                    <div class="legend-pill">03 Check</div>
+                    <div class="legend-pill">04 Route</div>
+                </div>
+            </div>
+            <div class="flow-visual">
+                <svg class="flow-svg" viewBox="0 0 1340 520" role="img" aria-label="NBC activation flow from signal sources through refinery, logic, and execution">
+                    <defs>
+                        <linearGradient id="softFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+                            <stop offset="100%" stop-color="#f4ecdf" stop-opacity="0.98" />
+                        </linearGradient>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#111216" flood-opacity="0.08"/>
+                        </filter>
+                    </defs>
+
+                    <rect x="40" y="28" width="270" height="470" rx="28" fill="url(#softFill)" stroke="rgba(184,134,11,0.20)" filter="url(#shadow)"/>
+                    <text x="175" y="70" text-anchor="middle" font-family="Orbitron, sans-serif" font-size="10.5" letter-spacing="2.1" fill="#b8860b">SIGNAL SOURCES</text>
+
+                    <rect x="64" y="96" width="222" height="76" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="82" y="126" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#111216">Market Events</text>
+                    <text x="82" y="147" font-family="Inter, sans-serif" font-size="11.5" fill="#5e626d">
+                        <tspan x="82" dy="0">Funding, hiring,</tspan>
+                        <tspan x="82" dy="15">product launches</tspan>
+                    </text>
+
+                    <rect x="64" y="186" width="222" height="76" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="82" y="216" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#111216">Buyer Movement</text>
+                    <text x="82" y="237" font-family="Inter, sans-serif" font-size="11.5" fill="#5e626d">
+                        <tspan x="82" dy="0">Role changes, team growth,</tspan>
+                        <tspan x="82" dy="15">account shifts</tspan>
+                    </text>
+
+                    <rect x="64" y="276" width="222" height="76" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="82" y="306" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#111216">Intent Activity</text>
+                    <text x="82" y="327" font-family="Inter, sans-serif" font-size="11.5" fill="#5e626d">
+                        <tspan x="82" dy="0">Search, content touch,</tspan>
+                        <tspan x="82" dy="15">competitor patterns</tspan>
+                    </text>
+
+                    <rect x="64" y="366" width="222" height="102" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="82" y="396" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#111216">Data Ingest</text>
+                    <text x="82" y="420" font-family="Inter, sans-serif" font-size="11.5" fill="#5e626d">Mixed quality.</text>
+                    <text x="82" y="439" font-family="Inter, sans-serif" font-size="11.5" fill="#5e626d">Needs cleanup before use.</text>
+
+                    <rect x="370" y="78" width="270" height="370" rx="30" fill="#111521" stroke="rgba(212,175,55,0.36)" filter="url(#shadow)"/>
+                    <text x="505" y="118" text-anchor="middle" font-family="Orbitron, sans-serif" font-size="10.5" letter-spacing="1.9" fill="#f1d77d">LAYER 1 // SIGNAL REFINERY</text>
+                    <circle cx="505" cy="242" r="50" fill="none" stroke="rgba(212,175,55,0.34)" stroke-width="1.6"/>
+                    <circle cx="505" cy="242" r="24" fill="rgba(212,175,55,0.10)" stroke="rgba(212,175,55,0.4)" stroke-width="1.2"/>
+                    <text x="485" y="243" font-family="Orbitron, sans-serif" font-size="8.5" letter-spacing="0.8" fill="#f6f1e8">REFINE</text>
+                    <text x="466" y="258" font-family="Orbitron, sans-serif" font-size="8.5" letter-spacing="0.8" fill="#f6f1e8">NORMALIZE</text>
+
+                    <rect x="402" y="148" width="96" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="416" y="169" font-family="Inter, sans-serif" font-size="9.5" font-weight="600" fill="#f6f1e8">Entropy Filter</text>
+                    <rect x="512" y="148" width="96" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="530" y="169" font-family="Inter, sans-serif" font-size="9.5" font-weight="600" fill="#f6f1e8">Entity Clean</text>
+                    <rect x="396" y="304" width="104" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="422" y="325" font-family="Inter, sans-serif" font-size="9.5" font-weight="600" fill="#f6f1e8">Fit + Resolve</text>
+                    <rect x="524" y="304" width="98" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="548" y="325" font-family="Inter, sans-serif" font-size="9.5" font-weight="600" fill="#f6f1e8">Review Rule</text>
+                    <line x1="450" y1="182" x2="484" y2="212" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="560" y1="182" x2="526" y2="212" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="448" y1="304" x2="484" y2="274" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="560" y1="304" x2="526" y2="274" stroke="rgba(212,175,55,0.32)" />
+                    <text x="394" y="392" font-family="Inter, sans-serif" font-size="10.8" font-weight="500" fill="#d0d6de">
+                        <tspan x="394" dy="0">Turns messy signals into clean</tspan>
+                        <tspan x="394" dy="15">records before they hit the queue.</tspan>
+                    </text>
+
+                    <rect x="700" y="78" width="270" height="370" rx="30" fill="url(#softFill)" stroke="rgba(184,134,11,0.20)" filter="url(#shadow)"/>
+                    <text x="835" y="118" text-anchor="middle" font-family="Orbitron, sans-serif" font-size="10.5" letter-spacing="1.9" fill="#b8860b">LAYER 2 // LOGIC GATES</text>
+                    <rect x="742" y="140" width="186" height="46" rx="18" fill="#fefaf2" stroke="rgba(17,18,22,0.12)"/>
+                    <text x="784" y="168" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#111216">Score Signal</text>
+                    <path d="M820 196 L835 224 L850 196 Z" fill="#b8860b"/>
+                    <rect x="742" y="236" width="186" height="46" rx="18" fill="#fefaf2" stroke="rgba(17,18,22,0.12)"/>
+                    <text x="754" y="264" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#111216">Confidence Gate</text>
+                    <path d="M820 292 L835 320 L850 292 Z" fill="#b8860b"/>
+                    <path d="M835 334 L886 382 L784 382 Z" fill="rgba(184,134,11,0.03)" stroke="rgba(184,134,11,0.72)" stroke-width="2.4"/>
+                    <text x="835" y="376" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="800" fill="#111216">Route Now?</text>
+
+                    <rect x="1030" y="28" width="270" height="470" rx="28" fill="#151924" stroke="rgba(13,182,179,0.30)" filter="url(#shadow)"/>
+                    <text x="1165" y="70" text-anchor="middle" font-family="Orbitron, sans-serif" font-size="10.5" letter-spacing="1.9" fill="#81e0d8">LAYER 3 // EXECUTION LAYER</text>
+                    <rect x="1060" y="98" width="210" height="72" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1082" y="126" font-family="Inter, sans-serif" font-size="15.5" font-weight="800" fill="#f6f1e8">Priority Queue</text>
+                    <text x="1082" y="147" font-family="Inter, sans-serif" font-size="11.5" fill="#b8c2ce">What needs action now</text>
+
+                    <rect x="1060" y="188" width="96" height="86" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.20)"/>
+                    <text x="1108" y="218" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#f1d77d">NEXT STEP</text>
+                    <text x="1108" y="244" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#f6f1e8">Sequence</text>
+                    <text x="1108" y="264" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#b8c2ce">Outreach path</text>
+
+                    <rect x="1174" y="188" width="96" height="86" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.20)"/>
+                    <text x="1222" y="218" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#f1d77d">STATUS</text>
+                    <text x="1222" y="244" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#f6f1e8">Track</text>
+                    <text x="1222" y="264" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#b8c2ce">Owner + result</text>
+
+                    <rect x="1060" y="298" width="210" height="70" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1082" y="326" font-family="Inter, sans-serif" font-size="15.5" font-weight="800" fill="#f6f1e8">Operator Action</text>
+                    <text x="1082" y="344" font-family="Inter, sans-serif" font-size="11.2" fill="#b8c2ce">
+                        <tspan x="1082" dy="0">Email, call, intro,</tspan>
+                        <tspan x="1082" dy="15">monitor, or ignore</tspan>
+                    </text>
+
+                    <rect x="1060" y="388" width="210" height="74" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1082" y="416" font-family="Inter, sans-serif" font-size="15.5" font-weight="800" fill="#f6f1e8">Feedback Loop</text>
+                    <text x="1082" y="438" font-family="Inter, sans-serif" font-size="11.5" fill="#b8c2ce">Results go back into the rules</text>
+
+                    <path d="M322 216 L358 244 L322 272 Z" fill="#b8860b"/>
+                    <path d="M652 216 L688 244 L652 272 Z" fill="#b8860b"/>
+                    <path d="M982 216 L1018 244 L982 272 Z" fill="#b8860b"/>
+                    <path d="M1190 456 C1138 486, 1012 486, 882 472" stroke="#0db6b3" stroke-width="2.5" stroke-dasharray="8 8" fill="none"/>
+                    <text x="1036" y="516" text-anchor="middle" font-family="Orbitron, sans-serif" font-size="8.5" fill="#0db6b3" letter-spacing="1.1">RESULTS BACK INTO RULES</text>
+                </svg>
+            </div>
+        </section>
+
+        <section class="model-grid">
+            <article class="model-card">
+                <h3>Signal Intake Monitor</h3>
+                <div class="card-frame">
+                    <div class="hud-shell">
+                        <div class="rail" style="top: 22px;"></div>
+                        <div class="rail" style="bottom: 20px;"></div>
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 22px; left: 16px;">Sources</div>
+                        <div class="node" style="top: 30px; right: 18px;">Context</div>
+                        <div class="node" style="bottom: 28px; left: 24px;">ICP</div>
+                        <div class="node gold" style="bottom: 22px; right: 24px;">Route</div>
+                    </div>
+                </div>
+                <p class="card-note">Live intake view for signal capture, cleanup, and queue prep before routing.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Qualification Logic</h3>
+                <div class="card-frame light">
+                    <div class="logic-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="70" y="24" width="180" height="30" rx="10" fill="#fffdfa" stroke="#c7b894" stroke-width="1.8"/>
+                            <text x="160" y="43" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#3a3120">Normalize Data</text>
+                            <line x1="160" y1="54" x2="160" y2="78" stroke="#9f8d63" stroke-width="2.2"/>
+                            <rect x="70" y="80" width="180" height="30" rx="10" fill="#fffdfa" stroke="#c7b894" stroke-width="1.8"/>
+                            <text x="160" y="99" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#3a3120">Score Signal</text>
+                            <line x1="160" y1="108" x2="160" y2="130" stroke="#9f8d63" stroke-width="2.2"/>
+                            <path d="M160 130 L214 170 L160 210 L106 170 Z" fill="#fffcf5" stroke="#9f8d63" stroke-width="2.2"/>
+                            <text x="160" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3a3120">Context</text>
+                            <text x="160" y="186" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3a3120">Logic</text>
+                            <line x1="106" y1="170" x2="64" y2="170" stroke="#9f8d63" stroke-width="2.2"/>
+                            <line x1="214" y1="170" x2="256" y2="170" stroke="#9f8d63" stroke-width="2.2"/>
+                            <rect x="26" y="154" width="38" height="32" rx="8" fill="#fffdfa" stroke="#c7b894" stroke-width="1.8"/>
+                            <rect x="256" y="154" width="38" height="32" rx="8" fill="#fffdfa" stroke="#c7b894" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">Rule sheet for deciding what passes, what gets reviewed, and what gets dropped.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Routing Blueprint</h3>
+                <div class="card-frame">
+                    <div class="blueprint-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="12" y="12" width="296" height="196" rx="14" fill="#191d29" stroke="#2f3547"/>
+                            <rect x="42" y="78" width="52" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <rect x="118" y="78" width="62" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <circle cx="216" cy="99" r="20" fill="none" stroke="#d4af37" stroke-width="1.4"/>
+                            <rect x="252" y="78" width="32" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="94" y1="99" x2="118" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="180" y1="99" x2="196" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="236" y1="99" x2="252" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="216" y1="119" x2="216" y2="154" stroke="#b9bfd0" stroke-width="1.2"/>
+                            <rect x="180" y="154" width="72" height="24" fill="none" stroke="#b9bfd0" stroke-width="1.2"/>
+                            <line x1="42" y1="142" x2="284" y2="142" stroke="#3a4258" stroke-dasharray="5 5"/>
+                            <text x="20" y="30" font-family="JetBrains Mono, monospace" font-size="10" fill="#d9dce6">BASIN::NEXUS // FLOW BLUEPRINT</text>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">System map showing how a raw signal moves through intake, logic, and routing.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Activation Model [NBC Flow]</h3>
+                <div class="card-frame">
+                    <div class="lecture-shell">
+                        <div class="rail" style="top: 24px;"></div>
+                        <div class="rail" style="bottom: 22px;"></div>
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 28px; left: 18px;">Intent</div>
+                        <div class="node" style="top: 28px; right: 18px;">Trust</div>
+                        <div class="node" style="bottom: 24px; left: 20px;">Urgency</div>
+                        <div class="node gold" style="bottom: 24px; right: 18px;">Action</div>
+                    </div>
+                </div>
+                <p class="card-note">Working model for testing score thresholds, timing, and routing paths.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>AE Queue Interface</h3>
+                <div class="card-frame">
+                    <div class="console-shell">
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 26px; left: 22px;">Queue</div>
+                        <div class="node" style="top: 26px; right: 18px;">Ops</div>
+                        <div class="node" style="bottom: 22px; left: 20px;">Score</div>
+                        <div class="node gold" style="bottom: 22px; right: 22px;">Route</div>
+                        <div style="position:absolute; inset:18px; border:1px solid rgba(255,255,255,0.08); border-radius:18px;"></div>
+                    </div>
+                </div>
+                <p class="card-note">Queue view that shows priority, context, owner, and next step for action.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Signal-to-Pipeline Spec</h3>
+                <div class="card-frame light">
+                    <div class="spec-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="16" y="16" width="288" height="188" rx="16" fill="none" stroke="rgba(17,18,22,0.14)"/>
+                            <text x="28" y="36" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" fill="#4a4f5a">SECURED_SPEC</text>
+                            <rect x="68" y="86" width="28" height="28" fill="#fff" stroke="rgba(17,18,22,0.18)"/>
+                            <rect x="126" y="76" width="72" height="48" fill="#fff" stroke="rgba(17,18,22,0.22)"/>
+                            <rect x="236" y="84" width="30" height="30" fill="#fff" stroke="rgba(17,18,22,0.16)"/>
+                            <line x1="96" y1="100" x2="126" y2="100" stroke="rgba(17,18,22,0.28)" stroke-width="1.6"/>
+                            <line x1="198" y1="100" x2="236" y2="100" stroke="rgba(17,18,22,0.28)" stroke-width="1.6"/>
+                            <line x1="162" y1="124" x2="162" y2="164" stroke="rgba(17,18,22,0.22)" stroke-width="1.4"/>
+                            <rect x="144" y="164" width="36" height="24" fill="#fff" stroke="rgba(17,18,22,0.16)"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">Spec sheet for the flow so operations and leadership work from the same model.</p>
+            </article>
+        </section>
+
+        <footer class="site-footer">
+            <div>NBC Revenue Activation Visual</div>
+            <div>Signal -> Refinery -> Rules -> Queue -> Execution</div>
+            <div>Built For Demo</div>
+        </footer>
+    </main>
+</body>
+</html>
