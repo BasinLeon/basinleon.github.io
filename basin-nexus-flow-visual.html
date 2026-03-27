@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Basin::Nexus Flow Visual | Leon Basin</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f6f1e8;
+            --paper: rgba(255, 255, 255, 0.72);
+            --paper-strong: #fffdf8;
+            --ink: #111216;
+            --muted: #5e626d;
+            --gold: #b8860b;
+            --gold-bright: #d4af37;
+            --gold-soft: rgba(184, 134, 11, 0.12);
+            --line: rgba(184, 134, 11, 0.16);
+            --shadow: 0 28px 68px rgba(17, 18, 22, 0.08);
+            --aqua: #0db6b3;
+            --slate: #1b1f2d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Outfit", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.12), transparent 22%),
+                radial-gradient(circle at 88% 12%, rgba(13, 182, 179, 0.10), transparent 18%),
+                linear-gradient(180deg, #faf6ef 0%, var(--cream) 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(17,18,22,0.022) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(17,18,22,0.022) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: radial-gradient(circle at center, black 44%, transparent 92%);
+        }
+
+        .shell {
+            width: min(1420px, calc(100vw - 42px));
+            margin: 28px auto;
+            padding: 26px;
+            border-radius: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            background: rgba(255, 250, 242, 0.76);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .topbar,
+        .hero,
+        .system-board,
+        .model-grid {
+            margin-bottom: 18px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .topbar-mark {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold);
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.62);
+        }
+
+        .chip-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.55);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+        }
+
+        .hero-card,
+        .hero-side,
+        .system-board,
+        .model-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.72);
+            background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,250,242,0.86));
+            box-shadow: var(--shadow);
+        }
+
+        .hero-card,
+        .hero-side {
+            padding: 28px 28px 24px;
+        }
+
+        .label {
+            display: inline-flex;
+            margin-bottom: 16px;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .hero-card h1 {
+            margin: 0 0 14px;
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(2.8rem, 6vw, 5.7rem);
+            line-height: 0.92;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            max-width: 9ch;
+        }
+
+        .hero-card h1 span {
+            color: var(--gold);
+            display: block;
+        }
+
+        .hero-card p,
+        .hero-side p,
+        .model-card p,
+        .board-copy p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+
+        .mini-proof-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .mini-proof {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(17,18,22,0.06);
+        }
+
+        .mini-proof strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+        }
+
+        .mini-proof span {
+            color: var(--muted);
+            font-size: 0.87rem;
+            line-height: 1.5;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 14px;
+            align-content: start;
+        }
+
+        .hero-side-panel {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(248, 242, 232, 0.82);
+            border: 1px solid var(--line);
+        }
+
+        .hero-side-panel h2 {
+            margin: 0 0 8px;
+            font-size: 1.3rem;
+            letter-spacing: -0.03em;
+        }
+
+        .system-board {
+            padding: 26px;
+        }
+
+        .board-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 22px;
+        }
+
+        .board-head h2 {
+            margin: 0 0 8px;
+            font-size: 2rem;
+            letter-spacing: -0.04em;
+        }
+
+        .flow-legend {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .legend-pill {
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.8);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.66rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .flow-visual {
+            padding: 24px 18px 18px;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at center, rgba(212,175,55,0.08), transparent 42%),
+                linear-gradient(180deg, rgba(255,255,255,0.86), rgba(250,245,236,0.96));
+            border: 1px solid var(--line);
+        }
+
+        .flow-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .model-card {
+            padding: 18px 18px 16px;
+        }
+
+        .model-card h3 {
+            margin: 0 0 14px;
+            font-family: "Orbitron", sans-serif;
+            font-size: 1rem;
+            line-height: 1.35;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            min-height: 2.8em;
+        }
+
+        .card-frame {
+            margin-bottom: 16px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(17,18,22,0.08);
+            background: linear-gradient(180deg, #161925, #0f1220);
+            aspect-ratio: 1.28 / 0.86;
+            position: relative;
+        }
+
+        .card-frame.light {
+            background: linear-gradient(180deg, #f8f7f3, #ece8de);
+        }
+
+        .hud-shell,
+        .console-shell,
+        .lecture-shell,
+        .spec-shell,
+        .logic-shell,
+        .blueprint-shell {
+            position: absolute;
+            inset: 0;
+        }
+
+        .hud-shell::before,
+        .console-shell::before,
+        .lecture-shell::before,
+        .spec-shell::before,
+        .logic-shell::before,
+        .blueprint-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        .hud-shell .ring,
+        .console-shell .ring,
+        .lecture-shell .ring {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            width: 68px;
+            height: 68px;
+            margin-left: -34px;
+            margin-top: -34px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.42);
+            box-shadow: 0 0 0 16px rgba(212,175,55,0.06);
+        }
+
+        .hud-shell .node,
+        .console-shell .node,
+        .lecture-shell .node {
+            position: absolute;
+            padding: 5px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(212,175,55,0.28);
+            background: rgba(255,255,255,0.06);
+            color: #f6f1e8;
+            font-size: 0.58rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .hud-shell .node.gold,
+        .console-shell .node.gold,
+        .lecture-shell .node.gold {
+            color: #f1d77d;
+        }
+
+        .hud-shell .rail,
+        .console-shell .rail,
+        .lecture-shell .rail {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.28), transparent);
+        }
+
+        .logic-shell svg,
+        .blueprint-shell svg,
+        .spec-shell svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .card-note {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .footline {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(17,18,22,0.08);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        @media (max-width: 1180px) {
+            .hero,
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .board-head {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .flow-legend {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .shell {
+                width: min(100vw - 18px, 100%);
+                margin: 10px auto;
+                padding: 14px;
+                border-radius: 24px;
+            }
+
+            .hero-card,
+            .hero-side,
+            .system-board,
+            .model-card {
+                padding: 18px;
+                border-radius: 22px;
+            }
+
+            .hero-card h1 {
+                font-size: 2.5rem;
+            }
+
+            .mini-proof-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="topbar">
+            <div class="topbar-mark">BasinLeon Platform Visual // Basin::Nexus</div>
+            <div class="chip-row">
+                <div class="chip">Layer 1 Signal Refinery</div>
+                <div class="chip">Layer 2 Logic Gates</div>
+                <div class="chip">Layer 3 Actuator</div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <article class="hero-card">
+                <div class="label">Operating Models</div>
+                <h1>Basin::<span>Nexus Flow</span></h1>
+                <p>Basin::Nexus is the operating system behind the stack. It sources, scores, sequences, and tracks from raw signal to closed deal by forcing noisy market inputs through a Signal Refinery, Logic Gates, and an Actuator layer that tells the operator what deserves action now.</p>
+                <div class="mini-proof-grid">
+                    <div class="mini-proof">
+                        <strong>Capture</strong>
+                        <span>Raw events, account movement, role changes, funding, intent shifts, and buyer behavior signals.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Logic Gates</strong>
+                        <span>Normalize, score, and apply context logic so weak signals do not get mistaken for actionable opportunities.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Actuate</strong>
+                        <span>Push the right opportunity, with the right framing, to the right operator or seller at the right moment.</span>
+                    </div>
+                    <div class="mini-proof">
+                        <strong>Compound</strong>
+                        <span>Each interaction teaches the system which signals convert, which ones stall, and where the next leverage sits.</span>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="hero-side">
+                <section class="hero-side-panel">
+                    <div class="label">Why This Matters</div>
+                    <h2>From forecast entropy to clean operator action.</h2>
+                    <p>Most teams stop at sourcing and enrichment. Basin::Nexus adds the interpretation layer that reduces entropy and upgrades routing quality.</p>
+                </section>
+                <section class="hero-side-panel">
+                    <div class="label">Core Translation</div>
+                    <h2>The system decides what deserves human attention.</h2>
+                    <p>That is the moat: not gathering more data, but knowing what to ignore, what to escalate for human review, and what to route into predictive action.</p>
+                </section>
+            </aside>
+        </section>
+
+        <section class="system-board">
+            <div class="board-head">
+                <div class="board-copy">
+                    <div class="label">System Flow</div>
+                    <h2>How Basin::Nexus converts noise into pipeline.</h2>
+                    <p>The logic chain below follows your own architecture language: source signals, refine them, run them through logic gates, decide confidence, and route validated outputs into execution.</p>
+                </div>
+                <div class="flow-legend">
+                    <div class="legend-pill">01 Ingest</div>
+                    <div class="legend-pill">02 Refine</div>
+                    <div class="legend-pill">03 Validate</div>
+                    <div class="legend-pill">04 Actuate</div>
+                </div>
+            </div>
+            <div class="flow-visual">
+                <svg class="flow-svg" viewBox="0 0 1340 520" role="img" aria-label="Basin Nexus flow from signal sources through refinery, logic, and execution">
+                    <defs>
+                        <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#b8860b" />
+                            <stop offset="100%" stop-color="#d4af37" />
+                        </linearGradient>
+                        <linearGradient id="softFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+                            <stop offset="100%" stop-color="#f4ecdf" stop-opacity="0.98" />
+                        </linearGradient>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#111216" flood-opacity="0.08"/>
+                        </filter>
+                        <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+                            <path d="M0,0 L14,7 L0,14 z" fill="#b8860b"></path>
+                        </marker>
+                    </defs>
+
+                    <rect x="24" y="28" width="252" height="470" rx="28" fill="url(#softFill)" stroke="rgba(184,134,11,0.20)" filter="url(#shadow)"/>
+                    <text x="50" y="70" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2.5" fill="#b8860b">SIGNAL SOURCES</text>
+
+                    <rect x="50" y="96" width="200" height="72" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="68" y="126" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Market Events</text>
+                    <text x="68" y="147" font-family="Outfit, sans-serif" font-size="13" fill="#5e626d">Funding, hiring, product launches</text>
+
+                    <rect x="50" y="184" width="200" height="72" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="68" y="214" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Buyer Movement</text>
+                    <text x="68" y="235" font-family="Outfit, sans-serif" font-size="13" fill="#5e626d">Role changes, team growth, account shifts</text>
+
+                    <rect x="50" y="272" width="200" height="72" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="68" y="302" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Intent Activity</text>
+                    <text x="68" y="323" font-family="Outfit, sans-serif" font-size="13" fill="#5e626d">Search, content touch, competitor patterns</text>
+
+                    <rect x="50" y="360" width="200" height="96" rx="18" fill="#fff" stroke="rgba(17,18,22,0.08)"/>
+                    <text x="68" y="390" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Data Ingest</text>
+                    <text x="68" y="413" font-family="Outfit, sans-serif" font-size="13" fill="#5e626d">High volume. Mixed quality.</text>
+                    <text x="68" y="434" font-family="Outfit, sans-serif" font-size="13" fill="#5e626d">Needs refinement before action.</text>
+
+                    <rect x="334" y="78" width="298" height="370" rx="30" fill="#111521" stroke="rgba(212,175,55,0.36)" filter="url(#shadow)"/>
+                    <text x="366" y="118" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2.5" fill="#f1d77d">LAYER 1 // SIGNAL REFINERY</text>
+                    <circle cx="483" cy="244" r="54" fill="none" stroke="rgba(212,175,55,0.34)" stroke-width="1.6"/>
+                    <circle cx="483" cy="244" r="28" fill="rgba(212,175,55,0.10)" stroke="rgba(212,175,55,0.4)" stroke-width="1.2"/>
+                    <text x="462" y="246" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">REFINE</text>
+                    <text x="445" y="262" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">NORMALIZE</text>
+
+                    <rect x="366" y="150" width="92" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="378" y="171" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">Entropy Filter</text>
+                    <rect x="510" y="150" width="92" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="524" y="171" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">Entity Clean</text>
+                    <rect x="356" y="304" width="108" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="374" y="325" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">Fit + Resolve</text>
+                    <rect x="500" y="304" width="112" height="34" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(212,175,55,0.24)"/>
+                    <text x="510" y="325" font-family="JetBrains Mono, monospace" font-size="10" fill="#f6f1e8">Operator Review Logic</text>
+                    <line x1="412" y1="184" x2="452" y2="214" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="556" y1="184" x2="515" y2="214" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="410" y1="304" x2="452" y2="274" stroke="rgba(212,175,55,0.32)" />
+                    <line x1="556" y1="304" x2="515" y2="274" stroke="rgba(212,175,55,0.32)" />
+                    <text x="366" y="392" font-family="Outfit, sans-serif" font-size="15" fill="#d0d6de">Turns messy signal streams into clean candidates before any predictive action fires.</text>
+
+                    <rect x="690" y="78" width="282" height="370" rx="30" fill="url(#softFill)" stroke="rgba(184,134,11,0.20)" filter="url(#shadow)"/>
+                    <text x="720" y="118" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2.5" fill="#b8860b">LAYER 2 // LOGIC GATES</text>
+                    <rect x="740" y="144" width="182" height="48" rx="18" fill="#fefaf2" stroke="rgba(17,18,22,0.12)"/>
+                    <text x="786" y="173" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Score Signal</text>
+                    <line x1="831" y1="192" x2="831" y2="224" stroke="url(#goldStroke)" stroke-width="2" marker-end="url(#arrow)"/>
+                    <rect x="740" y="232" width="182" height="48" rx="18" fill="#fefaf2" stroke="rgba(17,18,22,0.12)"/>
+                    <text x="756" y="261" font-family="Orbitron, sans-serif" font-size="18" fill="#111216">Confidence Gate</text>
+                    <line x1="831" y1="280" x2="831" y2="312" stroke="url(#goldStroke)" stroke-width="2" marker-end="url(#arrow)"/>
+                    <path d="M831 320 L887 372 L775 372 Z" fill="#fff9ef" stroke="rgba(184,134,11,0.36)" stroke-width="2"/>
+                    <text x="780" y="369" font-family="JetBrains Mono, monospace" font-size="11" fill="#111216">Predictive Routing?</text>
+
+                    <rect x="1018" y="28" width="298" height="470" rx="28" fill="#151924" stroke="rgba(13,182,179,0.30)" filter="url(#shadow)"/>
+                    <text x="1048" y="70" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2.5" fill="#81e0d8">LAYER 3 // ACTUATOR</text>
+                    <rect x="1048" y="98" width="238" height="74" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1072" y="126" font-family="Orbitron, sans-serif" font-size="18" fill="#f6f1e8">Priority Queue</text>
+                    <text x="1072" y="148" font-family="Outfit, sans-serif" font-size="13" fill="#b8c2ce">What deserves action now</text>
+
+                    <rect x="1048" y="190" width="112" height="86" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.20)"/>
+                    <text x="1070" y="220" font-family="JetBrains Mono, monospace" font-size="10" fill="#f1d77d">PLAY</text>
+                    <text x="1070" y="244" font-family="Orbitron, sans-serif" font-size="17" fill="#f6f1e8">Sequence</text>
+                    <text x="1070" y="264" font-family="Outfit, sans-serif" font-size="12" fill="#b8c2ce">Narrative route</text>
+
+                    <rect x="1174" y="190" width="112" height="86" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.20)"/>
+                    <text x="1196" y="220" font-family="JetBrains Mono, monospace" font-size="10" fill="#f1d77d">PLAY</text>
+                    <text x="1196" y="244" font-family="Orbitron, sans-serif" font-size="17" fill="#f6f1e8">Track</text>
+                    <text x="1180" y="264" font-family="Outfit, sans-serif" font-size="12" fill="#b8c2ce">Feedback + ownership</text>
+
+                    <rect x="1048" y="294" width="238" height="72" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1072" y="322" font-family="Orbitron, sans-serif" font-size="18" fill="#f6f1e8">Operator Action</text>
+                    <text x="1072" y="344" font-family="Outfit, sans-serif" font-size="13" fill="#b8c2ce">Email, call, intro, monitor, or ignore</text>
+
+                    <rect x="1048" y="384" width="238" height="74" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(13,182,179,0.22)"/>
+                    <text x="1072" y="412" font-family="Orbitron, sans-serif" font-size="18" fill="#f6f1e8">Feedback Loop</text>
+                    <text x="1072" y="434" font-family="Outfit, sans-serif" font-size="13" fill="#b8c2ce">Validated outcomes return to scoring logic</text>
+
+                    <path d="M250 244 C290 244, 308 244, 334 244" stroke="url(#goldStroke)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+                    <path d="M632 244 C660 244, 668 244, 690 244" stroke="url(#goldStroke)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+                    <path d="M972 244 C994 244, 1002 244, 1018 244" stroke="url(#goldStroke)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+                    <path d="M1168 458 C1092 514, 862 514, 830 468" stroke="#0db6b3" stroke-width="3" stroke-dasharray="8 8" fill="none" marker-end="url(#arrow)"/>
+                    <text x="970" y="500" font-family="JetBrains Mono, monospace" font-size="11" fill="#0db6b3" letter-spacing="1.2">LEARNING LOOP BACK INTO LOGIC</text>
+                </svg>
+            </div>
+        </section>
+
+        <section class="model-grid">
+            <article class="model-card">
+                <h3>Signal Refinery Monitor</h3>
+                <div class="card-frame">
+                    <div class="hud-shell">
+                        <div class="rail" style="top: 22px;"></div>
+                        <div class="rail" style="bottom: 20px;"></div>
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 22px; left: 16px;">Sources</div>
+                        <div class="node" style="top: 30px; right: 18px;">Context</div>
+                        <div class="node" style="bottom: 28px; left: 24px;">ICP</div>
+                        <div class="node gold" style="bottom: 22px; right: 24px;">Route</div>
+                    </div>
+                </div>
+                <p class="card-note">Python-native telemetry surface for real-time signal extraction, normalization, and routing readiness.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Autonomous Logic</h3>
+                <div class="card-frame light">
+                    <div class="logic-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="72" y="24" width="176" height="30" rx="10" fill="#ffffff" stroke="#b8b2a5"/>
+                            <text x="110" y="43" font-family="JetBrains Mono, monospace" font-size="11" fill="#111216">Normalize Data</text>
+                            <line x1="160" y1="54" x2="160" y2="78" stroke="#8b826c" stroke-width="2"/>
+                            <rect x="74" y="80" width="172" height="28" rx="10" fill="#ffffff" stroke="#b8b2a5"/>
+                            <text x="111" y="98" font-family="JetBrains Mono, monospace" font-size="11" fill="#111216">Score Signal</text>
+                            <line x1="160" y1="108" x2="160" y2="130" stroke="#8b826c" stroke-width="2"/>
+                            <path d="M160 130 L214 170 L160 210 L106 170 Z" fill="#fefaf2" stroke="#8b826c" stroke-width="2"/>
+                            <text x="131" y="172" font-family="JetBrains Mono, monospace" font-size="10" fill="#111216">Context</text>
+                            <text x="132" y="186" font-family="JetBrains Mono, monospace" font-size="10" fill="#111216">Logic</text>
+                            <line x1="106" y1="170" x2="56" y2="170" stroke="#8b826c" stroke-width="2"/>
+                            <line x1="214" y1="170" x2="264" y2="170" stroke="#8b826c" stroke-width="2"/>
+                            <rect x="18" y="154" width="38" height="32" rx="8" fill="#ffffff" stroke="#b8b2a5"/>
+                            <rect x="264" y="154" width="38" height="32" rx="8" fill="#ffffff" stroke="#b8b2a5"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">Engineering schematic for the decision tree that separates meaningful signal from false positives.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Proprietary IP Blueprint</h3>
+                <div class="card-frame">
+                    <div class="blueprint-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="12" y="12" width="296" height="196" rx="14" fill="#191d29" stroke="#2f3547"/>
+                            <rect x="42" y="78" width="52" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <rect x="118" y="78" width="62" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <circle cx="216" cy="99" r="20" fill="none" stroke="#d4af37" stroke-width="1.4"/>
+                            <rect x="252" y="78" width="32" height="42" fill="none" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="94" y1="99" x2="118" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="180" y1="99" x2="196" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="236" y1="99" x2="252" y2="99" stroke="#b9bfd0" stroke-width="1.4"/>
+                            <line x1="216" y1="119" x2="216" y2="154" stroke="#b9bfd0" stroke-width="1.2"/>
+                            <rect x="180" y="154" width="72" height="24" fill="none" stroke="#b9bfd0" stroke-width="1.2"/>
+                            <line x1="42" y1="142" x2="284" y2="142" stroke="#3a4258" stroke-dasharray="5 5"/>
+                            <text x="20" y="30" font-family="JetBrains Mono, monospace" font-size="10" fill="#d9dce6">BASIN::NEXUS // FLOW BLUEPRINT</text>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">System architecture view of how raw signal passes through interpretation and into predictive routing.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Lecture Model [GTM Arch Live]</h3>
+                <div class="card-frame">
+                    <div class="lecture-shell">
+                        <div class="rail" style="top: 24px;"></div>
+                        <div class="rail" style="bottom: 22px;"></div>
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 28px; left: 18px;">Intent</div>
+                        <div class="node" style="top: 28px; right: 18px;">Trust</div>
+                        <div class="node" style="bottom: 24px; left: 20px;">Urgency</div>
+                        <div class="node gold" style="bottom: 24px; right: 18px;">Action</div>
+                    </div>
+                </div>
+                <p class="card-note">Interactive teaching surface for score logic, action thresholds, architecture trace, and live experiments.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Execution Console Interface</h3>
+                <div class="card-frame">
+                    <div class="console-shell">
+                        <div class="ring"></div>
+                        <div class="node gold" style="top: 26px; left: 22px;">Queue</div>
+                        <div class="node" style="top: 26px; right: 18px;">Ops</div>
+                        <div class="node" style="bottom: 22px; left: 20px;">Score</div>
+                        <div class="node gold" style="bottom: 22px; right: 22px;">Route</div>
+                        <div style="position:absolute; inset:18px; border:1px solid rgba(255,255,255,0.08); border-radius:18px;"></div>
+                    </div>
+                </div>
+                <p class="card-note">The orchestration surface where the operator sees priority, context, and the next best move.</p>
+            </article>
+
+            <article class="model-card">
+                <h3>Signal-to-Prediction Spec</h3>
+                <div class="card-frame light">
+                    <div class="spec-shell">
+                        <svg viewBox="0 0 320 220" aria-hidden="true">
+                            <rect x="22" y="24" width="274" height="172" rx="16" fill="#f7f5ee" stroke="#bdb5a6"/>
+                            <rect x="126" y="64" width="68" height="54" fill="none" stroke="#8f8775" stroke-width="1.6"/>
+                            <path d="M92 90 H126 M194 90 H228" stroke="#8f8775" stroke-width="1.6"/>
+                            <path d="M160 118 V154" stroke="#8f8775" stroke-width="1.6"/>
+                            <rect x="64" y="76" width="28" height="28" fill="none" stroke="#bdb5a6"/>
+                            <rect x="228" y="76" width="28" height="28" fill="none" stroke="#bdb5a6"/>
+                            <rect x="142" y="154" width="36" height="20" fill="none" stroke="#bdb5a6"/>
+                            <text x="32" y="46" font-family="JetBrains Mono, monospace" font-size="10" fill="#111216">SECURED_SPEC</text>
+                        </svg>
+                    </div>
+                </div>
+                <p class="card-note">Formal architecture specification that keeps operators, engineers, and leadership aligned on one signal-to-prediction model.</p>
+            </article>
+        </section>
+
+        <section class="footline">
+            <div>BasinLeon Platform Visual</div>
+            <div>Signal -> Refinery -> Logic Gates -> Actuator -> Operator Action</div>
+            <div>Prepared For Demo And Explanation</div>
+        </section>
+    </main>
+</body>
+</html>
