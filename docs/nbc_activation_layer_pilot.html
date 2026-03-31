@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NBC Universal | Revenue Activation Layer Pilot</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4efe5;
+            --surface: rgba(255, 255, 255, 0.82);
+            --surface-strong: #fffdf9;
+            --ink: #14253c;
+            --muted: #5d6b7b;
+            --accent: #ad7b21;
+            --accent-strong: #8a6317;
+            --line: rgba(20, 37, 60, 0.12);
+            --shadow: 0 30px 70px rgba(20, 37, 60, 0.14);
+            --gradient: radial-gradient(circle at top left, rgba(173, 123, 33, 0.22), transparent 32%), linear-gradient(135deg, #18283d 0%, #101e2f 55%, #192f46 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(173, 123, 33, 0.12), transparent 30%),
+                linear-gradient(180deg, #f7f2ea 0%, #f3eee6 38%, #efe8de 100%);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 14px;
+            z-index: 20;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            background: rgba(16, 30, 47, 0.84);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 22px 50px rgba(16, 30, 47, 0.22);
+        }
+
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 16px 22px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .badge {
+            width: fit-content;
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brand h1 {
+            color: #fff9ef;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .brand p {
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.84rem;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            color: #fff5df;
+        }
+
+        .nav-cta {
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #d7a03f 0%, #b78227 100%);
+            color: #1a2530;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(183, 130, 39, 0.28);
+        }
+
+        .hero {
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 34px;
+            background: var(--gradient);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+            gap: 34px;
+            padding: 56px;
+            align-items: stretch;
+        }
+
+        .eyebrow {
+            margin-bottom: 18px;
+            color: rgba(255, 245, 223, 0.76);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .hero h2 {
+            max-width: 12ch;
+            margin-bottom: 22px;
+            color: #fffaf1;
+            font-size: clamp(2.8rem, 5vw, 5rem);
+            line-height: 0.94;
+            font-weight: 600;
+            letter-spacing: -0.06em;
+        }
+
+        .hero h2 span {
+            display: block;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            color: #f1cf87;
+        }
+
+        .hero-copy {
+            max-width: 700px;
+            margin-bottom: 28px;
+            color: rgba(255, 250, 241, 0.82);
+            font-size: 1.08rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #d7a03f 0%, #b78227 100%);
+            color: #1a2530;
+            box-shadow: 0 16px 30px rgba(173, 123, 33, 0.28);
+        }
+
+        .secondary-btn {
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #fff7e7;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .primary-btn:hover,
+        .secondary-btn:hover,
+        .nav-cta:hover {
+            transform: translateY(-1px);
+        }
+
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .hero-stat {
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-stat strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #fffaf1;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-stat span {
+            color: rgba(255, 245, 223, 0.72);
+            font-size: 0.84rem;
+        }
+
+        .hero-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .hero-card,
+        .section-card,
+        .cta-card {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+        }
+
+        .hero-card {
+            padding: 24px 24px 22px;
+            color: #fff9ef;
+        }
+
+        .card-kicker {
+            margin-bottom: 10px;
+            color: rgba(255, 245, 223, 0.62);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .hero-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.22rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-card p {
+            color: rgba(255, 248, 236, 0.76);
+            font-size: 0.94rem;
+        }
+
+        .hero-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-list-item {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-list-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #fffaf1;
+            font-size: 0.94rem;
+        }
+
+        .hero-list-item span {
+            color: rgba(255, 248, 236, 0.7);
+            font-size: 0.84rem;
+        }
+
+        main {
+            padding: 40px 0 80px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 28px;
+            margin-top: 30px;
+        }
+
+        .section-card {
+            padding: 30px;
+            background: rgba(255, 253, 249, 0.86);
+            border: 1px solid rgba(20, 37, 60, 0.08);
+            box-shadow: 0 18px 40px rgba(20, 37, 60, 0.08);
+        }
+
+        .section-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.7rem;
+            letter-spacing: -0.04em;
+        }
+
+        .section-card p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 16px;
+            color: var(--accent-strong);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.74rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .mini-card {
+            padding: 18px;
+            border-radius: 20px;
+            background: var(--surface-strong);
+            border: 1px solid rgba(20, 37, 60, 0.08);
+        }
+
+        .mini-card strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .mini-card p,
+        .mini-card span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .flow {
+            display: grid;
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .flow-step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            padding: 18px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, #fffdf9 0%, #f8f3ec 100%);
+            border: 1px solid rgba(20, 37, 60, 0.08);
+        }
+
+        .flow-step .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #102134;
+            color: #f6d390;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .flow-step h4 {
+            margin-bottom: 5px;
+            font-size: 1.02rem;
+            letter-spacing: -0.02em;
+        }
+
+        .flow-step p {
+            font-size: 0.93rem;
+        }
+
+        .sidebar-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .sidebar-item {
+            padding: 16px 18px;
+            border-left: 3px solid var(--accent);
+            border-radius: 0 16px 16px 0;
+            background: rgba(173, 123, 33, 0.08);
+        }
+
+        .sidebar-item strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.94rem;
+        }
+
+        .pilot-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .pilot-box {
+            padding: 16px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #fffdf9 0%, #f8f3ec 100%);
+            border: 1px solid rgba(20, 37, 60, 0.08);
+        }
+
+        .pilot-box strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pilot-box span {
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        .cta-card {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+            gap: 24px;
+            padding: 32px;
+            background: linear-gradient(145deg, #13263d 0%, #102033 48%, #162d45 100%);
+            color: #fff9ef;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+
+        .cta-card h3 {
+            margin-bottom: 12px;
+            font-size: 2rem;
+            letter-spacing: -0.05em;
+        }
+
+        .cta-card p {
+            color: rgba(255, 247, 231, 0.78);
+        }
+
+        .cta-points {
+            display: grid;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .cta-point {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cta-point strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #fffaf1;
+            font-size: 0.96rem;
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        label {
+            display: grid;
+            gap: 7px;
+            font-size: 0.84rem;
+            color: rgba(255, 247, 231, 0.74);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fffefb;
+            font: inherit;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 247, 231, 0.42);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            border: none;
+            cursor: pointer;
+            min-height: 52px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #d7a03f 0%, #b78227 100%);
+            color: #1a2530;
+            font-size: 0.96rem;
+            font-weight: 700;
+        }
+
+        .form-note,
+        .success-message {
+            font-size: 0.84rem;
+            color: rgba(255, 247, 231, 0.66);
+        }
+
+        .success-message {
+            display: none;
+            color: #f6d390;
+        }
+
+        footer {
+            margin-top: 24px;
+            padding: 0 4px;
+            color: rgba(20, 37, 60, 0.56);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1100px) {
+            .hero-grid,
+            .content-grid,
+            .cta-card {
+                grid-template-columns: 1fr;
+            }
+
+            .pilot-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page-shell {
+                padding: 16px;
+            }
+
+            .topbar-inner,
+            .hero-grid,
+            .section-card,
+            .cta-card {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero-grid {
+                padding-top: 34px;
+                padding-bottom: 34px;
+            }
+
+            .hero h2 {
+                max-width: none;
+            }
+
+            .hero-meta,
+            .two-col,
+            .pilot-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .topbar-inner {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="brand">
+                    <div class="badge">Proposal Microsite // NBC Universal</div>
+                    <h1>Revenue Activation Layer Pilot</h1>
+                    <p>Prepared for Kevin Keyes, Jeff Wynne, and NBC LA Sales Leadership</p>
+                </div>
+                <div class="nav">
+                    <a href="#gap">The Gap</a>
+                    <a href="#flow">Pilot Flow</a>
+                    <a href="#pilot">Pilot Scope</a>
+                    <a href="#walkthrough" class="nav-cta">Request Pilot Walkthrough</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow">Post-Training Digital Pipeline Activation</div>
+                    <h2>Make training <span>show up</span> in pipeline.</h2>
+                    <p class="hero-copy">
+                        NBC's proposal already addresses diagnostic, mastery, and coaching. This layer comes after that. It gives the Los Angeles team an additional source of qualified digital opportunities, routes them into the current sales motion, and proves whether the model should scale before NBC changes any internal systems.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="primary-btn" href="#walkthrough">Request Pilot Walkthrough</a>
+                        <a class="secondary-btn" href="#pilot">See LA Pilot Scope</a>
+                    </div>
+                    <div class="hero-meta">
+                        <div class="hero-stat">
+                            <strong>21</strong>
+                            <span>Account Executives already inside the broader proposal flow</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>LA-first</strong>
+                            <span>One-market pilot before any wider rollout</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>No rebuild</strong>
+                            <span>Current CRM, sellers, and reporting stay intact</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-rail">
+                    <div class="hero-card">
+                        <div class="card-kicker">Why this exists</div>
+                        <h3>Training improves readiness. It does not guarantee flow.</h3>
+                        <p>
+                            The risk after enablement is simple: the team is sharper, but qualified digital opportunities still enter too slowly, too broadly, or too late. This pilot fixes the handoff zone between readiness and live revenue motion.
+                        </p>
+                    </div>
+
+                    <div class="hero-card">
+                        <div class="card-kicker">What stays intact</div>
+                        <div class="hero-list">
+                            <div class="hero-list-item">
+                                <strong>NBC keeps the current sales system</strong>
+                                <span>This starts as an external lead-generation and refinement layer, not a CRM replacement.</span>
+                            </div>
+                            <div class="hero-list-item">
+                                <strong>NBC keeps seller ownership</strong>
+                                <span>Qualified opportunities still route to the right AE, market owner, or sales leader.</span>
+                            </div>
+                            <div class="hero-list-item">
+                                <strong>NBC proves it with a baseline comparison</strong>
+                                <span>Leadership can compare quality, response speed, and downstream progression before expanding scope.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main>
+            <div class="content-grid">
+                <section class="section-card" id="gap">
+                    <div class="section-label">The Gap After Training</div>
+                    <h3>The issue is not effort. It is routing, timing, and fit.</h3>
+                    <p>
+                        NBC is asking sellers to move from linear inventory conversations to digital solution selling. The broader TalSmart engagement is designed to improve readiness, confidence, and execution behavior. The activation layer solves the next problem: making sure higher-fit digital opportunities reach the right seller while intent is still live.
+                    </p>
+                    <div class="two-col">
+                        <div class="mini-card">
+                            <strong>What breaks today</strong>
+                            <p>Interest arrives through inbound and outbound channels, but quality and urgency are inconsistent. Stronger reps still spend time sorting weak opportunities.</p>
+                        </div>
+                        <div class="mini-card">
+                            <strong>What this pilot changes</strong>
+                            <p>NBC gets an additional, externally managed layer that identifies target buyers, filters them against agreed priorities, and hands over better opportunities faster.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="section-card">
+                    <div class="section-label">Non-Disruption Rules</div>
+                    <h3>Start outside the system. Earn the right to go deeper later.</h3>
+                    <p>
+                        This matches the direction in the Jassi syncs: keep the first engagement easy to buy, easy to measure, and easy to stop if the signal is weak.
+                    </p>
+                    <div class="sidebar-list">
+                        <div class="sidebar-item">
+                            <strong>No immediate internal integration</strong>
+                            <span>The pilot can run alongside current workflows and feed approved leads into the existing process.</span>
+                        </div>
+                        <div class="sidebar-item">
+                            <strong>No immediate headcount request</strong>
+                            <span>The value proposition is cleaner opportunity flow, not another layer of human coordination.</span>
+                        </div>
+                        <div class="sidebar-item">
+                            <strong>No giant transformation ask on day one</strong>
+                            <span>Leadership sees one market, one pilot, one benchmark, then decides whether the model deserves a wider deployment.</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="content-grid">
+                <section class="section-card" id="flow">
+                    <div class="section-label">Pilot Flow</div>
+                    <h3>Three steps. One clear handoff.</h3>
+                    <p>
+                        The page Jassi shows should make the motion easy to understand. NBC keeps doing what it already does. This layer adds qualified opportunity flow on top.
+                    </p>
+                    <div class="flow">
+                        <div class="flow-step">
+                            <div class="step-number">01</div>
+                            <div>
+                                <h4>Signal capture against the agreed buyer profile</h4>
+                                <p>Use NBC's approved ICP, offer priorities, and market focus to identify relevant digital buyers and buying windows.</p>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-number">02</div>
+                            <div>
+                                <h4>Refine for fit before the lead hits the team</h4>
+                                <p>Filter for account fit, role fit, and conversation relevance so the team sees fewer generic names and more useful opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-number">03</div>
+                            <div>
+                                <h4>Route to the current NBC sales motion</h4>
+                                <p>Hand qualified opportunities to the appropriate AE, market owner, or sales leader while intent is still active and measurable.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="section-card">
+                    <div class="section-label">Leadership View</div>
+                    <h3>What NBC should be able to evaluate within the pilot.</h3>
+                    <div class="sidebar-list">
+                        <div class="sidebar-item">
+                            <strong>Lead quality</strong>
+                            <span>Are the additional opportunities closer to the buyer profile NBC actually wants?</span>
+                        </div>
+                        <div class="sidebar-item">
+                            <strong>Response timing</strong>
+                            <span>Are qualified opportunities reaching the team sooner, with less friction before follow-up?</span>
+                        </div>
+                        <div class="sidebar-item">
+                            <strong>Downstream movement</strong>
+                            <span>Do these opportunities generate stronger first conversations and better progression than the current baseline?</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="section-card" id="pilot">
+                <div class="section-label">Los Angeles Pilot Structure</div>
+                <h3>Keep the scope narrow enough to prove, then decide.</h3>
+                <p>
+                    The cleanest first move, based on the transcripts, is one market, one operating rhythm, and one comparison logic. NBC does not need to approve a platform rebuild to test whether this activation layer improves digital opportunity flow.
+                </p>
+                <div class="pilot-grid">
+                    <div class="pilot-box">
+                        <strong>Scope</strong>
+                        <span>Los Angeles market only, aligned to the current proposal and team structure.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Inputs</strong>
+                        <span>Approved ICP, offer priorities, target accounts, and messaging guardrails.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Handoff</strong>
+                        <span>Qualified opportunities routed into the current NBC sales motion, not a new replacement system.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Review cadence</strong>
+                        <span>Weekly leadership review against baseline quality, speed, and progression metrics.</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-card" id="walkthrough">
+                <div>
+                    <div class="section-label" style="color: rgba(246, 211, 144, 0.78);">Next Step</div>
+                    <h3>Request the pilot walkthrough.</h3>
+                    <p>
+                        Use this as the bridge between the current proposal and the post-training execution conversation. The goal is not to buy a giant system immediately. The goal is to review one market, one pilot shape, and the exact baseline NBC wants to compare against.
+                    </p>
+                    <div class="cta-points">
+                        <div class="cta-point">
+                            <strong>Recommended audience</strong>
+                            <span>Sales leadership, market owners, and the internal champion carrying the broader proposal.</span>
+                        </div>
+                        <div class="cta-point">
+                            <strong>Recommended meeting</strong>
+                            <span>30-minute pilot walkthrough covering scope, inputs, measurement, and leadership review cadence.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <form id="nbc-pilot-form">
+                        <div class="form-grid">
+                            <label>
+                                Full name
+                                <input type="text" id="nbc-name" name="name" placeholder="Kevin Keyes" required>
+                            </label>
+                            <label>
+                                Work email
+                                <input type="email" id="nbc-email" name="email" placeholder="name@nbcuni.com" required>
+                            </label>
+                            <label>
+                                Role
+                                <input type="text" id="nbc-role" name="role" placeholder="Sales Leadership" required>
+                            </label>
+                            <label>
+                                Priority market
+                                <select id="nbc-market" name="market" required>
+                                    <option value="">Select one</option>
+                                    <option value="Los Angeles">Los Angeles</option>
+                                    <option value="Telemundo 52">Telemundo 52</option>
+                                    <option value="Multi-market">Multi-market</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label>
+                            Biggest pipeline bottleneck
+                            <textarea id="nbc-challenge" name="challenge" placeholder="Where does digital opportunity flow break today?"></textarea>
+                        </label>
+                        <button class="form-submit" type="submit">Request 30-Minute Pilot Walkthrough</button>
+                        <p class="form-note">Prototype capture flow for review conversations. Wire this form to HubSpot, Google Sheets, or your preferred handler during implementation.</p>
+                        <p class="success-message" id="nbc-success">Your mail client should open with the pilot request drafted. If it does not, copy the fields into the outreach flow manually.</p>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            TALSMART x NBC PROPOSAL LAYER // PILOT-FIRST, BASELINE-COMPARED, NON-DISRUPTIVE
+        </footer>
+    </div>
+
+    <script>
+        const nbcForm = document.getElementById('nbc-pilot-form');
+        const nbcSuccess = document.getElementById('nbc-success');
+
+        nbcForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('nbc-name').value.trim();
+            const email = document.getElementById('nbc-email').value.trim();
+            const role = document.getElementById('nbc-role').value.trim();
+            const market = document.getElementById('nbc-market').value.trim();
+            const challenge = document.getElementById('nbc-challenge').value.trim();
+
+            const subject = encodeURIComponent('NBC Revenue Activation Layer Pilot Walkthrough');
+            const body = encodeURIComponent(
+                'Pilot Walkthrough Request\n\n' +
+                'Name: ' + name + '\n' +
+                'Work Email: ' + email + '\n' +
+                'Role: ' + role + '\n' +
+                'Priority Market: ' + market + '\n' +
+                'Pipeline Bottleneck: ' + (challenge || 'Not provided') + '\n\n' +
+                'Requested from the NBC Revenue Activation Layer pilot page.'
+            );
+
+            window.location.href = 'mailto:js@talsmart.com,lbasin23@gmail.com?subject=' + subject + '&body=' + body;
+            nbcSuccess.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

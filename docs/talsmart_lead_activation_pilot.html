@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>TalSmart | External Lead Activation Layer</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef4f1;
+            --surface: rgba(255, 255, 255, 0.84);
+            --surface-strong: #fcfefd;
+            --ink: #103229;
+            --muted: #527165;
+            --accent: #178b6b;
+            --accent-strong: #126d55;
+            --line: rgba(16, 50, 41, 0.12);
+            --shadow: 0 28px 60px rgba(16, 50, 41, 0.14);
+            --gradient: radial-gradient(circle at top right, rgba(23, 139, 107, 0.2), transparent 34%), linear-gradient(135deg, #133b31 0%, #0d2f28 58%, #16443a 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(23, 139, 107, 0.1), transparent 28%),
+                linear-gradient(180deg, #f4faf7 0%, #edf4f0 45%, #e8f0eb 100%);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 14px;
+            z-index: 20;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            background: rgba(13, 47, 40, 0.84);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 22px 50px rgba(13, 47, 40, 0.22);
+        }
+
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 16px 22px;
+        }
+
+        .badge {
+            width: fit-content;
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brand h1 {
+            margin-top: 6px;
+            color: #f5fffb;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .brand p {
+            margin-top: 3px;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.84rem;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            color: #f4fffa;
+        }
+
+        .nav-cta {
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #49c39f 0%, #1f9d7c 100%);
+            color: #133228;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(31, 157, 124, 0.28);
+        }
+
+        .hero {
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 34px;
+            background: var(--gradient);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+            gap: 34px;
+            padding: 56px;
+            align-items: stretch;
+        }
+
+        .eyebrow {
+            margin-bottom: 18px;
+            color: rgba(221, 255, 246, 0.74);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .hero h2 {
+            max-width: 11ch;
+            margin-bottom: 22px;
+            color: #f5fffb;
+            font-size: clamp(2.8rem, 5vw, 4.8rem);
+            line-height: 0.95;
+            font-weight: 600;
+            letter-spacing: -0.06em;
+        }
+
+        .hero h2 span {
+            display: block;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+            color: #74e0bf;
+        }
+
+        .hero-copy {
+            max-width: 720px;
+            margin-bottom: 28px;
+            color: rgba(245, 255, 251, 0.82);
+            font-size: 1.08rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #49c39f 0%, #1f9d7c 100%);
+            color: #133228;
+            box-shadow: 0 16px 30px rgba(31, 157, 124, 0.28);
+        }
+
+        .secondary-btn {
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #f4fffa;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .hero-stat {
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-stat strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #f5fffb;
+            font-size: 1.18rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-stat span {
+            color: rgba(221, 255, 246, 0.72);
+            font-size: 0.84rem;
+        }
+
+        .hero-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .hero-card,
+        .section-card,
+        .cta-card {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+        }
+
+        .hero-card {
+            padding: 24px 24px 22px;
+            color: #f5fffb;
+        }
+
+        .card-kicker {
+            margin-bottom: 10px;
+            color: rgba(221, 255, 246, 0.62);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .hero-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-card p {
+            color: rgba(245, 255, 251, 0.76);
+            font-size: 0.94rem;
+        }
+
+        .hero-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-list-item {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-list-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #f5fffb;
+            font-size: 0.94rem;
+        }
+
+        .hero-list-item span {
+            color: rgba(245, 255, 251, 0.7);
+            font-size: 0.84rem;
+        }
+
+        main {
+            padding: 40px 0 80px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 28px;
+            margin-top: 30px;
+        }
+
+        .section-card {
+            padding: 30px;
+            background: rgba(252, 254, 253, 0.9);
+            border: 1px solid rgba(16, 50, 41, 0.08);
+            box-shadow: 0 18px 40px rgba(16, 50, 41, 0.08);
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 16px;
+            color: var(--accent-strong);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.74rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .section-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.7rem;
+            letter-spacing: -0.04em;
+        }
+
+        .section-card p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .mini-card,
+        .fit-chip,
+        .pilot-box {
+            padding: 18px;
+            border-radius: 20px;
+            background: var(--surface-strong);
+            border: 1px solid rgba(16, 50, 41, 0.08);
+        }
+
+        .mini-card strong,
+        .fit-chip strong,
+        .pilot-box strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.96rem;
+            letter-spacing: -0.02em;
+        }
+
+        .mini-card p,
+        .fit-chip span,
+        .pilot-box span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .flow {
+            display: grid;
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .flow-step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            padding: 18px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, #fcfefd 0%, #f1f8f4 100%);
+            border: 1px solid rgba(16, 50, 41, 0.08);
+        }
+
+        .flow-step .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #0f342a;
+            color: #8df0cf;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .flow-step h4 {
+            margin-bottom: 5px;
+            font-size: 1.02rem;
+            letter-spacing: -0.02em;
+        }
+
+        .flow-step p {
+            font-size: 0.93rem;
+        }
+
+        .fit-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .pilot-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .cta-card {
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(300px, 1.08fr);
+            gap: 24px;
+            padding: 32px;
+            background: linear-gradient(145deg, #11382e 0%, #0c2f27 48%, #154137 100%);
+            color: #f5fffb;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+
+        .cta-card h3 {
+            margin-bottom: 12px;
+            font-size: 2rem;
+            letter-spacing: -0.05em;
+        }
+
+        .cta-card p {
+            color: rgba(245, 255, 251, 0.78);
+        }
+
+        .cta-points {
+            display: grid;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .cta-point {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cta-point strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #f5fffb;
+            font-size: 0.96rem;
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        label {
+            display: grid;
+            gap: 7px;
+            font-size: 0.84rem;
+            color: rgba(245, 255, 251, 0.74);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fffefb;
+            font: inherit;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(245, 255, 251, 0.42);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            border: none;
+            cursor: pointer;
+            min-height: 52px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #49c39f 0%, #1f9d7c 100%);
+            color: #133228;
+            font-size: 0.96rem;
+            font-weight: 700;
+        }
+
+        .form-note,
+        .success-message {
+            font-size: 0.84rem;
+            color: rgba(245, 255, 251, 0.66);
+        }
+
+        .success-message {
+            display: none;
+            color: #8df0cf;
+        }
+
+        footer {
+            margin-top: 24px;
+            padding: 0 4px;
+            color: rgba(16, 50, 41, 0.56);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1100px) {
+            .hero-grid,
+            .content-grid,
+            .cta-card {
+                grid-template-columns: 1fr;
+            }
+
+            .pilot-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page-shell {
+                padding: 16px;
+            }
+
+            .topbar-inner,
+            .hero-grid,
+            .section-card,
+            .cta-card {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero-grid {
+                padding-top: 34px;
+                padding-bottom: 34px;
+            }
+
+            .hero h2 {
+                max-width: none;
+            }
+
+            .hero-meta,
+            .two-col,
+            .pilot-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .topbar-inner {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="brand">
+                    <div class="badge">Lead Engine Page // TalSmart</div>
+                    <h1>External Lead Activation Layer</h1>
+                    <p>Generalized version for future proposals, outreach, and inbound capture</p>
+                </div>
+                <div class="nav">
+                    <a href="#fit">Who It Fits</a>
+                    <a href="#flow">How It Works</a>
+                    <a href="#pilot">Pilot Model</a>
+                    <a href="#demo" class="nav-cta">Request Pilot Demo</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow">Additional Opportunity Flow Without System Disruption</div>
+                    <h2>Add a qualified lead layer <span>beside</span> the system you already run.</h2>
+                    <p class="hero-copy">
+                        TalSmart already sells diagnostic, training, coaching, and leadership support. This page covers the next layer: a pilot that identifies higher-fit opportunities, refines them against your ICP, and hands them into the current sales motion without asking you to replace your CRM, sellers, or process on day one.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="primary-btn" href="#demo">Request Pilot Demo</a>
+                        <a class="secondary-btn" href="#pilot">See Pilot Model</a>
+                    </div>
+                    <div class="hero-meta">
+                        <div class="hero-stat">
+                            <strong>Pilot-first</strong>
+                            <span>Start with one market, team, or motion before expanding scope</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Outside-in</strong>
+                            <span>Built to run beside your current infrastructure first</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Partner-ready</strong>
+                            <span>Simple enough for Jassi to show, specific enough to sell</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-rail">
+                    <div class="hero-card">
+                        <div class="card-kicker">Where it fits</div>
+                        <h3>After readiness, before deeper transformation.</h3>
+                        <p>
+                            This is the bridge between training and live revenue execution. The first sale is a small, measurable pilot. If the signal proves out, the client can decide whether to expand into deeper process or system work.
+                        </p>
+                    </div>
+
+                    <div class="hero-card">
+                        <div class="card-kicker">Why buyers like it</div>
+                        <div class="hero-list">
+                            <div class="hero-list-item">
+                                <strong>It does not ask them to rip out what already works</strong>
+                                <span>They keep the current team, CRM, and internal reporting chain.</span>
+                            </div>
+                            <div class="hero-list-item">
+                                <strong>It gives them another source of qualified opportunities</strong>
+                                <span>The promise is additional flow, not abstract strategy alone.</span>
+                            </div>
+                            <div class="hero-list-item">
+                                <strong>It creates a measurable yes or no</strong>
+                                <span>Leadership can compare output against the current baseline and decide from evidence.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main>
+            <div class="content-grid">
+                <section class="section-card" id="fit">
+                    <div class="section-label">Ideal Fit</div>
+                    <h3>Built for teams that already have sellers but want better opportunity flow.</h3>
+                    <p>
+                        The calls with Jassi made the positioning clear: this lands best with companies that already have some inbound, outbound, or partner motion in place, but want an additional high-fit lead source before they commit to a bigger transformation.
+                    </p>
+                    <div class="fit-grid">
+                        <div class="fit-chip">
+                            <strong>Sales leaders who want a low-risk pilot</strong>
+                            <span>They are open to better pipeline inputs, but not ready to rebuild the entire system immediately.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Teams coming out of diagnostic or training work</strong>
+                            <span>They already understand the readiness gap and now need clearer execution flow.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Organizations with active AEs, SDRs, or closers</strong>
+                            <span>The value increases when there is already a team ready to follow up on stronger opportunities.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="section-card">
+                    <div class="section-label">Offer Stack</div>
+                    <h3>How this fits beside TalSmart's other offers.</h3>
+                    <div class="sidebar-list" style="display:grid;gap:12px;margin-top:18px;">
+                        <div class="fit-chip">
+                            <strong>Diagnostic</strong>
+                            <span>Find the gap and create leadership clarity.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Mastery / Coaching</strong>
+                            <span>Improve readiness and live execution behavior.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Activation Layer</strong>
+                            <span>Feed stronger opportunities into the current motion and benchmark the result.</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="content-grid">
+                <section class="section-card" id="flow">
+                    <div class="section-label">How It Works</div>
+                    <h3>Three clean steps for a showable, sellable first engagement.</h3>
+                    <p>
+                        This is the simplest version Jassi can bring into partner and client conversations without overcomplicating the offer.
+                    </p>
+                    <div class="flow">
+                        <div class="flow-step">
+                            <div class="step-number">01</div>
+                            <div>
+                                <h4>Define the target corridor</h4>
+                                <p>Agree on buyer profile, target accounts, offer priorities, and any market-specific constraints before outreach or routing begins.</p>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-number">02</div>
+                            <div>
+                                <h4>Generate and refine opportunities</h4>
+                                <p>Source opportunities externally, filter them for role, account, and use-case fit, and reduce the amount of noise hitting the team.</p>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-number">03</div>
+                            <div>
+                                <h4>Hand off into the current motion</h4>
+                                <p>Route qualified opportunities to the existing sellers and compare lead quality, response timing, and progression against the current benchmark.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="section-card">
+                    <div class="section-label">What Stays Intact</div>
+                    <h3>The page should remove buyer fear fast.</h3>
+                    <div class="fit-grid">
+                        <div class="fit-chip">
+                            <strong>Current CRM</strong>
+                            <span>No forced migration in the pilot phase.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Current sellers</strong>
+                            <span>The team still owns follow-up and closing.</span>
+                        </div>
+                        <div class="fit-chip">
+                            <strong>Current process</strong>
+                            <span>The pilot is an external layer, not a day-one replacement strategy.</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="section-card" id="pilot">
+                <div class="section-label">Pilot Model</div>
+                <h3>Small enough to buy. Clear enough to measure.</h3>
+                <p>
+                    The first engagement should be framed as a fixed pilot with obvious boundaries. That keeps the sale easy, the delivery focused, and the result easier to compare.
+                </p>
+                <div class="pilot-grid">
+                    <div class="pilot-box">
+                        <strong>Starting scope</strong>
+                        <span>One market, one offer line, or one team rather than a full business transformation.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Client inputs</strong>
+                        <span>ICP, offer list, target accounts, current baseline, and messaging constraints.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Measurement</strong>
+                        <span>Lead fit, speed to response, meetings sourced, and downstream progression.</span>
+                    </div>
+                    <div class="pilot-box">
+                        <strong>Decision rule</strong>
+                        <span>Scale only if the pilot proves out against the current benchmark.</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-card" id="demo">
+                <div>
+                    <div class="section-label" style="color: rgba(141, 240, 207, 0.78);">Next Step</div>
+                    <h3>Request the pilot demo.</h3>
+                    <p>
+                        This is the generalized version Jassi can show after NBC. It is narrow enough for enterprise conversations and broad enough to carry into other accounts without rewriting the offer every time.
+                    </p>
+                    <div class="cta-points">
+                        <div class="cta-point">
+                            <strong>Best first conversation</strong>
+                            <span>A 30-minute walkthrough covering corridor fit, inputs, pilot shape, and measurement logic.</span>
+                        </div>
+                        <div class="cta-point">
+                            <strong>Best first promise</strong>
+                            <span>An additional source of higher-fit opportunities beside the current system, not a giant rebuild.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <form id="talsmart-demo-form">
+                        <div class="form-grid">
+                            <label>
+                                Full name
+                                <input type="text" id="ts-name" name="name" placeholder="Your name" required>
+                            </label>
+                            <label>
+                                Work email
+                                <input type="email" id="ts-email" name="email" placeholder="name@company.com" required>
+                            </label>
+                            <label>
+                                Team type
+                                <select id="ts-team" name="team" required>
+                                    <option value="">Select one</option>
+                                    <option value="Sales leadership">Sales leadership</option>
+                                    <option value="Revenue operations">Revenue operations</option>
+                                    <option value="Founder-led team">Founder-led team</option>
+                                    <option value="Channel partner">Channel partner</option>
+                                </select>
+                            </label>
+                            <label>
+                                Priority market
+                                <input type="text" id="ts-market" name="market" placeholder="United States, London, India">
+                            </label>
+                        </div>
+                        <label>
+                            Biggest opportunity-flow bottleneck
+                            <textarea id="ts-challenge" name="challenge" placeholder="What is slowing down the pipeline today?"></textarea>
+                        </label>
+                        <button class="form-submit" type="submit">Request Pilot Demo</button>
+                        <p class="form-note">Prototype capture flow for internal use and live demos. Connect to HubSpot, Google Sheets, or a form backend during implementation.</p>
+                        <p class="success-message" id="ts-success">Your mail client should open with the pilot demo request drafted. If it does not, use the captured fields in the next outreach step.</p>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            TALSMART LEAD ACTIVATION LAYER // SHOWABLE NOW, REUSABLE LATER, PILOT-FIRST BY DEFAULT
+        </footer>
+    </div>
+
+    <script>
+        const talsmartForm = document.getElementById('talsmart-demo-form');
+        const talsmartSuccess = document.getElementById('ts-success');
+
+        talsmartForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('ts-name').value.trim();
+            const email = document.getElementById('ts-email').value.trim();
+            const team = document.getElementById('ts-team').value.trim();
+            const market = document.getElementById('ts-market').value.trim();
+            const challenge = document.getElementById('ts-challenge').value.trim();
+
+            const subject = encodeURIComponent('TalSmart External Lead Activation Layer Demo');
+            const body = encodeURIComponent(
+                'Pilot Demo Request\n\n' +
+                'Name: ' + name + '\n' +
+                'Work Email: ' + email + '\n' +
+                'Team Type: ' + team + '\n' +
+                'Priority Market: ' + (market || 'Not provided') + '\n' +
+                'Opportunity Bottleneck: ' + (challenge || 'Not provided') + '\n\n' +
+                'Requested from the TalSmart External Lead Activation Layer page.'
+            );
+
+            window.location.href = 'mailto:js@talsmart.com,lbasin23@gmail.com?subject=' + subject + '&body=' + body;
+            talsmartSuccess.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

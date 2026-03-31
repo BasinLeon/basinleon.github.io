@@ -43,6 +43,15 @@ This hub documents the transition from **Tactical Execution** (Feb 2026) to **Re
 *   **[diagnostic-led-outreach](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/diagnostic-led-outreach/SKILL.md)**: Generating high-status "Lures" for CXOs.
 *   **[gtm-meeting-intelligence](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/gtm-meeting-intelligence/SKILL.md)**: Call prep battle cards and "Conversation Control" maps.
 *   **[partnership-architect](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/partnership-architect/SKILL.md)**: Modeling revenue-share and affiliate commercial mechanics.
+*   **[gtm-email-leader](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/gtm-email-leader/SKILL.md)**: Drafting client, founder, recruiter, and partner emails in a clear, senior, motion-preserving GTM operator voice.
+*   **[recruiter-relationship-engine](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/recruiter-relationship-engine/SKILL.md)**: Handling recruiters, hiring managers, and headhunters in a way that preserves recall, status, and future-fit opportunity.
+*   **[boardy-conversation-engine](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/boardy-conversation-engine/SKILL.md)**: Managing Boardy intros and profile signaling to generate 3-5 high-fit conversations per week.
+*   **[lb-crm-opportunity-ingest](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/lb-crm-opportunity-ingest/SKILL.md)**: Translating dashboards, notes, and email extracts into structured opportunity rows for Leon's CRM and pipeline trackers.
+*   **[lb-crm-people-orbit-sync](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/lb-crm-people-orbit-sync/SKILL.md)**: Syncing people, relationship status, and next steps into the People in Orbit layer.
+*   **[mti-growth-engine](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/mti-growth-engine/SKILL.md)**: Running the Mock That Interview 90-day growth push with weekly diagnostics, experiments, and intern delegation.
+*   **[mti-partnership-prospector](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/mti-partnership-prospector/SKILL.md)**: Sourcing and segmenting bootcamps, universities, and career accelerators into outreach-ready MTI partnership lanes.
+*   **[mti-retention-auditor](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/mti-retention-auditor/SKILL.md)**: Turning onboarding and repeat-usage friction into concrete activation and retention tests.
+*   **[nexus-product-steering](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/nexus-product-steering/SKILL.md)**: Converting vendor "feedback" asks into defined pilot structure, leverage protection, and expansion mechanics.
 *   **[nexus-strategic-copy](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/nexus-strategic-copy/SKILL.md)**: High-status, outcome-led GTM copy (The "Leon Move").
 *   **[Enterprise Sales Leadership: The Architecture of Scale](file:///Users/basin/Desktop/Basin & Associates 🌍/Leon's Journal/01_Codex Hub/Enterprise Sales Leadership - The Architecture of Scale.md)**: The "Secret Sauce" behind high-status enterprise deployments.
 *   **[Neurobiological Revenue Architecture - The Tri-Fold Loop](file:///Users/basin/Desktop/Basin & Associates 🌍/Leon's Journal/01_Codex Hub/Neurobiological Revenue Architecture - The Tri-Fold Loop.md)**: The neuroscience behind the "Why the Brain Buys" logic.
@@ -88,6 +97,8 @@ This hub documents the transition from **Tactical Execution** (Feb 2026) to **Re
 ### 🧠 Intelligence & Ops
 
 *   **[obsidian-intelligence-layer](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/obsidian-intelligence-layer/SKILL.md)**: Deep-linking deals to the permanent knowledge vault.
+*   **[obsidian-feedback-loop](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/obsidian-feedback-loop/SKILL.md)**: Persisting high-value sessions, frameworks, and project assets into the Obsidian vault by default.
+*   **[conversation-memory-ledger](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/conversation-memory-ledger/SKILL.md)**: Preserving exact phrases, decisions, and user corrections in Obsidian so future sessions reload the right context more faithfully.
 *   **[workflow-interviewer](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/workflow-interviewer/SKILL.md)**: Turning messy calls into structured agent requirements.
 *   **[dispatching-parallel-agents](file:///Users/basin/Desktop/Basin & Associates 🌍/.agents/skills/dispatching-parallel-agents/SKILL.md)**: Collaborative subagent management.
 
