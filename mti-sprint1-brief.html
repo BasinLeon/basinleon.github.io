@@ -5,25 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MTI Sprint 1 — Call Brief | Basin::Nexus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --black:#0e0e0e;--white:#f5f3ee;--accent:#c8f04a;
-  --mid:#1a1a1a;--border:#2e2e2e;--muted:#666;
+  --black:#0e0e0e;--white:#f0ede6;--accent:#c8f04a;
+  --border:#2a2a2a;--muted:#5a5a5a;
   --ok:#4ad68e;--warn:#f0a030;--danger:#ff5a5a;--info:#5ab4ff;
-  --fh:'Syne',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --fh:'Syne','Arial Black',Arial,sans-serif;
+  --fm:'IBM Plex Mono','Courier New',monospace;
 }
-html{background:var(--black);color:var(--white);font-family:var(--fh)}
+html{background:var(--black);color:var(--white);font-family:var(--fh);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{min-height:100vh}
 .page{max-width:900px;margin:0 auto;padding:3rem 2rem 6rem}
-</style>
-</head>
-<body>
-<div class="page">
 
-<!-- STYLES -->
-<style>
 /* topbar */
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
 .tb-brand{font-family:var(--fm);font-size:11px;color:var(--muted);letter-spacing:.12em}
@@ -33,15 +29,19 @@ body{min-height:100vh}
 /* hero */
 .hero{margin-bottom:2.5rem}
 .hero-eye{font-family:var(--fm);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:.75rem}
-.hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:1rem}
+.hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:1rem;color:var(--white);letter-spacing:-.01em}
 .hero-meta{font-family:var(--fm);font-size:12px;color:var(--muted)}
 .hero-meta span{color:var(--white)}
-
+</style>
+</head>
+<body>
+<div class="page">
+<style>
 /* stat row */
 .stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2.5rem}
 .stat-cell{background:var(--black);padding:1.25rem 1.5rem}
 .stat-cell .slabel{font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:.08em;margin-bottom:.5rem}
-.stat-cell .sval{font-size:2rem;font-weight:700;color:var(--accent);line-height:1}
+.stat-cell .sval{font-size:2rem;font-weight:700;color:var(--accent);line-height:1;font-family:var(--fh)}
 .stat-cell .ssub{font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:.3rem}
 
 /* section head */
@@ -50,28 +50,24 @@ body{min-height:100vh}
 .sec-head .slbl{font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
 .sec-head::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* list base */
+/* block list */
 .blk-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
 .blk-item{background:var(--black);display:flex;align-items:flex-start;gap:14px;padding:1rem 1.25rem}
-
-/* access */
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
 .dok{background:var(--ok)}.dwarn{background:var(--warn)}.dred{background:var(--danger)}.dblue{background:var(--info)}
-.atitle{font-size:14px;font-weight:600;color:var(--white);margin-bottom:2px}
-.asub{font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.5}
-.pill{font-family:var(--fm);font-size:10px;letter-spacing:.06em;padding:4px 10px;border-radius:2px;flex-shrink:0;font-weight:500;margin-left:auto}
+.atitle{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px}
+.asub{font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.55}
+.pill{font-family:var(--fm);font-size:10px;letter-spacing:.06em;padding:4px 10px;border-radius:2px;flex-shrink:0;font-weight:500;margin-left:auto;align-self:flex-start}
 .pok{background:rgba(74,214,142,.1);color:var(--ok);border:1px solid rgba(74,214,142,.25)}
 .pwarn{background:rgba(240,160,48,.1);color:var(--warn);border:1px solid rgba(240,160,48,.25)}
 .pred{background:rgba(255,90,90,.1);color:var(--danger);border:1px solid rgba(255,90,90,.25)}
 .pblue{background:rgba(90,180,255,.1);color:var(--info);border:1px solid rgba(90,180,255,.25)}
-.pgray{background:rgba(102,102,102,.1);color:var(--muted);border:1px solid rgba(102,102,102,.2)}
-</style>
+.pgray{background:rgba(90,90,90,.1);color:var(--muted);border:1px solid rgba(90,90,90,.2)}
 
-<style>
 /* agenda */
+.ag-blk{border:1px solid var(--border)}
 .ag-item{background:var(--black);display:grid;grid-template-columns:56px 1fr;gap:14px;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
 .ag-item:last-child{border-bottom:none}
-.ag-blk{background:var(--border);border:1px solid var(--border)}
 .ag-time{font-family:var(--fm);font-size:11px;color:var(--muted);padding-top:2px}
 .ag-t{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px}
 .ag-d{font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.6}
@@ -94,7 +90,7 @@ body{min-height:100vh}
 /* links */
 .links-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.5rem}
 .ext-link{font-family:var(--fm);font-size:11px;padding:6px 14px;border:1px solid var(--border);color:var(--muted);text-decoration:none;border-radius:2px;transition:all .15s}
-.ext-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,240,74,.04)}
+.ext-link:hover{border-color:var(--accent);color:var(--accent)}
 
 /* footer */
 .footer{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;margin-top:3rem}
@@ -121,7 +117,7 @@ body{min-height:100vh}
   <h1>Mock That Interview<br>Poaching Engine</h1>
   <div class="hero-meta">
     <span>Tuesday April 7, 2026</span>&nbsp;&middot;&nbsp;11:00 AM PDT&nbsp;&middot;&nbsp;
-    Ayo &nbsp;&middot;&nbsp; Ridwan &nbsp;&middot;&nbsp; Ola &nbsp;&middot;&nbsp; Leon
+    Ayo&nbsp;&middot;&nbsp;Ridwan&nbsp;&middot;&nbsp;Ola&nbsp;&middot;&nbsp;Leon
   </div>
 </div>
 
@@ -150,7 +146,7 @@ body{min-height:100vh}
   <div class="blk-list">
     <div class="blk-item">
       <div class="dot dok"></div>
-      <div class="flex-grow-1" style="flex:1">
+      <div style="flex:1">
         <div class="atitle">Google Search Console</div>
         <div class="asub">lbasin23@gmail.com &mdash; granted and active</div>
       </div>
@@ -190,21 +186,21 @@ body{min-height:100vh}
       <div class="ag-time">5–20 min</div>
       <div>
         <div class="ag-t">Sprint 1 alignment</div>
-        <div class="ag-d">Confirm priorities: Poaching Engine baseline + acquisition motion. Is primary motion institutional B2B or direct-to-candidate?</div>
+        <div class="ag-d">Confirm priorities: Poaching Engine baseline + acquisition motion. Institutional B2B or direct-to-candidate?</div>
       </div>
     </div>
     <div class="ag-item">
       <div class="ag-time">20–35 min</div>
       <div>
         <div class="ag-t">Definition of done</div>
-        <div class="ag-d">Get their definition of Sprint 1 success in a number. Not mine — theirs. Capture verbally, confirm in Slack post-call.</div>
+        <div class="ag-d">Get their definition of Sprint 1 success in a number. Not mine &mdash; theirs. Capture verbally, confirm post-call.</div>
       </div>
     </div>
     <div class="ag-item">
       <div class="ag-time">35–45 min</div>
       <div>
         <div class="ag-t">Cadence + comms</div>
-        <div class="ag-d">Set async channel (WhatsApp: +1 408-933-8269), weekly check-in cadence, and escalation path for technical blockers.</div>
+        <div class="ag-d">Set async channel (WhatsApp: +1 408-933-8269), weekly check-in cadence, escalation path for technical blockers.</div>
       </div>
     </div>
   </div>
@@ -223,14 +219,14 @@ body{min-height:100vh}
   <div class="col-p">
     <div class="col-head">KEY QUESTIONS FOR THEM</div>
     <div class="q-list">
-      <div class="q-item"><span class="q-num">01</span><span class="q-text">Is the acquisition motion primarily institutional B2B or direct-to-candidate? The leads sheet points to B2B — confirm.</span></div>
-      <div class="q-item"><span class="q-num">02</span><span class="q-text">Which interviewer categories are currently over-subscribed vs idle? (PM, SWE, DevOps, Cybersecurity)</span></div>
-      <div class="q-item"><span class="q-num">03</span><span class="q-text">What does a winning Sprint 1 look like to you — what's the number?</span></div>
+      <div class="q-item"><span class="q-num">01</span><span class="q-text">Is acquisition motion primarily institutional B2B or direct-to-candidate? Leads sheet points to B2B &mdash; confirm.</span></div>
+      <div class="q-item"><span class="q-num">02</span><span class="q-text">Which interviewer categories are over-subscribed vs idle? (PM, SWE, DevOps, Cybersecurity)</span></div>
+      <div class="q-item"><span class="q-num">03</span><span class="q-text">What does a winning Sprint 1 look like to you &mdash; what's the number?</span></div>
     </div>
   </div>
 </div>
 
-<!-- POACHING ENGINE LAYERS -->
+<!-- ENGINE LAYERS -->
 <div class="sec">
   <div class="sec-head"><div class="slbl">POACHING ENGINE &mdash; DIAGNOSTIC LAYERS BUILT</div></div>
   <div class="blk-list">
@@ -254,7 +250,7 @@ body{min-height:100vh}
       <div class="dot dblue"></div>
       <div style="flex:1">
         <div class="atitle">Layer 3 &mdash; Interviewer Supply/Demand Gap</div>
-        <div class="asub">Mapping which roles (PM, SWE, DevOps, Cybersecurity) are hot vs idle &mdash; drives campaign targeting priority</div>
+        <div class="asub">Which roles (PM, SWE, DevOps, Cybersecurity) are hot vs idle &mdash; drives campaign targeting priority</div>
       </div>
       <span class="pill pblue">BUILT</span>
     </div>
@@ -269,7 +265,7 @@ body{min-height:100vh}
   </div>
 </div>
 
-<!-- LIVE PREVIEWS -->
+<!-- PREVIOUSLY DELIVERED -->
 <div class="sec">
   <div class="sec-head"><div class="slbl">PREVIOUSLY DELIVERED</div></div>
   <div class="links-row">
@@ -286,6 +282,6 @@ body{min-height:100vh}
   <p>Confidential &mdash; MTI Engagement Only</p>
 </div>
 
-</div><!-- .page -->
+</div>
 </body>
 </html>
