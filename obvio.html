@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obvio AI | California Market Entry</title>
+    <style>
+        :root {
+            --surface: #ffffff;
+            --surface2: #f8fafc;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #0f172a;
+            --text-2: #334155;
+            --text-3: #64748b;
+            --accent: #2563eb;
+            --accent-light: #3b82f6;
+            --green: #059669;
+            --green-bg: #d1fae5;
+            --amber: #d97706;
+            --amber-bg: #fef3c7;
+            --blue: #1d4ed8;
+            --blue-bg: #eff6ff;
+            --radius: 6px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --sans: -apple-system, system-ui, sans-serif;
+            --serif: Georgia, serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: var(--text);
+            font-family: var(--sans);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-family: var(--serif);
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            color: var(--text);
+        }
+
+        .header-meta {
+            font-size: 13px;
+            color: var(--text-3);
+            margin-bottom: 20px;
+        }
+
+        .mission-banner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 32px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .mission-banner strong {
+            color: var(--accent);
+            font-size: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-3);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Execution List Styles */
+        .exec-section {
+            margin-bottom: 32px;
+        }
+        
+        .exec-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .exec-item {
+            display: flex;
+            gap: 16px;
+            background: var(--surface);
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .exec-icon {
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .exec-content p {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .exec-quote {
+            margin: 0;
+            font-size: 12px;
+            font-style: italic;
+            color: var(--text-3);
+        }
+
+        .quote-block {
+            background: var(--surface2);
+            border-left: 4px solid var(--border-strong);
+            padding: 16px;
+            font-style: italic;
+            color: var(--text-2);
+            font-size: 14px;
+            margin-top: 24px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        /* Provided CSS */
+        .signal-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); } 
+        .signal-table { width: 100%; border-collapse: collapse; } 
+        .signal-table th { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--surface2); } 
+        .signal-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; } 
+        .signal-table tr:last-child td { border-bottom: none; } 
+        .signal-table tbody tr { cursor: pointer; transition: background .1s; } 
+        .signal-table tbody tr:hover td { background: #eef3ff; } 
+        .signal-table tbody tr.selected td { background: #dbeafe; } 
+        .tier-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; } 
+        .t1 { background: var(--green-bg); color: var(--green); } 
+        .t2 { background: var(--amber-bg); color: var(--amber); } 
+        .t3 { background: var(--surface2); color: var(--text-3); border: 1px solid var(--border); } 
+        .score-wrap { display: flex; align-items: center; gap: 7px; } 
+        .score-bar { width: 52px; height: 5px; background: var(--border); border-radius: 3px; position: relative; } 
+        .score-fill { position: absolute; left: 0; top: 0; height: 5px; border-radius: 3px; background: var(--accent); } 
+        .city-name { font-weight: 600; color: var(--text); font-size: 13px; } 
+        .city-pop { font-size: 11px; color: var(--text-3); } 
+        .urg-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; } 
+        .urg-high { background: var(--green-bg); color: var(--green); } 
+        .urg-med { background: var(--amber-bg); color: var(--amber); } 
+        .urg-low { background: var(--surface2); color: var(--text-3); } 
+        
+        .kpi-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-bottom: 32px;} 
+        .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); } 
+        .kpi-val { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--accent); } 
+        .kpi-lbl { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 4px; } 
+        .kpi-ctx { font-size: 12px; color: var(--text-3); margin-top: 8px; line-height: 1.5; } 
+        
+        .obj-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm);} 
+        .obj-table td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; } 
+        .obj-table tr:last-child td { border-bottom: none; } 
+        .obj-q { color: var(--text-2); font-weight: 600; line-height: 1.5; width: 35%; background: var(--surface2); border-right: 1px solid var(--border);} 
+        .obj-a { color: var(--text); line-height: 1.6; } 
+
+        @media (max-width: 640px) { 
+            .kpi-grid { grid-template-columns: 1fr; } 
+            .obj-table, .obj-table tr, .obj-table td { display: block; width: 100%; } 
+            .obj-q { border-bottom: none; border-right: none; padding-bottom: 8px; } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Obvio AI — California Market Entry</h1>
+        <div class="header-meta">
+            BDR / AE · Interview Prep · April 10, 2026<br>
+            Leon Basin | Built from Mike Venable interview
+        </div>
+    </div>
+
+    <div class="mission-banner">
+        <strong>7,500+</strong> pedestrians killed annually, up 70% in a decade. Vision Zero efforts are falling short. Obvio exists to change that with solar-powered, AI-assisted enforcement where police can't be. This plan is built around that mission.
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-30')">Days 1–30</button>
+        <button class="tab-btn" onclick="switchTab('tab-60')">Days 31–60</button>
+        <button class="tab-btn" onclick="switchTab('tab-signal')">Signal Engine</button>
+        <button class="tab-btn" onclick="switchTab('tab-kpi')">KPIs</button>
+        <button class="tab-btn" onclick="switchTab('tab-obj')">Objection Map</button>
+    </div>
+
+    <div id="tab-30" class="tab-panel active">
+        <div class="exec-section">
+            <div class="exec-title">Week 1 — Foundation</div>
+            <div class="exec-item">
+                <div class="exec-icon">◎</div>
+                <div class="exec-content">
+                    <p>Shadow Mike on at least 2 live calls. Colorado pipeline is the fastest education available. Study his pilot offer close and how he handles the cameras-are-controversial objection.</p>
+                    <p class="exec-quote">JD: "Thrives in ambiguity, enjoys building systems from scratch"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">◎</div>
+                <div class="exec-content">
+                    <p>Review all 25–30 existing HubSpot opportunities. Identify which 5–7 are buying this year and what's blocking the rest. Key question for Mike: "What does a chief need to graduate this to their top project?"</p>
+                    <p class="exec-quote">JD: "Qualify leads against agreed-upon buying signals"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Build California tier list. T1 = buying signal this year, T2 = 2027 runway, T3 = monitor. Start with 8 cities from signal engine.</p>
+                    <p class="exec-quote">JD: "Research, target, and engage municipal, county, and agency stakeholders"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Map the buying committee per city: Police Chief (signs), City Manager (approves budget), City Council (votes), Traffic Director (technical champion), Advocacy groups (community voice).</p>
+                    <p class="exec-quote">AE JD: "Navigate complex buying committees, long sales cycles, and procurement processes"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="exec-section">
+            <div class="exec-title">Week 2 — First Contact</div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Identify and contact 3 pedestrian/cycling advocacy groups per Tier 1 city. These are city council pre-seeders. Fix the council vote upstream.</p>
+                    <p class="exec-quote">AE JD: "Partner closely with product and engineering to support pilots and customer feedback loops"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Draft 3 email templates: Police Chief cold, Traffic Director warm, Advocacy partner intro. All under 70 words. Lead with fatality data specific to their city.</p>
+                    <p class="exec-quote">JD: "Help define Obvio's early BDR playbook, including messaging, cadences, and qualification criteria"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Begin outreach to T1 cities. Lead with phone. Use Sales Navigator for Police Chief and City Manager simultaneously.</p>
+                    <p class="exec-quote">JD: "Own first-touch outreach (email, phone, LinkedIn, events)"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="exec-section">
+            <div class="exec-title">Weeks 3–4 — Momentum</div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Goal: 8 first meetings booked by end of day 30. A first meeting = 45–60 min with Police Chief or City Manager. Primary conversion metric.</p>
+                    <p class="exec-quote">JD: "Schedule and prepare high-quality meetings for Account Executives and senior leadership"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>In every first meeting: identify 2–3 dangerous intersections they know about but have no data for. Offer the pilot. "Let me put devices there and give you real numbers."</p>
+                    <p class="exec-quote">AE JD: "Develop strong POVs on customer pain points and translate into compelling business cases"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Deliver week-3 debrief to Mike: account tier list, outreach results, top 3 objections heard. This is the BDR-to-AE handoff you're auditioning for.</p>
+                    <p class="exec-quote">JD: "Provide structured feedback on what resonates and where friction exists"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-block">
+            <strong>From Mike's transcript — the close that works in Colorado:</strong><br><br>
+            "What data do you really have? Almost always nothing, or very dated. How about this, tell me where the dangerous spots are. Let me come put devices there and give you something to take to your council."
+        </div>
+    </div>
+
+    <div id="tab-60" class="tab-panel">
+        <div class="exec-section">
+            <div class="exec-title">Days 31–45 — Convert and Document</div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Push every pilot conversation from day 30 to a signed agreement. Follow up within 48 hours of every first meeting.</p>
+                    <p class="exec-quote">AE JD: "Own and close mid-market to enterprise opportunities across a national territory"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>For each active pilot city: thread City Manager and 1–2 City Council members before the chief presents. Build the coalition in parallel, not after.</p>
+                    <p class="exec-quote">AE JD: "Navigate complex buying committees, long sales cycles, and procurement processes"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Draft Playbook v1: ICP definition, tier criteria, buying committee map, outreach sequence, pilot close script, objection handling, council pre-seeding strategy.</p>
+                    <p class="exec-quote">JD: "Help define Obvio's early BDR playbook, including messaging, cadences, and qualification criteria"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Run signal engine against North Carolina. Pull RFP filings, Vision Zero resolutions, police chief appointments. Deliver a pre-seeded lead list to Mike.</p>
+                    <p class="exec-quote">JD: "Support pilot programs, RFP tracking, and early partnership conversations"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="exec-section">
+            <div class="exec-title">Days 46–60 — Scale the Model</div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Deliver NC tier list to Mike by day 50: top 5 accounts, buying signals, advocacy groups already active.</p>
+                    <p class="exec-quote">NC market intelligence</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">✓</div>
+                <div class="exec-content">
+                    <p>Request structured check-in with Dhruv at day 45–50. Bring pipeline number, pilot conversion rate, Playbook v1, California signal engine output, and a specific ask about AE scope.</p>
+                    <p class="exec-quote">AE JD: "Help refine Obvio's sales playbooks, messaging, and early GTM processes"</p>
+                </div>
+            </div>
+            <div class="exec-item">
+                <div class="exec-icon">⚙</div>
+                <div class="exec-content">
+                    <p>Build a reference tracking framework. Log every city that agrees to a pilot and their primary motivator. This becomes targeting logic for markets 3–6.</p>
+                    <p class="exec-quote">Data architecture</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-block">
+            <strong>The AE case — say it at day 45, not before:</strong><br><br>
+            "I've built the California entry motion and documented it as a replicable playbook. I've pre-seeded North Carolina with the same signal layer. I'm not asking for a title change. I'm asking to own the full cycle in market 2 so we find out faster whether I can close what I open."
+        </div>
+    </div>
+
+    <div id="tab-signal" class="tab-panel">
+        <div class="signal-wrap">
+            <table class="signal-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>City</th>
+                        <th>Score</th>
+                        <th>Urgency</th>
+                        <th>Primary Buyer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tier-badge t1">T1</span></td>
+                        <td><div class="city-name">Sacramento, CA</div><div class="city-pop">524K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">91</span><div class="score-bar"><div class="score-fill" style="width: 91%"></div></div></div></td>
+                        <td><span class="urg-badge urg-high">High</span></td>
+                        <td>Police Chief</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t1">T1</span></td>
+                        <td><div class="city-name">Long Beach, CA</div><div class="city-pop">466K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">87</span><div class="score-bar"><div class="score-fill" style="width: 87%"></div></div></div></td>
+                        <td><span class="urg-badge urg-high">High</span></td>
+                        <td>Police Chief</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t1">T1</span></td>
+                        <td><div class="city-name">Fresno, CA</div><div class="city-pop">545K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">82</span><div class="score-bar"><div class="score-fill" style="width: 82%"></div></div></div></td>
+                        <td><span class="urg-badge urg-high">High</span></td>
+                        <td>Traffic Director</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t2">T2</span></td>
+                        <td><div class="city-name">Oakland, CA</div><div class="city-pop">440K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">68</span><div class="score-bar"><div class="score-fill" style="width: 68%"></div></div></div></td>
+                        <td><span class="urg-badge urg-med">Medium</span></td>
+                        <td>City Manager</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t2">T2</span></td>
+                        <td><div class="city-name">San Jose, CA</div><div class="city-pop">1.01M pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">64</span><div class="score-bar"><div class="score-fill" style="width: 64%"></div></div></div></td>
+                        <td><span class="urg-badge urg-med">Medium</span></td>
+                        <td>Police Chief</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t2">T2</span></td>
+                        <td><div class="city-name">Riverside, CA</div><div class="city-pop">314K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">61</span><div class="score-bar"><div class="score-fill" style="width: 61%"></div></div></div></td>
+                        <td><span class="urg-badge urg-med">Medium</span></td>
+                        <td>Police Chief</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t3">T3</span></td>
+                        <td><div class="city-name">Stockton, CA</div><div class="city-pop">322K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">38</span><div class="score-bar"><div class="score-fill" style="width: 38%; background: var(--text-3);"></div></div></div></td>
+                        <td><span class="urg-badge urg-low">Low</span></td>
+                        <td>TBD</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge t3">T3</span></td>
+                        <td><div class="city-name">Bakersfield, CA</div><div class="city-pop">407K pop.</div></td>
+                        <td><div class="score-wrap"><span style="font-weight:600">31</span><div class="score-bar"><div class="score-fill" style="width: 31%; background: var(--text-3);"></div></div></div></td>
+                        <td><span class="urg-badge urg-low">Low</span></td>
+                        <td>TBD</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tab-kpi" class="tab-panel">
+        <div class="exec-title">Day 30 Targets — Foundation</div>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-val">25</div>
+                <div class="kpi-lbl">Accounts Tiered in CRM</div>
+                <div class="kpi-ctx">Mike: "25 accounts, figure out the buying committee." Foundation metric before any call is made.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">8</div>
+                <div class="kpi-lbl">First Meetings Booked</div>
+                <div class="kpi-ctx">Mike: "#1 metric is first meetings — 45–60 min with a chief or city manager."</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">75+</div>
+                <div class="kpi-lbl">Dials per Day (Peak)</div>
+                <div class="kpi-ctx">Mike: "60–80 calls a day makes sense, but I'm open to a plan that looks different if it works."</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">3</div>
+                <div class="kpi-lbl">Advocacy Groups Engaged</div>
+                <div class="kpi-ctx">Seed this before the chief presents, not after. City council vote security.</div>
+            </div>
+        </div>
+
+        <div class="exec-title">Day 60 Targets — AE-Level Output</div>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-val">3+</div>
+                <div class="kpi-lbl">Active Pilots Proposed</div>
+                <div class="kpi-ctx">Pilot is the primary conversion mechanism. Data gathered = council-ready proof point.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">$1.5M+</div>
+                <div class="kpi-lbl">Pipeline Value</div>
+                <div class="kpi-ctx">$100K/camera × 15 cameras = $1.5M ARR per contract. Validates the California motion.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">1</div>
+                <div class="kpi-lbl">Market Entry Playbook</div>
+                <div class="kpi-ctx">Replicable across 6 new markets Mike needs to open this year.</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-val">NC</div>
+                <div class="kpi-lbl">Next Market Pre-seeded</div>
+                <div class="kpi-ctx">Feed Mike warm leads and data, not cold lists.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-obj" class="tab-panel">
+        <p style="color: var(--text-3); font-size: 14px; margin-bottom: 24px;">Source: Mike Venable, April 2, 2026. These are not hypotheticals. They are direct from the Colorado field.</p>
+        <table class="obj-table">
+            <tr>
+                <td class="obj-q">"Cameras are controversial here after the Flock/ICE story."</td>
+                <td class="obj-a">Obvio has no federal data sharing. Locally controlled, solar-powered. We're not Flock. We're what cities wanted before the cameras got political. Pure safety data, no surveillance angle.</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"Our city council would never approve this."</td>
+                <td class="obj-a">That's usually because nobody from the community has told them they want it. We've seen councils flip when cycling and pedestrian groups show up. Want to start there before we go to council?</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"We don't have budget for something like this."</td>
+                <td class="obj-a">No upfront cost. We install, we maintain. City costs are offset by citation revenue over the 5-year contract. Most customers are revenue-neutral by month four.</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"We tried a vendor before and it didn't go well."</td>
+                <td class="obj-a">Verra Mobility has had issues in several California cities. We're a different stack. Solar, AI-scored, no legacy hardware. Can I show you what Fort Collins looked like switching?</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"This isn't one of my projects this year."</td>
+                <td class="obj-a">Fair. Can I put devices at the 2–3 spots you know are dangerous and give you real data? No commitment. If you want to bring it to council later, you'll have something solid instead of anecdotes.</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"We already have a traffic enforcement program."</td>
+                <td class="obj-a">What's it covering? Most programs are 3–5 cameras on top corridors with nothing near schools. We can complement what's in place or scale coverage without adding headcount.</td>
+            </tr>
+            <tr>
+                <td class="obj-q">"People will push back on AI enforcement."</td>
+                <td class="obj-a">Lead with the data, not the technology. Residents complain about traffic safety more than almost anything. The ask isn't "approve AI." It's "let us show you where people are running stop signs near your schools."</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(tabId) {
+        // Remove active class from all panels and buttons
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to target panel
+        document.getElementById(tabId).classList.add('active');
+        
+        // Add active class to clicked button
+        event.target.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
