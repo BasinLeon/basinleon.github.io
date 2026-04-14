@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obvio AI | North Carolina Prospecting Strategy</title>
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+    <meta name="description" content="Leon Basin's Obvio AI BDR work sample presentation for North Carolina prospecting strategy and role play.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #101010;
+            --ink-soft: #4f4f4f;
+            --sand: #f6f1e8;
+            --paper: #fffdf9;
+            --line: rgba(16, 16, 16, 0.12);
+            --line-strong: rgba(16, 16, 16, 0.22);
+            --accent: #ef6a3a;
+            --accent-deep: #d4572b;
+            --accent-soft: rgba(239, 106, 58, 0.12);
+            --sage: #dfe8dc;
+            --gold: #f2d79a;
+            --shadow: 0 18px 40px rgba(16, 16, 16, 0.08);
+            --radius: 24px;
+            --radius-sm: 16px;
+            --max: 1280px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: linear-gradient(180deg, #faf6ee 0%, #f5efe4 100%);
+            color: var(--ink);
+            font-family: "Manrope", sans-serif;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        .app {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .ambient-orb,
+        .ambient-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .ambient-orb {
+            background:
+                radial-gradient(circle at 12% 18%, rgba(239, 106, 58, 0.15), transparent 28%),
+                radial-gradient(circle at 84% 22%, rgba(242, 215, 154, 0.22), transparent 24%),
+                radial-gradient(circle at 72% 82%, rgba(182, 206, 176, 0.2), transparent 26%);
+        }
+
+        .ambient-grid {
+            background-image:
+                linear-gradient(rgba(16, 16, 16, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 16, 16, 0.03) 1px, transparent 1px);
+            background-size: 36px 36px;
+            -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            background: rgba(255, 253, 249, 0.72);
+            border-bottom: 1px solid rgba(16, 16, 16, 0.08);
+        }
+
+        .topbar-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 8px var(--accent-soft);
+            flex: 0 0 auto;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-text strong,
+        .brand-text span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .brand-text strong {
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brand-text span {
+            font-size: 12px;
+            color: var(--ink-soft);
+        }
+
+        .topbar-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--ink-soft);
+        }
+
+        .progress-shell {
+            width: 180px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(16, 16, 16, 0.08);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 10%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent), #ff9a57);
+            transition: width 240ms ease;
+        }
+
+        .deck {
+            position: relative;
+            z-index: 1;
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 92px 20px 28px;
+            height: 100vh;
+        }
+
+        .slides {
+            position: relative;
+            height: calc(100vh - 120px);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(24px) scale(0.985);
+            transition: opacity 280ms ease, transform 280ms ease;
+        }
+
+        .notes-on .slide {
+            grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0) scale(1);
+        }
+
+        .panel,
+        .sidecar {
+            background: rgba(255, 253, 249, 0.78);
+            border: 1px solid rgba(16, 16, 16, 0.08);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            overflow: hidden;
+        }
+
+        .panel.scrollable {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .panel.scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .panel.scrollable::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .panel.scrollable::-webkit-scrollbar-thumb {
+            background: rgba(16,16,16,0.15);
+            border-radius: 4px;
+        }
+
+        .panel {
+            padding: 34px 34px 28px;
+        }
+
+        .sidecar {
+            padding: 28px 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-deep);
+            margin-bottom: 18px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 30px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            line-height: 1.02;
+            font-family: "Fraunces", serif;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: clamp(3.1rem, 6vw, 5.6rem);
+            margin-bottom: 18px;
+            letter-spacing: -0.04em;
+        }
+
+        h2 {
+            font-size: clamp(2.2rem, 4vw, 3.3rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ink-soft);
+            line-height: 1.6;
+            font-size: 1.02rem;
+        }
+
+        .lede {
+            max-width: 760px;
+            font-size: 1.08rem;
+            color: #303030;
+        }
+
+        .hero-stats {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .stat-card {
+            padding: 18px 16px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
+            border: 1px solid rgba(16, 16, 16, 0.08);
+        }
+
+        .stat-card strong,
+        .quote-card strong,
+        .metric strong {
+            display: block;
+            font-family: "Fraunces", serif;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .stat-card strong {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-card span,
+        .metric span,
+        .bullet-list span,
+        .table-note,
+        .tiny {
+            color: var(--ink-soft);
+            font-size: 0.88rem;
+        }
+
+        .quote-card {
+            background: linear-gradient(180deg, rgba(239, 106, 58, 0.08), rgba(239, 106, 58, 0.02));
+            border: 1px solid rgba(239, 106, 58, 0.22);
+            border-radius: 22px;
+            padding: 22px;
+            margin-top: 24px;
+        }
+
+        .quote-card p {
+            color: #2a2a2a;
+            font-size: 1rem;
+        }
+
+        .callout {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-left: 4px solid var(--accent);
+            background: rgba(239, 106, 58, 0.08);
+            border-radius: 0 14px 14px 0;
+            color: #232323;
+            font-size: 0.96rem;
+        }
+
+        .segments,
+        .week-grid,
+        .qual-grid,
+        .summary-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .segments {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-top: 22px;
+        }
+
+        .segment-card,
+        .week-card,
+        .qual-card,
+        .summary-card,
+        .script-card,
+        .objection-card,
+        .roleplay-card,
+        .sidebar-card {
+            border-radius: 22px;
+            border: 1px solid rgba(16, 16, 16, 0.08);
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .segment-card {
+            padding: 18px;
+        }
+
+        .segment-tier {
+            display: inline-flex;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .tier-1 { background: rgba(239, 106, 58, 0.12); color: var(--accent-deep); }
+        .tier-2 { background: rgba(182, 206, 176, 0.32); color: #375340; }
+        .tier-3 { background: rgba(242, 215, 154, 0.45); color: #5d4108; }
+
+        .segment-meta {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .segment-meta div {
+            padding-top: 10px;
+            border-top: 1px solid rgba(16, 16, 16, 0.08);
+            font-size: 0.9rem;
+            color: #2e2e2e;
+        }
+
+        .table-wrap {
+            margin-top: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(16, 16, 16, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(16, 16, 16, 0.08);
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        th {
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .city {
+            display: block;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .buyer-tags,
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ebe3d7;
+            font-size: 0.78rem;
+            color: #101010;
+        }
+
+        .week-grid,
+        .qual-grid,
+        .summary-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-top: 20px;
+        }
+
+        .week-card,
+        .qual-card,
+        .summary-card,
+        .script-card,
+        .objection-card,
+        .roleplay-card,
+        .sidebar-card {
+            padding: 18px;
+        }
+
+        .week-card strong,
+        .qual-card strong,
+        .summary-card strong,
+        .sidebar-card strong {
+            display: block;
+            font-size: 0.84rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-deep);
+            margin-bottom: 10px;
+        }
+
+        .bullet-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .bullet-list div {
+            padding-left: 14px;
+            position: relative;
+            color: #252525;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .bullet-list div::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.62em;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .scripts,
+        .objections,
+        .roleplay-grid {
+            display: grid;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .scripts,
+        .objections {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .roleplay-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .script-card header,
+        .objection-card header,
+        .roleplay-card header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .script-card code,
+        .objection-card code {
+            display: block;
+            padding: 14px;
+            border-radius: 16px;
+            background: #fffefb;
+            border: 1px solid rgba(16, 16, 16, 0.08);
+            white-space: pre-wrap;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.83rem;
+            line-height: 1.65;
+            color: #1f1f1f;
+        }
+
+        .metric-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .metric {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(16, 16, 16, 0.08);
+        }
+
+        .metric strong {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .sidecar-top {
+            display: grid;
+            gap: 14px;
+        }
+
+        .sidecar-footer {
+            padding-top: 18px;
+            border-top: 1px solid rgba(16, 16, 16, 0.08);
+        }
+
+        .sidecar {
+            display: none;
+        }
+
+        .notes-on .sidecar {
+            display: flex;
+        }
+
+        .speaker-note {
+            display: none;
+        }
+
+        .notes-on .speaker-note {
+            display: block;
+        }
+
+        .presenter-nav {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            width: 52px;
+            height: 52px;
+            border: none;
+            border-radius: 18px;
+            background: rgba(16, 16, 16, 0.88);
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .jump-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .jump-list button {
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(16, 16, 16, 0.08);
+            background: rgba(255, 255, 255, 0.75);
+            color: #2c2c2c;
+            cursor: pointer;
+            font-size: 0.86rem;
+        }
+
+        .jump-list button.active {
+            border-color: rgba(239, 106, 58, 0.28);
+            background: rgba(239, 106, 58, 0.08);
+            color: var(--accent-deep);
+            font-weight: 700;
+        }
+
+        @media (max-width: 1100px) {
+            .slide,
+            .slide.active {
+                grid-template-columns: 1fr;
+            }
+
+            .sidecar {
+                display: none;
+            }
+
+            .hero-stats,
+            .segments,
+            .scripts,
+            .objections,
+            .roleplay-grid,
+            .week-grid,
+            .qual-grid,
+            .summary-grid,
+            .metric-strip {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            body {
+                overflow: auto;
+            }
+
+            .deck,
+            .slides {
+                height: auto;
+            }
+
+            .slide {
+                position: relative;
+                display: none;
+                transform: none;
+                opacity: 1;
+            }
+
+            .slide.active {
+                display: grid;
+            }
+
+            .topbar-inner {
+                padding: 14px 18px;
+            }
+
+            .topbar-meta {
+                display: none;
+            }
+
+            .hero-stats,
+            .segments,
+            .scripts,
+            .objections,
+            .roleplay-grid,
+            .week-grid,
+            .qual-grid,
+            .summary-grid,
+            .metric-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px 20px;
+            }
+
+            .presenter-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+        <div class="ambient-orb"></div>
+        <div class="ambient-grid"></div>
+
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="brand-lockup">
+                    <div class="brand-dot"></div>
+                    <div class="brand-text">
+                        <strong>Obvio AI · BDR Work Sample</strong>
+                        <span>North Carolina prospecting strategy + role play framework</span>
+                    </div>
+                </div>
+                <div class="topbar-meta">
+                    <span>Leon Basin · April 16, 2026</span>
+                    <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
+                    <span id="slideCounter">1 / 10</span>
+                </div>
+            </div>
+        </div>
+
+        <main class="deck">
+            <section class="slides" id="slides">
+                <article class="slide active" data-title="Title" data-notes="Lead with mission, then the reason for market design: fast pilot proof, not generic blasting.">
+                    <div class="panel">
+                        <div class="eyebrow">There are no accidents</div>
+                        <h1>North Carolina prospecting strategy for Obvio's first BDR.</h1>
+                        <p class="lede">This plan is built to generate qualified municipal meetings fast, using Obvio's proven traffic-safety story, a segmented North Carolina market map, and a handoff standard that makes the AE's job easier instead of noisier.</p>
+
+                        <div class="hero-stats">
+                            <div class="stat-card">
+                                <strong>~40K<sup style="font-size:0.45em;vertical-align:super;font-family:'Manrope',sans-serif;font-weight:600;color:var(--accent)">1</sup></strong>
+                                <span>traffic deaths annually in the U.S.</span>
+                            </div>
+                            <div class="stat-card">
+                                <strong>$35B<sup style="font-size:0.45em;vertical-align:super;font-family:'Manrope',sans-serif;font-weight:600;color:var(--accent)">2</sup></strong>
+                                <span>cities spend on traffic enforcement and response</span>
+                            </div>
+                            <div class="stat-card">
+                                <strong>10 days<sup style="font-size:0.45em;vertical-align:super;font-family:'Manrope',sans-serif;font-weight:600;color:var(--accent)">3</sup></strong>
+                                <span>deployment window vs. multi-year infrastructure cycles</span>
+                            </div>
+                            <div class="stat-card">
+                                <strong>50%<sup style="font-size:0.45em;vertical-align:super;font-family:'Manrope',sans-serif;font-weight:600;color:var(--accent)">4</sup></strong>
+                                <span>violation reduction cited in Morningside, MD</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(16,16,16,0.08);display:flex;flex-wrap:wrap;gap:12px">
+                            <span style="font-size:0.72rem;color:var(--ink-soft)"><sup style="color:var(--accent);font-weight:700">1</sup> NHTSA Traffic Safety Facts 2022 (USDOT)</span>
+                            <span style="font-size:0.72rem;color:var(--ink-soft)"><sup style="color:var(--accent);font-weight:700">2</sup> Obvio AI mission page / ATSSA industry data</span>
+                            <span style="font-size:0.72rem;color:var(--ink-soft)"><sup style="color:var(--accent);font-weight:700">3</sup> Obvio AI deployment documentation</span>
+                            <span style="font-size:0.72rem;color:var(--ink-soft)"><sup style="color:var(--accent);font-weight:700">4</sup> Obvio AI case study — Chief Franklin, Morningside MD</span>
+                        </div>
+
+                        <div class="quote-card">
+                            <strong>Core thesis</strong>
+                            <p>Do not start by spraying every city in the state. Start where a pain signal is visible, the buying committee is navigable, and a pilot can become a public proof point inside 90 days.</p>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Interview brief</strong>
+                                <p>Part 1 covers target selection, weekly structure, messaging, and qualification. Part 2 is a cold call or discovery role play.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Design choice</strong>
+                                <p>Clean, mission-first framing mirrors Obvio's site: clear problem, real community proof, minimal noise, operator language.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Open with mission, then say: “I’m not pitching a list. I’m pitching a repeatable market-entry motion.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Market Logic" data-notes="Pre-answer the likely question: why suburbs and university towns before Charlotte or Raleigh proper.">
+                    <div class="panel">
+                        <div class="eyebrow">Market logic</div>
+                        <h2>Why North Carolina, and why not start with Raleigh or Charlotte proper?</h2>
+                        <p class="lede">Large city deals can validate the category, but they are slower, more political, and harder for a first BDR motion to convert quickly. The right move is to win in smaller municipalities with visible traffic pain, then use those proofs to climb into larger metros.</p>
+
+                        <div class="qual-grid">
+                            <div class="qual-card">
+                                <strong>Fast proof base</strong>
+                                <div class="bullet-list">
+                                    <div>Suburbs and university towns can move from first meeting to pilot faster than top-tier metros.</div>
+                                    <div>Early wins create local proof for Chiefs, City Managers, and council members in adjacent markets.</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>Higher relevance</strong>
+                                <div class="bullet-list">
+                                    <div>North Carolina offers multiple simultaneous buying triggers: rapid suburban growth, campus pedestrian density, and corridor safety pressure.</div>
+                                    <div>That means parallel campaigns with distinct messaging instead of one generic statewide pitch.</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>Answer for Q&amp;A</strong>
+                                <div class="bullet-list">
+                                    <div>“Large municipal deals run 12 to 18 months. Suburbs and university towns get you pilots and case studies in 90 days.”</div>
+                                    <div>“That proof base is what earns the right to go after bigger city systems next.”</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>Selection rule</strong>
+                                <div class="bullet-list">
+                                    <div>Prioritize cities where I can identify a public safety pain point, a reachable buying committee, and a plausible pilot path before procurement complexity takes over.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="callout">The point is not to avoid the biggest cities forever. The point is to sequence the market so the first six months create evidence, references, and internal leverage.</div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Decision lens</strong>
+                                <p>Pain visibility + buying committee access + pilot probability + adjacency value.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>What this signals</strong>
+                                <p>You understand territory design as pipeline architecture, not just account list generation.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Say “I want proof density before prestige logos.” That is a sharp operator line if delivered calmly.</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Segments" data-notes="Three simultaneous motions. Keep it tight: trigger, targets, reason.">
+                    <div class="panel">
+                        <div class="eyebrow">Three simultaneous motions</div>
+                        <h2>Segment the state by buying trigger, not geography alone.</h2>
+                        <div class="segments">
+                            <div class="segment-card">
+                                <div class="segment-tier tier-1">Tier 1 · High-growth sprawl</div>
+                                <h3>Charlotte belt municipalities</h3>
+                                <p>Huntersville, Matthews, Concord, Monroe, Gastonia, Kannapolis.</p>
+                                <div class="segment-meta">
+                                    <div><strong>Trigger:</strong> growth outpacing enforcement capacity and school-zone complexity.</div>
+                                    <div><strong>Message:</strong> give Chiefs data and deterrence where they cannot station officers consistently.</div>
+                                    <div><strong>Why first:</strong> high pilot probability and strong adjacency for regional expansion.</div>
+                                </div>
+                            </div>
+                            <div class="segment-card">
+                                <div class="segment-tier tier-2">Tier 2 · Pedestrian density</div>
+                                <h3>Triangle and university towns</h3>
+                                <p>Chapel Hill, Carrboro, Cary, Durham, Greenville, Boone.</p>
+                                <div class="segment-meta">
+                                    <div><strong>Trigger:</strong> student foot traffic, Vision Zero language, politically visible safety concerns.</div>
+                                    <div><strong>Message:</strong> protect high-footfall corridors with evidence chiefs can take to managers and councils.</div>
+                                    <div><strong>Why second:</strong> strong story fit, slightly more stakeholder complexity.</div>
+                                </div>
+                            </div>
+                            <div class="segment-card">
+                                <div class="segment-tier tier-3">Tier 3 · Corridor and seasonal pressure</div>
+                                <h3>Coastal and I-40 corridor</h3>
+                                <p>Wilmington, Jacksonville, Fayetteville, Burlington, High Point, Wilson.</p>
+                                <div class="segment-meta">
+                                    <div><strong>Trigger:</strong> seasonal surges, military or freight traffic, corridor speeding and crash concentration.</div>
+                                    <div><strong>Message:</strong> frame Obvio as fast-response infrastructure when staffing and capital projects lag.</div>
+                                    <div><strong>Why nurture:</strong> useful pipeline depth while Tier 1 and Tier 2 convert.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Operating principle</strong>
+                                <p>Each segment gets its own messaging lane, target titles, and proof framing. Same product, different trigger story.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Proof anchor</strong>
+                                <p>Morningside and Colmar Manor show that the conversation is not “camera tech.” It is reduced violations, safer corridors, and council-ready data.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Say “I can engage all three, but I would measure myself on Tier 1 conversion first.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Target List" data-notes="Show list competence without drowning in it. Mention buying committee map.">
+                    <div class="panel scrollable">
+                        <div class="eyebrow">Priority account map</div>
+                        <h2>Target list: 18 North Carolina municipalities with clear first-buyer logic.</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Priority</th>
+                                        <th>City</th>
+                                        <th>Why now</th>
+                                        <th>Primary first touch</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Huntersville</span><span class="tiny">Charlotte suburb</span></td>
+                                        <td>Growth, commuter traffic, school corridor logic</td>
+                                        <td>Police Chief → City Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Matthews</span><span class="tiny">Charlotte suburb</span></td>
+                                        <td>Dense arterial traffic with neighborhood sensitivity</td>
+                                        <td>Police Chief → traffic champion</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Concord</span><span class="tiny">regional activity hub</span></td>
+                                        <td>Scale plus suburb economics</td>
+                                        <td>Chief → Manager → Council sponsor</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Monroe</span><span class="tiny">Charlotte fringe</span></td>
+                                        <td>Fast-moving municipal profile and adjacency value</td>
+                                        <td>Police Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Gastonia</span><span class="tiny">west corridor</span></td>
+                                        <td>Commuter and corridor safety narrative</td>
+                                        <td>Chief + Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T1</td>
+                                        <td><span class="city">Kannapolis</span><span class="tiny">cabarrus corridor</span></td>
+                                        <td>Growing municipality with manageable committee size</td>
+                                        <td>Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Chapel Hill</span><span class="tiny">university town</span></td>
+                                        <td>Pedestrian density and public scrutiny</td>
+                                        <td>Transportation lead → Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Carrboro</span><span class="tiny">adjacent campus traffic</span></td>
+                                        <td>Compact footprint, visible safety concerns</td>
+                                        <td>Town Manager + Police</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Cary</span><span class="tiny">fast-growth suburb</span></td>
+                                        <td>Growth plus structured municipal process</td>
+                                        <td>Chief → Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Durham</span><span class="tiny">larger urban foothold</span></td>
+                                        <td>Stronger proof-value once reference base exists</td>
+                                        <td>Transportation + Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Greenville</span><span class="tiny">college and hospital traffic</span></td>
+                                        <td>Strong pedestrian and corridor story</td>
+                                        <td>Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T2</td>
+                                        <td><span class="city">Boone</span><span class="tiny">mountain student town</span></td>
+                                        <td>Compact, high-footfall, politically visible</td>
+                                        <td>Town Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">Wilmington</span><span class="tiny">coastal growth</span></td>
+                                        <td>Seasonal volume and visitor safety</td>
+                                        <td>Chief + city operations</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">Jacksonville</span><span class="tiny">military adjacency</span></td>
+                                        <td>Traffic flows and enforcement constraints</td>
+                                        <td>Police leadership</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">Fayetteville</span><span class="tiny">corridor and base traffic</span></td>
+                                        <td>High visibility, longer cycle</td>
+                                        <td>Chief → Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">Burlington</span><span class="tiny">I-40 corridor</span></td>
+                                        <td>Corridor speeding narrative</td>
+                                        <td>Police Chief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">High Point</span><span class="tiny">regional connector</span></td>
+                                        <td>Cross-traffic, manageable entry point</td>
+                                        <td>Chief + traffic engineering</td>
+                                    </tr>
+                                    <tr>
+                                        <td>T3</td>
+                                        <td><span class="city">Wilson</span><span class="tiny">eastern corridor</span></td>
+                                        <td>Useful nurture lane for later-stage proof</td>
+                                        <td>Chief</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="table-note">I would map four stakeholder lanes for each target: Police Chief, City Manager, Council influence, and local advocacy or school-safety voices.</p>
+                        <p style="font-size:0.75rem;color:var(--ink-soft);margin-top:8px;text-align:center;padding-bottom:8px;">↑ scroll to see all 18 cities</p>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>List philosophy</strong>
+                                <p>This is enough breadth to prove prioritization discipline while still being small enough to work deeply.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>What I would ask Mike</strong>
+                                <div class="bullet-list">
+                                    <div>Which NC cities already know Obvio but stalled?</div>
+                                    <div>What objections show up most in NC council dynamics?</div>
+                                    <div>Who besides the Chief has killed deals before?</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Use the phrase “census data vs. field reality” if they ask how you would refine the list with Mike.</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Weekly Rhythm" data-notes="Show that the week is structured around conversion, not activity theater.">
+                    <div class="panel">
+                        <div class="eyebrow">Execution machine</div>
+                        <h2>How I would structure the week.</h2>
+                        <div class="week-grid">
+                            <div class="week-card">
+                                <strong>Monday · Triaging</strong>
+                                <div class="bullet-list">
+                                    <div>Re-rank the 18 targets based on signal changes, open threads, and upcoming municipal timing.</div>
+                                    <div>Map buying committees and identify the one meeting-worthy story angle per account.</div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <strong>Tuesday · Tier 1 outbound</strong>
+                                <div class="bullet-list">
+                                    <div>Heavy call block for Tier 1 Chiefs and Managers.</div>
+                                    <div>Parallel email + LinkedIn touches with segment-specific language.</div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <strong>Wednesday · Multi-threading</strong>
+                                <div class="bullet-list">
+                                    <div>Push warm responses forward and widen the thread to traffic, operations, or community voices.</div>
+                                    <div>Prep every booked meeting with account notes and likely objections.</div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <strong>Thursday · Tier 2 + nurture</strong>
+                                <div class="bullet-list">
+                                    <div>Run Triangle and corridor outreach while following up all active conversations.</div>
+                                    <div>Log objections, language that resonates, and city-specific blockers.</div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <strong>Friday · Handoff and learning</strong>
+                                <div class="bullet-list">
+                                    <div>Review first-meeting quality, not just count.</div>
+                                    <div>Ship Mike a concise packet: meetings booked, objections heard, intersection clues, and recommended next steps.</div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <strong>Non-negotiable</strong>
+                                <div class="bullet-list">
+                                    <div>The week serves qualified meetings, not vanity activity.</div>
+                                    <div>If a segment underperforms, I reallocate quickly instead of defending the plan.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-strip">
+                            <div class="metric">
+                                <strong>8+</strong>
+                                <span>high-quality first meetings in the first cycle</span>
+                            </div>
+                            <div class="metric">
+                                <strong>60-80</strong>
+                                <span>dials on peak outbound days, adjusted if conversion proves better elsewhere</span>
+                            </div>
+                            <div class="metric">
+                                <strong>48 hrs</strong>
+                                <span>maximum lag before follow-up after any positive response</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>What they are testing</strong>
+                                <p>Can you build structure in ambiguity and create signal from sparse data?</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Good line to use</strong>
+                                <p>“I want my calendar and Mike's calendar to reflect the same prioritization logic.”</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>If they ask about volume, answer with “volume matters, but meeting quality is the governing metric.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Messaging" data-notes="Three tailored email examples. Keep them sharp and readable.">
+                    <div class="panel">
+                        <div class="eyebrow">Outreach messaging</div>
+                        <h2>Three email examples built around the city's actual pain signal.</h2>
+                        <div class="scripts">
+                            <div class="script-card">
+                                <header>
+                                    <h3>High-growth suburb</h3>
+                                    <span class="tiny">Chief / City Manager</span>
+                                </header>
+                                <code>Subject: [City] — the intersections you already know about
+
+Chief [Name],
+
+You already know which intersections are the problem. Every chief does. The issue is you can't station a cruiser there every morning and call it a strategy.
+
+A city about the size of [City] in Maryland ran a pilot at two intersections last year. Violations dropped 50% in eight weeks. No new hires. No infrastructure project. Just deterrence where it needed to be.
+
+I'd like to show you what that looks like for one corridor in [City]. Twenty minutes. If it doesn't fit, I'll leave you alone.
+
+Leon Basin
+Obvio AI</code>
+                            </div>
+                            <div class="script-card">
+                                <header>
+                                    <h3>University / pedestrian corridor</h3>
+                                    <span class="tiny">Transportation / safety lead</span>
+                                </header>
+                                <code>Subject: pedestrian safety in [Town] — a quick question
+
+[Name],
+
+When a student gets hit near campus, the story writes itself. Local press, community meeting, a council member asking what the plan is. You've seen this cycle.
+
+The enforcement gap isn't a staffing problem. It's a data problem. You can't defend an intersection you don't have numbers on.
+
+We work with university towns to put visible deterrence at the corridors that matter most — before the next incident, not after. One pilot corridor is usually enough to change the conversation at the council level.
+
+Worth a 20-minute call to see what this could look like at one spot in [Town]?
+
+Leon Basin
+Obvio AI</code>
+                            </div>
+                            <div class="script-card">
+                                <header>
+                                    <h3>Seasonal / corridor traffic</h3>
+                                    <span class="tiny">Chief / operations</span>
+                                </header>
+                                <code>Subject: [City] corridor — before the summer numbers come in
+
+Chief [Name],
+
+Seasonal traffic doesn't wait for budget cycles. By the time the crash data is in and the council approves something, you're already into the next season.
+
+We can deploy at one corridor in thirty days. You get real violation data — not a study, not a proposal — something you can actually put in front of your manager before the next spike hits.
+
+No long procurement. No infrastructure project. Just a pilot that gives you numbers.
+
+If there's a stretch of road in [City] that's been on your radar, that's the conversation I want to have. Fifteen minutes this week?
+
+Leon Basin
+Obvio AI</code>
+                            </div>
+                            <div class="script-card">
+                                <header>
+                                    <h3>Messaging rules</h3>
+                                    <span class="tiny">What stays constant</span>
+                                </header>
+                                <div class="bullet-list">
+                                    <div>Lead with the city's pain, not the product spec.</div>
+                                    <div>Reference proof points without overselling certainty.</div>
+                                    <div>Ask for a narrow next step: 15 minutes around one known corridor or intersection.</div>
+                                    <div>Write for speed and clarity. These are municipal operators, not marketing readers.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Why this works</strong>
+                                <p>The copy sells political cover and evidence generation, not just cameras. That is closer to how Chiefs and Managers think.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Messaging discipline</strong>
+                                <p>Each message changes the trigger story. The CTA stays small and concrete.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Say “I would rather send fewer credible emails than blast one template across all 18 cities.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Cold Call" data-notes="Use the tighter opener. Mapping frame. One objection pattern.">
+                    <div class="panel">
+                        <div class="eyebrow">Phone script</div>
+                        <h2>Cold call opener, discovery pivot, and objection handling.</h2>
+                        <div class="scripts">
+                            <div class="script-card">
+                                <header>
+                                    <h3>Opener</h3>
+                                    <span class="tiny">30-second door opener</span>
+                                </header>
+                                <code>[Name], Leon with Obvio AI. I'm mapping traffic enforcement gaps across the Charlotte metro. Do you have 60 seconds?
+
+The reason I'm calling is that cities like yours usually already know where the risky intersections are, but they do not have enough officer coverage or current data to move quickly. Obvio helps cities create deterrence and evidence without waiting on a long infrastructure cycle.
+
+Is there a corridor or school-zone area that comes up repeatedly for your team?</code>
+                            </div>
+                            <div class="script-card">
+                                <header>
+                                    <h3>Discovery pivot</h3>
+                                    <span class="tiny">From interruption to conversation</span>
+                                </header>
+                                <div class="bullet-list">
+                                    <div>Where do complaints or incidents cluster most often today?</div>
+                                    <div>What data do you already have, and where is it thin or outdated?</div>
+                                    <div>Who else needs to be convinced internally if a pilot makes sense?</div>
+                                    <div>What has stopped this from becoming a higher-priority project already?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="objections">
+                            <div class="objection-card">
+                                <header>
+                                    <h3>“We already enforce this.”</h3>
+                                </header>
+                                <p>I would agree with the intent, then reframe on consistency: “That makes sense. The gap I usually hear is not whether you enforce, but whether you can cover the same risky area consistently enough to reduce behavior and bring back hard data.”</p>
+                            </div>
+                            <div class="objection-card">
+                                <header>
+                                    <h3>“This sounds politically sensitive.”</h3>
+                                </header>
+                                <p>“It is sensitive, which is exactly why the first step should be a narrow pilot with clear safety framing and measurable results, not a broad rollout request.”</p>
+                            </div>
+                            <div class="objection-card">
+                                <header>
+                                    <h3>“No budget right now.”</h3>
+                                </header>
+                                <p>“Understood. I am not calling to force a budget conversation on the first call. I am trying to understand whether there is a corridor where a pilot would help you build the case internally.”</p>
+                            </div>
+                            <div class="objection-card">
+                                <header>
+                                    <h3>Close</h3>
+                                </header>
+                                <p>“If you point me to the one intersection or corridor you worry about most, I can make the next conversation concrete instead of generic.”</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Why “mapping” works</strong>
+                                <p>It signals research and pattern recognition, not a random cold pitch.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Cold-call standard</strong>
+                                <p>Success is not closing the deal. Success is earning a specific next conversation around a known problem area.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Read the opener slowly. It should sound observant, not hungry.</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Qualification" data-notes="Define qualified meeting and AE handoff. This is important.">
+                    <div class="panel">
+                        <div class="eyebrow">Qualification + handoff</div>
+                        <h2>What makes a lead qualified, and how I set my sales partner up for success.</h2>
+                        <div class="qual-grid">
+                            <div class="qual-card">
+                                <strong>Qualified meeting definition</strong>
+                                <div class="bullet-list">
+                                    <div>The prospect identifies a specific problem corridor, school zone, or intersection.</div>
+                                    <div>There is a plausible internal path beyond curiosity: Chief, Manager, transportation, or council access.</div>
+                                    <div>They agree to a real follow-up meeting to review pilot logic or proof points.</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>Disqualify early if</strong>
+                                <div class="bullet-list">
+                                    <div>The pain is vague and there is no urgency.</div>
+                                    <div>No one can name who else needs to be involved internally.</div>
+                                    <div>The conversation is purely informational with no willingness to review a concrete next step.</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>AE handoff packet</strong>
+                                <div class="bullet-list">
+                                    <div>Account summary and segment hypothesis.</div>
+                                    <div>Named stakeholders and buying committee map.</div>
+                                    <div>Problem corridor or intersection details.</div>
+                                    <div>Objections already surfaced and language that resonated.</div>
+                                    <div>Recommended proof point to use in the next meeting.</div>
+                                </div>
+                            </div>
+                            <div class="qual-card">
+                                <strong>My job in the handoff</strong>
+                                <div class="bullet-list">
+                                    <div>Reduce ambiguity for Mike and Craig.</div>
+                                    <div>Make the second conversation sharper than the first.</div>
+                                    <div>Keep learning loops tight so messaging and targeting improve weekly.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="callout">A qualified meeting is my definition, not the prospect's. If they cannot point to a real problem area and a real next internal conversation, it is not yet qualified.</div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Why this matters</strong>
+                                <p>This is where BDR work stops being activity support and starts becoming sales infrastructure.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Debrief angle</strong>
+                                <p>If they ask what success looks like, say: “A second meeting that starts from context, not from scratch.”</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Use the phrase “I want to lower the cognitive load on the AE.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Role Play" data-notes="Show framework and how you'd debrief yourself.">
+                    <div class="panel">
+                        <div class="eyebrow">Role play</div>
+                        <h2>How I would run the cold-call or discovery portion of the interview.</h2>
+                        <div class="roleplay-grid">
+                            <div class="roleplay-card">
+                                <header>
+                                    <h3>Open</h3>
+                                </header>
+                                <div class="bullet-list">
+                                    <div>Earn permission quickly.</div>
+                                    <div>Frame the call around a traffic-safety gap, not a pitch deck.</div>
+                                </div>
+                            </div>
+                            <div class="roleplay-card">
+                                <header>
+                                    <h3>Explore</h3>
+                                </header>
+                                <div class="bullet-list">
+                                    <div>Find the risky corridor.</div>
+                                    <div>Find the current enforcement limitation.</div>
+                                    <div>Find the internal blocker.</div>
+                                </div>
+                            </div>
+                            <div class="roleplay-card">
+                                <header>
+                                    <h3>Advance</h3>
+                                </header>
+                                <div class="bullet-list">
+                                    <div>Propose a narrow next meeting.</div>
+                                    <div>Anchor on proof and pilot logic.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <strong>If I get unexpected objections</strong>
+                                <div class="bullet-list">
+                                    <div>Acknowledge the concern without arguing.</div>
+                                    <div>Clarify whether it is political, operational, or budgetary.</div>
+                                    <div>Reframe toward a narrow pilot or data-gathering next step.</div>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <strong>If they ask what I would do differently</strong>
+                                <div class="bullet-list">
+                                    <div>I would name one question I should have asked earlier.</div>
+                                    <div>I would explain how I would tighten the next attempt rather than defending the first one.</div>
+                                    <div>I would show coachability without sounding uncertain.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quote-card">
+                            <strong>Debrief answer I would use</strong>
+                            <p>“I would check whether I found the actual operational bottleneck early enough. If I stayed too broad, I would tighten the next version around one corridor, one stakeholder path, and one proof point.”</p>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>What they want to see</strong>
+                                <p>Calm opening, clear questions, no panic on objections, and a measured next-step ask.</p>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Do not over-index on</strong>
+                                <p>Trying to “win” the role play. The goal is conversational control and diagnosis.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Say “I am listening for constraints more than buying signals in the first three minutes.”</p>
+                        </div>
+                    </aside>
+                </article>
+
+                <article class="slide" data-title="Close" data-notes="Wrap with clear operating identity and next-step framing.">
+                    <div class="panel">
+                        <div class="eyebrow">Closing summary</div>
+                        <h2>The operating identity I would bring to this role.</h2>
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <strong>Prioritize like an operator</strong>
+                                <p>I segment the market by trigger, sequence targets for proof, and avoid confusing breadth with progress.</p>
+                            </div>
+                            <div class="summary-card">
+                                <strong>Message like a municipal seller</strong>
+                                <p>I lead with safety risk, enforcement gaps, and council-ready evidence, not abstract product language.</p>
+                            </div>
+                            <div class="summary-card">
+                                <strong>Qualify with discipline</strong>
+                                <p>I define what deserves AE time and I make the next meeting sharper than the first.</p>
+                            </div>
+                            <div class="summary-card">
+                                <strong>Learn fast</strong>
+                                <p>I would use Mike's field reality to tighten this market map immediately after the first week of conversations.</p>
+                            </div>
+                        </div>
+
+                        <div class="quote-card">
+                            <strong>Closing line</strong>
+                            <p>My goal as Obvio's first BDR would be simple: generate qualified municipal conversations fast, turn those into repeatable proof, and build a market-entry playbook the company can scale beyond North Carolina.</p>
+                        </div>
+                    </div>
+
+                    <aside class="sidecar" aria-label="Slide notes and supporting context">
+                        <div class="sidecar-top">
+                            <div class="sidebar-card">
+                                <strong>Presenter controls</strong>
+                                <div class="bullet-list">
+                                    <div>Left / Right arrows or Space to navigate</div>
+                                    <div>Home / End to jump</div>
+                                    <div>N to toggle speaker cues</div>
+                                </div>
+                            </div>
+                            <div class="sidebar-card">
+                                <strong>Hosting note</strong>
+                                <p>This page is unlinked and marked noindex, but GitHub Pages is still public if someone has the URL.</p>
+                            </div>
+                        </div>
+                        <div class="sidecar-footer speaker-note">
+                            <strong>Speaker cue</strong>
+                            <p>Finish with one sentence, then stop. Let them ask the first question.</p>
+                        </div>
+                    </aside>
+                </article>
+            </section>
+        </main>
+
+        <div class="presenter-nav">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">&#8594;</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        const app = document.getElementById('app');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentIndex = 0;
+
+        function updateSlides(index) {
+            currentIndex = Math.max(0, Math.min(index, slides.length - 1));
+            slides.forEach((slide, slideIndex) => {
+                slide.classList.toggle('active', slideIndex === currentIndex);
+            });
+
+            const progress = ((currentIndex + 1) / slides.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            slideCounter.textContent = `${currentIndex + 1} / ${slides.length}`;
+
+            if (window.innerWidth > 760) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function nextSlide() {
+            updateSlides(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            updateSlides(currentIndex - 1);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+                event.preventDefault();
+                nextSlide();
+            }
+
+            if (["ArrowLeft", "PageUp"].includes(event.key)) {
+                event.preventDefault();
+                prevSlide();
+            }
+
+            if (event.key === 'Home') {
+                event.preventDefault();
+                updateSlides(0);
+            }
+
+            if (event.key === 'End') {
+                event.preventDefault();
+                updateSlides(slides.length - 1);
+            }
+
+            if (event.key.toLowerCase() === 'n') {
+                app.classList.toggle('notes-on');
+            }
+        });
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        updateSlides(0);
+    </script>
+</body>
+</html>
