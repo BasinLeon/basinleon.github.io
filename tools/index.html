@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools — Leon Basin</title>
+  <meta name="description" content="Interactive operator tools built by Leon Basin — revenue simulators, GTM diagnostics, pipeline architecture.">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold-primary: #C8880C;
+      --gold-light: #E89A18;
+      --gold-dark: #8B5A03;
+      --gold-border: rgba(200, 136, 12, 0.28);
+      --bg-deep: #0D0803;
+      --bg-card: #180C05;
+      --bg-warm: #201005;
+      --text-primary: #F2E4C8;
+      --text-secondary: #9B7D52;
+      --text-muted: #6B5030;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 20% 10%, #1a0a02 0%, #0D0803 60%, #050200 100%);
+      color: var(--text-primary);
+      font-family: 'Crimson Pro', Georgia, serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 8, 3, 0.97);
+      border-bottom: 1px solid var(--gold-border);
+      backdrop-filter: blur(8px);
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-primary); }
+
+    /* MASTHEAD */
+    .masthead {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 24px 40px;
+      border-bottom: 1px solid var(--gold-border);
+      position: relative;
+    }
+    .masthead::after {
+      content: '◆ ─────────────────── ◆ ─────────────────── ◆';
+      display: block;
+      text-align: center;
+      color: var(--gold-dark);
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      margin-top: 40px;
+    }
+    .masthead-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gold-primary);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .masthead-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .masthead-sub {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      font-style: italic;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .section { margin-bottom: 56px; }
+    .section-header {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    /* TOOL GRID */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border: 1px solid var(--gold-border);
+      border-top: 3px solid var(--gold-primary);
+      border-radius: 2px;
+      padding: 28px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .tool-card:hover {
+      border-top-color: var(--gold-light);
+      background: #1f0e04;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(200, 136, 12, 0.14);
+    }
+    .tool-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .tool-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--gold-primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tool-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .tool-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    .tool-cta {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gold-primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--gold-border);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .tool-card:hover .tool-cta { border-color: var(--gold-primary); }
+
+    /* FEATURED TOOL — full width */
+    .tool-card-featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .tool-card-featured .tool-content { flex: 1; }
+    .tool-card-featured .tool-icon { font-size: 3rem; margin-bottom: 0; flex-shrink: 0; }
+
+    @media (max-width: 640px) {
+      .tool-card-featured { flex-direction: column; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 0.65rem; }
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--gold-border);
+      text-align: center;
+      padding: 32px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    footer a { color: var(--text-muted); text-decoration: none; margin: 0 12px; }
+    footer a:hover { color: var(--gold-primary); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <a class="nav-logo" href="/">BASIN::NEXUS</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/blog/">Blog</a>
+      <a href="/library/">Library</a>
+      <a href="/case-studies/">Case Studies</a>
+      <a href="/tools/" class="active">Tools</a>
+      <a href="https://github.com/BasinLeon" rel="noopener noreferrer" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="masthead">
+  <div class="masthead-label">// Operator Toolkit</div>
+  <h1 class="masthead-title">Tools</h1>
+  <p class="masthead-sub">Interactive instruments for revenue architecture, GTM diagnostics, and pipeline design. Built to be used, not just read.</p>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-header">⚡ Core Operator Tools</div>
+    <div class="tool-grid">
+
+      <a class="tool-card tool-card-featured" href="/gtm-architecture-live/index-v2.html">
+        <div class="tool-icon">🏗️</div>
+        <div class="tool-content">
+          <div class="tool-tag">Interactive Architecture Model</div>
+          <div class="tool-name">GTM Architecture Live</div>
+          <div class="tool-desc">A fully interactive, layered model of a complete go-to-market architecture. Explore signal ingestion, ICP qualification, multi-channel sequencing, and revenue execution as a live system — not a static slide.</div>
+          <span class="tool-cta">Launch Tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/revenue_architecture_simulator.html">
+        <div class="tool-icon">📊</div>
+        <div class="tool-tag">Revenue Simulator</div>
+        <div class="tool-name">Revenue Architecture Simulator</div>
+        <div class="tool-desc">Model revenue architecture decisions in real time. Adjust headcount ratios, pipeline coverage targets, and conversion rates — see how the math responds before you commit to the build.</div>
+        <span class="tool-cta">Run Simulation →</span>
+      </a>
+
+      <a class="tool-card" href="/diagnostic.html">
+        <div class="tool-icon">🔍</div>
+        <div class="tool-tag">GTM Diagnostic</div>
+        <div class="tool-name">GTM Motion Diagnostic</div>
+        <div class="tool-desc">Walk through a structured diagnostic sequence to identify where your GTM motion is breaking down — pipeline generation, qualification signal, conversion efficiency, or execution cadence.</div>
+        <span class="tool-cta">Run Diagnostic →</span>
+      </a>
+
+      <a class="tool-card" href="/crm.html">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-tag">Pipeline Tool</div>
+        <div class="tool-name">NEXUS::CRM</div>
+        <div class="tool-desc">A lightweight, opinionated CRM interface built for operators who move fast. Track pipeline, log signal, and manage context — without the overhead of enterprise tooling.</div>
+        <span class="tool-cta">Open CRM →</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">🧪 Specialized Instruments</div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="/mock-interview-refinery-hud.html">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-tag">Interview Refinery</div>
+        <div class="tool-name">Mock Interview Refinery HUD</div>
+        <div class="tool-desc">A heads-up display for interview prep — track questions, stress-test answers, and refine your signal delivery under pressure.</div>
+        <span class="tool-cta">Open HUD →</span>
+      </a>
+
+      <a class="tool-card" href="/hazel_ai_prep_hud.html">
+        <div class="tool-icon">🤖</div>
+        <div class="tool-tag">AI Prep Tool</div>
+        <div class="tool-name">Hazel AI Prep HUD</div>
+        <div class="tool-desc">Structured preparation interface for AI-era sales and GTM roles — frameworks, signal vocabulary, and positioning for technical/AI product environments.</div>
+        <span class="tool-cta">Open HUD →</span>
+      </a>
+
+      <a class="tool-card" href="/mti-sovereign-mirror-hud.html">
+        <div class="tool-icon">🪞</div>
+        <div class="tool-tag">Strategy Mirror</div>
+        <div class="tool-name">MTI Sovereign Mirror HUD</div>
+        <div class="tool-desc">A mirror interface for the MTI sovereign GTM strategy — layering signal inputs against projected execution outputs across the full motion.</div>
+        <span class="tool-cta">Open Mirror →</span>
+      </a>
+
+      <a class="tool-card" href="/bounty-nexus-refinery-hud.html">
+        <div class="tool-icon">💎</div>
+        <div class="tool-tag">Pipeline Refinery</div>
+        <div class="tool-name">Bounty NEXUS Refinery HUD</div>
+        <div class="tool-desc">Pipeline signal refinery for marketplace and bounty-driven GTM motions — filtering noise, surfacing intent, and routing to execution.</div>
+        <span class="tool-cta">Open Refinery →</span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/">Portfolio</a>
+  <a href="/blog/">Blog</a>
+  <a href="/library/">Library</a>
+  <a href="/case-studies/">Case Studies</a>
+  <br><br>© 2026 Leon Basin • BASIN::NEXUS
+</footer>
+
+</body>
+</html>

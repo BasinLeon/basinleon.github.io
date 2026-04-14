@@ -1089,12 +1089,12 @@
 </div>
 <div class="signal-stats">
 <div class="signal-stat">
-<div class="signal-stat-value">80</div>
+<div class="signal-stat-value" id="stat-posts">0</div>
 <div class="signal-stat-label">Posts</div>
 </div>
 <div class="signal-stat">
-<div class="signal-stat-value" id="stat-signals">52</div>
-<div class="signal-stat-label">Signals</div>
+<div class="signal-stat-value" id="stat-topics">0</div>
+<div class="signal-stat-label">Topics</div>
 </div>
 </div>
 </div>
@@ -1104,19 +1104,19 @@
                     // SYSTEM_METRICS::LIVE
                 </div>
 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
-<span>SIGNALS_SCANNED:</span>
-<span style="color: var(--gold-primary); font-weight: 600;">14,203</span>
+<span>POSTS_PUBLISHED:</span>
+<span id="metric-posts-published" style="color: var(--gold-primary); font-weight: 600;">0</span>
 </div>
 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
-<span>NOISE_BLOCKED:</span>
-<span style="color: #ff6b6b; font-weight: 600;">12,850</span>
+<span>DISTINCT_TOPICS:</span>
+<span id="metric-distinct-topics" style="color: #ff6b6b; font-weight: 600;">0</span>
 </div>
 <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'Inter', sans-serif;">
-<span>SIGNAL_INTEGRITY:</span>
-<span style="color: #22c55e; font-weight: 600;">91%</span>
+<span>ACTIVE_CATEGORIES:</span>
+<span id="metric-active-categories" style="color: #22c55e; font-weight: 600;">0</span>
 </div>
 <div style="margin-top: 0.75rem; font-size: 0.65rem; text-align: right; opacity: 0.7; font-family: 'Inter', sans-serif;">
-                    UPDATED: T-MINUS 12M
+                    UPDATED: FROM DATASET
                 </div>
 </div>
 <!-- Ask Archive - Connects to Chatbot -->
@@ -1126,16 +1126,16 @@
 <!-- Categories as Bubbles -->
 <div class="sidebar-header"><span aria-hidden="true">�</span> Sections</div>
 <div class="category-bubbles">
-<span class="cat-bubble active" data-filter="all">All <small>163+</small></span>
-<span class="cat-bubble" data-filter="gtm" style="--cat-color: #D4AF37;">GTM</span>
-<span class="cat-bubble" data-filter="revenue" style="--cat-color: #4ade80;">Revenue</span>
-<span class="cat-bubble" data-filter="ai" style="--cat-color: #8b5cf6;">AI</span>
-<span class="cat-bubble" data-filter="cybersecurity" style="--cat-color: #06b6d4;">Cyber</span>
-<span class="cat-bubble" data-filter="creative" style="--cat-color: #ec4899;">Creative</span>
-<span class="cat-bubble" data-filter="sales" style="--cat-color: #fb923c;">Sales</span>
-<span class="cat-bubble" data-filter="python" style="--cat-color: #34d399;">Python</span>
-<span class="cat-bubble" data-filter="philosophy" style="--cat-color: #a78bfa;">Philosophy</span>
-<span class="cat-bubble" data-filter="sam" style="--cat-color: #f472b6;">Sam &amp; Ink</span>
+<span class="cat-bubble active" data-filter="all" data-label="All">All <small>0</small></span>
+<span class="cat-bubble" data-filter="gtm" data-label="GTM" style="--cat-color: #D4AF37;">GTM <small>0</small></span>
+<span class="cat-bubble" data-filter="revenue" data-label="Revenue" style="--cat-color: #4ade80;">Revenue <small>0</small></span>
+<span class="cat-bubble" data-filter="ai" data-label="AI" style="--cat-color: #8b5cf6;">AI <small>0</small></span>
+<span class="cat-bubble" data-filter="cybersecurity" data-label="Cyber" style="--cat-color: #06b6d4;">Cyber <small>0</small></span>
+<span class="cat-bubble" data-filter="creative" data-label="Creative" style="--cat-color: #ec4899;">Creative <small>0</small></span>
+<span class="cat-bubble" data-filter="sales" data-label="Sales" style="--cat-color: #fb923c;">Sales <small>0</small></span>
+<span class="cat-bubble" data-filter="python" data-label="Python" style="--cat-color: #34d399;">Python <small>0</small></span>
+<span class="cat-bubble" data-filter="philosophy" data-label="Philosophy" style="--cat-color: #a78bfa;">Philosophy <small>0</small></span>
+<span class="cat-bubble" data-filter="sam" data-label="Sam &amp; Ink" style="--cat-color: #f472b6;">Sam &amp; Ink <small>0</small></span>
 </div>
 <!-- Archive Dropdown -->
 <div class="sidebar-header"><span aria-hidden="true">�️</span> The Catalog</div>
@@ -1159,13 +1159,13 @@
 <div aria-hidden="true" class="about-avatar">🧠</div>
 <div class="about-name">Leon Basin</div>
 <div class="about-bio">Revenue Architect. Building systems that replace headcount with intelligence.
-                    $310M+ portfolio.</div>
+                    $300M+ portfolio.</div>
 </div>
 <!-- Newsletter -->
 <div class="sidebar-header"><span aria-hidden="true">✉️</span> The Dispatch</div>
 <div class="newsletter-cta">
 <h4>Subscribe</h4>
-<p>402+ revenue architects</p>
+<p>Join the Dispatch list</p>
 <form action="https://formspree.io/f/meeeqyrg" id="blog-newsletter-form" method="POST">
 <input name="email" placeholder="your@email.com" required="" type="email"/>
 <input name="_subject" type="hidden" value="🔔 Signal Feed Subscriber"/>
@@ -1297,6 +1297,76 @@
         let originalPosts = [];
         let isMonthFilterActive = false;
 
+        function getPublishedPosts(posts) {
+            return (posts || []).filter(p => p.url && p.url !== '#');
+        }
+
+        function matchesFilter(post, filter) {
+            if (!post || post.url === '#') return false;
+            if (filter === 'all') return true;
+            const searchTerm = filter.toLowerCase();
+            const tagMatch = (post.tags || []).some(t => t.toLowerCase().includes(searchTerm));
+            const titleMatch = (post.title || '').toLowerCase().includes(searchTerm);
+            return tagMatch || titleMatch;
+        }
+
+        function updateBubbleCounts(posts) {
+            const publishedPosts = getPublishedPosts(posts);
+            document.querySelectorAll('.cat-bubble').forEach(bubble => {
+                const filter = bubble.dataset.filter || 'all';
+                const label = bubble.dataset.label || bubble.textContent.trim();
+                const count = publishedPosts.filter(post => matchesFilter(post, filter)).length;
+                bubble.innerHTML = `${label} <small>${count}</small>`;
+            });
+        }
+
+        function renderArchiveMonths(posts) {
+            const container = document.getElementById('archive-months');
+            if (!container) return;
+
+            const counts = new Map();
+            getPublishedPosts(posts).forEach(post => {
+                if (!post.date) return;
+                const d = new Date(post.date);
+                if (isNaN(d.getTime())) return;
+                const monthKey = d.toISOString().slice(0, 7);
+                counts.set(monthKey, (counts.get(monthKey) || 0) + 1);
+            });
+
+            const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' });
+            const monthKeys = [...counts.keys()].sort((a, b) => b.localeCompare(a));
+            container.innerHTML = monthKeys.map(key => {
+                const [year, month] = key.split('-');
+                const date = new Date(Number(year), Number(month) - 1, 1);
+                const label = `${monthFormatter.format(date)} (${counts.get(key)})`;
+                return `<a aria-label="Filter posts from ${label}" class="archive-month" data-month="${key}" href="#">${label}</a>`;
+            }).join('');
+        }
+
+        function updateDatasetMetrics(posts) {
+            const publishedPosts = getPublishedPosts(posts);
+            const uniqueTopics = new Set();
+            const categorySet = new Set();
+
+            publishedPosts.forEach(post => {
+                (post.tags || []).forEach(tag => uniqueTopics.add(String(tag).trim()));
+                const category = (post.category || 'Uncategorized').toString().trim();
+                if (category) categorySet.add(category.toLowerCase());
+            });
+
+            const statPostsEl = document.getElementById('stat-posts');
+            const statTopicsEl = document.getElementById('stat-topics');
+            const metricPostsEl = document.getElementById('metric-posts-published');
+            const metricTopicsEl = document.getElementById('metric-distinct-topics');
+            const metricCategoriesEl = document.getElementById('metric-active-categories');
+
+            if (statPostsEl) statPostsEl.textContent = publishedPosts.length;
+            if (statTopicsEl) statTopicsEl.textContent = uniqueTopics.size;
+            if (metricPostsEl) metricPostsEl.textContent = publishedPosts.length;
+            if (metricTopicsEl) metricTopicsEl.textContent = uniqueTopics.size;
+            if (metricCategoriesEl) metricCategoriesEl.textContent = categorySet.size;
+        }
+
         // Format date for display
         function formatDate(dateStr) {
             if (!dateStr) return 'Archive';
@@ -1312,15 +1382,7 @@
         }
 
         function renderPosts() {
-            let filtered = currentFilter === 'all'
-                ? allPosts.filter(p => p.url && p.url !== '#') // Only show posts with valid URLs
-                : allPosts.filter(p => {
-                    if (p.url === '#') return false;
-                    const searchTerm = currentFilter.toLowerCase();
-                    const tagMatch = (p.tags || []).some(t => t.toLowerCase().includes(searchTerm));
-                    const titleMatch = (p.title || '').toLowerCase().includes(searchTerm);
-                    return tagMatch || titleMatch;
-                });
+            const filtered = allPosts.filter(p => matchesFilter(p, currentFilter));
 
             const toShow = filtered.slice(0, displayedCount);
 
@@ -1356,7 +1418,7 @@
             loadMoreBtn.style.display = displayedCount >= filtered.length ? 'none' : 'inline-block';
 
             // Update post count in sidebar
-            const countEl = document.querySelector('.signal-stat-value');
+            const countEl = document.getElementById('stat-posts');
             if (countEl) countEl.textContent = filtered.length;
         }
 
@@ -1389,41 +1451,34 @@
             archiveMonths.classList.toggle('open');
         });
 
-        // Archive month filter
-        document.querySelectorAll('.archive-month').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const month = link.dataset.month;
-                if (month) {
-                    // Save original posts if not already saved
-                    if (originalPosts.length === 0) {
-                        originalPosts = [...allPosts];
-                    }
-                    // Filter posts by month (YYYY-MM format)
-                    currentFilter = 'all';
-                    displayedCount = 15;
-                    isMonthFilterActive = true;
-                    allPosts = originalPosts.filter(p => {
-                        if (!p.date) return false;
-                        try {
-                            const postDate = new Date(p.date);
-                            if (isNaN(postDate.getTime())) return false;
-                            const postMonth = postDate.toISOString().slice(0, 7); // YYYY-MM
-                            const postYear = postDate.getFullYear().toString();
-                            return postMonth === month || (month.length === 4 && postYear === month);
-                        } catch (e) {
-                            return false;
-                        }
-                    });
-                    renderPosts();
-                    // Update active category bubble
-                    document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
-                    document.querySelector('.cat-bubble[data-filter="all"]')?.classList.add('active');
-                    // Close dropdown
-                    archiveToggle.classList.remove('open');
-                    archiveMonths.classList.remove('open');
-                }
+        // Archive month filter (event delegation so dynamically-rendered months work)
+        archiveMonths.addEventListener('click', (e) => {
+            const link = e.target.closest('.archive-month');
+            if (!link) return;
+            e.preventDefault();
+
+            const month = link.dataset.month;
+            if (!month) return;
+
+            if (originalPosts.length === 0) {
+                originalPosts = [...allPosts];
+            }
+
+            currentFilter = 'all';
+            displayedCount = 15;
+            isMonthFilterActive = true;
+            allPosts = originalPosts.filter(p => {
+                if (!p.date || !p.url || p.url === '#') return false;
+                const postDate = new Date(p.date);
+                if (isNaN(postDate.getTime())) return false;
+                return postDate.toISOString().slice(0, 7) === month;
             });
+
+            renderPosts();
+            document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
+            document.querySelector('.cat-bubble[data-filter="all"]')?.classList.add('active');
+            archiveToggle.classList.remove('open');
+            archiveMonths.classList.remove('open');
         });
 
         // Ask Archive - Opens NEXUS Intelligence chatbot
@@ -1449,6 +1504,9 @@
                     return new Date(b.date) - new Date(a.date);
                 });
                 originalPosts = [...allPosts]; // Save original for filtering
+                updateDatasetMetrics(originalPosts);
+                updateBubbleCounts(originalPosts);
+                renderArchiveMonths(originalPosts);
                 renderPosts();
                 console.log(`📚 Loaded ${allPosts.length} posts from archive`);
             })
@@ -1465,25 +1523,14 @@
                             return new Date(b.date) - new Date(a.date);
                         });
                         originalPosts = [...allPosts]; // Save original for filtering
+                        updateDatasetMetrics(originalPosts);
+                        updateBubbleCounts(originalPosts);
+                        renderArchiveMonths(originalPosts);
                         renderPosts();
                     })
                     .catch(e => console.error('Alternative fetch also failed:', e));
             });
 
-        // Fetch signal stats (with cache-busting)
-        const statsUrl = '../data/nexus-status.json?v=' + Date.now();
-        fetch(statsUrl, { cache: 'no-store' })
-            .then(r => {
-                if (!r.ok) return;
-                return r.json();
-            })
-            .then(data => {
-                if (data) {
-                    const statEl = document.getElementById('stat-signals');
-                    if (statEl) statEl.textContent = data.signalsScanned || 52;
-                }
-            })
-            .catch(() => { });
     </script>
 <!-- Blog Features -->
 <script src="js/blog-features.js?v=2.0"></script>
