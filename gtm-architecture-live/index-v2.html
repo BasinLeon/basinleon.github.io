@@ -3,420 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM Architecture Simulator | LATAM Expansion</title>
+    <title>Basin::Nexus | GTM Architecture Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0F172A; }
 
-        :root {
-            --theme-manual: #c49a45;
-            --theme-manual-bg: #fffbf0;
-            --theme-manual-border: #e6d5b3;
-
-            --theme-api: #2563eb;
-            --theme-api-bg: #f0f7ff;
-            --theme-api-border: #bfdbfe;
-
-            --bg-color: #f5f5f0;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
-
-            --active-color: var(--theme-manual);
-            --active-bg: var(--theme-manual-bg);
-            --active-border: var(--theme-manual-border);
-
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #CBD5E1;
+            outline: none;
         }
-
-        [data-theme="api"] {
-            --active-color: var(--theme-api);
-            --active-bg: var(--theme-api-bg);
-            --active-border: var(--theme-api-border);
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2563EB;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        input[type=range]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2563EB;
+            cursor: pointer;
+            border: 2px solid #fff;
         }
-
-        .simulator-card {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 800px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
+        .bar-manual { background: #CBD5E1; }
+        .bar-api    { background: #2563EB; }
+        .bar-track  { background: #E2E8F0; border-radius: 6px; overflow: hidden; }
+        .delta-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
-
-        .flash-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: white;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 100;
-        }
-        @keyframes flash {
-            0% { opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0; }
-        }
-        .flash-active { animation: flash 0.4s ease-out; }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 32px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .header-left .meta { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
-        .header-left h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
-        .header-stats { display: flex; gap: 32px; text-align: right; }
-        .stat-group { display: flex; flex-direction: column; }
-        .stat-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; font-weight: 600; margin-bottom: 4px;}
-        .stat-value { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
-        .stat-value.dynamic { color: var(--active-color); transition: color 0.3s ease; }
-
-        .trace-container { padding: 24px 32px 0 32px; }
-        .trace-box {
-            background: var(--active-bg);
-            border: 1px solid var(--active-border);
-            border-radius: 8px;
-            padding: 16px 20px;
-            transition: all 0.3s ease;
-        }
-        .trace-title { font-size: 0.65rem; text-transform: uppercase; color: var(--active-color); font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; transition: color 0.3s ease;}
-        .trace-text { font-size: 0.9rem; line-height: 1.5; color: var(--text-main); margin: 0; }
-
-        .visual-area {
-            position: relative;
-            padding: 60px 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .gauge-container { position: relative; width: 200px; height: 100px; }
-        .gauge-svg { width: 100%; height: 100%; overflow: visible; }
-        .gauge-bg { fill: none; stroke: var(--border-color); stroke-width: 12; stroke-linecap: round; }
-        .gauge-fill { fill: none; stroke: var(--active-color); stroke-width: 12; stroke-linecap: round; transition: stroke 0.3s ease, stroke-dasharray 0.4s ease-out; }
-        .gauge-center { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; }
-        .gauge-score { font-family: var(--font-mono); font-size: 3rem; font-weight: 700; line-height: 1; margin: 0; color: var(--text-main); }
-        .gauge-max { font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted); }
-
-        .pill {
-            position: absolute;
-            background: var(--card-bg);
-            border: 1px solid var(--active-border);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: all 0.3s ease;
-        }
-        .pill-demand { left: 40px; top: 40%; transform: translateY(-50%); }
-        .pill-icp { right: 40px; top: 40%; transform: translateY(-50%); }
-        .pill-event { left: 40px; top: 80%; transform: translateY(-50%); }
-        .pill-brand { right: 40px; top: 80%; transform: translateY(-50%); }
-
-        .tiers-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-            padding: 0 32px 32px 32px;
-        }
-        .tier-box {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            text-align: center;
-            opacity: 0.5;
-            transition: all 0.3s ease;
-        }
-        .tier-box.active {
-            opacity: 1;
-            background: var(--active-bg);
-            border-color: var(--active-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-        .tier-range { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; display: block;}
-        .tier-box.active .tier-range { color: var(--active-color); font-weight: bold;}
-        .tier-name { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); }
-        .tier-box.active .tier-name { color: var(--active-color); }
-
-        .controls-container {
-            background: #fafafa;
-            border-top: 1px solid var(--border-color);
-            padding: 24px 32px;
-        }
-
-        .toggle-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            border: 1px solid var(--active-border);
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-        }
-        .toggle-label { display: flex; flex-direction: column; }
-        .toggle-label strong { font-size: 0.9rem; margin-bottom: 2px;}
-        .toggle-label span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--active-color); transition: color 0.3s ease;}
-
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d1d5db; transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.3);}
-        input:checked + .slider { background-color: var(--theme-api); }
-        input:checked + .slider:before { transform: translateX(20px); }
-        [data-theme="manual"] .switch .slider { background-color: var(--theme-manual); }
-        [data-theme="manual"] input:checked + .slider { background-color: var(--theme-manual); }
-        [data-theme="manual"] input:not(:checked) + .slider:before { transform: translateX(0px); }
-
-        .sliders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 48px; margin-bottom: 24px; }
-        .slider-group { display: flex; align-items: center; justify-content: space-between; gap: 16px;}
-        .slider-group label { font-size: 0.85rem; font-weight: 600; width: 120px; flex-shrink: 0;}
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--active-color); cursor: pointer; margin-top: -6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: background 0.3s ease;}
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border-color); border-radius: 2px; }
-        .val-display { background: var(--card-bg); border: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; padding: 4px 12px; border-radius: 4px; min-width: 45px; text-align: center;}
-
-        .reset-btn { width: 100%; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; padding: 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;}
-        .reset-btn:hover { background: #f3f4f6; color: var(--text-main); }
-
-        .footer { display: flex; justify-content: space-between; padding: 16px 32px; background: var(--card-bg); border-top: 1px solid var(--border-color); font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase;}
     </style>
 </head>
-<body data-theme="manual">
+<body class="p-6 md:p-12 min-h-screen">
+    <div class="max-w-4xl mx-auto">
 
-    <div class="simulator-card">
-        <div class="flash-overlay" id="flashOverlay"></div>
+        <!-- Header -->
+        <header class="mb-8 border-b-2 border-slate-200 pb-5 flex justify-between items-end flex-wrap gap-4">
+            <div>
+                <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">SCU MKTG 3590 · May 14 Session</p>
+                <h1 class="text-3xl font-extrabold tracking-tight">BASIN::NEXUS</h1>
+                <p class="text-slate-500 text-sm mt-1">GTM Architecture Simulator — LATAM Expansion Scenario</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Grading Metric</p>
+                <p class="text-lg font-extrabold text-slate-800">Net Contribution</p>
+            </div>
+        </header>
 
-        <div class="header">
-            <div class="header-left">
-                <div class="meta">Live Scenario</div>
-                <h1>LATAM Expansion</h1>
-            </div>
-            <div class="header-stats">
-                <div class="stat-group">
-                    <span class="stat-label">Total Score</span>
-                    <span class="stat-value" id="headerScore">64</span>
-                </div>
-                <div class="stat-group">
-                    <span class="stat-label">Tier</span>
-                    <span class="stat-value dynamic" id="headerTier">Partner-Led Entry</span>
-                </div>
-                <div class="stat-group">
-                    <span class="stat-label">Arch</span>
-                    <span class="stat-value dynamic" id="headerArch">Manual</span>
-                </div>
-            </div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <div class="trace-container">
-            <div class="trace-box">
-                <div class="trace-title">Architecture Trace</div>
-                <p class="trace-text" id="traceText">
-                    <strong>Manual Textbook Architecture:</strong> High headcount, slow entry, fragmented channel coverage. Pipeline quality varies by rep effort and lead decay.
-                </p>
-            </div>
-        </div>
+            <!-- LEFT: Signal Inputs -->
+            <div class="col-span-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="font-bold mb-5 text-slate-700 uppercase text-xs tracking-widest">Signal Inputs</h2>
 
-        <div class="visual-area">
-            <div class="pill pill-demand">DEMAND: <span id="pillDemand">18</span></div>
-            <div class="pill pill-icp">ICP: <span id="pillIcp">20</span></div>
-            <div class="pill pill-event">EVENT: <span id="pillEvent">12</span></div>
-            <div class="pill pill-brand">BRAND: <span id="pillBrand">14</span></div>
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <label class="text-xs font-semibold text-slate-500">Market Demand</label>
+                        <span id="demand-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">18</span>
+                    </div>
+                    <input type="range" id="demand" min="0" max="25" value="18" class="w-full" oninput="updateDashboard()">
+                </div>
 
-            <div class="gauge-container">
-                <svg class="gauge-svg" viewBox="0 0 100 50">
-                    <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" />
-                    <path class="gauge-fill" id="gaugeFill" d="M 10 50 A 40 40 0 0 1 90 50" stroke-dasharray="125.6" stroke-dashoffset="45" />
-                </svg>
-                <div class="gauge-center">
-                    <div class="gauge-score" id="centerScore">64</div>
-                    <div class="gauge-max">/ 100</div>
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <label class="text-xs font-semibold text-slate-500">Regional ICP</label>
+                        <span id="icp-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">20</span>
+                    </div>
+                    <input type="range" id="icp" min="0" max="25" value="20" class="w-full" oninput="updateDashboard()">
                 </div>
-            </div>
-        </div>
 
-        <div class="tiers-container">
-            <div class="tier-box" id="tier1">
-                <span class="tier-range">&lt; 40</span>
-                <span class="tier-name">Delay Entry</span>
-            </div>
-            <div class="tier-box active" id="tier2">
-                <span class="tier-range">40 - 75</span>
-                <span class="tier-name">Partner-Led Entry</span>
-            </div>
-            <div class="tier-box" id="tier3">
-                <span class="tier-range">&gt; 75</span>
-                <span class="tier-name">Deploy Localized<br>API Automation</span>
-            </div>
-        </div>
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <label class="text-xs font-semibold text-slate-500">Compelling Event</label>
+                        <span id="event-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">12</span>
+                    </div>
+                    <input type="range" id="event" min="0" max="25" value="12" class="w-full" oninput="updateDashboard()">
+                </div>
 
-        <div class="controls-container">
-            <div class="toggle-row">
-                <div class="toggle-label">
-                    <strong>Architecture</strong>
-                    <span id="toggleLabelText">Manual GTM Architecture</span>
+                <div class="mb-6">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <label class="text-xs font-semibold text-slate-500">Brand Presence</label>
+                        <span id="brand-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">14</span>
+                    </div>
+                    <input type="range" id="brand" min="0" max="25" value="14" class="w-full" oninput="updateDashboard()">
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="archToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
 
-            <div class="sliders-grid">
-                <div class="slider-group">
-                    <label>Market Demand</label>
-                    <input type="range" id="valDemand" min="0" max="30" value="18">
-                    <div class="val-display" id="dispDemand">18</div>
-                </div>
-                <div class="slider-group">
-                    <label>Regional ICP</label>
-                    <input type="range" id="valIcp" min="0" max="30" value="20">
-                    <div class="val-display" id="dispIcp">20</div>
-                </div>
-                <div class="slider-group">
-                    <label>Compelling Event</label>
-                    <input type="range" id="valEvent" min="0" max="20" value="12">
-                    <div class="val-display" id="dispEvent">12</div>
-                </div>
-                <div class="slider-group">
-                    <label>Brand Presence</label>
-                    <input type="range" id="valBrand" min="0" max="20" value="14">
-                    <div class="val-display" id="dispBrand">14</div>
+                <div class="border-t border-slate-100 pt-5">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Architecture Mode</p>
+                    <div class="flex gap-2">
+                        <button id="btn-api" onclick="setMode('api')"
+                            class="flex-1 py-2 rounded-lg text-sm font-bold border-2 border-blue-600 bg-blue-600 text-white transition-all">
+                            API
+                        </button>
+                        <button id="btn-manual" onclick="setMode('manual')"
+                            class="flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all">
+                            Manual
+                        </button>
+                    </div>
+                    <p id="mode-label" class="text-center text-xs text-blue-600 font-bold mt-2 uppercase tracking-widest">API Automation Active</p>
                 </div>
             </div>
 
-            <button class="reset-btn" onclick="resetBaseline()">Reset Baseline</button>
-        </div>
+            <!-- RIGHT: Output panels -->
+            <div class="col-span-2 flex flex-col gap-4">
 
-        <div class="footer">
-            <span>BASIN::NEXUS</span>
-            <span>SCU MKTG 3590 &middot; May 14 Session</span>
+                <!-- Score + Tier -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
+                        <p class="text-blue-200 text-xs font-bold uppercase tracking-widest mb-1">GTM Score</p>
+                        <p class="text-5xl font-extrabold tabular-nums"><span id="total-score">64</span><span class="text-xl text-blue-300">/100</span></p>
+                        <p id="tier-label" class="mt-2 text-sm font-semibold text-blue-100">Partner-Led Entry</p>
+                    </div>
+                    <div class="bg-emerald-500 text-white p-5 rounded-xl shadow-sm">
+                        <p class="text-emerald-100 text-xs font-bold uppercase tracking-widest mb-1">Net Contribution</p>
+                        <p class="text-3xl font-extrabold tabular-nums" id="net-contrib">$896,000</p>
+                        <p class="mt-2 text-xs font-semibold text-emerald-100">Capital Allocation Speed:</p>
+                        <p id="speed-label" class="text-sm font-bold">Maximized (API)</p>
+                    </div>
+                </div>
+
+                <!-- Net Contribution comparison bar -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="font-bold mb-3 text-slate-700 uppercase text-xs tracking-widest">Net Contribution — Architecture Delta</h2>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-xs text-slate-500 w-14 text-right font-semibold">Manual</span>
+                        <div class="bar-track flex-1 h-7">
+                            <div id="bar-manual" class="bar-manual h-7 flex items-center pl-2 transition-all duration-500" style="width:40%">
+                                <span id="manual-label" class="text-xs font-bold text-slate-600">$384,000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-slate-500 w-14 text-right font-semibold">API</span>
+                        <div class="bar-track flex-1 h-7">
+                            <div id="bar-api" class="bar-api h-7 flex items-center pl-2 transition-all duration-500" style="width:94%">
+                                <span id="api-label" class="text-xs font-bold text-white">$896,000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center gap-2">
+                        <span id="delta-badge" class="delta-badge bg-emerald-100 text-emerald-700">+133% vs Manual</span>
+                        <span class="text-xs text-slate-400">API architecture multiplier: 1.4× vs headcount drag: 0.6×</span>
+                    </div>
+                </div>
+
+                <!-- Architecture Trace -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex-grow">
+                    <h2 class="font-bold mb-2 text-slate-700 uppercase text-xs tracking-widest">Architecture Trace</h2>
+                    <p id="trace-text"
+                        class="text-slate-600 text-sm leading-relaxed font-mono bg-slate-50 p-4 rounded-lg border border-slate-100 transition-all duration-300">
+                        Basin::Nexus API Architecture: Signal-prioritized targeting. Decision logic automates SKU pricing adjustments based on competitor data. Consistent system learning maximizes Net Contribution and capital allocation speed.
+                    </p>
+                </div>
+
+            </div>
         </div>
     </div>
 
     <script>
-        const body = document.body;
-        const archToggle = document.getElementById('archToggle');
-        const flashOverlay = document.getElementById('flashOverlay');
+        let currentMode = 'api';
 
-        const headerScore = document.getElementById('headerScore');
-        const headerTier = document.getElementById('headerTier');
-        const headerArch = document.getElementById('headerArch');
-        const centerScore = document.getElementById('centerScore');
-        const traceText = document.getElementById('traceText');
-        const toggleLabelText = document.getElementById('toggleLabelText');
-        const gaugeFill = document.getElementById('gaugeFill');
+        function setMode(mode) {
+            currentMode = mode;
+            const apiBtn    = document.getElementById('btn-api');
+            const manualBtn = document.getElementById('btn-manual');
+            const modeLabel = document.getElementById('mode-label');
 
-        const pillDemand = document.getElementById('pillDemand');
-        const pillIcp = document.getElementById('pillIcp');
-        const pillEvent = document.getElementById('pillEvent');
-        const pillBrand = document.getElementById('pillBrand');
-
-        const valDemand = document.getElementById('valDemand');
-        const valIcp = document.getElementById('valIcp');
-        const valEvent = document.getElementById('valEvent');
-        const valBrand = document.getElementById('valBrand');
-        const dispDemand = document.getElementById('dispDemand');
-        const dispIcp = document.getElementById('dispIcp');
-        const dispEvent = document.getElementById('dispEvent');
-        const dispBrand = document.getElementById('dispBrand');
-
-        const tier1 = document.getElementById('tier1');
-        const tier2 = document.getElementById('tier2');
-        const tier3 = document.getElementById('tier3');
-
-        const GAUGE_CIRCUMFERENCE = 125.6;
-
-        archToggle.addEventListener('change', handleToggle);
-        [valDemand, valIcp, valEvent, valBrand].forEach(input => {
-            input.addEventListener('input', calculateScore);
-        });
-
-        function handleToggle() {
-            flashOverlay.classList.remove('flash-active');
-            void flashOverlay.offsetWidth;
-            flashOverlay.classList.add('flash-active');
-
-            if (archToggle.checked) {
-                body.setAttribute('data-theme', 'api');
-                headerArch.innerText = 'API';
-                toggleLabelText.innerText = 'Basin::Nexus API Architecture';
-                traceText.innerHTML = '<strong>Basin::Nexus API Architecture:</strong> Signal-prioritized targeting. Decision logic drives next action automatically. Consistent system learning eliminates rep-effort variance.';
+            if (mode === 'api') {
+                apiBtn.className    = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-blue-600 bg-blue-600 text-white transition-all';
+                manualBtn.className = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all';
+                modeLabel.textContent = 'API Automation Active';
+                modeLabel.className = 'text-center text-xs text-blue-600 font-bold mt-2 uppercase tracking-widest';
             } else {
-                body.setAttribute('data-theme', 'manual');
-                headerArch.innerText = 'Manual';
-                toggleLabelText.innerText = 'Manual GTM Architecture';
-                traceText.innerHTML = '<strong>Manual Textbook Architecture:</strong> High headcount, slow entry, fragmented channel coverage. Pipeline quality varies by rep effort and lead decay.';
+                manualBtn.className = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-600 bg-slate-600 text-white transition-all';
+                apiBtn.className    = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all';
+                modeLabel.textContent = 'Manual / Textbook Mode';
+                modeLabel.className = 'text-center text-xs text-slate-500 font-bold mt-2 uppercase tracking-widest';
             }
+            updateDashboard();
         }
 
-        function calculateScore() {
-            const d = parseInt(valDemand.value);
-            const i = parseInt(valIcp.value);
-            const e = parseInt(valEvent.value);
-            const b = parseInt(valBrand.value);
+        function updateDashboard() {
+            const demand = parseInt(document.getElementById('demand').value);
+            const icp    = parseInt(document.getElementById('icp').value);
+            const event  = parseInt(document.getElementById('event').value);
+            const brand  = parseInt(document.getElementById('brand').value);
 
-            const total = d + i + e + b;
+            document.getElementById('demand-val').textContent = demand;
+            document.getElementById('icp-val').textContent    = icp;
+            document.getElementById('event-val').textContent  = event;
+            document.getElementById('brand-val').textContent  = brand;
 
-            dispDemand.innerText = d; pillDemand.innerText = d;
-            dispIcp.innerText = i; pillIcp.innerText = i;
-            dispEvent.innerText = e; pillEvent.innerText = e;
-            dispBrand.innerText = b; pillBrand.innerText = b;
+            const score = demand + icp + event + brand;
+            document.getElementById('total-score').textContent = score;
 
-            headerScore.innerText = total;
-            centerScore.innerText = total;
+            let tier = '';
+            if (score < 40)       tier = 'Delay Entry';
+            else if (score <= 75) tier = 'Partner-Led Entry';
+            else                  tier = 'Deploy Localized API Automation';
+            document.getElementById('tier-label').textContent = tier;
 
-            const offset = GAUGE_CIRCUMFERENCE - ((total / 100) * GAUGE_CIRCUMFERENCE);
-            gaugeFill.style.strokeDashoffset = offset;
+            const base        = score * 10000;
+            const apiContrib  = Math.round(base * 1.4);
+            const manContrib  = Math.round(base * 0.6);
+            const maxBar      = Math.max(apiContrib, 1);
+            const apiPct      = Math.min(100, Math.round((apiContrib / (score * 25 * 10000 * 1.4)) * 100) + 5);
+            const manPct      = Math.min(100, Math.round((manContrib / (score * 25 * 10000 * 1.4)) * 100) + 5);
+            const activePct   = Math.max(5, Math.round((apiPct * manContrib) / apiContrib));
 
-            tier1.classList.remove('active');
-            tier2.classList.remove('active');
-            tier3.classList.remove('active');
+            document.getElementById('bar-api').style.width    = Math.max(8, apiPct) + '%';
+            document.getElementById('bar-manual').style.width = Math.max(8, Math.round(apiPct * 0.43)) + '%';
+            document.getElementById('api-label').textContent  = '$' + apiContrib.toLocaleString();
+            document.getElementById('manual-label').textContent = '$' + manContrib.toLocaleString();
 
-            if (total < 40) {
-                tier1.classList.add('active');
-                headerTier.innerText = 'Delay Entry';
-            } else if (total <= 75) {
-                tier2.classList.add('active');
-                headerTier.innerText = 'Partner-Led Entry';
+            const deltaPct = Math.round(((apiContrib - manContrib) / manContrib) * 100);
+            document.getElementById('delta-badge').textContent = '+' + deltaPct + '% vs Manual';
+
+            let finalContrib, speed, trace;
+            if (currentMode === 'api') {
+                finalContrib = apiContrib;
+                speed = 'Maximized (API Orchestrated)';
+                trace = 'Basin::Nexus API Architecture: Signal-prioritized targeting. Decision logic automates SKU pricing adjustments based on competitor data. Consistent system learning maximizes Net Contribution and capital allocation speed.';
             } else {
-                tier3.classList.add('active');
-                headerTier.innerText = 'Deploy Localized API Automation';
+                finalContrib = manContrib;
+                speed = 'Slow (Headcount Drag)';
+                trace = 'Manual Textbook Architecture: High headcount, slow entry, fragmented channel coverage. Pipeline quality varies by rep effort and lead decay. Sub-optimal Net Contribution — no SKU pricing automation, no signal feedback loop.';
             }
+
+            document.getElementById('net-contrib').textContent  = '$' + finalContrib.toLocaleString();
+            document.getElementById('speed-label').textContent  = speed;
+            document.getElementById('trace-text').textContent   = trace;
         }
 
-        function resetBaseline() {
-            valDemand.value = 18;
-            valIcp.value = 20;
-            valEvent.value = 12;
-            valBrand.value = 14;
-            archToggle.checked = false;
-            handleToggle();
-            calculateScore();
-        }
-
-        calculateScore();
+        updateDashboard();
     </script>
 </body>
 </html>
