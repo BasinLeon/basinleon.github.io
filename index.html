@@ -113,9 +113,10 @@
         /* --- Global Nav --- */
         nav {
             position: fixed;
-            top: 0; width: 100%; height: 80px;
+            top: 0; width: 100%; height: calc(80px + env(safe-area-inset-top));
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 2rem; z-index: 1000;
+            padding: env(safe-area-inset-top) 2rem 0;
+            z-index: 1000;
             background: rgba(249, 246, 241, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -144,7 +145,7 @@
 
         /* --- Hero Section --- */
         .hero {
-            padding: 142px 0 60px;
+            padding: calc(142px + env(safe-area-inset-top)) 0 60px;
             text-align: center;
         }
         .hero-inner {
@@ -267,6 +268,14 @@
 
         .stats-grid.three-cols {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .value-card-grid {
+            align-items: stretch;
+        }
+
+        .value-card-grid > .stat-card {
+            height: 100%;
         }
 
         .value-card {
@@ -527,7 +536,7 @@
 
         @media (max-width: 1100px) and (min-width: 769px) {
             .hero {
-                padding: 130px 0 44px;
+                padding: calc(130px + env(safe-area-inset-top)) 0 44px;
             }
 
             .hero .manifesto {
@@ -558,6 +567,13 @@
 
             .stats-grid.five-cols {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .value-card,
+            .pilot-card,
+            .day-plan-card,
+            .intel-card {
+                min-height: 220px;
             }
 
             .stat-card {
@@ -780,7 +796,10 @@
 
         @media (max-width: 768px) {
             .container { padding: 0 1.2rem; }
-            nav { padding: 0 1.2rem; height: 70px; }
+            nav {
+                padding: env(safe-area-inset-top) 1.2rem 0;
+                height: calc(70px + env(safe-area-inset-top));
+            }
             .nav-logo { font-size: 0.9rem; letter-spacing: 3px; }
             .nav-links {
                 position: fixed;
@@ -808,7 +827,7 @@
                 border-bottom: 1px solid var(--border-soft);
             }
             
-            .hero { padding: 104px 0 34px; text-align: left; }
+            .hero { padding: calc(104px + env(safe-area-inset-top)) 0 34px; text-align: left; }
             .hero-inner { max-width: none; }
             .hero-badge {
                 margin-bottom: 1.4rem;
@@ -939,6 +958,21 @@
             .stats-grid.four-cols { grid-template-columns: 1fr; }
             .stats-grid.five-cols { grid-template-columns: 1fr; }
             .hero h1 { max-width: 9ch; }
+        }
+
+        @media (min-width: 1440px) {
+            .container {
+                max-width: 1100px;
+            }
+
+            .hero-inner {
+                max-width: 1000px;
+            }
+
+            nav {
+                padding-left: clamp(2rem, 4vw, 5rem);
+                padding-right: clamp(2rem, 4vw, 5rem);
+            }
         }
 
         .menu-toggle { 
