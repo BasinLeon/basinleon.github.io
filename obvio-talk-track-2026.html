@@ -42,15 +42,18 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .mode.active{display:flex;flex-direction:column}
 
 /* TELEPROMPTER MODE */
-#mode-tele{padding:18px;overflow:auto}
-.tele-wrap{max-width:920px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+#mode-tele{padding:14px 18px 26px;overflow:auto}
+.tele-wrap{width:min(980px,100%);margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px 20px;box-shadow:0 6px 24px rgba(0,0,0,0.28)}
 .tele-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .tele-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
 .tele-note{font-size:11px;color:var(--soft)}
+.tele-jumps{display:flex;gap:6px;flex-wrap:wrap}
+.tele-jump{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,0.03);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#d4cec5;text-decoration:none}
+.tele-jump:hover{border-color:rgba(239,106,58,.55);color:#ffb08f}
 .tele-cue{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ffb08f;margin:14px 0 8px}
-.tele-line{font-size:32px;line-height:1.2;font-weight:600;color:#f2efe9;letter-spacing:-.01em;margin:6px 0}
+.tele-line{font-size:clamp(25px,3.2vw,32px);line-height:1.22;font-weight:600;color:#f2efe9;letter-spacing:-.01em;margin:6px 0;overflow-wrap:anywhere}
 .tele-line.soft{color:#d1ccc5;font-weight:500}
-.tele-line.small{font-size:23px;font-weight:500;color:#ddd7cf}
+.tele-line.small{font-size:clamp(19px,2.3vw,23px);font-weight:500;color:#ddd7cf;overflow-wrap:anywhere}
 .tele-pause{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid rgba(239,106,58,.45);background:rgba(239,106,58,.14);color:#ffb08f;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:10px 0}
 .tele-rule{height:1px;background:var(--border);margin:14px 0}
 .tele-grid{display:grid;gap:10px;margin-top:6px}
@@ -58,6 +61,14 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .tele-k{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ffb08f;margin-bottom:5px}
 .tele-v{font-size:20px;line-height:1.35;color:#ece7df}
 .tele-v.sub{font-size:18px;color:#d8d2ca}
+.tele-topbtn{position:sticky;bottom:8px;float:right;z-index:4;margin-top:12px;background:rgba(239,106,58,.18);border:1px solid rgba(239,106,58,.48);color:#ffb08f;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.tele-topbtn:hover{background:rgba(239,106,58,.25)}
+@media (max-width: 760px){
+  #mode-tele{padding:10px 10px 22px}
+  .tele-wrap{padding:12px 12px 16px;border-radius:12px}
+  .tele-v{font-size:18px}
+  .tele-v.sub{font-size:16px}
+}
 
 /* FLASHCARD MODE */
 #mode-drill{align-items:center;justify-content:center;padding:20px}
@@ -305,10 +316,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 
 <!-- MODE 4: TELEPROMPTER -->
 <div class="mode" id="mode-tele">
-  <div class="tele-wrap">
+  <div class="tele-wrap" id="teleTop">
     <div class="tele-top">
       <div class="tele-title">Cold Call Teleprompter</div>
       <div class="tele-note">Insight-first cues. Ask more, explain less. Run 5 to 10 reps.</div>
+      <div class="tele-jumps">
+        <a class="tele-jump" href="#tele-open">Open</a>
+        <a class="tele-jump" href="#tele-triggers">Triggers</a>
+        <a class="tele-jump" href="#tele-objections">Objections</a>
+        <a class="tele-jump" href="#tele-advance">Advance</a>
+        <a class="tele-jump" href="#tele-close">Closing</a>
+      </div>
     </div>
 
     <div class="tele-item" style="margin-bottom:8px">
@@ -316,7 +334,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
       <div class="tele-v">Pull insight, not close. Leave with a named corridor + decision path.</div>
     </div>
 
-    <div class="tele-cue">Open</div>
+    <div class="tele-cue" id="tele-open">Open</div>
     <div class="tele-grid">
       <div class="tele-item"><div class="tele-k">Line</div><div class="tele-v">"[Name], Leon with Obvio AI. Quick one, do you have 60 seconds?"</div></div>
       <div class="tele-item"><div class="tele-k">Bridge</div><div class="tele-v sub">"I map traffic enforcement gaps across Charlotte-area cities."</div></div>
@@ -326,7 +344,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
     <div class="tele-pause">Pause · listen</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Insight Triggers (pick 2)</div>
+    <div class="tele-cue" id="tele-triggers">Insight Triggers (pick 2)</div>
     <div class="tele-grid">
       <div class="tele-item"><div class="tele-k">Pain</div><div class="tele-v sub">"Where are complaints or incidents clustering right now?"</div></div>
       <div class="tele-item"><div class="tele-k">Data Gap</div><div class="tele-v sub">"What data do you trust today, and where is it thin?"</div></div>
@@ -337,7 +355,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
     <div class="tele-pause">Pause · pick one objection</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Objection Snaps (short)</div>
+    <div class="tele-cue" id="tele-objections">Objection Snaps (short)</div>
     <div class="tele-grid">
       <div class="tele-item"><div class="tele-k">We already enforce</div><div class="tele-v sub">"Totally. Gap is consistency on the same corridor plus hard data."</div></div>
       <div class="tele-item"><div class="tele-k">Politically sensitive</div><div class="tele-v sub">"Exactly why we start narrow: one pilot corridor, safety framing."</div></div>
@@ -348,17 +366,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
     <div class="tele-pause">Pause · advance</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Advance (not close)</div>
+    <div class="tele-cue" id="tele-advance">Advance (not close)</div>
     <div class="tele-line small">"Point me to the worst corridor."</div>
     <div class="tele-line small">"I will show what data we can generate in 30 days."</div>
     <div class="tele-line small">"If not useful, we stop there."</div>
 
-    <div class="tele-cue" style="margin-top:16px">Meeting Trigger Checklist</div>
+    <div class="tele-cue" id="tele-close" style="margin-top:16px">Closing Triggers (pick 1)</div>
     <div class="tele-grid">
-      <div class="tele-item"><div class="tele-v sub">Named corridor/intersection</div></div>
-      <div class="tele-item"><div class="tele-v sub">Named stakeholder path</div></div>
-      <div class="tele-item"><div class="tele-v sub">Agreed next review call</div></div>
+      <div class="tele-item"><div class="tele-k">Insight Close</div><div class="tele-v sub">"Sounds like the gap is [X] at [corridor]. Fair?"</div></div>
+      <div class="tele-item"><div class="tele-k">Stakeholder Close</div><div class="tele-v sub">"Who else should join a 20-min review if we map this corridor?"</div></div>
+      <div class="tele-item"><div class="tele-k">Calendar Close</div><div class="tele-v sub">"Would next Tue or Thu be better for that review?"</div></div>
+      <div class="tele-item"><div class="tele-k">Power Close (if pushback)</div><div class="tele-v sub">"Morningside cut violations 50% in 8 weeks. Want to test one corridor first?"</div></div>
     </div>
+    <button class="tele-topbtn" onclick="backToTeleTop()">Back to Top</button>
   </div>
 </div>
 
@@ -379,6 +399,14 @@ function switchMode(id,btn){
   activeMode.classList.add('active');
   btn.classList.add('active');
   activeMode.scrollTop=0;
+  if(id==='tele'){
+    const top=document.getElementById('teleTop');
+    if(top) top.scrollIntoView({block:'start'});
+  }
+}
+function backToTeleTop(){
+  const target=document.getElementById('teleTop');
+  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function jumpToMockCall(e){
   if(e) e.preventDefault();
