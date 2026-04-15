@@ -26,6 +26,9 @@ This folder tracks the Mock That Interview opportunity separately from interview
 - `pricing_card.html`
 - `meeting_summary.txt`
 - `meeting_transcript.txt`
+- `friday_gtm_command_center.md`
+- `friday_founder_onepager_2026-04-17.md`
+- `uk_bootcamp_outreach_sequence_2026-04-17.md`
 
 ## Friday call goals
 
