@@ -34,6 +34,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .mode-hint strong{color:var(--orange);font-weight:600}
 .mode-hint a{display:inline-flex;align-items:center;justify-content:center;margin-left:10px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);text-decoration:none;color:var(--ink);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,0.03)}
 .mode-hint a:hover{border-color:rgba(239,106,58,.5);color:var(--orange)}
+.quick-note{margin:8px 0 0;font-size:11px;color:var(--dim)}
 
 /* MAIN */
 .main{height:calc(100vh - 88px);display:flex;flex-direction:column}
@@ -80,6 +81,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .rp-top{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .rp-scenario-btn{padding:7px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--soft);cursor:pointer;font-size:12px;font-weight:500;transition:all .15s}
 .rp-scenario-btn.active{border-color:var(--orange);color:var(--orange);background:rgba(239,106,58,.08)}
+.rp-toggle{padding:7px 10px;border-radius:99px;border:1px solid var(--border);font-size:11px;color:var(--soft);display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.02)}
+.rp-toggle input{accent-color:var(--orange)}
+.rp-transcript{border-top:1px solid var(--border);padding:10px 16px;max-height:150px;overflow-y:auto;font-family:'DM Mono',monospace;font-size:11px;color:#c8c3bc;line-height:1.6;background:rgba(255,255,255,0.02)}
+.rp-copy{margin-left:auto}
 .rp-chat{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
 .rp-empty{text-align:center;color:var(--soft);font-size:14px;padding:40px 20px;line-height:1.6}
 .msg-you{align-self:flex-end;background:var(--orange);color:#fff;border-radius:14px 14px 3px 14px;padding:10px 14px;max-width:75%;font-size:13px;line-height:1.6}
@@ -110,7 +115,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   <a class="mode-link" href="obvio-nc-work-sample-2026.html" title="Open Work Sample">Work Sample</a>
 </div>
 
-<div class="mode-hint">Full cold-calling transcript is in <strong>Live Script</strong>.<a href="#mock-call" onclick="jumpToMockCall(event)">Jump to Mock Call</a></div>
+<div class="mode-hint">Full cold-calling transcript is in <strong>Live Script</strong>.<a href="#mock-call" onclick="jumpToMockCall(event)">Jump to Mock Call</a><div class="quick-note">Practice-first path: Live Script read-through, then AI Prospect with Listener Mode ON for reps.</div></div>
 
 <div class="main">
 
@@ -170,6 +175,15 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   </div>
 
   <div class="divider"></div>
+
+  <div class="script-section">
+    <div class="ss-label">Mock Session Transcript (Gemini Style) <span class="ss-time">fast reps</span></div>
+    <div class="say-box"><strong>You:</strong> "Mike, Leon with Obvio AI. I'm mapping traffic enforcement gaps across Charlotte metro. Do you have 60 seconds?"</div>
+    <div class="pivot-box"><strong>Prospect:</strong> "We already enforce traffic laws. How is this different?"</div>
+    <div class="say-box"><strong>You:</strong> "Makes sense. The gap isn't whether you enforce, it's whether the same risky corridor gets consistent coverage and hard data back. Is that a factor here?"</div>
+    <div class="pivot-box"><strong>Prospect:</strong> "Yes, coverage consistency is hard."</div>
+    <div class="say-box"><strong>You:</strong> "If you point me to your worst corridor, I'll show what data we can generate in 30 days and we can decide from there."</div>
+  </div>
 
   <div class="script-section" id="mock-call">
     <div class="ss-label">Cold Calling Mock Call <span class="ss-time">Role Play Core Section</span></div>
@@ -254,12 +268,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
     <button class="rp-scenario-btn active" onclick="setScenario(0,this)">Chief Hartley · Huntersville T1</button>
     <button class="rp-scenario-btn" onclick="setScenario(1,this)">Director Kim · Chapel Hill T2</button>
     <button class="rp-scenario-btn" onclick="setScenario(2,this)">Manager Torres · Wilmington T3</button>
+    <label class="rp-toggle"><input type="checkbox" id="listenerMode"> Listener Mode</label>
+    <label class="rp-toggle"><input type="checkbox" id="coachMode" checked> Coach Notes</label>
     <button class="tbtn" onclick="resetRP()" style="margin-left:auto">New call</button>
+    <button class="tbtn rp-copy" onclick="copyTranscript()">Copy transcript</button>
   </div>
   <div class="rp-chat" id="rp-chat">
     <div class="rp-empty">Pick a scenario above and hit New call to start.<br>Type your response, hit Send or Enter.<br>The prospect stays in character — earn the conversation.</div>
   </div>
   <div class="rp-status" id="rp-status"></div>
+  <div class="rp-transcript" id="rp-transcript">Transcript log appears here.</div>
   <div class="rp-bottom">
     <textarea class="rp-input" id="rp-input" placeholder="Your response..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendRP()}"></textarea>
     <button class="rp-send" onclick="sendRP()">Send</button>
@@ -370,12 +388,28 @@ const scenarios=[
 ];
 let curScenario=0, rpHistory=[];
 
+function transcriptLine(role,text){
+  const el=document.getElementById('rp-transcript');
+  const ts=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  const tag=role==='you'?'YOU':'PROSPECT';
+  const current=el.textContent==='Transcript log appears here.'?'':el.textContent+'\n';
+  el.textContent=current+'['+ts+'] '+tag+': '+text;
+  el.scrollTop=el.scrollHeight;
+}
+
+function copyTranscript(){
+  const text=document.getElementById('rp-transcript').textContent;
+  if(!text || text==='Transcript log appears here.') return;
+  navigator.clipboard.writeText(text).then(()=>{document.getElementById('rp-status').textContent='Transcript copied.'});
+}
+
 function setScenario(idx,btn){curScenario=idx;document.querySelectorAll('.rp-scenario-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
 
 function resetRP(){
   rpHistory=[];
   document.getElementById('rp-chat').innerHTML='';
   document.getElementById('rp-status').textContent='';
+  document.getElementById('rp-transcript').textContent='Transcript log appears here.';
   addMsg('them','Hello?');
 }
 
@@ -393,6 +427,7 @@ function addMsg(role,text){
   chat.appendChild(wrap);
   chat.scrollTop=chat.scrollHeight;
   rpHistory.push({role:role==='you'?'user':'assistant',content:text});
+  transcriptLine(role,text);
 }
 
 async function sendRP(){
@@ -402,14 +437,22 @@ async function sendRP(){
   inp.value='';
   addMsg('you',text);
   document.getElementById('rp-status').textContent='thinking...';
-  const sys=`You are: ${scenarios[curScenario].role}\n\nRULES: Stay in character. 1-3 sentences max. Reward good discovery questions by opening up gradually. Punish product pitching by getting impatient or ending the call. Throw one natural objection during the call. Never say "great question." After 6+ exchanges, move toward a clear outcome: agree to next meeting or decline.`;
+  const listener=document.getElementById('listenerMode')?.checked;
+  const coach=document.getElementById('coachMode')?.checked;
+  const rolePrompt=listener
+    ? 'You are a silent interview listener. Keep responses short (max 1 sentence), non-judgmental, and do not derail flow. If user asks for role play, briefly answer as prospect and return control.'
+    : scenarios[curScenario].role;
+  const coachPrompt=coach
+    ? 'Add one extra sentence starting with "Coach:" with concise tactical feedback.'
+    : 'Do not provide coaching or feedback sentences.';
+  const sys=`You are: ${rolePrompt}\n\nRULES: Stay in character. 1-3 sentences max. Reward good discovery questions by opening up gradually. Punish product pitching by getting impatient or ending the call. Throw one natural objection during the call. Never say "great question." After 6+ exchanges, move toward a clear outcome: agree to next meeting or decline. ${coachPrompt}`;
   const msgs=[{role:'user',content:sys+'\n\nFirst message from prospect was: Hello?'},...rpHistory.slice(1)];
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,messages:msgs})});
     const data=await res.json();
     const reply=data.content?.[0]?.text||'Sorry, connection error.';
     addMsg('them',reply);
-    document.getElementById('rp-status').textContent='Exchange '+(Math.floor(rpHistory.length/2))+' — target: name the corridor, find the blocker, close to a meeting';
+    document.getElementById('rp-status').textContent=(listener?'Listener Mode':'Role Play')+' · Exchange '+(Math.floor(rpHistory.length/2))+' — target: name the corridor, find blocker, close next step';
   }catch{document.getElementById('rp-status').textContent='Connection error'}
 }
 
