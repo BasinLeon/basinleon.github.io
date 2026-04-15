@@ -32,6 +32,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .mode-link:hover{color:var(--ink)}
 .mode-hint{padding:8px 14px;border-bottom:1px solid var(--border);font-size:11px;color:var(--soft);text-align:center}
 .mode-hint strong{color:var(--orange);font-weight:600}
+.mode-hint a{display:inline-flex;align-items:center;justify-content:center;margin-left:10px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);text-decoration:none;color:var(--ink);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,0.03)}
+.mode-hint a:hover{border-color:rgba(239,106,58,.5);color:var(--orange)}
 
 /* MAIN */
 .main{height:calc(100vh - 88px);display:flex;flex-direction:column}
@@ -108,7 +110,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   <a class="mode-link" href="obvio-nc-work-sample-2026.html" title="Open Work Sample">Work Sample</a>
 </div>
 
-<div class="mode-hint">Full cold-calling transcript is in <strong>Live Script</strong>.</div>
+<div class="mode-hint">Full cold-calling transcript is in <strong>Live Script</strong>.<a href="#mock-call" onclick="jumpToMockCall(event)">Jump to Mock Call</a></div>
 
 <div class="main">
 
@@ -168,6 +170,12 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   </div>
 
   <div class="divider"></div>
+
+  <div class="script-section" id="mock-call">
+    <div class="ss-label">Cold Calling Mock Call <span class="ss-time">Role Play Core Section</span></div>
+    <div class="ss-anchor">Open. Diagnose. Advance.</div>
+    <div class="say-box">Use this section live: opener → discovery → objections → close. Goal is not to close the deal on this call. Goal is to secure the next qualified meeting with a named corridor and stakeholder path.</div>
+  </div>
 
   <div class="script-section">
     <div class="ss-label">Cold call opener <span class="ss-time">Part 2 · say verbatim</span></div>
@@ -269,6 +277,16 @@ function updT(){const m=Math.floor(sec/60),s=sec%60;document.getElementById('tim
 
 // MODE SWITCH
 function switchMode(id,btn){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('mode-'+id).classList.add('active');btn.classList.add('active')}
+function jumpToMockCall(e){
+  if(e) e.preventDefault();
+  document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));
+  document.getElementById('mode-script').classList.add('active');
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  const scriptBtn=[...document.querySelectorAll('.mode-btn')].find(b=>b.textContent.trim()==='Live Script');
+  if(scriptBtn) scriptBtn.classList.add('active');
+  const target=document.getElementById('mock-call');
+  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 // FLASHCARD DECKS
 const decks = {
