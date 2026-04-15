@@ -48,11 +48,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .tele-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
 .tele-note{font-size:11px;color:var(--soft)}
 .tele-cue{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ffb08f;margin:14px 0 8px}
-.tele-line{font-size:42px;line-height:1.18;font-weight:600;color:#f2efe9;letter-spacing:-.01em;margin:6px 0}
+.tele-line{font-size:32px;line-height:1.2;font-weight:600;color:#f2efe9;letter-spacing:-.01em;margin:6px 0}
 .tele-line.soft{color:#d1ccc5;font-weight:500}
-.tele-line.small{font-size:28px;font-weight:500;color:#ddd7cf}
+.tele-line.small{font-size:23px;font-weight:500;color:#ddd7cf}
 .tele-pause{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid rgba(239,106,58,.45);background:rgba(239,106,58,.14);color:#ffb08f;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:10px 0}
 .tele-rule{height:1px;background:var(--border);margin:14px 0}
+.tele-grid{display:grid;gap:10px;margin-top:6px}
+.tele-item{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.02)}
+.tele-k{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ffb08f;margin-bottom:5px}
+.tele-v{font-size:20px;line-height:1.35;color:#ece7df}
+.tele-v.sub{font-size:18px;color:#d8d2ca}
 
 /* FLASHCARD MODE */
 #mode-drill{align-items:center;justify-content:center;padding:20px}
@@ -303,44 +308,57 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   <div class="tele-wrap">
     <div class="tele-top">
       <div class="tele-title">Cold Call Teleprompter</div>
-      <div class="tele-note">One-screen cues. No paragraphs. Run it 5 to 10 times.</div>
+      <div class="tele-note">Insight-first cues. Ask more, explain less. Run 5 to 10 reps.</div>
+    </div>
+
+    <div class="tele-item" style="margin-bottom:8px">
+      <div class="tele-k">Main Goal</div>
+      <div class="tele-v">Pull insight, not close. Leave with a named corridor + decision path.</div>
     </div>
 
     <div class="tele-cue">Open</div>
-    <div class="tele-line">[Name], Leon with Obvio AI.</div>
-    <div class="tele-line">Quick one, do you have 60 seconds?</div>
-    <div class="tele-line soft">I map traffic enforcement gaps across Charlotte-area cities.</div>
-    <div class="tele-line">Is there one corridor or school zone that keeps coming up?</div>
+    <div class="tele-grid">
+      <div class="tele-item"><div class="tele-k">Line</div><div class="tele-v">"[Name], Leon with Obvio AI. Quick one, do you have 60 seconds?"</div></div>
+      <div class="tele-item"><div class="tele-k">Bridge</div><div class="tele-v sub">"I map traffic enforcement gaps across Charlotte-area cities."</div></div>
+      <div class="tele-item"><div class="tele-k">Ask</div><div class="tele-v">"What corridor or school zone keeps coming up for your team?"</div></div>
+    </div>
 
     <div class="tele-pause">Pause · listen</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Diagnose</div>
-    <div class="tele-line small">Where are incidents clustering most right now?</div>
-    <div class="tele-line small">What data do you have, and what is missing?</div>
-    <div class="tele-line small">Who else needs to be in the room if a pilot makes sense?</div>
+    <div class="tele-cue">Insight Triggers (pick 2)</div>
+    <div class="tele-grid">
+      <div class="tele-item"><div class="tele-k">Pain</div><div class="tele-v sub">"Where are complaints or incidents clustering right now?"</div></div>
+      <div class="tele-item"><div class="tele-k">Data Gap</div><div class="tele-v sub">"What data do you trust today, and where is it thin?"</div></div>
+      <div class="tele-item"><div class="tele-k">Consequence</div><div class="tele-v sub">"If nothing changes this quarter, what gets worse?"</div></div>
+      <div class="tele-item"><div class="tele-k">Decision Path</div><div class="tele-v sub">"Who else needs to be in the room if a pilot makes sense?"</div></div>
+    </div>
 
     <div class="tele-pause">Pause · pick one objection</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Objection Snaps</div>
-    <div class="tele-line small">We already enforce → Totally. Gap is consistent coverage plus hard data.</div>
-    <div class="tele-line small">Politically sensitive → Exactly why we start narrow with one safety pilot.</div>
-    <div class="tele-line small">No budget → Understood. Just pressure-testing one corridor pilot.</div>
-    <div class="tele-line small">Send info → Absolutely. Best email? Ped safety or intersection enforcement?</div>
+    <div class="tele-cue">Objection Snaps (short)</div>
+    <div class="tele-grid">
+      <div class="tele-item"><div class="tele-k">We already enforce</div><div class="tele-v sub">"Totally. Gap is consistency on the same corridor plus hard data."</div></div>
+      <div class="tele-item"><div class="tele-k">Politically sensitive</div><div class="tele-v sub">"Exactly why we start narrow: one pilot corridor, safety framing."</div></div>
+      <div class="tele-item"><div class="tele-k">No budget</div><div class="tele-v sub">"Understood. I am pressure-testing one corridor pilot, not a full rollout."</div></div>
+      <div class="tele-item"><div class="tele-k">Send info</div><div class="tele-v sub">"Absolutely. Best email? Ped safety or intersection enforcement priority?"</div></div>
+    </div>
 
-    <div class="tele-pause">Pause · close</div>
+    <div class="tele-pause">Pause · advance</div>
     <div class="tele-rule"></div>
 
-    <div class="tele-cue">Close</div>
-    <div class="tele-line">Point me to the worst corridor.</div>
-    <div class="tele-line">I will show what data we can generate in 30 days.</div>
-    <div class="tele-line soft">If it is not useful, we stop there.</div>
+    <div class="tele-cue">Advance (not close)</div>
+    <div class="tele-line small">"Point me to the worst corridor."</div>
+    <div class="tele-line small">"I will show what data we can generate in 30 days."</div>
+    <div class="tele-line small">"If not useful, we stop there."</div>
 
-    <div class="tele-cue" style="margin-top:16px">Power Close · only if needed</div>
-    <div class="tele-line small">Even with more officers, no team can cover every stop sign.</div>
-    <div class="tele-line small">Morningside reduced violations 50% in 8 weeks.</div>
-    <div class="tele-line small">Let us start at your worst intersection and give you council-ready data.</div>
+    <div class="tele-cue" style="margin-top:16px">Meeting Trigger Checklist</div>
+    <div class="tele-grid">
+      <div class="tele-item"><div class="tele-v sub">Named corridor/intersection</div></div>
+      <div class="tele-item"><div class="tele-v sub">Named stakeholder path</div></div>
+      <div class="tele-item"><div class="tele-v sub">Agreed next review call</div></div>
+    </div>
   </div>
 </div>
 
