@@ -30,6 +30,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .mode-btn.active{color:var(--orange);border-bottom-color:var(--orange)}
 .mode-link{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--soft);letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center}
 .mode-link:hover{color:var(--ink)}
+.mode-hint{padding:8px 14px;border-bottom:1px solid var(--border);font-size:11px;color:var(--soft);text-align:center}
+.mode-hint strong{color:var(--orange);font-weight:600}
 
 /* MAIN */
 .main{height:calc(100vh - 88px);display:flex;flex-direction:column}
@@ -100,16 +102,18 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 </div>
 
 <div class="mode-bar">
-  <button class="mode-btn active" onclick="switchMode('drill',this)">Drill Cards</button>
-  <button class="mode-btn" onclick="switchMode('script',this)">Live Script</button>
+  <button class="mode-btn" onclick="switchMode('drill',this)">Drill Cards</button>
+  <button class="mode-btn active" onclick="switchMode('script',this)">Live Script</button>
   <button class="mode-btn" onclick="switchMode('rp',this)">AI Prospect</button>
   <a class="mode-link" href="obvio-nc-work-sample-2026.html" title="Open Work Sample">Work Sample</a>
 </div>
 
+<div class="mode-hint">Full cold-calling transcript is in <strong>Live Script</strong>.</div>
+
 <div class="main">
 
 <!-- MODE 1: FLASHCARD DRILL -->
-<div class="mode active" id="mode-drill">
+<div class="mode" id="mode-drill">
   <div class="card-area">
     <div class="deck-select" id="deck-select"></div>
     <div class="deck-info" id="deck-info">Card 1 of 8</div>
@@ -130,7 +134,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 </div>
 
 <!-- MODE 2: LIVE SCRIPT -->
-<div class="mode" id="mode-script">
+<div class="mode active" id="mode-script">
 <div class="script-page">
 
   <div class="script-section">
