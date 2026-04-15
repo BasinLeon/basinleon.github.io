@@ -41,6 +41,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .mode{display:none;flex:1;overflow:hidden}
 .mode.active{display:flex;flex-direction:column}
 
+/* TELEPROMPTER MODE */
+#mode-tele{padding:18px;overflow:auto}
+.tele-wrap{max-width:920px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+.tele-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.tele-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+.tele-note{font-size:11px;color:var(--soft)}
+.tele-cue{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#ffb08f;margin:14px 0 8px}
+.tele-line{font-size:42px;line-height:1.18;font-weight:600;color:#f2efe9;letter-spacing:-.01em;margin:6px 0}
+.tele-line.soft{color:#d1ccc5;font-weight:500}
+.tele-line.small{font-size:28px;font-weight:500;color:#ddd7cf}
+.tele-pause{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid rgba(239,106,58,.45);background:rgba(239,106,58,.14);color:#ffb08f;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:10px 0}
+.tele-rule{height:1px;background:var(--border);margin:14px 0}
+
 /* FLASHCARD MODE */
 #mode-drill{align-items:center;justify-content:center;padding:20px}
 .card-area{width:100%;max-width:620px;display:flex;flex-direction:column;gap:12px}
@@ -112,6 +125,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   <button class="mode-btn" onclick="switchMode('drill',this)">Drill Cards</button>
   <button class="mode-btn active" onclick="switchMode('script',this)">Live Script</button>
   <button class="mode-btn" onclick="switchMode('rp',this)">AI Prospect</button>
+  <button class="mode-btn" onclick="switchMode('tele',this)">Teleprompter</button>
   <a class="mode-link" href="obvio-nc-work-sample-2026.html" title="Open Work Sample">Work Sample</a>
 </div>
 
@@ -281,6 +295,52 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
   <div class="rp-bottom">
     <textarea class="rp-input" id="rp-input" placeholder="Your response..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendRP()}"></textarea>
     <button class="rp-send" onclick="sendRP()">Send</button>
+  </div>
+</div>
+
+<!-- MODE 4: TELEPROMPTER -->
+<div class="mode" id="mode-tele">
+  <div class="tele-wrap">
+    <div class="tele-top">
+      <div class="tele-title">Cold Call Teleprompter</div>
+      <div class="tele-note">One-screen cues. No paragraphs. Run it 5 to 10 times.</div>
+    </div>
+
+    <div class="tele-cue">Open</div>
+    <div class="tele-line">[Name], Leon with Obvio AI.</div>
+    <div class="tele-line">Quick one, do you have 60 seconds?</div>
+    <div class="tele-line soft">I map traffic enforcement gaps across Charlotte-area cities.</div>
+    <div class="tele-line">Is there one corridor or school zone that keeps coming up?</div>
+
+    <div class="tele-pause">Pause · listen</div>
+    <div class="tele-rule"></div>
+
+    <div class="tele-cue">Diagnose</div>
+    <div class="tele-line small">Where are incidents clustering most right now?</div>
+    <div class="tele-line small">What data do you have, and what is missing?</div>
+    <div class="tele-line small">Who else needs to be in the room if a pilot makes sense?</div>
+
+    <div class="tele-pause">Pause · pick one objection</div>
+    <div class="tele-rule"></div>
+
+    <div class="tele-cue">Objection Snaps</div>
+    <div class="tele-line small">We already enforce → Totally. Gap is consistent coverage plus hard data.</div>
+    <div class="tele-line small">Politically sensitive → Exactly why we start narrow with one safety pilot.</div>
+    <div class="tele-line small">No budget → Understood. Just pressure-testing one corridor pilot.</div>
+    <div class="tele-line small">Send info → Absolutely. Best email? Ped safety or intersection enforcement?</div>
+
+    <div class="tele-pause">Pause · close</div>
+    <div class="tele-rule"></div>
+
+    <div class="tele-cue">Close</div>
+    <div class="tele-line">Point me to the worst corridor.</div>
+    <div class="tele-line">I will show what data we can generate in 30 days.</div>
+    <div class="tele-line soft">If it is not useful, we stop there.</div>
+
+    <div class="tele-cue" style="margin-top:16px">Power Close · only if needed</div>
+    <div class="tele-line small">Even with more officers, no team can cover every stop sign.</div>
+    <div class="tele-line small">Morningside reduced violations 50% in 8 weeks.</div>
+    <div class="tele-line small">Let us start at your worst intersection and give you council-ready data.</div>
   </div>
 </div>
 
