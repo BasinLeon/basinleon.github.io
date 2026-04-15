@@ -367,10 +367,107 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   <textarea class="note-input" placeholder="Key lines to land, things to show coachability on, closing frame..."></textarea>
 </div>
 
+<div class="divider"></div>
+
+<!-- MEMORIZE SECTION -->
+<div class="phase">
+  <div class="phase-label">Memorize these three</div>
+  <h2>The lines you can't look up.</h2>
+</div>
+
+<div class="beats">
+  <div class="beat open" onclick="toggle(this)">
+    <div class="beat-header">
+      <div class="beat-num">①</div>
+      <div class="beat-content">
+        <div class="beat-title">90-second presentation opener</div>
+        <div class="beat-sub">Say this verbatim to open Part 1. Then go to slide 1.</div>
+        <div class="beat-toggle">↑ tap to collapse</div>
+      </div>
+    </div>
+    <div class="beat-script" style="display:block">"Today I'll walk you through four things: who I target first and why, how I structure the week, how I message each segment, and what I call a qualified handoff.<br><br>The short version of the strategy: don't spray NC. Start where the pain signal is visible, the buying committee is reachable, and a pilot can become a proof point inside 90 days. That proof base is what earns the right to go after bigger cities next.<br><br>Let me show you how I'd execute that."</div>
+  </div>
+
+  <div class="beat" onclick="toggle(this)">
+    <div class="beat-header">
+      <div class="beat-num">②</div>
+      <div class="beat-content">
+        <div class="beat-title">"Why you over other candidates?" — 60 seconds</div>
+        <div class="beat-sub">Dhruv will ask some version of this. Have it ready.</div>
+        <div class="beat-toggle">↓ tap for answer</div>
+      </div>
+    </div>
+    <div class="beat-script">"Because I've already done the 0-to-1 build. At Fudo Security I was the first US GTM hire — I built the outbound infrastructure from scratch, compressed SDR ramp from 90 days to 5, and generated 160% YoY pipeline growth.<br><br>The work here is the same architecture: figure out who's in pain, what signal tells you they're ready to move, and build the system that converts that into qualified meetings at scale.<br><br>The difference with Obvio is that the mission matters. Safer streets aren't abstract. And I want to build the playbook for a company like this — not inherit someone else's."</div>
+  </div>
+
+  <div class="beat" onclick="toggle(this)">
+    <div class="beat-header">
+      <div class="beat-num">③</div>
+      <div class="beat-content">
+        <div class="beat-title">Recovery script — if role play goes sideways</div>
+        <div class="beat-sub">If you stumble, use this to reset and show self-awareness.</div>
+        <div class="beat-toggle">↓ tap for recovery</div>
+      </div>
+    </div>
+    <div class="beat-script">[Pause. Take a breath. Then:]<br><br>"Let me reset — I went product-forward too fast. Let me back up."<br><br>[Restart from the discovery question:]<br>"Is there a corridor or school-zone that comes up repeatedly for your team?"<br><br>[In debrief, own it clearly:]<br>"I got ahead of myself there. I led with what Obvio does before I found what they needed. If I'd waited for them to name the intersection, the close would have been easier. That's the rep I want to be — the one who asks first."</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PRACTICE SECTION -->
+<div class="phase">
+  <div class="phase-label">Live practice · Role play simulator</div>
+  <h2>Pick a scenario. Run the call.</h2>
+</div>
+
+<div class="grid2" style="margin-bottom:8px">
+  <div class="card" style="cursor:pointer;transition:box-shadow .15s" onclick="openPractice(0)">
+    <div class="card-label orange">T1 — Charlotte suburb</div>
+    <p style="margin-bottom:10px">Chief Hartley · Huntersville PD · Skeptical but reachable. Problem corridors exist — he just hasn't said them yet.</p>
+    <button style="background:var(--orange);color:#fff;border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif">Start cold call →</button>
+  </div>
+  <div class="card" style="cursor:pointer;transition:box-shadow .15s" onclick="openPractice(1)">
+    <div class="card-label blue">T2 — University corridor</div>
+    <p style="margin-bottom:10px">Director Kim · Chapel Hill Transportation · Progressive, data-oriented. Cautious about community pushback.</p>
+    <button style="background:var(--blue);color:#fff;border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif">Start cold call →</button>
+  </div>
+</div>
+<div class="card" style="cursor:pointer;margin-bottom:16px" onclick="openPractice(2)">
+  <div class="card-label" style="color:var(--dim)">T3 — Coastal / seasonal</div>
+  <p style="margin-bottom:10px">Manager Torres · Wilmington City Ops · Stretched thin, tight budget, slow procurement. Open but needs something concrete.</p>
+  <button style="background:#555;color:#fff;border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif">Start cold call →</button>
+</div>
+
+<div class="note-block">
+  <div class="note-label">Practice debrief — what landed, what to tighten</div>
+  <textarea class="note-input" placeholder="After each practice run, write what you'd do differently..."></textarea>
+</div>
+
 <div class="footer">basinleon.github.io/obvio-talk-track-2026.html · noindex · Apr 16 2026</div>
 
 </div><!-- end .page -->
 
+<!-- PRACTICE MODAL -->
+<div id="practice-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;width:min(680px,94vw);max-height:90vh;overflow:hidden;display:flex;flex-direction:column">
+    <div style="background:#111;padding:14px 20px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)">Role Play Practice</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px" id="rp-scenario-label">Scenario loading...</div>
+      </div>
+      <button onclick="closePractice()" style="background:rgba(255,255,255,.1);border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px">✕ Close</button>
+    </div>
+    <div id="rp-chat" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;min-height:260px;max-height:360px"></div>
+    <div style="border-top:1px solid rgba(0,0,0,.1);padding:12px 16px;display:flex;gap:8px">
+      <input id="rp-input" type="text" placeholder="Your response..." style="flex:1;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none" onkeydown="if(event.key==='Enter')sendRP()">
+      <button onclick="sendRP()" style="background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;font-size:13px;font-weight:600">Send</button>
+    </div>
+    <div id="rp-status" style="padding:6px 16px 10px;font-size:11px;color:var(--dim);font-family:'DM Mono',monospace"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
 <script>
 function toggle(el){
   el.classList.toggle('open');
@@ -391,6 +488,86 @@ function updateTimer(){
   if(seconds>=1800) el.style.color='#ff6b6b';
   else if(seconds>=900) el.style.color='#f0c040';
   else el.style.color='#fff';
+}
+
+// ROLE PLAY PRACTICE ENGINE
+const scenarios = [
+  { label:'Chief Hartley · Huntersville PD · T1', role:'Police Chief, Huntersville NC. You\'re busy. You\'ve heard vendor pitches before. You\'re skeptical but not hostile. You know Main St and Gilead Rd are problem corridors but haven\'t said that yet. If Leon earns it, open up. If he pitches, shut down.' },
+  { label:'Director Kim · Chapel Hill Transportation · T2', role:'Transportation Director, Chapel Hill. You\'re progressive, data-oriented, politically aware. You\'re interested in Vision Zero but cautious about community pushback on automated enforcement. You\'ll engage if Leon frames this as data, not cameras.' },
+  { label:'Manager Torres · Wilmington City Ops · T3', role:'City Operations Manager, Wilmington. You\'re stretched thin. Seasonal traffic is a real headache. Budget is tight and procurement is slow. You\'re open but skeptical. You need something concrete before you\'ll move.' }
+];
+let rpHistory = [];
+let currentScenario = null;
+
+function openPractice(idx){
+  currentScenario = scenarios[idx];
+  rpHistory = [];
+  document.getElementById('rp-scenario-label').textContent = currentScenario.label;
+  const chat = document.getElementById('rp-chat');
+  chat.innerHTML = '';
+  addMsg('prospect', 'Hello?');
+  document.getElementById('practice-overlay').style.display='flex';
+  document.getElementById('rp-input').focus();
+}
+
+function closePractice(){
+  document.getElementById('practice-overlay').style.display='none';
+}
+
+function addMsg(role, text){
+  const chat = document.getElementById('rp-chat');
+  const div = document.createElement('div');
+  div.style.cssText = role==='you' 
+    ? 'align-self:flex-end;background:#111;color:#fff;border-radius:12px 12px 3px 12px;padding:10px 14px;max-width:80%;font-size:13px;line-height:1.6'
+    : 'align-self:flex-start;background:#f3f0ea;color:#111;border-radius:12px 12px 12px 3px;padding:10px 14px;max-width:80%;font-size:13px;line-height:1.6';
+  if(role==='you') div.innerHTML = '<span style="font-size:10px;opacity:.5;display:block;margin-bottom:3px">You</span>' + text;
+  else div.innerHTML = '<span style="font-size:10px;color:var(--orange);font-weight:600;display:block;margin-bottom:3px">' + currentScenario.label.split('·')[0].trim() + '</span>' + text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  rpHistory.push({role: role==='you'?'user':'assistant', content: text});
+}
+
+async function sendRP(){
+  const input = document.getElementById('rp-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  addMsg('you', text);
+  document.getElementById('rp-status').textContent = 'Prospect is thinking...';
+
+  const systemPrompt = `You are playing the role of: ${currentScenario.role}
+
+RULES:
+- Stay in character as a busy municipal official. 
+- Respond in 1-4 sentences max. Be realistic, not theatrical.
+- If Leon pitches features, get impatient or end the call.
+- If Leon asks good discovery questions (finds the corridor, finds the blocker), open up gradually.
+- Throw in one objection naturally (budget, politics, "we already do this", or "send info").
+- Do NOT coach Leon or break character. NEVER say "Great question."
+- After 6+ exchanges, start moving toward a close (either agree to next meeting or decline).`;
+
+  const messages = [
+    {role:'user', content: systemPrompt + '\n\nRespond as the prospect. First message was: Hello?'},
+    ...rpHistory.slice(1).map(m => ({role: m.role, content: m.content}))
+  ];
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:150,
+        messages
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, try again.';
+    addMsg('prospect', reply);
+    document.getElementById('rp-status').textContent = `Exchange ${Math.floor(rpHistory.length/2)} of ~6`;
+  } catch(e) {
+    document.getElementById('rp-status').textContent = 'Connection error — check network';
+  }
 }
 </script>
 </body>
