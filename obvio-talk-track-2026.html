@@ -372,7 +372,14 @@ function resetTimer(){clearInterval(iv);running=false;sec=0;updT();document.quer
 function updT(){const m=Math.floor(sec/60),s=sec%60;document.getElementById('timer').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;const el=document.getElementById('timer');el.style.color=sec>=2700?'#ff6b6b':sec>=900?'#f0c040':'#f0ede8'}
 
 // MODE SWITCH
-function switchMode(id,btn){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('mode-'+id).classList.add('active');btn.classList.add('active')}
+function switchMode(id,btn){
+  document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  const activeMode=document.getElementById('mode-'+id);
+  activeMode.classList.add('active');
+  btn.classList.add('active');
+  activeMode.scrollTop=0;
+}
 function jumpToMockCall(e){
   if(e) e.preventDefault();
   document.querySelectorAll('.mode').forEach(m=>m.classList.remove('active'));
