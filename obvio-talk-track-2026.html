@@ -47,6 +47,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .tele-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .tele-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
 .tele-note{font-size:11px;color:var(--soft)}
+.tele-edit-controls{display:flex;gap:6px;align-items:center}
 .tele-jumps{display:flex;gap:6px;flex-wrap:wrap}
 .tele-jump{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,0.03);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#d4cec5;text-decoration:none}
 .tele-jump:hover{border-color:rgba(239,106,58,.55);color:#ffb08f}
@@ -63,6 +64,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 .tele-v.sub{font-size:18px;color:#d8d2ca}
 .tele-topbtn{position:sticky;bottom:8px;float:right;z-index:4;margin-top:12px;background:rgba(239,106,58,.18);border:1px solid rgba(239,106,58,.48);color:#ffb08f;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 .tele-topbtn:hover{background:rgba(239,106,58,.25)}
+#teleEditable[contenteditable="true"]{outline:1px dashed rgba(239,106,58,.5);outline-offset:6px}
+#teleEditable[contenteditable="true"] .tele-item{cursor:text}
 @media (max-width: 760px){
   #mode-tele{padding:10px 10px 22px}
   .tele-wrap{padding:12px 12px 16px;border-radius:12px}
@@ -379,6 +382,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
     <div class="tele-top">
       <div class="tele-title">Cold Call Teleprompter</div>
       <div class="tele-note">Insight-first cues. Ask more, explain less. Run 5 to 10 reps.</div>
+      <div class="tele-edit-controls">
+        <button class="tbtn" id="teleEditBtn" onclick="toggleTeleEdit()">Edit Flow</button>
+        <button class="tbtn" id="teleSaveBtn" onclick="saveTeleFlow()" style="display:none">Save Flow</button>
+        <button class="tbtn" id="teleResetBtn" onclick="resetTeleFlow()" style="display:none">Reset</button>
+      </div>
       <div class="tele-jumps">
         <a class="tele-jump" href="#tele-open">Open</a>
         <a class="tele-jump" href="#tele-flow">Flow</a>
@@ -390,6 +398,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
         <a class="tele-jump" href="#tele-close">Closing</a>
       </div>
     </div>
+
+    <div id="teleEditable">
 
     <div class="tele-item" style="margin-bottom:8px">
       <div class="tele-k">Main Goal</div>
@@ -441,7 +451,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
 
     <div class="tele-cue" id="tele-full-pack">Full Talk Track Pack (long-form backup)</div>
     <div class="tele-grid">
-      <div class="tele-item"><div class="tele-k">Opening Variants</div><div class="tele-v sub"><strong>60s:</strong> "[Name], Leon with Obvio AI. Quick one, do you have 60 seconds? I map traffic enforcement gaps across Charlotte-area cities. Most teams know the risky corridors, but staffing, budget cycles, and utility-heavy installs slow action. What corridor or school zone keeps coming up for your team?"<br><br><strong>20s:</strong> "We help cities pressure-test one high-risk corridor fast, without utility-heavy installs, and generate safety evidence in 30 days. Which corridor keeps coming up for your team?"<br><br><strong>12s:</strong> "One corridor, 30 days, safety evidence. If not useful, we stop there. Which corridor should we test first?"</div></div>
+      <div class="tele-item"><div class="tele-k">Opening Variants</div><div class="tele-v sub"><strong>60s:</strong> "[Name], Leon with Obvio AI. Quick one. I map traffic enforcement gaps across Charlotte-area cities. Most teams know the risky corridors, but staffing, budget cycles, and utility-heavy installs slow action. What corridor or school zone keeps coming up for your team?"<br><br><strong>20s:</strong> "We help cities pressure-test one high-risk corridor fast, without utility-heavy installs, and generate safety evidence in 30 days. Which corridor keeps coming up for your team?"<br><br><strong>12s:</strong> "One corridor, 30 days, safety evidence. If not useful, we stop there. Which corridor should we test first?"</div></div>
       <div class="tele-item"><div class="tele-k">Middle Architecture (what to hit in order)</div><div class="tele-v sub">1) Pain: recurring corridor + limited officer coverage.<br>2) Data gap: what is trusted vs thin today.<br>3) Revenue architecture: do not lead with fines; lead with safety movement, avoided incident costs, and operational efficiency.<br>4) Legal path: city attorney validates compliant structure before any scale decision.<br>5) Grants cover: SS4A + CRTPO regional leverage.<br>6) Decision path: city manager + council + patrol/traffic command.</div></div>
       <div class="tele-item"><div class="tele-k">Budget Response (verbatim, long-form)</div><div class="tele-v sub">"Given NC budget uncertainty, we are not proposing a full rollout. We are proposing one fixed-scope pilot so you can make a data-backed decision when funding clarity improves."</div></div>
       <div class="tele-item"><div class="tele-k">Privacy Response (verbatim, long-form)</div><div class="tele-v sub">"This is violation-specific detection, not continuous surveillance. Retention is limited, and policy controls are explicit. The goal is less intrusive, more consistent safety enforcement."</div></div>
@@ -480,6 +490,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'DM Sans
       <div class="tele-item"><div class="tele-k">Stakeholder Close</div><div class="tele-v sub">"Who else should join a 20-min review if we map this corridor?"</div></div>
       <div class="tele-item"><div class="tele-k">Calendar Close</div><div class="tele-v sub">"Would next Tue or Thu be better for that review?"</div></div>
       <div class="tele-item"><div class="tele-k">Power Close (if pushback)</div><div class="tele-v sub">"Morningside cut violations 50% in 8 weeks. Want to test one corridor first?"</div></div>
+    </div>
     </div>
     <button class="tele-topbtn" onclick="backToTeleTop()">Back to Top</button>
   </div>
@@ -531,6 +542,43 @@ function jumpToMasterPack(e){
   const target=document.getElementById('master-pack');
   if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+// TELEPROMPTER EDIT MODE
+const teleEditable=document.getElementById('teleEditable');
+const teleEditBtn=document.getElementById('teleEditBtn');
+const teleSaveBtn=document.getElementById('teleSaveBtn');
+const teleResetBtn=document.getElementById('teleResetBtn');
+const TELE_STORAGE_KEY='obvio.teleprompter.customHtml.v1';
+const TELE_DEFAULT_HTML=teleEditable?teleEditable.innerHTML:'';
+let teleEditing=false;
+
+function loadTeleFlow(){
+  if(!teleEditable) return;
+  const saved=localStorage.getItem(TELE_STORAGE_KEY);
+  if(saved) teleEditable.innerHTML=saved;
+}
+
+function toggleTeleEdit(){
+  if(!teleEditable||!teleEditBtn||!teleSaveBtn||!teleResetBtn) return;
+  teleEditing=!teleEditing;
+  teleEditable.setAttribute('contenteditable',teleEditing?'true':'false');
+  teleEditBtn.textContent=teleEditing?'Done':'Edit Flow';
+  teleSaveBtn.style.display=teleEditing?'inline-block':'none';
+  teleResetBtn.style.display=teleEditing?'inline-block':'none';
+}
+
+function saveTeleFlow(){
+  if(!teleEditable) return;
+  localStorage.setItem(TELE_STORAGE_KEY,teleEditable.innerHTML);
+}
+
+function resetTeleFlow(){
+  if(!teleEditable) return;
+  localStorage.removeItem(TELE_STORAGE_KEY);
+  teleEditable.innerHTML=TELE_DEFAULT_HTML;
+}
+
+loadTeleFlow();
 
 // FLASHCARD DECKS
 const decks = {
