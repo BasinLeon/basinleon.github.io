@@ -977,6 +977,45 @@ function show(n){
 }
 function go(d){show(cur+d)}
 show(0);
+
+// Keep zoom local to this page instead of browser site-wide zoom.
+(function initLocalZoom(){
+  const storageKey='localZoom:'+location.pathname;
+  const step=0.05;
+  const min=0.8;
+  const max=1.35;
+  let level=parseFloat(sessionStorage.getItem(storageKey)||'1');
+
+  function clamp(v){return Math.max(min,Math.min(max,v));}
+  function apply(){
+    document.body.style.zoom=String(level);
+    sessionStorage.setItem(storageKey,String(level));
+  }
+  function change(delta){
+    level=clamp(Math.round((level+delta)*100)/100);
+    apply();
+  }
+  function reset(){
+    level=1;
+    apply();
+  }
+
+  apply();
+
+  window.addEventListener('keydown',e=>{
+    if(!(e.metaKey||e.ctrlKey)) return;
+    if(e.key==='='||e.key==='+'){e.preventDefault();change(step);}
+    else if(e.key==='-'||e.key==='_'){e.preventDefault();change(-step);}
+    else if(e.key==='0'){e.preventDefault();reset();}
+  },{passive:false});
+
+  window.addEventListener('wheel',e=>{
+    if(!(e.metaKey||e.ctrlKey)) return;
+    e.preventDefault();
+    change(e.deltaY<0?step:-step);
+  },{passive:false});
+})();
+
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();go(1)}
   if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(-1)}
