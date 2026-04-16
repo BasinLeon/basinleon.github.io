@@ -8,6 +8,7 @@ Owner: Leon
 You have enough source material. The blocker is not data. The blocker is execution focus.
 
 This file consolidates:
+
 - Institutional targeting logic
 - 90-day execution protocol
 - Technical access parity checklist
@@ -26,6 +27,18 @@ This file consolidates:
 - `mti-sovereign-mirror-hud.html`
 - `mock-interview-refinery-hud.html`
 - `mti-competitive-market-projection.html`
+- `docs/mock_that_interview/founder_ask_slide_scale_protocol_2026-04-17.md`
+- `docs/mock_that_interview/milestone_compensation_addendum_2026-04-17.md`
+- `docs/mock_that_interview/kpi_definition_table_2026-04-17.md`
+
+## Friday handoff sequence (what to show in order)
+
+1. Operator Console (control center)
+2. Signal -> Intercept -> Validate -> Yield model
+3. Build proof (HUDs and projection pages)
+4. Founder Ask slide (Scale Protocol)
+5. KPI Definition table (live agreement)
+6. Milestone Compensation Addendum (DocuSign only after verbal milestone agreement)
 
 ## Hard facts from the email thread
 
@@ -93,6 +106,7 @@ Before any live demo or founder sync:
 - [ ] Search Console access confirmed
 
 Owner notes:
+
 - If Turnstile fails on raw Cloud Run host, fix host allowlist or use proper custom admin domain immediately.
 
 ## Revenue architecture framing (for Ayo + Ridwan)
@@ -110,18 +124,22 @@ Pitch this:
 ## Friday schedule (execution blocks)
 
 09:00-11:00
+
 - Finalize 90-day roadmap doc
 - Confirm ICP scoring and account tiers
 
 11:00-13:00
+
 - Technical parity checks (admin/login/domain/search console)
 - Record blockers and owner names
 
 13:00-15:00
+
 - Build institutional lead list from template
 - Finalize outreach templates and first-touch scripts
 
 15:00-17:00
+
 - Package Friday sync deck + one-page summary
 - Lock next-week action queue and owner assignments
 
@@ -135,10 +153,10 @@ Pitch this:
 
 ## Ask list for founders (must be explicit)
 
-1. Confirm institutional-first motion priority
-2. Confirm owner for admin/domain access issues
-3. Approve first pilot account cohort
-4. Approve reporting cadence and success metric definitions
+1. Whitelist `.run.app` in Cloudflare Turnstile
+2. Elevate `lbasin23@gmail.com` to Admin status
+3. Approve Milestone Alignment framework (500 and 1,000 gates)
+4. Confirm owner for tech parity, outreach execution, and KPI reporting
 
 ## End-of-day success criteria
 
@@ -153,6 +171,7 @@ Pitch this:
 Risk: Institutional motion feels heavy for current team bandwidth.
 
 Fallback path:
+
 - Keep institutional lane as primary strategy
 - Run lighter direct-candidate lane for immediate signal while system matures
 - Protect founder time by standardizing weekly ops template

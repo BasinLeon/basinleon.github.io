@@ -29,6 +29,9 @@ This folder tracks the Mock That Interview opportunity separately from interview
 - `friday_gtm_command_center.md`
 - `friday_founder_onepager_2026-04-17.md`
 - `uk_bootcamp_outreach_sequence_2026-04-17.md`
+- `founder_ask_slide_scale_protocol_2026-04-17.md`
+- `milestone_compensation_addendum_2026-04-17.md`
+- `kpi_definition_table_2026-04-17.md`
 
 ## Friday call goals
 
