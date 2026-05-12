@@ -1,255 +1,550 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basin::Nexus | GTM Architecture Simulator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0F172A; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTM Architecture Simulator | Market Entry</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
-        input[type=range] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            border-radius: 3px;
-            background: #CBD5E1;
-            outline: none;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #2563EB;
-            cursor: pointer;
-            border: 2px solid #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        input[type=range]::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #2563EB;
-            cursor: pointer;
-            border: 2px solid #fff;
-        }
-        .bar-manual { background: #CBD5E1; }
-        .bar-api    { background: #2563EB; }
-        .bar-track  { background: #E2E8F0; border-radius: 6px; overflow: hidden; }
-        .delta-badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-    </style>
+    :root {
+      --navy: #0D1B2A;
+      --navy-2: #112233;
+      --teal: #00A896;
+      --slate: #F0F4F8;
+      --row: #E8EDF2;
+      --dark: #1C2B3A;
+      --muted: #8492A6;
+      --white: #FFFFFF;
+      --border: #D8E2EA;
+      --active: #8492A6;
+      --active-soft: #F0F4F8;
+    }
+
+    [data-mode="signal"] {
+      --active: var(--teal);
+      --active-soft: #E6F7F4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--slate);
+      color: var(--dark);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    .simulator {
+      width: min(980px, 100%);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 18px 50px rgba(13, 27, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 22px;
+      padding: 26px 30px 22px;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 9px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .subhead {
+      max-width: 620px;
+      margin: 0;
+      color: #C7D2DE;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .score-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .metric {
+      min-height: 78px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .metric span {
+      display: block;
+      margin-bottom: 7px;
+      color: #AAB8C7;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--white);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .metric .active-text { color: var(--active); }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 22px;
+      padding: 26px 30px 30px;
+    }
+
+    .trace {
+      padding: 17px 18px;
+      border: 1px solid var(--active);
+      border-radius: 8px;
+      background: var(--active-soft);
+      transition: 0.2s ease;
+    }
+
+    .trace-title {
+      margin-bottom: 7px;
+      color: var(--active);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .trace p {
+      margin: 0;
+      color: var(--dark);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .decision-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .tier {
+      padding: 15px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      opacity: 0.58;
+      transition: 0.2s ease;
+    }
+
+    .tier.active {
+      opacity: 1;
+      border-color: var(--active);
+      background: var(--active-soft);
+      box-shadow: 0 8px 20px rgba(13, 27, 42, 0.08);
+    }
+
+    .tier small {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+
+    .tier strong {
+      display: block;
+      color: var(--dark);
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .tier.active strong { color: var(--active); }
+
+    .gauge-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--slate);
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 220px;
+      height: 120px;
+      margin: 8px auto 18px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .gauge-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    .gauge-fill {
+      fill: none;
+      stroke: var(--active);
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke 0.2s ease, stroke-dashoffset 0.25s ease;
+    }
+
+    .gauge-score {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .gauge-score span {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 14px;
+      border: 1px solid var(--active);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    .mode-toggle strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14px;
+    }
+
+    .mode-toggle span {
+      display: block;
+      color: var(--active);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .switch {
+      position: relative;
+      width: 48px;
+      height: 27px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      background: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      transition: 0.2s ease;
+    }
+
+    input:checked + .slider {
+      background: var(--teal);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(21px);
+    }
+
+    .controls {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .control {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 13px;
+      color: var(--dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .control output {
+      color: var(--active);
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--active);
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 30px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 850px) {
+      body { padding: 0; }
+      .simulator { border-radius: 0; }
+      .top, .main { grid-template-columns: 1fr; }
+      .controls, .decision-row, .score-panel { grid-template-columns: 1fr; }
+      .bottom { flex-direction: column; }
+    }
+  </style>
 </head>
-<body class="p-6 md:p-12 min-h-screen">
-    <div class="max-w-4xl mx-auto">
+<body data-mode="manual">
+  <main class="simulator">
+    <section class="top">
+      <div>
+        <p class="eyebrow">Country Manager Bridge</p>
+        <h1>Market Entry Decision Simulator</h1>
+        <p class="subhead">Use the same kind of inputs from the simulation. First run the manual baseline, then flip to signal-driven execution and compare decision speed.</p>
+      </div>
 
-        <!-- Header -->
-        <header class="mb-8 border-b-2 border-slate-200 pb-5 flex justify-between items-end flex-wrap gap-4">
-            <div>
-                <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">SCU MKTG 3590 · May 14 Session</p>
-                <h1 class="text-3xl font-extrabold tracking-tight">BASIN::NEXUS</h1>
-                <p class="text-slate-500 text-sm mt-1">GTM Architecture Simulator — LATAM Expansion Scenario</p>
-            </div>
-            <div class="text-right">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Grading Metric</p>
-                <p class="text-lg font-extrabold text-slate-800">Net Contribution</p>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- LEFT: Signal Inputs -->
-            <div class="col-span-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold mb-5 text-slate-700 uppercase text-xs tracking-widest">Signal Inputs</h2>
-
-                <div class="mb-5">
-                    <div class="flex justify-between items-baseline mb-1">
-                        <label class="text-xs font-semibold text-slate-500">Market Demand</label>
-                        <span id="demand-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">18</span>
-                    </div>
-                    <input type="range" id="demand" min="0" max="25" value="18" class="w-full" oninput="updateDashboard()">
-                </div>
-
-                <div class="mb-5">
-                    <div class="flex justify-between items-baseline mb-1">
-                        <label class="text-xs font-semibold text-slate-500">Regional ICP</label>
-                        <span id="icp-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">20</span>
-                    </div>
-                    <input type="range" id="icp" min="0" max="25" value="20" class="w-full" oninput="updateDashboard()">
-                </div>
-
-                <div class="mb-5">
-                    <div class="flex justify-between items-baseline mb-1">
-                        <label class="text-xs font-semibold text-slate-500">Compelling Event</label>
-                        <span id="event-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">12</span>
-                    </div>
-                    <input type="range" id="event" min="0" max="25" value="12" class="w-full" oninput="updateDashboard()">
-                </div>
-
-                <div class="mb-6">
-                    <div class="flex justify-between items-baseline mb-1">
-                        <label class="text-xs font-semibold text-slate-500">Brand Presence</label>
-                        <span id="brand-val" class="text-sm font-bold text-slate-800 tabular-nums w-6 text-right">14</span>
-                    </div>
-                    <input type="range" id="brand" min="0" max="25" value="14" class="w-full" oninput="updateDashboard()">
-                </div>
-
-                <div class="border-t border-slate-100 pt-5">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Architecture Mode</p>
-                    <div class="flex gap-2">
-                        <button id="btn-api" onclick="setMode('api')"
-                            class="flex-1 py-2 rounded-lg text-sm font-bold border-2 border-blue-600 bg-blue-600 text-white transition-all">
-                            API
-                        </button>
-                        <button id="btn-manual" onclick="setMode('manual')"
-                            class="flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all">
-                            Manual
-                        </button>
-                    </div>
-                    <p id="mode-label" class="text-center text-xs text-blue-600 font-bold mt-2 uppercase tracking-widest">API Automation Active</p>
-                </div>
-            </div>
-
-            <!-- RIGHT: Output panels -->
-            <div class="col-span-2 flex flex-col gap-4">
-
-                <!-- Score + Tier -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
-                        <p class="text-blue-200 text-xs font-bold uppercase tracking-widest mb-1">GTM Score</p>
-                        <p class="text-5xl font-extrabold tabular-nums"><span id="total-score">64</span><span class="text-xl text-blue-300">/100</span></p>
-                        <p id="tier-label" class="mt-2 text-sm font-semibold text-blue-100">Partner-Led Entry</p>
-                    </div>
-                    <div class="bg-emerald-500 text-white p-5 rounded-xl shadow-sm">
-                        <p class="text-emerald-100 text-xs font-bold uppercase tracking-widest mb-1">Net Contribution</p>
-                        <p class="text-3xl font-extrabold tabular-nums" id="net-contrib">$896,000</p>
-                        <p class="mt-2 text-xs font-semibold text-emerald-100">Capital Allocation Speed:</p>
-                        <p id="speed-label" class="text-sm font-bold">Maximized (API)</p>
-                    </div>
-                </div>
-
-                <!-- Net Contribution comparison bar -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                    <h2 class="font-bold mb-3 text-slate-700 uppercase text-xs tracking-widest">Net Contribution — Architecture Delta</h2>
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="text-xs text-slate-500 w-14 text-right font-semibold">Manual</span>
-                        <div class="bar-track flex-1 h-7">
-                            <div id="bar-manual" class="bar-manual h-7 flex items-center pl-2 transition-all duration-500" style="width:40%">
-                                <span id="manual-label" class="text-xs font-bold text-slate-600">$384,000</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs text-slate-500 w-14 text-right font-semibold">API</span>
-                        <div class="bar-track flex-1 h-7">
-                            <div id="bar-api" class="bar-api h-7 flex items-center pl-2 transition-all duration-500" style="width:94%">
-                                <span id="api-label" class="text-xs font-bold text-white">$896,000</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-3 flex items-center gap-2">
-                        <span id="delta-badge" class="delta-badge bg-emerald-100 text-emerald-700">+133% vs Manual</span>
-                        <span class="text-xs text-slate-400">API architecture multiplier: 1.4× vs headcount drag: 0.6×</span>
-                    </div>
-                </div>
-
-                <!-- Architecture Trace -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex-grow">
-                    <h2 class="font-bold mb-2 text-slate-700 uppercase text-xs tracking-widest">Architecture Trace</h2>
-                    <p id="trace-text"
-                        class="text-slate-600 text-sm leading-relaxed font-mono bg-slate-50 p-4 rounded-lg border border-slate-100 transition-all duration-300">
-                        Basin::Nexus API Architecture: Signal-prioritized targeting. Decision logic automates SKU pricing adjustments based on competitor data. Consistent system learning maximizes Net Contribution and capital allocation speed.
-                    </p>
-                </div>
-
-            </div>
+      <div class="score-panel">
+        <div class="metric">
+          <span>Total score</span>
+          <strong id="headerScore">64</strong>
         </div>
-    </div>
+        <div class="metric">
+          <span>Recommendation</span>
+          <strong class="active-text" id="headerTier">Partner first</strong>
+        </div>
+        <div class="metric">
+          <span>Mode</span>
+          <strong class="active-text" id="headerMode">Manual</strong>
+        </div>
+        <div class="metric">
+          <span>Decision speed</span>
+          <strong class="active-text" id="headerSpeed">Rounds</strong>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        let currentMode = 'api';
+    <section class="main">
+      <div>
+        <div class="trace">
+          <div class="trace-title" id="traceTitle">Manual baseline</div>
+          <p id="traceText"><strong>Manual GTM:</strong> The team debates the market, adds people, and waits for the next round of results. The decision can be right, but it moves slowly.</p>
+        </div>
 
-        function setMode(mode) {
-            currentMode = mode;
-            const apiBtn    = document.getElementById('btn-api');
-            const manualBtn = document.getElementById('btn-manual');
-            const modeLabel = document.getElementById('mode-label');
+        <div class="decision-row">
+          <div class="tier" id="tier1">
+            <small>&lt; 40</small>
+            <strong>Wait</strong>
+          </div>
+          <div class="tier active" id="tier2">
+            <small>40 - 75</small>
+            <strong>Partner first</strong>
+          </div>
+          <div class="tier" id="tier3">
+            <small>&gt; 75</small>
+            <strong>Go direct</strong>
+          </div>
+        </div>
+      </div>
 
-            if (mode === 'api') {
-                apiBtn.className    = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-blue-600 bg-blue-600 text-white transition-all';
-                manualBtn.className = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all';
-                modeLabel.textContent = 'API Automation Active';
-                modeLabel.className = 'text-center text-xs text-blue-600 font-bold mt-2 uppercase tracking-widest';
-            } else {
-                manualBtn.className = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-600 bg-slate-600 text-white transition-all';
-                apiBtn.className    = 'flex-1 py-2 rounded-lg text-sm font-bold border-2 border-slate-200 bg-white text-slate-500 transition-all';
-                modeLabel.textContent = 'Manual / Textbook Mode';
-                modeLabel.className = 'text-center text-xs text-slate-500 font-bold mt-2 uppercase tracking-widest';
-            }
-            updateDashboard();
-        }
+      <aside class="gauge-card">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 100 55" aria-hidden="true">
+            <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+            <path class="gauge-fill" id="gaugeFill" d="M 10 50 A 40 40 0 0 1 90 50" stroke-dasharray="125.6" stroke-dashoffset="45.216"></path>
+          </svg>
+          <div class="gauge-score"><span id="centerScore">64</span><span>/100</span></div>
+        </div>
 
-        function updateDashboard() {
-            const demand = parseInt(document.getElementById('demand').value);
-            const icp    = parseInt(document.getElementById('icp').value);
-            const event  = parseInt(document.getElementById('event').value);
-            const brand  = parseInt(document.getElementById('brand').value);
+        <div class="mode-toggle">
+          <div>
+            <strong>Run model</strong>
+            <span id="toggleLabelText">Manual baseline</span>
+          </div>
+          <label class="switch" aria-label="Toggle signal-driven mode">
+            <input type="checkbox" id="modeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </aside>
 
-            document.getElementById('demand-val').textContent = demand;
-            document.getElementById('icp-val').textContent    = icp;
-            document.getElementById('event-val').textContent  = event;
-            document.getElementById('brand-val').textContent  = brand;
+      <div class="controls">
+        <div class="control">
+          <label for="valDemand">Market demand <output id="dispDemand">18</output></label>
+          <input id="valDemand" type="range" min="0" max="30" value="18">
+        </div>
+        <div class="control">
+          <label for="valIcp">ICP fit <output id="dispIcp">20</output></label>
+          <input id="valIcp" type="range" min="0" max="30" value="20">
+        </div>
+        <div class="control">
+          <label for="valCoverage">Channel coverage <output id="dispCoverage">12</output></label>
+          <input id="valCoverage" type="range" min="0" max="20" value="12">
+        </div>
+        <div class="control">
+          <label for="valBudget">Budget room <output id="dispBudget">14</output></label>
+          <input id="valBudget" type="range" min="0" max="20" value="14">
+        </div>
+      </div>
+    </section>
 
-            const score = demand + icp + event + brand;
-            document.getElementById('total-score').textContent = score;
+    <footer class="bottom">
+      <span>Basin::Nexus</span>
+      <span>SCU MKTG 3590 - Session 14</span>
+    </footer>
+  </main>
 
-            let tier = '';
-            if (score < 40)       tier = 'Delay Entry';
-            else if (score <= 75) tier = 'Partner-Led Entry';
-            else                  tier = 'Deploy Localized API Automation';
-            document.getElementById('tier-label').textContent = tier;
+  <script>
+    const body = document.body;
+    const modeToggle = document.getElementById('modeToggle');
+    const headerScore = document.getElementById('headerScore');
+    const headerTier = document.getElementById('headerTier');
+    const headerMode = document.getElementById('headerMode');
+    const headerSpeed = document.getElementById('headerSpeed');
+    const centerScore = document.getElementById('centerScore');
+    const gaugeFill = document.getElementById('gaugeFill');
+    const traceTitle = document.getElementById('traceTitle');
+    const traceText = document.getElementById('traceText');
+    const toggleLabelText = document.getElementById('toggleLabelText');
 
-            const base        = score * 10000;
-            const apiContrib  = Math.round(base * 1.4);
-            const manContrib  = Math.round(base * 0.6);
-            const maxBar      = Math.max(apiContrib, 1);
-            const apiPct      = Math.min(100, Math.round((apiContrib / (score * 25 * 10000 * 1.4)) * 100) + 5);
-            const manPct      = Math.min(100, Math.round((manContrib / (score * 25 * 10000 * 1.4)) * 100) + 5);
-            const activePct   = Math.max(5, Math.round((apiPct * manContrib) / apiContrib));
+    const inputs = {
+      demand: document.getElementById('valDemand'),
+      icp: document.getElementById('valIcp'),
+      coverage: document.getElementById('valCoverage'),
+      budget: document.getElementById('valBudget'),
+    };
 
-            document.getElementById('bar-api').style.width    = Math.max(8, apiPct) + '%';
-            document.getElementById('bar-manual').style.width = Math.max(8, Math.round(apiPct * 0.43)) + '%';
-            document.getElementById('api-label').textContent  = '$' + apiContrib.toLocaleString();
-            document.getElementById('manual-label').textContent = '$' + manContrib.toLocaleString();
+    const outputs = {
+      demand: document.getElementById('dispDemand'),
+      icp: document.getElementById('dispIcp'),
+      coverage: document.getElementById('dispCoverage'),
+      budget: document.getElementById('dispBudget'),
+    };
 
-            const deltaPct = Math.round(((apiContrib - manContrib) / manContrib) * 100);
-            document.getElementById('delta-badge').textContent = '+' + deltaPct + '% vs Manual';
+    const tiers = [
+      document.getElementById('tier1'),
+      document.getElementById('tier2'),
+      document.getElementById('tier3'),
+    ];
 
-            let finalContrib, speed, trace;
-            if (currentMode === 'api') {
-                finalContrib = apiContrib;
-                speed = 'Maximized (API Orchestrated)';
-                trace = 'Basin::Nexus API Architecture: Signal-prioritized targeting. Decision logic automates SKU pricing adjustments based on competitor data. Consistent system learning maximizes Net Contribution and capital allocation speed.';
-            } else {
-                finalContrib = manContrib;
-                speed = 'Slow (Headcount Drag)';
-                trace = 'Manual Textbook Architecture: High headcount, slow entry, fragmented channel coverage. Pipeline quality varies by rep effort and lead decay. Sub-optimal Net Contribution — no SKU pricing automation, no signal feedback loop.';
-            }
+    const gaugeLength = 125.6;
 
-            document.getElementById('net-contrib').textContent  = '$' + finalContrib.toLocaleString();
-            document.getElementById('speed-label').textContent  = speed;
-            document.getElementById('trace-text').textContent   = trace;
-        }
+    modeToggle.addEventListener('change', updateMode);
+    Object.values(inputs).forEach(input => input.addEventListener('input', calculateScore));
 
-        updateDashboard();
-    </script>
+    function updateMode() {
+      const signalMode = modeToggle.checked;
+      body.setAttribute('data-mode', signalMode ? 'signal' : 'manual');
+      headerMode.textContent = signalMode ? 'Signal' : 'Manual';
+      headerSpeed.textContent = signalMode ? 'Hours' : 'Rounds';
+      toggleLabelText.textContent = signalMode ? 'Signal-driven execution' : 'Manual baseline';
+      traceTitle.textContent = signalMode ? 'Signal-driven execution' : 'Manual baseline';
+      traceText.innerHTML = signalMode
+        ? '<strong>Signal-driven GTM:</strong> The team reads demand, fit, coverage, and budget signals first. The same decision gets made faster, with less guessing.'
+        : '<strong>Manual GTM:</strong> The team debates the market, adds people, and waits for the next round of results. The decision can be right, but it moves slowly.';
+      calculateScore();
+    }
+
+    function calculateScore() {
+      const demand = Number(inputs.demand.value);
+      const icp = Number(inputs.icp.value);
+      const coverage = Number(inputs.coverage.value);
+      const budget = Number(inputs.budget.value);
+      const total = demand + icp + coverage + budget;
+
+      outputs.demand.textContent = demand;
+      outputs.icp.textContent = icp;
+      outputs.coverage.textContent = coverage;
+      outputs.budget.textContent = budget;
+      headerScore.textContent = total;
+      centerScore.textContent = total;
+      gaugeFill.style.strokeDashoffset = gaugeLength - ((total / 100) * gaugeLength);
+
+      tiers.forEach(tier => tier.classList.remove('active'));
+      if (total < 40) {
+        tiers[0].classList.add('active');
+        headerTier.textContent = 'Wait';
+      } else if (total <= 75) {
+        tiers[1].classList.add('active');
+        headerTier.textContent = 'Partner first';
+      } else {
+        tiers[2].classList.add('active');
+        headerTier.textContent = 'Go direct';
+      }
+    }
+
+    updateMode();
+  </script>
 </body>
 </html>
