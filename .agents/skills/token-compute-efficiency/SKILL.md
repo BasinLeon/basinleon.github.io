@@ -1,100 +1,162 @@
 ---
 name: token-compute-efficiency
-description: Use when starting complex codebase edits, analyzing large files, running multi-agent workflows, or managing context tokens and compute budgets.
+description: Use when starting complex codebase edits, analyzing large files, running multi-agent workflows, reviewing noisy logs, or managing context tokens and compute budgets across agent runtimes including Codex.
 ---
 
 # Token & Compute Efficiency (Quiet Machine Doctrine)
 
 ## Overview
+
 The **Quiet Machine** doctrine establishes that high-performance engineering requires extreme token and context hygiene. A crowded context window degrades LLM attention, increases latency, and invites logic loops. This skill mandates rules for running lean, precise, and compute-efficient agent sessions.
 
----
+This skill is runtime-aware: keep the doctrine stable, then map it to the tools available in the current environment. In Codex, use the Codex sidecar rules below. In Antigravity/Gemini-style environments, use the original tool names and patterns.
 
-## When to Use
+## When To Use
 
-### Use When:
+Use when:
+
 - Modifying large codebases or working in long-running chats.
 - Searching for specific code blocks across many directories.
 - Refactoring files or generating extensive changes.
 - Launching subagents or executing parallel background processes.
+- Reviewing noisy logs, test failures, or broad git diffs.
 
-### Do NOT Use When:
+Do not use when:
+
 - Running simple, isolated one-line shell commands.
-- Asking basic conceptual questions unrelated to files in the workspace.
-
----
+- Answering basic conceptual questions unrelated to files in the workspace.
 
 ## Core Patterns
 
-### 1. Progressive Disclosure (No Catting Large Files)
-Never view or load a large file in its entirety if you only need a specific section. Use targeted searches first, then load narrow line ranges.
+### 1. Progressive Disclosure
 
-| ❌ INSUFFICIENT HYGIENE | ✅ LEAN HYGIENE |
-| :--- | :--- |
-| Using `view_file` on a `1,000-line` file to inspect one function. | Using `grep_search` to find the line numbers, then `view_file` specifying exact `StartLine` and `EndLine`. |
-| Running `cat` or broad shell outputs of whole files. | Specifying line limits or filters via grep, awk, or tail. |
+Never view or load a large file in its entirety if you only need a specific section. Search first, then load narrow line ranges.
 
-```python
-# ✅ Good: Progressive view after locating target
-default_api.view_file(
-    AbsolutePath="/path/to/large_file.py",
-    StartLine=45,
-    EndLine=80,
-    toolAction="Viewing exact line range for function",
-    toolSummary="Inspect function target"
-)
+Original runtime pattern:
+
+- Use `grep_search` to locate the target.
+- Use `view_file` with `StartLine` and `EndLine`.
+- Avoid broad `cat` or whole-file views.
+
+Codex pattern:
+
+```bash
+rg -n "functionName|className|error text" path/
+rg --files | rg "target-name|package.json|SKILL.md"
+sed -n '120,190p' path/to/file
+nl -ba path/to/file | sed -n '120,190p'
 ```
 
-### 2. Subagent Sandboxing (Context Isolation)
-Never clutter the parent conversation with exhaustive codebase searches, dependency lookups, or build logs. Sandbox exploratory work in a subagent.
+Codex rule: if a file is more than about 150 lines, use `rg` first and read only the nearby range unless the full structure is truly necessary.
 
-- **The Subagent** executes 20+ tool calls, reads raw code, and processes bulky logs.
-- **The Parent** receives only a clean, synthesized 10-line summary of findings.
-- **Result:** You save 50,000+ context tokens from being carried over into future turns.
+### 2. Subagent Sandboxing
 
-### 3. Diff-Only Modifications
-Minimize output generation token usage by replacing only the relevant blocks of code rather than re-writing entire files.
+Do not clutter the parent conversation with exhaustive codebase searches, dependency lookups, or build logs. When the runtime and user allow it, sandbox exploratory work in a subagent.
+
+Original runtime pattern:
+
+- The subagent executes many tool calls, reads raw code, and processes bulky logs.
+- The parent receives a clean, synthesized summary.
+- The parent avoids carrying exploratory noise into future turns.
+
+Codex pattern:
+
+- Spawn subagents only when the user explicitly asks for subagents, delegation, or parallel agent work.
+- Give each subagent a concrete, bounded task.
+- Ask for a concise report with file paths, changed files, commands run, and remaining risks.
+- Do not duplicate the delegated work locally while the subagent is running.
+
+If Codex subagents are not allowed, simulate the same discipline locally: search narrowly, read bounded ranges, and carry forward a short working summary.
+
+### 3. Diff-Only File Operations
+
+Minimize input and output token usage by changing only relevant blocks of code rather than rewriting entire files.
+
+Original runtime pattern:
 
 - Use `replace_file_content` for a single contiguous change.
 - Use `multi_replace_file_content` for multiple non-contiguous edits in the same file.
-- **Never** use `write_to_file` to overwrite a large existing file just to modify a few lines.
+- Do not use `write_to_file` to overwrite a large existing file just to modify a few lines.
 
-### 4. No Echo Responses
-Never print massive file content, full stack traces, or entire markdown documents directly in the chat response. 
-- Save long outputs or summaries directly to **Artifacts** or **Scratch Files**.
-- Point the user to the file path using markdown links: `[basename](file:///absolute/path/to/file)`.
-- Summarize only the critical high-level takeaways in the chat.
+Codex pattern:
 
----
+- Use `apply_patch` for manual edits.
+- Keep hunks small, reviewable, and scoped to the task.
+- Preserve unrelated dirty worktree changes.
+- Avoid broad formatter churn unless the project requires it.
 
-## Quick Reference: Tool Efficiency
+### 4. Clean Output Responses
 
-| Tool / Command | Efficiency Strategy |
-| :--- | :--- |
-| `grep_search` | Primary search target. Use precise queries to avoid scanning directories manually. |
-| `view_file` | Always set `StartLine` and `EndLine` on files larger than 100 lines. |
-| `run_command` | Limit stdout. Pipe long outputs to files (e.g., `command > scratch.log`) or use head/tail. |
-| `manage_task` | Do **not** poll `status` in a loop. Launch the command, stop calling tools, and wait for the system wakeup. |
+Never print massive file content, full stack traces, or entire markdown documents directly in chat.
 
----
+Original runtime pattern:
+
+- Save long outputs or summaries directly to artifacts or scratch files.
+- Point the user to the file path.
+- Summarize only the critical takeaways.
+
+Codex pattern:
+
+- Set `max_output_tokens` on noisy commands.
+- Use targeted commands over broad dumps.
+- Summarize the key error line, affected file, command run, and result.
+- Link local files in Codex markdown style:
+
+```markdown
+[SKILL.md](/absolute/path/to/SKILL.md:12)
+```
+
+## Quick Reference: Runtime Tool Mapping
+
+| Goal | Original Runtime | Codex Runtime |
+| :--- | :--- | :--- |
+| Find code | `grep_search` | `rg -n`, `rg --files` |
+| Read file section | `view_file` with `StartLine` / `EndLine` | `sed -n`, `nl -ba ... | sed -n` |
+| Single edit | `replace_file_content` | `apply_patch` |
+| Multi-edit | `multi_replace_file_content` | `apply_patch` with multiple hunks |
+| Avoid huge overwrite | Avoid `write_to_file` on existing large files | Avoid whole-file rewrites; patch only changed lines |
+| Run commands | `run_command` with limited stdout | `exec_command` with `max_output_tokens` |
+| Background work | `manage_task` without polling loops | Track session ids; avoid pointless polling |
+| Delegation | Background subagent sandbox | `spawn_agent` only with explicit user permission |
+
+## Command Output Hygiene
+
+Good Codex command patterns:
+
+```bash
+git status --short
+git diff -- path/to/file
+rg -n "FAILED|ERROR|panic|Traceback" test-output.log
+tail -n 80 test-output.log
+```
+
+Prefer scoped verification before full suites when investigating a narrow issue, such as a single test file, targeted package script, or focused lint command.
 
 ## Bulletproofing: Common Rationalizations
 
-When under pressure, agents often justify context-wasting behavior. Stop and counter these rationalizations immediately:
-
 | Excuse | Operational Truth |
 | :--- | :--- |
-| *"I need to read the whole file to make sure I don't miss any dependencies."* | False. Use `grep_search` or cross-reference imports first. You can selectively read other files if needed. |
-| *"It is easier to rewrite the whole file than figure out the exact lines to replace."* | False. Overwriting a large file burns massive input/output tokens. Take 15 seconds to locate the target lines. |
-| *"I will just print the entire log so the user sees all the details."* | False. Cluttering the chat history with logs causes immediate attention decay. Write to a scratch file and link it. |
-| *"Let me poll the build status a few times quickly."* | False. Polling tools burns compute and turns. Stop calling tools and let the system wake you up. |
-
----
+| "I need to read the whole file to make sure I do not miss anything." | Search and cross-reference first. Selectively read more only when the first pass shows it is needed. |
+| "It is easier to rewrite the whole file than figure out the exact lines." | Patch the relevant block. Whole-file rewrites burn tokens and increase regression risk. |
+| "I will print the whole log so the user sees all details." | Summarize the useful failure and keep the raw log out of chat unless explicitly requested. |
+| "Let me poll the build status a few times quickly." | Polling burns turns and context. Wait only when the result is needed for the next decision. |
+| "A subagent would be cleaner, so I can spawn one." | In Codex, subagents require explicit user permission. Use local discipline otherwise. |
 
 ## Red Flags
 
-If you notice these behaviors, **STOP** and restructure your turn:
-- `[ ]` You viewed more than 200 lines of code without specifying `StartLine` and `EndLine`.
-- `[ ]` You printed more than 20 lines of a raw log or code block in your chat response.
-- `[ ]` You are about to use `write_to_file` with `Overwrite=true` on an existing file that is not a newly created artifact.
-- `[ ]` You ran a command in the background and immediately called `manage_task` to check its status in the same turn.
+Pause and restructure when:
+
+- You are about to read more than 200 lines without first searching.
+- A command may print thousands of lines and has no output cap.
+- You are about to overwrite a large existing file.
+- You are planning to spawn a subagent without explicit user permission in Codex.
+- Your final answer is mostly process narration instead of outcome.
+
+## Final Checklist
+
+Before finishing:
+
+- Did I inspect only the needed context?
+- Did I preserve unrelated user changes?
+- Did I verify the change at the right scope?
+- Did I give the user the useful result without flooding the conversation?
