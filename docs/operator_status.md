@@ -1,6 +1,6 @@
 # Operator Status
 
-Last updated: 2026-03-10 14:18 PDT
+Last updated: 2026-03-31 10:18 PDT
 
 ## Current Focus
 
@@ -43,9 +43,9 @@ Last updated: 2026-03-10 14:18 PDT
 ### Bounty
 
 - Contact: Rayan Dabbagh
-- Stage: Needs reschedule
-- Next step: reply with a later Wednesday or Thursday option
-- Status: still warm; Rayan replied after being sick
+- Stage: Awaiting V3 Beta Activation
+- Next step: Wait for founders to enable V3 access for SCU prep
+- Status: V3 Beta request sent (2026-03-30)
 
 ### ASPR AI
 
@@ -121,9 +121,9 @@ Last updated: 2026-03-10 14:18 PDT
 
 ## Next 3 Moves
 
-1. Rehearse the Altruist / Hazel screen from the prep page and keep answers tight.
-2. Reply to Rayan and Ganesh so Bounty stays warm and ASPR closes cleanly.
-3. Keep `docs/opportunities.json` current so the operator tracker stays useful.
+1. Await V3 Beta activation from Rayan Dabbagh to begin SCU lecture prep.
+2. Rehearse the Altruist / Hazel screen from the prep page and keep answers tight.
+3. Plan the SCU "Live Strike" prompts once V3 is unlocked.
 
 ## Canonical Files
 
