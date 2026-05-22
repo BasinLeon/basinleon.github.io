@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REPLIT // ENTERPRISE AM // STRIKE HUD v1.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #0e0e1e;
+            --sidebar-bg: #16162a;
+            --card-bg: #1c1c36;
+            --accent-neon: #f15a24; /* Replit Orange */
+            --accent-blue: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: #2e2e4e;
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 2% 2%, rgba(241, 90, 36, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 98% 98%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+        }
+
+        /* Sidebar */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+        }
+
+        .brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem; color: var(--accent-neon); margin-bottom: 48px; }
+        .brand span { color: var(--text-main); }
+
+        .nav-label { font-size: 0.65rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; padding: 10px 0; color: var(--text-dim); transition: 0.2s; cursor: pointer; }
+        .nav-item:hover { color: var(--text-main); }
+        .nav-item i { color: var(--accent-neon); width: 18px; }
+
+        /* Main */
+        main { flex: 1; padding: 48px; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; }
+        .h-title h1 { font-family: var(--font-heading); font-weight: 800; font-size: 2.2rem; }
+        .h-title p { color: var(--text-dim); font-size: 1rem; }
+        .status-pill { background: rgba(241, 90, 36, 0.1); border: 1px solid var(--accent-neon); color: var(--accent-neon); padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+
+        .narrative-bar { background: #252345; padding: 20px; border-radius: 12px; margin-bottom: 32px; border-left: 4px solid var(--accent-neon); display: flex; justify-content: space-between; align-items: center; }
+        .n-text { font-size: 0.95rem; font-weight: 600; }
+        .n-tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-neon); }
+
+        /* Card Grid */
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: border-color 0.3s; }
+        .card:hover { border-color: var(--accent-neon); }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .card-header i { color: var(--accent-neon); font-size: 1.2rem; }
+        .card-title { font-weight: 800; font-size: 1.1rem; font-family: var(--font-heading); }
+
+        .bullet { display: flex; gap: 12px; font-size: 0.85rem; line-height: 1.6; color: var(--text-dim); margin-bottom: 12px; }
+        .bullet b { color: var(--text-main); }
+        .bullet::before { content: "•"; color: var(--accent-neon); font-weight: 800; }
+
+        /* The Ghazi Profile */
+        .hiring-manager { margin-top: 48px; background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.2); padding: 24px; border-radius: 16px; }
+        .hm-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; font-family: var(--font-heading); font-weight: 800; color: var(--accent-blue); }
+        .hm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        .hm-point h4 { font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; letter-spacing: 1px; }
+        .hm-point p { font-size: 0.9rem; line-height: 1.5; color: var(--text-dim); }
+
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand">REPLIT<span>::</span>NEXUS</div>
+        <div class="nav-label">The Strike Pack</div>
+        <div class="nav-item"><i class="fas fa-terminal"></i> Dev-to-Yield Pipeline</div>
+        <div class="nav-item"><i class="fas fa-cloud"></i> Infrastructure Value</div>
+        <div class="nav-item"><i class="fas fa-microchip"></i> AI Deployment Flow</div>
+        
+        <div style="margin-top: auto;">
+            <p class="nav-label">Preparation</p>
+            <p style="font-size: 0.7rem; color: var(--text-dim);">Call Scheduled: FRIDAY / MONDAY <br>Duration: 15 MINS</p>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="h-title">
+                <h1>GHAZI MASOOD // SCREEN</h1>
+                <p>VP of Sales // Enterprise GTM Strike Protocol</p>
+            </div>
+            <div class="status-pill">> VIBE_CHECK_ARCHITECT</div>
+        </header>
+
+        <div class="narrative-bar">
+            <div class="n-text">"Replit is the Operating System for the AI-First Enterprise. I build the adoption cycles that prove it."</div>
+            <div class="n-tag">PROTOCOL_GHAZI_01</div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-bolt"></i> <div class="card-title">The Velocity Play</div></div>
+                <div class="bullet"><b>The Pain:</b> Enterprise devs spend 50% of time on "Config & Setup."</div>
+                <div class="bullet"><b>The Yield:</b> I frame Replit as <b>Instant Engineering Cycles.</b> We sell "Time-to-Value," not just code space.</div>
+                <div class="bullet"><b>Proof:</b> Scaled Fudo infrastructure by focusing on <b>Friction Reduction.</b></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-network-wired"></i> <div class="card-title">The Strategic AM Logic</div></div>
+                <div class="bullet"><b>Expansion:</b> AMs aren't "Renewal Managers." They are <b>Workload Scouts.</b></div>
+                <div class="bullet"><b>Logic:</b> I find the next internal project (AI/LLM pilots) and port it to Replit before they hire a DevOps army.</div>
+                <div class="bullet"><b>Status:</b> Expert at high-retainer ($2k+ floor) account management.</div>
+            </div>
+        </div>
+
+        <div class="hiring-manager">
+            <div class="hm-head"><i class="fas fa-user-tie"></i> TARGET INTEL: GHAZI MASOOD</div>
+            <div class="hm-grid">
+                <div class="hm-point">
+                    <h4>The Pedigree</h4>
+                    <p>Ex-<b>Databricks</b> / <b>Elastic</b> / <b>Oracle</b>. He understands high-status platforms. <b>HISTORY:</b> You cleared the <b>FEB 24</b> screen with <b>Emily Gleeson</b> (Director/Leadership). Ghazi is the final Enterprise-level calibration.</p>
+                </div>
+                <div class="hm-point">
+                    <h4>The Interview Style</h4>
+                    <p>He will value <b>Conciseness</b> and <b>Technical Authority</b>. He wants an AM who doesn't need "Training" on what a developer does. Prove you understand the <b>Signal Refinery</b> logic.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

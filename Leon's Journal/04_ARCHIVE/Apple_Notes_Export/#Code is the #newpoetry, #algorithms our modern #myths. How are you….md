@@ -1,0 +1,1 @@
+# #Code is the #newpoetry, #algorithms our modern #myths. How are you…*Created: Sunday, June 23, 2024 at 5:17:08?PM*<div>#Code is the #newpoetry, #algorithms our modern #myths. How are you #writing your digital #story? #TechPhilosophy</div>

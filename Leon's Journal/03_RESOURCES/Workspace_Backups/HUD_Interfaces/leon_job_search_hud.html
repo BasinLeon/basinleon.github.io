@@ -1,0 +1,264 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-mono, monospace); }
+
+.hud { padding: 1.5rem 0; max-width: 760px; }
+
+.hud-header { 
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 1.5rem; padding-bottom: 0.75rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.hud-title { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; color: var(--color-text-secondary); text-transform: uppercase; }
+.hud-date { font-size: 11px; color: var(--color-text-tertiary); }
+
+.section-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  color: var(--color-text-tertiary); text-transform: uppercase;
+  margin-bottom: 8px; margin-top: 1.5rem;
+}
+.section-label:first-of-type { margin-top: 0; }
+
+.story-block {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  position: relative;
+}
+.story-text {
+  font-size: 13px; line-height: 1.75;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
+.story-pivot {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 0.5px solid var(--color-border-tertiary);
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.pivot-btn {
+  font-size: 11px; padding: 4px 10px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-mono);
+}
+.pivot-btn:hover { background: var(--color-background-tertiary); color: var(--color-text-primary); }
+.pivot-btn.active { 
+  background: var(--color-background-info); 
+  color: var(--color-text-info);
+  border-color: var(--color-border-info);
+}
+.pivot-line {
+  font-size: 12px; color: var(--color-text-info);
+  margin-top: 8px; line-height: 1.5;
+  font-family: var(--font-sans);
+  min-height: 18px;
+  transition: opacity 0.2s;
+}
+
+.targets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 8px;
+}
+.target-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.target-card:hover { border-color: var(--color-border-secondary); }
+.target-card.high { border-left: 2px solid #1D9E75; }
+.target-card.mid { border-left: 2px solid #BA7517; }
+.target-card.low { border-left: 2px solid var(--color-border-tertiary); }
+.target-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.target-role { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.target-meta { display: flex; align-items: center; justify-content: space-between; }
+.target-stage { font-size: 10px; color: var(--color-text-tertiary); }
+.target-badge {
+  font-size: 9px; font-weight: 500; padding: 2px 6px;
+  border-radius: var(--border-radius-md);
+  letter-spacing: 0.05em;
+}
+.badge-hot { background: #E1F5EE; color: #0F6E56; }
+.badge-active { background: #FAEEDA; color: #854F0B; }
+.badge-screen { background: #EEEDFE; color: #3C3489; }
+.badge-cold { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+
+.rhythm-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.rhythm-card {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 0.75rem 1rem;
+}
+.rhythm-day { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 6px; }
+.rhythm-tasks { list-style: none; }
+.rhythm-tasks li { 
+  font-size: 11px; color: var(--color-text-secondary); 
+  padding: 2px 0; font-family: var(--font-sans);
+  display: flex; align-items: flex-start; gap: 6px;
+}
+.rhythm-tasks li::before { content: "—"; color: var(--color-text-tertiary); flex-shrink: 0; }
+
+.rule-line {
+  font-size: 11px; color: var(--color-text-tertiary);
+  padding: 6px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-sans);
+}
+.rule-line:last-child { border-bottom: none; }
+.rule-num { 
+  font-size: 10px; font-weight: 500; color: var(--color-text-tertiary);
+  min-width: 16px;
+}
+.rule-text { color: var(--color-text-primary); font-size: 12px; }
+
+.stats-row {
+  display: flex; gap: 8px; margin-bottom: 1rem;
+}
+.stat-card {
+  flex: 1;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+}
+.stat-num { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+.stat-label { font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; font-family: var(--font-sans); }
+.stat-sub { font-size: 9px; color: var(--color-text-tertiary); font-family: var(--font-sans); }
+</style>
+
+<div class="hud">
+
+<div class="hud-header">
+  <span class="hud-title">LeonOS // Job Search HUD</span>
+  <span class="hud-date" id="hud-date"></span>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num">13</div>
+    <div class="stat-label">1st rounds</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">4</div>
+    <div class="stat-label">final rounds</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">sniper → final</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">0%</div>
+    <div class="stat-label">portal → close</div>
+  </div>
+</div>
+
+<p class="section-label">The 60-second story</p>
+<div class="story-block">
+  <p class="story-text" id="story-core">I've spent 15 years in revenue. The first ten I was a seller. The last five I became something different. I started noticing that most revenue problems aren't people problems — they're signal problems. Bad data, noisy pipelines, reps working on the wrong accounts. So I stopped managing the noise and started building systems to cut through it. I built a signal engine at Fudo Security that grew pipeline 160% and saved $424K in a year. Then I built Basin::Nexus — my own architecture for doing the same thing. Now I use that framework everywhere I go.</p>
+  <div class="story-pivot">
+    <button class="pivot-btn" onclick="setPivot('builder')">builder role</button>
+    <button class="pivot-btn" onclick="setPivot('director')">director / ops role</button>
+    <button class="pivot-btn" onclick="setPivot('ae')">AE / sales role</button>
+  </div>
+  <div class="pivot-line" id="pivot-line"></div>
+</div>
+
+<p class="section-label">Top 5 targets — sniper only</p>
+<div class="targets-grid" id="targets-grid"></div>
+
+<p class="section-label">Weekly rhythm</p>
+<div class="rhythm-grid">
+  <div class="rhythm-card">
+    <div class="rhythm-day">Monday</div>
+    <ul class="rhythm-tasks">
+      <li>Audit pipeline status</li>
+      <li>Kill anything stalled 14+ days</li>
+      <li>Identify 1 new sniper target</li>
+    </ul>
+  </div>
+  <div class="rhythm-card">
+    <div class="rhythm-day">Wednesday</div>
+    <ul class="rhythm-tasks">
+      <li>Direct HM outreach only</li>
+      <li>Follow up on open threads</li>
+      <li>Prep any calls this week</li>
+    </ul>
+  </div>
+  <div class="rhythm-card">
+    <div class="rhythm-day">Friday</div>
+    <ul class="rhythm-tasks">
+      <li>Close open loops</li>
+      <li>One piece of content</li>
+      <li>Review next week's calls</li>
+    </ul>
+  </div>
+</div>
+
+<p class="section-label">The three rules</p>
+<div>
+  <div class="rule-line"><span class="rule-num">01</span><span class="rule-text">No portal applications. Sniper outreach or referral only.</span></div>
+  <div class="rule-line"><span class="rule-num">02</span><span class="rule-text">Stop after the first complete thought. Let them pull the next one.</span></div>
+  <div class="rule-line"><span class="rule-num">03</span><span class="rule-text">5 active targets max. Everything else is a distraction.</span></div>
+</div>
+
+</div>
+
+<script>
+const targets = [
+  { name: "LinkedIn", role: "Alliance Partnership Lead", stage: "Screen today", signal: "hot", badge: "badge-hot" },
+  { name: "Fivetran", role: "Partner Program", stage: "Call tomorrow", signal: "hot", badge: "badge-hot" },
+  { name: "Obvio", role: "Phone Interview", stage: "Wed 12:30pm", signal: "hot", badge: "badge-hot" },
+  { name: "Replit", role: "Enterprise Account Mgr", stage: "HM met Mar 17", signal: "active", badge: "badge-active" },
+  { name: "BRM Labs", role: "Founding GTM Engineer", stage: "Final round", signal: "active", badge: "badge-active" },
+];
+
+const pivots = {
+  builder: "For this role, I want to wire that engine directly into your stack.",
+  director: "For this role, I want to run that playbook at scale across your team.",
+  ae: "For this role, I want to use that system to close the accounts your competitors are missing."
+};
+
+let activePivot = null;
+
+function setPivot(key) {
+  const btns = document.querySelectorAll('.pivot-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (activePivot === key) {
+    activePivot = null;
+    document.getElementById('pivot-line').textContent = '';
+    return;
+  }
+  activePivot = key;
+  event.target.classList.add('active');
+  document.getElementById('pivot-line').textContent = pivots[key];
+}
+
+const grid = document.getElementById('targets-grid');
+targets.forEach(t => {
+  const card = document.createElement('div');
+  card.className = `target-card ${t.signal === 'hot' ? 'high' : t.signal === 'active' ? 'mid' : 'low'}`;
+  card.innerHTML = `
+    <div class="target-name">${t.name}</div>
+    <div class="target-role">${t.role}</div>
+    <div class="target-meta">
+      <span class="target-stage">${t.stage}</span>
+      <span class="target-badge ${t.badge}">${t.signal}</span>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+const d = new Date();
+document.getElementById('hud-date').textContent = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+</script>

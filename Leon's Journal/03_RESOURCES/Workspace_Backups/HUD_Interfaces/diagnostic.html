@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Operating Model Diagnostic | Basin & Associates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 850px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient);
+        }
+
+        header {
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .brand h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .doc-info {
+            text-align: right;
+        }
+
+        .doc-info span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero {
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 90%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s;
+        }
+
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .checklist {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .checklist li {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checklist li::before {
+            content: '→';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .score-section {
+            background: var(--gradient);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--bg);
+        }
+
+        .score-content h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .score-content p {
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .score-box {
+            background: var(--bg);
+            color: var(--accent);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-cta {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page { 
+                box-shadow: none; 
+                border: none; 
+                width: 100%; 
+                margin: 0;
+                background: white;
+                color: #0f172a;
+            }
+            .page::before { height: 4px; }
+            .card { background: #f8fafc; border: 1px solid #e2e8f0; }
+            h1, h2, h3 { color: #0f172a !important; -webkit-text-fill-color: initial !important; background: none !important; }
+            .brand h1 { -webkit-text-fill-color: #0f172a !important; }
+            .card h3 { color: #0284c7 !important; }
+            .score-section { background: #0f172a !important; color: white !important; }
+            .score-box { background: white !important; color: #0f172a !important; border: 2px solid #0f172a; }
+            .checklist li::before { color: #0284c7 !important; }
+            .text-muted { color: #64748b !important; }
+        }
+
+        /* Animated micro-interaction for screen view */
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px -10px var(--accent-glow);
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="brand">
+                <h1>BASIN & ASSOCIATES</h1>
+                <p>Enterprise Execution Intelligence</p>
+            </div>
+            <div class="doc-info">
+                <span>Diagnostic Code: COM-X1</span>
+                <span>Category: Operational Integrity</span>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h2>The Commercial Operating Model Diagnostic</h2>
+            <p>A high-status framework for identifying the structural bottlenecks between enterprise strategy and predictable revenue delivery.</p>
+        </section>
+
+        <div class="grid">
+            <div class="card">
+                <h3>1. Operating Rhythm</h3>
+                <p>Is your cadence of execution predictable or reactive?</p>
+                <ul class="checklist">
+                    <li>Fixed meeting taxonomy</li>
+                    <li>Synchronized team reporting</li>
+                    <li>Decision-grade dashboards</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>2. System Symmetry</h3>
+                <p>Do your tools support the workflow, or is the team serving the CRM?</p>
+                <ul class="checklist">
+                    <li>Automated signal routing</li>
+                    <li>Zero-manual entry audits</li>
+                    <li>Cross-functional data sync</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>3. Friction Mapping</h3>
+                <p>Where does high-value effort get lost in administrative noise?</p>
+                <ul class="checklist">
+                    <li>Internal handoff velocity</li>
+                    <li>Approval cycle duration</li>
+                    <li>Strategic work-to-noise ratio</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>4. Revenue Integrity</h3>
+                <p>Is the pipeline a "hope-based" forecast or a mechanical outcome?</p>
+                <ul class="checklist">
+                    <li>Intent-based signal scoring</li>
+                    <li>Relationship architecture depth</li>
+                    <li>Weighted outcome projections</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="score-section">
+            <div class="score-content">
+                <h3>The "Fixer" Perspective</h3>
+                <p>"Complexity is the enemy of execution. Clarity is the requirement for scale."</p>
+            </div>
+            <div class="score-box">9.2</div>
+        </div>
+
+        <footer>
+            <div>
+                <strong>LEON BASIN</strong><br>
+                Commercial Operations & Transformation Director
+            </div>
+            <a href="https://linkedin.com/in/basinleon" class="footer-cta">Schedule a Diagnostic →</a>
+        </footer>
+    </div>
+</body>
+</html>

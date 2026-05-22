@@ -1,0 +1,1 @@
+# Talk to Jillian, in these kind of situations when we work with you…*Created: Wednesday, October 7, 2020 at 6:19:25?PM*<div><h1>Talk to Jillian, in</h1><h1> these kind </h1><h1>of </h1><h1>situations</h1><h1> when we work with you, do you </h1><h1>want me to make the call or check with </h1><h1>you first moving forward. </h1></div>

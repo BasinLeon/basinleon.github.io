@@ -1,0 +1,6 @@
+# It's been a great year for us dear parents. Not only have I gotten…*Created: Friday, December 29, 2017 at 3:41:09?PM*<div>It's been a great year for us dear parents. Not only have I gotten married, Marina is pregnant and I've traveled with my soulmate, but all three of us have grown in so many different ways. Both of you mom and dad, have grown internally and in exchange of this metamorphosis the external part of your desires about life and family is becoming a reality. Both of you are going to be grandparents and I'm thankful that I found someone who believes in me and for giving me an opportunity to be a father. I appreciate both of your support and continues strength that you've given me, while experiencing and raising me from a young man to a father to be.  </div>
+<div><br></div>
+<div>Grandparents, </div>
+<div><br></div>
+<div>I did not forget about you!:) I am beyond ecstatic to have you both here with my wife and the parents. We are so thankful that you both are determined to be great-great-grandparents and because of your will and love for one another, you inspire me every single day to have a lot of love and patience. 56 years!!! Congratulations! It's amazing and beautiful! I hope Marina and I can exprience the love and the passion that you both share for one another every single day. </div>
+<div><br></div>

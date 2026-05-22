@@ -1,0 +1,1 @@
+# Thank you for the warm welcome, team! I am excited to be joining Sense…*Created: Monday, January 4, 2021 at 1:32:58?PM*<div><span style="font-size: 18px">Thank you for the warm welcome, team! I am excited to be joining Sense and looking forward to connecting with everyone in the future.  </span></div>

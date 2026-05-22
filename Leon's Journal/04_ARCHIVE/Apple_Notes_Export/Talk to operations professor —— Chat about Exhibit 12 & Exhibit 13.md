@@ -1,0 +1,1 @@
+# Talk to operations professor ÑÑ Chat about Exhibit 12 & Exhibit 13*Created: Friday, July 15, 2022 at 7:48:38?PM*<div><h1>Talk</h1><h1> to ope</h1><h1>rations p</h1><h1>rofessor</h1><h1> </h1><h1>ÑÑ </h1><h1>Chat </h1><h1>about Ex</h1><h1>hi</h1><h1>bit </h1><h1>12 </h1><h1>&amp</h1><h1> Exh</h1><h1>ibit 1</h1><h1>3</h1></div>

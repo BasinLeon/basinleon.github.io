@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OBVIO AI — BDR Interview HUD</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #080c0f;
+    --surface: #0d1318;
+    --surface2: #121920;
+    --border: #1e2d38;
+    --border-accent: #1e4060;
+    --text: #c8d8e4;
+    --text-dim: #5a7a90;
+    --text-muted: #2e4558;
+    --accent: #00c2ff;
+    --accent-dim: #005c7a;
+    --accent-glow: rgba(0, 194, 255, 0.12);
+    --green: #00e5a0;
+    --green-dim: #004d35;
+    --amber: #f5a623;
+    --amber-dim: #4a3000;
+    --red: #ff4e6a;
+    --red-dim: #3a000f;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0, 80, 140, 0.18) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(30, 45, 56, 0.3) 39px, rgba(30, 45, 56, 0.3) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(30, 45, 56, 0.15) 39px, rgba(30, 45, 56, 0.15) 40px);
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .hud-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    border: 1px solid var(--border-accent);
+    background: var(--surface);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hud-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--green), transparent);
+    animation: scanline 4s ease-in-out infinite;
+  }
+
+  @keyframes scanline {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .hud-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .company-name {
+    font-family: var(--sans);
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .role-line {
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+    text-align: right;
+  }
+
+  .meta-item { }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .meta-value.highlight { color: var(--accent); }
+  .meta-value.time { color: var(--green); font-size: 13px; font-weight: 600; }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 229, 160, 0.08);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-top: 8px;
+  }
+
+  .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    padding: 4px;
+    background: var(--surface);
+    overflow-x: auto;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .nav-btn:hover { color: var(--accent); background: var(--accent-glow); }
+  .nav-btn.active { color: var(--accent); background: var(--accent-glow); border-bottom: 1px solid var(--accent); }
+
+  /* ── SECTION CARD ── */
+  .section {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  .section.active { display: block; }
+  .section.always { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-header:hover { background: rgba(0,194,255,0.03); }
+
+  .section-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    min-width: 24px;
+  }
+
+  .section-title {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .section-badge {
+    font-size: 9px;
+    padding: 2px 8px;
+    border: 1px solid;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge-blue { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-glow); }
+  .badge-green { color: var(--green); border-color: var(--green-dim); background: rgba(0,229,160,0.06); }
+  .badge-amber { color: var(--amber); border-color: var(--amber-dim); background: rgba(245,166,35,0.06); }
+
+  .section-toggle {
+    color: var(--text-muted);
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  .section-body {
+    padding: 20px 24px;
+  }
+
+  .section-body.collapsed { display: none; }
+
+  /* ── COMPANY CONTEXT ── */
+  .context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .context-card {
+    border: 1px solid var(--border);
+    padding: 16px;
+    background: var(--surface2);
+  }
+
+  .context-card-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .context-card-label::before {
+    content: '';
+    width: 12px; height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .context-card p {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .stat-pill {
+    display: inline-block;
+    background: rgba(0,194,255,0.08);
+    border: 1px solid var(--border-accent);
+    color: var(--accent);
+    font-size: 11px;
+    padding: 3px 10px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    background: var(--bg);
+  }
+
+  /* ── POSITIONING ── */
+  .core-quote {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    padding: 20px 24px;
+    border-left: 3px solid var(--accent);
+    background: rgba(0,194,255,0.04);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .moat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .moat-card {
+    border: 1px solid var(--border);
+    padding: 16px;
+    background: var(--surface2);
+  }
+
+  .moat-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+
+  .moat-card p {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .proof-point {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--green-dim);
+    padding: 14px 18px;
+    background: rgba(0,229,160,0.04);
+    margin-top: 12px;
+  }
+
+  .proof-num {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  .proof-desc {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── WAR STORIES ── */
+  .story-card {
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .story-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .story-company {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex: 1;
+  }
+
+  .story-outcome {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 600;
+    background: rgba(0,229,160,0.08);
+    border: 1px solid var(--green-dim);
+    padding: 3px 10px;
+  }
+
+  .story-body {
+    padding: 16px 18px;
+  }
+
+  .story-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: start;
+  }
+
+  .story-key {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    padding-top: 1px;
+  }
+
+  .story-val {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .story-val strong { color: var(--accent); font-weight: 500; }
+
+  /* ── Q&A ── */
+  .qa-card {
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .qa-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .qa-q:hover { background: var(--accent-glow); }
+  .qa-card.open .qa-q { border-bottom-color: var(--border); background: var(--accent-glow); }
+
+  .q-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    min-width: 16px;
+    padding-top: 2px;
+    font-weight: 600;
+  }
+
+  .q-text {
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+    font-weight: 500;
+  }
+
+  .q-toggle {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .qa-card.open .q-toggle { transform: rotate(90deg); color: var(--accent); }
+
+  .qa-a {
+    display: none;
+    padding: 16px 18px 16px 46px;
+  }
+
+  .qa-card.open .qa-a { display: block; }
+
+  .qa-a p {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .qa-a p:last-child { margin-bottom: 0; }
+
+  .answer-tag {
+    display: inline-block;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    border: 1px solid var(--amber-dim);
+    padding: 2px 7px;
+    margin-right: 6px;
+    margin-bottom: 8px;
+  }
+
+  /* ── QUESTIONS FOR MIKE ── */
+  .mike-list { list-style: none; }
+
+  .mike-q {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .mike-q:last-child { border-bottom: none; }
+
+  .mike-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    min-width: 20px;
+    padding-top: 2px;
+    font-weight: 600;
+  }
+
+  .mike-text {
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .mike-why {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: var(--border-accent); }
+  .check-item.done { border-color: var(--green-dim); background: rgba(0,229,160,0.04); }
+
+  .check-box {
+    width: 16px; height: 16px;
+    border: 1px solid var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .check-item.done .check-box {
+    border-color: var(--green);
+    background: var(--green);
+    color: #000;
+  }
+
+  .check-mark { font-size: 9px; display: none; font-weight: 700; }
+  .check-item.done .check-mark { display: block; }
+
+  .check-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+
+  .check-item.done .check-label {
+    color: var(--green);
+    text-decoration: line-through;
+    text-decoration-color: var(--green-dim);
+  }
+
+  .checklist-progress {
+    margin-top: 16px;
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .progress-count {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 24px;
+    padding: 12px 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── UTILS ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
+  }
+
+  @media (max-width: 700px) {
+    .context-grid { grid-template-columns: 1fr; }
+    .moat-grid { grid-template-columns: 1fr; }
+    .checklist { grid-template-columns: 1fr; }
+    .meta-grid { grid-template-columns: 1fr; text-align: left; }
+    .hud-header { grid-template-columns: 1fr; }
+    .company-name { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="hud-header">
+    <div>
+      <div class="hud-title">// Interview Intelligence HUD</div>
+      <div class="company-name">OBVIO AI</div>
+      <div class="role-line">BDR — Business Development Representative</div>
+      <div style="margin-top:10px;">
+        <span class="live-badge"><span class="live-dot"></span>Session Active</span>
+      </div>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Interviewer</div>
+        <div class="meta-value highlight">Mike Venable</div>
+        <div class="meta-value" style="font-size:10px;color:var(--text-dim);">Sr. Account Executive</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Platform</div>
+        <div class="meta-value">Google Meet</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Date</div>
+        <div class="meta-value">Thu, April 2, 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Time</div>
+        <div class="meta-value time">1:00 – 1:45 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NAV ── -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('company')">01 Company</button>
+    <button class="nav-btn" onclick="showSection('positioning')">02 Positioning</button>
+    <button class="nav-btn" onclick="showSection('stories')">03 War Stories</button>
+    <button class="nav-btn" onclick="showSection('qa')">04 Q&amp;A Prep</button>
+    <button class="nav-btn" onclick="showSection('mike')">05 Ask Mike</button>
+    <button class="nav-btn" onclick="showSection('checklist')">06 Checklist</button>
+  </div>
+
+  <!-- ── SECTION 01: COMPANY CONTEXT ── -->
+  <div class="section active" id="section-company">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">01</span>
+      <span class="section-title">Company Context</span>
+      <span class="section-badge badge-blue">Series A · $28.7M</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="context-grid">
+        <div class="context-card">
+          <div class="context-card-label">What They Build</div>
+          <p>Solar-powered AI camera systems that detect, classify, and auto-report traffic violations in real time. Edge AI processing — no cloud dependency. Footage not flagged as a violation is blurred and deleted within 12 hours.</p>
+          <span class="stat-pill">Computer Vision + Edge AI</span>
+        </div>
+        <div class="context-card">
+          <div class="context-card-label">Who They Sell To (ICP)</div>
+          <p>Municipalities, county governments, and law enforcement agencies. Decision makers are city traffic directors, public safety commissioners, and police chiefs. Budget comes from public safety and infrastructure allocations.</p>
+          <div class="tag-list">
+            <span class="tag">Municipalities</span>
+            <span class="tag">Law Enforcement</span>
+            <span class="tag">County Gov</span>
+            <span class="tag">Traffic Auth</span>
+          </div>
+        </div>
+        <div class="context-card">
+          <div class="context-card-label">BDR → AE Motion</div>
+          <p>BDRs build the pipeline by prospecting public safety directors and city officials. AEs like Mike close contracts that are often multi-year, multi-site deployments. Revenue model: citation-sharing with municipalities — so closed deals compound over time.</p>
+          <span class="stat-pill">Long Sales Cycle · High ACV</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="context-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="context-card">
+          <div class="context-card-label">Funding</div>
+          <p>$22M Series A led by <strong style="color:var(--accent)">Bain Capital Ventures</strong>. Additional investors: Khosla Ventures, Pathlight Ventures, GTMfund. Founded 2023, San Carlos, CA. ~8 employees — still early, every BDR hire matters.</p>
+        </div>
+        <div class="context-card">
+          <div class="context-card-label">Proof Points to Know</div>
+          <p>Prince George's County, MD: stop sign violations down <strong style="color:var(--green)">50% in 8 weeks</strong> after Obvio deployment. Police chief quote: "Even if I had 30 more officers, I couldn't do what we did with Obvio."</p>
+        </div>
+        <div class="context-card">
+          <div class="context-card-label">Competitive Context</div>
+          <p>Competes vs. Unleash Live, NoTraffic, Xtelligent. Key differentiator: privacy-by-design (edge processing, no persistent footage). Positioned as community-first, not surveillance-first. That's the wedge in hesitant municipalities.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 02: POSITIONING ── -->
+  <div class="section" id="section-positioning">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">02</span>
+      <span class="section-title">Core Positioning</span>
+      <span class="section-badge badge-amber">Your Narrative</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="core-quote">
+        "I don't just prospect. I build the system that makes prospecting compound."
+      </div>
+
+      <div class="moat-grid">
+        <div class="moat-card">
+          <div class="moat-label">Builder's Moat</div>
+          <p>Most BDRs work sequences. You build infrastructure. Python pipelines, CRM automation, signal-layered outreach engines. The code you write solves revenue problems — not technical ones. That distinction is what Mike needs to understand early.</p>
+        </div>
+        <div class="moat-card">
+          <div class="moat-label">Why Obvio Specifically</div>
+          <p>Government and public safety procurement has long sales cycles and high relationship dependency. That's where systematic, signal-driven prospecting compounds hardest. A BDR who can map a city's decision tree and sequence it — is an AE multiplier, not just a lead feeder.</p>
+        </div>
+      </div>
+
+      <div class="proof-point">
+        <div class="proof-num">160%</div>
+        <div class="proof-desc">
+          <strong style="color:#fff">YoY Pipeline Growth · Americas</strong><br>
+          Fudo Security — built the outbound signal refinery from scratch. Replaced manual research with automated enrichment. Result: active pipeline grew 160% year-over-year. Not a lucky quarter. A system that kept compounding.
+        </div>
+      </div>
+
+      <div class="proof-point" style="border-color:var(--accent-dim);background:var(--accent-glow);margin-top:10px;">
+        <div class="proof-num" style="color:var(--accent)">$424K</div>
+        <div class="proof-desc">
+          <strong style="color:#fff">Operational Savings via CRM Automation</strong><br>
+          Not just pipeline up — cost down. Automated CRM workflows that eliminated manual data entry and follow-up lag. This is what "Builder BDR" means in dollar terms.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="padding: 14px 18px; border: 1px solid var(--border); background: var(--surface2);">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:8px;">60-Second Story Structure</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+          <div style="border-left:2px solid var(--accent);padding-left:10px;">
+            <div style="font-size:9px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Hook</div>
+            <div style="font-size:11px;color:var(--text);">GTM + Revenue Operations leader who codes. Systems over sequences.</div>
+          </div>
+          <div style="border-left:2px solid var(--amber);padding-left:10px;">
+            <div style="font-size:9px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Proof</div>
+            <div style="font-size:11px;color:var(--text);">160% pipeline growth. $424K saved. BDR ramp 90d → 5d.</div>
+          </div>
+          <div style="border-left:2px solid var(--green);padding-left:10px;">
+            <div style="font-size:9px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Fit</div>
+            <div style="font-size:11px;color:var(--text);">Obvio needs pipeline velocity in a slow-cycle market. That's exactly where systems win.</div>
+          </div>
+          <div style="border-left:2px solid var(--text-dim);padding-left:10px;">
+            <div style="font-size:9px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Ask</div>
+            <div style="font-size:11px;color:var(--text);">"What does the ideal first 90 days look like for this role?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 03: WAR STORIES ── -->
+  <div class="section" id="section-stories">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">03</span>
+      <span class="section-title">War Stories</span>
+      <span class="section-badge badge-green">3 Active</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+
+      <div class="story-card">
+        <div class="story-header">
+          <div style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;">Story 01</div>
+          <div class="story-company">Fudo Security</div>
+          <div class="story-outcome">+160% Active Pipeline YoY</div>
+        </div>
+        <div class="story-body">
+          <div class="story-row">
+            <div class="story-key">Situation</div>
+            <div class="story-val">Joined as the first US GTM hire. Zero outbound infrastructure. Sales team doing manual research — hours per lead, inconsistent data quality, cold outreach hitting unqualified accounts.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">System Built</div>
+            <div class="story-val"><strong>Signal Refinery:</strong> automated enrichment pipeline replacing manual research. Layered technographic, firmographic, and behavioral signals to score and route leads before any human touched them.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Result</div>
+            <div class="story-val">Active leads grew <strong>160% YoY</strong>. SDR ramp time dropped from 90 days to 5 days. AEs received pre-qualified, context-rich leads instead of raw lists. $424K in operational savings from CRM automation layered in parallel.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Mike Angle</div>
+            <div class="story-val">This is what a BDR who ships infrastructure looks like vs. one who runs sequences. Mike receives compounding handoff quality, not one-off meetings.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="story-header">
+          <div style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;">Story 02</div>
+          <div class="story-company">SurveyMonkey</div>
+          <div class="story-outcome">Pipeline Creation at Scale</div>
+        </div>
+        <div class="story-body">
+          <div class="story-row">
+            <div class="story-key">Situation</div>
+            <div class="story-val">Enterprise segment with complex buying committees. CRM data was incomplete — deal history, contact coverage, and stage hygiene all inconsistent. Pipeline reviews were unreliable.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">System Built</div>
+            <div class="story-val">Designed pipeline creation workflows + CRM completeness standards at the account level. Introduced contact mapping by buying role so AEs always had multi-threaded coverage before first call.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Result</div>
+            <div class="story-val">Forecasting accuracy improved. AEs entered meetings with full stakeholder maps. Pipeline hygiene became a default behavior, not a QBR cleanup exercise.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Mike Angle</div>
+            <div class="story-val">Government procurement has the same multi-stakeholder complexity. City councils, police leadership, traffic directors — all need mapped. This story shows you can operationalize that.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="story-header">
+          <div style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;">Story 03</div>
+          <div class="story-company">Mock That Interview / TalSmart</div>
+          <div class="story-outcome">Outbound Engine — Zero to Pilot</div>
+        </div>
+        <div class="story-body">
+          <div class="story-row">
+            <div class="story-key">Situation</div>
+            <div class="story-val">Fractional engagement. Client had a product but no outbound motion. No ICP definition, no sequences, no CRM process. Starting from a blank canvas.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">System Built</div>
+            <div class="story-val">Built the full outbound engine: ICP definition, signal-based prospecting, Clay enrichment workflows, sequencing strategy, and CRM structure. Then packaged it as a repeatable pilot model for external delivery.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Result</div>
+            <div class="story-val">Operational system delivered in Sprint 1. External client model validated. Demonstrates the ability to build systems independently, not just execute inside existing structure.</div>
+          </div>
+          <div class="story-row">
+            <div class="story-key">Mike Angle</div>
+            <div class="story-val">At a company with ~8 employees, this matters. You're not waiting to be handed a playbook — you build one. That's an AE's dream BDR partner at an early-stage company.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 04: Q&A PREP ── -->
+  <div class="section" id="section-qa">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">04</span>
+      <span class="section-title">Likely Questions + Answers</span>
+      <span class="section-badge badge-amber">Tap to Expand</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+
+      <div class="qa-card" onclick="toggleQA(this)">
+        <div class="qa-q">
+          <span class="q-label">Q</span>
+          <span class="q-text">Walk me through your outbound process.</span>
+          <span class="q-toggle">▶</span>
+        </div>
+        <div class="qa-a">
+          <span class="answer-tag">Framework</span>
+          <p>I don't start with a sequence — I start with a signal architecture. Before any email or call goes out, I want to know: what's the ICP, what signals indicate a good-fit account right now, and what's the enrichment layer that makes my outreach relevant instead of generic.</p>
+          <p>At Fudo, that meant building a Python-powered enrichment pipeline that pulled technographic, firmographic, and intent signals before a rep ever touched a lead. At Obvio, the equivalent would be mapping municipalities by traffic fatality rate, recent council votes on public safety budgets, and incumbent tech relationships — so every touch is timed and contextual.</p>
+          <p>From there: personalized first touch tied to a specific signal, multi-channel follow-up with decreasing cadence, and a clear handoff protocol to the AE when interest is qualified. The system logs everything into CRM so the AE walks in with context, not cold data.</p>
+        </div>
+      </div>
+
+      <div class="qa-card" onclick="toggleQA(this)">
+        <div class="qa-q">
+          <span class="q-label">Q</span>
+          <span class="q-text">How do you handle a cold territory?</span>
+          <span class="q-toggle">▶</span>
+        </div>
+        <div class="qa-a">
+          <span class="answer-tag">Strategy</span>
+          <p>A cold territory is an infrastructure problem, not a hustle problem. If no one's heard of you, flooding them with email volume doesn't fix it — it burns the list.</p>
+          <p>First move: identify the highest-signal accounts. For Obvio, that's cities with recent pedestrian fatalities, active public safety bond measures, or visible media coverage of traffic issues. Those are accounts where the problem is already salient — I'm not creating urgency, I'm arriving at the right moment.</p>
+          <p>Second: find warm paths. City councils, public safety associations, regional conferences — these are the channels that bypass cold outreach entirely. At Fudo, I used RSA prep to generate warm conversations before the conference started. Same principle: warm the territory before you blast it.</p>
+          <p>Third: build the feedback loop early. First 30 days of outreach tells you what messaging lands and what doesn't. I instrument that at the sequence level so I'm iterating fast, not repeating bad patterns for a quarter.</p>
+        </div>
+      </div>
+
+      <div class="qa-card" onclick="toggleQA(this)">
+        <div class="qa-q">
+          <span class="q-label">Q</span>
+          <span class="q-text">What does good pipeline hygiene look like to you?</span>
+          <span class="q-toggle">▶</span>
+        </div>
+        <div class="qa-a">
+          <span class="answer-tag">Ops</span>
+          <p>Pipeline hygiene means the data in the CRM reflects reality — not what we wish were true. Stage definitions are clear and enforced. Contact coverage maps the full buying committee, not just the first person who responded. Activity is logged at the deal level, not just the contact level.</p>
+          <p>For a company like Obvio selling into government, I'd add: procurement stage tracking. Government contracts have distinct milestones — RFP, budget approval, council vote. If those aren't mapped in the CRM, forecast accuracy is a guess. I'd want to build that stage structure early, before deals pile up without it.</p>
+          <p>The goal is that Mike can walk into a pipeline review and trust the number — not spend the meeting doing archaeology on old deals.</p>
+        </div>
+      </div>
+
+      <div class="qa-card" onclick="toggleQA(this)">
+        <div class="qa-q">
+          <span class="q-label">Q</span>
+          <span class="q-text">Why BDR vs. a more senior role?</span>
+          <span class="q-toggle">▶</span>
+        </div>
+        <div class="qa-a">
+          <span class="answer-tag">Framing</span>
+          <p>Direct answer: because Obvio is at the stage where the BDR function is the company's revenue foundation. There's no playbook yet. The person who takes this role isn't just generating meetings — they're building the repeatable pipeline motion that the whole go-to-market will run on.</p>
+          <p>I've been at the senior operator level. I know what a broken top-of-funnel does to an AE's quarter, to forecasting, to morale. Coming in at BDR here means I'm building the infrastructure I know needs to exist — not inheriting someone else's half-built version of it.</p>
+          <p>Also: I want to earn the trust. At 8 employees, I'd rather show what I can build in the first 90 days and have that conversation based on results — not a title I walked in with.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 05: QUESTIONS FOR MIKE ── -->
+  <div class="section" id="section-mike">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">05</span>
+      <span class="section-title">Questions for Mike</span>
+      <span class="section-badge badge-blue">4 Loaded</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="mike-list">
+        <li class="mike-q">
+          <div class="mike-num">01</div>
+          <div>
+            <div class="mike-text">"What separates your top BDRs from the middle of the pack?"</div>
+            <div class="mike-why">→ Listen for: system-building vs. sequence-running. If Mike says "consistency" or "coachability" — that's a structured environment. If he says "curiosity" or "they figure things out" — that's a builder culture. Calibrate accordingly.</div>
+          </div>
+        </li>
+        <li class="mike-q">
+          <div class="mike-num">02</div>
+          <div>
+            <div class="mike-text">"How does the BDR-to-AE handoff work here?"</div>
+            <div class="mike-why">→ Listen for: what defines a qualified lead, how much context transfers, who owns the intro call. This tells you how close the BDR-AE relationship is and whether there's room to design a tighter handoff process.</div>
+          </div>
+        </li>
+        <li class="mike-q">
+          <div class="mike-num">03</div>
+          <div>
+            <div class="mike-text">"What does the first 30 days look like?"</div>
+            <div class="mike-why">→ Listen for: onboarding structure, ramp expectations, tool access, and whether there's a playbook or you're building one. Early-stage company answer will tell you if the runway is clear or if you're walking into fog.</div>
+          </div>
+        </li>
+        <li class="mike-q">
+          <div class="mike-num">04</div>
+          <div>
+            <div class="mike-text">"What's the one metric you need this role to move?"</div>
+            <div class="mike-why">→ This is the closing question. It anchors the conversation to Mike's actual success criteria — not the job description. Whatever he says is what you want to reference in your follow-up email. Shows you're thinking in outcomes, not activities.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── SECTION 06: CHECKLIST ── -->
+  <div class="section" id="section-checklist">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">06</span>
+      <span class="section-title">Pre-Call Checklist</span>
+      <span class="section-badge badge-green" id="checklist-badge">0 / 5</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <span class="check-label">Quiet room + headphones + water ready</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <span class="check-label">HUD open on second screen</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <span class="check-label">Mike Venable LinkedIn reviewed</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <span class="check-label">Obvio AI product demo watched</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)" style="grid-column: span 2;">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <span class="check-label">60-second story practiced out loud — hook, proof, fit, ask</span>
+        </div>
+      </div>
+      <div class="checklist-progress">
+        <span class="progress-label">Readiness</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <span class="progress-count" id="progress-count">0 / 5</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <span class="footer-left">BASIN::NEXUS — INTERVIEW HUD v1.0 // CONFIDENTIAL</span>
+    <span class="footer-right">OBVIO AI · BDR · APRIL 2 2026</span>
+  </div>
+
+</div>
+
+<script>
+  // Section nav
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Collapse/expand section body
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.section-toggle');
+    body.classList.toggle('collapsed');
+    toggle.textContent = body.classList.contains('collapsed') ? '▸' : '▾';
+  }
+
+  // Q&A accordion
+  function toggleQA(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.qa-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  // Checklist
+  function toggleCheck(item) {
+    item.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const items = document.querySelectorAll('.check-item');
+    const done = document.querySelectorAll('.check-item.done').length;
+    const total = items.length;
+    const pct = (done / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = done + ' / ' + total;
+    document.getElementById('checklist-badge').textContent = done + ' / ' + total;
+    if (done === total) {
+      document.getElementById('checklist-badge').style.color = 'var(--green)';
+      document.getElementById('checklist-badge').style.borderColor = 'var(--green-dim)';
+    }
+  }
+</script>
+</body>
+</html>

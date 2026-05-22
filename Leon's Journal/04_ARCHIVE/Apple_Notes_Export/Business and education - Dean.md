@@ -1,0 +1,3 @@
+# Business and education - Dean*Created: Wednesday, April 22, 2026 at 11:27:16?AM*<div><b><span style="font-size: 24px"><h1>Business and education - Dean</h1></span></b></div>
+<div><span style="font-size: 17px">Math </span></div>
+<div><span style="font-size: 17px">How it works - I never been to the Human Resources everything is each position should be applied online - particular position - seeking part time  - two colleges - mission college - Santa Clara - West Valley College - send my resume - J Edwards - Dean - </span><span style="font-size: 17px">Olga.nova@missioncollege.edu</span><span style="font-size: 17px"> - all positions - west valley college mission college district - </span></div>

@@ -1,0 +1,4 @@
+# Clay sits right at the intersection of systems thinking and human…*Created: Thursday, October 30, 2025 at 2:00:55?PM*<div>Clay sits right at the intersection of systems thinking and human connection the same place I’ve built my career. I’ve spent the last few years designing go-to-market motions and partnership frameworks that turn complexity into clarity. Clay’s product feels like a natural extension of that mindset; helping people build smarter relationships instead of noisier pipelines. I want to contribute to a team that treats GTM like craft, not chaos.</div>
+<div><br></div>
+<div><br></div>
+<div>The best demo I’ve seen was from a small AI workflow company called Retell. They didn’t start with slides or features they started with a real problem, live data, and a story. Every click connected back to a customer’s world, not the product’s ego. It reminded me that great demos are like good writing you earn attention by being useful first.</div>

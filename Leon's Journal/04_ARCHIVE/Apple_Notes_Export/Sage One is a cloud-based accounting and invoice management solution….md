@@ -1,0 +1,5 @@
+# Sage One is a cloud-based accounting and invoice management solution…*Created: Monday, December 14, 2020 at 2:31:55?PM*<div><b><span style="font-size: 19px">Sage</span></b><span style="font-size: 19px"> One is a </span><b><span style="font-size: 19px">cloud</span></b><span style="font-size: 19px">-based </span><b><span style="font-size: 19px">accounting</span></b><span style="font-size: 19px"> and invoice management solution for small </span><b><span style="font-size: 19px">businesses</span></b><span style="font-size: 19px">. </span></div>
+<div><span style="font-size: 19px"><br></span></div>
+<div><span style="font-size: 19px">It offers core </span><b><span style="font-size: 19px">accounting</span></b><span style="font-size: 19px">, project </span><b><span style="font-size: 19px">accounting</span></b><span style="font-size: 19px">, expense management and compliance management within a suite.</span></div>
+<div><span style="font-size: 19px"><br></span></div>
+<div>Internet accounting - customer service and satisfaction and able to deliver through engage colleagues - putting customers first - </div>

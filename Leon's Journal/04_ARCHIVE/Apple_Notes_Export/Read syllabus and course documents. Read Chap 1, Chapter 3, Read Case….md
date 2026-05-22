@@ -1,0 +1,1 @@
+# Read syllabus and course documents. Read Chap 1, Chapter 3, Read Case…*Created: Friday, September 3, 2021 at 5:31:45?PM*<div><b>Read syllabus and course documents. Read Chap 1, Chapter 3, Read Case Study PDF CORK, Video,.  Sync up on Tuesday.</b><b><br></b></div>

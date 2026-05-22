@@ -1,0 +1,8 @@
+# The "Senior Operator" Narrative for Gokul*Created: Tuesday, April 7, 2026 at 4:15:30?PM*<div><b><span style="font-size: 22px"><h2>The &quotSenior Operator&quot Narrative for Gokul</h2></span></b></div>
+<div><span style="font-size: 19px">When you open this in the interview, don't just click buttons. Use this script:</span></div>
+<ul>
+<li><b><span style="font-size: 19px">Lead with the Logic:</span></b><span style="font-size: 19px"> &quotGokul, instead of a slide deck, I built a functional view of how I'd architect Hazel's ingestion layer. This is a password-gated environment because in fintech, we don't leak lead data.&quot</span></li>
+<li><b><span style="font-size: 19px">The Password:</span></b><span style="font-size: 19px"> Use HAZEL2026. This feels like an internal dev environment.</span></li>
+<li><b><span style="font-size: 19px">The Technical Bridge:</span></b><span style="font-size: 19px"> &quotI used Tailwind for the front end and simulated the Claude 3.5 Sonnet logic I'd normally wire via an n8n webhook or a custom Python microservice. The goal is to show how we move from raw advisor data to a high-intent outreach draft without a human touching a spreadsheet.&quot</span></li>
+<li><b><span style="font-size: 19px">The &quotMuddy Boots&quot Touch:</span></b><span style="font-size: 19px"> &quotNotice the 'Rationale' box. I don't just want a score. I want the system to tell the AE </span><i><span style="font-size: 19px">why</span></i><span style="font-size: 19px"> we are reaching out. That eliminates the 15 minutes of research they usually do before a call.&quot</span></li>
+</ul>

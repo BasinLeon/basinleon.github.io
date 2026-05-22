@@ -1,0 +1,3 @@
+# Parents in Law*Created: Friday, December 29, 2017 at 3:35:43?PM*<div><b>Parents in Law</b><br></div>
+<div><br></div>
+<div>I'm fortunate to have found a wife that I dreamt up in my dreams, but to have parents in law who are wonderful, carrying and full of love is not easy to find. I am thankful everyday to have the support and care that both of you; Volodya and Galya provide me with. Your relationship and the foundation you've created inspire me every time I see you interecting amongst yourself and with your daughter, my wife. I couldn't ask for anything else, but this perfect joyous moment to be here with you both!</div>

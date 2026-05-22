@@ -1,0 +1,3 @@
+# Let’s say less about Kabbalah and more about being conservative and…*Created: Thursday, July 18, 2024 at 7:54:43?PM*<div><h1>Let’s</h1><h1> say </h1><h1>less </h1><h1>about </h1><h1>Kabbalah </h1><h1>and </h1><h1>mo</h1><h1>re </h1><h1>about being</h1><h1> c</h1><h1>onser</h1><h1>vativ</h1><h1>e and le</h1><h1>ss ref</h1><h1>orm </h1><h1>and also</h1><h1> less a</h1><h1>bout nee</h1><h1>ding </h1><h1>mon</h1><h1>e</h1><h1>y</h1><h1><br></h1></div>
+<div><h1><br></h1></div>
+<div><h1>K</h1><h1>abbalah </h1><h1>is </h1><h1>not bad. </h1><h1>It n</h1><h1>eeds to </h1><h1>be expla</h1><h1>ined well</h1><h1>. </h1><h1> </h1></div>

@@ -1,0 +1,145 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.hud{padding:1rem 0}
+.topbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
+.metric-label{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px}
+.metric-val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.metric-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.section-label{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:8px}
+.sprint-col{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+.col-head{font-size:12px;font-weight:500;color:var(--color-text-secondary);padding:0 0 6px 0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:8px}
+.task{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:6px;cursor:pointer;transition:background 0.1s}
+.task:hover{background:var(--color-background-secondary)}
+.task.done{opacity:0.45}
+.task.done .task-title{text-decoration:line-through}
+.task-title{font-size:13px;color:var(--color-text-primary);line-height:1.4;font-weight:500}
+.task-sub{font-size:11px;color:var(--color-text-secondary);margin-top:3px;line-height:1.4}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;margin-top:5px;font-weight:500}
+.tag-today{background:#E1F5EE;color:#085041}
+.tag-wed{background:#FAEEDA;color:#633806}
+.tag-next{background:#EEEDFE;color:#3C3489}
+.blocker-bar{background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
+.blocker-dot{width:8px;height:8px;border-radius:50%;background:#E24B4A;flex-shrink:0}
+.blocker-text{font-size:13px;color:#791F1F}
+.progress-wrap{margin-bottom:1.5rem}
+.progress-bar{height:4px;border-radius:2px;background:var(--color-border-tertiary);overflow:hidden}
+.progress-fill{height:100%;background:#1D9E75;border-radius:2px;transition:width 0.3s}
+.progress-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary);margin-top:5px}
+.ask-btn{font-size:12px;color:var(--color-text-secondary);background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 12px;cursor:pointer;margin-top:6px}
+.ask-btn:hover{background:var(--color-background-secondary)}
+</style>
+
+<div class="hud">
+
+<div class="blocker-bar">
+  <div class="blocker-dot"></div>
+  <div class="blocker-text">Dashboard access blocked — bug on their end. GSC + leads sheet are live. Sprint proceeds.</div>
+</div>
+
+<div class="topbar">
+  <div class="metric">
+    <div class="metric-label">Sprint</div>
+    <div class="metric-val">1</div>
+    <div class="metric-sub">Week of Mar 30</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Deadline</div>
+    <div class="metric-val">Wed</div>
+    <div class="metric-sub">Diagnostic due</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Targets</div>
+    <div class="metric-val" id="target-count">26</div>
+    <div class="metric-sub">UK institutions</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Tasks done</div>
+    <div class="metric-val"><span id="done-count">0</span>/9</div>
+    <div class="metric-sub">click to check off</div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="pfill" style="width:0%"></div></div>
+  <div class="progress-meta"><span id="plabel">0 of 9 complete</span><span>Sprint 1</span></div>
+</div>
+
+<div class="section-label">This week</div>
+<div class="sprint-col">
+
+  <div>
+    <div class="col-head">Today — signal pull</div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Pull GSC top queries</div>
+      <div class="task-sub">Flag non-brand terms. What are people searching before they find MTI?</div>
+      <div><span class="tag tag-today">today</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Audit leads sheet</div>
+      <div class="task-sub">Bootcamps vs universities. Which segments have program manager contacts?</div>
+      <div><span class="tag tag-today">today</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Confirm acquisition motion</div>
+      <div class="task-sub">B2B institutional or direct-to-candidate? Awaiting Ayo reply.</div>
+      <div><span class="tag tag-today">today</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-head">Tuesday — build</div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Map funnel drop-off</div>
+      <div class="task-sub">Homepage → signup → paid. Where do users leave?</div>
+      <div><span class="tag tag-wed">tue</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Score top 10 targets</div>
+      <div class="task-sub">Rank bootcamp list by program size + LinkedIn contact quality.</div>
+      <div><span class="tag tag-wed">tue</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Draft first outreach sequence</div>
+      <div class="task-sub">3-touch cold outreach to program managers. Use demo video as hook.</div>
+      <div><span class="tag tag-wed">tue</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-head">Wednesday — deliver</div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Build signal map (1 page)</div>
+      <div class="task-sub">GSC traffic + funnel drop + top 10 targets + channel recommendation.</div>
+      <div><span class="tag tag-next">wed</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Send diagnostic to Ayo + Ridwan</div>
+      <div class="task-sub">Email with the one-pager. No fluff. Let the output speak.</div>
+      <div><span class="tag tag-next">wed</span></div>
+    </div>
+    <div class="task" onclick="tick(this)">
+      <div class="task-title">Book 15-min sync for next week</div>
+      <div class="task-sub">Propose time in same email. Work reviewed, not blind kickoff.</div>
+      <div><span class="tag tag-next">wed</span></div>
+    </div>
+  </div>
+
+</div>
+
+<button class="ask-btn" onclick="sendPrompt('Help me build the MTI signal map diagnostic document for Sprint 1')">Build the signal map now ↗</button>
+
+</div>
+
+<script>
+const TOTAL = 9;
+function tick(el){
+  el.classList.toggle('done');
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('done-count').textContent = done;
+  document.getElementById('pfill').style.width = Math.round(done/TOTAL*100)+'%';
+  document.getElementById('plabel').textContent = done+' of '+TOTAL+' complete';
+}
+</script>

@@ -1,0 +1,10 @@
+# Personal Summary*Created: Tuesday, October 3, 2023 at 11:58:37?AM*<div>Personal Summary</div>
+<div>This section is optional. Use it to tell us a little more about yourself.<br></div>
+<div><br></div>
+<div>With a tenacious pursuit for excellence and a decade-long journey in the realm of B2B SaaS sales and account management, I have carved a niche for myself, especially within the staffing and recruitment sector. My professional voyage has seen me at the helm of key roles at prestigious organizations like Google, SurveyMonkey, and Sense, where my prowess in exceeding sales targets and fostering enduring client relationships were not only recognized but became a benchmark.</div>
+<div><br></div>
+<div>I thrive in the confluence of sales strategy, customer-centric approaches, and cross-functional collaboration. My tenure as the Head of Business Development and Account Management at Basin &amp Associates, and previously as a Regional Sales Executive at Slingshot Connections, has refined my skills in strategic customer engagement, sales analytics, and sustainable business strategies. My technical acumen, coupled with a profound understanding of CRM tools like Salesforce, Outreach, and HubSpot, has consistently propelled me towards achieving and often surpassing set sales quotas.</div>
+<div><br></div>
+<div>An alumnus of Santa Clara University with an MBA degree, my educational background has been the cornerstone, propelling me into real-world business challenges with a strategic mindset. The blend of my analytical skills, leadership acumen, and a deep understanding of the recruitment industry sets me apart. I am not just a business development professional; I am a relationship builder, a strategic thinker, and a fervent advocate for delivering exceptional value to clients.</div>
+<div><br></div>
+<div>As I continue to evolve in my professional narrative, I am on the lookout for opportunities that challenge me, that allow me to contribute to a visionary team, and where my unique blend of skills can be harnessed towards achieving remarkable business growth and client success.</div>

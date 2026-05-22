@@ -1,0 +1,128 @@
+BidFlow x Murad: Glazing Automation Blueprint
+Mon, Mar 23, 2026
+
+Summary:
+
+The meeting reviewed integrating BidFlow with BuildingConnected to automate glazing bid intake and proposal generation for Murad’s business. Attendees confirmed account and access requirements: Garrett will use a separate API key and requested read access to at least one example bid so he can reverse-engineer data flow and test end-to-end functionality; Murad attempted to add Garrett to a bid and shared screens to locate the proposal, drawings, and scopes that include glazing and mirrors. Garrett demoed a mock Bay Area Glass workspace, showing trade selection, service area, inbox connector behavior, and how email and BuildingConnected data will surface opportunities with a confidence/relevance score based on keyword matches; several backend fixes and connector/API tests were noted as outstanding. The group examined an AI-driven proposal product that can draft proposals and extract basic scope from emails but currently cannot analyze attached files without uploaded company knowledge (pricing tables, templates, diagrams). Participants discussed limits of automated cost estimation for storefront frames and trade-specific items, agreed the platform must ingest representative bid PDFs and company templates for accurate pricing, and evaluated a vendor-API approach to surface manufacturer prices for quotes.
+
+
+Chapters & Topics:
+
+Opening and Attendance
+The call opened with informal greetings and confirmations of presence from Leon, Garrett, and Murad, including brief small talk and confirmation that cameras were optional.
+
+Access and Privacy Concerns
+Participants discussed account privacy and how to grant limited access; Garrett emphasized not needing full account credentials and recommended sharing bid-level access instead of full account details.
+
+Adding Garrett to a Bid and Screen Sharing
+Murad attempted to log into BuildingConnected, share his screen, and add Garrett to a bid while Garrett provided step-by-step instructions for screen sharing and adding a bidder to a project.
+* Garrett will use his API key and needs access to at least one real bid to test and validate the end-to-end process.
+
+Proposal Content and Scope Identification
+The team reviewed a specific proposal (Harriman's common) and confirmed the available files, drawings, and specs, noting the glazing and mirror requirements relevant to Murad’s preferences.
+* Murad confirmed the specific proposal contains glazing and mirror scope, making it relevant to their automation rules.
+
+Demo of Prototype and Data Flow
+Garrett demonstrated a mock Bay Area Glass account, showed trade/service-area setup, explained inbox and BuildingConnected connectors, and described how emails are scanned to surface bid opportunities with a confidence score derived from keyword matches.
+* The system prototype (Bay Area Glass) supports trade selection, service area, compliance, and preference filters for incoming opportunities.
+* Bid opportunities are surfaced by scanning connected email and BuildingConnected feeds and are assigned a confidence score based on keyword analysis of email headers and bodies.
+* Some backend/connecter kinks remain and Garrett is still testing the integration before full rollout.
+
+Product overview and demo walkthrough
+Garrett presented the product purpose: analyze bid content and generate comprehensive proposal drafts, emphasizing time savings and higher bid throughput. Leon and others navigated the interface, noting an "AI analysis" area and asking to scroll through the demo content to view flow and options.
+* The product's main focus is automating analysis of bid data and generating draft proposals to reduce manual work and increase bid volume.
+
+Proposal generation mechanics and data needs
+The group discussed what inputs the AI requires, including manual entry of certain fields and uploading company templates and knowledge bases to produce branded proposals and apply margin rules. Garrett explained the mock proposal is generic because no company data or templates are attached to the demo account.
+* The current mock account shows scope extraction from email content but has no attached-file analysis because no company data or templates have been uploaded yet.
+* Uploading company-specific documents, pricing tables, and templates into the knowledge base is required for accurate, branded proposals and margin calculations.
+
+Pricing strategy and estimator limitations
+Murad explained real-world pricing complexities for trades like mirrors and windows, stressing that specs (thickness, reflection, brand) in plans affect cost and that manufacturer quotes or takeoffs may be required for accurate pricing. The team discussed the challenge of aggregating vendor prices to create a reliable automated price estimator.
+* Automated price estimation for specialized items (mirrors, windows) is limited without manufacturer pricing or detailed takeoff data in the drawings.
+* The team agreed that creating templates for common project types (e.g., gyms with mirrors) would enable autofill and speed up proposal generation.
+
+Drawings access, schedules, and takeoffs
+The conversation moved to where drawings and schedules live within project files and how the system should locate window/glazing schedules for takeoffs. Participants discovered files were read-only in the demo environment, limiting in-app analysis until connectivity or permissions are enabled.
+* Some project files are read-only in the system, restricting direct manipulation within the app until connectivity or permissions are resolved.
+
+Knowledge‑base and bid ingestion overview
+Leon described uploading files into a knowledge base to let the system pull relevant information for each bid. Garrett outlined that connecting a building‑connected account will allow the platform to sync drawings, subfolders, and PDFs into the system.
+* The platform will ingest bid documents into a knowledge base and pull relevant information for each bid.
+* Email and building-connector integrations are the primary intake channels to prioritize for development.
+
+Intake channels and resource connectors
+Garrett explained that email is one intake method and that a resources tab will list connectors (email, building connectors, third‑party sites) used to find jobs. The team agreed different software requires different integration approaches and prioritized connectors accordingly.
+
+Prioritization and product scope (pricing calculator limits)
+Murad and Leon emphasized simplifying daily bids and adding an internal pricing calculator to pick promising opportunities. Garrett and Murad discussed constraints: the system cannot discover competitors’ bids or reliably scrape all external price data, so full automated competitive pricing is out of scope for now.
+* A built-in pricing calculator was requested, but competitive pricing comparison and external bid sourcing are not currently feasible.
+
+Demo attempt and file transfer workflow
+Murad attempted to share his screen and files but encountered OS screen‑recording prompts and file‑access difficulties. Garrett reiterated that emailing the PDF to his address with a clear subject line is the immediate way to ingest a bid for analysis.
+* Garrett requested a concrete example bid package and a written list of Murad’s specific requirements to build and test the features.
+
+Reviewing the example bid PDF and takeoffs
+Murad confirmed the example file contained ~11 pages of drawings and that he performs takeoffs to extract needed pages from larger sets. He showed how windows and storefronts are differentiated in plans and asked whether the system can price storefronts from that data.
+* Leon will prepare and send a transcript-based summary with explicit requirements to Murad and Garrett for refinement via email.
+* Accurate takeoffs (quantities extracted from plan pages) are available in submitted PDFs and are essential input for proposals.
+
+Implementation approach and go‑to‑market focus
+Garrett used an analogy of different “cars” (connectors) to explain building specific integrations and argued for concentrating on email and building connectors to reach market faster. He committed to using PDFs and building‑connector bids to create AI processing while acknowledging further manual input will remain necessary.
+
+Pricing data requirement and limitations
+The group agreed that accurate pricing is required and that an AI alone should not fabricate prices. Murad emphasized the need to source real pricing and began explaining product details to show how vendors and specifications affect pricing.
+* The team must obtain real vendor pricing rather than rely on AI estimates
+
+Storefront product details and vendor constraints
+Murad described storefronts as aluminum frames with glazing and compared manufacturers to car brands to explain limited local supplier options; he noted architects sometimes specify brands or leave options open, which constrains vendor selection.
+* Storefronts are aluminum-framed glazed assemblies supplied by a limited set of local manufacturers
+
+Rapid quoting capability from manufacturers
+Murad stated that given sizes manufacturers can produce price quotes quickly, indicating pricing integration is feasible if the application captures necessary dimensions.
+* Murad confirmed manufacturers can provide rapid pricing if sizes are known
+
+API-based business opportunity
+Garrett proposed partnering with local manufacturers and building an API system to sync price updates to the application, enabling competitive quoting and directing work to vendors with better quotes.
+* Garrett proposed creating APIs with local manufacturers so price updates flow into the application
+
+Meeting wrap-up and next steps
+Leon steered the group to finalize action items and follow-up; participants agreed to circulate a summary, Leon committed to send an email and schedule the next meeting, and Garrett asked for the transcript to review.
+* Leon will follow up by email and schedule the next meeting once Garrett is ready
+
+
+Action Items:
+
+* Murad Rakhamimov will add Garrett Blakeslee as a bidder to at least one existing bid for testing.
+* Garrett Blakeslee will finalize API/connector programming and run end-to-end tests using the provided example bid to identify and fix any bottlenecks.
+* Murad Rakhamimov will accept Garrett’s invite so Garrett can view the RFP and related documents.
+* Meeting participants will review the prototype/demo and provide feedback to Garrett Blakeslee when requested
+* Meeting participant will prepare and upload company pricing templates and diagrams into the product knowledge base for testing proposal generation
+* Murad Rakhamimov will send a sample set of plans (including window schedules) as an example for the team to test against the product
+* Garrett Blakeslee will create a test version of the current interface and a proposal-generation demo after receiving Murad’s example files.
+* Murad Rakhamimov will email the example bid PDF to Garrett at the provided Ether AI address so Garrett can ingest and test it in the platform.
+* Murad Rakhamimov will prepare and send a written document detailing exactly what outputs he wants the system to produce for testing purposes.
+* Leon Basin will send Murad and Garrett a transcript-based summary with explicit requirements and next steps via email.
+* Murad Rakhamimov will provide pricing data from the company he primarily buys windows from
+* Garrett Blakeslee will review the transcript if Leon sends it to him
+* Leon Basin will follow up with an email summarizing the conversation
+* Leon Basin will schedule the next meeting when Garrett is ready
+
+
+Key Questions:
+
+* How do I add you on BuildingConnected so you can view a bid?
+* What does the confidence/relevance number represent for an opportunity?
+* Is the trade for mirrors auto-filled in the scope or where does the mirror scope come from?
+* Are the PDFs and attached files for a bid analyzed within this report?
+* Can drawings be uploaded to the platform (Bird) so the system can pull data from them?
+* Can the system pull pricing from PDFs or from internet sources to compare against competitors?
+* Can I (Murad) upload my sample PDF directly into the chat/meeting for Garrett to view?
+* Can the system derive a price for storefronts from the plan takeoffs in the sample PDF?
+* What are the action items and who should follow up?
+* How should the meeting notes be shared and who will draft them?
+
+
+Notepad:
+
+* No notes

@@ -1,0 +1,3 @@
+# Dear wife,*Created: Monday, March 28, 2022 at 3:05:28?PM*<div><h1>D</h1><h1>ear </h1><h1>wife,</h1></div>
+<div><br></div>
+<div>Been thinking a few things. But simply, it was a nightmare and I do not appreciate nightmares. I’ve been through too many to count. My heart and soul belong to you my dear. I will protect myself and this family from evil doings with utmost care moving forward. I ask for your guidance as energy flows freely and latches itself to an open portal. Protect your heart and mind and let’s do our due diligence to protect Ella’s and Leila’s as well. This world is wicked but there’s so much peace, love and beauty in it. Sorry that you had to go through this shit. Evil doings are around I just need to do a better job protecting myself. </div>

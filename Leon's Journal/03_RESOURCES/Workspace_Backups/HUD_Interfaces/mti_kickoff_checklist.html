@@ -1,0 +1,173 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .section { margin-bottom: 1.5rem; }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 8px; }
+  .item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); margin-bottom: 6px; cursor: pointer; transition: background 0.1s; }
+  .item:hover { background: var(--color-background-secondary); }
+  .item.done { opacity: 0.5; }
+  .item.done .item-text { text-decoration: line-through; }
+  .checkbox { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--color-border-secondary); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
+  .checkbox.checked { background: #1D9E75; border-color: #1D9E75; }
+  .checkmark { width: 10px; height: 7px; display: none; }
+  .checkmark path { stroke: white; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .checkbox.checked .checkmark { display: block; }
+  .item-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.5; }
+  .item-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; margin-left: 6px; font-weight: 500; }
+  .tag-pre { background: #EAF3DE; color: #3B6D11; }
+  .tag-live { background: #E6F1FB; color: #185FA5; }
+  .tag-post { background: #FAEEDA; color: #854F0B; }
+  .progress-bar { height: 4px; border-radius: 2px; background: var(--color-border-tertiary); margin-bottom: 1.5rem; overflow: hidden; }
+  .progress-fill { height: 100%; background: #1D9E75; border-radius: 2px; transition: width 0.3s; }
+  .progress-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; }
+  .reset-btn { font-size: 12px; color: var(--color-text-tertiary); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; }
+</style>
+
+<div style="padding: 1rem 0;">
+
+<div class="progress-label" id="progress-label">0 of 12 complete</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+<div class="section">
+  <div class="section-label">Before the call <span class="tag tag-pre">pre-call</span></div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Confirm read-only dashboard access received</div>
+      <div class="item-sub">Can you navigate it yourself? Log in and verify.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Confirm Google Search Console access</div>
+      <div class="item-sub">Invitation accepted + property visible — not just email received.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Outreach/leads sheet received and reviewed</div>
+      <div class="item-sub">Note column structure, status fields, and volume before the call.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Prepare your Sprint 1 priority list (3 items max)</div>
+      <div class="item-sub">Know what you're aligning on before you walk in.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">During the call <span class="tag tag-live">live</span></div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Verify all 3 access items are live and working</div>
+      <div class="item-sub">If anything is missing, log it as a blocker. Max 5 min to resolve.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Align on Sprint 1 priorities — get verbal confirmation</div>
+      <div class="item-sub">Poaching Engine baseline + top 1-2 supporting tasks.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Confirm communication cadence with Ayo + Ridwan</div>
+      <div class="item-sub">Async channel, check-in frequency, escalation path.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Ask: what does a successful Sprint 1 look like to them?</div>
+      <div class="item-sub">Capture their definition of done — not yours.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Don't let the call drift into product demos or feature tours</div>
+      <div class="item-sub">Redirect: "Let's park that for the diagnostic output."</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Poaching Engine diagnostic <span class="tag tag-post">post-call</span></div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Pull GSC top queries — flag non-brand terms</div>
+      <div class="item-sub">Acquisition-stage queries are your targeting signal.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Map homepage → signup → paid conversion drop-off</div>
+      <div class="item-sub">Both CTAs route to app.mockthatinterview.com. Where do users leave?</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Audit leads sheet: source, stage, vertical, volume</div>
+      <div class="item-sub">Identify top persona clusters and any dead segments.</div>
+    </div>
+  </div>
+
+  <div class="item" onclick="toggle(this)">
+    <div class="checkbox"><svg class="checkmark" viewBox="0 0 10 7"><path d="M1 3.5L4 6.5L9 1"/></svg></div>
+    <div>
+      <div class="item-text">Deliver one-page signal map within 48h of call</div>
+      <div class="item-sub">Traffic concentration · funnel drop points · interviewer supply gaps · top 10 targets.</div>
+    </div>
+  </div>
+</div>
+
+<button class="reset-btn" onclick="resetAll()">reset all</button>
+
+</div>
+
+<script>
+  const TOTAL = 12;
+  function toggle(el) {
+    el.classList.toggle('done');
+    const cb = el.querySelector('.checkbox');
+    cb.classList.toggle('checked');
+    updateProgress();
+  }
+  function updateProgress() {
+    const done = document.querySelectorAll('.item.done').length;
+    document.getElementById('progress-fill').style.width = (done / TOTAL * 100) + '%';
+    document.getElementById('progress-label').textContent = done + ' of ' + TOTAL + ' complete';
+  }
+  function resetAll() {
+    document.querySelectorAll('.item').forEach(el => {
+      el.classList.remove('done');
+      el.querySelector('.checkbox').classList.remove('checked');
+    });
+    updateProgress();
+  }
+</script>

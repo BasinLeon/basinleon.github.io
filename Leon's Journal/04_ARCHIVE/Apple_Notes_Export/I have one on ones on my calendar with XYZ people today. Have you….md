@@ -1,0 +1,1 @@
+# I have one on ones on my calendar with XYZ people today. Have you…*Created: Monday, January 2, 2023 at 11:01:43?PM*<div>I have one on ones on my calendar with XYZ people today. Have you already told them about the reorg and if not, should I use this time to tell them and then cancel all future meetings?</div>

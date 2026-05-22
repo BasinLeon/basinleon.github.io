@@ -1,0 +1,1 @@
+# Make list a big picture and small picture goals individual list notÉ*Created: Sunday, April 15, 2018 at 11:12:08?AM*<div>Make list a big picture and small picture goals individual list not only daughter and then compare the list </div>

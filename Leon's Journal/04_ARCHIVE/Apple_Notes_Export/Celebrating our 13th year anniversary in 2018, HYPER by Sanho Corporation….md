@@ -1,0 +1,3 @@
+# Celebrating our 13th year anniversary in 2018, HYPER by Sanho Corporation…*Created: Wednesday, July 11, 2018 at 9:32:29?PM*<div>Celebrating our 13th year anniversary in 2018, HYPER by Sanho Corporation is a young, energetic team based in Silicon Valley, California. We specialize in delivering cutting-edge IT &amp mobile accessories with a focus on Apple, portable power, data storage &amp connectivity products. </div>
+<div><br></div>
+<div>Experienced Salesperson with a demonstrated history of working in the Consumer Electronics industry. Skilled in Negotiation, Operations Management, Sales, Market Research, and Management. Strong sales professional with a Bachelor of Science (BS) focused in Psychology.</div>

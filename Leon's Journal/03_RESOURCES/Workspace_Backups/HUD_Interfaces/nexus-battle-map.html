@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIN::NEXUS | Lo Sync Battle Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --panel-bg: #1a1e24;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --border-color: #2dd4bf20;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            line-height: 1.5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: #11141a;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--accent-blue);
+            font-family: var(--font-mono);
+        }
+
+        .subtitle span {
+            color: var(--text-muted);
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #000;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+        .timer {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            background: #222;
+            color: #ccc;
+            border: 1px solid #444;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .header-right {
+            max-width: 400px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .header-right strong {
+            color: var(--text-main);
+        }
+
+        /* MAIN CONTENT */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 20px 24px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* PANELS */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .panel.flush {
+            padding: 0;
+        }
+
+        /* TALK TRACK */
+        .track-item {
+            margin-bottom: 24px;
+        }
+        .track-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .track-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .track-time {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent-blue);
+        }
+
+        .btn-done {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-done.active {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .track-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .track-script {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .track-script em {
+            color: #64748b;
+            font-size: 12px;
+            display: block;
+            margin: 6px 0;
+            border-left: 2px solid #334155;
+            padding-left: 8px;
+        }
+
+        /* EXECUTION FLOW */
+        .flow-list {
+            list-style: none;
+        }
+
+        .flow-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+        .flow-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-checkbox {
+            margin-top: 3px;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            background: transparent;
+        }
+
+        .flow-checkbox:checked {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .flow-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 4px;
+            height: 8px;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .flow-content strong {
+            display: block;
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .flow-content p {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* LEXICON */
+        .lexicon-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .lexicon-table th {
+            text-align: left;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            color: var(--accent-blue);
+            font-weight: normal;
+        }
+
+        .lexicon-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .lexicon-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .lex-red {
+            color: var(--accent-red);
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
+        .lex-green {
+            color: var(--accent-green);
+        }
+
+        /* SIMULATOR OUTPUTS */
+        .sim-outputs {
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+        
+        .sim-title {
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .out-row { display: flex; gap: 8px; }
+        .out-range { min-width: 65px; color: var(--accent-yellow); }
+        .out-red .out-range { color: var(--accent-red); }
+        .out-green .out-range { color: var(--accent-green); }
+
+        /* BATTLE CARDS */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .battle-card {
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #111;
+        }
+
+        .card-summary {
+            padding: 10px 12px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent-yellow);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .card-summary::after {
+            content: '▼';
+            font-size: 10px;
+            color: #666;
+            transition: transform 0.2s;
+        }
+
+        details[open] .card-summary::after {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            padding: 0 12px 12px;
+            color: var(--text-main);
+            font-size: 12px;
+        }
+
+        /* TARGET INTEL */
+        .intel-content {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .intel-content strong {
+            color: #fff;
+        }
+        .intel-highlight {
+            color: var(--accent-main); /* fallback */
+            color: white;
+            font-weight: bold;
+        }
+
+        /* HARD ASK */
+        .hard-ask {
+            border: 1px solid var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: auto;
+        }
+
+        .ask-header {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent-green);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .ask-list {
+            list-style: decimal inside;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">BASIN::NEXUS</div>
+            <div class="subtitle">Lo Sync <span>/</span> Apr 14 <span>/</span> 9:30 AM <span>/</span> Zoom</div>
+        </div>
+        
+        <div class="header-center">
+            <div class="timer" id="timer">00:00</div>
+            <div class="btn-group">
+                <button class="btn" onclick="startTimer()">Start</button>
+                <button class="btn" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <strong>Objective:</strong> Secure the May 14 slot. Prove the GTM Architecture Simulator is the live capstone to his Country Manager simulation. Leave Tuesday with a confirmed date and a co-instructor login.
+        </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="main-container">
+        
+        <!-- COLUMN 1: TALK TRACK -->
+        <div class="column">
+            <div class="panel" style="flex-grow: 1;">
+                <div class="section-header">Talk Track (20 Min)</div>
+                
+                <div class="track-item">
+                    <div class="track-header">
+                        <span class="track-time">00:00 - 03:00</span>
+                        <button class="btn-done" onclick="this.classList.toggle('active')">MARK DONE</button>
+                    </div>
+                    <div class="track-title">The Hook</div>
+                    <div class="track-script">
+                        "Professor Lo, I reviewed the syllabus carefully. I saw your background at HP and Toshiba. You built distribution channels in Asia. You know what it actually takes to enter a market. I want to spend May 14 showing your students how we execute that same market entry decision today. Not with headcount. With signal architecture."
+                    </div>
+                </div>
+
+                <div class="track-item">
+                    <div class="track-header">
+                        <span class="track-time">03:00 - 05:00</span>
+                        <button class="btn-done" onclick="this.classList.toggle('active')">MARK DONE</button>
+                    </div>
+                    <div class="track-title">Syllabus Bridge</div>
+                    <div class="track-script">
+                        "Your students run Country Manager all quarter. They calculate sales force allocation, channel distribution, market entry sequence manually. I want to be the final bridge. Session 19 is 'GTM Growth via Monetization.' That is the exact moment they are ready to see what these decisions look like when you automate the inputs. My session shows them the architecture Series A companies use to run those same decisions at scale."
+                    </div>
+                </div>
+
+                <div class="track-item">
+                    <div class="track-header">
+                        <span class="track-time">05:00 - 15:00</span>
+                        <button class="btn-done" onclick="this.classList.toggle('active')">MARK DONE</button>
+                    </div>
+                    <div class="track-title">Live Demo</div>
+                    <div class="track-script">
+                        <em>[Share screen. GTM Simulator visible. Confirm he can see it.]</em>
+                        "Here is the interactive model I built for the class. Let's run a LATAM expansion scenario."
+                        <em>[Move sliders. Show output shift.]</em>
+                        "Watch what happens to the capital allocation output when I flip from Manual Architecture to API Architecture."
+                        <em>[Toggle mode. Output changes to Partner-Led / API Automation.]</em>
+                        "This is what we run live on May 14. Students bring their Country Manager constraints. We solve them with a real revenue engine."
+                    </div>
+                </div>
+
+                <div class="track-item">
+                    <div class="track-header">
+                        <span class="track-time">15:00 - 20:00</span>
+                        <button class="btn-done" onclick="this.classList.toggle('active')">MARK DONE</button>
+                    </div>
+                    <div class="track-title">Close + Hard Ask</div>
+                    <div class="track-script">
+                        "Does this run of show fit your expectations for the May 14 slot?"
+                        <em>[Wait for yes. Do not fill the silence.]</em>
+                        "Two asks: confirm the date in writing, and provision a co-instructor login for the Interpretive portal so I can pull exact scenarios from their active simulation before I arrive."
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMN 2: EXECUTION FLOW -->
+        <div class="column">
+            <div class="panel">
+                <div class="section-header">Demo Execution Flow</div>
+                <ul class="flow-list">
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>01 Pre-Call Check</strong>
+                            <p>Simulator tab open, tested. Battle Map PDF staged in drafts.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>02 Screen Share Start</strong>
+                            <p>Share simulator tab only. Confirm he can see sliders.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>03 Set Scenario: LATAM</strong>
+                            <p>Inputs: Demand Signal, ICP Match, Compelling Event, Brand.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>04 Manual Mode First</strong>
+                            <p>Output: high headcount, slow entry. Let him see the cost.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>05 Toggle to API Mode</strong>
+                            <p>Output shifts to Partner-Led or API Automation. Delta speaks.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <input type="checkbox" class="flow-checkbox">
+                        <div class="flow-content">
+                            <strong>06 Fallback</strong>
+                            <p>If share fails: drop Battle Map PDF in Zoom chat immediately.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel">
+                <div class="section-header">Syllabus Lexicon</div>
+                <table class="lexicon-table">
+                    <thead>
+                        <tr>
+                            <th>Never Say (SaaS)</th>
+                            <th>Say This (Lo's Vocab)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="lex-red">Intent Signal</td><td class="lex-green">Market Demand Signal</td></tr>
+                        <tr><td class="lex-red">ICP Fit</td><td class="lex-green">Regional ICP Match</td></tr>
+                        <tr><td class="lex-red">Urgency / Trigger</td><td class="lex-green">Local Compelling Event</td></tr>
+                        <tr><td class="lex-red">Brand Awareness</td><td class="lex-green">Brand Presence</td></tr>
+                        <tr><td class="lex-red">Pipeline Velocity</td><td class="lex-green">Capital Allocation Speed</td></tr>
+                        <tr><td class="lex-red">RevOps Automation</td><td class="lex-green">GTM Execution Layer</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sim-outputs">
+                <div class="sim-title">Simulator Outputs</div>
+                <div class="out-row out-red"><div class="out-range">Score &lt;40</div><div>: Delay Entry</div></div>
+                <div class="out-row out-yellow"><div class="out-range">Score 40-75</div><div>: Partner-Led Entry</div></div>
+                <div class="out-row out-green"><div class="out-range">Score &gt;75</div><div>: Deploy API Automation</div></div>
+            </div>
+        </div>
+
+        <!-- COLUMN 3: BATTLE CARDS & INTEL -->
+        <div class="column">
+            <div class="panel" style="padding-bottom: 24px;">
+                <div class="section-header">Battle Cards</div>
+                <div class="card-list">
+                    <details class="battle-card">
+                        <summary class="card-summary">"Too technical for marketing?"</summary>
+                        <div class="card-body">
+                            Not about code. About capital allocation. Marketing leaders in 2026 manage the outputs of these systems. Teaching strategy, not syntax.
+                        </div>
+                    </details>
+                    <details class="battle-card">
+                        <summary class="card-summary">"Conflicts with textbook theory?"</summary>
+                        <div class="card-body">
+                            Builds on it. Textbook teaches the <em>what</em>. My session shows the <em>how</em>. Exact execution layer for Session 19.
+                        </div>
+                    </details>
+                    <details class="battle-card">
+                        <summary class="card-summary">"May 14 may not be the right slot."</summary>
+                        <div class="card-body">
+                            Can swap into demand generation lecture Week 8. Will tailor simulator to early-stage signal acquisition instead.
+                        </div>
+                    </details>
+                    <details class="battle-card">
+                        <summary class="card-summary">"Send me something in writing."</summary>
+                        <div class="card-body">
+                            Battle Map PDF dropping in Zoom chat right now. Review async, then confirm.
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="section-header">Target Intel</div>
+                <div class="intel-content">
+                    <strong style="color:var(--accent-blue);">Prof. Desmond Lo:</strong> HP China business unit manager. Distribution channels for Toshiba + LG. PhD Michigan. Research: channel governance, sales force coordination. <strong>He has operator DNA.</strong><br><br>
+                    <strong>Lead with execution receipts, not theory.</strong>
+                </div>
+            </div>
+
+            <div class="hard-ask">
+                <div class="ask-header">Hard Ask — End of Call</div>
+                <ol class="ask-list">
+                    <li>Confirm May 14 in writing.</li>
+                    <li>Co-instructor login for Interpretive portal.</li>
+                </ol>
+            </div>
+            
+        </div>
+    </main>
+
+    <script>
+        // Simple Timer Logic
+        let timerInterval;
+        let seconds = 0;
+        const timerDisplay = document.getElementById('timer');
+
+        function updateTimerDisplay() {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${m}:${s}`;
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                seconds++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            seconds = 0;
+            updateTimerDisplay();
+        }
+    </script>
+</body>
+</html>

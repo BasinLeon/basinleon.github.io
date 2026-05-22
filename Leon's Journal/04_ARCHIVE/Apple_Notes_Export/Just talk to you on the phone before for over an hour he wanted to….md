@@ -1,0 +1,4 @@
+# Just talk to you on the phone before for over an hour he wanted to…*Created: Wednesday, February 13, 2019 at 5:12:05?PM*<div>Just talk to you on the phone before for over an hour he wanted to be and be your mentor and he’s asked you to stay in touch with for this reason you can always say no but it sure makes it feel good to see you succeed and this is the opportunity to ask him and dish in on the big favor when you’re really close<br></div>
+<div><br></div>
+<div><br></div>
+<div>You could say hi Scott just following up on my last email if there’s any chance that you’d be willing to spend 15 minutes to let me bounce my practice off of you in preparation to so I can understand how I can improve on the sales calls since I’ve done one called for an interview before and they haven’t gone so well is there any chance you be kind enough to send to do you minutes with me this weekend or the next few days before I have a interview</div>

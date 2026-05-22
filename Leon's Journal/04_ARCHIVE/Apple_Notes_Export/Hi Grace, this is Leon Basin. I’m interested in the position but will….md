@@ -1,0 +1,1 @@
+# Hi Grace, this is Leon Basin. I’m interested in the position but will…*Created: Friday, December 20, 2024 at 1:12:55?PM*<div>Hi Grace, this is Leon Basin. I’m interested in the position but will be heading out on vacation soon. Would it be possible to schedule a call after I return on January 2, 2025?</div>

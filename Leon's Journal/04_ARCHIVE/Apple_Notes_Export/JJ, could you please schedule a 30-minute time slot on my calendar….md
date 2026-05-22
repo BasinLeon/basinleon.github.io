@@ -1,0 +1,1 @@
+# JJ, could you please schedule a 30-minute time slot on my calendar…*Created: Tuesday, July 18, 2023 at 10:30:19?PM*<div>JJ, could you please schedule a 30-minute time slot on my calendar at the end of each day, preferably at 4 o'clock, to review the document? Once the review is complete, please email Thereza and me, to confirm that it has been finalized. Thank you!</div>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIVETRAN // STRATEGIC PARTNER HUD // v1.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --sidebar-bg: #0c0e14;
+            --card-bg: #11141d;
+            --accent-blue: #0077ff;
+            --accent-yellow: #ffc400;
+            --accent-emerald: #10b981;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: #1e293b;
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(0, 119, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(255, 196, 0, 0.05) 0%, transparent 40%);
+        }
+
+        /* Lateral Menu */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; margin-bottom: 48px; color: var(--accent-blue); letter-spacing: -1px; }
+        .brand span { color: var(--accent-yellow); }
+
+        .nav-section { margin-bottom: 40px; }
+        .nav-label { font-size: 0.65rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; display: block; }
+        .nav-item { display: flex; align-items: center; gap: 14px; font-size: 0.85rem; padding: 12px 0; color: var(--text-dim); cursor: pointer; transition: color 0.2s; }
+        .nav-item:hover, .nav-item.active { color: var(--text-main); }
+        .nav-item i { width: 18px; color: var(--accent-blue); }
+
+        /* Main Dashboard */
+        main {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 56px;
+        }
+
+        .header-title h1 { font-family: var(--font-heading); font-weight: 800; font-size: 2.4rem; letter-spacing: -1px; }
+        .header-title p { color: var(--text-dim); font-size: 1rem; margin-top: 4px; }
+
+        .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px; }
+        .badge { background: var(--card-bg); border: 1px solid var(--border); padding: 24px; border-radius: 16px; position: relative; overflow: hidden; }
+        .badge::after { content: ""; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--accent-blue); opacity: 0.3; }
+        .badge-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: block; font-weight: 700; }
+        .badge-val { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; }
+        .badge-sub { font-size: 0.75rem; color: var(--text-dim); margin-top: 6px; }
+
+        .grid-main { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+
+        .section-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 32px; height: 100%; }
+        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+        .section-icon { width: 40px; height: 40px; background: rgba(0, 119, 255, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--accent-blue); font-size: 1.2rem; }
+        .section-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; }
+
+        .bullet-list { list-style: none; }
+        .bullet { display: flex; gap: 14px; margin-bottom: 18px; font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); }
+        .bullet b { color: var(--text-main); font-weight: 700; }
+        .bullet::before { content: "→"; color: var(--accent-blue); font-weight: 800; }
+
+        .client-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid var(--border); 
+            padding: 16px; 
+            border-radius: 12px; 
+            margin-bottom: 16px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .client-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+        .client-tag { font-size: 0.7rem; color: var(--accent-blue); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        .client-status { font-size: 0.7rem; color: var(--accent-emerald); font-weight: 800; }
+
+        /* The "Highway" Logic Visual */
+        .highway-wrapper {
+            margin-top: 48px;
+            padding: 24px;
+            background: rgba(255, 196, 0, 0.05);
+            border: 1px solid rgba(255, 196, 0, 0.2);
+            border-radius: 20px;
+        }
+        .highway-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; margin-bottom: 16px; }
+        .highway-flow { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .flow-node { text-align: center; width: 120px; }
+        .flow-icon { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent-blue); }
+        .flow-node p { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .flow-node span { font-size: 0.65rem; color: var(--text-dim); }
+        .flow-mid { font-family: var(--font-heading); font-weight: 800; color: var(--accent-yellow); font-size: 1.2rem; }
+
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand">FIVETRAN <span>//</span> NEXUS</div>
+
+        <div class="nav-section">
+            <span class="nav-label">Strategy</span>
+            <div class="nav-item active"><i class="fas fa-route"></i> The Inbound Highway</div>
+            <div class="nav-item"><i class="fas fa-filter"></i> Signal Refinery</div>
+            <div class="nav-item"><i class="fas fa-coins"></i> Commercial Yield</div>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Resources</span>
+            <div class="nav-item"><i class="fas fa-book"></i> Logic-Gap Manifesto</div>
+            <div class="nav-item"><i class="fas fa-plug"></i> Custom Connectors</div>
+            <div class="nav-item"><i class="fas fa-shield-halved"></i> Privacy Protocols</div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="header-title">
+                <h1>FIVETRAN PARTNER SYNC</h1>
+                <p>Strategic Brief for Tyler Hogan // v2026.1</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-blue); font-weight: 800;">[STATUS: ACTIVE_ARCHITECT]</p>
+                <p style="font-size: 0.7rem; color: var(--text-dim);">MAR 24 // 1:00 PM PST // Leon Basin</p>
+            </div>
+        </header>
+
+        <div class="badge-grid">
+            <div class="badge">
+                <span class="badge-label">Active Pilots</span>
+                <div class="badge-val">2 (UK & US)</div>
+                <div class="badge-sub">MTI & Ketch Implementation</div>
+            </div>
+            <div class="badge">
+                <span class="badge-label">Logic Model</span>
+                <div class="badge-val">SIGNAL-TO-YIELD</div>
+                <div class="badge-sub">Fivetran x Clay x Nexus Hub</div>
+            </div>
+            <div class="badge">
+                <span class="badge-label">Primary KPI</span>
+                <div class="badge-val">PIPELINE VELOCITY</div>
+                <div class="badge-sub">Inception to Technical Validation</div>
+            </div>
+        </div>
+
+        <div class="grid-main">
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-network-wired"></i></div>
+                    <div class="section-title">The "Data Highway" Logic</div>
+                </div>
+                <ul class="bullet-list">
+                    <li class="bullet"><b>Centralized Ingestion:</b> Moving beyond manual exports. I use Fivetran to centralize <b>LinkedIn, Salesforce, and Ads</b> data into a clean Postgres core.</li>
+                    <li class="bullet"><b>The Logic-Gap:</b> Most Fivetran users fail after ingestion. I solve the <b>Refinement Phase</b>—connecting raw data to <b>Clay</b> and <b>Descope</b> for enrichment.</li>
+                    <li class="bullet"><b>Affiliate Architect:</b> My goal is to build a recurring **"Revenue Terminal"** where Fivetran credits are baked into the fractional GTM retainer.</li>
+                </ul>
+
+                <div class="highway-wrapper">
+                    <div class="highway-label">Traffic Architecture</div>
+                    <div class="highway-flow">
+                        <div class="flow-node">
+                            <div class="flow-icon"><i class="fas fa-industry"></i></div>
+                            <p>Fivetran</p>
+                            <span>Raw Ingestion</span>
+                        </div>
+                        <div class="flow-mid"><i class="fas fa-arrow-right"></i></div>
+                        <div class="flow-node">
+                            <div class="flow-icon" style="color: var(--accent-yellow);"><i class="fas fa-flask"></i></div>
+                            <p>Refinery</p>
+                            <span>Nexus logic</span>
+                        </div>
+                        <div class="flow-mid"><i class="fas fa-arrow-right"></i></div>
+                        <div class="flow-node">
+                            <div class="flow-icon" style="color: var(--accent-emerald);"><i class="fas fa-money-bill-trend-up"></i></div>
+                            <p>Yield</p>
+                            <span>Closed Won</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);"><i class="fas fa-bolt"></i></div>
+                    <div class="section-title">Active Pilots</div>
+                </div>
+                
+                <div class="client-card">
+                    <div>
+                        <p class="client-name">MockThatInterview</p>
+                        <span class="client-tag">UK Cluster // DevOps</span>
+                    </div>
+                    <span class="client-status">ACTIVE</span>
+                </div>
+
+                <div class="client-card">
+                    <div>
+                        <p class="client-name">Ketch</p>
+                        <span class="client-tag">US Cluster // Privacy</span>
+                    </div>
+                    <span class="client-status">PENDING</span>
+                </div>
+
+                <div style="margin-top: 24px; padding: 20px; border: 1px dashed var(--border); border-radius: 12px; text-align: center;">
+                    <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 12px;">Next Step for Tyler:</p>
+                    <p style="font-size: 0.8rem; font-weight: 800; color: var(--accent-blue);">Secure Partner Credits for MTI Launch Phase.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

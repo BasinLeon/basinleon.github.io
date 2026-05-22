@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NBC Activation Layer Visual | Leon Basin</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #06070d;
+            --bg-soft: #0f1220;
+            --panel: rgba(16, 20, 34, 0.82);
+            --panel-strong: rgba(18, 24, 41, 0.95);
+            --line: rgba(212, 175, 55, 0.16);
+            --gold: #d4af37;
+            --gold-soft: rgba(212, 175, 55, 0.16);
+            --gold-bright: #f4d86f;
+            --ink: #f4f2ed;
+            --muted: #a8afbd;
+            --aqua: #6ee7d5;
+            --aqua-soft: rgba(110, 231, 213, 0.18);
+            --shadow: 0 40px 90px rgba(0, 0, 0, 0.42);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            background:
+                radial-gradient(circle at 12% 18%, rgba(212, 175, 55, 0.13), transparent 24%),
+                radial-gradient(circle at 84% 12%, rgba(110, 231, 213, 0.14), transparent 20%),
+                linear-gradient(145deg, #05060b 0%, #0c1120 48%, #06070d 100%);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(circle at center, black 38%, transparent 86%);
+        }
+
+        .shell {
+            width: min(1460px, calc(100vw - 36px));
+            margin: 26px auto;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 26px;
+        }
+
+        .eyebrow,
+        .meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.03);
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card,
+        .mini-card,
+        .diagram-card,
+        .pillar-card,
+        .close-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(16, 20, 34, 0.84), rgba(10, 14, 25, 0.98));
+        }
+
+        .hero-card {
+            padding: 34px 36px 30px;
+        }
+
+        .hero-card::after,
+        .diagram-card::after,
+        .pillar-card::after,
+        .mini-card::after,
+        .close-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.02) 40%, transparent 72%);
+            transform: translateX(-45%);
+            animation: shimmer 9s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            from { transform: translateX(-60%); }
+            to { transform: translateX(60%); }
+        }
+
+        .hero h1 {
+            max-width: 10ch;
+            margin-top: 16px;
+            margin-bottom: 18px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 6vw, 5.9rem);
+            line-height: 0.92;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--gold);
+        }
+
+        .hero p {
+            max-width: 66ch;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .proof {
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .proof strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--ink);
+            font-size: 1rem;
+        }
+
+        .proof span {
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.45;
+        }
+
+        .mini-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .mini-card {
+            padding: 20px 22px;
+            min-height: 150px;
+        }
+
+        .section-label {
+            margin-bottom: 10px;
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .mini-card h2,
+        .diagram-card h2,
+        .pillar-card h2,
+        .close-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+        }
+
+        .mini-card p,
+        .diagram-card p,
+        .pillar-card p,
+        .close-card p {
+            color: var(--muted);
+            font-size: 0.94rem;
+            line-height: 1.6;
+        }
+
+        .diagram-card {
+            padding: 26px 28px 30px;
+            margin-bottom: 18px;
+        }
+
+        .diagram-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: 0.86fr 1.28fr 0.86fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .lane {
+            position: relative;
+            display: grid;
+            gap: 14px;
+        }
+
+        .lane-title {
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .node {
+            position: relative;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+            min-height: 122px;
+        }
+
+        .node.core {
+            border-color: rgba(212, 175, 55, 0.24);
+            background: linear-gradient(180deg, rgba(212,175,55,0.1), rgba(255,255,255,0.03));
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.05), 0 22px 50px rgba(212,175,55,0.12);
+        }
+
+        .node.aqua {
+            border-color: rgba(110, 231, 213, 0.18);
+            background: linear-gradient(180deg, rgba(110,231,213,0.1), rgba(255,255,255,0.03));
+        }
+
+        .node h3 {
+            margin-bottom: 8px;
+            font-size: 1.02rem;
+            letter-spacing: -0.02em;
+        }
+
+        .node p {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .node-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .connector {
+            position: relative;
+            height: 100%;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connector::before,
+        .connector::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.8), rgba(110,231,213,0.32));
+            transform: translateY(-50%);
+        }
+
+        .connector::after {
+            width: 16px;
+            right: -4px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--gold-bright), transparent 72%);
+            box-shadow: 0 0 24px rgba(212,175,55,0.36);
+        }
+
+        .connector-label {
+            position: relative;
+            z-index: 1;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(6, 7, 13, 0.86);
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mid-flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .pillar-card {
+            padding: 22px 24px;
+        }
+
+        .pillar-card ul {
+            margin-top: 14px;
+            padding-left: 18px;
+        }
+
+        .pillar-card li {
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .close-card {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+            padding: 24px 26px;
+        }
+
+        .close-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .close-item {
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .close-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--ink);
+            font-size: 0.96rem;
+        }
+
+        .close-item span {
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.45;
+        }
+
+        .signature {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+            margin-top: 18px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1180px) {
+            .hero,
+            .close-card,
+            .diagram-grid,
+            .pillar-grid,
+            .mid-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .connector {
+                min-height: 54px;
+            }
+
+            .connector::before {
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(180deg, rgba(212,175,55,0.12), rgba(212,175,55,0.8), rgba(110,231,213,0.32));
+            }
+
+            .connector::after {
+                top: auto;
+                bottom: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 720px) {
+            .shell {
+                width: calc(100vw - 20px);
+                margin: 10px auto;
+                padding: 14px;
+            }
+
+            .topbar,
+            .hero-card,
+            .diagram-card,
+            .pillar-card,
+            .mini-card,
+            .close-card {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .topbar {
+                display: grid;
+                gap: 12px;
+            }
+
+            .meta-row,
+            .signature {
+                justify-content: start;
+            }
+
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="topbar">
+            <div class="eyebrow">BasinLeon Platform Visual // NBC Universal</div>
+            <div class="meta-row">
+                <div class="meta-chip">Post-Training Offer</div>
+                <div class="meta-chip">Jassi Proposal Layer</div>
+                <div class="meta-chip">Pilot-First Architecture</div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <div class="hero-card">
+                <div class="section-label">Visual Story</div>
+                <h1>NBC <span>Activation Layer</span></h1>
+                <p>
+                    This is the visual version of what Jassi kept describing in the transcript: NBC keeps its current sales system, while Leon's layer sits beside it, identifies stronger digital opportunities upstream, refines them for fit, and routes them into the existing sales motion without forcing a rebuild on day one.
+                </p>
+                <div class="proof-grid">
+                    <div class="proof">
+                        <strong>21 AEs already in motion</strong>
+                        <span>The broader proposal handles diagnostic, mastery, and coaching. This layer comes after readiness.</span>
+                    </div>
+                    <div class="proof">
+                        <strong>Los Angeles pilot first</strong>
+                        <span>One market, one benchmark, one leadership review cadence before any wider expansion.</span>
+                    </div>
+                    <div class="proof">
+                        <strong>No CRM replacement</strong>
+                        <span>NBC keeps its current system, current sellers, and current handoff structure.</span>
+                    </div>
+                    <div class="proof">
+                        <strong>Built to scale later</strong>
+                        <span>Once the pilot proves out, the same logic can extend into deeper infrastructure or automation.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mini-stack">
+                <article class="mini-card">
+                    <div class="section-label">Why It Wins</div>
+                    <h2>Easy to understand in one pass.</h2>
+                    <p>
+                        The board answers the three things an executive needs fast: what changes, what stays intact, and how the pilot gets measured.
+                    </p>
+                </article>
+                <article class="mini-card">
+                    <div class="section-label">Call Use</div>
+                    <h2>Built for screen-share, not just forwarding.</h2>
+                    <p>
+                        This is meant to support Jassi in a conversation. It gives him a visual spine for the story, while leaving room for the live explanation.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="diagram-card">
+            <div class="diagram-header">
+                <div>
+                    <div class="section-label">Pictorial Diagram</div>
+                    <h2>The layer sits between readiness and live digital pipeline flow.</h2>
+                </div>
+                <p>Not a replacement system. An additional opportunity engine that feeds the current motion.</p>
+            </div>
+
+            <div class="diagram-grid">
+                <div class="lane">
+                    <div class="lane-title">What NBC Already Has</div>
+                    <article class="node">
+                        <div class="node-tag">Current State</div>
+                        <h3>Inbound and outbound activity</h3>
+                        <p>Existing marketing, seller activity, and response channels remain in place.</p>
+                    </article>
+                    <article class="node">
+                        <div class="node-tag">Readiness Layer</div>
+                        <h3>Diagnostic, mastery, coaching</h3>
+                        <p>The broader TalSmart proposal improves seller behavior and digital readiness.</p>
+                    </article>
+                </div>
+
+                <div class="lane">
+                    <div class="lane-title">External Activation Layer</div>
+                    <div class="mid-flow">
+                        <article class="node core">
+                            <div class="node-tag">Step 01</div>
+                            <h3>Signal Capture</h3>
+                            <p>Identify target digital buyers using agreed ICP, market priorities, and opportunity criteria.</p>
+                        </article>
+                        <div class="connector">
+                            <div class="connector-label">Refine</div>
+                        </div>
+                        <article class="node core">
+                            <div class="node-tag">Step 02</div>
+                            <h3>Qualification + Fit</h3>
+                            <p>Filter for relevance so the team sees fewer weak names and more actionable opportunities.</p>
+                        </article>
+                        <div class="connector">
+                            <div class="connector-label">Route</div>
+                        </div>
+                        <article class="node core">
+                            <div class="node-tag">Step 03</div>
+                            <h3>Routing Layer</h3>
+                            <p>Hand qualified opportunities to the right AE or market owner while intent is still live.</p>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="lane">
+                    <div class="lane-title">What NBC Gets</div>
+                    <article class="node aqua">
+                        <div class="node-tag">Operating Result</div>
+                        <h3>Stronger first conversations</h3>
+                        <p>Higher-fit digital opportunities reach the current sales team faster and with better context.</p>
+                    </article>
+                    <article class="node aqua">
+                        <div class="node-tag">Leadership View</div>
+                        <h3>Weekly benchmark review</h3>
+                        <p>Compare lead quality, response timing, and downstream progression against the current baseline.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="pillar-grid">
+            <article class="pillar-card">
+                <div class="section-label">Why It Is Easy To Buy</div>
+                <h2>Start outside the system.</h2>
+                <p>The first engagement stays lightweight and measurable.</p>
+                <ul>
+                    <li>No CRM replacement</li>
+                    <li>No seller disruption</li>
+                    <li>No giant transformation ask on day one</li>
+                </ul>
+            </article>
+
+            <article class="pillar-card">
+                <div class="section-label">Pilot Scope</div>
+                <h2>Los Angeles first.</h2>
+                <p>One market, one benchmark, one proof point before expansion.</p>
+                <ul>
+                    <li>Approved ICP and market priorities</li>
+                    <li>Current team keeps follow-up ownership</li>
+                    <li>Leadership sees clear signal before scaling</li>
+                </ul>
+            </article>
+
+            <article class="pillar-card">
+                <div class="section-label">Demo Framework Later</div>
+                <h2>Three visual modules.</h2>
+                <p>When you want a richer demo later, build these next.</p>
+                <ul>
+                    <li>Signal capture view</li>
+                    <li>Qualification and fit console</li>
+                    <li>Routing and leadership review board</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="close-card">
+            <div>
+                <div class="section-label">Executive Close</div>
+                <h2>The point is continuity, not complexity.</h2>
+                <p>
+                    Jassi's strongest positioning in the transcript was simple: NBC keeps doing what it is already doing, and this layer adds another source of qualified digital opportunity flow. That makes the pilot easy to buy now and easier to deepen later if the signal proves out.
+                </p>
+            </div>
+
+            <div class="close-list">
+                <div class="close-item">
+                    <strong>Frame for the call</strong>
+                    <span>"This sits after training and before deeper infrastructure work."</span>
+                </div>
+                <div class="close-item">
+                    <strong>Frame for the buyer</strong>
+                    <span>"You keep your current team and system. We add a cleaner source of digital pipeline."</span>
+                </div>
+                <div class="close-item">
+                    <strong>Frame for later build</strong>
+                    <span>"If the Los Angeles pilot proves out, the same architecture can expand into a richer execution system."</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="signature">
+            <span>BasinLeon Platform Visual</span>
+            <span>NBC Universal // Revenue Activation Layer</span>
+            <span>Prepared for Jassi Proposal Flow</span>
+        </div>
+    </main>
+</body>
+</html>

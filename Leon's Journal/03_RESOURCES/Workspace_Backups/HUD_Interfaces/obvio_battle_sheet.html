@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leon Basin — Obvio Mirror</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111827;--ink2:#374151;--ink3:#6b7280;
+  --border:#e5e7eb;--bg:#f9fafb;--white:#fff;
+  --navy:#1e3a8a;--navy-d:#dbeafe;--navy-m:#3b5fd9;
+  --green:#065f46;--green-d:#d1fae5;--green-m:#059669;
+  --amber:#78350f;--amber-d:#fef3c7;--amber-m:#d97706;
+  --red:#7f1d1d;--red-d:#fee2e2;
+  --orange:#9a3412;--orange-d:#fff7ed;
+  --teal:#134e4a;--teal-d:#ccfbf1;--teal-m:#0d9488;
+  --f:'Inter',sans-serif;
+}
+body{font-family:var(--f);background:var(--white);color:var(--ink);font-size:11.5px;line-height:1.45;padding:20px 24px 28px;max-width:900px;margin:0 auto}
+
+/* EDIT BAR */
+.eb{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 10px;background:var(--navy-d);border-radius:5px;border:1px solid #bfdbfe;font-size:10px;color:var(--navy)}
+.eb span{flex:1}
+.et{font-family:var(--f);font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;border:none;cursor:pointer}
+.et.on{background:var(--navy);color:#fff}
+.et.off{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+[contenteditable="true"]{outline:2px dashed #93c5fd;border-radius:2px;cursor:text}
+[contenteditable="true"]:focus{outline:2px solid var(--navy-m);background:#f0f6ff}
+
+/* HEADER */
+.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid var(--navy);padding-bottom:8px;margin-bottom:10px}
+.hd h1{font-size:17px;font-weight:700;color:var(--navy)}
+.hd .sub{font-size:9.5px;color:var(--ink3);margin-top:2px}
+.hd .contact{font-size:9.5px;color:var(--ink3);text-align:right;line-height:1.55}
+
+/* MISSION STRIP */
+.ms{background:var(--navy);color:#fff;border-radius:5px;padding:6px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.ms-n{font-size:18px;font-weight:700;color:#93c5fd;flex-shrink:0}
+.ms-t{font-size:10px;color:#bfdbfe;line-height:1.4}
+.ms-t b{color:#fff}
+
+/* MAIN GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* PANEL */
+.p{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.ph{padding:4px 10px;font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.ph-n{background:var(--navy);color:#fff}
+.ph-g{background:var(--green-d);color:var(--green)}
+.ph-a{background:var(--amber-d);color:var(--amber)}
+.ph-t{background:var(--teal-d);color:var(--teal)}
+.ph-gr{background:var(--bg);color:var(--ink3);border-bottom:1px solid var(--border)}
+.ph-r{background:var(--red-d);color:var(--red)}
+.pb{padding:8px 10px}
+
+/* RECEIPTS */
+.rc{display:flex;gap:6px;padding:3.5px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.rc:last-child{border-bottom:none}
+.rv{font-size:15px;font-weight:700;color:var(--navy-m);min-width:50px;flex-shrink:0}
+.rl{font-size:11px;color:var(--ink2);font-weight:500}
+.rx{font-size:10px;color:var(--ink3)}
+
+/* STORIES */
+.st{padding:4.5px 0;border-bottom:1px solid var(--border)}
+.st:last-child{border-bottom:none}
+.sq{font-size:10px;font-weight:600;color:var(--ink3);font-style:italic;margin-bottom:2px}
+.sa{font-size:11px;color:var(--ink);font-weight:500;line-height:1.4}
+.stag{display:inline-block;font-size:8.5px;font-weight:600;padding:1px 5px;border-radius:3px;margin-top:2px}
+.tg{background:var(--green-d);color:var(--green)}
+.ta{background:var(--amber-d);color:var(--amber)}
+.tn{background:var(--navy-d);color:var(--navy)}
+.tr{background:var(--red-d);color:var(--red)}
+
+/* SCREEN SHARE STEPS */
+.ss{display:flex;gap:6px;padding:3.5px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.ss:last-child{border-bottom:none}
+.sn{width:14px;height:14px;border-radius:50%;background:var(--navy);color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.st2{font-size:11px;color:var(--ink);line-height:1.4}
+.st2 b{color:var(--navy)}
+.ssub{font-size:9.5px;color:var(--ink3)}
+.pl{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--navy);background:var(--navy-d);padding:2px 5px;border-radius:3px;display:inline-block;margin:5px 0 3px}
+
+/* OBJECTIONS */
+.ob{display:grid;grid-template-columns:1fr 1.4fr;gap:6px;padding:3.5px 0;border-bottom:1px solid var(--border);font-size:11px}
+.ob:last-child{border-bottom:none}
+.oq{color:var(--ink3);font-style:italic;line-height:1.4}
+.oa{color:var(--ink);font-weight:500;line-height:1.4}
+
+/* CHECKS */
+.ck{display:flex;gap:5px;padding:3.5px 0;font-size:11px;border-bottom:1px solid var(--border)}
+.ck:last-child{border-bottom:none}
+.cb{width:10px;height:10px;border:1.5px solid var(--border);border-radius:2px;flex-shrink:0;margin-top:2px}
+
+/* CALLOUTS */
+.cq{border-radius:4px;padding:5px 9px;margin-top:6px}
+.cl{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.ct{font-size:11px;line-height:1.45;font-style:italic;font-weight:500}
+.cq-b{background:var(--navy-d);border-left:2px solid var(--navy-m)}
+.cq-b .cl,.cq-b .ct{color:var(--navy)}
+.cq-g{background:var(--green-d);border-left:2px solid var(--green-m)}
+.cq-g .cl,.cq-g .ct{color:var(--green)}
+.trump{background:var(--orange-d);border:1px solid #fed7aa;border-radius:5px;padding:7px 10px;margin-top:6px}
+.tl{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--orange);margin-bottom:3px}
+.tb{font-size:11px;color:#7c2d12;line-height:1.45}
+.tb b{color:#431407}
+
+.div{border:none;border-top:2px dashed var(--border);margin:10px 0}
+.ft{display:flex;justify-content:space-between;margin-top:10px;padding-top:7px;border-top:1px solid var(--border);font-size:9.5px;color:var(--ink3)}
+@media print{.eb{display:none}body{padding:14px}[contenteditable]{outline:none!important;background:transparent!important}}
+</style>
+</head>
+<body>
+
+<div class="eb"><span id="eh">Click <b>Edit</b> to change any text live.</span><button class="et on" id="eb" onclick="tog()">Edit</button></div>
+
+<div class="hd">
+  <div><h1>Leon Basin</h1><div class="sub">BDR/AE · Obvio AI · Apr 10, 2:00 PM · Dhruv Maheshwari · Wharton MBA · ex-Google AR · ex-Motive GPM</div></div>
+  <div class="contact">lbasin23@gmail.com · 408-933-8269<br>linkedin.com/in/leonbasin</div>
+</div>
+
+<div class="ms"><div class="ms-n">~40K</div><div class="ms-t"><b>killed in traffic crashes annually — Obvio's own mission page.</b> $35B spent. Vision Zero failing. Solar AI cameras. In under a week. Results in 10 days.</div></div>
+
+<div class="g2">
+<div class="p">
+  <div class="ph ph-n">Receipts — open every answer with one</div>
+  <div class="pb">
+    <div class="rc"><div class="rv">160%</div><div><div class="rl">YoY pipeline — Fudo Security</div><div class="rx">First US hire. Signal-based. Zero to 8 people.</div></div></div>
+    <div class="rc"><div class="rv">90→5</div><div><div class="rl">SDR ramp compression</div><div class="rx">Infrastructure, not training.</div></div></div>
+    <div class="rc"><div class="rv">$424K</div><div><div class="rl">Annual savings — Fudo</div><div class="rx">Python automation. Solo. No eng resources.</div></div></div>
+    <div class="rc"><div class="rv">$10M+</div><div><div class="rl">Qualified pipeline — Sense (Series D)</div><div class="rx">Signal-driven outbound. B2B AI.</div></div></div>
+    <div class="rc"><div class="rv">$2M+</div><div><div class="rl">US market expansion pipeline</div><div class="rx">Fudo. Zero brand. Cold entry.</div></div></div>
+  </div>
+</div>
+
+<div class="p">
+  <div class="ph ph-g">Answers — say it, then stop</div>
+  <div class="pb">
+    <div class="st">
+      <div class="sq">"Tell me about yourself."</div>
+      <div class="sa">I build the railroad before the trains run. First US hire at Fudo. Built GTM motion zero to close. 160% YoY, ramp 90→5 days. Here because founding GTM is highest-leverage work. This mission is worth doing right.</div>
+      <span class="stag tn">Stop. Let him respond.</span>
+    </div>
+    <div class="st">
+      <div class="sq">"Why BDR at your level?"</div>
+      <div class="sa">Early-stage is highest-leverage. I've seen GTM built wrong — 12 months and a CMO to fix it. I'd rather be first boots on the ground. Not a step back. It's where the real decisions happen.</div>
+      <span class="stag tg">AE setup — seeds day 45 ask</span>
+    </div>
+    <div class="st">
+      <div class="sq">"Your stack is different."</div>
+      <div class="sa">At Fudo — routing, enrichment, deduplication. $424K in savings. No eng. Just me and the API docs. Same logic runs in HubSpot, Clay, or Sheets. Tool changes. Architecture doesn't.</div>
+      <span class="stag tn">Lead with $424K. Don't say "fast learner."</span>
+    </div>
+    <div class="st">
+      <div class="sq">"Prove it in a regulatory environment."</div>
+      <div class="sa">Fudo. Zero connections. Cold US entry. Came as advisor, not rep. TCO + structured POC. $2M+ from scratch. Same playbook here: Vision Zero mandates, new chiefs, open safety grants are the signals.</div>
+      <span class="stag tr">Dhruv's hardest push — have this cold</span>
+    </div>
+    <div class="st">
+      <div class="sq">"BDR vs AE — where do you fit?"</div>
+      <div class="sa">I've built both muscles. BDR is front-line Intel. AE is the close. Last 5 years I've been developing the close — Fudo was a full-cycle role. I'm happy to prove it BDR-first here.</div>
+      <span class="stag tg">Bridges both titles</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="div"></div>
+
+<div class="p" style="margin-bottom:8px">
+  <div class="ph ph-r">Screen Share — when he asks about strategy or first 30 days</div>
+  <div class="pb">
+    <div class="pl">Trigger</div>
+    <div class="ss"><div class="sn">→</div><div class="st2">"I mapped the exact infrastructure from my Mike conversation. Let me show you." Share Chrome → obvio.html</div></div>
+    <div class="pl">Order</div>
+    <div class="ss"><div class="sn">1</div><div class="st2"><b>~40K stat</b> — set the mission. "40,000 people leave home and never make it back. Vision Zero is failing. We fix it in 10 days."</div></div>
+    <div class="ss"><div class="sn">2</div><div class="st2"><b>KPIs tab first.</b> Day 30: 25 accounts, 8 meetings, 3 advocacy groups. Day 60: 3 pilots, $1.5M pipeline. "I track revenue, not activity."</div></div>
+    <div class="ss"><div class="sn">3</div><div class="st2"><b>Day 1–30 fast.</b> Pipeline triage → pre-seed advocates → 8 meetings. Under 90 seconds. Let him interrupt.</div></div>
+    <div class="ss"><div class="sn">4</div><div class="st2"><b>Signal Engine only if he asks</b> about prioritization. Denver at 91. Three triggers: Mandate + New Boss + Money = Tier 1, call Monday.</div></div>
+    <div class="ss"><div class="sn">5</div><div class="st2"><b>Objection map only if he brings up Flock</b> or competition.</div></div>
+    <div class="pl">Close</div>
+    <div class="ss"><div class="sn">C</div><div class="st2">"Chief, even with 30 more officers you can't enforce every stop sign. Franklin: 50% reduction in 8 weeks. Stone: same. Let me put devices at your worst intersection."</div></div>
+  </div>
+</div>
+
+<div class="g3">
+<div class="p">
+  <div class="ph ph-a">Objections</div>
+  <div class="pb">
+    <div class="ob"><div class="oq">Flock/ICE/cameras</div><div class="oa">No federal sharing. Locally controlled. Safety data only.</div></div>
+    <div class="ob"><div class="oq">Council won't approve</div><div class="oa">No community voice yet. Seed cycling advocates first.</div></div>
+    <div class="ob"><div class="oq">No budget</div><div class="oa">Zero upfront. Citation revenue offsets. Neutral by month 4.</div></div>
+    <div class="ob"><div class="oq">Bad vendor before</div><div class="oa">Verra Mobility fumbled CA. Different stack entirely.</div></div>
+    <div class="ob"><div class="oq">Not a priority</div><div class="oa">Let me put devices at your 3 worst spots. No commitment.</div></div>
+  </div>
+</div>
+
+<div class="p">
+  <div class="ph ph-t">30/60 in 60 seconds</div>
+  <div class="pb">
+    <div class="ss"><div class="sn">1</div><div><div class="st2">Shadow Mike. Triage 25–30 HubSpot ops. Find the 5–7 buying this year.</div><div class="ssub">Wk 1</div></div></div>
+    <div class="ss"><div class="sn">2</div><div><div class="st2">Advocacy groups before cold PD outreach.</div><div class="ssub">Wk 2 — Mike's lesson</div></div></div>
+    <div class="ss"><div class="sn">3</div><div><div class="st2">8 meetings by day 30. Each meeting: name the dangerous intersections, offer the pilot.</div><div class="ssub">Wks 3–4</div></div></div>
+    <div class="ss"><div class="sn">4</div><div><div class="st2">Convert pilots → signed agreements. Playbook v1. Thread council before chief presents.</div><div class="ssub">Days 31–45</div></div></div>
+    <div class="ss"><div class="sn">5</div><div><div class="st2">Pre-seed next market. Day 45 check-in with Dhruv on AE scope.</div><div class="ssub">Days 46–60</div></div></div>
+  </div>
+  <div class="cq cq-g" style="margin:0 8px 8px">
+    <div class="cl">Day 45 AE ask</div>
+    <div class="ct">"Built Colorado. Pre-seeded market 2. Asking to own the full cycle there."</div>
+  </div>
+</div>
+
+<div class="p">
+  <div class="ph ph-gr">Ask Dhruv</div>
+  <div class="pb">
+    <div class="ck"><div class="cb"></div><div>"Biggest unknown in a new Colorado county?"</div></div>
+    <div class="ck"><div class="cb"></div><div>"When chief says yes — full buying committee?"</div></div>
+    <div class="ck"><div class="cb"></div><div>"Perfect 90 days — numbers, not activities?"</div></div>
+    <div class="ck"><div class="cb"></div><div>"AE vs BDR as markets 2 and 3 open?"</div></div>
+  </div>
+  <div class="cq cq-b" style="margin:0 8px">
+    <div class="cl">Pilot close — verbatim</div>
+    <div class="ct">"What data do you really have? Almost always nothing. Tell me where the dangerous spots are."</div>
+  </div>
+  <div class="trump" style="margin:6px 8px 8px">
+    <div class="tl">Two chiefs. Same result.</div>
+    <div class="tb">Franklin, Morningside: <b>"Even if I had 30 more officers, I couldn't accomplish what we did."</b><br>Stone, Colmar Manor: <b>"Even if I put a cop at every stop sign — not getting 50% reduction like this."</b></div>
+  </div>
+</div>
+</div>
+
+<div class="ft"><div>Leon Basin · lbasin23@gmail.com · 408-933-8269 · Exec MBA SCU</div><div>Obvio · Mirror v5 · Apr 10, 2026</div></div>
+
+<script>
+function tog(){
+  const b=document.getElementById('eb'),h=document.getElementById('eh'),on=b.textContent==='Edit';
+  document.querySelectorAll('.rl,.rx,.sa,.st2,.oa,.ct,.tb,.ck div:last-child,.sq,.oq').forEach(e=>e.contentEditable=on?'true':'false');
+  b.textContent=on?'Done':'Edit';b.className=on?'et off':'et on';
+  h.innerHTML=on?'<b>Editing ON</b> — click any text to change it.':'Click <b>Edit</b> to change any text live.';
+}
+window.onbeforeprint=()=>document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='false');
+</script>
+</body>
+</html>

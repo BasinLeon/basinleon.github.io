@@ -1,0 +1,1 @@
+# Hi Paul, thanks for reaching out. I have a family appointment this…*Created: Wednesday, December 10, 2025 at 9:40:49?AM*<div>Hi Paul, thanks for reaching out. I have a family appointment this morning, so I can't talk right now. However, I’d love to connect later. Would 1:30 PM today work for you? </div>

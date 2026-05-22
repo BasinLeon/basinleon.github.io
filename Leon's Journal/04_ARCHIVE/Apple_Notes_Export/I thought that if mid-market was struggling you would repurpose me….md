@@ -1,0 +1,1 @@
+# I thought that if mid-market was struggling you would repurpose me…*Created: Monday, March 20, 2023 at 8:15:08?AM*<div>I thought that if mid-market was struggling you would repurpose me to corporate because of the skills I have built in my almost 2.5 years with Sense and contributions I have made, so instead, I think it would be fair to at least have a severance. </div>
