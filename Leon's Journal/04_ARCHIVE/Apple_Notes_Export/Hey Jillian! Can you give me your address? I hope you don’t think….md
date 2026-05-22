@@ -1,1 +1,0 @@
-# Hey Jillian! Can you give me your address? I hope you don’t think…*Created: Friday, October 16, 2020 at 10:27:30?PM*<div>Hey Jillian! Can you give me your address? I hope you don’t think it’s a weird question. I would like to send you a small thank you gift for your time and guidance during this busy time. </div>

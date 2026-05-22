@@ -1,3 +1,0 @@
-# I am Covid positive hoping to qualify for anti body treatment because…*Created: Monday, December 20, 2021 at 11:11:19?AM*<div><h1>I</h1><h1> am </h1><h1>Covid </h1><h1>positive</h1><h1> </h1><h1>hoping to</h1><h1> </h1><h1>qualify for </h1><h1>anti</h1><h1> body </h1><h1>trea</h1><h1>tment</h1><h1> </h1><h1>because </h1><h1>I </h1><h1>wa</h1><h1>s dia</h1><h1>gnosed </h1><h1>with </h1><h1>cancer </h1><h1>and </h1><h1>I am on </h1><h1>active </h1><h1>s</h1><h1>u</h1><h1>rvalan</h1><h1>ce</h1><h1> </h1><h1>and </h1><h1>radiatio</h1><h1>n</h1><h1>. </h1><h1><br></h1></div>
-<div><br></div>
-<div>I was exposed to someone with Covid at home on Saturday </div>

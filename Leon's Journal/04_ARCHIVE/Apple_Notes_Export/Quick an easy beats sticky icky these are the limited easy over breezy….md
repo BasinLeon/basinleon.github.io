@@ -1,2 +1,0 @@
-# Quick an easy beats sticky icky these are the limited easy over breezy…*Created: Friday, February 7, 2020 at 1:35:03?PM*<div><h1>Quick an easy beats sticky icky these are the limited easy over bree</h1><h1>zy </h1><h1>simply bec</h1><h1>ause I'm </h1><h1>easily distracted </h1><h1>by </h1><h1>not suc</h1><h1>ceeding </h1><h1>bu</h1><h1>t </h1><h1>always having a strong mins w</h1><h1>ith </h1><h1>achie</h1><h1>ving success. </h1></div>
-<div><br></div>

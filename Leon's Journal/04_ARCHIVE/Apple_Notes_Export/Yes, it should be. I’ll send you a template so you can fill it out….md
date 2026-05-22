@@ -1,1 +1,0 @@
-# Yes, it should be. I’ll send you a template so you can fill it out…*Created: Thursday, November 21, 2024 at 12:02:43?PM*<div>Yes, it should be. I’ll send you a template so you can fill it out, and we can forward it to him before December 4th. Does that work for you?</div>

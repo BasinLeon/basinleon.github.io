@@ -1,2 +1,0 @@
-# EXTERNAL ANALYSIS*Created: Tuesday, November 16, 2021 at 9:51:49?AM*<div><b><span style="font-size: 28px"><h1>E</h1></span></b><b><span style="font-size: 28px"><h1>X</h1></span></b><b><span style="font-size: 28px"><h1>T</h1></span></b><b><span style="font-size: 28px"><h1>ERNAL A</h1></span></b><b><span style="font-size: 28px"><h1>NALYSIS</h1></span></b><b><span style="font-size: 28px"><h1><br></h1></span></b></div>
-<div><b><span style="font-size: 28px"><br></span></b></div>

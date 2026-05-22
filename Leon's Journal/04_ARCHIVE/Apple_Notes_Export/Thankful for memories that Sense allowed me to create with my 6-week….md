@@ -1,3 +1,0 @@
-# Thankful for memories that Sense allowed me to create with my 6-week…*Created: Friday, December 3, 2021 at 9:07:18?PM*<div>Thankful for memories that Sense allowed me to create with my 6-week paternity leave. Looking forward to coming back this week and ready to create meaningful professional relationships within the Recruiting and Staffing industry.<br></div>
-<div><br></div>
-<div>Hi Pankaj! I really want to make it and am very excited to be coming back Thursday. This party overlaps with bedtime for our kids. We are seeing if we can hire a babysitter to come help her so that I can attend, but we may not be able to find someone. I’m grateful that we have  opportunities for these kind of events and look forward to the next one if I can’t make this one. </div>

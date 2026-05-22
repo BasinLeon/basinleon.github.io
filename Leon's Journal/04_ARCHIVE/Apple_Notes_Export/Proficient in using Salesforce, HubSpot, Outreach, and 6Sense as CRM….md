@@ -1,1 +1,0 @@
-# Proficient in using Salesforce, HubSpot, Outreach, and 6Sense as CRMÉ*Created: Wednesday, August 30, 2023 at 1:38:31?PM*<div>Proficient in using Salesforce, HubSpot, Outreach, and 6Sense as CRM and Business Intelligence tools.</div>

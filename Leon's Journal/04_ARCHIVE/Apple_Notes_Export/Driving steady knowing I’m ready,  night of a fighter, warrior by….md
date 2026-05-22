@@ -1,2 +1,0 @@
-# Driving steady knowing I’m ready,  night of a fighter, warrior by…*Created: Monday, September 14, 2020 at 1:47:42?PM*<div><h1>Driving steady knowing I’m</h1><h1> ready,  night of a fighter, warrior by the golden touch of the pure bliss, emotions galore </h1><h1>it’s</h1><h1> like evermore stories </h1><h1>untold </h1><h1>in the lighting strike, </h1><h1>congratulations on the </h1><h1>stanzas</h1><h1> </h1><h1>of</h1><h1> </h1><h1>a</h1><h1> celebration.</h1><h1> </h1></div>
-<div><br></div>

@@ -1,2 +1,0 @@
-# Modern Jewish Poetry: In modern times, Jewish poets around the world…*Created: Wednesday, August 9, 2023 at 8:04:00?PM*<div>Modern Jewish Poetry: In modern times, Jewish poets around the world have explored themes of exile, identity, Holocaust remembrance, and the relationship with God, among others. Their work contributes to the rich tapestry of Jewish thought and experience.<br></div>
-<div><br></div>

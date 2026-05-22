@@ -1,2 +1,0 @@
-# Ingredients:*Created: Friday, November 26, 2021 at 10:24:43?PM*<div><b><span style="font-size: 24px">Ingredients</span></b><b><span style="font-size: 24px">:</span></b><span style="font-size: 24px"><br></span></div>
-<div><span style="font-size: 24px">Pullulan, Grapeseed Oil, Cannabis Oil, Tapioca Starch, Glycerin, Gum Arabic, Sunflower Lecithin, Quillaja Extract, Natural Flavors, Natural Colors (Beet, Annatto), Natural Terpenes, Monk Fruit Extract, Water</span></div>

@@ -1,2 +1,0 @@
-# “Keagan was a Senior Key Account Strategist for the Enterprise Accounts…*Created: Thursday, September 3, 2020 at 9:53:36?AM*<div><br></div>
-<div>“Keagan was a Senior Key Account Strategist for the Enterprise Accounts where he led the team in meetings booked, pipeline created and closed won generated. A warm, focused and meticulous sales professional with a desire to be the best. I would recommend Keagan for any organization that are looking for a consistent revenue creation.</div>

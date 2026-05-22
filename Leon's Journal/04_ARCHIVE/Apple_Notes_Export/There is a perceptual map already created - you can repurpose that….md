@@ -1,1 +1,0 @@
-# There is a perceptual map already created - you can repurpose that…*Created: Saturday, August 6, 2022 at 12:39:03?PM*<div>There is a perceptual map already created - you can repurpose that from the perspective of breakthrough technology</div>

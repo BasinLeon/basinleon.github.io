@@ -1,35 +1,0 @@
-# Put in the time for the few hours,*Created: Friday, November 5, 2021 at 3:42:53?PM*<div><h1>Put in the</h1><h1> time </h1><h1>for </h1><h1>the few ho</h1><h1>urs, </h1></div>
-<div><br></div>
-<div><span style="font-size: 18px">Been her</span><span style="font-size: 18px">e a </span><span style="font-size: 18px">year, </span><span style="font-size: 18px">w</span><span style="font-size: 18px">illing to</span><span style="font-size: 18px"> p</span><span style="font-size: 18px">ut in </span><span style="font-size: 18px">a f</span><span style="font-size: 18px">ew hours </span><span style="font-size: 18px">during my</span><span style="font-size: 18px"> paternity</span><span style="font-size: 18px"> leave, </span><span style="font-size: 18px">made t</span><span style="font-size: 18px">he numbers </span><span style="font-size: 18px">and you se</span><span style="font-size: 18px">e what I am </span><span style="font-size: 18px">able to</span><span style="font-size: 18px"> do. </span><span style="font-size: 18px">Put in t</span><span style="font-size: 18px">he effort</span><span style="font-size: 18px"> in, </span><span style="font-size: 18px">tak</span><span style="font-size: 18px">es time to ra</span><span style="font-size: 18px">mp</span><span style="font-size: 18px">, </span><span style="font-size: 18px">a</span><span style="font-size: 18px">s of Janua</span><span style="font-size: 18px">ry </span><span style="font-size: 18px">it will be, </span><span style="font-size: 18px">and </span><span style="font-size: 18px">b</span><span style="font-size: 18px">ased on my r</span><span style="font-size: 18px">ecord will </span><span style="font-size: 18px">do my th</span><span style="font-size: 18px">ing, </span></div>
-<div><br></div>
-<div>Put out as much as you can, I am sure it will work out, and the company knows this past year <br></div>
-<div>Nice talking to you and do what I can do. I will do what I was going to <br></div>
-<div><br></div>
-<div>Playbook will be completed, coming back, <br></div>
-<div><br></div>
-<div><b><span style="font-size: 17px">As</span></b><b><span style="font-size: 17px"> </span></b><b><span style="font-size: 17px">I talked ab</span></b><b><span style="font-size: 17px">out </span></b><b><span style="font-size: 17px">(g</span></b><b><span style="font-size: 17px">ood c</span></b><b><span style="font-size: 17px">onversati</span></b><b><span style="font-size: 17px">on)</span></b><b><span style="font-size: 17px">. </span></b><b><span style="font-size: 17px">Wha</span></b><b><span style="font-size: 17px">t I agreed</span></b><b><span style="font-size: 17px"> to do</span></b><b><span style="font-size: 17px">, </span></b><b><span style="font-size: 17px">we all k</span></b><b><span style="font-size: 17px">now t</span></b><b><span style="font-size: 17px">hat </span></b><b><span style="font-size: 17px">December</span></b><b><span style="font-size: 17px"> (</span></b><b><span style="font-size: 17px"> </span></b><b><span style="font-size: 17px">Of course </span></b><b><span style="font-size: 17px">I will com</span></b><b><span style="font-size: 17px">plete the p</span></b><b><span style="font-size: 17px">laybook </span></b><b><span style="font-size: 17px">and have been </span></b><b><span style="font-size: 17px">here 1 yea</span></b><b><span style="font-size: 17px">r, </span></b><b><span style="font-size: 17px">y</span></b><b><span style="font-size: 17px">ou and the </span></b><b><span style="font-size: 17px">leadership</span></b><b><span style="font-size: 17px"> a</span></b><b><span style="font-size: 17px">nd have se</span></b><b><span style="font-size: 17px">en what I can</span></b><b><span style="font-size: 17px"> </span></b><b><span style="font-size: 17px">contribute an</span></b><b><span style="font-size: 17px">d I loo</span></b><b><span style="font-size: 17px">k forwar</span></b><b><span style="font-size: 17px">d to comi</span></b><b><span style="font-size: 17px">ng. </span></b><b><span style="font-size: 17px">December</span></b><b><span style="font-size: 17px"> 10t</span></b><b><span style="font-size: 17px">h </span></b><b><span style="font-size: 17px"><br></span></b></div>
-<div><b><span style="font-size: 17px"><br></span></b></div>
-<div><b><span style="font-size: 17px">N</span></b><b><span style="font-size: 17px">ice talking to</span></b><b><span style="font-size: 17px"> you, </span></b><b><span style="font-size: 17px">obvi</span></b><b><span style="font-size: 17px">ously I wi</span></b><b><span style="font-size: 17px">ll focus on w</span></b><b><span style="font-size: 17px">hat we talked a</span></b><b><span style="font-size: 17px">bout </span></b><b><span style="font-size: 17px">during our </span></b><b><span style="font-size: 17px">1:1 </span></b><b><span style="font-size: 17px">and the p</span></b><b><span style="font-size: 17px">laybook</span></b><b><span style="font-size: 17px">, a</span></b><b><span style="font-size: 17px">nd we kno</span></b><b><span style="font-size: 17px">w </span></b><b><span style="font-size: 17px">December when I</span></b><b><span style="font-size: 17px"> return </span></b><b><span style="font-size: 17px">_____</span></b><b><span style="font-size: 17px"> can b</span></b><b><span style="font-size: 17px">e slow </span></b><b><span style="font-size: 17px">ear</span></b><b><span style="font-size: 17px">ly </span></b><b><span style="font-size: 17px">December, </span></b><b><span style="font-size: 17px">been with the c</span></b><b><span style="font-size: 17px">ompany </span></b><b><span style="font-size: 17px">1 year</span></b><b><span style="font-size: 17px">, </span></b><b><span style="font-size: 17px">and I </span></b><b><span style="font-size: 17px">believe you </span></b><b><span style="font-size: 17px">and the le</span></b><b><span style="font-size: 17px">adership </span></b><b><span style="font-size: 17px">ha</span></b><b><span style="font-size: 17px">ve </span></b><b><span style="font-size: 17px">contributed a</span></b><b><span style="font-size: 17px">nd I lo</span></b><b><span style="font-size: 17px">ok forward </span></b><b><span style="font-size: 17px">t</span></b><b><span style="font-size: 17px">o seeing </span></b><b><span style="font-size: 17px">everyone </span></b><b><span style="font-size: 17px">when I ge</span></b><b><span style="font-size: 17px">t back. </span></b><b><span style="font-size: 17px"><br></span></b></div>
-<div><b><span style="font-size: 17px"><br></span></b></div>
-<div><b><span style="font-size: 17px">W</span></b><b><span style="font-size: 17px">ork</span></b><b><span style="font-size: 17px">:</span></b><b><span style="font-size: 17px"><br></span></b></div>
-<ul>
-<li>Email to mike </li>
-<li>Finish Taryn paper work <br></li>
-</ul>
-<div><br></div>
-<div><b>Tammy’s </b><b>class</b><b>:</b><br></div>
-<ol>
-<li>Western digital </li>
-<li>Peloton <br></li>
-<li>Quiz 4 assignment <br></li>
-</ol>
-<div><br></div>
-<ul>
-<li>Barry’s essay <br></li>
-</ul>
-<div><br></div>
-<div>Andy:</div>
-<ul>
-<li>2 sessions <br></li>
-<li>Meet with Andy at 12pm <br></li>
-</ul>

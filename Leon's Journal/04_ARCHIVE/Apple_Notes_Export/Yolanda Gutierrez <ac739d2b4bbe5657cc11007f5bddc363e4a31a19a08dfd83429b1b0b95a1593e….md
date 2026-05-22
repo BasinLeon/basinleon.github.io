@@ -1,3 +1,0 @@
-# Yolanda Gutierrez <ac739d2b4bbe5657cc11007f5bddc363e4a31a19a08dfd83429b1b0b95a1593e…*Created: Monday, January 8, 2024 at 3:15:17?PM*<div>Yolanda Gutierrez &ltac739d2b4bbe5657cc11007f5bddc363e4a31a19a08dfd83429b1b0b95a1593e@legacypg.mailer.appfolio.us&gt<br></div>
-<div><br></div>
-<div>Hi Neha! Hope hope you had a great weekend and a good start to the week. Thank you so much again for helping. Introduce me to Rodney and for your words of support. I haven’t heard back from him but I’m still very keen on having a chance to interview for the other two rules. Do you think it would be possible to send a quick note to those hiring managers if you have not already?</div>

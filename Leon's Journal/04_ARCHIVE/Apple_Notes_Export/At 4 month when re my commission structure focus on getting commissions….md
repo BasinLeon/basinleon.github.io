@@ -1,1 +1,0 @@
-# At 4 month when re my commission structure focus on getting commissions…*Created: Tuesday, April 18, 2023 at 8:30:05?PM*<div><h1>At </h1><h1>4</h1><h1> mo</h1><h1>nth </h1><h1>when </h1><h1>r</h1><h1>e</h1><h1> </h1><h1>my </h1><h1>commission</h1><h1> </h1><h1>structure</h1><h1> </h1><h1>focus </h1><h1>on </h1><h1>g</h1><h1>etting </h1><h1>commissions</h1><h1> </h1></div>

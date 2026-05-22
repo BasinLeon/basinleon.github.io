@@ -1,3 +1,0 @@
-# PayPal chris and Charles shipping and receiving*Created: Wednesday, June 14, 2023 at 10:13:10?AM*<div><h1>PayPal</h1><h1> </h1><h1>chris and</h1><h1> </h1><h1>Charles </h1><h1>shipping </h1><h1>and </h1><h1>receiving </h1><h1><br></h1></div>
-<div><br></div>
-<div>Thank you so much for a great tour of PayPal and your warm hospitality, @Sriram. It’s great seeing the great work that PayPal is doing by focus on democranalizing the financial services to ensure that everyone, regardless of background or economic standing, has access to affordable, convenient, and secure products and services to take control of their financial lives. I’m looking forward to watching the greatness continuing to shine.  </div>

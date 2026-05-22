@@ -1,3 +1,0 @@
-# Magda,*Created: Thursday, October 23, 2025 at 12:34:06?PM*<div><span style="font-size: 18px">Magda,</span></div>
-<div><span style="font-size: 18px"><br></span></div>
-<div><span style="font-size: 18px">Happy to review any separation agreement. First, I need </span><b><span style="font-size: 18px">final wages today</span></b><span style="font-size: 18px"> base, accrued PTO, and </span><b><span style="font-size: 18px">all earned commission</span></b><span style="font-size: 18px"> with an </span><b><span style="font-size: 18px">itemized accounting</span></b><span style="font-size: 18px"> by deal. If any amounts aren’t yet calculable, we’ll set a date certain. After wages are handled, we can talk about severance and a release.</span></div>

@@ -1,2 +1,0 @@
-# I imagine tapping my network is not the smartest choice right now…*Created: Wednesday, October 7, 2020 at 6:40:58?PM*<div>I imagine tapping my network is not the smartest choice right now, building my story, a better understanding of my responsibilities pre-Covid19 and during is totally different. I feel that this role has increased responsibilities and growth which is great as I know more, but I need to brush up on the terminology when interviewing. </div>
-<div><br></div>

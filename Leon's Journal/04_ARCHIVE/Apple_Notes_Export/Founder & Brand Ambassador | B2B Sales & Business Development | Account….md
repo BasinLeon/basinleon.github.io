@@ -1,9 +1,0 @@
-# Founder & Brand Ambassador | B2B Sales & Business Development | Account…*Created: Tuesday, January 23, 2024 at 9:29:43?AM*<div>Founder &amp Brand Ambassador | B2B Sales &amp Business Development | Account Management <br></div>
-<div><br></div>
-<div>I am Leon Basin, a Brand Ambassador at Braintrust, the world's first and largest user-owned professional network and job marketplace. With over 10 years of experience in software, SaaS, and technology sales, I have a proven track record of generating revenue, building strategic partnerships, and delivering customer success.</div>
-<div><br></div>
-<div>My core competencies include account management, business development, digital marketing, and consultative selling. I have worked with industry leaders like Google and SurveyMonkey, where I turned complex challenges into opportunities, translated customer needs into actionable insights, and fostered relationships that led to significant commercial achievements. At Sense, I directly contributed to our commercial success by focusing on customer insights and feedback.</div>
-<div><br></div>
-<div>As a Brand Ambassador at Braintrust, I am passionate about helping the world's talent realize their potential, with access to high-paying jobs, ownership through the BTRST token, transparency, and opportunities for learning and growth. I am motivated by opportunities to contribute to enterprises where innovation and sustainability are at the forefront, and where I can align with forward-thinking organizations that share my vision and values.</div>
-<div><br></div>
-<div>I invite you to connect with me and explore how my strategic perspective and commitment to impactful growth can align with your company's vision. Together, we can forge a legacy marked by significant achievements and a commitment to societal progress.</div>

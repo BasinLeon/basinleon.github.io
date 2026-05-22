@@ -1,1 +1,0 @@
-# “I thought I’d solved a problem when really I was creating new ones…*Created: Monday, December 10, 2018 at 5:28:30?PM*<div>“I thought I’d solved a problem when really I was creating new ones by taking the path of least resistance”</div>

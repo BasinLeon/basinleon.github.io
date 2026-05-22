@@ -1,1 +1,0 @@
-# Sales, trust, and having daughters*Created: Tuesday, May 23, 2023 at 7:57:10?PM*<div><h1>Sal</h1><h1>es</h1><h1>, </h1><h1>trust</h1><h1>, </h1><h1>and </h1><h1>having </h1><h1>daughters</h1><h1> </h1></div>
