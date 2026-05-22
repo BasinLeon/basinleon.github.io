@@ -2,16 +2,20 @@
 layout: page
 title: About
 permalink: /about/
-description: "Executive operator profile for Leon Basin: GTM systems, revenue architecture, execution design, and teaching through practical frameworks."
+description: "Executive operator profile for Leon Basin: Founding GTM Member, Business Development at Obvio.ai, with a background in GTM systems, revenue architecture, execution design, and practical frameworks."
 ---
 
-I build GTM operating systems for teams that have outgrown improvisation.
+I am currently Founding GTM Member, Business Development at [Obvio.ai](https://www.obvio.ai/).
 
-My work sits at the intersection of GTM strategy, systems design, and execution architecture. I am usually brought into environments where growth is real, but execution is noisy: ownership is blurry, routing is fragile, onboarding is too manual, and too much of the motion depends on heroic effort instead of usable design.
+The background behind that work is GTM operating systems for teams that have outgrown improvisation.
+
+My work sits at the intersection of GTM strategy, systems design, and execution architecture. I have usually worked in environments where growth is real, but execution is noisy: ownership is blurry, routing is fragile, onboarding is too manual, and too much of the motion depends on heroic effort instead of usable design.
 
 Across Google, SurveyMonkey, Sense, Fudo Security, and advisory work with founder-led teams, the pattern has been consistent. The problem is rarely a lack of effort. The problem is usually that the system underneath the motion cannot keep up with the ambition on top of it.
 
 I do my best work where founders, operators, and technical teams need one model they can actually run. That means cleaner routing, clearer ownership, better signal quality, and execution that survives scrutiny.
+
+Current focus: Obvio.ai GTM execution, business development, public-sector growth systems, and selected writing/case-study work.
 
 ## What I Build
 
