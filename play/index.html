@@ -207,6 +207,13 @@
             padding-top: 40px;
         }
 
+        #codex-panel {
+            transition: border-color 0.2s ease;
+        }
+        #codex-panel:hover {
+            border-color: #D4AF37;
+        }
+
         .book-header {
             display: flex;
             justify-content: space-between;
@@ -288,7 +295,7 @@
         <div class="header-inner">
             <div class="logo">THE GAME <span style="color:#555; font-size:12px;">@leonbasinwriter</span></div>
             <div class="status-bar">
-                <div>OPERATOR SIM <span style="color:#444">v0.3</span></div>
+                <div style="color:#444"></div>
             </div>
         </div>
     </div>
@@ -320,14 +327,22 @@
         <div class="section-label">THE COURT — SURFACE LAYER</div>
         <div class="court-container">
             <canvas id="court" width="900" height="420"></canvas>
-            <div class="court-info">
-                Click on the court to aim. Current levers shape the outcome.
+            <div class="court-info" style="font-size:13px; color:#666;">
+                Set the line. The levers decide what actually moves.
             </div>
-            <div class="shot-controls" style="margin-top: 20px;">
-                <button class="btn primary" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px;">
-                    RELEASE THE SHOT
+            <div class="shot-controls" style="margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn primary" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px; background: #D4AF37; color: #000; border: none;">
+                    TAKE IT
+                </button>
+                <button class="btn" onclick="exportCourtMoment()" style="padding: 16px 28px; font-size: 14px; letter-spacing: 1px;">
+                    EXPORT MOMENT FOR X
                 </button>
             </div>
+        </div>
+
+        <!-- Subtle layer reading (no big label) -->
+        <div id="court-reading" style="margin-top: 14px; font-size: 13px; color:#888; min-height: 42px; line-height: 1.5;">
+            <span id="court-reading-text"></span>
         </div>
     </div>
 
@@ -354,9 +369,9 @@
         <div class="system">
             <div class="system-name">OPERATOR STATE</div>
             <div style="font-size:13px; line-height:1.7; color:#888;">
-                Energy drains with every shot.<br>
-                Reputation grows with consistent alignment.<br>
-                Low energy = noisier outcomes.
+                Energy drains with every committed move.<br>
+                Reputation reflects what the field has seen of you so far.<br>
+                When you're depleted, the results get noisy.
             </div>
             <div style="margin-top:16px; font-size:12px; color:#555;">
                 Current Play: <span id="current-play" style="color:#aaa">Standard</span>
@@ -442,6 +457,7 @@
             </div>
             <div class="layer-desc">Reveals itself only after sustained alignment. Not yet accessible.</div>
             <div class="layer-bar"><div class="layer-fill" id="l5-bar" style="width:0%"></div></div>
+            <button onclick="initiateKeter()" class="btn" style="margin-top:10px; font-size:12px; padding:6px 14px; display:none;" id="keter-initiate-btn">INITIATE — CROSS THE THRESHOLD</button>
         </div>
     </div>
 
@@ -450,7 +466,7 @@
         <div class="book-header">
             <div>
                 <div class="section-label">THE BOOK</div>
-                <div style="font-size:15px; color:#888;">Wagers on Resolution</div>
+                <div style="font-size:15px; color:#888;">Positions on what your actions will actually produce.</div>
             </div>
         </div>
 
@@ -473,8 +489,111 @@
             </div>
         </div>
 
+        <!-- BOOK LEDGER — X-shareable performance (the social alchemy surface) -->
+        <div style="margin: 18px 0 10px; padding: 14px 18px; background:#0a0a0a; border:1px solid #1f1f1f; border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div>
+                <div style="font-size:11px; letter-spacing:2px; color:var(--gold);">BOOK LEDGER</div>
+                <div id="book-ledger" style="font-size:13px; color:#aaa; margin-top:3px;">
+                    — • Streak — • Biggest — 
+                </div>
+            </div>
+            <button class="btn" onclick="exportBookRecord()" style="padding:9px 18px; font-size:12px; letter-spacing:1.5px;">EXPORT RECORD FOR X</button>
+        </div>
+
         <div id="book-wagers">
             <!-- Populated dynamically by JS -->
+        </div>
+
+        <!-- CODEXHUB + APPLICATIONS -->
+        <div id="codex-panel" style="margin-top: 24px; padding: 20px; background:#0a0a0a; border:1px solid #1f1f1f; border-left:4px solid #D4AF37; border-radius:6px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div>
+                    <div style="font-size:11px; letter-spacing:2px; color:#D4AF37;">CODEXHUB</div>
+                    <div style="font-size:13px; color:#aaa; margin-top:2px;">Fragments: <span id="codex-fragments">0</span></div>
+                </div>
+                <button onclick="exportCodexHubCard()" class="btn" style="font-size:11px; padding:6px 14px;">EXPORT HUB FOR X</button>
+            </div>
+
+            <div id="codex-powerups-list" style="margin-bottom:16px; font-size:13px; color:#ccc;">
+                <!-- Populated by JS -->
+            </div>
+
+            <div style="border-top:1px solid #222; padding-top:14px;">
+                <div style="font-size:11px; letter-spacing:2px; color:#D4AF37; margin-bottom:8px;">APPLICATIONS</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button onclick="applyCodex('readers-lens')" class="btn" style="font-size:12px; padding:8px 14px;">Apply Reader's Lens</button>
+                    <button onclick="applyCodex('field-anchor')" class="btn" style="font-size:12px; padding:8px 14px;">Apply Field Anchor</button>
+                    <button onclick="applyCodex('pull-weaver')" class="btn" style="font-size:12px; padding:8px 14px;">Apply Pull Weaver</button>
+                    <button onclick="applyCodex('sam-ink-transmission')" class="btn" style="font-size:12px; padding:8px 14px; background:#222; border-color:#D4AF37;">Sam & Ink Transmission</button>
+                    <button onclick="applyCodex('agent-mesh-bridge')" class="btn" style="font-size:12px; padding:8px 14px; background:#222; border-color:#D4AF37;">Agent Mesh Bridge</button>
+                    <button onclick="applyCodex('demo-arsenal')" class="btn" style="font-size:12px; padding:8px 14px; background:#222; border-color:#D4AF37;">Demo Arsenal</button>
+                </div>
+                <div style="font-size:11px; color:#555; margin-top:8px;">Applications generate operator artifacts for the field.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAM & INK TRANSMISSION - Interactive Raw Music Power-Up (Movement) -->
+    <div id="sam-ink-music" style="display:none; margin-top: 40px; padding-top: 30px; border-top: 1px solid #111;">
+        <div class="section-label">SAM & INK — TRANSMISSION</div>
+        <div style="max-width: 720px; margin-bottom: 16px; color: #888; font-size: 14px;">
+            Real raw shit. This is a movement. Use the current levers as your instrument.
+            Capture field transmissions and broadcast them.
+        </div>
+
+        <div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 6px; padding: 20px;">
+            <div style="margin-bottom: 16px;">
+                <button onclick="startSamInkAudio()" class="btn primary" style="padding: 10px 20px;">START RAW SIGNAL</button>
+                <button onclick="stopSamInkAudio()" class="btn" style="padding: 10px 20px; margin-left: 8px;">CUT</button>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <button onclick="engageSamInkLive()" class="btn" style="padding: 14px 28px; background:#1a1408; border-color:#D4AF37; font-size:14px;">ENGAGE LIVE INSTRUMENT</button>
+                <button onclick="disengageSamInkLive()" class="btn" style="padding: 14px 18px; margin-left:8px;">DISENGAGE</button>
+                <span id="sam-ink-live-status" style="margin-left:16px; font-size:12px; color:#D4AF37; letter-spacing:1px;"></span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                <button onclick="triggerSamInkSound('noise')" class="btn" style="padding: 12px;">NOISE BURST</button>
+                <button onclick="triggerSamInkSound('low')" class="btn" style="padding: 12px;">LOW GRIND</button>
+                <button onclick="triggerSamInkSound('pulse')" class="btn" style="padding: 12px;">PULSE</button>
+                <button onclick="triggerSamInkSound('ink')" class="btn" style="padding: 12px;">INK DRIP</button>
+            </div>
+
+            <div style="margin-bottom: 12px; font-size: 12px; color: #666;">
+                LIVE: Levers now directly sculpt the running signal. Aggression = grit/distortion. Patience = space/decay. Clarity = high cut & presence.
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button onclick="captureSamInkTransmission()" class="btn" style="padding: 12px 24px; background: #222; border-color: #D4AF37;">CAPTURE TRANSMISSION</button>
+                <button onclick="scanFieldRecordings()" class="btn" style="padding: 12px 18px; margin-left: 8px;">SCAN FIELD RECORDINGS</button>
+                <span style="margin-left: 12px; font-size: 12px; color: #555;">Record the current movement as a field transmission.</span>
+            </div>
+            <div id="field-recordings" style="margin-top: 12px; font-size: 12px; color: #666; min-height: 20px;"></div>
+
+            <div id="sam-ink-output" style="margin-top: 16px; font-size: 13px; color: #888; min-height: 40px; white-space: pre-wrap;"></div>
+        </div>
+    </div>
+
+    <!-- @LIBRARY - The Operator Archive (accumulating personal text) -->
+    <div id="operator-library" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #111;">
+        <div class="section-label">@LIBRARY — OPERATOR ARCHIVE</div>
+        <div style="max-width: 720px; margin-bottom: 12px; color: #888; font-size: 14px;">
+            The texts are accumulating. Your own commentary on what actually moved.
+            Consult the archive. Re-broadcast what matters.
+        </div>
+
+        <div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 6px; padding: 16px;">
+            <div id="library-entries" style="max-height: 280px; overflow-y: auto; margin-bottom: 12px; font-size: 13px; line-height: 1.5; color: #ccc;">
+                <!-- Populated dynamically -->
+                <div style="color:#555;">The archive is empty. Every real transmission will be recorded here.</div>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button onclick="consultLibrary()" class="btn" style="padding: 8px 16px;">CONSULT THE ARCHIVE</button>
+                <button onclick="exportLibrarySnapshot()" class="btn" style="padding: 8px 16px;">EXPORT LIBRARY SNAPSHOT FOR X</button>
+                <button onclick="logMediaTransmission()" class="btn" style="padding: 8px 16px; background:#222; border-color:#D4AF37;">LOG CINEMA TRANSMISSION</button>
+            </div>
         </div>
     </div>
 
@@ -522,14 +641,31 @@ let state = {
     layer5: 0,    
     totalSparksGathered: 0,
 
-    // THE BOOK - Polymarket-style wagers (veiled)
+    // THE BOOK - Polymarket-style wagers (veiled) + social alchemy layer
     book: {
-        open: [],           // current wagers
-        history: [],        // resolved wagers
+        open: [],           
+        history: [],        
         volume: 0,
         correct: 0,
-        totalResolved: 0
-    }
+        totalResolved: 0,
+        // Performance for X alchemy + consequences
+        currentStreak: 0,
+        bestStreak: 0,
+        biggestPayout: 0,
+        totalPnl: 0,           // net Sparks won/lost from the Book
+        lastOutcome: null      // for shareable moments
+    },
+
+    // THE OPERATOR CODEX (Phase 0 - Next Layer Power)
+    codex: {
+        fragments: 0,          // raw collected power
+        powerups: [],          // array of unlocked powerup ids
+        initiatedKeter: false, // deliberate initiation flag
+        rectifications: 0
+    },
+
+    // @Library - The accumulating operator archive / personal text
+    library: []   // array of {id, type, text, stats, timestamp}
 };
 
 let levers = {
@@ -545,6 +681,7 @@ function saveState() {
     localStorage.setItem('thegame_state_v1', JSON.stringify(state));
     localStorage.setItem('thegame_levers_v1', JSON.stringify(levers));
     localStorage.setItem('thegame_unlocks_v1', JSON.stringify({ layer5: unlockedLayer5 }));
+    // Codex is now part of core state — persists automatically
 }
 
 function loadState() {
@@ -552,7 +689,14 @@ function loadState() {
     const savedLevers = localStorage.getItem('thegame_levers_v1');
     const savedUnlocks = localStorage.getItem('thegame_unlocks_v1');
 
-    if (savedState) state = { ...state, ...JSON.parse(savedState) };
+    if (savedState) {
+        const loaded = JSON.parse(savedState);
+        state = { ...state, ...loaded };
+        // Ensure Codex object exists for older saves
+        if (!state.codex) {
+            state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
+        }
+    }
     if (savedLevers) levers = { ...levers, ...JSON.parse(savedLevers) };
     if (savedUnlocks) {
         const u = JSON.parse(savedUnlocks);
@@ -578,6 +722,11 @@ function updateLevers() {
     document.getElementById('agg-val').textContent = levers.aggression;
     document.getElementById('pat-val').textContent = levers.patience;
     document.getElementById('cla-val').textContent = levers.clarity;
+
+    // Live Sam & Ink instrument reacts instantly when engaged
+    if (typeof updateSamInkLiveFromLevers === 'function' && samInkLiveActive) {
+        updateSamInkLiveFromLevers();
+    }
 }
 
 function updateLayers() {
@@ -613,11 +762,17 @@ function updateAllUI() {
     updateArc();
     updateLayers();
     updateBookUI();
+    updateCodexUI();
 }
 
 // ==================== CANVAS COURT ====================
 let canvas, ctx;
 let lastShot = null;
+let currentAim = null;   // {x, y} from mouse
+let isShooting = false;  // lock during animation
+
+// Visual snapshot for exports
+let lastShotVisual = null;  // {targetX, targetY, success, reading, deltas, levers}
 
 function initCourt() {
     canvas = document.getElementById('court');
@@ -626,63 +781,165 @@ function initCourt() {
     drawCourt();
 
     canvas.addEventListener('mousemove', (e) => {
+        if (isShooting) return;
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+        currentAim = { x, y };
         drawCourt(x, y);
     });
 
-    canvas.addEventListener('mouseleave', () => drawCourt());
+    canvas.addEventListener('mouseleave', () => {
+        if (!isShooting) currentAim = null;
+        drawCourt();
+    });
+
+    // Click on court also sets aim (better feedback)
+    canvas.addEventListener('click', (e) => {
+        if (isShooting) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        currentAim = { x, y };
+        drawCourt(x, y);
+    });
 }
 
 function drawCourt(aimX = null, aimY = null) {
-    ctx.fillStyle = '#0f0f0f';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const w = canvas.width;
+    const h = canvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
 
-    // Court lines
+    // Background
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, w, h);
+
+    // Court floor (dark wood feel)
+    ctx.fillStyle = '#111';
+    ctx.fillRect(50, 50, w - 100, h - 100);
+
+    // Court boundary (stronger)
+    ctx.strokeStyle = '#2a2a2a';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(55, 55, w - 110, h - 110);
+
+    // Center line
     ctx.strokeStyle = '#222';
     ctx.lineWidth = 2;
-    ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+    ctx.beginPath();
+    ctx.moveTo(cx, 60);
+    ctx.lineTo(cx, h - 60);
+    ctx.stroke();
 
-    // Hoop area (right side)
+    // Center circle
+    ctx.beginPath();
+    ctx.arc(cx, cy, 55, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // === HOOP AREA (right side) ===
+    const hoopCenterX = w - 95;
+    const hoopCenterY = cy;
+
+    // Backboard
+    ctx.fillStyle = '#1f1f1f';
+    ctx.fillRect(hoopCenterX + 22, hoopCenterY - 48, 8, 96);
     ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(hoopCenterX + 22, hoopCenterY - 48, 8, 96);
+
+    // Rim (more visible)
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 5;
     ctx.beginPath();
-    ctx.arc(canvas.width - 120, canvas.height / 2, 60, 0, Math.PI * 2);
+    ctx.arc(hoopCenterX, hoopCenterY, 26, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Hoop
-    ctx.strokeStyle = '#444';
+    // Inner rim highlight
+    ctx.strokeStyle = '#777';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(canvas.width - 80, canvas.height / 2, 18, 0, Math.PI * 2);
+    ctx.arc(hoopCenterX, hoopCenterY, 22, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Ball
-    ctx.fillStyle = '#222';
-    ctx.beginPath();
-    ctx.arc(120, canvas.height / 2, 14, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Aim indicator
-    if (aimX && aimY) {
-        ctx.strokeStyle = 'rgba(197, 162, 111, 0.6)';
-        ctx.lineWidth = 1.5;
+    // Net suggestion (simple lines)
+    ctx.strokeStyle = 'rgba(180, 180, 180, 0.35)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++) {
+        const angle = (i - 2) * 0.18;
         ctx.beginPath();
-        ctx.moveTo(120, canvas.height / 2);
-        ctx.lineTo(aimX, aimY);
+        ctx.moveTo(hoopCenterX + Math.cos(angle) * 22, hoopCenterY + Math.sin(angle) * 8);
+        ctx.lineTo(hoopCenterX + Math.cos(angle) * 22, hoopCenterY + 38);
         ctx.stroke();
     }
 
-    // Last shot result
+    // === BALL ===
+    const ballX = 95;
+    const ballY = cy;
+    ctx.fillStyle = '#2a2a2a';
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, 16, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ball lines
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, 16, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(ballX - 16, ballY);
+    ctx.lineTo(ballX + 16, ballY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(ballX, ballY - 16);
+    ctx.lineTo(ballX, ballY + 16);
+    ctx.stroke();
+
+    // === AIM PREVIEW (much better arc) ===
+    if (aimX && aimY) {
+        const agg = levers.aggression;
+        const pat = levers.patience;
+        const cla = levers.clarity;
+
+        // Calculate arc control based on levers
+        const dx = aimX - ballX;
+        const dy = aimY - ballY;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+        // Patience = higher arc, Aggression = flatter
+        const arcHeight = (pat - 30) * 0.9 - (agg - 50) * 0.6;
+        const controlX = ballX + dx * 0.55;
+        const controlY = ballY + dy * 0.55 - arcHeight;
+
+        // Clarity = tighter / more confident preview
+        const alpha = 0.55 + (cla - 40) * 0.006;
+        ctx.strokeStyle = `rgba(212, 175, 55, ${Math.max(0.35, Math.min(0.85, alpha))})`;
+        ctx.lineWidth = 2.5;
+
+        ctx.beginPath();
+        ctx.moveTo(ballX, ballY);
+        ctx.quadraticCurveTo(controlX, controlY, aimX, aimY);
+        ctx.stroke();
+
+        // Small aim dot at end
+        ctx.fillStyle = '#D4AF37';
+        ctx.beginPath();
+        ctx.arc(aimX, aimY, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Last shot result (stronger)
     if (lastShot) {
-        ctx.fillStyle = lastShot.success ? '#C5A26F' : '#B84C3F';
-        ctx.font = '14px JetBrains Mono';
-        ctx.fillText(lastShot.message, canvas.width / 2 - 60, 60);
+        ctx.fillStyle = lastShot.success ? '#D4AF37' : '#B84C3F';
+        ctx.font = 'bold 15px JetBrains Mono';
+        ctx.fillText(lastShot.message, w / 2 - 45, 48);
     }
 }
 
-// ==================== SHOT MECHANIC ====================
+// ==================== SHOT MECHANIC (now with real animation) ====================
 function takeShot() {
-    if (!canvas) return;
+    if (!canvas || isShooting) return;
 
     const energyCost = 8 + (levers.aggression / 12);
     if (state.energy < energyCost) {
@@ -697,12 +954,151 @@ function takeShot() {
     const pat = levers.patience;
     const cla = levers.clarity;
 
-    // Base success influenced by levers + energy + reputation
+    // Calculate success (same logic as before)
     let successChance = 48 + (cla * 0.32) + (pat * 0.18) - (agg * 0.12);
     successChance += (state.reputation - 50) * 0.15;
     successChance += (state.energy - 60) * 0.12;
 
     const success = Math.random() * 100 < successChance;
+
+    // Store outcome for after animation
+    const shotOutcome = { success, agg, pat, cla };
+
+    // Use current mouse aim or default
+    const target = currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
+
+    // Start the visual shot animation
+    animateShot(target.x, target.y, shotOutcome);
+}
+
+function animateShot(targetX, targetY, outcome) {
+    isShooting = true;
+
+    const ballStartX = 95;
+    const ballStartY = canvas.height / 2;
+
+    const agg = outcome.agg;
+    const pat = outcome.pat;
+    const cla = outcome.cla || 50;
+
+    // Much more dramatic lever-reactive arc (Patience = high beautiful rainbow, Aggression = line drive / flat)
+    const dx = targetX - ballStartX;
+    const dy = targetY - ballStartY;
+    const arcHeight = (pat - 22) * 1.35 - (agg - 48) * 0.95 + (cla - 50) * 0.3;
+    const controlX = ballStartX + dx * 0.52;
+    const controlY = ballStartY + dy * 0.48 - arcHeight;
+
+    let t = 0;
+    const duration = 42; // slightly slower, more cinematic
+
+    let trail = [];
+
+    function frame() {
+        t++;
+        const progress = t / duration;
+
+        // Quadratic bezier with stronger lever personality
+        const x = (1 - progress) * (1 - progress) * ballStartX +
+                  2 * (1 - progress) * progress * controlX +
+                  progress * progress * targetX;
+
+        const y = (1 - progress) * (1 - progress) * ballStartY +
+                  2 * (1 - progress) * progress * controlY +
+                  progress * progress * targetY;
+
+        // Redraw court
+        drawCourt(targetX, targetY);
+
+        // Trail (juice)
+        trail.push({x, y});
+        if (trail.length > 7) trail.shift();
+        ctx.strokeStyle = 'rgba(212,175,55,0.35)';
+        ctx.lineWidth = 2;
+        for (let i = 1; i < trail.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(trail[i-1].x, trail[i-1].y);
+            ctx.lineTo(trail[i].x, trail[i].y);
+            ctx.stroke();
+        }
+
+        // Moving ball — slightly larger, gold
+        ctx.fillStyle = '#D4AF37';
+        ctx.beginPath();
+        ctx.arc(x, y, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(x, y, 16, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (t < duration) {
+            requestAnimationFrame(frame);
+        } else {
+            // Final impact visual based on outcome
+            drawShotImpact(x, y, outcome);
+            finishShot(outcome, targetX, targetY);
+        }
+    }
+
+    frame();
+}
+
+function drawShotImpact(x, y, outcome) {
+    // Rim / hoop hit vs clean swish vs different misses
+    const { success, agg, pat } = outcome;
+
+    if (success) {
+        // Clean swish or soft rim kiss
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(x, y - 4, 28, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Subtle net "swish" lines
+        ctx.strokeStyle = 'rgba(212,175,55,0.5)';
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < 3; i++) {
+            ctx.beginPath();
+            ctx.moveTo(x - 18 + i*9, y + 8);
+            ctx.lineTo(x - 14 + i*9, y + 32);
+            ctx.stroke();
+        }
+    } else {
+        // Miss reactions
+        const missType = (agg > 72) ? 'hard-rim' : (pat < 35) ? 'airball' : (agg < 35) ? 'short' : 'backboard';
+
+        ctx.strokeStyle = '#888';
+        ctx.lineWidth = 2;
+
+        if (missType === 'hard-rim') {
+            // Hard clang on front rim
+            ctx.beginPath();
+            ctx.arc(x, y - 6, 22, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = '#666';
+            ctx.fillRect(x - 22, y - 14, 44, 6);
+        } else if (missType === 'airball') {
+            // Weak, dying arc
+            ctx.beginPath();
+            ctx.arc(x, y + 18, 14, 0, Math.PI * 2);
+            ctx.stroke();
+        } else if (missType === 'short') {
+            ctx.beginPath();
+            ctx.moveTo(x - 20, y + 10);
+            ctx.lineTo(x + 20, y + 10);
+            ctx.stroke();
+        } else {
+            // Backboard rattle
+            ctx.fillStyle = '#444';
+            ctx.fillRect(x - 8, y - 30, 16, 38);
+        }
+    }
+}
+
+function finishShot(outcome, targetX, targetY) {
+    const { success, agg, pat, cla } = outcome;
 
     let l1 = 0, l2 = 0, l3 = 0, l4 = 0;
 
@@ -729,28 +1125,94 @@ function takeShot() {
         lastShot = { success: false, message: "NO GOOD" };
     }
 
-    // Apply to layers
+    // Track deltas before applying
+    const before = {
+        l1: state.layer1,
+        l2: state.layer2,
+        l3: state.layer3,
+        l4: state.layer4
+    };
+
+    // Apply layers
     state.layer1 = Math.min(100, Math.max(10, state.layer1 + (success ? l1 : -l1 * 0.6)));
     state.layer2 = Math.min(100, Math.max(10, state.layer2 + (success ? l2 : -l2 * 0.7)));
     state.layer3 = Math.min(100, Math.max(10, state.layer3 + (success ? l3 : -l3 * 0.6)));
 
-    // Progression & hidden rules
+    const deltas = {
+        l1: state.layer1 - before.l1,
+        l2: state.layer2 - before.l2,
+        l3: state.layer3 - before.l3,
+        l4: state.layer4 - before.l4
+    };
+
     state.totalSparksGathered += Math.floor(l4 * 0.6);
 
-    // Unlock 5th layer after meaningful progress
+    // Keter + Codex progress
     if (!unlockedLayer5 && state.totalSparksGathered >= 35 && state.reputation >= 62) {
         unlockedLayer5 = true;
         state.layer5 = 12;
+        if (!state.codex.initiatedKeter) state.codex.fragments += 1;
     }
 
     if (unlockedLayer5) {
         const hiddenGain = success ? (cla / 30) : -1;
         state.layer5 = Math.max(5, Math.min(100, state.layer5 + hiddenGain));
+        if (success && cla > 65 && Math.random() < 0.22) {
+            state.codex.fragments += 1;
+        }
     }
 
-    drawCourt();
+    // === THE READING (Zohar commentary) ===
+    const reading = generateReading(success, agg, pat, cla, deltas);
+    const readingEl = document.getElementById('court-reading-text');
+    if (readingEl) {
+        readingEl.textContent = reading;
+    }
+
+    // Auto-archive to @Library
+    autoArchive('court', reading, { sparks: state.sparks, network: Math.round(state.networkOfPulls) });
+
+    // Save high-quality visual snapshot for X exports (court moments)
+    lastShotVisual = {
+        targetX: targetX,
+        targetY: targetY,
+        success: success,
+        reading: reading,
+        deltas: deltas,
+        levers: { agg, pat, cla },
+        sparks: state.sparks,
+        network: Math.round(state.networkOfPulls),
+        xPres: Math.round(state.xPresence)
+    };
+
+    // Final redraw with result
+    drawCourt(targetX, targetY);
     updateAllUI();
     saveState();
+
+    // Small visual feedback on hoop when success
+    if (success) {
+        setTimeout(() => {
+            if (canvas && ctx) {
+                const hoopX = canvas.width - 95;
+                const hoopY = canvas.height / 2;
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(hoopX, hoopY, 32, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }, 80);
+    }
+
+    isShooting = false;
+    // Keep the last aim visible for a moment
+    setTimeout(() => {
+        if (!isShooting) {
+            currentAim = null;
+            drawCourt();
+        }
+    }, 650);
 }
 
 // ==================== X LAYER: BROADCAST ====================
@@ -857,6 +1319,10 @@ function postToX(context = 'general') {
                `#TheGame #Operator`;
     }
 
+    // Broadcasting moves live markets (X as actual field)
+    influenceMarkets("x-post");
+    }
+
     // Copy to clipboard
     navigator.clipboard.writeText(text).then(() => {
         // Open X compose with prefilled text
@@ -941,35 +1407,853 @@ function feelThePulls() {
     alert(`${message}\n\n+${Math.floor(sparkGain)} Sparks\nNetwork of Pulls now at ${Math.round(state.networkOfPulls)}`);
 }
 
-// ==================== THE BOOK (Prediction Market Mechanics) ====================
+// ==================== LAYER READING (subtle, not announced) ====================
+function generateReading(success, agg, pat, cla, layerDeltas) {
+    const l1 = layerDeltas.l1 || 0;
+    const l2 = layerDeltas.l2 || 0;
+    const l3 = layerDeltas.l3 || 0;
+    const l4 = layerDeltas.l4 || 0;
+
+    let lines = [];
+
+    if (success) {
+        if (cla > 68 && pat > 58) {
+            lines.push("Clean transmission. Multiple layers registered the same move.");
+        } else if (agg > 72) {
+            lines.push("Fast and heavy. The surface took it, but the pattern underneath is still settling.");
+        } else {
+            lines.push("The action landed across a few layers without major distortion.");
+        }
+
+        if (l4 > 6) {
+            lines.push("Something real accumulated.");
+        } else if (l3 > 5) {
+            lines.push("This one will show up again later.");
+        }
+    } else {
+        if (agg > 68) {
+            lines.push("Too much force, not enough alignment. The field pushed back.");
+        } else if (cla < 38) {
+            lines.push("The move was unclear even in the moment it happened.");
+        } else {
+            lines.push("The action created friction that will need to be dealt with.");
+        }
+    }
+
+    return lines.join(" ");
+}
+
+// ==================== KETER INITIATION + CODEX (Phase 0 Power) ====================
+function initiateKeter() {
+    if (!unlockedLayer5) {
+        alert("You have not yet reached the threshold.");
+        return;
+    }
+    if (state.codex.initiatedKeter) {
+        alert("You have already crossed. The Hidden remembers.");
+        return;
+    }
+    if (state.energy < 35 || state.sparks < 60) {
+        alert("Initiation demands real cost. You are not yet ready.");
+        return;
+    }
+
+    // The real threshold moment — deliberate, expensive, consequential
+    state.energy -= 35;
+    state.sparks -= 60;
+    state.codex.initiatedKeter = true;
+    state.codex.fragments += 3; // strong first Codex reward
+
+    // Immediate Keter surge
+    state.layer5 = Math.min(100, state.layer5 + 22);
+    state.networkOfPulls = Math.min(100, state.networkOfPulls + 11);
+    state.reputation = Math.min(100, state.reputation + 8);
+
+    // First Codex powerup — "The Reader's Lens"
+    if (!state.codex.powerups.includes('readers-lens')) {
+        state.codex.powerups.push('readers-lens');
+    }
+
+    updateAllUI();
+    updateCodexUI();
+    saveState();
+
+    alert("You have initiated into Keter.\n\nThe Hidden now sees you.\n+3 Codex fragments. The Reader's Lens acquired.\n\nThis changes everything.");
+}
+
+function updateCodexUI() {
+    // Show/hide the Initiate button
+    const btn = document.getElementById('keter-initiate-btn');
+    if (btn) {
+        if (unlockedLayer5 && !state.codex.initiatedKeter) {
+            btn.style.display = 'inline-block';
+        } else {
+            btn.style.display = 'none';
+        }
+    }
+
+    // Live Codex panel
+    const fragEl = document.getElementById('codex-fragments');
+    const powEl = document.getElementById('codex-powerups');
+    if (fragEl) fragEl.textContent = state.codex.fragments || 0;
+    if (powEl) {
+        if (state.codex.powerups && state.codex.powerups.length > 0) {
+            powEl.innerHTML = state.codex.powerups.map(p => {
+                if (p === 'readers-lens') return '<span style="color:#D4AF37">Reader\'s Lens</span>';
+                return p;
+            }).join(', ');
+        } else {
+            powEl.textContent = '—';
+        }
+    }
+
+    // Console for operator visibility
+    if (state.codex.fragments > 0 || (state.codex.powerups && state.codex.powerups.length > 0)) {
+        console.log('%c[CODEX] Fragments:', 'color:#D4AF37', state.codex.fragments, 'Powerups:', state.codex.powerups);
+    }
+
+    // CodexHub powerups list with descriptions
+    const listEl = document.getElementById('codex-powerups-list');
+    if (listEl) {
+        if (!state.codex.powerups || state.codex.powerups.length === 0) {
+            listEl.innerHTML = '<span style="color:#555;">No active powerups. Initiate into Keter to begin.</span>';
+        } else {
+            const descriptions = {
+                'readers-lens': 'Reveals clearer probabilities in The Book',
+                'field-anchor': 'Stabilizes X Presence volatility',
+                'pull-weaver': 'Direct influence on Network of Pulls',
+                'sam-ink-transmission': 'Raw interactive music power-up from the Sam & Ink movement',
+                'agent-mesh-bridge': 'Import and transmute Obsidian Agent Mesh runlogs into Codex fragments and field transmissions',
+                'demo-arsenal': 'Deploy the real ~/Demo-Arsenal environment, record field operations, and transmute them into Library/Audio artifacts + X transmissions'
+            };
+            listEl.innerHTML = state.codex.powerups.map(p => {
+                const desc = descriptions[p] || 'Active operator technology';
+                return `<div style="margin:4px 0; color:#D4AF37;">• ${p.replace(/-/g,' ')} <span style="color:#666; font-size:12px;">— ${desc}</span></div>`;
+            }).join('');
+        }
+    }
+}
+
+// Apply Codex powerup (Application) — game effect + perfect X artifact
+function applyCodex(powerupId) {
+    if (!state.codex.powerups.includes(powerupId)) {
+        alert("You do not possess this powerup yet.");
+        return;
+    }
+
+    let effectText = '';
+    let xCopy = '';
+
+    if (powerupId === 'readers-lens') {
+        // Temporary Book clarity boost
+        window.codexLensActive = (window.codexLensActive || 0) + 8;
+        effectText = 'Reader\'s Lens applied. Book probabilities clarified for the next several resolutions.';
+        xCopy = `Applied Reader's Lens through CodexHub. The Book now reads cleaner. @CodexHub @Applications`;
+    } else if (powerupId === 'field-anchor') {
+        state.xPresence = Math.min(100, state.xPresence + 12);
+        effectText = 'Field Anchor engaged. X Presence stabilized.';
+        xCopy = `Field Anchor applied via CodexHub. Signal locked in. @CodexHub @Applications`;
+    } else if (powerupId === 'pull-weaver') {
+        state.networkOfPulls = Math.min(100, state.networkOfPulls + 9);
+        effectText = 'Pull Weaver activated. The Network shifts under deliberate hand.';
+        xCopy = `Pull Weaver deployed from CodexHub. The field responded. @CodexHub @Applications`;
+    } else if (powerupId === 'sam-ink-transmission') {
+        // Activate the raw music power-up
+        showSamInkMusicTool();
+        effectText = 'Sam & Ink Transmission activated. Raw movement engaged.';
+        xCopy = `Sam & Ink Transmission live from the field. Real raw shit. This is a movement. @CodexHub @Applications`;
+    } else if (powerupId === 'agent-mesh-bridge') {
+        // Bridge to the real Obsidian Agent Mesh (one body)
+        effectText = 'Agent Mesh Bridge engaged. The vault\'s nervous system speaks through the simulation.';
+        xCopy = `Agent Mesh Bridge active. Obsidian runs now feed the field directly. @CodexHub @Applications`;
+        // Open a simple bridge interface
+        setTimeout(() => showAgentMeshBridge(), 80);
+    } else if (powerupId === 'demo-arsenal') {
+        // Deploy real ~/Demo-Arsenal/scripts + @Library/Audio ritual
+        effectText = 'Demo Arsenal deployed. Real scripts engaged. Recording now feeds the Operator Library and the field.';
+        xCopy = `Demo Arsenal live. Scripts + recordings now move as operator transmissions. @CodexHub @Applications @DemoArsenal`;
+        setTimeout(() => showDemoArsenalPowerup(), 80);
+    }
+
+    updateAllUI();
+    updateCodexUI();
+    saveState();
+
+    // Generate beautiful X artifact for this Application
+    createCodexApplicationCard(powerupId, effectText, xCopy);
+}
+
+async function createCodexApplicationCard(powerupId, effect, tweetText) {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 1080;
+    exportCanvas.height = 1080;
+    const ctx = exportCanvas.getContext('2d');
+
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    ctx.strokeStyle = 'rgba(212,175,55,0.07)';
+    ctx.lineWidth = 1;
+    for (let i = 60; i < 1080; i += 60) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1080); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
+    }
+
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(50, 50, 980, 980);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 28px Space Grotesk, sans-serif';
+    ctx.fillText('CODEXHUB APPLICATION', 90, 130);
+
+    ctx.fillStyle = '#888';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText('@leonbasinwriter  •  THE GAME', 90, 165);
+
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '32px Space Grotesk, sans-serif';
+    ctx.fillText(powerupId.replace(/-/g, ' ').toUpperCase(), 90, 280);
+
+    ctx.fillStyle = '#ccc';
+    ctx.font = '22px Inter, system-ui';
+    const lines = wrapText(effect, 38);
+    let y = 360;
+    lines.forEach(l => { ctx.fillText(l, 90, y); y += 34; });
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    await shareVisualForX(exportCanvas, `codex-${powerupId}`, tweetText, 5);
+}
+
+async function exportCodexHubCard() {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 1080;
+    exportCanvas.height = 1080;
+    const ctx = exportCanvas.getContext('2d');
+
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    ctx.strokeStyle = 'rgba(212,175,55,0.07)';
+    ctx.lineWidth = 1;
+    for (let i = 60; i < 1080; i += 60) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1080); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
+    }
+
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(50, 50, 980, 980);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 32px Space Grotesk, sans-serif';
+    ctx.fillText('CODEXHUB', 90, 130);
+
+    ctx.fillStyle = '#888';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText('@leonbasinwriter  •  OPERATOR ARCHIVE', 90, 165);
+
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '24px Inter, system-ui';
+    ctx.fillText(`Fragments: ${state.codex.fragments}`, 90, 260);
+
+    const powerupNames = (state.codex.powerups || []).map(p => p.replace(/-/g,' ')).join(' • ') || 'None active';
+    ctx.fillText(`Active: ${powerupNames}`, 90, 310);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    const tweetText = `CodexHub status: ${state.codex.fragments} fragments active. The operator builds infrastructure. @CodexHub @Applications`;
+    await shareVisualForX(exportCanvas, 'codexhub', tweetText, 3);
+}
+
+// ==================== SAM & INK TRANSMISSION - Raw Interactive Music Power-Up (Movement) ====================
+let samInkAudioContext = null;
+let samInkSounds = {};
+let samInkLiveActive = false;
+let samInkLiveNodes = {}; // {noise, filter, gain, dist, oscs...}
+let samInkLiveRaf = null;
+
+function showSamInkMusicTool() {
+    const panel = document.getElementById('sam-ink-music');
+    if (panel) {
+        panel.style.display = 'block';
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (state.codex) {
+        state.codex.fragments = (state.codex.fragments || 0) + 1;
+        updateCodexUI();
+    }
+}
+
+function startSamInkAudio() {
+    if (!samInkAudioContext) {
+        samInkAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (samInkAudioContext.state === 'suspended') {
+        samInkAudioContext.resume();
+    }
+}
+
+function stopSamInkAudio() {
+    Object.values(samInkSounds).forEach(sound => {
+        if (sound && sound.stop) { try { sound.stop(); } catch(e){} }
+    });
+    samInkSounds = {};
+}
+
+function triggerSamInkSound(type) {
+    if (!samInkAudioContext) startSamInkAudio();
+    const agg = levers.aggression || 50;
+    const pat = levers.patience || 50;
+    const cla = levers.clarity || 50;
+    const now = samInkAudioContext.currentTime;
+
+    if (type === 'noise') {
+        const bufferSize = samInkAudioContext.sampleRate * 0.8;
+        const buffer = samInkAudioContext.createBuffer(1, bufferSize, samInkAudioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = samInkAudioContext.createBufferSource();
+        noise.buffer = buffer;
+        const filter = samInkAudioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 200 + (agg * 8);
+        const gain = samInkAudioContext.createGain();
+        gain.gain.value = 0.6 + (cla / 300);
+        const dist = samInkAudioContext.createWaveShaper();
+        dist.curve = makeDistortionCurve(agg * 1.2);
+        noise.connect(filter); filter.connect(dist); dist.connect(gain); gain.connect(samInkAudioContext.destination);
+        noise.start(now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.7 + (pat / 120));
+        samInkSounds['noise'] = noise;
+    }
+    if (type === 'low') {
+        const osc = samInkAudioContext.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.value = 40 + (pat * 0.4);
+        const filter = samInkAudioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 180 + (agg * 3);
+        const gain = samInkAudioContext.createGain();
+        gain.gain.value = 0.4;
+        osc.connect(filter); filter.connect(gain); gain.connect(samInkAudioContext.destination);
+        osc.start(now);
+        setTimeout(() => { gain.gain.linearRampToValueAtTime(0.001, samInkAudioContext.currentTime + 0.6); osc.stop(samInkAudioContext.currentTime + 0.8); }, 1200);
+        samInkSounds['low'] = osc;
+    }
+    if (type === 'pulse' || type === 'ink') {
+        const osc = samInkAudioContext.createOscillator();
+        osc.type = 'square';
+        osc.frequency.value = type === 'ink' ? 600 + (cla * 5) : 80 + (cla * 2);
+        const gain = samInkAudioContext.createGain();
+        gain.gain.value = 0.25;
+        osc.connect(gain); gain.connect(samInkAudioContext.destination);
+        osc.start(now);
+        setTimeout(() => { gain.gain.linearRampToValueAtTime(0.001, samInkAudioContext.currentTime + 0.35); osc.stop(samInkAudioContext.currentTime + 0.4); }, 600);
+        samInkSounds[type] = osc;
+    }
+}
+
+function makeDistortionCurve(amount) {
+    const n = 44100;
+    const curve = new Float32Array(n);
+    const deg = Math.PI * amount / 10;
+    for (let i = 0; i < n; i++) {
+        const x = (i * 2 / n) - 1;
+        curve[i] = (3 + deg) * x * 20 * Math.PI / (Math.PI + deg * Math.abs(x));
+    }
+    return curve;
+}
+
+// ==================== LIVE SAM & INK INSTRUMENT (lever-reactive real-time) ====================
+function engageSamInkLive() {
+    if (!samInkAudioContext) startSamInkAudio();
+    if (samInkLiveActive) return;
+
+    samInkLiveActive = true;
+    const now = samInkAudioContext.currentTime;
+
+    // Master live noise + filtered grind layer (the "instrument body")
+    const bufferSize = samInkAudioContext.sampleRate * 4;
+    const buffer = samInkAudioContext.createBuffer(1, bufferSize, samInkAudioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = samInkAudioContext.createBufferSource();
+    noise.buffer = buffer;
+    noise.loop = true;
+
+    const noiseFilter = samInkAudioContext.createBiquadFilter();
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.value = 800;
+
+    const noiseDist = samInkAudioContext.createWaveShaper();
+    noiseDist.curve = makeDistortionCurve(60);
+
+    const noiseGain = samInkAudioContext.createGain();
+    noiseGain.gain.value = 0.55;
+
+    // Secondary low drone (Patience = space)
+    const drone = samInkAudioContext.createOscillator();
+    drone.type = 'sawtooth';
+    drone.frequency.value = 38;
+
+    const droneFilter = samInkAudioContext.createBiquadFilter();
+    droneFilter.type = 'lowpass';
+    droneFilter.frequency.value = 220;
+
+    const droneGain = samInkAudioContext.createGain();
+    droneGain.gain.value = 0.32;
+
+    // High presence / ink layer (Clarity = cut)
+    const inkOsc = samInkAudioContext.createOscillator();
+    inkOsc.type = 'square';
+    inkOsc.frequency.value = 720;
+
+    const inkGain = samInkAudioContext.createGain();
+    inkGain.gain.value = 0.08;
+
+    // Connect the live graph
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseDist);
+    noiseDist.connect(noiseGain);
+    noiseGain.connect(samInkAudioContext.destination);
+
+    drone.connect(droneFilter);
+    droneFilter.connect(droneGain);
+    droneGain.connect(samInkAudioContext.destination);
+
+    inkOsc.connect(inkGain);
+    inkGain.connect(samInkAudioContext.destination);
+
+    noise.start(now);
+    drone.start(now);
+    inkOsc.start(now);
+
+    samInkLiveNodes = {
+        noise, noiseFilter, noiseDist, noiseGain,
+        drone, droneFilter, droneGain,
+        inkOsc, inkGain
+    };
+
+    const status = document.getElementById('sam-ink-live-status');
+    if (status) status.textContent = '● LIVE — MOVE THE LEVERS';
+
+    // Immediately apply current levers
+    updateSamInkLiveFromLevers();
+
+    // Keep it breathing with subtle movement
+    if (samInkLiveRaf) cancelAnimationFrame(samInkLiveRaf);
+    function liveTick() {
+        if (!samInkLiveActive) return;
+        updateSamInkLiveFromLevers();
+        samInkLiveRaf = requestAnimationFrame(liveTick);
+    }
+    samInkLiveRaf = requestAnimationFrame(liveTick);
+
+    // Award a fragment for engaging the real instrument
+    if (state.codex) {
+        state.codex.fragments = (state.codex.fragments || 0) + 1;
+        updateCodexUI();
+    }
+}
+
+function disengageSamInkLive() {
+    samInkLiveActive = false;
+    if (samInkLiveRaf) {
+        cancelAnimationFrame(samInkLiveRaf);
+        samInkLiveRaf = null;
+    }
+    if (samInkLiveNodes.noise && samInkLiveNodes.noise.stop) {
+        try { samInkLiveNodes.noise.stop(); } catch(e){}
+    }
+    if (samInkLiveNodes.drone && samInkLiveNodes.drone.stop) {
+        try { samInkLiveNodes.drone.stop(); } catch(e){}
+    }
+    if (samInkLiveNodes.inkOsc && samInkLiveNodes.inkOsc.stop) {
+        try { samInkLiveNodes.inkOsc.stop(); } catch(e){}
+    }
+    samInkLiveNodes = {};
+
+    const status = document.getElementById('sam-ink-live-status');
+    if (status) status.textContent = '';
+
+    // Keep the one-shot buttons functional
+}
+
+function updateSamInkLiveFromLevers() {
+    if (!samInkLiveActive || !samInkLiveNodes.noiseGain) return;
+
+    const agg = levers.aggression || 50;
+    const pat = levers.patience || 50;
+    const cla = levers.clarity || 50;
+
+    // Aggression → grit + distortion + brighter filter
+    if (samInkLiveNodes.noiseFilter) {
+        samInkLiveNodes.noiseFilter.frequency.value = 420 + (agg * 9);
+    }
+    if (samInkLiveNodes.noiseDist) {
+        samInkLiveNodes.noiseDist.curve = makeDistortionCurve(30 + agg * 0.9);
+    }
+    if (samInkLiveNodes.noiseGain) {
+        samInkLiveNodes.noiseGain.gain.value = 0.38 + (agg * 0.003);
+    }
+
+    // Patience → space / low drone body + slower decay feel
+    if (samInkLiveNodes.droneFilter) {
+        samInkLiveNodes.droneFilter.frequency.value = 140 + (pat * 1.8);
+    }
+    if (samInkLiveNodes.droneGain) {
+        samInkLiveNodes.droneGain.gain.value = 0.22 + (pat * 0.0022);
+    }
+
+    // Clarity → high presence / cut / ink definition
+    if (samInkLiveNodes.inkOsc) {
+        samInkLiveNodes.inkOsc.frequency.value = 640 + (cla * 4.2);
+    }
+    if (samInkLiveNodes.inkGain) {
+        samInkLiveNodes.inkGain.gain.value = 0.055 + (cla * 0.0018);
+    }
+}
+
+function captureSamInkTransmission() {
+    const agg = Math.round(levers.aggression || 50);
+    const pat = Math.round(levers.patience || 50);
+    const cla = Math.round(levers.clarity || 50);
+    const live = samInkLiveActive ? 'LIVE ' : '';
+
+    let transmission = `${live}Sam & Ink transmission. Grit ${agg}. Space ${pat}. Cut ${cla}.`;
+    if (samInkLiveActive) {
+        transmission += `\nThe levers were the instrument. The signal was moved in real time.`;
+    }
+    transmission += `\nReal raw shit moved. This is a movement.`;
+
+    const output = document.getElementById('sam-ink-output');
+    if (output) output.textContent = transmission;
+
+    // Auto-archive to @Library with richer metadata
+    autoArchive('sam-ink', transmission, { 
+        agg, pat, cla, 
+        live: samInkLiveActive,
+        layer: Math.round(state.layer1 || 0),
+        bookEdge: state.bookEdge || 0
+    });
+
+    createSamInkTransmissionCard(transmission, agg, pat, cla, samInkLiveActive);
+}
+
+function scanFieldRecordings() {
+    const container = document.getElementById('field-recordings');
+    if (!container) return;
+
+    // References to the operator's actual music library (raw, real files from Application Support/Music and Music folder)
+    const knownRecordings = [
+        "313 Chetwood Dr 4.m4a",
+        "Hope_FirstDraft.mp3 (Leon And Elvis)",
+        "Library/Application Support/Music — Apple Music server objects & playback streams"
+    ];
+
+    container.innerHTML = `<span style="color:#D4AF37;">Field recordings available:</span> ${knownRecordings.join(" • ")}<br><span style="color:#555;">Use these as raw material when capturing. The Library already knows these frequencies.</span>`;
+}
+
+async function createSamInkTransmissionCard(transmission, agg, pat, cla, wasLive = false) {
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+
+    // Live sessions get a stronger gold frame
+    if (wasLive) {
+        ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=6;
+        ctx.strokeRect(38,38,1004,1004);
+    }
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 26px Space Grotesk, sans-serif';
+    ctx.fillText(wasLive ? 'SAM & INK — LIVE TRANSMISSION' : 'SAM & INK TRANSMISSION', 90, 120);
+    ctx.fillStyle = '#888'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText(`@leonbasinwriter  •  AGG ${agg} PAT ${pat} CLA ${cla}${wasLive ? '  •  LIVE' : ''}`, 90, 155);
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '22px Inter, system-ui';
+    wrapText(transmission, 42).forEach((l,i) => ctx.fillText(l, 90, 240 + i*36));
+    ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    const tweet = transmission.replace(/\n/g,' ') + ' This is a movement.';
+    await shareVisualForX(c, wasLive ? 'sam-ink-live' : 'sam-ink', tweet, wasLive ? 7 : 5);
+}
+
+// ==================== @LIBRARY - Operator Archive System ====================
+function addToLibrary(entry) {
+    if (!state.library) state.library = [];
+    entry.id = Date.now();
+    entry.timestamp = Date.now();
+    state.library.unshift(entry); // newest first
+    if (state.library.length > 20) state.library.pop(); // keep it lean
+    renderLibrary();
+    saveState();
+}
+
+function renderLibrary() {
+    const container = document.getElementById('library-entries');
+    if (!container) return;
+
+    if (!state.library || state.library.length === 0) {
+        container.innerHTML = '<div style="color:#555;">The archive is empty. Every real transmission will be recorded here.</div>';
+        return;
+    }
+
+    container.innerHTML = state.library.map(entry => {
+        const date = new Date(entry.timestamp).toLocaleDateString();
+        let preview = entry.text ? entry.text.substring(0, 120) + (entry.text.length > 120 ? '...' : '') : '';
+        if (entry.type === 'sam-ink') preview = entry.text || 'Sam & Ink transmission';
+
+        return `
+            <div style="border-bottom:1px solid #222; padding:8px 0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                <div style="flex:1;">
+                    <div style="font-size:11px; color:#666;">${entry.type.toUpperCase()} • ${date}</div>
+                    <div style="margin-top:4px;">${preview}</div>
+                    ${entry.stats ? `<div style="font-size:11px; color:#555; margin-top:4px;">${JSON.stringify(entry.stats)}</div>` : ''}
+                </div>
+                <button onclick="reExportFromLibrary(${entry.id})" class="btn" style="font-size:11px; padding:4px 10px; flex-shrink:0;">RE-EXPORT</button>
+            </div>
+        `;
+    }).join('');
+}
+
+function reExportFromLibrary(id) {
+    const entry = (state.library || []).find(e => e.id === id);
+    if (!entry) return;
+
+    const text = entry.text || 'Field transmission from the archive.';
+    const tweetText = `${text} (from the Operator Archive)`;
+
+    // Create a simple archive-style card
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 24px Space Grotesk, sans-serif';
+    ctx.fillText('@LIBRARY — ARCHIVED TRANSMISSION', 90, 120);
+
+    ctx.fillStyle = '#888'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText(`${entry.type.toUpperCase()} • ${new Date(entry.timestamp).toLocaleDateString()}`, 90, 155);
+
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
+    wrapText(text, 44).forEach((l,i) => ctx.fillText(l, 90, 220 + i*30));
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    shareVisualForX(c, 'library-entry', tweetText, 2);
+}
+
+function consultLibrary() {
+    if (!state.library || state.library.length === 0) {
+        alert("The archive is silent. Create transmissions first.");
+        return;
+    }
+
+    // Pick a random past entry and give a small thematic buff
+    const entry = state.library[Math.floor(Math.random() * state.library.length)];
+    let buff = '';
+
+    if (entry.type === 'court' || entry.type === 'reading') {
+        state.clarity = (state.clarity || 50) + 6; // temporary mental model
+        buff = 'The old reading clarified the current line.';
+    } else if (entry.type === 'sam-ink') {
+        state.networkOfPulls = Math.min(100, state.networkOfPulls + 5);
+        buff = 'The raw transmission resonated. The Network stirred.';
+    } else {
+        state.reputation = Math.min(100, state.reputation + 4);
+        buff = 'The archive reminded you who you are becoming.';
+    }
+
+    updateAllUI();
+    saveState();
+
+    const output = document.getElementById('sam-ink-output') || document.createElement('div');
+    if (output) {
+        output.textContent = `Consulted the Library: ${buff}`;
+    }
+    alert(`Library consulted.\n\n${buff}`);
+}
+
+async function exportLibrarySnapshot() {
+    if (!state.library || state.library.length === 0) {
+        alert("Nothing in the archive yet.");
+        return;
+    }
+
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 28px Space Grotesk, sans-serif';
+    ctx.fillText('@LIBRARY — OPERATOR ARCHIVE', 90, 120);
+
+    ctx.fillStyle = '#888'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText(`${state.library.length} entries  •  @leonbasinwriter`, 90, 155);
+
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '18px Inter, system-ui';
+    let y = 220;
+    state.library.slice(0,6).forEach((entry, i) => {
+        const short = (entry.text || '').substring(0, 70) + '...';
+        ctx.fillText(`${i+1}. ${short}`, 90, y);
+        y += 28;
+    });
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    const tweetText = `Operator Archive snapshot: ${state.library.length} transmissions recorded. The texts are compounding. @CodexHub @Applications`;
+    await shareVisualForX(c, 'library-snapshot', tweetText, 3);
+}
+
+// Simple cinema transmission logger (ties @Movies/TV into the Library + X flow)
+function logMediaTransmission() {
+    const title = prompt("Film or series title? (e.g., 'The Substance (2024)')");
+    if (!title) return;
+
+    const note = prompt("One raw transmission line (what it activated):");
+    if (!note) return;
+
+    const entry = {
+        type: 'movies-tv',
+        text: `${title} — ${note}`,
+        stats: { source: 'Agent Mesh / Movies/TV specialist' }
+    };
+
+    addToLibrary(entry);
+
+    // Auto-offer X artifact using the established alchemy
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 24px Space Grotesk, sans-serif';
+    ctx.fillText('MOVIES/TV FIELD NOTE', 90, 120);
+
+    ctx.fillStyle = '#888'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText('Agent Mesh Specialist • @CodexHub @Applications', 90, 155);
+
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
+    wrapText(entry.text, 44).forEach((l,i) => ctx.fillText(l, 90, 220 + i*30));
+
+    ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    const tweetText = `${entry.text} Cinema as another court.`;
+    shareVisualForX(c, 'cinema-transmission', tweetText, 3);
+}
+
+// Auto-archive hook (call this from existing capture points)
+function autoArchive(type, text, stats = {}) {
+    addToLibrary({ type, text, stats });
+}
+
+// Hook into existing systems (examples - these will be called from the relevant functions)
+const originalCaptureSamInk = window.captureSamInkTransmission || function(){};
+window.captureSamInkTransmission = function() {
+    originalCaptureSamInk();
+    // The capture function already updates the output - we can enhance later
+};
+
+// For now, we'll manually call autoArchive in key places in future refinements.
 
 function getAvailableWagers() {
     const w = [];
     const n = state.networkOfPulls;
     const x = state.xPresence;
     const e = state.energy;
+    const l4 = state.layer4;
+    const refineryBonus = (window.lastRefineryQuality || 0);
 
-    // Dynamic wagers based on current state (like live markets)
+    // Codex powerup: Reader's Lens — reveals more accurate probabilities
+    const hasReadersLens = state.codex && state.codex.powerups.includes('readers-lens');
+    const lensClarity = hasReadersLens ? 14 : 0;
+
+    // Core live markets — higher stakes, more variety
     w.push({
         id: 'net-high',
         question: `Network of Pulls above 60 after 5 more actions?`,
-        prob: Math.min(85, Math.max(15, 30 + (n - 40) * 0.8)),
-        stake: 25
+        prob: Math.min(88, Math.max(12, 28 + (n - 40) * 0.85 + lensClarity)),
+        stake: 35
     });
 
     w.push({
         id: 'x-up',
         question: `X Presence increases by 8+ before Energy drops below 40?`,
-        prob: Math.min(80, Math.max(20, 45 + (x - 50) * 0.6 - (e < 60 ? 15 : 0))),
-        stake: 20
+        prob: Math.min(82, Math.max(18, 42 + (x - 50) * 0.55 - (e < 55 ? 18 : 0))),
+        stake: 30
     });
 
+    // New: Layer / Refinery-tied markets
+    w.push({
+        id: 'spark-surge',
+        question: `Layer 4 (Spark) rises 12+ in next 6 shots?`,
+        prob: Math.min(79, Math.max(21, 35 + (l4 - 45) * 0.6 + refineryBonus * 0.4)),
+        stake: 40
+    });
+
+    w.push({
+        id: 'lever-balance',
+        question: `All three Levers within 12 points of each other after next resolution?`,
+        prob: Math.min(75, Math.max(25, 48 + (Math.abs(levers.aggression - levers.patience) < 15 ? 12 : -8))),
+        stake: 28
+    });
+
+    // Higher-stakes "Alpha" markets (appear with progression)
+    if (state.book.totalResolved > 4 || state.sparks > 120) {
+        w.push({
+            id: 'alpha-pull',
+            question: `A single action moves the Network by 15+ in either direction?`,
+            prob: Math.min(68, Math.max(18, 32 + (n > 70 ? 15 : 0) + (state.reputation > 70 ? 10 : 0) + (lensClarity * 0.6))),
+            stake: 85
+        });
+    }
+
+    // Hidden layer high-consequence markets
     if (unlockedLayer5) {
         w.push({
             id: 'hidden-move',
             question: `The Hidden layer moves by 10+ in the next 7 shots?`,
-            prob: Math.min(75, Math.max(25, 40 + (state.layer5 - 30) * 0.5)),
-            stake: 30
+            prob: Math.min(72, Math.max(22, 38 + (state.layer5 - 28) * 0.55)),
+            stake: 55
+        });
+        w.push({
+            id: 'hidden-alpha',
+            question: `The Hidden reaches 45+ before any major distortion event?`,
+            prob: Math.min(65, Math.max(15, 29 + state.layer5 * 0.4)),
+            stake: 120   // serious capital at risk — social alchemy material
+        });
+    }
+
+    // Rare high-payout "black swan" style
+    if (state.shots > 12) {
+        w.push({
+            id: 'black-swan',
+            question: `Next 4 shots produce +180 combined Sparks (rare alignment)?`,
+            prob: Math.min(38, Math.max(8, 14 + (state.networkOfPulls > 75 ? 18 : 0))),
+            stake: 65
         });
     }
 
@@ -1015,27 +2299,71 @@ function resolveWagers() {
     const e = state.energy;
 
     const stillOpen = [];
+    let bigEventTriggered = false;
 
     state.book.open.forEach(pos => {
         let resolved = false;
         let correct = false;
 
+        // Core resolutions
         if (pos.wagerId === 'net-high') {
             resolved = true;
             correct = (n > 60) === (pos.side === 'yes');
         }
         if (pos.wagerId === 'x-up') {
             resolved = (e < 40);
-            correct = ((x - 35) >= 8) === (pos.side === 'yes'); // rough proxy
+            correct = ((x - 35) >= 8) === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'spark-surge') {
+            resolved = true;
+            correct = (state.layer4 > (pos.createdAt ? 52 : 48)) === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'lever-balance') {
+            resolved = true;
+            const balanced = Math.abs(levers.aggression - levers.patience) < 15 && Math.abs(levers.patience - levers.clarity) < 15;
+            correct = balanced === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'alpha-pull') {
+            resolved = true;
+            correct = (Math.abs(state.networkOfPulls - n) >= 12) === (pos.side === 'yes');
         }
         if (pos.wagerId === 'hidden-move' && unlockedLayer5) {
             resolved = true;
-            correct = (state.layer5 > 30) === (pos.side === 'yes'); // simplified
+            correct = (state.layer5 > 30) === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'hidden-alpha' && unlockedLayer5) {
+            resolved = true;
+            correct = (state.layer5 >= 45) === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'black-swan') {
+            resolved = true;
+            correct = false; // rare by design — big upside when it hits
+            // We'll override payout logic below for drama
         }
 
         if (resolved) {
-            const payout = correct ? Math.floor(pos.stake * (100 / pos.prob)) : 0;
+            let payout = correct ? Math.floor(pos.stake * (100 / Math.max(12, pos.prob))) : 0;
+
+            // Black swan drama
+            if (pos.wagerId === 'black-swan' && correct) payout = 240;
+
             state.sparks += payout;
+            state.book.totalPnl = (state.book.totalPnl || 0) + (payout - pos.stake);
+
+            // Streak tracking
+            if (correct) {
+                state.book.currentStreak = (state.book.currentStreak || 0) + 1;
+                if (state.book.currentStreak > (state.book.bestStreak || 0)) {
+                    state.book.bestStreak = state.book.currentStreak;
+                }
+            } else {
+                state.book.currentStreak = 0;
+            }
+
+            // Track biggest
+            if (payout > (state.book.biggestPayout || 0)) {
+                state.book.biggestPayout = payout;
+            }
 
             state.book.history.push({
                 ...pos,
@@ -1046,15 +2374,86 @@ function resolveWagers() {
 
             state.book.totalResolved++;
             if (correct) state.book.correct++;
+
+            state.book.lastOutcome = {
+                question: pos.question,
+                side: pos.side,
+                correct,
+                payout,
+                stake: pos.stake,
+                atShots: state.shots
+            };
+
+            // === SOCIAL ALCHEMY: Big outcomes move the deeper field ===
+            if (correct && pos.stake >= 55) {
+                // Major layer shift + hidden event potential
+                state.layer3 = Math.min(100, state.layer3 + 9);
+                state.layer4 = Math.min(100, state.layer4 + 11);
+                state.networkOfPulls = Math.min(100, state.networkOfPulls + 7);
+                state.reputation = Math.min(100, state.reputation + 6);
+
+                if (unlockedLayer5) {
+                    state.layer5 = Math.min(100, state.layer5 + (pos.stake > 100 ? 14 : 8));
+                }
+                bigEventTriggered = true;
+            }
+
+            if (!correct && pos.stake >= 55) {
+                // Painful but real: distortion that must be rectified later
+                state.reputation = Math.max(20, state.reputation - 8);
+                state.energy = Math.max(20, state.energy - 12);
+                state.layer2 = Math.max(10, state.layer2 - 6);
+                // Creates future opportunity (rectification pull)
+                if (Math.random() < 0.6) {
+                    state.networkOfPulls = Math.max(15, state.networkOfPulls - 5);
+                }
+            }
         } else {
             stillOpen.push(pos);
         }
     });
 
     state.book.open = stillOpen;
+
+    // Surface the alchemy
+    if (bigEventTriggered) {
+        // Slight extra X Presence from operating at this level
+        state.xPresence = Math.min(100, state.xPresence + 3);
+    }
+
     updateBookUI();
     updateAllUI();
     saveState();
+}
+
+// === MARKET MAKING / INFLUENCE (Social Alchemy Core) ===
+function influenceMarkets(source = "action") {
+    if (!state.book.open.length) return;
+
+    const influence = (source === "refinery") ? 7 : (source === "x-post") ? 5 : 3.5;
+
+    state.book.open.forEach(pos => {
+        const delta = (Math.random() * influence) - (influence * 0.42);
+        pos.prob = Math.max(11, Math.min(89, pos.prob + delta));
+    });
+
+    // Strong refinery work seeds fresh high-signal opportunities
+    if (source === "refinery" && Math.random() < 0.42 && state.book.open.length < 5) {
+        const q = (window.lastRefineryQuality || 0);
+        const fresh = {
+            id: Date.now(),
+            wagerId: (q > 2) ? 'alpha-pull' : 'spark-surge',
+            question: (q > 2) ? `A single action moves the Network by 15+ in either direction?` : `Layer 4 (Spark) rises 12+ in next 6 shots?`,
+            prob: 41 + q * 7,
+            stake: (q > 2) ? 75 : 42,
+            createdAt: state.shots
+        };
+        if (!state.book.open.some(p => p.wagerId === fresh.wagerId)) {
+            state.book.open.push(fresh);
+        }
+    }
+
+    updateBookUI();
 }
 
 function updateBookUI() {
@@ -1119,17 +2518,32 @@ function updateBookUI() {
     }
 
     hitEl.textContent = resolved > 0 ? hit + '%' : '—';
+
+    // Book Ledger (X alchemy surface)
+    const ledgerEl = document.getElementById('book-ledger');
+    if (ledgerEl) {
+        const streak = state.book.currentStreak || 0;
+        const best = state.book.bestStreak || 0;
+        const big = state.book.biggestPayout || 0;
+        const pnl = state.book.totalPnl || 0;
+        ledgerEl.innerHTML = `Streak <span style="color:#ddd">${streak}</span> (best ${best}) • Biggest <span style="color:var(--gold)">+${big}</span> • Net <span style="${pnl >= 0 ? 'color:#a3c97f' : 'color:#B84C3F'}">${pnl >= 0 ? '+' : ''}${pnl}</span>`;
+    }
 }
 
-// Hook resolution into existing actions
+// Hook resolution + market influence into shots (surface action moves the Book)
 const originalTakeShot = window.takeShot || function(){};
 window.takeShot = function() {
-    // call original if exists, else do nothing extra here
     if (typeof originalTakeShot === 'function' && originalTakeShot !== window.takeShot) {
         originalTakeShot();
     }
     // Resolve markets periodically
     if (Math.random() < 0.35) resolveWagers();
+
+    // Skilled surface play gently moves live markets (operator presence)
+    if (Math.random() < 0.28) {
+        influenceMarkets("shot");
+    }
+
     updateBookUI();
 };
 
@@ -1161,6 +2575,12 @@ function init() {
     initLevers();
     updateAllUI();
     updateBookUI();
+    updateCodexUI();
+    // Ensure CodexHub list renders on load
+    if (typeof updateCodexUI === 'function') updateCodexUI();
+
+    // Render @Library on load
+    if (typeof renderLibrary === 'function') renderLibrary();
 
     // Gentle energy regen over time (Sims-like)
     setInterval(() => {
@@ -1316,17 +2736,21 @@ function processRefinery() {
         Avg Quality: ${Math.round(avgQuality)} | Entropy: ${Math.round(entropy)}
     `;
 
-    // Store for X posting
+    // Store for X posting + Book influence
     window.lastRefineryResult = {
         signals: ref.signals.length,
         sparks: sparksGained,
         network: Math.floor(state.networkOfPulls),
         layer4: layerBoost
     };
+    window.lastRefineryQuality = Math.round(avgQuality / 10);
 
     // Clear for next run
     ref.signals = [];
     drawRefinery();
+
+    // Market making: good refinement moves live wagers
+    influenceMarkets("refinery");
 
     // Offer direct X post after meaningful refinement
     setTimeout(() => {
@@ -1345,7 +2769,7 @@ function resetRefinery() {
     document.getElementById('refinery-output').innerHTML = '';
 }
 
-function exportRefineryCard() {
+async function exportRefineryCard() {
     const canvas = document.getElementById('refinery-canvas');
     if (!canvas) return;
 
@@ -1387,18 +2811,497 @@ function exportRefineryCard() {
     ctx.font = '18px JetBrains Mono';
     ctx.fillText('basinleon.github.io/play', 80, 980);
 
-    // Trigger download
+    // Perfect X connection
+    const tweetText = `Refined signal through the model. The field moved.`;
+    await shareVisualForX(exportCanvas, 'refinery', tweetText, 3);
+}
+
+// === BOOK RECORD EXPORT — The heart of social media flow alchemy ===
+async function exportBookRecord() {
+    const b = state.book;
+    const edge = document.getElementById('book-edge')?.textContent || '—';
+    const hit = document.getElementById('book-hitrate')?.textContent || '—';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+
+    // Dark operator background
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(212,175,55,0.07)';
+    ctx.lineWidth = 1;
+    for (let i = 60; i < 1080; i += 60) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1080); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
+    }
+
+    // Gold frame
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(50, 50, 980, 980);
+
+    // Header
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 28px Space Grotesk, sans-serif';
+    ctx.fillText('THE BOOK', 90, 130);
+    ctx.font = '18px Inter, sans-serif';
+    ctx.fillStyle = '#888';
+    ctx.fillText('OPERATOR LEDGER • RESOLUTIONS RECORDED', 90, 165);
+
+    // Big stats
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = 'bold 72px Space Grotesk, sans-serif';
+    ctx.fillText(edge, 90, 290);
+
+    ctx.font = '20px Inter, sans-serif';
+    ctx.fillStyle = '#888';
+    ctx.fillText('EDGE', 95, 320);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 48px Space Grotesk, sans-serif';
+    ctx.fillText(hit, 420, 290);
+    ctx.font = '20px Inter, sans-serif';
+    ctx.fillStyle = '#888';
+    ctx.fillText('HIT RATE', 425, 320);
+
+    // Performance block
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 22px Space Grotesk, sans-serif';
+    ctx.fillText('CURRENT STREAK', 90, 420);
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '64px Space Grotesk, sans-serif';
+    ctx.fillText(String(b.currentStreak || 0), 90, 490);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 22px Space Grotesk, sans-serif';
+    ctx.fillText('BEST STREAK', 380, 420);
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '64px Space Grotesk, sans-serif';
+    ctx.fillText(String(b.bestStreak || 0), 380, 490);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 22px Space Grotesk, sans-serif';
+    ctx.fillText('BIGGEST SINGLE TRANSMISSION', 670, 420);
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '64px Space Grotesk, sans-serif';
+    ctx.fillText('+' + (b.biggestPayout || 0), 670, 490);
+
+    // Net P&L
+    const pnl = b.totalPnl || 0;
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 22px Space Grotesk, sans-serif';
+    ctx.fillText('NET (SPARKS)', 90, 580);
+    ctx.fillStyle = pnl >= 0 ? '#a3c97f' : '#B84C3F';
+    ctx.font = '64px Space Grotesk, sans-serif';
+    ctx.fillText((pnl >= 0 ? '+' : '') + pnl, 90, 650);
+
+    // Last outcome if exists
+    if (b.lastOutcome) {
+        ctx.fillStyle = '#666';
+        ctx.font = '18px Inter, sans-serif';
+        ctx.fillText('LAST RESOLUTION', 90, 730);
+        ctx.fillStyle = '#E8E8E8';
+        ctx.font = '21px Inter, sans-serif';
+        const outcomeText = (b.lastOutcome.correct ? 'TRANSMITTED' : 'DISTORTED') + ' • ' + b.lastOutcome.stake + ' → ' + (b.lastOutcome.correct ? '+' : '') + b.lastOutcome.payout;
+        ctx.fillText(outcomeText, 90, 765);
+    }
+
+    // Footer
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = '16px JetBrains Mono, monospace';
+    ctx.fillText('basinleon.github.io/play  •  @leonbasinwriter', 90, 980);
+
+    // Perfect X connection
+    const copy = `Book performance: ${edge} edge • ${hit} hit rate • ${b.currentStreak || 0} streak (best ${b.bestStreak || 0}). Biggest transmission +${b.biggestPayout || 0}. The field keeps score.`;
+    await shareVisualForX(canvas, 'book-ledger', copy, 4);
+}
+
+// === COURT MOMENT EXPORT — Premium shareable stories from the surface ===
+async function exportCourtMoment() {
+    if (!lastShotVisual) {
+        alert("Take a shot first to capture a moment.");
+        return;
+    }
+
+    const v = lastShotVisual;
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 1080;
+    exportCanvas.height = 1080;
+    const ctx = exportCanvas.getContext('2d');
+
+    // Dark operator background
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // Subtle gold grid
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 60; i < 1080; i += 60) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1080); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
+    }
+
+    // Gold frame
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(50, 50, 980, 980);
+
+    // Header
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 26px Space Grotesk, sans-serif';
+    ctx.fillText('THE COURT', 90, 110);
+
+    ctx.fillStyle = '#888';
+    ctx.font = '16px JetBrains Mono, monospace';
+    ctx.fillText('@leonbasinwriter  •  THE GAME', 90, 140);
+
+    // Draw simplified court diagram with the actual shot arc
+    const courtX = 90;
+    const courtY = 180;
+    const courtW = 900;
+    const courtH = 420;
+
+    // Court background
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(courtX, courtY, courtW, courtH);
+
+    // Court border
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(courtX + 5, courtY + 5, courtW - 10, courtH - 10);
+
+    // Hoop (right)
+    const hoopX = courtX + courtW - 95;
+    const hoopY = courtY + courtH / 2;
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(hoopX, hoopY, 26, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Ball start position
+    const ballX = courtX + 95;
+    const ballY = courtY + courtH / 2;
+
+    // Recreate the shot arc from the actual levers
+    const agg = v.levers.agg;
+    const pat = v.levers.pat;
+    const dx = v.targetX - ballX;
+    const dy = v.targetY - ballY;
+    const arcHeight = (pat - 30) * 0.9 - (agg - 50) * 0.6;
+    const controlX = ballX + dx * 0.55;
+    const controlY = ballY + dy * 0.55 - arcHeight;
+
+    // Draw the arc in gold
+    ctx.strokeStyle = v.success ? '#D4AF37' : '#B84C3F';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(ballX, ballY);
+    ctx.quadraticCurveTo(controlX, controlY, v.targetX, v.targetY);
+    ctx.stroke();
+
+    // Ball at start
+    ctx.fillStyle = '#222';
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, 14, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Result indicator near hoop
+    ctx.fillStyle = v.success ? '#D4AF37' : '#B84C3F';
+    ctx.font = 'bold 18px JetBrains Mono';
+    ctx.fillText(v.success ? 'CLEAN' : 'NO GOOD', hoopX - 40, hoopY - 45);
+
+    // The reading — the story
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '22px Inter, system-ui';
+    const readingLines = wrapText(v.reading || "The field registered the move.", 42);
+    let yPos = 650;
+    readingLines.forEach(line => {
+        ctx.fillText(line, 90, yPos);
+        yPos += 32;
+    });
+
+    // Key deltas
+    ctx.fillStyle = '#888';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText(`Sparks ${v.sparks}   Network ${v.network}   X ${v.xPres}`, 90, 820);
+
+    // Footer
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = '16px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play', 90, 980);
+
+    // Use the perfect X connection flow
+    const quote = v.reading ? v.reading.split('.')[0] + '.' : 'The field registered the move.';
+    const tweetText = `${quote}`;
+    await shareVisualForX(exportCanvas, 'court-moment', tweetText, 4);
+}
+
+// Simple text wrapper for export cards
+function wrapText(text, maxChars) {
+    const words = text.split(' ');
+    const lines = [];
+    let current = '';
+    words.forEach(word => {
+        if ((current + ' ' + word).trim().length > maxChars) {
+            if (current) lines.push(current);
+            current = word;
+        } else {
+            current = (current + ' ' + word).trim();
+        }
+    });
+    if (current) lines.push(current);
+    return lines;
+}
+
+// === PERFECT X CONNECTION HELPER ===
+// Generates visual, downloads it, copies image to clipboard, opens X compose with perfect copy.
+// This is the frictionless "play → beautiful artifact → post on X" loop.
+async function shareVisualForX(exportCanvas, filenameBase, tweetText, extraXBonus = 3) {
+    const dataUrl = exportCanvas.toDataURL('image/png');
+
+    // 1. Trigger download (user keeps the asset)
     const link = document.createElement('a');
-    link.download = `refinery-${Date.now()}.png`;
-    link.href = exportCanvas.toDataURL('image/png');
+    link.download = `${filenameBase}-${Date.now()}.png`;
+    link.href = dataUrl;
     link.click();
 
-    // After download, offer to post directly to X
+    // 2. Copy image directly to clipboard (the magic for seamless X posting)
+    try {
+        const blob = await (await fetch(dataUrl)).blob();
+        await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+        ]);
+    } catch (e) {
+        // Fallback: still works, user can manually attach
+        console.log('Clipboard image copy not supported, user will attach manually');
+    }
+
+    // 3. Open X compose with high-status pre-written text
+    const encoded = encodeURIComponent(tweetText + '\n\nbasinleon.github.io/play');
+    window.open(`https://x.com/compose/tweet?text=${encoded}`, '_blank');
+
+    // 4. Small mechanical reward for broadcasting the work (feeds the alchemy)
+    state.xPresence = Math.min(100, state.xPresence + extraXBonus);
+    updateArc();
+    saveState();
+
+    // 5. Clean operator feedback
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#D4AF37;padding:14px 24px;border:1px solid #333;border-radius:4px;z-index:99999;font-size:13px;letter-spacing:0.5px;';
+    toast.textContent = 'Image copied to clipboard — paste it in X. Artifact saved.';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2800);
+}
+
+// ==================== AGENT MESH BRIDGE (Codex Application) ====================
+// Ties the real Obsidian Agent Mesh runs directly into THE GAME as one body.
+function showAgentMeshBridge() {
+    const existing = document.getElementById('mesh-bridge-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'mesh-bridge-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999999;display:flex;align-items:center;justify-content:center;';
+    modal.innerHTML = `
+        <div style="background:#0a0a0a;border:1px solid #D4AF37;border-radius:6px;width:620px;max-width:92%;padding:28px;">
+            <div style="color:#D4AF37;font-size:15px;letter-spacing:1px;margin-bottom:8px;">AGENT MESH BRIDGE</div>
+            <div style="color:#888;font-size:13px;margin-bottom:18px;line-height:1.5;">
+                Paste a key transmission line or summary from your Obsidian Agent Mesh runlog.<br>
+                The vault and the simulation become one nervous system.
+            </div>
+            <textarea id="mesh-input" placeholder="e.g. Movies/TV field note on [title] — surface: ... deeper: ... hidden activation: new pull toward Rectification" style="width:100%;height:140px;background:#111;border:1px solid #333;color:#ddd;padding:12px;font-family:JetBrains Mono,monospace;font-size:13px;"></textarea>
+            <div style="margin-top:16px;display:flex;gap:10px;">
+                <button onclick="submitMeshBridge()" class="btn" style="padding:12px 26px;background:#1a1408;border-color:#D4AF37;">TRANSMUTE INTO CODEX</button>
+                <button onclick="closeMeshBridge()" class="btn" style="padding:12px 18px;">CANCEL</button>
+            </div>
+            <div style="margin-top:12px;font-size:11px;color:#555;">This awards Codex fragments and produces a field-ready X artifact.</div>
+        </div>
+    `;
+    document.body.appendChild(modal);
     setTimeout(() => {
-        if (confirm('Image downloaded. Post this moment to X (@leonbasinwriter)?')) {
-            postToX('refinery');
-        }
-    }, 800);
+        const ta = document.getElementById('mesh-input');
+        if (ta) ta.focus();
+    }, 50);
+}
+
+function closeMeshBridge() {
+    const m = document.getElementById('mesh-bridge-modal');
+    if (m) m.remove();
+}
+
+async function submitMeshBridge() {
+    const input = document.getElementById('mesh-input');
+    const text = (input && input.value.trim()) || 'Mesh run transmuted. The operator\'s vault spoke.';
+    closeMeshBridge();
+
+    // Award significant fragments for bridging the two systems
+    if (!state.codex) state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
+    state.codex.fragments = (state.codex.fragments || 0) + 3;
+
+    const transmission = `Agent Mesh transmission received.\n${text}\n\nVault and simulation now speak the same language. @CodexHub @Applications`;
+
+    // Archive to Library as a special type
+    autoArchive('agent-mesh', transmission, { source: 'obsidian-bridge', fragmentsAwarded: 3 });
+
+    // Generate the X artifact
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 24px Space Grotesk, sans-serif';
+    ctx.fillText('AGENT MESH BRIDGE', 90, 120);
+    ctx.fillStyle = '#888'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText('@leonbasinwriter  •  OBSIDIAN ↔ THE GAME', 90, 152);
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
+    wrapText(transmission, 40).forEach((l,i) => ctx.fillText(l, 90, 230 + i*32));
+    ctx.fillStyle = '#D4AF37'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+
+    const tweet = text.replace(/\n/g,' ').slice(0,220) + ' — Mesh runs now move the field. @CodexHub @Applications';
+    await shareVisualForX(c, 'mesh-bridge', tweet, 6);
+
+    updateAllUI();
+    updateCodexUI();
+    saveState();
+
+    // Subtle court reading
+    const reading = document.getElementById('court-reading-text');
+    if (reading) reading.textContent = 'The vault spoke. New fragments. The operator is no longer split.';
+}
+
+// ==================== DEMO ARSENAL POWERUP (tied to real ~/Demo-Arsenal/scripts + @Library/Audio) ====================
+function showDemoArsenalPowerup() {
+    const existing = document.getElementById('demo-arsenal-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'demo-arsenal-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:999999;display:flex;align-items:center;justify-content:center;';
+    modal.innerHTML = `
+        <div style="background:#0a0a0a;border:1px solid #D4AF37;border-radius:6px;width:680px;max-width:94%;padding:28px;">
+            <div style="color:#D4AF37;font-size:15px;letter-spacing:1px;margin-bottom:6px;">DEMO ARSENAL — FIELD DEPLOYMENT</div>
+            <div style="color:#888;font-size:13px;margin-bottom:16px;line-height:1.45;">
+                Real paths: <span style="color:#D4AF37;">~/Demo-Arsenal/scripts/</span><br>
+                Audio ritual: <span style="color:#D4AF37;">@Library/Audio</span> ingestion after every take.
+            </div>
+
+            <div style="background:#111;border:1px solid #222;padding:16px;margin-bottom:16px;font-size:13px;line-height:1.5;color:#ccc;">
+                <strong>Current Arsenal Scripts:</strong><br>
+                • start-demo.sh — full environment (code-server + tunnel + local AI + DBs)<br>
+                • record-demo.sh — macOS screen + voice capture (Cmd+Shift+5)<br>
+                • stop-demo.sh — clean tunnel shutdown<br><br>
+                <strong>Post-Recording Protocol:</strong> Rename → move to Library/Audio/Demo-Recordings → generate transmission note + X card.
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <input id="demo-topic" placeholder="Topic / Audience (e.g. Tech Panel — Signal Refinery)" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#ddd;font-size:13px;">
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button onclick="logDemoArsenalRun()" class="btn" style="padding:12px 22px;background:#1a1408;border-color:#D4AF37;">LOG RUN + RECORDING</button>
+                <button onclick="simulateArsenalRecording()" class="btn" style="padding:12px 18px;">SIMULATE RECORDING + TRANSMIT</button>
+                <button onclick="closeDemoArsenalModal()" class="btn" style="padding:12px 18px;">CLOSE</button>
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;color:#555;">
+                Every real deployment must produce a Library entry and X artifact. This is not prep — this is the field.
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function closeDemoArsenalModal() {
+    const m = document.getElementById('demo-arsenal-modal');
+    if (m) m.remove();
+}
+
+async function logDemoArsenalRun() {
+    const topicInput = document.getElementById('demo-topic');
+    const topic = (topicInput && topicInput.value.trim()) || 'Live Field Deployment';
+
+    closeDemoArsenalModal();
+
+    if (!state.codex) state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
+    state.codex.fragments = (state.codex.fragments || 0) + 2;
+
+    const transmission = `Demo Arsenal deployment executed.\nTopic: ${topic}\nScripts engaged: start-demo.sh + record-demo.sh\n\nReal environment. Real audio captured. Now feeding @Library/Audio and the field.\n\n@CodexHub @Applications @DemoArsenal`;
+
+    autoArchive('demo-arsenal', transmission, { 
+        scripts: ['start-demo.sh', 'record-demo.sh'], 
+        topic,
+        realPath: '~/Demo-Arsenal/scripts'
+    });
+
+    // Generate X card
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 24px Space Grotesk, sans-serif';
+    ctx.fillText('DEMO ARSENAL — FIELD TRANSMISSION', 90, 120);
+    ctx.fillStyle = '#888'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText(`@leonbasinwriter  •  ${topic}`, 90, 152);
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
+    wrapText(transmission, 40).forEach((l,i) => ctx.fillText(l, 90, 230 + i*32));
+    ctx.fillStyle = '#D4AF37'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText('~/Demo-Arsenal/scripts  •  @Library/Audio  •  basinleon.github.io/play', 90, 980);
+
+    const tweet = `${topic} — Arsenal deployed. Scripts + recording now live as operator transmission. @CodexHub @Applications @DemoArsenal`;
+    await shareVisualForX(c, 'demo-arsenal', tweet, 6);
+
+    updateAllUI();
+    updateCodexUI();
+    saveState();
+
+    const reading = document.getElementById('court-reading-text');
+    if (reading) reading.textContent = 'Environment live. Recording captured. The operation is now in the Library.';
+}
+
+async function simulateArsenalRecording() {
+    const topicInput = document.getElementById('demo-topic');
+    const topic = (topicInput && topicInput.value.trim()) || 'Simulated Field Take';
+    closeDemoArsenalModal();
+
+    const transmission = `Simulated Arsenal recording complete.\n${topic}\n\nIn real use: record-demo.sh would have captured screen + voice into @Library/Audio.\n\nThis is rehearsal as transmission.`;
+
+    if (!state.codex) state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
+    state.codex.fragments += 1;
+
+    autoArchive('demo-arsenal', transmission, { simulated: true, topic });
+
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1080;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#050508'; ctx.fillRect(0,0,1080,1080);
+    ctx.strokeStyle = 'rgba(212,175,55,0.06)'; ctx.lineWidth=1;
+    for (let i=60; i<1080; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1080,i); ctx.stroke(); }
+    ctx.strokeStyle = '#D4AF37'; ctx.lineWidth=3; ctx.strokeRect(50,50,980,980);
+    ctx.fillStyle = '#D4AF37'; ctx.font = 'bold 24px Space Grotesk, sans-serif';
+    ctx.fillText('DEMO ARSENAL — SIMULATED TRANSMISSION', 90, 120);
+    ctx.fillStyle = '#888'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText(`@leonbasinwriter  •  ${topic}`, 90, 152);
+    ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
+    wrapText(transmission, 40).forEach((l,i) => ctx.fillText(l, 90, 230 + i*32));
+    ctx.fillStyle = '#D4AF37'; ctx.font = '15px JetBrains Mono';
+    ctx.fillText('~/Demo-Arsenal/scripts  •  @Library/Audio  •  basinleon.github.io/play', 90, 980);
+
+    await shareVisualForX(c, 'demo-arsenal-sim', transmission.replace(/\n/g,' ') + ' @DemoArsenal', 4);
+
+    updateAllUI();
+    updateCodexUI();
+    saveState();
 }
 
 // Initialize refinery when page loads
