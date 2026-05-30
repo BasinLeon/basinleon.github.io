@@ -480,6 +480,28 @@
 
 </div>
 
+<!-- SIGNAL REFINERY - Major Interactive Framework -->
+<div id="refinery" style="margin-top: 80px; padding-top: 40px; border-top: 1px solid #111;">
+    <div class="section-label">SIGNAL REFINERY</div>
+    <div style="max-width: 720px; margin-bottom: 20px; color: #888; font-size: 14px;">
+        A core operating model. Drag and configure signals through real stages. 
+        See direct, measurable impact on Sparks, Layers, Network of Pulls, and The Book.
+    </div>
+
+    <div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 20px;">
+        <canvas id="refinery-canvas" width="820" height="300" style="width:100%; max-width:820px; background:#111; border-radius:4px; display:block; margin:0 auto; cursor: grab;"></canvas>
+    </div>
+
+    <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn" onclick="addRawSignal()">+ ADD RAW SIGNAL</button>
+        <button class="btn primary" onclick="processRefinery()">PROCESS REFINERY</button>
+        <button class="btn" onclick="exportRefineryCard()">EXPORT VISUAL FOR X</button>
+        <button class="btn" onclick="resetRefinery()">RESET</button>
+    </div>
+
+    <div id="refinery-output" style="margin-top:16px; font-size:13px; color:#888; min-height:50px;"></div>
+</div>
+
 <div class="footer">
     BUILT TO BE EXPANDED • EVERY SHOT MOVES EVERYTHING
 </div>
@@ -1092,6 +1114,206 @@ function init() {
 
     console.log('%c[THE GAME] Layered operator simulation initialized. All systems live.', 'color:#333');
 }
+
+// ==================== SIGNAL REFINERY - Interactive Framework ====================
+let refinerySignals = [];
+
+function initRefinery() {
+    const canvas = document.getElementById('refinery-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    // Simple data model for signals
+    window.refinery = {
+        canvas,
+        ctx,
+        signals: [],
+        stages: [
+            { name: "RAW", x: 80 },
+            { name: "FILTER", x: 280 },
+            { name: "PRIORITIZE", x: 480 },
+            { name: "AMPLIFY", x: 680 }
+        ]
+    };
+
+    canvas.addEventListener('mousedown', handleRefineryMouse);
+    canvas.addEventListener('mousemove', handleRefineryMouse);
+    canvas.addEventListener('mouseup', () => window.refinery.dragging = null);
+
+    drawRefinery();
+}
+
+function handleRefineryMouse(e) {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const ref = window.refinery;
+
+    if (e.type === 'mousedown') {
+        ref.dragging = ref.signals.find(s => Math.hypot(s.x - x, s.y - y) < 18);
+    }
+
+    if (e.type === 'mousemove' && ref.dragging) {
+        ref.dragging.x = Math.max(40, Math.min(780, x));
+        ref.dragging.y = Math.max(40, Math.min(260, y));
+        drawRefinery();
+    }
+}
+
+function addRawSignal() {
+    const ref = window.refinery;
+    if (!ref) return;
+
+    ref.signals.push({
+        x: 80 + Math.random() * 40,
+        y: 80 + Math.random() * 140,
+        quality: 20 + Math.random() * 30,
+        label: "Signal"
+    });
+    drawRefinery();
+}
+
+function drawRefinery() {
+    const ref = window.refinery;
+    if (!ref) return;
+    const { ctx, canvas, signals, stages } = ref;
+
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw stages
+    stages.forEach((stage, i) => {
+        ctx.strokeStyle = '#333';
+        ctx.strokeRect(stage.x - 50, 30, 100, 240);
+
+        ctx.fillStyle = '#444';
+        ctx.font = '12px JetBrains Mono';
+        ctx.fillText(stage.name, stage.x - 30, 55);
+    });
+
+    // Draw signals
+    signals.forEach(sig => {
+        ctx.fillStyle = '#C5A26F';
+        ctx.beginPath();
+        ctx.arc(sig.x, sig.y, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#000';
+        ctx.font = '10px JetBrains Mono';
+        ctx.fillText(Math.round(sig.quality), sig.x - 8, sig.y + 3);
+    });
+}
+
+function processRefinery() {
+    const ref = window.refinery;
+    if (!ref || !ref.signals.length) return;
+
+    let totalYield = 0;
+    let entropy = 0;
+
+    ref.signals.forEach(sig => {
+        // Simple model: position in stages affects quality
+        let stageBonus = 1;
+        if (sig.x > 250) stageBonus = 1.4;
+        if (sig.x > 450) stageBonus = 1.9;
+        if (sig.x > 650) stageBonus = 2.6;
+
+        const refined = sig.quality * stageBonus;
+        totalYield += refined;
+        entropy += Math.max(0, 60 - refined);
+    });
+
+    const avgQuality = totalYield / ref.signals.length;
+    const sparksGained = Math.floor(totalYield / 12);
+    const layerBoost = Math.floor(avgQuality / 18);
+
+    // Apply to game state
+    state.sparks += sparksGained;
+    state.networkOfPulls = Math.min(100, state.networkOfPulls + Math.floor(avgQuality / 25));
+    state.layer4 = Math.min(100, state.layer4 + layerBoost);
+
+    // The Book loves good refinement
+    if (state.book) {
+        state.book.volume += Math.floor(totalYield / 8);
+    }
+
+    updateAllUI();
+
+    const output = document.getElementById('refinery-output');
+    output.innerHTML = `
+        Processed ${ref.signals.length} signals → <strong>+${sparksGained} Sparks</strong>, 
+        Network +${Math.floor(avgQuality/25)}, Layer 4 +${layerBoost}<br>
+        Avg Quality: ${Math.round(avgQuality)} | Entropy: ${Math.round(entropy)}
+    `;
+
+    // Clear for next run
+    ref.signals = [];
+    drawRefinery();
+}
+
+function resetRefinery() {
+    const ref = window.refinery;
+    if (ref) {
+        ref.signals = [];
+        drawRefinery();
+    }
+    document.getElementById('refinery-output').innerHTML = '';
+}
+
+function exportRefineryCard() {
+    const canvas = document.getElementById('refinery-canvas');
+    if (!canvas) return;
+
+    // Create a beautiful export card
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 1080;
+    exportCanvas.height = 1080;
+    const ctx = exportCanvas.getContext('2d');
+
+    // Dark premium background
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // Gold border
+    ctx.strokeStyle = '#C5A26F';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(40, 40, 1000, 1000);
+
+    // Title
+    ctx.fillStyle = '#C5A26F';
+    ctx.font = 'bold 42px Space Grotesk';
+    ctx.fillText('SIGNAL REFINERY', 80, 120);
+
+    ctx.fillStyle = '#888';
+    ctx.font = '20px JetBrains Mono';
+    ctx.fillText('@leonbasinwriter  •  THE GAME', 80, 160);
+
+    // Paste the current refinery state visually (simplified)
+    ctx.drawImage(canvas, 80, 220, 920, 340);
+
+    // Stats
+    ctx.fillStyle = '#E8E8E8';
+    ctx.font = '28px JetBrains Mono';
+    ctx.fillText(`Sparks: ${state.sparks}    Network: ${Math.round(state.networkOfPulls)}`, 80, 620);
+    ctx.fillText(`Layer 4: ${Math.round(state.layer4)}    X: ${Math.round(state.xPresence)}`, 80, 670);
+
+    // Bottom text
+    ctx.fillStyle = '#C5A26F';
+    ctx.font = '18px JetBrains Mono';
+    ctx.fillText('basinleon.github.io/play', 80, 980);
+
+    // Trigger download
+    const link = document.createElement('a');
+    link.download = `refinery-${Date.now()}.png`;
+    link.href = exportCanvas.toDataURL('image/png');
+    link.click();
+}
+
+// Initialize refinery when page loads
+setTimeout(() => {
+    initRefinery();
+}, 1200);
 
 init();
 </script>
