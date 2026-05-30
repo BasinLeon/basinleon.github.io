@@ -208,7 +208,7 @@
 <header>
     <div class="container">
         <div class="header-inner">
-            <div class="logo">THE GAME</div>
+            <div class="logo">THE GAME <span style="color:#555; font-size:12px;">@leonbasinwriter</span></div>
             <div class="status-bar">
                 <div>OPERATOR SIM <span style="color:#444">v0.3</span></div>
             </div>
@@ -231,6 +231,7 @@
     <div class="arc-bar" id="arc-bar">
         <div class="arc-stat">SPARKS <span class="num" id="sparks">0</span></div>
         <div class="arc-stat">REPUTATION <span class="num" id="reputation">50</span></div>
+        <div class="arc-stat">X PRESENCE <span class="num" id="xPresence">35</span></div>
         <div class="arc-stat">ENERGY <span class="num" id="energy">100</span></div>
         <div class="arc-stat">SHOTS <span class="num" id="shots">0</span></div>
     </div>
@@ -280,6 +281,20 @@
             </div>
             <div style="margin-top:16px; font-size:12px; color:#555;">
                 Current Play: <span id="current-play" style="color:#aaa">Standard</span>
+            </div>
+        </div>
+
+        <!-- X LAYER -->
+        <div class="system">
+            <div class="system-name">X PRESENCE @leonbasinwriter</div>
+            <div style="font-size:13px; line-height:1.6; color:#888; margin-bottom:12px;">
+                Your public signal on X. High presence amplifies Sparks but increases volatility in the deeper layers.
+            </div>
+            <button class="btn primary" onclick="broadcastOnX()" style="width:100%; margin-top:8px;">
+                BROADCAST ON X
+            </button>
+            <div style="font-size:11px; color:#444; margin-top:8px;">
+                Every broadcast moves Reputation + Sparks, but risks The Pattern and The Spark.
             </div>
         </div>
     </div>
@@ -349,6 +364,7 @@ let state = {
     reputation: 50,
     energy: 100,
     shots: 0,
+    xPresence: 35,           // New X Layer
     layer1: 65,   // Malkhut / Court
     layer2: 48,   // Yesod / Play
     layer3: 37,   // Netzach / Pattern
@@ -389,6 +405,7 @@ function loadState() {
 function updateArc() {
     document.getElementById('sparks').textContent = state.sparks;
     document.getElementById('reputation').textContent = Math.round(state.reputation);
+    document.getElementById('xPresence').textContent = Math.round(state.xPresence);
     document.getElementById('energy').textContent = Math.round(state.energy);
     document.getElementById('shots').textContent = state.shots;
 }
@@ -573,6 +590,77 @@ function takeShot() {
     drawCourt();
     updateAllUI();
     saveState();
+}
+
+// ==================== X LAYER: BROADCAST ====================
+function broadcastOnX() {
+    const cost = 12;
+    if (state.energy < cost) {
+        alert("Not enough energy to broadcast cleanly.");
+        return;
+    }
+
+    state.energy -= cost;
+    state.shots += 1; // counts as public action
+
+    const agg = levers.aggression;
+    const pat = levers.patience;
+    const cla = levers.clarity;
+
+    // X broadcasts are high leverage
+    const success = (cla + pat) > (agg + 40); // clarity and patience help on X
+
+    let repChange = 0;
+    let sparkGain = 0;
+    let message = "";
+
+    if (success) {
+        repChange = 4 + (cla / 20);
+        sparkGain = 6 + (cla / 15);
+        state.xPresence = Math.min(100, state.xPresence + 5);
+        message = "Strong signal. The post landed.";
+    } else {
+        repChange = -3;
+        sparkGain = 2;
+        state.xPresence = Math.max(10, state.xPresence - 4);
+        message = "The post scattered. Some noise entered the field.";
+    }
+
+    state.reputation = Math.max(5, Math.min(100, state.reputation + repChange));
+    state.sparks += Math.floor(sparkGain);
+    state.totalSparksGathered += Math.floor(sparkGain);
+
+    // X actions affect deeper layers more
+    state.layer3 = Math.max(8, Math.min(100, state.layer3 + (success ? 3 : -4))); // Pattern
+    state.layer4 = Math.max(8, Math.min(100, state.layer4 + (success ? 5 : -2))); // Spark
+
+    // Chance to unlock layer 5 through public work
+    if (!unlockedLayer5 && state.totalSparksGathered >= 28 && state.xPresence >= 55) {
+        unlockedLayer5 = true;
+        state.layer5 = 8;
+    }
+
+    updateAllUI();
+    saveState();
+
+    // Generate X-ready text
+    const postText = generateXPost(success, sparkGain, repChange);
+    alert(`Broadcast complete.\n\n${message}\n\nReady-to-post text:\n\n${postText}\n\n(Copy and post from @leonbasinwriter)`);
+}
+
+function generateXPost(success, sparks, rep) {
+    const lines = [
+        `Shot taken. ${success ? "It carried." : "It scattered."}`,
+        `+${Math.floor(sparks)} Sparks. Reputation ${rep > 0 ? '+' : ''}${Math.round(rep)}.`,
+        `X Presence now at ${Math.round(state.xPresence)}.`,
+        ``,
+        `The layers moved.`,
+        ``,
+        `Play THE GAME: https://basinleon.github.io/play`,
+        ``,
+        `#TheGame #Operator`
+    ];
+    return lines.join('\n');
 }
 
 // ==================== INIT ====================
