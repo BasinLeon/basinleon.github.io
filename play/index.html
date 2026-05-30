@@ -199,6 +199,84 @@
             color: #333;
             letter-spacing: 2px;
         }
+
+        /* THE BOOK - Polymarket-style mechanics, veiled */
+        .book-section {
+            margin-top: 80px;
+            border-top: 1px solid #111;
+            padding-top: 40px;
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            color: var(--gold-bright);
+        }
+
+        .wager {
+            border: 1px solid #1a1a1a;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .wager-desc {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .wager-odds {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .wager-input {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .wager-input input {
+            width: 80px;
+            background: #111;
+            border: 1px solid #222;
+            color: var(--text);
+            padding: 6px 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
     </style>
 </head>
 <body>
@@ -367,6 +445,39 @@
         </div>
     </div>
 
+    <!-- THE BOOK (Polymarket-style mechanics, veiled as operator field) -->
+    <div class="book-section">
+        <div class="book-header">
+            <div>
+                <div class="section-label">THE BOOK</div>
+                <div style="font-size:15px; color:#888;">Wagers on Resolution</div>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi">
+                <div class="kpi-label">EDGE</div>
+                <div class="kpi-value" id="book-edge">+0.0%</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">CALIBRATION</div>
+                <div class="kpi-value" id="book-calibration">—</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">VOLUME</div>
+                <div class="kpi-value" id="book-volume">0</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">HIT RATE</div>
+                <div class="kpi-value" id="book-hitrate">—</div>
+            </div>
+        </div>
+
+        <div id="book-wagers">
+            <!-- Populated dynamically by JS -->
+        </div>
+    </div>
+
 </div>
 
 <div class="footer">
@@ -381,13 +492,22 @@ let state = {
     energy: 100,
     shots: 0,
     xPresence: 35,           
-    networkOfPulls: 42,      // NEW: Network of Pulls — street + ancient texts + spiritual divinity
+    networkOfPulls: 42,      
     layer1: 65,   
     layer2: 48,   
     layer3: 37,   
     layer4: 22,   
     layer5: 0,    
-    totalSparksGathered: 0
+    totalSparksGathered: 0,
+
+    // THE BOOK - Polymarket-style wagers (veiled)
+    book: {
+        open: [],           // current wagers
+        history: [],        // resolved wagers
+        volume: 0,
+        correct: 0,
+        totalResolved: 0
+    }
 };
 
 let levers = {
@@ -470,6 +590,7 @@ function updateLayers() {
 function updateAllUI() {
     updateArc();
     updateLayers();
+    updateBookUI();
 }
 
 // ==================== CANVAS COURT ====================
@@ -732,6 +853,198 @@ function feelThePulls() {
     alert(`${message}\n\n+${Math.floor(sparkGain)} Sparks\nNetwork of Pulls now at ${Math.round(state.networkOfPulls)}`);
 }
 
+// ==================== THE BOOK (Prediction Market Mechanics) ====================
+
+function getAvailableWagers() {
+    const w = [];
+    const n = state.networkOfPulls;
+    const x = state.xPresence;
+    const e = state.energy;
+
+    // Dynamic wagers based on current state (like live markets)
+    w.push({
+        id: 'net-high',
+        question: `Network of Pulls above 60 after 5 more actions?`,
+        prob: Math.min(85, Math.max(15, 30 + (n - 40) * 0.8)),
+        stake: 25
+    });
+
+    w.push({
+        id: 'x-up',
+        question: `X Presence increases by 8+ before Energy drops below 40?`,
+        prob: Math.min(80, Math.max(20, 45 + (x - 50) * 0.6 - (e < 60 ? 15 : 0))),
+        stake: 20
+    });
+
+    if (unlockedLayer5) {
+        w.push({
+            id: 'hidden-move',
+            question: `The Hidden layer moves by 10+ in the next 7 shots?`,
+            prob: Math.min(75, Math.max(25, 40 + (state.layer5 - 30) * 0.5)),
+            stake: 30
+        });
+    }
+
+    return w;
+}
+
+function placeWager(wagerId, side) {
+    const available = getAvailableWagers();
+    const wager = available.find(w => w.id === wagerId);
+    if (!wager) return;
+
+    const stake = wager.stake;
+    if (state.sparks < stake) {
+        alert("Not enough Sparks to take this position.");
+        return;
+    }
+
+    state.sparks -= stake;
+
+    const position = {
+        id: Date.now(),
+        wagerId: wager.id,
+        question: wager.question,
+        prob: wager.prob,
+        stake: stake,
+        side: side, // 'yes' or 'no'
+        createdAt: state.shots
+    };
+
+    state.book.open.push(position);
+    state.book.volume += stake;
+
+    updateBookUI();
+    updateAllUI();
+    saveState();
+}
+
+function resolveWagers() {
+    if (!state.book.open.length) return;
+
+    const n = state.networkOfPulls;
+    const x = state.xPresence;
+    const e = state.energy;
+
+    const stillOpen = [];
+
+    state.book.open.forEach(pos => {
+        let resolved = false;
+        let correct = false;
+
+        if (pos.wagerId === 'net-high') {
+            resolved = true;
+            correct = (n > 60) === (pos.side === 'yes');
+        }
+        if (pos.wagerId === 'x-up') {
+            resolved = (e < 40);
+            correct = ((x - 35) >= 8) === (pos.side === 'yes'); // rough proxy
+        }
+        if (pos.wagerId === 'hidden-move' && unlockedLayer5) {
+            resolved = true;
+            correct = (state.layer5 > 30) === (pos.side === 'yes'); // simplified
+        }
+
+        if (resolved) {
+            const payout = correct ? Math.floor(pos.stake * (100 / pos.prob)) : 0;
+            state.sparks += payout;
+
+            state.book.history.push({
+                ...pos,
+                resolved: true,
+                correct,
+                payout
+            });
+
+            state.book.totalResolved++;
+            if (correct) state.book.correct++;
+        } else {
+            stillOpen.push(pos);
+        }
+    });
+
+    state.book.open = stillOpen;
+    updateBookUI();
+    updateAllUI();
+    saveState();
+}
+
+function updateBookUI() {
+    const container = document.getElementById('book-wagers');
+    if (!container) return;
+
+    const available = getAvailableWagers();
+    let html = '';
+
+    available.forEach(w => {
+        const yesProb = Math.round(w.prob);
+        const noProb = 100 - yesProb;
+
+        html += `
+            <div class="wager">
+                <div class="wager-desc">${w.question}</div>
+                <div class="wager-odds">YES ${yesProb}% / NO ${noProb}%</div>
+                <div class="wager-input">
+                    <button class="btn" onclick="placeWager('${w.id}', 'yes')">YES ${w.stake}</button>
+                    <button class="btn" onclick="placeWager('${w.id}', 'no')">NO ${w.stake}</button>
+                </div>
+            </div>
+        `;
+    });
+
+    if (state.book.open.length) {
+        html += `<div style="margin: 20px 0 8px; font-size:12px; color:#555;">OPEN POSITIONS</div>`;
+        state.book.open.forEach(pos => {
+            html += `<div class="wager" style="opacity:0.8">
+                <div>${pos.question} <span style="color:#666">(${pos.side.toUpperCase()})</span></div>
+                <div style="color:#666">Stake: ${pos.stake}</div>
+            </div>`;
+        });
+    }
+
+    container.innerHTML = html || `<div style="color:#555; font-size:13px;">No active markets right now.</div>`;
+
+    // KPIs
+    const edgeEl = document.getElementById('book-edge');
+    const calEl = document.getElementById('book-calibration');
+    const volEl = document.getElementById('book-volume');
+    const hitEl = document.getElementById('book-hitrate');
+
+    const vol = state.book.volume || 0;
+    const resolved = state.book.totalResolved || 0;
+    const hit = resolved > 0 ? Math.round((state.book.correct / resolved) * 100) : 0;
+
+    volEl.textContent = vol;
+
+    if (resolved > 3) {
+        const calibration = Math.max(0, Math.min(100, hit));
+        calEl.textContent = calibration + '%';
+
+        // Simple edge calculation (how much better than random)
+        const impliedAvg = 50; // rough
+        const edge = Math.round((hit - impliedAvg) * 0.8);
+        edgeEl.textContent = (edge > 0 ? '+' : '') + edge + '%';
+        edgeEl.style.color = edge >= 0 ? 'var(--gold-bright)' : '#B84C3F';
+    } else {
+        calEl.textContent = '—';
+        edgeEl.textContent = '—';
+    }
+
+    hitEl.textContent = resolved > 0 ? hit + '%' : '—';
+}
+
+// Hook resolution into existing actions
+const originalTakeShot = window.takeShot || function(){};
+window.takeShot = function() {
+    // call original if exists, else do nothing extra here
+    if (typeof originalTakeShot === 'function' && originalTakeShot !== window.takeShot) {
+        originalTakeShot();
+    }
+    // Resolve markets periodically
+    if (Math.random() < 0.35) resolveWagers();
+    updateBookUI();
+};
+
 // ==================== INIT ====================
 function initLevers() {
     const ids = ['agg', 'pat', 'cla'];
@@ -759,6 +1072,7 @@ function init() {
     initCourt();
     initLevers();
     updateAllUI();
+    updateBookUI();
 
     // Gentle energy regen over time (Sims-like)
     setInterval(() => {
