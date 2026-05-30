@@ -94,11 +94,11 @@
         }
 
         .hero-sub {
-            max-width: 520px;
+            max-width: 540px;
             margin: 0 auto 48px;
-            font-size: 16px;
+            font-size: 15px;
             color: #888;
-            line-height: 1.6;
+            line-height: 1.55;
         }
 
         .layer-hint {
@@ -340,27 +340,31 @@
             <div class="hero-label">A SURFACE AND WHAT LIES BENEATH</div>
             <h1 class="hero-title">THE GAME</h1>
             <p class="hero-sub">
-                Basketball as the visible play.<br>
-                Deeper structures moving underneath.<br>
-                Every shot ripples through layers.
+                The shot is the only thing the world sees.<br>
+                Underneath it, other things are moving.
             </p>
             <div class="layer-hint">4 LAYERS • MULTIPLE LEVERS • EVOLVING STATE</div>
         </div>
 
         <!-- SURFACE LAYER: THE COURT -->
         <div class="court-section">
-            <div class="section-label">LAYER 1 — THE COURT (SURFACE)</div>
+            <div class="section-label">LAYER 1 — THE SURFACE</div>
 
             <div class="court">
                 <div class="court-visual" id="court-visual">
-                    THE SHOT
+                    <img id="court-gif" src="https://media.tenor.com/7sX2vN0vL9kAAAAC/basketball-shot-slow-motion.gif" 
+                         style="max-height: 240px; width: auto; border-radius: 4px;" alt="">
                     <div class="shot-result" id="shot-result"></div>
                 </div>
 
+                <div style="margin-bottom: 20px; font-size: 13px; color: #555;">
+                    Levers shape the shot. Commit when ready.
+                </div>
+
                 <div class="controls">
-                    <button class="btn" onclick="takeShot('safe')">SAFE SHOT</button>
-                    <button class="btn primary" onclick="takeShot('contested')">CONTESTED SHOT</button>
-                    <button class="btn" onclick="takeShot('desperation')">DESPERATION</button>
+                    <button class="btn primary" onclick="takeTheShot()" style="padding: 16px 48px; font-size: 15px;">
+                        TAKE THE SHOT
+                    </button>
                 </div>
             </div>
         </div>
@@ -378,8 +382,8 @@
                     <div class="layer-value" id="layer2-value">42</div>
                 </div>
                 <div class="layer-desc">
-                    The tactical layer. Timing, positioning, reading the defense. 
-                    Every shot adjusts your "Play Integrity."
+                    The read. The timing. The geometry of the moment. 
+                    This layer tracks how cleanly the action fits the situation.
                 </div>
                 <div class="layer-bar"><div class="layer-fill" id="layer2-bar" style="width:42%"></div></div>
             </div>
@@ -390,8 +394,8 @@
                     <div class="layer-value" id="layer3-value">31</div>
                 </div>
                 <div class="layer-desc">
-                    Recurring structures. How this moment echoes previous ones. 
-                    Alignment with larger arcs and cycles.
+                    The longer arc. How this shot sits inside your history of shots. 
+                    Repetition either strengthens or erodes the structure.
                 </div>
                 <div class="layer-bar"><div class="layer-fill" id="layer3-bar" style="width:31%"></div></div>
             </div>
@@ -402,8 +406,7 @@
                     <div class="layer-value" id="layer4-value">19</div>
                 </div>
                 <div class="layer-desc">
-                    The hidden layer. The part that cannot be measured directly. 
-                    What is being rectified or scattered in this action.
+                    What actually moves when you act. The part that doesn't show up in the box score.
                 </div>
                 <div class="layer-bar"><div class="layer-fill" id="layer4-bar" style="width:19%"></div></div>
             </div>
@@ -412,6 +415,11 @@
         <!-- LEVERS -->
         <div class="levers">
             <div class="levers-title">LEVERS YOU CAN PULL</div>
+
+            <div style="text-align:center; margin-bottom: 24px;">
+                <img src="https://media.tenor.com/5fXvNqZqO0gAAAAC/basketball-dribble-dark.gif" 
+                     style="max-height: 140px; opacity: 0.75; border-radius: 4px;" alt="">
+            </div>
 
             <div class="lever">
                 <div class="lever-label">Aggression</div>
@@ -482,82 +490,70 @@
             document.getElementById('lever-clarity-val').textContent = levers.clarity;
         }
 
-        function takeShot(type) {
+        function takeTheShot() {
             const court = document.getElementById('court-visual');
             const resultEl = document.getElementById('shot-result');
+            const gif = document.getElementById('court-gif');
 
             state.totalShots++;
 
-            let baseSuccess = 0;
-            let layerImpact = { l2: 0, l3: 0, l4: 0 };
-            let message = "";
-
-            // Base mechanics influenced by levers
             const effectiveAggression = levers.aggression;
             const effectivePatience = levers.patience;
             const effectiveClarity = levers.clarity;
 
-            if (type === 'safe') {
-                baseSuccess = 65 + (effectivePatience * 0.25) + (effectiveClarity * 0.15);
-                layerImpact.l2 = 4 + (effectivePatience / 20);
-                layerImpact.l3 = 2;
-                layerImpact.l4 = 1 + (effectiveClarity / 30);
-                message = "SOLID POSSESSION";
-            } 
-            else if (type === 'contested') {
-                baseSuccess = 38 + (effectiveAggression * 0.3) + (effectiveClarity * 0.2);
-                layerImpact.l2 = 8 + (effectiveAggression / 15);
-                layerImpact.l3 = 5 + (effectiveClarity / 20);
-                layerImpact.l4 = 4 + (effectiveAggression / 25);
-                message = baseSuccess > 55 ? "CLEAN LOOK" : "FORCED IT";
-            } 
-            else if (type === 'desperation') {
-                baseSuccess = 22 + (effectiveAggression * 0.4);
-                layerImpact.l2 = 3;
-                layerImpact.l3 = 9 + (effectiveAggression / 12);
-                layerImpact.l4 = 12 + (effectiveAggression / 10) - (effectivePatience / 15);
-                message = Math.random() > 0.5 ? "HEAVES IT" : "MIRACLE RANGE";
-            }
-
+            // Single committed action, shaped by the levers
+            const baseSuccess = 42 + (effectiveClarity * 0.35) + (effectivePatience * 0.2) - (effectiveAggression * 0.15);
             const success = Math.random() * 100 < baseSuccess;
 
-            // Apply changes
+            let l2 = 0, l3 = 0, l4 = 0;
+            let message = "";
+
             if (success) {
-                state.layer2 = Math.min(100, state.layer2 + layerImpact.l2);
-                state.layer3 = Math.min(100, state.layer3 + layerImpact.l3);
-                state.layer4 = Math.min(100, state.layer4 + layerImpact.l4);
-                state.sparksGathered += Math.floor(layerImpact.l4 * 0.8);
-                message = "BUCKET • " + message;
+                l2 = 7 + (effectivePatience / 18);
+                l3 = 5 + (effectiveClarity / 22);
+                l4 = 6 + (effectiveClarity / 25) + (effectivePatience / 30);
+
+                state.layer2 = Math.min(100, state.layer2 + l2);
+                state.layer3 = Math.min(100, state.layer3 + l3);
+                state.layer4 = Math.min(100, state.layer4 + l4);
+
+                message = "IT GOES IN";
+                gif.src = "https://media.tenor.com/7sX2vN0vL9kAAAAC/basketball-shot-slow-motion.gif"; // clean make feel
             } else {
-                state.layer2 = Math.max(5, state.layer2 - (layerImpact.l2 * 0.6));
-                state.layer3 = Math.max(5, state.layer3 - (layerImpact.l3 * 0.4));
-                state.layer4 = Math.max(5, state.layer4 - (layerImpact.l4 * 0.3));
-                message = "MISS • " + message;
+                l2 = 3;
+                l3 = 4 + (effectiveAggression / 20);
+                l4 = 3;
+
+                state.layer2 = Math.max(8, state.layer2 - l2 * 0.7);
+                state.layer3 = Math.max(8, state.layer3 - l3 * 0.6);
+                state.layer4 = Math.max(8, state.layer4 - l4 * 0.5);
+
+                message = "NO GOOD";
+                gif.src = "https://media.tenor.com/3vGfZfQvO5kAAAAC/basketball-miss.gif"; // miss feel
             }
 
-            // Visual feedback
+            // Visual + result
             resultEl.textContent = message;
             resultEl.style.opacity = '1';
             resultEl.style.color = success ? '#E8D5A3' : '#B84C3F';
 
-            // Subtle court flash
             court.style.transition = 'none';
-            court.style.background = success ? '#1a2a1a' : '#2a1a1a';
+            court.style.background = success ? '#122211' : '#221111';
             setTimeout(() => {
-                court.style.transition = 'background 1.2s ease';
+                court.style.transition = 'background 1400ms ease';
                 court.style.background = 'linear-gradient(#111, #0a0a0a)';
-            }, 40);
+            }, 60);
 
             setTimeout(() => {
                 resultEl.style.opacity = '0';
-            }, 1600);
+            }, 1800);
 
             updateUI();
 
-            // Every 5 shots, something deeper can shift (room for evolution)
-            if (state.totalShots % 5 === 0) {
-                const hiddenShift = (levers.clarity - 50) * 0.08;
-                state.layer4 = Math.max(5, Math.min(100, state.layer4 + hiddenShift));
+            // Hidden evolution every few shots
+            if (state.totalShots % 4 === 0) {
+                const drift = (effectiveClarity - 50) * 0.06;
+                state.layer4 = Math.max(8, Math.min(100, state.layer4 + drift));
                 updateUI();
             }
         }
