@@ -824,6 +824,72 @@ function generateXPost(success, sparks, rep) {
     return lines.join('\n');
 }
 
+// ==================== X CONNECTOR - High quality posting to @leonbasinwriter ====================
+function postToX(context = 'general') {
+    let text = '';
+
+    const n = Math.round(state.networkOfPulls);
+    const sparks = state.sparks;
+    const xPres = Math.round(state.xPresence);
+    const edge = document.getElementById('book-edge')?.textContent || '';
+    const calibration = document.getElementById('book-calibration')?.textContent || '';
+
+    if (context === 'refinery' && window.lastRefineryResult) {
+        const r = window.lastRefineryResult;
+        text = `Refined ${r.signals} signals through the model.\n\n` +
+               `+${r.sparks} Sparks • Network of Pulls ${r.network}\n` +
+               `Layer 4 impact: +${r.layer4}\n\n` +
+               `The field moved.\n\n` +
+               `Play THE GAME → https://basinleon.github.io/play\n\n` +
+               `#TheGame #Operator`;
+    } else if (context === 'book' && state.book.totalResolved > 0) {
+        text = `Book performance: ${edge} edge • ${calibration} calibration\n` +
+               `${state.book.volume} Sparks volume across ${state.book.totalResolved} resolutions.\n\n` +
+               `The reads are compounding.\n\n` +
+               `Play THE GAME → https://basinleon.github.io/play\n\n` +
+               `#TheGame #Operator`;
+    } else {
+        // General strong state post
+        text = `Network of Pulls at ${n}.\n` +
+               `${sparks} Sparks gathered. X Presence ${xPres}.\n\n` +
+               `The operator is moving.\n\n` +
+               `Play THE GAME → https://basinleon.github.io/play\n\n` +
+               `#TheGame #Operator`;
+    }
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(text).then(() => {
+        // Open X compose with prefilled text
+        const encoded = encodeURIComponent(text);
+        window.open(`https://x.com/compose/tweet?text=${encoded}`, '_blank');
+
+        // Optional toast
+        const toast = document.createElement('div');
+        toast.textContent = 'Copied to clipboard + opened X compose for @leonbasinwriter';
+        toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#C5A26F;padding:12px 24px;border:1px solid #333;border-radius:4px;z-index:9999;font-size:13px;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2400);
+    }).catch(() => {
+        // Fallback
+        prompt('Copy this text and post from @leonbasinwriter:', text);
+        window.open('https://x.com/compose/tweet', '_blank');
+    });
+}
+
+function attachXConnector() {
+    // Add a small persistent connector button in the header if not present
+    const header = document.querySelector('.header-inner');
+    if (header && !document.getElementById('x-connector-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'x-connector-btn';
+        btn.className = 'btn';
+        btn.style.cssText = 'padding: 6px 14px; font-size: 12px;';
+        btn.textContent = 'POST TO X (@leonbasinwriter)';
+        btn.onclick = () => postToX('general');
+        header.appendChild(btn);
+    }
+}
+
 // ==================== NETWORK OF PULLS ====================
 function feelThePulls() {
     const cost = 6;
@@ -1112,6 +1178,9 @@ function init() {
         }
     });
 
+    // Attach persistent X connector button in header
+    attachXConnector();
+
     console.log('%c[THE GAME] Layered operator simulation initialized. All systems live.', 'color:#333');
 }
 
@@ -1247,9 +1316,24 @@ function processRefinery() {
         Avg Quality: ${Math.round(avgQuality)} | Entropy: ${Math.round(entropy)}
     `;
 
+    // Store for X posting
+    window.lastRefineryResult = {
+        signals: ref.signals.length,
+        sparks: sparksGained,
+        network: Math.floor(state.networkOfPulls),
+        layer4: layerBoost
+    };
+
     // Clear for next run
     ref.signals = [];
     drawRefinery();
+
+    // Offer direct X post after meaningful refinement
+    setTimeout(() => {
+        if (sparksGained >= 8 && confirm('Strong refinement. Post this to X (@leonbasinwriter)?')) {
+            postToX('refinery');
+        }
+    }, 1400);
 }
 
 function resetRefinery() {
@@ -1308,6 +1392,13 @@ function exportRefineryCard() {
     link.download = `refinery-${Date.now()}.png`;
     link.href = exportCanvas.toDataURL('image/png');
     link.click();
+
+    // After download, offer to post directly to X
+    setTimeout(() => {
+        if (confirm('Image downloaded. Post this moment to X (@leonbasinwriter)?')) {
+            postToX('refinery');
+        }
+    }, 800);
 }
 
 // Initialize refinery when page loads
