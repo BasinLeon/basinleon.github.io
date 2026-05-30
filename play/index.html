@@ -232,6 +232,7 @@
         <div class="arc-stat">SPARKS <span class="num" id="sparks">0</span></div>
         <div class="arc-stat">REPUTATION <span class="num" id="reputation">50</span></div>
         <div class="arc-stat">X PRESENCE <span class="num" id="xPresence">35</span></div>
+        <div class="arc-stat">NETWORK OF PULLS <span class="num" id="networkOfPulls">42</span></div>
         <div class="arc-stat">ENERGY <span class="num" id="energy">100</span></div>
         <div class="arc-stat">SHOTS <span class="num" id="shots">0</span></div>
     </div>
@@ -295,6 +296,21 @@
             </button>
             <div style="font-size:11px; color:#444; margin-top:8px;">
                 Every broadcast moves Reputation + Sparks, but risks The Pattern and The Spark.
+            </div>
+        </div>
+
+        <!-- NETWORK OF PULLS -->
+        <div class="system">
+            <div class="system-name">NETWORK OF PULLS</div>
+            <div style="font-size:13px; line-height:1.6; color:#888; margin-bottom:12px;">
+                The invisible web. Street encounters, ancient texts, divine currents, and synchronicities all pulling at once. 
+                The operator who learns to read the pulls moves differently.
+            </div>
+            <button class="btn" onclick="feelThePulls()" style="width:100%;">
+                FEEL THE PULLS
+            </button>
+            <div style="font-size:11px; color:#444; margin-top:8px;">
+                Tune in. The Network responds to presence, not force.
             </div>
         </div>
     </div>
@@ -364,12 +380,13 @@ let state = {
     reputation: 50,
     energy: 100,
     shots: 0,
-    xPresence: 35,           // New X Layer
-    layer1: 65,   // Malkhut / Court
-    layer2: 48,   // Yesod / Play
-    layer3: 37,   // Netzach / Pattern
-    layer4: 22,   // Hod / Spark
-    layer5: 0,    // Keter / Hidden (unlocked later)
+    xPresence: 35,           
+    networkOfPulls: 42,      // NEW: Network of Pulls — street + ancient texts + spiritual divinity
+    layer1: 65,   
+    layer2: 48,   
+    layer3: 37,   
+    layer4: 22,   
+    layer5: 0,    
     totalSparksGathered: 0
 };
 
@@ -406,6 +423,7 @@ function updateArc() {
     document.getElementById('sparks').textContent = state.sparks;
     document.getElementById('reputation').textContent = Math.round(state.reputation);
     document.getElementById('xPresence').textContent = Math.round(state.xPresence);
+    document.getElementById('networkOfPulls').textContent = Math.round(state.networkOfPulls);
     document.getElementById('energy').textContent = Math.round(state.energy);
     document.getElementById('shots').textContent = state.shots;
 }
@@ -661,6 +679,57 @@ function generateXPost(success, sparks, rep) {
         `#TheGame #Operator`
     ];
     return lines.join('\n');
+}
+
+// ==================== NETWORK OF PULLS ====================
+function feelThePulls() {
+    const cost = 6;
+    if (state.energy < cost) {
+        alert("Too drained to read the field clearly.");
+        return;
+    }
+
+    state.energy -= cost;
+
+    const cla = levers.clarity;
+    const pat = levers.patience;
+    const xPres = state.xPresence;
+
+    // The Network is mystical + street + ancient
+    // High clarity + patience + moderate X presence = best results
+    const attunement = (cla * 0.4) + (pat * 0.35) + (Math.abs(xPres - 55) * -0.15);
+
+    const pullStrength = 8 + (attunement / 12);
+    const isDivine = Math.random() * 100 < (cla + 20);
+
+    let sparkGain = 0;
+    let message = "";
+
+    if (isDivine) {
+        sparkGain = pullStrength * 1.4;
+        state.networkOfPulls = Math.min(100, state.networkOfPulls + 9);
+        message = "A clear pull from the old texts moved through the street.";
+    } else {
+        sparkGain = pullStrength * 0.8;
+        state.networkOfPulls = Math.max(15, state.networkOfPulls + (attunement > 40 ? 5 : -3));
+        message = "Street-level pull. Ordinary but charged. The Network noticed you.";
+    }
+
+    state.sparks += Math.floor(sparkGain);
+    state.totalSparksGathered += Math.floor(sparkGain);
+
+    // The Network affects multiple layers at once
+    state.layer2 = Math.min(100, state.layer2 + 4);
+    state.layer4 = Math.min(100, state.layer4 + 6);
+
+    if (unlockedLayer5) {
+        state.layer5 = Math.min(100, state.layer5 + 3);
+    }
+
+    updateAllUI();
+    saveState();
+
+    alert(`${message}\n\n+${Math.floor(sparkGain)} Sparks\nNetwork of Pulls now at ${Math.round(state.networkOfPulls)}`);
 }
 
 // ==================== INIT ====================
