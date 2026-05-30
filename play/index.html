@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAY • Operator Training</title>
+    <meta name="description" content="Dark operator training simulations. Battle executive archetypes under pressure.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-bright: #F4D35E;
+            --bg: #000000;
+            --bg-elev: #0a0a0a;
+            --border: #222222;
+            --text: #EDEDED;
+            --text-dim: #888888;
+            --danger: #FF3B30;
+            --success: #30D158;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Top bar */
+        .topbar {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            font-size: 15px;
+            color: var(--gold);
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link:hover { color: var(--gold); }
+
+        /* Hero / Title */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+
+        .hero-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(42px, 7vw, 72px);
+            font-weight: 700;
+            line-height: 0.92;
+            letter-spacing: -3.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title span {
+            color: var(--gold-bright);
+        }
+
+        .hero-sub {
+            font-size: 17px;
+            color: var(--text-dim);
+            max-width: 460px;
+            margin: 0 auto 48px;
+            line-height: 1.5;
+        }
+
+        /* Big CTA */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            font-weight: 700;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-bright);
+            transform: translateY(-1px);
+        }
+
+        .btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Opponent Grid */
+        .section-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .opponent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 80px;
+        }
+
+        .opponent {
+            background: var(--bg-elev);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 26px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .opponent:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .opponent-icon {
+            font-size: 32px;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        .opponent-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .opponent-role {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 18px;
+        }
+
+        .opponent-desc {
+            font-size: 14px;
+            line-height: 1.55;
+            color: #aaa;
+        }
+
+        /* Battle Arena */
+        .arena {
+            display: none;
+            padding: 40px 0 80px;
+        }
+
+        .arena-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .arena-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+
+        .fighter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .fighter {
+            flex: 1;
+        }
+
+        .fighter.you { text-align: left; }
+        .fighter.opp { text-align: right; }
+
+        .fighter-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        .fighter-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .health-container {
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 999px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .health {
+            height: 100%;
+            background: linear-gradient(to right, #D4AF37, #F4D35E);
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .vs {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: #444;
+            padding: 0 30px 40px;
+            align-self: center;
+        }
+
+        .question {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 32px 36px;
+            margin-bottom: 24px;
+            font-size: 17px;
+            line-height: 1.45;
+        }
+
+        .responses {
+            display: grid;
+            gap: 12px;
+        }
+
+        .response {
+            background: #111;
+            border: 1px solid #222;
+            color: var(--text);
+            padding: 20px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            line-height: 1.45;
+            transition: all 0.15s ease;
+        }
+
+        .response:hover {
+            border-color: var(--gold);
+            background: #1a1a1a;
+        }
+
+        .log {
+            margin-top: 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #666;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        .log strong { color: #888; }
+
+        /* Results */
+        .results {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .results-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+
+        .results-score {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--gold-bright);
+            line-height: 1;
+            margin: 12px 0 32px;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -4px;
+        }
+
+        .results-text {
+            max-width: 420px;
+            margin: 0 auto 48px;
+            font-size: 16px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .footer-note {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 12px;
+            color: #444;
+            letter-spacing: 1px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="topbar-inner">
+                <div class="brand">BASIN • OPERATOR TRAINING</div>
+                <a href="/" class="nav-link">EXIT SIM</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Title / Hub -->
+    <div id="hub">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-kicker">SIM-01</div>
+                <h1 class="hero-title">VERSUS</h1>
+                <p class="hero-sub">
+                    Cold operator training. Real executive pressure.<br>
+                    No safety net. No second chances.
+                </p>
+                <button onclick="showOpponents()" class="btn btn-gold">BEGIN SIMULATION</button>
+            </div>
+
+            <div>
+                <div class="section-header">SELECT OPPONENT</div>
+                <div class="opponent-grid" id="opponent-grid">
+                    <!-- JS populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battle Arena -->
+    <div id="arena" class="arena">
+        <div class="container">
+            <div class="arena-header">
+                <div class="arena-title" id="arena-title"></div>
+                <button onclick="exitToHub()" class="btn" style="padding: 8px 18px; font-size: 12px;">ABORT</button>
+            </div>
+
+            <div class="fighter-row">
+                <div class="fighter you">
+                    <div class="fighter-label">OPERATOR</div>
+                    <div class="fighter-name">YOU</div>
+                    <div class="health-container"><div class="health" id="player-hp" style="width:100%"></div></div>
+                </div>
+
+                <div class="vs">VS</div>
+
+                <div class="fighter opp">
+                    <div class="fighter-label" id="opp-label"></div>
+                    <div class="fighter-name" id="opp-name"></div>
+                    <div class="health-container"><div class="health" id="opp-hp" style="width:100%"></div></div>
+                </div>
+            </div>
+
+            <div class="question" id="question"></div>
+
+            <div class="responses" id="responses"></div>
+
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="results">
+        <div class="container">
+            <div class="results-title" id="results-title"></div>
+            <div class="results-score" id="results-score"></div>
+            <div class="results-text" id="results-text"></div>
+
+            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+                <button onclick="rematch()" class="btn btn-gold">RUN IT AGAIN</button>
+                <button onclick="exitToHub()" class="btn">CHOOSE NEW OPPONENT</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        BUILT FOR OPERATORS WHO WANT TO STAY SHARP
+    </div>
+
+    <script>
+        const OPPONENTS = [
+            {
+                id: "cfo",
+                icon: "📉",
+                name: "MARCUS HALE",
+                role: "CFO • SERIES D",
+                desc: "Every number you say will be weaponized. No fluff survives.",
+                questions: [
+                    {
+                        q: "Your last role claims 160% pipeline growth. Walk me through the exact math — what was actually influenced by you versus market tailwinds?",
+                        answers: [
+                            { t: "I rebuilt the outbound engine from scratch. Before/after cohort data shows 2.8x sourced pipeline in 11 months.", dmg: 29 },
+                            { t: "The team executed the GTM plan I designed and we hit the number.", dmg: 11 },
+                            { t: "The product got stronger and the market was hot.", dmg: -9 }
+                        ]
+                    },
+                    {
+                        q: "If I gave you this role tomorrow, what would be the single highest-leverage change in the first 30 days — and the dollar impact?",
+                        answers: [
+                            { t: "Kill the bottom two funnel stages and reallocate every rep hour into a closed-loop signal system.", dmg: 34 },
+                            { t: "Implement a cleaner CRM dashboard and stricter forecast process.", dmg: 9 },
+                            { t: "Focus on team culture and motivation first.", dmg: -14 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "ceo",
+                icon: "🔥",
+                name: "ELENA VOSS",
+                role: "CEO & CO-FOUNDER",
+                desc: "She sees through bullshit in under 11 seconds. Vision or die.",
+                questions: [
+                    {
+                        q: "We’re 18 months from an exit. Why should I bet the entire GTM motion on someone who’s never carried a bag at this scale?",
+                        answers: [
+                            { t: "Because I’ve built the actual systems that let average reps win without heroics.", dmg: 31 },
+                            { t: "I close enterprise and I learn faster than anyone you’ve hired.", dmg: 8 },
+                            { t: "My experience at smaller companies makes me more scrappy.", dmg: -12 }
+                        ]
+                    },
+                    {
+                        q: "Paint the picture of this company in 3 years with you running revenue. What’s non-negotiable?",
+                        answers: [
+                            { t: "A deterministic signal-to-close operating system that doesn’t rely on headcount or luck.", dmg: 36 },
+                            { t: "A high-performance sales culture with strong managers.", dmg: 7 },
+                            { t: "Hitting the number every single quarter, by any means necessary.", dmg: -11 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "vps",
+                icon: "⚔️",
+                name: "DEREK KANE",
+                role: "VP SALES • 200+ REPS",
+                desc: "Old-school. Will smell weakness from the first sentence.",
+                questions: [
+                    {
+                        q: "Your last company had a 22% close rate. That’s embarrassing. What the fuck were you actually doing?",
+                        answers: [
+                            { t: "Moved the first real economic buyer conversation to day 9. Close rate went from 22% to 41%.", dmg: 27 },
+                            { t: "Cleaned up the CRM and stopped reps from chasing garbage leads.", dmg: 6 },
+                            { t: "The product just wasn’t differentiated enough.", dmg: -16 }
+                        ]
+                    },
+                    {
+                        q: "Give me one process you’re proud of that actually moved win rate. Real numbers only.",
+                        answers: [
+                            { t: "Pre-call intelligence packet every rep had to complete. +19 point win rate lift on those deals.", dmg: 32 },
+                            { t: "Weekly team deal reviews with leadership.", dmg: 5 },
+                            { t: "We got better at holding the line on pricing.", dmg: -7 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "eng",
+                icon: "🧠",
+                name: "PRIYA SHARMA",
+                role: "VP ENGINEERING",
+                desc: "Extremely precise. Will dismantle vague answers instantly.",
+                questions: [
+                    {
+                        q: "Sales keeps promising features we haven’t scoped. How do you fix the GTM–Engineering interface?",
+                        answers: [
+                            { t: "Create a joint signal council. Only validated, scored opportunities can request roadmap time.", dmg: 33 },
+                            { t: "Have sales bring the top 5 requests monthly and we prioritize together.", dmg: 8 },
+                            { t: "Tell sales to stop overpromising and manage expectations.", dmg: -13 }
+                        ]
+                    },
+                    {
+                        q: "How do you actually know revenue is healthy versus just lucky this quarter?",
+                        answers: [
+                            { t: "Rolling 4-quarter sourced-to-closed ratio by cohort, not just this quarter’s number.", dmg: 28 },
+                            { t: "Win rate, ACV, and cycle length.", dmg: 10 },
+                            { t: "If we’re hitting quota, it’s healthy.", dmg: -8 }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let game = null;
+
+        function showOpponents() {
+            const grid = document.getElementById('opponent-grid');
+            grid.innerHTML = '';
+
+            OPPONENTS.forEach(opp => {
+                const el = document.createElement('div');
+                el.className = 'opponent';
+                el.innerHTML = `
+                    <span class="opponent-icon">${opp.icon}</span>
+                    <div class="opponent-name">${opp.name}</div>
+                    <div class="opponent-role">${opp.role}</div>
+                    <div class="opponent-desc">${opp.desc}</div>
+                `;
+                el.onclick = () => startBattle(opp);
+                grid.appendChild(el);
+            });
+
+            document.getElementById('hub').style.display = 'none';
+        }
+
+        function startBattle(opp) {
+            game = {
+                opponent: opp,
+                playerHP: 100,
+                oppHP: 100,
+                round: 1,
+                score: 0,
+                logEl: document.getElementById('log')
+            };
+
+            document.getElementById('hub').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('arena').style.display = 'block';
+
+            document.getElementById('arena-title').textContent = `SIM-01 // ${opp.name}`;
+            document.getElementById('opp-label').textContent = opp.role;
+            document.getElementById('opp-name').textContent = opp.name;
+
+            game.logEl.innerHTML = '';
+            updateHP();
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qIndex = Math.min(game.round - 1, game.opponent.questions.length - 1);
+            const q = game.opponent.questions[qIndex];
+
+            document.getElementById('question').textContent = q.q;
+
+            const respContainer = document.getElementById('responses');
+            respContainer.innerHTML = '';
+
+            q.answers.forEach((ans, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'response';
+                btn.textContent = ans.t;
+                btn.onclick = () => chooseAnswer(ans);
+                respContainer.appendChild(btn);
+            });
+        }
+
+        function chooseAnswer(ans) {
+            const log = game.logEl;
+
+            game.oppHP = Math.max(0, game.oppHP - ans.dmg);
+            game.score += Math.max(0, ans.dmg) + 8;
+
+            addLog(`YOU: ${ans.t}`);
+            addLog(`→ ${ans.dmg > 20 ? 'DEVASTATING' : ans.dmg > 10 ? 'SOLID' : 'ACCEPTABLE'} (${ans.dmg > 0 ? '+' : ''}${ans.dmg})`, ans.dmg > 15 ? '#D4AF37' : '#777');
+
+            updateHP();
+
+            if (game.oppHP <= 0) {
+                setTimeout(() => showResults(true), 850);
+                return;
+            }
+
+            // Opponent counter
+            setTimeout(() => {
+                const counter = 17 + Math.floor(Math.random() * 11);
+                game.playerHP = Math.max(0, game.playerHP - counter);
+
+                addLog(`${game.opponent.name.split(' ')[0]} pushes back hard...`, '#444');
+                addLog(`YOU TAKE ${counter} DAMAGE`, '#FF3B30');
+
+                updateHP();
+
+                if (game.playerHP <= 0) {
+                    setTimeout(() => showResults(false), 850);
+                } else {
+                    game.round++;
+                    setTimeout(loadQuestion, 1100);
+                }
+            }, 1400);
+        }
+
+        function addLog(text, color = '#666') {
+            const line = document.createElement('div');
+            line.style.color = color;
+            line.textContent = text;
+            game.logEl.appendChild(line);
+            game.logEl.scrollTop = 9999;
+        }
+
+        function updateHP() {
+            document.getElementById('player-hp').style.width = game.playerHP + '%';
+            document.getElementById('opp-hp').style.width = game.oppHP + '%';
+        }
+
+        function showResults(won) {
+            document.getElementById('arena').style.display = 'none';
+            const res = document.getElementById('results');
+            res.style.display = 'block';
+
+            if (won) {
+                document.getElementById('results-title').textContent = 'SIM COMPLETE';
+                document.getElementById('results-title').style.color = 'var(--success)';
+                document.getElementById('results-score').textContent = game.score;
+                document.getElementById('results-text').innerHTML = 
+                    `You broke ${game.opponent.name}.<br>They stopped asking questions.`;
+            } else {
+                document.getElementById('results-title').textContent = 'ELIMINATED';
+                document.getElementById('results-title').style.color = 'var(--danger)';
+                document.getElementById('results-score').textContent = game.score;
+                document.getElementById('results-text').innerHTML = 
+                    `They got you. Pressure won.<br>Most operators never make it out of this round.`;
+            }
+        }
+
+        function rematch() {
+            const opp = game.opponent;
+            document.getElementById('results').style.display = 'none';
+            startBattle(opp);
+        }
+
+        function exitToHub() {
+            document.getElementById('arena').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('hub').style.display = 'block';
+        }
+
+        // Preload opponent cards on the hub
+        function initHubOpponents() {
+            const grid = document.getElementById('opponent-grid');
+            grid.innerHTML = '';
+
+            OPPONENTS.forEach(opp => {
+                const el = document.createElement('div');
+                el.className = 'opponent';
+                el.innerHTML = `
+                    <span class="opponent-icon">${opp.icon}</span>
+                    <div class="opponent-name">${opp.name}</div>
+                    <div class="opponent-role">${opp.role}</div>
+                    <div class="opponent-desc">${opp.desc}</div>
+                `;
+                el.onclick = () => startBattle(opp);
+                grid.appendChild(el);
+            });
+        }
+
+        // Boot
+        initHubOpponents();
+
+        // Keyboard hint
+        console.log('%c[PLAY] Operator training sim ready. Dark. Cold. No mercy.', 'color:#333');
+    </script>
+</body>
+</html>
