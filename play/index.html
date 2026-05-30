@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE GAME • Layers</title>
-    <meta name="description" content="A layered simulation. Basketball as surface. Deeper structures underneath.">
+    <title>THE GAME</title>
+    <meta name="description" content="A layered operator simulation. Basketball as surface. Deeper structures underneath.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,11 +14,8 @@
             --gold-bright: #E8D5A3;
             --bg: #000000;
             --text: #E8E8E8;
-            --text-dim: #666666;
-            --layer1: #C5A26F;
-            --layer2: #8B6F47;
-            --layer3: #5C4A35;
-            --layer4: #3D2F22;
+            --text-dim: #666;
+            --danger: #B84C3F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,137 +29,62 @@
 
         .scanlines {
             position: fixed; inset: 0;
-            background: repeating-linear-gradient(
-                transparent, transparent 3px,
-                rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 6px
-            );
-            pointer-events: none;
-            z-index: 9999;
+            background: repeating-linear-gradient(transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 6px);
+            pointer-events: none; z-index: 9999;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px;
-        }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 
-        /* Header */
         header {
-            padding: 28px 0;
+            padding: 24px 0;
             border-bottom: 1px solid #111;
+            position: sticky; top: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); z-index: 100;
         }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--gold); }
+        .status-bar { display: flex; gap: 32px; font-size: 12px; color: #555; letter-spacing: 1px; }
 
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .hero { text-align: center; padding: 80px 0 40px; }
+        .hero-label { font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 12px; }
+        .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(52px, 7vw, 96px); font-weight: 700; letter-spacing: -5px; line-height: 0.88; margin-bottom: 16px; }
+        .hero-sub { max-width: 560px; margin: 0 auto; font-size: 15px; color: #888; line-height: 1.5; }
+
+        /* ARC / PROGRESSION */
+        .arc-bar {
+            display: flex; gap: 24px; justify-content: center; margin: 32px 0;
+            font-size: 13px; color: #666;
         }
+        .arc-stat { font-family: 'JetBrains Mono', monospace; }
+        .arc-stat .num { color: var(--gold); font-size: 15px; }
 
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            letter-spacing: 3px;
-            color: var(--gold);
-        }
+        /* THE COURT - Interactive Canvas */
+        .court-section { margin: 40px 0; }
+        .section-label { font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 16px; text-align: center; }
 
-        .meta {
-            font-size: 12px;
-            color: #444;
-            letter-spacing: 1px;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 120px 0 80px;
-            text-align: center;
-        }
-
-        .hero-label {
-            font-size: 11px;
-            letter-spacing: 4px;
-            color: var(--gold);
-            margin-bottom: 16px;
-        }
-
-        .hero-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(48px, 7vw, 92px);
-            font-weight: 700;
-            letter-spacing: -5px;
-            line-height: 0.9;
-            margin-bottom: 24px;
-        }
-
-        .hero-sub {
-            max-width: 540px;
-            margin: 0 auto 48px;
-            font-size: 15px;
-            color: #888;
-            line-height: 1.55;
-        }
-
-        .layer-hint {
-            font-size: 12px;
-            color: #444;
-            letter-spacing: 2px;
-        }
-
-        /* The Court - Surface Layer */
-        .court-section {
-            margin: 60px 0;
-        }
-
-        .section-label {
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: var(--gold);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .court {
+        .court-container {
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 8px;
-            padding: 40px;
+            padding: 32px;
             text-align: center;
         }
 
-        .court-visual {
-            height: 280px;
-            background: linear-gradient(#111, #0a0a0a);
+        canvas#court {
+            background: #111;
             border: 1px solid #222;
-            margin-bottom: 32px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            letter-spacing: -2px;
-            color: #222;
-            overflow: hidden;
+            border-radius: 4px;
+            cursor: crosshair;
+            max-width: 100%;
         }
 
-        .shot-result {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            letter-spacing: 4px;
-            color: var(--gold);
-            opacity: 0;
-            transition: all 0.4s ease;
-            pointer-events: none;
-            white-space: nowrap;
+        .court-info {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #555;
         }
 
-        .shot-result.show {
-            opacity: 1;
-        }
-
-        .controls {
+        .shot-controls {
+            margin-top: 24px;
             display: flex;
             gap: 12px;
             justify-content: center;
@@ -179,12 +101,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
-        .btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
+        .btn:hover { border-color: var(--gold); color: var(--gold); }
         .btn.primary {
             background: var(--gold);
             color: #000;
@@ -192,121 +109,87 @@
             font-weight: 600;
         }
 
-        /* Layers Panel - The Depth */
-        .layers-panel {
-            margin-top: 80px;
+        /* SYSTEMS / LEVERS + SIMS */
+        .systems {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
         }
 
-        .layers-title {
+        .system {
+            border: 1px solid #1a1a1a;
+            padding: 20px 24px;
+        }
+        .system-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: var(--gold);
+        }
+        .system-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            color: var(--gold-bright);
+            margin-bottom: 12px;
+        }
+        .lever {
+            margin-top: 12px;
+        }
+        .lever label {
+            font-size: 11px;
+            color: #666;
+            display: block;
+            margin-bottom: 4px;
+        }
+        input[type="range"] { width: 100%; accent-color: var(--gold); }
+
+        /* LAYERS */
+        .layers {
+            margin-top: 80px;
+        }
+        .layers-header {
             text-align: center;
             margin-bottom: 32px;
         }
-
-        .layers-title .main {
+        .layers-header .title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 15px;
             letter-spacing: 3px;
         }
-
-        .layers-title .sub {
-            font-size: 12px;
-            color: #555;
-            margin-top: 6px;
-        }
-
         .layer {
             border: 1px solid #1a1a1a;
+            padding: 20px 24px;
             margin-bottom: 12px;
-            padding: 24px 28px;
-            transition: all 0.3s ease;
         }
-
-        .layer:hover {
-            border-color: #333;
-        }
-
         .layer-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
-
-        .layer-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            letter-spacing: 1px;
-        }
-
-        .layer-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--gold);
-        }
-
+        .layer-name { font-size: 14px; }
+        .layer-val { font-family: 'JetBrains Mono', monospace; color: var(--gold); }
         .layer-desc {
             font-size: 13px;
-            color: #666;
-            line-height: 1.6;
+            color: #777;
+            line-height: 1.5;
         }
-
         .layer-bar {
             height: 2px;
             background: #1a1a1a;
-            margin-top: 16px;
+            margin-top: 14px;
             position: relative;
         }
-
         .layer-fill {
-            position: absolute;
             height: 100%;
             background: var(--gold);
-            transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: width .6s cubic-bezier(0.23,1,0.32,1);
         }
 
-        /* Levers */
-        .levers {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid #111;
-        }
-
-        .levers-title {
-            text-align: center;
-            margin-bottom: 32px;
-            font-size: 13px;
-            letter-spacing: 3px;
-            color: #555;
-        }
-
-        .lever {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .lever-label {
-            width: 160px;
-            font-size: 13px;
-            color: #888;
-        }
-
-        .lever-input {
-            flex: 1;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--gold);
-        }
-
-        .lever-value {
-            width: 48px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--gold);
-            text-align: right;
+        .hidden-layer {
+            opacity: 0.35;
+            pointer-events: none;
         }
 
         .footer {
@@ -316,278 +199,431 @@
             color: #333;
             letter-spacing: 2px;
         }
-
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
+<div class="scanlines"></div>
 
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <div class="logo">THE GAME</div>
-                <div class="meta">LAYERED SIMULATION • BASINLEON.GITHUB.IO</div>
-            </div>
-        </div>
-    </header>
-
+<header>
     <div class="container">
-
-        <!-- HERO -->
-        <div class="hero">
-            <div class="hero-label">A SURFACE AND WHAT LIES BENEATH</div>
-            <h1 class="hero-title">THE GAME</h1>
-            <p class="hero-sub">
-                The shot is the only thing the world sees.<br>
-                Underneath it, other things are moving.
-            </p>
-            <div class="layer-hint">4 LAYERS • MULTIPLE LEVERS • EVOLVING STATE</div>
-        </div>
-
-        <!-- SURFACE LAYER: THE COURT -->
-        <div class="court-section">
-            <div class="section-label">LAYER 1 — THE SURFACE</div>
-
-            <div class="court">
-                <div class="court-visual" id="court-visual">
-                    <img id="court-gif" src="https://media.tenor.com/7sX2vN0vL9kAAAAC/basketball-shot-slow-motion.gif" 
-                         style="max-height: 240px; width: auto; border-radius: 4px;" alt="">
-                    <div class="shot-result" id="shot-result"></div>
-                </div>
-
-                <div style="margin-bottom: 20px; font-size: 13px; color: #555;">
-                    Levers shape the shot. Commit when ready.
-                </div>
-
-                <div class="controls">
-                    <button class="btn primary" onclick="takeTheShot()" style="padding: 16px 48px; font-size: 15px;">
-                        TAKE THE SHOT
-                    </button>
-                </div>
+        <div class="header-inner">
+            <div class="logo">THE GAME</div>
+            <div class="status-bar">
+                <div>OPERATOR SIM <span style="color:#444">v0.3</span></div>
             </div>
         </div>
+    </div>
+</header>
 
-        <!-- LAYERS -->
-        <div class="layers-panel">
-            <div class="layers-title">
-                <div class="main">THE LAYERS</div>
-                <div class="sub">What happens beneath the visible play</div>
-            </div>
+<div class="container">
 
-            <div class="layer">
-                <div class="layer-header">
-                    <div class="layer-name">LAYER 2 — THE PLAY</div>
-                    <div class="layer-value" id="layer2-value">42</div>
-                </div>
-                <div class="layer-desc">
-                    The read. The timing. The geometry of the moment. 
-                    This layer tracks how cleanly the action fits the situation.
-                </div>
-                <div class="layer-bar"><div class="layer-fill" id="layer2-bar" style="width:42%"></div></div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-header">
-                    <div class="layer-name">LAYER 3 — THE PATTERN</div>
-                    <div class="layer-value" id="layer3-value">31</div>
-                </div>
-                <div class="layer-desc">
-                    The longer arc. How this shot sits inside your history of shots. 
-                    Repetition either strengthens or erodes the structure.
-                </div>
-                <div class="layer-bar"><div class="layer-fill" id="layer3-bar" style="width:31%"></div></div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-header">
-                    <div class="layer-name">LAYER 4 — THE SPARK</div>
-                    <div class="layer-value" id="layer4-value">19</div>
-                </div>
-                <div class="layer-desc">
-                    What actually moves when you act. The part that doesn't show up in the box score.
-                </div>
-                <div class="layer-bar"><div class="layer-fill" id="layer4-bar" style="width:19%"></div></div>
-            </div>
-        </div>
-
-        <!-- LEVERS -->
-        <div class="levers">
-            <div class="levers-title">LEVERS YOU CAN PULL</div>
-
-            <div style="text-align:center; margin-bottom: 24px;">
-                <img src="https://media.tenor.com/5fXvNqZqO0gAAAAC/basketball-dribble-dark.gif" 
-                     style="max-height: 140px; opacity: 0.75; border-radius: 4px;" alt="">
-            </div>
-
-            <div class="lever">
-                <div class="lever-label">Aggression</div>
-                <div class="lever-input">
-                    <input type="range" id="lever-aggression" min="0" max="100" value="50" oninput="updateLevers()">
-                </div>
-                <div class="lever-value" id="lever-aggression-val">50</div>
-            </div>
-
-            <div class="lever">
-                <div class="lever-label">Patience</div>
-                <div class="lever-input">
-                    <input type="range" id="lever-patience" min="0" max="100" value="50" oninput="updateLevers()">
-                </div>
-                <div class="lever-value" id="lever-patience-val">50</div>
-            </div>
-
-            <div class="lever">
-                <div class="lever-label">Clarity</div>
-                <div class="lever-input">
-                    <input type="range" id="lever-clarity" min="0" max="100" value="50" oninput="updateLevers()">
-                </div>
-                <div class="lever-value" id="lever-clarity-val">50</div>
-            </div>
-        </div>
-
+    <div class="hero">
+        <div class="hero-label">SURFACE AND STRUCTURE</div>
+        <h1 class="hero-title">THE GAME</h1>
+        <p class="hero-sub">
+            The shot is visible.<br>
+            Everything else moves in layers underneath.
+        </p>
     </div>
 
-    <div class="footer">
-        BUILT TO EVOLVE • PULL LEVERS • WATCH THE LAYERS RESPOND
+    <!-- ARC / PROGRESSION -->
+    <div class="arc-bar" id="arc-bar">
+        <div class="arc-stat">SPARKS <span class="num" id="sparks">0</span></div>
+        <div class="arc-stat">REPUTATION <span class="num" id="reputation">50</span></div>
+        <div class="arc-stat">ENERGY <span class="num" id="energy">100</span></div>
+        <div class="arc-stat">SHOTS <span class="num" id="shots">0</span></div>
     </div>
 
-    <script>
-        // Simple but deep state
-        let state = {
-            layer2: 42,   // The Play
-            layer3: 31,   // The Pattern
-            layer4: 19,   // The Spark
-            totalShots: 0,
-            sparksGathered: 0
-        };
+    <!-- THE COURT -->
+    <div class="court-section">
+        <div class="section-label">THE COURT — SURFACE LAYER</div>
+        <div class="court-container">
+            <canvas id="court" width="900" height="420"></canvas>
+            <div class="court-info">
+                Click on the court to aim. Current levers shape the outcome.
+            </div>
+            <div class="shot-controls" style="margin-top: 20px;">
+                <button class="btn primary" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px;">
+                    RELEASE THE SHOT
+                </button>
+            </div>
+        </div>
+    </div>
 
-        let levers = {
-            aggression: 50,
-            patience: 50,
-            clarity: 50
-        };
+    <!-- SYSTEMS + SIMS -->
+    <div class="systems">
+        <!-- Levers -->
+        <div class="system">
+            <div class="system-name">THE LEVERS</div>
+            <div class="lever">
+                <label>Aggression <span id="agg-val">50</span></label>
+                <input type="range" id="agg" min="0" max="100" value="50" oninput="updateLevers()">
+            </div>
+            <div class="lever">
+                <label>Patience <span id="pat-val">50</span></label>
+                <input type="range" id="pat" min="0" max="100" value="50" oninput="updateLevers()">
+            </div>
+            <div class="lever">
+                <label>Clarity <span id="cla-val">50</span></label>
+                <input type="range" id="cla" min="0" max="100" value="50" oninput="updateLevers()">
+            </div>
+        </div>
 
-        function updateUI() {
-            // Update layer displays
-            document.getElementById('layer2-value').textContent = Math.round(state.layer2);
-            document.getElementById('layer2-bar').style.width = state.layer2 + '%';
+        <!-- Sims Systems -->
+        <div class="system">
+            <div class="system-name">OPERATOR STATE</div>
+            <div style="font-size:13px; line-height:1.7; color:#888;">
+                Energy drains with every shot.<br>
+                Reputation grows with consistent alignment.<br>
+                Low energy = noisier outcomes.
+            </div>
+            <div style="margin-top:16px; font-size:12px; color:#555;">
+                Current Play: <span id="current-play" style="color:#aaa">Standard</span>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('layer3-value').textContent = Math.round(state.layer3);
-            document.getElementById('layer3-bar').style.width = state.layer3 + '%';
+    <!-- LAYERS -->
+    <div class="layers">
+        <div class="layers-header">
+            <div class="title">THE LAYERS</div>
+        </div>
 
-            document.getElementById('layer4-value').textContent = Math.round(state.layer4);
-            document.getElementById('layer4-bar').style.width = state.layer4 + '%';
+        <div class="layer">
+            <div class="layer-header">
+                <div class="layer-name">1. MALKHUT — THE COURT</div>
+                <div class="layer-val" id="l1-val">—</div>
+            </div>
+            <div class="layer-desc">The visible action. The only layer most people ever see.</div>
+            <div class="layer-bar"><div class="layer-fill" id="l1-bar" style="width:0%"></div></div>
+        </div>
+
+        <div class="layer">
+            <div class="layer-header">
+                <div class="layer-name">2. YESOD — THE PLAY</div>
+                <div class="layer-val" id="l2-val">—</div>
+            </div>
+            <div class="layer-desc">The structure underneath the moment. How the shot connects to the situation.</div>
+            <div class="layer-bar"><div class="layer-fill" id="l2-bar" style="width:0%"></div></div>
+        </div>
+
+        <div class="layer">
+            <div class="layer-header">
+                <div class="layer-name">3. NETZACH — THE PATTERN</div>
+                <div class="layer-val" id="l3-val">—</div>
+            </div>
+            <div class="layer-desc">The longer memory. How this action sits inside your history of actions.</div>
+            <div class="layer-bar"><div class="layer-fill" id="l3-bar" style="width:0%"></div></div>
+        </div>
+
+        <div class="layer">
+            <div class="layer-header">
+                <div class="layer-name">4. HOD — THE SPARK</div>
+                <div class="layer-val" id="l4-val">—</div>
+            </div>
+            <div class="layer-desc">What is actually transmitted or lost. The part that compounds or dissipates.</div>
+            <div class="layer-bar"><div class="layer-fill" id="l4-bar" style="width:0%"></div></div>
+        </div>
+
+        <div class="layer hidden-layer" id="layer5">
+            <div class="layer-header">
+                <div class="layer-name">5. KETER — THE HIDDEN</div>
+                <div class="layer-val" id="l5-val">LOCKED</div>
+            </div>
+            <div class="layer-desc">Reveals itself only after sustained alignment. Not yet accessible.</div>
+            <div class="layer-bar"><div class="layer-fill" id="l5-bar" style="width:0%"></div></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    BUILT TO BE EXPANDED • EVERY SHOT MOVES EVERYTHING
+</div>
+
+<script>
+// ==================== CORE STATE ====================
+let state = {
+    sparks: 0,
+    reputation: 50,
+    energy: 100,
+    shots: 0,
+    layer1: 65,   // Malkhut / Court
+    layer2: 48,   // Yesod / Play
+    layer3: 37,   // Netzach / Pattern
+    layer4: 22,   // Hod / Spark
+    layer5: 0,    // Keter / Hidden (unlocked later)
+    totalSparksGathered: 0
+};
+
+let levers = {
+    aggression: 50,
+    patience: 50,
+    clarity: 50
+};
+
+let unlockedLayer5 = false;
+
+// ==================== PERSISTENCE ====================
+function saveState() {
+    localStorage.setItem('thegame_state_v1', JSON.stringify(state));
+    localStorage.setItem('thegame_levers_v1', JSON.stringify(levers));
+    localStorage.setItem('thegame_unlocks_v1', JSON.stringify({ layer5: unlockedLayer5 }));
+}
+
+function loadState() {
+    const savedState = localStorage.getItem('thegame_state_v1');
+    const savedLevers = localStorage.getItem('thegame_levers_v1');
+    const savedUnlocks = localStorage.getItem('thegame_unlocks_v1');
+
+    if (savedState) state = { ...state, ...JSON.parse(savedState) };
+    if (savedLevers) levers = { ...levers, ...JSON.parse(savedLevers) };
+    if (savedUnlocks) {
+        const u = JSON.parse(savedUnlocks);
+        unlockedLayer5 = u.layer5 || false;
+    }
+}
+
+// ==================== UI UPDATES ====================
+function updateArc() {
+    document.getElementById('sparks').textContent = state.sparks;
+    document.getElementById('reputation').textContent = Math.round(state.reputation);
+    document.getElementById('energy').textContent = Math.round(state.energy);
+    document.getElementById('shots').textContent = state.shots;
+}
+
+function updateLevers() {
+    levers.aggression = parseInt(document.getElementById('agg').value);
+    levers.patience = parseInt(document.getElementById('pat').value);
+    levers.clarity = parseInt(document.getElementById('cla').value);
+
+    document.getElementById('agg-val').textContent = levers.aggression;
+    document.getElementById('pat-val').textContent = levers.patience;
+    document.getElementById('cla-val').textContent = levers.clarity;
+}
+
+function updateLayers() {
+    const l1 = Math.round(state.layer1);
+    const l2 = Math.round(state.layer2);
+    const l3 = Math.round(state.layer3);
+    const l4 = Math.round(state.layer4);
+    const l5 = Math.round(state.layer5);
+
+    document.getElementById('l1-val').textContent = l1;
+    document.getElementById('l1-bar').style.width = l1 + '%';
+
+    document.getElementById('l2-val').textContent = l2;
+    document.getElementById('l2-bar').style.width = l2 + '%';
+
+    document.getElementById('l3-val').textContent = l3;
+    document.getElementById('l3-bar').style.width = l3 + '%';
+
+    document.getElementById('l4-val').textContent = l4;
+    document.getElementById('l4-bar').style.width = l4 + '%';
+
+    const layer5El = document.getElementById('layer5');
+    if (unlockedLayer5) {
+        layer5El.classList.remove('hidden-layer');
+        document.getElementById('l5-val').textContent = l5;
+        document.getElementById('l5-bar').style.width = l5 + '%';
+    } else {
+        layer5El.classList.add('hidden-layer');
+    }
+}
+
+function updateAllUI() {
+    updateArc();
+    updateLayers();
+}
+
+// ==================== CANVAS COURT ====================
+let canvas, ctx;
+let lastShot = null;
+
+function initCourt() {
+    canvas = document.getElementById('court');
+    ctx = canvas.getContext('2d');
+
+    drawCourt();
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        drawCourt(x, y);
+    });
+
+    canvas.addEventListener('mouseleave', () => drawCourt());
+}
+
+function drawCourt(aimX = null, aimY = null) {
+    ctx.fillStyle = '#0f0f0f';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Court lines
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+    // Hoop area (right side)
+    ctx.strokeStyle = '#333';
+    ctx.beginPath();
+    ctx.arc(canvas.width - 120, canvas.height / 2, 60, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Hoop
+    ctx.strokeStyle = '#444';
+    ctx.beginPath();
+    ctx.arc(canvas.width - 80, canvas.height / 2, 18, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Ball
+    ctx.fillStyle = '#222';
+    ctx.beginPath();
+    ctx.arc(120, canvas.height / 2, 14, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Aim indicator
+    if (aimX && aimY) {
+        ctx.strokeStyle = 'rgba(197, 162, 111, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(120, canvas.height / 2);
+        ctx.lineTo(aimX, aimY);
+        ctx.stroke();
+    }
+
+    // Last shot result
+    if (lastShot) {
+        ctx.fillStyle = lastShot.success ? '#C5A26F' : '#B84C3F';
+        ctx.font = '14px JetBrains Mono';
+        ctx.fillText(lastShot.message, canvas.width / 2 - 60, 60);
+    }
+}
+
+// ==================== SHOT MECHANIC ====================
+function takeShot() {
+    if (!canvas) return;
+
+    const energyCost = 8 + (levers.aggression / 12);
+    if (state.energy < energyCost) {
+        alert("Low energy. Rest or realign.");
+        return;
+    }
+
+    state.energy = Math.max(0, state.energy - energyCost);
+    state.shots++;
+
+    const agg = levers.aggression;
+    const pat = levers.patience;
+    const cla = levers.clarity;
+
+    // Base success influenced by levers + energy + reputation
+    let successChance = 48 + (cla * 0.32) + (pat * 0.18) - (agg * 0.12);
+    successChance += (state.reputation - 50) * 0.15;
+    successChance += (state.energy - 60) * 0.12;
+
+    const success = Math.random() * 100 < successChance;
+
+    let l1 = 0, l2 = 0, l3 = 0, l4 = 0;
+
+    if (success) {
+        l1 = 6 + (pat / 20);
+        l2 = 7 + (cla / 18);
+        l3 = 5 + (cla / 22);
+        l4 = 8 + (cla / 15) + (pat / 20);
+
+        state.sparks = Math.round(state.sparks + (l4 * 0.7));
+        state.reputation = Math.min(100, state.reputation + 1.2);
+        state.layer4 = Math.min(100, state.layer4 + l4);
+
+        lastShot = { success: true, message: "CLEAN" };
+    } else {
+        l1 = 2;
+        l2 = 3;
+        l3 = 4 + (agg / 18);
+        l4 = 2;
+
+        state.reputation = Math.max(10, state.reputation - 0.6);
+        state.layer3 = Math.max(10, state.layer3 - l3 * 0.5);
+
+        lastShot = { success: false, message: "NO GOOD" };
+    }
+
+    // Apply to layers
+    state.layer1 = Math.min(100, Math.max(10, state.layer1 + (success ? l1 : -l1 * 0.6)));
+    state.layer2 = Math.min(100, Math.max(10, state.layer2 + (success ? l2 : -l2 * 0.7)));
+    state.layer3 = Math.min(100, Math.max(10, state.layer3 + (success ? l3 : -l3 * 0.6)));
+
+    // Progression & hidden rules
+    state.totalSparksGathered += Math.floor(l4 * 0.6);
+
+    // Unlock 5th layer after meaningful progress
+    if (!unlockedLayer5 && state.totalSparksGathered >= 35 && state.reputation >= 62) {
+        unlockedLayer5 = true;
+        state.layer5 = 12;
+    }
+
+    if (unlockedLayer5) {
+        const hiddenGain = success ? (cla / 30) : -1;
+        state.layer5 = Math.max(5, Math.min(100, state.layer5 + hiddenGain));
+    }
+
+    drawCourt();
+    updateAllUI();
+    saveState();
+}
+
+// ==================== INIT ====================
+function initLevers() {
+    const ids = ['agg', 'pat', 'cla'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = levers[id === 'agg' ? 'aggression' : id === 'pat' ? 'patience' : 'clarity'];
+            el.oninput = () => {
+                updateLevers();
+                saveState();
+            };
         }
+    });
+    updateLevers();
+}
 
-        function updateLevers() {
-            levers.aggression = parseInt(document.getElementById('lever-aggression').value);
-            levers.patience = parseInt(document.getElementById('lever-patience').value);
-            levers.clarity = parseInt(document.getElementById('lever-clarity').value);
+function init() {
+    loadState();
 
-            document.getElementById('lever-aggression-val').textContent = levers.aggression;
-            document.getElementById('lever-patience-val').textContent = levers.patience;
-            document.getElementById('lever-clarity-val').textContent = levers.clarity;
+    // Apply saved levers to inputs
+    document.getElementById('agg').value = levers.aggression;
+    document.getElementById('pat').value = levers.patience;
+    document.getElementById('cla').value = levers.clarity;
+
+    initCourt();
+    initLevers();
+    updateAllUI();
+
+    // Gentle energy regen over time (Sims-like)
+    setInterval(() => {
+        if (state.energy < 100) {
+            state.energy = Math.min(100, state.energy + 1.5);
+            updateArc();
         }
+    }, 18000);
 
-        function takeTheShot() {
-            const court = document.getElementById('court-visual');
-            const resultEl = document.getElementById('shot-result');
-            const gif = document.getElementById('court-gif');
-
-            state.totalShots++;
-
-            const effectiveAggression = levers.aggression;
-            const effectivePatience = levers.patience;
-            const effectiveClarity = levers.clarity;
-
-            // Single committed action, shaped by the levers
-            const baseSuccess = 42 + (effectiveClarity * 0.35) + (effectivePatience * 0.2) - (effectiveAggression * 0.15);
-            const success = Math.random() * 100 < baseSuccess;
-
-            let l2 = 0, l3 = 0, l4 = 0;
-            let message = "";
-
-            if (success) {
-                l2 = 7 + (effectivePatience / 18);
-                l3 = 5 + (effectiveClarity / 22);
-                l4 = 6 + (effectiveClarity / 25) + (effectivePatience / 30);
-
-                state.layer2 = Math.min(100, state.layer2 + l2);
-                state.layer3 = Math.min(100, state.layer3 + l3);
-                state.layer4 = Math.min(100, state.layer4 + l4);
-
-                message = "IT GOES IN";
-                gif.src = "https://media.tenor.com/7sX2vN0vL9kAAAAC/basketball-shot-slow-motion.gif"; // clean make feel
-            } else {
-                l2 = 3;
-                l3 = 4 + (effectiveAggression / 20);
-                l4 = 3;
-
-                state.layer2 = Math.max(8, state.layer2 - l2 * 0.7);
-                state.layer3 = Math.max(8, state.layer3 - l3 * 0.6);
-                state.layer4 = Math.max(8, state.layer4 - l4 * 0.5);
-
-                message = "NO GOOD";
-                gif.src = "https://media.tenor.com/3vGfZfQvO5kAAAAC/basketball-miss.gif"; // miss feel
-            }
-
-            // Visual + result
-            resultEl.textContent = message;
-            resultEl.style.opacity = '1';
-            resultEl.style.color = success ? '#E8D5A3' : '#B84C3F';
-
-            court.style.transition = 'none';
-            court.style.background = success ? '#122211' : '#221111';
-            setTimeout(() => {
-                court.style.transition = 'background 1400ms ease';
-                court.style.background = 'linear-gradient(#111, #0a0a0a)';
-            }, 60);
-
-            setTimeout(() => {
-                resultEl.style.opacity = '0';
-            }, 1800);
-
-            updateUI();
-
-            // Hidden evolution every few shots
-            if (state.totalShots % 4 === 0) {
-                const drift = (effectiveClarity - 50) * 0.06;
-                state.layer4 = Math.max(8, Math.min(100, state.layer4 + drift));
-                updateUI();
-            }
+    // Keyboard support for quick shots
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            takeShot();
         }
+    });
 
-        function init() {
-            // Initialize lever displays
-            document.getElementById('lever-aggression').value = levers.aggression;
-            document.getElementById('lever-patience').value = levers.patience;
-            document.getElementById('lever-clarity').value = levers.clarity;
+    console.log('%c[THE GAME] Layered operator simulation initialized. All systems live.', 'color:#333');
+}
 
-            document.getElementById('lever-aggression-val').textContent = levers.aggression;
-            document.getElementById('lever-patience-val').textContent = levers.patience;
-            document.getElementById('lever-clarity-val').textContent = levers.clarity;
+init();
+</script>
 
-            updateUI();
-
-            // Gentle demo pulse on load (can be removed later)
-            setTimeout(() => {
-                const court = document.getElementById('court-visual');
-                if (court) court.style.boxShadow = '0 0 0 1px rgba(197, 162, 111, 0.1)';
-            }, 1800);
-        }
-
-        // Make state inspectable for future evolution
-        window.THEGAME = {
-            getState: () => state,
-            getLevers: () => levers,
-            reset: () => {
-                state = { layer2: 42, layer3: 31, layer4: 19, totalShots: 0, sparksGathered: 0 };
-                updateUI();
-            }
-        };
-
-        init();
-    </script>
 </body>
 </html>
