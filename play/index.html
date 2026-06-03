@@ -657,6 +657,57 @@
             font-size: 12px;
             line-height: 1.35;
         }
+        .ability small {
+            display: block;
+            margin-top: 8px;
+            color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+        .tactical-readout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .tactical-box {
+            border: 1px solid rgba(216,182,106,0.13);
+            background: rgba(0,0,0,0.24);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: left;
+        }
+        .tactical-box strong {
+            display: block;
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .tactical-box span {
+            color: #bdb4a4;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        .odysseus-bridge {
+            margin-top: 14px;
+            border: 1px solid rgba(91,183,168,0.22);
+            background: linear-gradient(135deg, rgba(91,183,168,0.08), rgba(216,182,106,0.045));
+            border-radius: 8px;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+        .odysseus-bridge p {
+            color: #bdb4a4;
+            font-size: 13px;
+            line-height: 1.45;
+            margin-top: 4px;
+        }
 
         @media (max-width: 980px) {
             .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 42px; }
@@ -668,6 +719,7 @@
             .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .mechanics-hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .ability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .tactical-readout, .odysseus-bridge { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
@@ -801,6 +853,13 @@
                 <div class="step"><strong>3. RELEASE</strong>Press Take It, then press again or Space in the green window.</div>
                 <div class="step"><strong>4. POST</strong>Turn strong moments into an X draft, card, or public receipt.</div>
             </div>
+            <div class="odysseus-bridge">
+                <div>
+                    <div class="sim-kicker">ODYSSEUS BRIDGE</div>
+                    <p>The public arcade creates the moment. The private cockpit should ingest the receipt later as memory, task, or research fuel.</p>
+                </div>
+                <button class="btn" onclick="exportOdysseusPacket()" style="padding:10px 14px; font-size:11px;">COPY PACKET</button>
+            </div>
         </div>
         <div class="how-card visitor-card">
             <div class="sim-kicker">VISITORS</div>
@@ -833,6 +892,16 @@
                 <div class="mechanic-stat">POWER <strong id="power-score">—</strong></div>
                 <div class="mechanic-stat">PRESSURE <strong id="pressure-score">—</strong></div>
                 <div class="mechanic-stat">RANGE <strong id="range-score">—</strong></div>
+            </div>
+            <div class="tactical-readout">
+                <div class="tactical-box">
+                    <strong>TACTICAL READ</strong>
+                    <span id="tactical-read">Pin the defender, choose a square, then release on tempo.</span>
+                </div>
+                <div class="tactical-box">
+                    <strong>BOARD SQUARE</strong>
+                    <span id="board-square">—</span>
+                </div>
             </div>
             <div class="meter-shell" aria-hidden="true">
                 <div class="meter-green"></div>
@@ -1509,6 +1578,50 @@ async function exportSimCard() {
     await shareVisualForX(c, 'the-game-sim-card', generateXDraft('operator', false), 5);
 }
 
+function exportOdysseusPacket() {
+    const packet = {
+        source: 'THE_GAME_PUBLIC_SIM',
+        intended_destination: 'BasinLeon/odysseus',
+        created_at: new Date().toISOString(),
+        rank: getSimRank(),
+        state: {
+            sparks: state.sparks,
+            reputation: Math.round(state.reputation),
+            xPresence: Math.round(state.xPresence),
+            networkOfPulls: Math.round(state.networkOfPulls),
+            energy: Math.round(state.energy),
+            shots: state.shots,
+            viralHeat: state.sim?.viralHeat || 0
+        },
+        current_tactic: ABILITIES[activeAbility]?.label || 'Pin the Defender',
+        last_mechanics: lastMechanics ? {
+            square: lastMechanics.square,
+            zone: lastMechanics.zone,
+            quality: Math.round(lastMechanics.quality),
+            pressure: Math.round(lastMechanics.pressure),
+            rangePenalty: Math.round(lastMechanics.rangePenalty),
+            ability: lastMechanics.ability?.name
+        } : null,
+        last_moment: state.sim?.moments?.[0] || null,
+        suggested_odysseus_actions: [
+            'store as memory',
+            'turn into X draft variants',
+            'create follow-up task',
+            'compare against prior operator runs'
+        ]
+    };
+    const text = JSON.stringify(packet, null, 2);
+    const done = () => {
+        recordSimAction('draft', { summary: 'Odysseus packet copied for machine-room ingestion.', clarity: levers.clarity });
+        alert('Odysseus packet copied. Later this can POST directly into the private cockpit.');
+    };
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(done).catch(() => prompt('Copy this Odysseus packet:', text));
+    } else {
+        prompt('Copy this Odysseus packet:', text);
+    }
+}
+
 // ==================== CANVAS COURT ====================
 let canvas, ctx;
 let lastShot = null;
@@ -1532,7 +1645,9 @@ const ABILITIES = {
         pressure: -10,
         release: 14,
         energy: 0,
-        reward: 1
+        cost: 9,
+        reward: 1,
+        tactic: 'control file'
     },
     knight: {
         name: 'KNIGHT FORK',
@@ -1543,7 +1658,9 @@ const ABILITIES = {
         range: -14,
         release: 4,
         energy: 3,
-        reward: 1.15
+        cost: 12,
+        reward: 1.15,
+        tactic: 'attack angle'
     },
     castle: {
         name: 'CASTLE',
@@ -1554,7 +1671,9 @@ const ABILITIES = {
         range: 0,
         release: 8,
         energy: -6,
-        reward: 0.75
+        cost: 6,
+        reward: 0.75,
+        tactic: 'reset tempo'
     },
     gambit: {
         name: 'GAMBIT',
@@ -1565,7 +1684,9 @@ const ABILITIES = {
         range: 4,
         release: -12,
         energy: 8,
-        reward: 1.55
+        cost: 18,
+        reward: 1.55,
+        tactic: 'sacrifice'
     }
 };
 
@@ -1624,6 +1745,16 @@ function updateMechanicText(id, value) {
     if (el) el.textContent = value;
 }
 
+function getBoardSquare(x, y) {
+    const left = 55;
+    const top = 55;
+    const width = canvas.width - 110;
+    const height = canvas.height - 110;
+    const file = clamp(Math.floor(((x - left) / width) * 8), 0, 7);
+    const rank = clamp(7 - Math.floor(((y - top) / height) * 8), 0, 7);
+    return `${'ABCDEFGH'[file]}${rank + 1}`;
+}
+
 function updateReleaseNeedle() {
     const needle = document.getElementById('release-needle');
     if (needle) needle.style.left = `${clamp(releaseValue, 0, 100)}%`;
@@ -1636,6 +1767,7 @@ function renderAbilities() {
         <button class="ability ${activeAbility === id ? 'active' : ''}" onclick="selectAbility('${id}')">
             <strong>${ability.name}</strong>
             <span>${ability.desc}</span>
+            <small>${ability.cost} energy · ${ability.tactic}</small>
         </button>
     `).join('');
     const currentPlay = document.getElementById('current-play');
@@ -1659,6 +1791,8 @@ function updateMechanicPreview(releaseScore = null) {
     updateMechanicText('power-score', `${Math.round(m.power)}%`);
     updateMechanicText('pressure-score', `${Math.round(m.pressure)}%`);
     updateMechanicText('range-score', `${Math.round(m.rangePenalty)}%`);
+    updateMechanicText('board-square', `${m.square} · ${m.zone}`);
+    updateMechanicText('tactical-read', m.tacticalRead);
     return m;
 }
 
@@ -1678,14 +1812,17 @@ function calculateShotMechanics(targetX, targetY, releaseScore = null) {
     const releaseBonus = releaseScore === null ? 0 : (releaseScore - 52) * 0.55;
     const baseQuality = clamp(54 + leverBalance + ability.quality - pressure * 0.34 - rangePenalty * 0.72 + (state.energy - 55) * 0.08, 4, 96);
     const quality = clamp(baseQuality + releaseBonus, 2, 98);
-    return { targetX, targetY, aimError, shotDistance, pressure, power, rangePenalty, baseQuality, quality, abilityId: activeAbility, ability };
+    const square = getBoardSquare(targetX, targetY);
+    const zone = targetX > 650 ? 'rim file' : targetX > 430 ? 'mid-board' : 'backcourt';
+    const tacticalRead = `${ability.label} on ${square}: ${pressure > 55 ? 'contested file' : 'open file'}, ${rangePenalty > 28 ? 'long diagonal' : 'clean lane'}, ${quality > 72 ? 'green-light move' : quality > 45 ? 'playable move' : 'low-percentage move'}.`;
+    return { targetX, targetY, aimError, shotDistance, pressure, power, rangePenalty, baseQuality, quality, abilityId: activeAbility, ability, square, zone, tacticalRead };
 }
 
 function startReleaseMeter() {
     if (isMeterActive || isShooting) return;
     pendingTarget = currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
     const preview = calculateShotMechanics(pendingTarget.x, pendingTarget.y, null);
-    if (state.energy < 8 + preview.power / 16 + preview.ability.energy) {
+    if (state.energy < preview.ability.cost) {
         alert("Low energy. Castle, rest, or realign before forcing the move.");
         return;
     }
@@ -1750,6 +1887,40 @@ function drawCourt(aimX = null, aimY = null) {
     ctx.strokeStyle = '#2a2a2a';
     ctx.lineWidth = 4;
     ctx.strokeRect(55, 55, w - 110, h - 110);
+
+    // Chess-board tactical overlay: files/ranks on top of the court
+    const boardLeft = 55;
+    const boardTop = 55;
+    const boardW = w - 110;
+    const boardH = h - 110;
+    const cellW = boardW / 8;
+    const cellH = boardH / 8;
+    for (let file = 0; file < 8; file++) {
+        for (let rank = 0; rank < 8; rank++) {
+            ctx.fillStyle = (file + rank) % 2 === 0 ? 'rgba(216,182,106,0.018)' : 'rgba(91,183,168,0.022)';
+            ctx.fillRect(boardLeft + file * cellW, boardTop + rank * cellH, cellW, cellH);
+        }
+    }
+    ctx.strokeStyle = 'rgba(216,182,106,0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 8; i++) {
+        ctx.beginPath();
+        ctx.moveTo(boardLeft + i * cellW, boardTop);
+        ctx.lineTo(boardLeft + i * cellW, boardTop + boardH);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(boardLeft, boardTop + i * cellH);
+        ctx.lineTo(boardLeft + boardW, boardTop + i * cellH);
+        ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(216,182,106,0.35)';
+    ctx.font = '10px JetBrains Mono';
+    for (let file = 0; file < 8; file++) {
+        ctx.fillText('ABCDEFGH'[file], boardLeft + file * cellW + 8, boardTop + boardH - 8);
+    }
+    for (let rank = 0; rank < 8; rank++) {
+        ctx.fillText(String(8 - rank), boardLeft + 8, boardTop + rank * cellH + 15);
+    }
 
     // Center line
     ctx.strokeStyle = '#222';
@@ -1872,9 +2043,14 @@ function drawCourt(aimX = null, aimY = null) {
         ctx.fill();
 
         const m = calculateShotMechanics(aimX, aimY, null);
+        const fileIndex = 'ABCDEFGH'.indexOf(m.square[0]);
+        const rankIndex = 8 - Number(m.square[1]);
+        ctx.strokeStyle = m.baseQuality >= 70 ? 'rgba(91,183,168,0.75)' : m.baseQuality >= 45 ? 'rgba(216,182,106,0.72)' : 'rgba(184,76,63,0.72)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(boardLeft + fileIndex * cellW + 2, boardTop + rankIndex * cellH + 2, cellW - 4, cellH - 4);
         ctx.fillStyle = m.baseQuality >= 70 ? '#5BB7A8' : m.baseQuality >= 45 ? '#D4AF37' : '#B84C3F';
         ctx.font = '12px JetBrains Mono';
-        ctx.fillText(`${Math.round(m.baseQuality)}% ${m.ability.name}`, aimX + 10, aimY - 10);
+        ctx.fillText(`${m.square} · ${Math.round(m.baseQuality)}% · ${m.ability.name}`, aimX + 10, aimY - 10);
     }
 
     // Last shot result (stronger)
@@ -1899,7 +2075,7 @@ function beginShot(targetX, targetY, success, mechanics, releaseScore) {
     const agg = levers.aggression;
     const pat = levers.patience;
     const cla = levers.clarity;
-    const energyCost = 8 + mechanics.power / 16 + mechanics.ability.energy;
+    const energyCost = mechanics.ability.cost + mechanics.power / 24;
     state.energy = clamp(state.energy - energyCost, 0, 100);
     if (mechanics.abilityId === 'castle') state.energy = Math.min(100, state.energy + 10);
     state.shots++;
