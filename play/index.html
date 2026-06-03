@@ -803,7 +803,7 @@
             font-size: 12px;
             line-height: 1.45;
         }
-        .odysseus-bridge {
+        .operator-packet {
             margin-top: 14px;
             border: 1px solid rgba(91,183,168,0.22);
             background: linear-gradient(135deg, rgba(91,183,168,0.08), rgba(216,182,106,0.045));
@@ -814,7 +814,7 @@
             gap: 12px;
             align-items: center;
         }
-        .odysseus-bridge p {
+        .operator-packet p {
             color: #bdb4a4;
             font-size: 13px;
             line-height: 1.45;
@@ -832,7 +832,7 @@
             .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .mechanics-hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .ability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .tactical-readout, .odysseus-bridge { grid-template-columns: 1fr; }
+            .tactical-readout, .operator-packet { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
@@ -963,23 +963,23 @@
     <section class="capture-grid" id="capture" aria-label="Open library and GTM capture">
         <div class="capture-panel">
             <div class="sim-kicker">OPEN LIBRARY · GTM CAPTURE</div>
-            <p>Get the playbook, the Operator OS notes, or a teardown of what this sim is modeling. This static page captures intent locally and packages it for email/Odysseus until the backend is wired.</p>
+            <p>Get the playbook, the field notes, or a teardown of what this sim is modeling. This GitHub Pages version saves leads in the visitor's browser first, then packages the lead for email, CSV, or CRM import.</p>
             <form class="capture-form" onsubmit="submitLeadCapture(event)">
                 <input id="gtm-email" type="email" autocomplete="email" placeholder="you@company.com" required>
-                <input id="gtm-role" type="text" autocomplete="organization-title" placeholder="Founder, GTM, RevOps, operator, curious builder">
+                <input id="gtm-role" type="text" autocomplete="organization-title" placeholder="Name, company, role, or context">
                 <select id="gtm-intent">
                     <option value="Send me the playbook">Send me the playbook</option>
-                    <option value="I want the Operator OS">I want the Operator OS</option>
+                    <option value="I want the field notes">I want the field notes</option>
                     <option value="I want GTM help">I want GTM help</option>
-                    <option value="I want the Codex/Odysseus bridge">I want the Codex/Odysseus bridge</option>
+                    <option value="I want the Codex / CRM bridge">I want the Codex / CRM bridge</option>
                     <option value="Just following">Just following</option>
                 </select>
                 <div class="capture-actions">
-                    <button class="btn primary" type="submit" style="padding:9px 14px; font-size:11px;">CAPTURE INTENT</button>
-                    <button class="btn" type="button" onclick="emailLeadPacket()" style="padding:9px 14px; font-size:11px;">EMAIL PACKET</button>
+                    <button class="btn primary" type="submit" style="padding:9px 14px; font-size:11px;">SAVE + EMAIL</button>
+                    <button class="btn" type="button" onclick="emailLeadPacket()" style="padding:9px 14px; font-size:11px;">SEND TO BASIN</button>
                     <button class="btn" type="button" onclick="exportLeadsCsv()" style="padding:9px 14px; font-size:11px;">CSV</button>
                 </div>
-                <div class="capture-status"><span id="lead-status">READY</span> · LEADS <span id="lead-count">0</span></div>
+                <div class="capture-status"><span id="lead-status">SENDS TO LBASIN23@GMAIL.COM VIA EMAIL PACKET</span> · LOCAL LEADS <span id="lead-count">0</span></div>
             </form>
         </div>
         <div class="quote-strip" aria-label="Library quote">
@@ -998,12 +998,12 @@
                 <div class="step"><strong>3. SHOOT</strong>Press Take It once. Tempo is handled automatically.</div>
                 <div class="step"><strong>4. POST</strong>Turn strong moments into an X draft, card, or public receipt.</div>
             </div>
-            <div class="odysseus-bridge">
+            <div class="operator-packet">
                 <div>
-                    <div class="sim-kicker">ODYSSEUS BRIDGE</div>
-                    <p>The public arcade creates the moment. The private cockpit should ingest the receipt later as memory, task, or research fuel.</p>
+                    <div class="sim-kicker">OPERATOR PACKET</div>
+                    <p>The public arcade creates the moment. Copy the receipt into your notes, CRM, or next backend as memory, task, or research fuel.</p>
                 </div>
-                <button class="btn" onclick="exportOdysseusPacket()" style="padding:10px 14px; font-size:11px;">COPY PACKET</button>
+                <button class="btn" onclick="exportOperatorPacket()" style="padding:10px 14px; font-size:11px;">COPY PACKET</button>
             </div>
         </div>
         <div class="how-card visitor-card">
@@ -1669,7 +1669,7 @@ function generateXDraft(style = 'operator', shouldRecord = true) {
     } else if (style === 'thread') {
         text = `1/ I built THE GAME as a public operating sim.\n\nThe surface is basketball. The deeper mechanic is intent, pressure, and timing.\n\n2/ Every move changes the state: Sparks, Reputation, X Presence, Network of Pulls, Energy.\n\n3/ The post engine turns a run into something shareable instead of letting the signal disappear.\n\n4/ Current read: ${hook}\n\n${stats}\n\nhttps://basinleon.github.io/play/`;
     } else if (style === 'dm') {
-        text = `Saw you checking out THE GAME.\n\nIf you want the playbook behind it, I can send the Operator OS / GTM notes.\n\nCurrent sim read: ${hook}\n\nhttps://basinleon.github.io/play/`;
+        text = `Saw you checking out THE GAME.\n\nIf you want the playbook behind it, I can send the field notes / GTM notes.\n\nCurrent sim read: ${hook}\n\nhttps://basinleon.github.io/play/`;
     } else {
         text = `${rank} report:\n\n${hook}\n\n${stats}.\n\nThe shot is visible. The system underneath is the game.\n\nhttps://basinleon.github.io/play/`;
     }
@@ -1721,6 +1721,7 @@ function buildLeadPacket(lead = null) {
     const payload = {
         source: 'THE GAME /play',
         url: 'https://basinleon.github.io/play/',
+        captureMode: 'Static GitHub Pages: saved in browser localStorage, then exported by email/CSV/copy packet.',
         capturedAt: new Date().toISOString(),
         latestLead: latest,
         localLeadCount: leads.length,
@@ -1770,8 +1771,9 @@ function submitLeadCapture(event) {
     leads.push(lead);
     saveLeadLedger(leads);
     recordSimAction('lead', { summary: `Intent captured: ${lead.intent}.`, clarity: levers.clarity, success: true });
-    if (statusEl) statusEl.textContent = `CAPTURED · ${leads.length} LOCAL LEAD${leads.length === 1 ? '' : 'S'}`;
+    if (statusEl) statusEl.textContent = `SAVED · OPENING EMAIL TO ${GTM_INBOX.toUpperCase()}`;
     if (roleEl) roleEl.value = '';
+    emailLeadPacket();
 }
 
 function copyLeadPacket() {
@@ -1788,7 +1790,10 @@ function copyLeadPacket() {
 
 function emailLeadPacket() {
     const packet = buildLeadPacket();
-    window.location.href = `mailto:${GTM_INBOX}?subject=${encodeURIComponent('THE GAME lead packet')}&body=${encodeURIComponent(packet)}`;
+    const statusEl = document.getElementById('lead-status');
+    if (statusEl) statusEl.textContent = 'OPENING EMAIL PACKET';
+    const mailtoUrl = `mailto:${GTM_INBOX}?subject=${encodeURIComponent('THE GAME lead packet')}&body=${encodeURIComponent(packet)}`;
+    window.open(mailtoUrl, '_self');
 }
 
 function exportLeadsCsv() {
@@ -1842,10 +1847,10 @@ async function exportSimCard() {
     await shareVisualForX(c, 'the-game-sim-card', generateXDraft('operator', false), 5);
 }
 
-function exportOdysseusPacket() {
+function exportOperatorPacket() {
     const packet = {
         source: 'THE_GAME_PUBLIC_SIM',
-        intended_destination: 'BasinLeon/odysseus',
+        intended_destination: 'Basin operator notes / CRM / future lead endpoint',
         created_at: new Date().toISOString(),
         rank: getSimRank(),
         state: {
@@ -1867,22 +1872,23 @@ function exportOdysseusPacket() {
             ability: lastMechanics.ability?.name
         } : null,
         last_moment: state.sim?.moments?.[0] || null,
-        suggested_odysseus_actions: [
-            'store as memory',
+        suggested_actions: [
+            'store as operator note',
             'turn into X draft variants',
             'create follow-up task',
-            'compare against prior operator runs'
+            'attach to lead or account record',
+            'compare against prior runs'
         ]
     };
     const text = JSON.stringify(packet, null, 2);
     const done = () => {
-        recordSimAction('draft', { summary: 'Odysseus packet copied for machine-room ingestion.', clarity: levers.clarity });
-        alert('Odysseus packet copied. Later this can POST directly into the private cockpit.');
+        recordSimAction('draft', { summary: 'Operator packet copied for notes, CRM, or backend ingestion.', clarity: levers.clarity });
+        alert('Operator packet copied. This can go into notes, CRM, or a future lead endpoint.');
     };
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(done).catch(() => prompt('Copy this Odysseus packet:', text));
+        navigator.clipboard.writeText(text).then(done).catch(() => prompt('Copy this operator packet:', text));
     } else {
-        prompt('Copy this Odysseus packet:', text);
+        prompt('Copy this operator packet:', text);
     }
 }
 
