@@ -3,28 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE GAME</title>
+    <title>THE GAME | Basin</title>
     <meta name="description" content="A layered operator simulation. Basketball as surface. Deeper structures underneath.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #C5A26F;
-            --gold-bright: #E8D5A3;
+            --gold: #D8B66A;
+            --gold-bright: #F1D891;
+            --teal: #5BB7A8;
             --bg: #000000;
-            --text: #E8E8E8;
-            --text-dim: #666;
+            --panel: #10100e;
+            --line: rgba(216, 182, 106, 0.18);
+            --text: #F2EFE7;
+            --text-dim: #8f8879;
             --danger: #B84C3F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #000;
+            background:
+                radial-gradient(circle at 18% 5%, rgba(216, 182, 106, 0.16), transparent 28%),
+                radial-gradient(circle at 84% 18%, rgba(91, 183, 168, 0.11), transparent 24%),
+                linear-gradient(180deg, #080807 0%, #000 56%, #080705 100%);
             color: var(--text);
-            font-family: 'Inter', system_ui, sans-serif;
+            font-family: 'Manrope', system-ui, sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(216, 182, 106, 0.035) 1px, transparent 1px),
+                linear-gradient(rgba(216, 182, 106, 0.026) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, #000, transparent 70%);
+            pointer-events: none;
         }
 
         .scanlines {
@@ -33,28 +52,84 @@
             pointer-events: none; z-index: 9999;
         }
 
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
 
         header {
-            padding: 24px 0;
-            border-bottom: 1px solid #111;
-            position: sticky; top: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); z-index: 100;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--line);
+            position: sticky; top: 0; background: rgba(5,5,4,0.82); backdrop-filter: blur(18px); z-index: 100;
         }
         .header-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--gold); }
-        .status-bar { display: flex; gap: 32px; font-size: 12px; color: #555; letter-spacing: 1px; }
+        .logo { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--gold); }
+        .logo span { margin-left: 8px; color: var(--text-dim) !important; letter-spacing: 0.5px; }
+        .status-bar { display: flex; gap: 10px; font-size: 11px; color: var(--text-dim); letter-spacing: 1px; flex-wrap: wrap; justify-content: flex-end; }
+        .status-pill {
+            border: 1px solid rgba(216,182,106,0.18);
+            background: rgba(216,182,106,0.055);
+            border-radius: 999px;
+            padding: 7px 10px;
+            white-space: nowrap;
+        }
 
-        .hero { text-align: center; padding: 80px 0 40px; }
-        .hero-label { font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 12px; }
-        .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(52px, 7vw, 96px); font-weight: 700; letter-spacing: -5px; line-height: 0.88; margin-bottom: 16px; }
-        .hero-sub { max-width: 560px; margin: 0 auto; font-size: 15px; color: #888; line-height: 1.5; }
+        .hero {
+            min-height: clamp(300px, 42vh, 460px);
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.75fr);
+            align-items: center;
+            gap: 42px;
+            padding: 42px 0 22px;
+        }
+        .hero-label { font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
+        .hero-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(64px, 9vw, 138px); font-weight: 800; letter-spacing: 0; line-height: 0.78; margin-bottom: 22px; text-transform: uppercase; }
+        .hero-sub { max-width: 560px; font-size: clamp(17px, 2vw, 24px); color: #d8d0bf; line-height: 1.35; }
+        .hero-aside {
+            border: 1px solid var(--line);
+            background: linear-gradient(145deg, rgba(216,182,106,0.1), rgba(10,10,9,0.82) 46%, rgba(91,183,168,0.08));
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 28px 80px rgba(0,0,0,0.42);
+        }
+        .hero-aside-title {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold-bright);
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+        .signal-row {
+            display: grid;
+            grid-template-columns: 34px 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(216,182,106,0.13);
+            font-size: 13px;
+            color: #beb6a7;
+        }
+        .signal-row:first-of-type { border-top: 0; }
+        .signal-mark {
+            width: 34px; height: 34px; border-radius: 50%;
+            display: grid; place-items: center;
+            background: rgba(216,182,106,0.1);
+            color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+        .signal-row strong { color: var(--text); display: block; margin-bottom: 3px; }
+        .signal-meter { color: var(--teal); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
 
         /* ARC / PROGRESSION */
         .arc-bar {
-            display: flex; gap: 24px; justify-content: center; margin: 32px 0;
-            font-size: 13px; color: #666;
+            display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap: 10px; margin: 18px 0 34px;
+            font-size: 12px; color: var(--text-dim);
         }
-        .arc-stat { font-family: 'JetBrains Mono', monospace; }
+        .arc-stat {
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(216,182,106,0.13);
+            background: rgba(12,12,10,0.72);
+            padding: 12px;
+            border-radius: 6px;
+        }
         .arc-stat .num { color: var(--gold); font-size: 15px; }
 
         /* THE COURT - Interactive Canvas */
@@ -62,11 +137,12 @@
         .section-label { font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 16px; text-align: center; }
 
         .court-container {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
+            background: linear-gradient(180deg, rgba(19,18,15,0.96), rgba(8,8,7,0.96));
+            border: 1px solid var(--line);
             border-radius: 8px;
-            padding: 32px;
+            padding: clamp(14px, 3vw, 30px);
             text-align: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 24px 80px rgba(0,0,0,0.35);
         }
 
         canvas#court {
@@ -75,6 +151,8 @@
             border-radius: 4px;
             cursor: crosshair;
             max-width: 100%;
+            height: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.45);
         }
 
         .court-info {
@@ -92,18 +170,20 @@
         }
 
         .btn {
-            background: transparent;
-            border: 1px solid #333;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(216,182,106,0.2);
             color: var(--text);
             padding: 14px 28px;
             font-size: 13px;
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.2s ease;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
         }
-        .btn:hover { border-color: var(--gold); color: var(--gold); }
+        .btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
         .btn.primary {
-            background: var(--gold);
+            background: linear-gradient(180deg, var(--gold-bright), var(--gold));
             color: #000;
             border-color: var(--gold);
             font-weight: 600;
@@ -113,16 +193,18 @@
         .systems {
             margin-top: 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
         }
 
         .system {
-            border: 1px solid #1a1a1a;
+            border: 1px solid rgba(216,182,106,0.15);
+            background: rgba(12,12,10,0.72);
             padding: 20px 24px;
+            border-radius: 8px;
         }
         .system-name {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Bricolage Grotesque', sans-serif;
             font-size: 14px;
             letter-spacing: 1px;
             margin-bottom: 12px;
@@ -159,9 +241,11 @@
             letter-spacing: 3px;
         }
         .layer {
-            border: 1px solid #1a1a1a;
+            border: 1px solid rgba(216,182,106,0.15);
+            background: rgba(12,12,10,0.68);
             padding: 20px 24px;
             margin-bottom: 12px;
+            border-radius: 6px;
         }
         .layer-header {
             display: flex;
@@ -177,13 +261,13 @@
         }
         .layer-bar {
             height: 2px;
-            background: #1a1a1a;
+            background: rgba(255,255,255,0.06);
             margin-top: 14px;
             position: relative;
         }
         .layer-fill {
             height: 100%;
-            background: var(--gold);
+            background: linear-gradient(90deg, var(--gold), var(--teal));
             transition: width .6s cubic-bezier(0.23,1,0.32,1);
         }
 
@@ -203,7 +287,7 @@
         /* THE BOOK - Polymarket-style mechanics, veiled */
         .book-section {
             margin-top: 80px;
-            border-top: 1px solid #111;
+            border-top: 1px solid var(--line);
             padding-top: 40px;
         }
 
@@ -243,7 +327,7 @@
         }
 
         .kpi-value {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Bricolage Grotesque', sans-serif;
             font-size: 22px;
             color: var(--gold-bright);
         }
@@ -284,6 +368,42 @@
             padding: 6px 10px;
             font-family: 'JetBrains Mono', monospace;
         }
+
+        .field-note {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-left: 2px solid var(--gold);
+            background: rgba(216,182,106,0.06);
+            font-size: 13px;
+            color: #a9a193;
+            min-height: 46px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 980px) {
+            .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 42px; }
+            .hero-aside { max-width: 640px; }
+            .arc-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 0 16px; }
+            header { position: static; }
+            .header-inner { align-items: flex-start; gap: 14px; flex-direction: column; }
+            .status-bar { justify-content: flex-start; }
+            .hero-title { font-size: clamp(58px, 20vw, 84px); line-height: 0.82; }
+            .hero-sub { font-size: 17px; }
+            .hero-aside { padding: 16px; }
+            .signal-row { grid-template-columns: 30px 1fr; }
+            .signal-meter { grid-column: 2; }
+            .arc-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .systems, .kpi-grid { grid-template-columns: 1fr; }
+            .wager { align-items: flex-start; flex-direction: column; }
+            .wager-odds { text-align: left; }
+            .book-header { align-items: flex-start; }
+            .btn { width: 100%; padding-left: 16px; padding-right: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -295,7 +415,9 @@
         <div class="header-inner">
             <div class="logo">THE GAME <span style="color:#555; font-size:12px;">@leonbasinwriter</span></div>
             <div class="status-bar">
-                <div style="color:#444"></div>
+                <div class="status-pill">COURT LIVE</div>
+                <div class="status-pill">LAYERED SIM</div>
+                <div class="status-pill">EXPORT READY</div>
             </div>
         </div>
     </div>
@@ -304,12 +426,31 @@
 <div class="container">
 
     <div class="hero">
-        <div class="hero-label">SURFACE AND STRUCTURE</div>
-        <h1 class="hero-title">THE GAME</h1>
-        <p class="hero-sub">
-            The shot is visible.<br>
-            Everything else moves in layers underneath.
-        </p>
+        <div>
+            <div class="hero-label">SURFACE AND STRUCTURE</div>
+            <h1 class="hero-title">THE GAME</h1>
+            <p class="hero-sub">
+                The shot is visible. The actual game is the invisible pressure system underneath it.
+            </p>
+        </div>
+        <aside class="hero-aside" aria-label="Game layers preview">
+            <div class="hero-aside-title">FIELD READOUT</div>
+            <div class="signal-row">
+                <div class="signal-mark">01</div>
+                <div><strong>Surface</strong>Set the line, take the shot, watch the court answer.</div>
+                <div class="signal-meter">LIVE</div>
+            </div>
+            <div class="signal-row">
+                <div class="signal-mark">02</div>
+                <div><strong>Levers</strong>Aggression, patience, and clarity shape the arc.</div>
+                <div class="signal-meter">TUNABLE</div>
+            </div>
+            <div class="signal-row">
+                <div class="signal-mark">03</div>
+                <div><strong>Book</strong>Every move resolves into signal, reputation, and consequence.</div>
+                <div class="signal-meter">COMPOUNDS</div>
+            </div>
+        </aside>
     </div>
 
     <!-- ARC / PROGRESSION -->
@@ -326,10 +467,6 @@
     <div class="court-section">
         <div class="section-label">THE COURT — SURFACE LAYER</div>
         <div class="court-container">
-            <canvas id="court" width="900" height="420"></canvas>
-            <div class="court-info" style="font-size:13px; color:#666;">
-                Set the line. The levers decide what actually moves.
-            </div>
             <div class="shot-controls" style="margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn primary" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px; background: #D4AF37; color: #000; border: none;">
                     TAKE IT
@@ -338,11 +475,15 @@
                     EXPORT MOMENT FOR X
                 </button>
             </div>
+            <div class="court-info" style="font-size:13px; color:#666;">
+                Aim anywhere on the court. The levers decide what actually moves.
+            </div>
+            <canvas id="court" width="900" height="420"></canvas>
         </div>
 
         <!-- Subtle layer reading (no big label) -->
-        <div id="court-reading" style="margin-top: 14px; font-size: 13px; color:#888; min-height: 42px; line-height: 1.5;">
-            <span id="court-reading-text"></span>
+        <div id="court-reading" class="field-note">
+            <span id="court-reading-text">Set the line, tune the levers, then take the shot.</span>
         </div>
     </div>
 
@@ -774,6 +915,14 @@ let isShooting = false;  // lock during animation
 // Visual snapshot for exports
 let lastShotVisual = null;  // {targetX, targetY, success, reading, deltas, levers}
 
+function getCanvasPoint(e, targetCanvas) {
+    const rect = targetCanvas.getBoundingClientRect();
+    return {
+        x: (e.clientX - rect.left) * (targetCanvas.width / rect.width),
+        y: (e.clientY - rect.top) * (targetCanvas.height / rect.height)
+    };
+}
+
 function initCourt() {
     canvas = document.getElementById('court');
     ctx = canvas.getContext('2d');
@@ -782,9 +931,7 @@ function initCourt() {
 
     canvas.addEventListener('mousemove', (e) => {
         if (isShooting) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const { x, y } = getCanvasPoint(e, canvas);
         currentAim = { x, y };
         drawCourt(x, y);
     });
@@ -797,9 +944,7 @@ function initCourt() {
     // Click on court also sets aim (better feedback)
     canvas.addEventListener('click', (e) => {
         if (isShooting) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const { x, y } = getCanvasPoint(e, canvas);
         currentAim = { x, y };
         drawCourt(x, y);
     });
@@ -1321,7 +1466,6 @@ function postToX(context = 'general') {
 
     // Broadcasting moves live markets (X as actual field)
     influenceMarkets("x-post");
-    }
 
     // Copy to clipboard
     navigator.clipboard.writeText(text).then(() => {
@@ -2634,9 +2778,7 @@ function initRefinery() {
 }
 
 function handleRefineryMouse(e) {
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const { x, y } = getCanvasPoint(e, e.target);
     const ref = window.refinery;
 
     if (e.type === 'mousedown') {
