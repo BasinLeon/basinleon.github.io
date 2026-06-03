@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE GAME | Basin</title>
     <meta name="description" content="A layered operator simulation. Basketball as surface. Deeper structures underneath.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23070604'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23D8B66A' stroke-width='5'/%3E%3Cpath d='M12 32h40M32 10v44' stroke='%23D8B66A' stroke-width='4'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -525,12 +526,148 @@
             letter-spacing: 1px;
         }
 
+        .how-to {
+            margin: 22px 0 14px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            align-items: stretch;
+        }
+        .how-card {
+            border: 1px solid rgba(216,182,106,0.15);
+            background: rgba(12,12,10,0.72);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .step {
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.025);
+            border-radius: 6px;
+            padding: 10px;
+            color: #bdb4a4;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        .step strong {
+            display: block;
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .visitor-card {
+            min-width: 210px;
+            display: grid;
+            align-content: center;
+            gap: 10px;
+            text-align: center;
+        }
+        .visitor-card img {
+            margin: 0 auto;
+            max-width: 180px;
+        }
+        .mechanics-hud {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
+            margin: 14px 0 10px;
+        }
+        .mechanic-stat {
+            border: 1px solid rgba(216,182,106,0.13);
+            background: rgba(0,0,0,0.24);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+        .mechanic-stat strong {
+            display: block;
+            color: var(--gold-bright);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+        .meter-shell {
+            height: 14px;
+            border: 1px solid rgba(216,182,106,0.2);
+            background: rgba(255,255,255,0.04);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px auto 0;
+            max-width: 560px;
+        }
+        .meter-green {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 44%;
+            width: 12%;
+            background: rgba(91,183,168,0.45);
+        }
+        .meter-needle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0%;
+            width: 4px;
+            background: var(--gold-bright);
+            box-shadow: 0 0 18px rgba(216,182,106,0.8);
+        }
+        .ability-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .ability {
+            border: 1px solid rgba(216,182,106,0.16);
+            background: rgba(255,255,255,0.025);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            color: #c9c0af;
+            transition: all .18s ease;
+        }
+        .ability:hover,
+        .ability.active {
+            border-color: var(--gold);
+            background: rgba(216,182,106,0.08);
+            transform: translateY(-1px);
+        }
+        .ability strong {
+            display: block;
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .ability span {
+            display: block;
+            color: var(--text-dim);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
         @media (max-width: 980px) {
             .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 42px; }
             .hero-aside { max-width: 640px; }
             .arc-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .x-sim { grid-template-columns: 1fr; }
+            .how-to { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .mechanics-hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .ability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
 
         @media (max-width: 640px) {
@@ -548,6 +685,7 @@
             .sim-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .mission { grid-template-columns: 22px 1fr; }
             .mission-reward { grid-column: 2; }
+            .steps, .mechanics-hud, .ability-grid { grid-template-columns: 1fr; }
             .wager { align-items: flex-start; flex-direction: column; }
             .wager-odds { text-align: left; }
             .book-header { align-items: flex-start; }
@@ -654,12 +792,32 @@
         </div>
     </section>
 
+    <section class="how-to" aria-label="How to play">
+        <div class="how-card">
+            <div class="sim-kicker">HOW TO PLAY</div>
+            <div class="steps">
+                <div class="step"><strong>1. AIM</strong>Click the court to set the target. Deep angles are harder.</div>
+                <div class="step"><strong>2. CHOOSE</strong>Pick a chess-like ability: fork, castle, pin, or gambit.</div>
+                <div class="step"><strong>3. RELEASE</strong>Press Take It, then press again or Space in the green window.</div>
+                <div class="step"><strong>4. POST</strong>Turn strong moments into an X draft, card, or public receipt.</div>
+            </div>
+        </div>
+        <div class="how-card visitor-card">
+            <div class="sim-kicker">VISITORS</div>
+            <img src="https://visitor-badge.laobi.icu/badge?page_id=basinleon.the-game.play&left_text=plays" alt="Visitor count for THE GAME">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim);">
+                YOUR RUNS <span id="local-runs" style="color:var(--gold-bright);">0</span>
+            </div>
+        </div>
+    </section>
+
     <!-- THE COURT -->
     <div class="court-section">
         <div class="section-label">THE COURT — SURFACE LAYER</div>
         <div class="court-container">
+            <div class="ability-grid" id="ability-grid" aria-label="Chess-like shot abilities"></div>
             <div class="shot-controls" style="margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn primary" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px; background: #D4AF37; color: #000; border: none;">
+                <button class="btn primary" id="take-shot-btn" onclick="takeShot()" style="padding: 16px 52px; font-size: 15px; background: #D4AF37; color: #000; border: none;">
                     TAKE IT
                 </button>
                 <button class="btn" onclick="exportCourtMoment()" style="padding: 16px 28px; font-size: 14px; letter-spacing: 1px;">
@@ -667,7 +825,18 @@
                 </button>
             </div>
             <div class="court-info" style="font-size:13px; color:#666;">
-                Aim anywhere on the court. The levers decide what actually moves.
+                Aim anywhere. Press Take It to start the release meter, then press again or Space on the green.
+            </div>
+            <div class="mechanics-hud">
+                <div class="mechanic-stat">SHOT QUALITY <strong id="shot-quality">—</strong></div>
+                <div class="mechanic-stat">RELEASE <strong id="release-score">READY</strong></div>
+                <div class="mechanic-stat">POWER <strong id="power-score">—</strong></div>
+                <div class="mechanic-stat">PRESSURE <strong id="pressure-score">—</strong></div>
+                <div class="mechanic-stat">RANGE <strong id="range-score">—</strong></div>
+            </div>
+            <div class="meter-shell" aria-hidden="true">
+                <div class="meter-green"></div>
+                <div class="meter-needle" id="release-needle"></div>
             </div>
             <canvas id="court" width="900" height="420"></canvas>
         </div>
@@ -1025,6 +1194,7 @@ function saveState() {
     localStorage.setItem('thegame_state_v1', JSON.stringify(state));
     localStorage.setItem('thegame_levers_v1', JSON.stringify(levers));
     localStorage.setItem('thegame_unlocks_v1', JSON.stringify({ layer5: unlockedLayer5 }));
+    localStorage.setItem('thegame_ability_v1', activeAbility);
     // Codex is now part of core state — persists automatically
 }
 
@@ -1032,6 +1202,7 @@ function loadState() {
     const savedState = localStorage.getItem('thegame_state_v1');
     const savedLevers = localStorage.getItem('thegame_levers_v1');
     const savedUnlocks = localStorage.getItem('thegame_unlocks_v1');
+    const savedAbility = localStorage.getItem('thegame_ability_v1');
 
     if (savedState) {
         const loaded = JSON.parse(savedState);
@@ -1072,6 +1243,7 @@ function loadState() {
         const u = JSON.parse(savedUnlocks);
         unlockedLayer5 = u.layer5 || false;
     }
+    if (savedAbility && ABILITIES[savedAbility]) activeAbility = savedAbility;
 }
 
 // ==================== UI UPDATES ====================
@@ -1342,6 +1514,60 @@ let canvas, ctx;
 let lastShot = null;
 let currentAim = null;   // {x, y} from mouse
 let isShooting = false;  // lock during animation
+let isMeterActive = false;
+let releaseValue = 0;
+let releaseDirection = 1;
+let releaseRaf = null;
+let pendingTarget = null;
+let defender = { x: 650, y: 210, pressure: 50 };
+let lastMechanics = null;
+let activeAbility = 'pin';
+
+const ABILITIES = {
+    pin: {
+        name: 'PIN',
+        label: 'Pin the Defender',
+        desc: 'Wider release window. Small pressure reduction.',
+        quality: 4,
+        pressure: -10,
+        release: 14,
+        energy: 0,
+        reward: 1
+    },
+    knight: {
+        name: 'KNIGHT FORK',
+        label: 'Knight Fork',
+        desc: 'Beats pressure from weird angles. Better deep/side shots.',
+        quality: 2,
+        pressure: -18,
+        range: -14,
+        release: 4,
+        energy: 3,
+        reward: 1.15
+    },
+    castle: {
+        name: 'CASTLE',
+        label: 'Castle',
+        desc: 'Defensive reset. Safer shot, less upside, restores a little energy.',
+        quality: 8,
+        pressure: -8,
+        range: 0,
+        release: 8,
+        energy: -6,
+        reward: 0.75
+    },
+    gambit: {
+        name: 'GAMBIT',
+        label: 'Gambit',
+        desc: 'Costs energy. Harder release, higher upside and heat.',
+        quality: 13,
+        pressure: 8,
+        range: 4,
+        release: -12,
+        energy: 8,
+        reward: 1.55
+    }
+};
 
 // Visual snapshot for exports
 let lastShotVisual = null;  // {targetX, targetY, success, reading, deltas, levers}
@@ -1377,8 +1603,133 @@ function initCourt() {
         if (isShooting) return;
         const { x, y } = getCanvasPoint(e, canvas);
         currentAim = { x, y };
+        updateMechanicPreview();
         drawCourt(x, y);
     });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && isMeterActive) {
+            e.preventDefault();
+            releaseShot();
+        }
+    });
+}
+
+function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+}
+
+function updateMechanicText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+function updateReleaseNeedle() {
+    const needle = document.getElementById('release-needle');
+    if (needle) needle.style.left = `${clamp(releaseValue, 0, 100)}%`;
+}
+
+function renderAbilities() {
+    const grid = document.getElementById('ability-grid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(ABILITIES).map(([id, ability]) => `
+        <button class="ability ${activeAbility === id ? 'active' : ''}" onclick="selectAbility('${id}')">
+            <strong>${ability.name}</strong>
+            <span>${ability.desc}</span>
+        </button>
+    `).join('');
+    const currentPlay = document.getElementById('current-play');
+    if (currentPlay) currentPlay.textContent = ABILITIES[activeAbility].label;
+}
+
+function selectAbility(id) {
+    if (!ABILITIES[id] || isShooting || isMeterActive) return;
+    activeAbility = id;
+    renderAbilities();
+    updateMechanicPreview();
+    saveState();
+}
+
+function updateMechanicPreview(releaseScore = null) {
+    if (!canvas) return null;
+    const target = pendingTarget || currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
+    const m = calculateShotMechanics(target.x, target.y, releaseScore);
+    updateMechanicText('shot-quality', releaseScore === null ? `${Math.round(m.baseQuality)}%` : `${Math.round(m.quality)}%`);
+    updateMechanicText('release-score', releaseScore === null ? 'SET' : `${Math.round(releaseScore)}%`);
+    updateMechanicText('power-score', `${Math.round(m.power)}%`);
+    updateMechanicText('pressure-score', `${Math.round(m.pressure)}%`);
+    updateMechanicText('range-score', `${Math.round(m.rangePenalty)}%`);
+    return m;
+}
+
+function calculateShotMechanics(targetX, targetY, releaseScore = null) {
+    const ballX = 95;
+    const ballY = canvas.height / 2;
+    const hoopX = canvas.width - 95;
+    const hoopY = canvas.height / 2;
+    const aimError = Math.hypot(targetX - hoopX, targetY - hoopY);
+    const shotDistance = Math.hypot(targetX - ballX, targetY - ballY);
+    const defenderDistance = Math.hypot(targetX - defender.x, targetY - defender.y);
+    const ability = ABILITIES[activeAbility] || ABILITIES.pin;
+    const pressure = clamp(78 - defenderDistance / 5 + levers.aggression * 0.08 + ability.pressure, 4, 88);
+    const power = clamp((shotDistance / 760) * 100 + levers.aggression * 0.18 - levers.patience * 0.08 + ability.energy * 0.4, 22, 100);
+    const rangePenalty = clamp(aimError / 2.8 + Math.max(0, shotDistance - 690) / 9 + (ability.range || 0), 0, 65);
+    const leverBalance = 18 + levers.clarity * 0.35 + levers.patience * 0.2 - Math.abs(levers.aggression - levers.patience) * 0.08;
+    const releaseBonus = releaseScore === null ? 0 : (releaseScore - 52) * 0.55;
+    const baseQuality = clamp(54 + leverBalance + ability.quality - pressure * 0.34 - rangePenalty * 0.72 + (state.energy - 55) * 0.08, 4, 96);
+    const quality = clamp(baseQuality + releaseBonus, 2, 98);
+    return { targetX, targetY, aimError, shotDistance, pressure, power, rangePenalty, baseQuality, quality, abilityId: activeAbility, ability };
+}
+
+function startReleaseMeter() {
+    if (isMeterActive || isShooting) return;
+    pendingTarget = currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
+    const preview = calculateShotMechanics(pendingTarget.x, pendingTarget.y, null);
+    if (state.energy < 8 + preview.power / 16 + preview.ability.energy) {
+        alert("Low energy. Castle, rest, or realign before forcing the move.");
+        return;
+    }
+    releaseValue = 0;
+    releaseDirection = 1;
+    isMeterActive = true;
+    const takeBtn = document.getElementById('take-shot-btn');
+    if (takeBtn) takeBtn.textContent = 'RELEASE';
+    const loop = () => {
+        if (!isMeterActive) return;
+        const ability = ABILITIES[activeAbility] || ABILITIES.pin;
+        const speed = 2.2 + levers.aggression / 70 + Math.max(0, 55 - levers.clarity) / 90 + (ability.release < 0 ? 0.65 : 0);
+        releaseValue += speed * releaseDirection;
+        if (releaseValue >= 100) {
+            releaseValue = 100;
+            releaseDirection = -1;
+        }
+        if (releaseValue <= 0) {
+            releaseValue = 0;
+            releaseDirection = 1;
+        }
+        updateReleaseNeedle();
+        updateMechanicPreview(null);
+        drawCourt(pendingTarget.x, pendingTarget.y);
+        releaseRaf = requestAnimationFrame(loop);
+    };
+    loop();
+}
+
+function releaseShot() {
+    if (!isMeterActive || isShooting) return;
+    isMeterActive = false;
+    if (releaseRaf) cancelAnimationFrame(releaseRaf);
+    const ability = ABILITIES[activeAbility] || ABILITIES.pin;
+    const windowBonus = ability.release || 0;
+    const releaseScore = clamp(100 - Math.abs(releaseValue - 50) * Math.max(0.8, 2 - windowBonus / 22), 0, 100);
+    updateReleaseNeedle();
+    const target = pendingTarget || currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
+    const mechanics = updateMechanicPreview(releaseScore);
+    const success = Math.random() * 100 < mechanics.quality;
+    const takeBtn = document.getElementById('take-shot-btn');
+    if (takeBtn) takeBtn.textContent = 'TAKE IT';
+    pendingTarget = null;
+    beginShot(target.x, target.y, success, mechanics, releaseScore);
 }
 
 function drawCourt(aimX = null, aimY = null) {
@@ -1472,6 +1823,22 @@ function drawCourt(aimX = null, aimY = null) {
     ctx.lineTo(ballX, ballY + 16);
     ctx.stroke();
 
+    // === DEFENDER / PRESSURE FIELD ===
+    defender.x = 610 + Math.sin((state.shots + levers.aggression) * 0.35) * 45;
+    defender.y = cy + Math.cos((state.shots + levers.patience) * 0.28) * 72;
+    ctx.strokeStyle = 'rgba(184,76,63,0.38)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(defender.x, defender.y, 54, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(184,76,63,0.18)';
+    ctx.beginPath();
+    ctx.arc(defender.x, defender.y, 15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#9b6b61';
+    ctx.font = '10px JetBrains Mono';
+    ctx.fillText('PRESS', defender.x - 17, defender.y - 22);
+
     // === AIM PREVIEW (much better arc) ===
     if (aimX && aimY) {
         const agg = levers.aggression;
@@ -1503,6 +1870,11 @@ function drawCourt(aimX = null, aimY = null) {
         ctx.beginPath();
         ctx.arc(aimX, aimY, 3.5, 0, Math.PI * 2);
         ctx.fill();
+
+        const m = calculateShotMechanics(aimX, aimY, null);
+        ctx.fillStyle = m.baseQuality >= 70 ? '#5BB7A8' : m.baseQuality >= 45 ? '#D4AF37' : '#B84C3F';
+        ctx.font = '12px JetBrains Mono';
+        ctx.fillText(`${Math.round(m.baseQuality)}% ${m.ability.name}`, aimX + 10, aimY - 10);
     }
 
     // Last shot result (stronger)
@@ -1516,35 +1888,24 @@ function drawCourt(aimX = null, aimY = null) {
 // ==================== SHOT MECHANIC (now with real animation) ====================
 function takeShot() {
     if (!canvas || isShooting) return;
-
-    const energyCost = 8 + (levers.aggression / 12);
-    if (state.energy < energyCost) {
-        alert("Low energy. Rest or realign.");
+    if (isMeterActive) {
+        releaseShot();
         return;
     }
+    startReleaseMeter();
+}
 
-    state.energy = Math.max(0, state.energy - energyCost);
-    state.shots++;
-
+function beginShot(targetX, targetY, success, mechanics, releaseScore) {
     const agg = levers.aggression;
     const pat = levers.patience;
     const cla = levers.clarity;
-
-    // Calculate success (same logic as before)
-    let successChance = 48 + (cla * 0.32) + (pat * 0.18) - (agg * 0.12);
-    successChance += (state.reputation - 50) * 0.15;
-    successChance += (state.energy - 60) * 0.12;
-
-    const success = Math.random() * 100 < successChance;
-
-    // Store outcome for after animation
-    const shotOutcome = { success, agg, pat, cla };
-
-    // Use current mouse aim or default
-    const target = currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
-
-    // Start the visual shot animation
-    animateShot(target.x, target.y, shotOutcome);
+    const energyCost = 8 + mechanics.power / 16 + mechanics.ability.energy;
+    state.energy = clamp(state.energy - energyCost, 0, 100);
+    if (mechanics.abilityId === 'castle') state.energy = Math.min(100, state.energy + 10);
+    state.shots++;
+    lastMechanics = mechanics;
+    const shotOutcome = { success, agg, pat, cla, mechanics, releaseScore, abilityId: mechanics.abilityId };
+    animateShot(targetX, targetY, shotOutcome);
 }
 
 function animateShot(targetX, targetY, outcome) {
@@ -1674,31 +2035,34 @@ function drawShotImpact(x, y, outcome) {
 }
 
 function finishShot(outcome, targetX, targetY) {
-    const { success, agg, pat, cla } = outcome;
+    const { success, agg, pat, cla, mechanics, releaseScore } = outcome;
+    const ability = mechanics?.ability || ABILITIES.pin;
+    const rewardMult = ability.reward || 1;
+    const qualityTier = mechanics?.quality >= 82 ? 'PERFECT READ' : mechanics?.quality >= 62 ? 'GOOD READ' : mechanics?.quality >= 38 ? 'CONTESTED' : 'BAD READ';
 
     let l1 = 0, l2 = 0, l3 = 0, l4 = 0;
 
     if (success) {
-        l1 = 6 + (pat / 20);
-        l2 = 7 + (cla / 18);
-        l3 = 5 + (cla / 22);
-        l4 = 8 + (cla / 15) + (pat / 20);
+        l1 = (6 + (pat / 20)) * rewardMult;
+        l2 = (7 + (cla / 18)) * rewardMult;
+        l3 = (5 + (cla / 22)) * rewardMult;
+        l4 = (8 + (cla / 15) + (pat / 20)) * rewardMult;
 
         state.sparks = Math.round(state.sparks + (l4 * 0.7));
         state.reputation = Math.min(100, state.reputation + 1.2);
         state.layer4 = Math.min(100, state.layer4 + l4);
 
-        lastShot = { success: true, message: "CLEAN" };
+        lastShot = { success: true, message: qualityTier };
     } else {
         l1 = 2;
         l2 = 3;
-        l3 = 4 + (agg / 18);
+        l3 = 4 + (agg / 18) + (ability.name === 'GAMBIT' ? 3 : 0);
         l4 = 2;
 
         state.reputation = Math.max(10, state.reputation - 0.6);
         state.layer3 = Math.max(10, state.layer3 - l3 * 0.5);
 
-        lastShot = { success: false, message: "NO GOOD" };
+        lastShot = { success: false, message: qualityTier };
     }
 
     // Track deltas before applying
@@ -1739,7 +2103,7 @@ function finishShot(outcome, targetX, targetY) {
     }
 
     // === THE READING (Zohar commentary) ===
-    const reading = generateReading(success, agg, pat, cla, deltas);
+    const reading = generateReading(success, agg, pat, cla, deltas) + ` ${ability.name} ${success ? 'created leverage' : 'failed to convert'}. Release ${Math.round(releaseScore || 0)}. Quality ${Math.round(mechanics?.quality || 0)}.`;
     const readingEl = document.getElementById('court-reading-text');
     if (readingEl) {
         readingEl.textContent = reading;
@@ -1752,7 +2116,7 @@ function finishShot(outcome, targetX, targetY) {
         aggression: agg,
         patience: pat,
         clarity: cla,
-        summary: `${success ? 'Clean shot' : 'Missed shot'}: ${reading}`
+        summary: `${success ? 'Converted' : 'Missed'} ${ability.name}: ${reading}`
     });
 
     // Save high-quality visual snapshot for X exports (court moments)
@@ -1763,6 +2127,12 @@ function finishShot(outcome, targetX, targetY) {
         reading: reading,
         deltas: deltas,
         levers: { agg, pat, cla },
+        mechanics: {
+            quality: Math.round(mechanics?.quality || 0),
+            release: Math.round(releaseScore || 0),
+            pressure: Math.round(mechanics?.pressure || 0),
+            ability: ability.name
+        },
         sparks: state.sparks,
         network: Math.round(state.networkOfPulls),
         xPres: Math.round(state.xPresence)
@@ -3170,6 +3540,12 @@ function init() {
     ensureSimDay();
     initCourt();
     initLevers();
+    renderAbilities();
+    const localRuns = parseInt(localStorage.getItem('thegame_local_runs_v1') || '0', 10) + 1;
+    localStorage.setItem('thegame_local_runs_v1', String(localRuns));
+    const localRunsEl = document.getElementById('local-runs');
+    if (localRunsEl) localRunsEl.textContent = localRuns;
+    updateMechanicPreview();
     updateAllUI();
     updateBookUI();
     updateCodexUI();
