@@ -380,11 +380,157 @@
             line-height: 1.5;
         }
 
+        .x-sim {
+            margin: 22px 0 36px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 14px;
+        }
+        .sim-panel {
+            border: 1px solid rgba(216,182,106,0.15);
+            background: linear-gradient(180deg, rgba(15,15,13,0.86), rgba(7,7,6,0.92));
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .sim-topline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .sim-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+        .sim-rank {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 0.95;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .sim-brief {
+            color: #bdb4a4;
+            font-size: 14px;
+            line-height: 1.55;
+            max-width: 720px;
+        }
+        .sim-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .sim-metric {
+            border: 1px solid rgba(216,182,106,0.12);
+            background: rgba(216,182,106,0.045);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+        .sim-metric strong {
+            display: block;
+            color: var(--gold-bright);
+            font-size: 18px;
+            margin-top: 4px;
+        }
+        .mission-list {
+            display: grid;
+            gap: 8px;
+        }
+        .mission {
+            display: grid;
+            grid-template-columns: 22px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.025);
+            border-radius: 6px;
+            font-size: 13px;
+            color: #c9c0af;
+        }
+        .mission.done {
+            border-color: rgba(91,183,168,0.35);
+            background: rgba(91,183,168,0.07);
+        }
+        .mission-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid rgba(216,182,106,0.5);
+        }
+        .mission.done .mission-dot {
+            background: var(--teal);
+            border-color: var(--teal);
+            box-shadow: 0 0 20px rgba(91,183,168,0.35);
+        }
+        .mission-reward {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .composer {
+            margin-top: 14px;
+            border: 1px solid rgba(216,182,106,0.14);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.22);
+        }
+        .composer textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            border: 0;
+            border-bottom: 1px solid rgba(216,182,106,0.12);
+            background: rgba(0,0,0,0.34);
+            color: var(--text);
+            padding: 14px;
+            font: 13px/1.55 'JetBrains Mono', monospace;
+            outline: none;
+        }
+        .composer-actions {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+        .timeline {
+            margin-top: 14px;
+            display: grid;
+            gap: 8px;
+            max-height: 210px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .moment {
+            border-left: 2px solid rgba(216,182,106,0.45);
+            background: rgba(255,255,255,0.025);
+            padding: 9px 10px;
+            color: #aaa293;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        .moment strong {
+            color: var(--gold-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 980px) {
             .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 42px; }
             .hero-aside { max-width: 640px; }
             .arc-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .x-sim { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
@@ -399,6 +545,9 @@
             .signal-meter { grid-column: 2; }
             .arc-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .systems, .kpi-grid { grid-template-columns: 1fr; }
+            .sim-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .mission { grid-template-columns: 22px 1fr; }
+            .mission-reward { grid-column: 2; }
             .wager { align-items: flex-start; flex-direction: column; }
             .wager-odds { text-align: left; }
             .book-header { align-items: flex-start; }
@@ -462,6 +611,48 @@
         <div class="arc-stat">ENERGY <span class="num" id="energy">100</span></div>
         <div class="arc-stat">SHOTS <span class="num" id="shots">0</span></div>
     </div>
+
+    <!-- X-NATIVE SIM LAYER -->
+    <section class="x-sim" aria-label="X simulator command deck">
+        <div class="sim-panel">
+            <div class="sim-topline">
+                <div class="sim-kicker">X COMMAND DECK</div>
+                <button class="btn" onclick="newDailyBriefing()" style="padding:8px 12px; font-size:11px;">NEW BRIEF</button>
+            </div>
+            <div class="sim-rank" id="sim-rank">Signal Rookie</div>
+            <div class="sim-brief" id="daily-briefing">
+                Loading the field. Take a shot, complete missions, and turn the result into a public artifact.
+            </div>
+            <div class="sim-metrics">
+                <div class="sim-metric">STREAK <strong id="sim-streak">0</strong></div>
+                <div class="sim-metric">MISSIONS <strong id="sim-missions">0/3</strong></div>
+                <div class="sim-metric">POSTS <strong id="sim-posts">0</strong></div>
+                <div class="sim-metric">VIRAL HEAT <strong id="sim-heat">0</strong></div>
+            </div>
+            <div style="margin-top:16px;">
+                <div class="sim-kicker" style="margin-bottom:10px;">ACTIVE MISSIONS</div>
+                <div class="mission-list" id="mission-list"></div>
+            </div>
+        </div>
+
+        <div class="sim-panel">
+            <div class="sim-topline">
+                <div class="sim-kicker">POST ENGINE</div>
+                <button class="btn primary" onclick="generateXDraft('operator')" style="padding:8px 12px; font-size:11px;">DRAFT</button>
+            </div>
+            <div class="composer">
+                <textarea id="x-draft" aria-label="Generated X post draft">Take a shot to generate a post from the sim state.</textarea>
+                <div class="composer-actions">
+                    <button class="btn" onclick="generateXDraft('operator')" style="padding:8px 12px; font-size:11px;">OPERATOR</button>
+                    <button class="btn" onclick="generateXDraft('plain')" style="padding:8px 12px; font-size:11px;">PLAIN</button>
+                    <button class="btn" onclick="generateXDraft('viral')" style="padding:8px 12px; font-size:11px;">VIRAL</button>
+                    <button class="btn primary" onclick="copyDraftToX()" style="padding:8px 12px; font-size:11px;">POST TO X</button>
+                    <button class="btn" onclick="exportSimCard()" style="padding:8px 12px; font-size:11px;">CARD</button>
+                </div>
+            </div>
+            <div class="timeline" id="sim-timeline"></div>
+        </div>
+    </section>
 
     <!-- THE COURT -->
     <div class="court-section">
@@ -805,6 +996,18 @@ let state = {
         rectifications: 0
     },
 
+    sim: {
+        day: null,
+        seed: 0,
+        streak: 0,
+        posts: 0,
+        viralHeat: 0,
+        lastActionDate: null,
+        missions: [],
+        moments: [],
+        lastDraft: ''
+    },
+
     // @Library - The accumulating operator archive / personal text
     library: []   // array of {id, type, text, stats, timestamp}
 };
@@ -836,6 +1039,32 @@ function loadState() {
         // Ensure Codex object exists for older saves
         if (!state.codex) {
             state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
+        }
+        if (!state.sim) {
+            state.sim = {
+                day: null,
+                seed: 0,
+                streak: 0,
+                posts: 0,
+                viralHeat: 0,
+                lastActionDate: null,
+                missions: [],
+                moments: [],
+                lastDraft: ''
+            };
+        } else {
+            state.sim = {
+                day: null,
+                seed: 0,
+                streak: 0,
+                posts: 0,
+                viralHeat: 0,
+                lastActionDate: null,
+                missions: [],
+                moments: [],
+                lastDraft: '',
+                ...state.sim
+            };
         }
     }
     if (savedLevers) levers = { ...levers, ...JSON.parse(savedLevers) };
@@ -904,6 +1133,208 @@ function updateAllUI() {
     updateLayers();
     updateBookUI();
     updateCodexUI();
+    updateSimUI();
+}
+
+// ==================== X SIM LAYER ====================
+const SIM_MISSION_POOL = [
+    { id: 'take-shot', text: 'Take a shot on the court', reward: '+6 heat', test: a => a === 'shot' },
+    { id: 'clean-shot', text: 'Land a clean shot', reward: '+10 heat', test: (a, m) => a === 'shot' && m.success },
+    { id: 'broadcast', text: 'Broadcast a signal to X', reward: '+8 heat', test: a => a === 'broadcast' },
+    { id: 'pulls', text: 'Read the Network of Pulls', reward: '+5 heat', test: a => a === 'pulls' },
+    { id: 'refine', text: 'Process the Signal Refinery', reward: '+9 heat', test: a => a === 'refinery' },
+    { id: 'clarity', text: 'Act with Clarity above 65', reward: '+7 heat', test: (a, m) => m.clarity >= 65 },
+    { id: 'patience', text: 'Win without rushing: Patience above Aggression', reward: '+7 heat', test: (a, m) => m.patience > m.aggression },
+    { id: 'post-draft', text: 'Generate or post an X draft', reward: '+6 heat', test: a => a === 'draft' || a === 'post' }
+];
+
+const BRIEFINGS = [
+    'The field is noisy. Make one clear move, then turn the result into a public artifact.',
+    'Today rewards patience. Slow the arc, let the shot breathe, then publish the read.',
+    'The audience wants receipts. Create a moment, name the signal, and post the consequence.',
+    'High aggression can break through, but it taxes the pattern. Use it only if the read is clean.',
+    'The sim is watching for alignment: court action, public signal, and a written record.'
+];
+
+function todayKey() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function ensureSimDay() {
+    const day = todayKey();
+    if (!state.sim) state.sim = {};
+    if (state.sim.day === day && state.sim.missions && state.sim.missions.length) return;
+
+    const seed = Array.from(day).reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+    const missions = [];
+    for (let i = 0; i < 3; i++) {
+        const pick = SIM_MISSION_POOL[(seed + i * 3) % SIM_MISSION_POOL.length];
+        missions.push({ id: pick.id, done: false });
+    }
+
+    state.sim.day = day;
+    state.sim.seed = seed;
+    state.sim.missions = missions;
+    state.sim.moments = state.sim.moments || [];
+    state.sim.lastDraft = state.sim.lastDraft || '';
+    saveState();
+}
+
+function getMissionDef(id) {
+    return SIM_MISSION_POOL.find(m => m.id === id) || SIM_MISSION_POOL[0];
+}
+
+function getSimRank() {
+    const score = state.sparks + (state.sim.posts || 0) * 8 + (state.sim.viralHeat || 0) + state.reputation;
+    if (score >= 360) return 'Pattern Architect';
+    if (score >= 260) return 'Court Operator';
+    if (score >= 180) return 'Signal Handler';
+    if (score >= 115) return 'Field Reader';
+    return 'Signal Rookie';
+}
+
+function recordSimAction(action, meta = {}) {
+    ensureSimDay();
+    const day = todayKey();
+
+    if (state.sim.lastActionDate !== day) {
+        state.sim.streak = (state.sim.lastActionDate ? state.sim.streak + 1 : Math.max(1, state.sim.streak || 1));
+        state.sim.lastActionDate = day;
+    }
+
+    let completed = 0;
+    state.sim.missions.forEach(mission => {
+        if (mission.done) return;
+        const def = getMissionDef(mission.id);
+        if (def.test(action, meta)) {
+            mission.done = true;
+            completed++;
+        }
+    });
+
+    const heatGain = Math.max(1, Math.round((meta.success ? 8 : 3) + completed * 6 + (meta.clarity || levers.clarity) / 30));
+    state.sim.viralHeat = Math.min(999, (state.sim.viralHeat || 0) + heatGain);
+
+    const label = action.toUpperCase();
+    const line = meta.summary || `${label} moved the sim. Heat +${heatGain}.`;
+    state.sim.moments = [
+        { type: label, text: line, heat: heatGain, at: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+        ...(state.sim.moments || [])
+    ].slice(0, 12);
+
+    generateXDraft(action === 'post' ? 'plain' : 'operator', false);
+    updateSimUI();
+    saveState();
+}
+
+function updateSimUI() {
+    const rankEl = document.getElementById('sim-rank');
+    if (!rankEl) return;
+    ensureSimDay();
+
+    const briefing = BRIEFINGS[state.sim.seed % BRIEFINGS.length];
+    document.getElementById('daily-briefing').textContent = briefing;
+    rankEl.textContent = getSimRank();
+    document.getElementById('sim-streak').textContent = state.sim.streak || 0;
+    document.getElementById('sim-posts').textContent = state.sim.posts || 0;
+    document.getElementById('sim-heat').textContent = state.sim.viralHeat || 0;
+
+    const done = state.sim.missions.filter(m => m.done).length;
+    document.getElementById('sim-missions').textContent = `${done}/${state.sim.missions.length}`;
+    document.getElementById('mission-list').innerHTML = state.sim.missions.map(m => {
+        const def = getMissionDef(m.id);
+        return `<div class="mission ${m.done ? 'done' : ''}">
+            <div class="mission-dot"></div>
+            <div>${def.text}</div>
+            <div class="mission-reward">${def.reward}</div>
+        </div>`;
+    }).join('');
+
+    const timeline = document.getElementById('sim-timeline');
+    timeline.innerHTML = (state.sim.moments || []).length
+        ? state.sim.moments.map(m => `<div class="moment"><strong>${m.type} · ${m.at}</strong><br>${m.text}</div>`).join('')
+        : `<div class="moment"><strong>SIM READY</strong><br>Take a shot to create the first public moment.</div>`;
+
+    const draft = document.getElementById('x-draft');
+    if (draft && state.sim.lastDraft && draft.value !== state.sim.lastDraft) draft.value = state.sim.lastDraft;
+}
+
+function newDailyBriefing() {
+    state.sim.day = null;
+    ensureSimDay();
+    recordSimAction('brief', { summary: 'New field briefing loaded. The day has a different pressure.' });
+}
+
+function generateXDraft(style = 'operator', shouldRecord = true) {
+    ensureSimDay();
+    const rank = getSimRank();
+    const last = (state.sim.moments || [])[0];
+    const hook = last ? last.text : 'The sim is live. First shot pending.';
+    const stats = `Sparks ${state.sparks} · Rep ${Math.round(state.reputation)} · X ${Math.round(state.xPresence)} · Heat ${state.sim.viralHeat || 0}`;
+    let text = '';
+
+    if (style === 'plain') {
+        text = `I built THE GAME into a little public operating sim.\n\n${hook}\n\nCurrent state: ${stats}.\n\nPlay it here: https://basinleon.github.io/play/`;
+    } else if (style === 'viral') {
+        text = `Tiny experiment:\n\nWhat if posting on X was treated like a basketball shot?\n\nAim. Tune aggression/patience/clarity. Take the shot. Let the sim judge the consequence.\n\n${stats}\n\nhttps://basinleon.github.io/play/`;
+    } else {
+        text = `${rank} report:\n\n${hook}\n\n${stats}.\n\nThe shot is visible. The system underneath is the game.\n\nhttps://basinleon.github.io/play/`;
+    }
+
+    state.sim.lastDraft = text;
+    const draft = document.getElementById('x-draft');
+    if (draft) draft.value = text;
+    if (shouldRecord) recordSimAction('draft', { summary: `Draft generated in ${style} mode.`, clarity: levers.clarity });
+    return text;
+}
+
+function copyDraftToX() {
+    const draft = document.getElementById('x-draft');
+    const text = draft ? draft.value : generateXDraft('operator', false);
+    state.sim.posts = (state.sim.posts || 0) + 1;
+    state.xPresence = Math.min(100, state.xPresence + 4);
+    recordSimAction('post', { summary: 'X post packaged and sent to compose.', clarity: levers.clarity, success: true });
+
+    const openCompose = () => window.open(`https://x.com/compose/tweet?text=${encodeURIComponent(text)}`, '_blank');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(openCompose).catch(openCompose);
+    } else {
+        prompt('Copy this post:', text);
+        openCompose();
+    }
+}
+
+async function exportSimCard() {
+    const c = document.createElement('canvas');
+    c.width = 1200;
+    c.height = 675;
+    const g = c.getContext('2d');
+    g.fillStyle = '#050504';
+    g.fillRect(0, 0, c.width, c.height);
+    const grad = g.createLinearGradient(0, 0, c.width, c.height);
+    grad.addColorStop(0, 'rgba(216,182,106,0.28)');
+    grad.addColorStop(1, 'rgba(91,183,168,0.18)');
+    g.fillStyle = grad;
+    g.fillRect(0, 0, c.width, c.height);
+    g.strokeStyle = '#D8B66A';
+    g.lineWidth = 3;
+    g.strokeRect(42, 42, c.width - 84, c.height - 84);
+
+    g.fillStyle = '#F2EFE7';
+    g.font = 'bold 72px Bricolage Grotesque, sans-serif';
+    g.fillText(getSimRank().toUpperCase(), 78, 150);
+    g.fillStyle = '#D8B66A';
+    g.font = '22px JetBrains Mono, monospace';
+    g.fillText('@leonbasinwriter · THE GAME', 82, 198);
+    g.fillStyle = '#F2EFE7';
+    g.font = '30px Manrope, sans-serif';
+    wrapText((state.sim.moments?.[0]?.text || 'The sim is live.'), 54).forEach((line, i) => g.fillText(line, 82, 278 + i * 42));
+    g.fillStyle = '#D8B66A';
+    g.font = '24px JetBrains Mono, monospace';
+    g.fillText(`SPARKS ${state.sparks}   REP ${Math.round(state.reputation)}   X ${Math.round(state.xPresence)}   HEAT ${state.sim.viralHeat || 0}`, 82, 560);
+    g.fillText('basinleon.github.io/play', 82, 610);
+
+    await shareVisualForX(c, 'the-game-sim-card', generateXDraft('operator', false), 5);
 }
 
 // ==================== CANVAS COURT ====================
@@ -1316,6 +1747,13 @@ function finishShot(outcome, targetX, targetY) {
 
     // Auto-archive to @Library
     autoArchive('court', reading, { sparks: state.sparks, network: Math.round(state.networkOfPulls) });
+    recordSimAction('shot', {
+        success,
+        aggression: agg,
+        patience: pat,
+        clarity: cla,
+        summary: `${success ? 'Clean shot' : 'Missed shot'}: ${reading}`
+    });
 
     // Save high-quality visual snapshot for X exports (court moments)
     lastShotVisual = {
@@ -1413,6 +1851,13 @@ function broadcastOnX() {
 
     // Generate X-ready text
     const postText = generateXPost(success, sparkGain, repChange);
+    recordSimAction('broadcast', {
+        success,
+        aggression: agg,
+        patience: pat,
+        clarity: cla,
+        summary: success ? 'Broadcast landed cleanly on X.' : 'Broadcast scattered, but the field still registered it.'
+    });
     alert(`Broadcast complete.\n\n${message}\n\nReady-to-post text:\n\n${postText}\n\n(Copy and post from @leonbasinwriter)`);
 }
 
@@ -1547,6 +1992,13 @@ function feelThePulls() {
 
     updateAllUI();
     saveState();
+    recordSimAction('pulls', {
+        success: isDivine,
+        aggression: levers.aggression,
+        patience: pat,
+        clarity: cla,
+        summary: `${message} Network now ${Math.round(state.networkOfPulls)}.`
+    });
 
     alert(`${message}\n\n+${Math.floor(sparkGain)} Sparks\nNetwork of Pulls now at ${Math.round(state.networkOfPulls)}`);
 }
@@ -2715,6 +3167,7 @@ function init() {
     document.getElementById('pat').value = levers.patience;
     document.getElementById('cla').value = levers.clarity;
 
+    ensureSimDay();
     initCourt();
     initLevers();
     updateAllUI();
@@ -2886,6 +3339,13 @@ function processRefinery() {
         layer4: layerBoost
     };
     window.lastRefineryQuality = Math.round(avgQuality / 10);
+    recordSimAction('refinery', {
+        success: sparksGained >= 8,
+        aggression: levers.aggression,
+        patience: levers.patience,
+        clarity: levers.clarity,
+        summary: `Refined ${ref.signals.length} signals into +${sparksGained} Sparks and +${layerBoost} Spark layer.`
+    });
 
     // Clear for next run
     ref.signals = [];
