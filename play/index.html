@@ -287,16 +287,30 @@
 
         /* THE BOOK - Polymarket-style mechanics, veiled */
         .book-section {
-            margin-top: 80px;
+            margin-top: 40px;
             border-top: 1px solid var(--line);
-            padding-top: 40px;
+            padding-top: 28px;
         }
 
         #codex-panel {
             transition: border-color 0.2s ease;
+            margin-top: 16px !important;
+            padding: 14px !important;
         }
         #codex-panel:hover {
             border-color: #D4AF37;
+        }
+        #operator-library,
+        #refinery {
+            margin-top: 28px !important;
+            padding-top: 22px !important;
+        }
+        #library-entries {
+            max-height: 190px !important;
+        }
+        #book-wagers {
+            display: grid;
+            gap: 10px;
         }
 
         .book-header {
@@ -503,6 +517,77 @@
             padding: 10px;
             flex-wrap: wrap;
         }
+        .capture-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .capture-panel {
+            border: 1px solid rgba(91,183,168,0.22);
+            background: rgba(8,14,13,0.72);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .capture-panel p {
+            margin: 8px 0 12px;
+            color: var(--text-dim);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .capture-form {
+            display: grid;
+            gap: 8px;
+        }
+        .capture-form input,
+        .capture-form select {
+            width: 100%;
+            border: 1px solid rgba(216,182,106,0.18);
+            background: rgba(0,0,0,0.45);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 10px 11px;
+            font: 12px 'JetBrains Mono', monospace;
+            outline: none;
+        }
+        .capture-form input:focus,
+        .capture-form select:focus {
+            border-color: rgba(91,183,168,0.65);
+            box-shadow: 0 0 0 2px rgba(91,183,168,0.12);
+        }
+        .capture-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .capture-status {
+            min-height: 18px;
+            color: var(--teal);
+            font: 11px 'JetBrains Mono', monospace;
+            letter-spacing: 0.4px;
+        }
+        .quote-strip {
+            border: 1px solid rgba(216,182,106,0.13);
+            background: rgba(255,255,255,0.025);
+            border-radius: 8px;
+            padding: 14px;
+            display: grid;
+            gap: 10px;
+        }
+        .quote-strip blockquote {
+            margin: 0;
+            color: #ddd6c8;
+            font-size: 15px;
+            line-height: 1.45;
+        }
+        .quote-strip cite {
+            color: var(--gold);
+            font: 11px 'JetBrains Mono', monospace;
+            font-style: normal;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
         .timeline {
             margin-top: 14px;
             display: grid;
@@ -527,9 +612,9 @@
         }
 
         .how-to {
-            margin: 22px 0 14px;
+            margin: 14px 0 12px;
             display: grid;
-            grid-template-columns: 1fr auto;
+            grid-template-columns: minmax(0, 1fr) 180px;
             gap: 14px;
             align-items: stretch;
         }
@@ -541,7 +626,7 @@
         }
         .steps {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
             gap: 10px;
             margin-top: 12px;
         }
@@ -563,15 +648,23 @@
             margin-bottom: 5px;
         }
         .visitor-card {
-            min-width: 210px;
+            min-width: 0;
             display: grid;
             align-content: center;
-            gap: 10px;
+            gap: 8px;
             text-align: center;
         }
         .visitor-card img {
             margin: 0 auto;
-            max-width: 180px;
+            max-width: 130px;
+        }
+        .visitor-note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            line-height: 1.35;
+            color: #625d54;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         .mechanics-hud {
             display: grid;
@@ -595,6 +688,7 @@
             margin-top: 4px;
         }
         .meter-shell {
+            display: none;
             height: 14px;
             border: 1px solid rgba(216,182,106,0.2);
             background: rgba(255,255,255,0.04);
@@ -715,6 +809,7 @@
             .arc-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .x-sim { grid-template-columns: 1fr; }
+            .capture-grid { grid-template-columns: 1fr; }
             .how-to { grid-template-columns: 1fr; }
             .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .mechanics-hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -735,6 +830,7 @@
             .arc-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .systems, .kpi-grid { grid-template-columns: 1fr; }
             .sim-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .capture-panel, .quote-strip { padding: 12px; }
             .mission { grid-template-columns: 22px 1fr; }
             .mission-reward { grid-column: 2; }
             .steps, .mechanics-hud, .ability-grid { grid-template-columns: 1fr; }
@@ -836,11 +932,42 @@
                     <button class="btn" onclick="generateXDraft('operator')" style="padding:8px 12px; font-size:11px;">OPERATOR</button>
                     <button class="btn" onclick="generateXDraft('plain')" style="padding:8px 12px; font-size:11px;">PLAIN</button>
                     <button class="btn" onclick="generateXDraft('viral')" style="padding:8px 12px; font-size:11px;">VIRAL</button>
+                    <button class="btn" onclick="generateXDraft('thread')" style="padding:8px 12px; font-size:11px;">THREAD</button>
+                    <button class="btn" onclick="generateXDraft('dm')" style="padding:8px 12px; font-size:11px;">DM</button>
                     <button class="btn primary" onclick="copyDraftToX()" style="padding:8px 12px; font-size:11px;">POST TO X</button>
                     <button class="btn" onclick="exportSimCard()" style="padding:8px 12px; font-size:11px;">CARD</button>
                 </div>
             </div>
             <div class="timeline" id="sim-timeline"></div>
+        </div>
+    </section>
+
+    <section class="capture-grid" aria-label="Open library and GTM capture">
+        <div class="capture-panel">
+            <div class="sim-kicker">OPEN LIBRARY · GTM CAPTURE</div>
+            <p>Get the playbook, the Operator OS notes, or a teardown of what this sim is modeling. This static page captures intent locally and packages it for email/Odysseus until the backend is wired.</p>
+            <form class="capture-form" onsubmit="submitLeadCapture(event)">
+                <input id="gtm-email" type="email" autocomplete="email" placeholder="you@company.com" required>
+                <input id="gtm-role" type="text" autocomplete="organization-title" placeholder="Founder, GTM, RevOps, operator, curious builder">
+                <select id="gtm-intent">
+                    <option value="Send me the playbook">Send me the playbook</option>
+                    <option value="I want the Operator OS">I want the Operator OS</option>
+                    <option value="I want GTM help">I want GTM help</option>
+                    <option value="I want the Codex/Odysseus bridge">I want the Codex/Odysseus bridge</option>
+                    <option value="Just following">Just following</option>
+                </select>
+                <div class="capture-actions">
+                    <button class="btn primary" type="submit" style="padding:9px 14px; font-size:11px;">CAPTURE INTENT</button>
+                    <button class="btn" type="button" onclick="emailLeadPacket()" style="padding:9px 14px; font-size:11px;">EMAIL PACKET</button>
+                    <button class="btn" type="button" onclick="exportLeadsCsv()" style="padding:9px 14px; font-size:11px;">CSV</button>
+                </div>
+                <div class="capture-status"><span id="lead-status">READY</span> · LEADS <span id="lead-count">0</span></div>
+            </form>
+        </div>
+        <div class="quote-strip" aria-label="Library quote">
+            <blockquote id="library-quote">“The shot is visible. The actual game is the invisible pressure system underneath it.”</blockquote>
+            <cite>From the open library</cite>
+            <button class="btn" onclick="copyLeadPacket()" style="padding:9px 14px; font-size:11px; justify-self:start;">COPY LEAD PACKET</button>
         </div>
     </section>
 
@@ -850,7 +977,7 @@
             <div class="steps">
                 <div class="step"><strong>1. AIM</strong>Click the court to set the target. Deep angles are harder.</div>
                 <div class="step"><strong>2. CHOOSE</strong>Pick a chess-like ability: fork, castle, pin, or gambit.</div>
-                <div class="step"><strong>3. RELEASE</strong>Press Take It, then press again or Space in the green window.</div>
+                <div class="step"><strong>3. SHOOT</strong>Press Take It once. Tempo is handled automatically.</div>
                 <div class="step"><strong>4. POST</strong>Turn strong moments into an X draft, card, or public receipt.</div>
             </div>
             <div class="odysseus-bridge">
@@ -862,8 +989,9 @@
             </div>
         </div>
         <div class="how-card visitor-card">
-            <div class="sim-kicker">VISITORS</div>
+            <div class="sim-kicker">PAGE PLAYS</div>
             <img src="https://visitor-badge.laobi.icu/badge?page_id=basinleon.the-game.play&left_text=plays" alt="Visitor count for THE GAME">
+            <div class="visitor-note">Badge counts page hits/plays, not verified unique visitors.</div>
             <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim);">
                 YOUR RUNS <span id="local-runs" style="color:var(--gold-bright);">0</span>
             </div>
@@ -884,11 +1012,11 @@
                 </button>
             </div>
             <div class="court-info" style="font-size:13px; color:#666;">
-                Aim anywhere. Press Take It to start the release meter, then press again or Space on the green.
+                Aim if you want. Pick an ability if you want. Press Take It once.
             </div>
             <div class="mechanics-hud">
                 <div class="mechanic-stat">SHOT QUALITY <strong id="shot-quality">—</strong></div>
-                <div class="mechanic-stat">RELEASE <strong id="release-score">READY</strong></div>
+                <div class="mechanic-stat">TEMPO <strong id="release-score">AUTO</strong></div>
                 <div class="mechanic-stat">POWER <strong id="power-score">—</strong></div>
                 <div class="mechanic-stat">PRESSURE <strong id="pressure-score">—</strong></div>
                 <div class="mechanic-stat">RANGE <strong id="range-score">—</strong></div>
@@ -896,7 +1024,7 @@
             <div class="tactical-readout">
                 <div class="tactical-box">
                     <strong>TACTICAL READ</strong>
-                    <span id="tactical-read">Pin the defender, choose a square, then release on tempo.</span>
+                    <span id="tactical-read">Choose an ability, choose a square, then take the shot.</span>
                 </div>
                 <div class="tactical-box">
                     <strong>BOARD SQUARE</strong>
@@ -1074,14 +1202,14 @@
             <!-- Populated dynamically by JS -->
         </div>
 
-        <!-- CODEXHUB + APPLICATIONS -->
+        <!-- CODEX + APPLICATIONS -->
         <div id="codex-panel" style="margin-top: 24px; padding: 20px; background:#0a0a0a; border:1px solid #1f1f1f; border-left:4px solid #D4AF37; border-radius:6px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div>
-                    <div style="font-size:11px; letter-spacing:2px; color:#D4AF37;">CODEXHUB</div>
+                    <div style="font-size:11px; letter-spacing:2px; color:#D4AF37;">CODEX</div>
                     <div style="font-size:13px; color:#aaa; margin-top:2px;">Fragments: <span id="codex-fragments">0</span></div>
                 </div>
-                <button onclick="exportCodexHubCard()" class="btn" style="font-size:11px; padding:6px 14px;">EXPORT HUB FOR X</button>
+                <button onclick="exportCodexCard()" class="btn" style="font-size:11px; padding:6px 14px;">EXPORT CODEX FOR X</button>
             </div>
 
             <div id="codex-powerups-list" style="margin-bottom:16px; font-size:13px; color:#ccc;">
@@ -1463,7 +1591,9 @@ function recordSimAction(action, meta = {}) {
         ...(state.sim.moments || [])
     ].slice(0, 12);
 
-    generateXDraft(action === 'post' ? 'plain' : 'operator', false);
+    if (action !== 'draft' && action !== 'lead') {
+        generateXDraft(action === 'post' ? 'plain' : 'operator', false);
+    }
     updateSimUI();
     saveState();
 }
@@ -1518,6 +1648,10 @@ function generateXDraft(style = 'operator', shouldRecord = true) {
         text = `I built THE GAME into a little public operating sim.\n\n${hook}\n\nCurrent state: ${stats}.\n\nPlay it here: https://basinleon.github.io/play/`;
     } else if (style === 'viral') {
         text = `Tiny experiment:\n\nWhat if posting on X was treated like a basketball shot?\n\nAim. Tune aggression/patience/clarity. Take the shot. Let the sim judge the consequence.\n\n${stats}\n\nhttps://basinleon.github.io/play/`;
+    } else if (style === 'thread') {
+        text = `1/ I built THE GAME as a public operating sim.\n\nThe surface is basketball. The deeper mechanic is intent, pressure, and timing.\n\n2/ Every move changes the state: Sparks, Reputation, X Presence, Network of Pulls, Energy.\n\n3/ The post engine turns a run into something shareable instead of letting the signal disappear.\n\n4/ Current read: ${hook}\n\n${stats}\n\nhttps://basinleon.github.io/play/`;
+    } else if (style === 'dm') {
+        text = `Saw you checking out THE GAME.\n\nIf you want the playbook behind it, I can send the Operator OS / GTM notes.\n\nCurrent sim read: ${hook}\n\nhttps://basinleon.github.io/play/`;
     } else {
         text = `${rank} report:\n\n${hook}\n\n${stats}.\n\nThe shot is visible. The system underneath is the game.\n\nhttps://basinleon.github.io/play/`;
     }
@@ -1543,6 +1677,118 @@ function copyDraftToX() {
         prompt('Copy this post:', text);
         openCompose();
     }
+}
+
+const LEAD_STORAGE_KEY = 'thegame_gtm_leads_v1';
+const GTM_INBOX = 'lbasin23@gmail.com';
+
+function getLeadLedger() {
+    try {
+        return JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || '[]');
+    } catch (err) {
+        return [];
+    }
+}
+
+function saveLeadLedger(leads) {
+    localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads.slice(-100)));
+    updateLeadCaptureUI();
+}
+
+function buildLeadPacket(lead = null) {
+    const leads = getLeadLedger();
+    const latest = lead || leads[leads.length - 1] || null;
+    const draft = document.getElementById('x-draft')?.value || state.sim.lastDraft || generateXDraft('operator', false);
+    const lastMoment = (state.sim.moments || [])[0]?.text || 'No sim moment yet.';
+    const payload = {
+        source: 'THE GAME /play',
+        url: 'https://basinleon.github.io/play/',
+        capturedAt: new Date().toISOString(),
+        latestLead: latest,
+        localLeadCount: leads.length,
+        intentState: {
+            sparks: state.sparks,
+            reputation: Math.round(state.reputation),
+            xPresence: Math.round(state.xPresence),
+            networkOfPulls: Math.round(state.networkOfPulls),
+            energy: Math.round(state.energy),
+            shots: state.shots,
+            rank: getSimRank(),
+            lastMoment
+        },
+        xDraft: draft
+    };
+    return JSON.stringify(payload, null, 2);
+}
+
+function updateLeadCaptureUI() {
+    const countEl = document.getElementById('lead-count');
+    const leads = getLeadLedger();
+    if (countEl) countEl.textContent = leads.length;
+}
+
+function submitLeadCapture(event) {
+    event.preventDefault();
+    const emailEl = document.getElementById('gtm-email');
+    const roleEl = document.getElementById('gtm-role');
+    const intentEl = document.getElementById('gtm-intent');
+    const statusEl = document.getElementById('lead-status');
+    const email = (emailEl?.value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (statusEl) statusEl.textContent = 'ENTER A VALID EMAIL';
+        return;
+    }
+
+    const lead = {
+        email,
+        role: (roleEl?.value || '').trim(),
+        intent: intentEl?.value || 'Send me the playbook',
+        capturedAt: new Date().toISOString(),
+        rank: getSimRank(),
+        lastMoment: (state.sim.moments || [])[0]?.text || '',
+        xDraft: document.getElementById('x-draft')?.value || ''
+    };
+    const leads = getLeadLedger();
+    leads.push(lead);
+    saveLeadLedger(leads);
+    recordSimAction('lead', { summary: `Intent captured: ${lead.intent}.`, clarity: levers.clarity, success: true });
+    if (statusEl) statusEl.textContent = `CAPTURED · ${leads.length} LOCAL LEAD${leads.length === 1 ? '' : 'S'}`;
+    if (roleEl) roleEl.value = '';
+}
+
+function copyLeadPacket() {
+    const packet = buildLeadPacket();
+    const statusEl = document.getElementById('lead-status');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(packet).then(() => {
+            if (statusEl) statusEl.textContent = 'LEAD PACKET COPIED';
+        }).catch(() => prompt('Copy lead packet:', packet));
+    } else {
+        prompt('Copy lead packet:', packet);
+    }
+}
+
+function emailLeadPacket() {
+    const packet = buildLeadPacket();
+    window.location.href = `mailto:${GTM_INBOX}?subject=${encodeURIComponent('THE GAME lead packet')}&body=${encodeURIComponent(packet)}`;
+}
+
+function exportLeadsCsv() {
+    const leads = getLeadLedger();
+    const headers = ['capturedAt', 'email', 'role', 'intent', 'rank', 'lastMoment'];
+    const csv = [
+        headers.join(','),
+        ...leads.map(lead => headers.map(key => `"${String(lead[key] || '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `the-game-leads-${todayKey()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    const statusEl = document.getElementById('lead-status');
+    if (statusEl) statusEl.textContent = `CSV EXPORTED · ${leads.length} LEADS`;
 }
 
 async function exportSimCard() {
@@ -1787,7 +2033,7 @@ function updateMechanicPreview(releaseScore = null) {
     const target = pendingTarget || currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
     const m = calculateShotMechanics(target.x, target.y, releaseScore);
     updateMechanicText('shot-quality', releaseScore === null ? `${Math.round(m.baseQuality)}%` : `${Math.round(m.quality)}%`);
-    updateMechanicText('release-score', releaseScore === null ? 'SET' : `${Math.round(releaseScore)}%`);
+    updateMechanicText('release-score', releaseScore === null ? 'AUTO' : `${Math.round(releaseScore)}%`);
     updateMechanicText('power-score', `${Math.round(m.power)}%`);
     updateMechanicText('pressure-score', `${Math.round(m.pressure)}%`);
     updateMechanicText('range-score', `${Math.round(m.rangePenalty)}%`);
@@ -2065,10 +2311,24 @@ function drawCourt(aimX = null, aimY = null) {
 function takeShot() {
     if (!canvas || isShooting) return;
     if (isMeterActive) {
-        releaseShot();
+        isMeterActive = false;
+        if (releaseRaf) cancelAnimationFrame(releaseRaf);
+    }
+    const target = currentAim || { x: canvas.width - 95, y: canvas.height / 2 };
+    const preview = calculateShotMechanics(target.x, target.y, null);
+    if (state.energy < preview.ability.cost) {
+        alert("Low energy. Castle, rest, or realign before forcing the move.");
         return;
     }
-    startReleaseMeter();
+    const tempoScore = clamp(
+        62 + levers.clarity * 0.28 + (preview.ability.release || 0) * 0.45 - levers.aggression * 0.08 + (Math.random() * 10 - 5),
+        35,
+        96
+    );
+    const mechanics = updateMechanicPreview(tempoScore);
+    const success = Math.random() * 100 < mechanics.quality;
+    pendingTarget = null;
+    beginShot(target.x, target.y, success, mechanics, tempoScore);
 }
 
 function beginShot(targetX, targetY, success, mechanics, releaseScore) {
@@ -2279,7 +2539,7 @@ function finishShot(outcome, targetX, targetY) {
     }
 
     // === THE READING (Zohar commentary) ===
-    const reading = generateReading(success, agg, pat, cla, deltas) + ` ${ability.name} ${success ? 'created leverage' : 'failed to convert'}. Release ${Math.round(releaseScore || 0)}. Quality ${Math.round(mechanics?.quality || 0)}.`;
+    const reading = generateReading(success, agg, pat, cla, deltas) + ` ${ability.name} ${success ? 'created leverage' : 'failed to convert'}. Tempo ${Math.round(releaseScore || 0)}. Quality ${Math.round(mechanics?.quality || 0)}.`;
     const readingEl = document.getElementById('court-reading-text');
     if (readingEl) {
         readingEl.textContent = reading;
@@ -2654,7 +2914,7 @@ function updateCodexUI() {
         console.log('%c[CODEX] Fragments:', 'color:#D4AF37', state.codex.fragments, 'Powerups:', state.codex.powerups);
     }
 
-    // CodexHub powerups list with descriptions
+    // Codex powerups list with descriptions
     const listEl = document.getElementById('codex-powerups-list');
     if (listEl) {
         if (!state.codex.powerups || state.codex.powerups.length === 0) {
@@ -2690,30 +2950,30 @@ function applyCodex(powerupId) {
         // Temporary Book clarity boost
         window.codexLensActive = (window.codexLensActive || 0) + 8;
         effectText = 'Reader\'s Lens applied. Book probabilities clarified for the next several resolutions.';
-        xCopy = `Applied Reader's Lens through CodexHub. The Book now reads cleaner. @CodexHub @Applications`;
+        xCopy = `Applied Reader's Lens through Codex. The Book now reads cleaner. @Codex @Applications`;
     } else if (powerupId === 'field-anchor') {
         state.xPresence = Math.min(100, state.xPresence + 12);
         effectText = 'Field Anchor engaged. X Presence stabilized.';
-        xCopy = `Field Anchor applied via CodexHub. Signal locked in. @CodexHub @Applications`;
+        xCopy = `Field Anchor applied via Codex. Signal locked in. @Codex @Applications`;
     } else if (powerupId === 'pull-weaver') {
         state.networkOfPulls = Math.min(100, state.networkOfPulls + 9);
         effectText = 'Pull Weaver activated. The Network shifts under deliberate hand.';
-        xCopy = `Pull Weaver deployed from CodexHub. The field responded. @CodexHub @Applications`;
+        xCopy = `Pull Weaver deployed from Codex. The field responded. @Codex @Applications`;
     } else if (powerupId === 'sam-ink-transmission') {
         // Activate the raw music power-up
         showSamInkMusicTool();
         effectText = 'Sam & Ink Transmission activated. Raw movement engaged.';
-        xCopy = `Sam & Ink Transmission live from the field. Real raw shit. This is a movement. @CodexHub @Applications`;
+        xCopy = `Sam & Ink Transmission live from the field. Real raw shit. This is a movement. @Codex @Applications`;
     } else if (powerupId === 'agent-mesh-bridge') {
         // Bridge to the real Obsidian Agent Mesh (one body)
         effectText = 'Agent Mesh Bridge engaged. The vault\'s nervous system speaks through the simulation.';
-        xCopy = `Agent Mesh Bridge active. Obsidian runs now feed the field directly. @CodexHub @Applications`;
+        xCopy = `Agent Mesh Bridge active. Obsidian runs now feed the field directly. @Codex @Applications`;
         // Open a simple bridge interface
         setTimeout(() => showAgentMeshBridge(), 80);
     } else if (powerupId === 'demo-arsenal') {
         // Deploy real ~/Demo-Arsenal/scripts + @Library/Audio ritual
         effectText = 'Demo Arsenal deployed. Real scripts engaged. Recording now feeds the Operator Library and the field.';
-        xCopy = `Demo Arsenal live. Scripts + recordings now move as operator transmissions. @CodexHub @Applications @DemoArsenal`;
+        xCopy = `Demo Arsenal live. Scripts + recordings now move as operator transmissions. @Codex @Applications @DemoArsenal`;
         setTimeout(() => showDemoArsenalPowerup(), 80);
     }
 
@@ -2747,7 +3007,7 @@ async function createCodexApplicationCard(powerupId, effect, tweetText) {
 
     ctx.fillStyle = '#D4AF37';
     ctx.font = 'bold 28px Space Grotesk, sans-serif';
-    ctx.fillText('CODEXHUB APPLICATION', 90, 130);
+    ctx.fillText('CODEX APPLICATION', 90, 130);
 
     ctx.fillStyle = '#888';
     ctx.font = '16px JetBrains Mono';
@@ -2765,12 +3025,12 @@ async function createCodexApplicationCard(powerupId, effect, tweetText) {
 
     ctx.fillStyle = '#D4AF37';
     ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
     await shareVisualForX(exportCanvas, `codex-${powerupId}`, tweetText, 5);
 }
 
-async function exportCodexHubCard() {
+async function exportCodexCard() {
     const exportCanvas = document.createElement('canvas');
     exportCanvas.width = 1080;
     exportCanvas.height = 1080;
@@ -2792,7 +3052,7 @@ async function exportCodexHubCard() {
 
     ctx.fillStyle = '#D4AF37';
     ctx.font = 'bold 32px Space Grotesk, sans-serif';
-    ctx.fillText('CODEXHUB', 90, 130);
+    ctx.fillText('CODEX', 90, 130);
 
     ctx.fillStyle = '#888';
     ctx.font = '16px JetBrains Mono';
@@ -2807,9 +3067,9 @@ async function exportCodexHubCard() {
 
     ctx.fillStyle = '#D4AF37';
     ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
-    const tweetText = `CodexHub status: ${state.codex.fragments} fragments active. The operator builds infrastructure. @CodexHub @Applications`;
+    const tweetText = `Codex status: ${state.codex.fragments} fragments active. The operator builds infrastructure. @Codex @Applications`;
     await shareVisualForX(exportCanvas, 'codexhub', tweetText, 3);
 }
 
@@ -3125,7 +3385,7 @@ async function createSamInkTransmissionCard(transmission, agg, pat, cla, wasLive
     ctx.fillStyle = '#E8E8E8'; ctx.font = '22px Inter, system-ui';
     wrapText(transmission, 42).forEach((l,i) => ctx.fillText(l, 90, 240 + i*36));
     ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
     const tweet = transmission.replace(/\n/g,' ') + ' This is a movement.';
     await shareVisualForX(c, wasLive ? 'sam-ink-live' : 'sam-ink', tweet, wasLive ? 7 : 5);
 }
@@ -3194,7 +3454,7 @@ function reExportFromLibrary(id) {
     wrapText(text, 44).forEach((l,i) => ctx.fillText(l, 90, 220 + i*30));
 
     ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
     shareVisualForX(c, 'library-entry', tweetText, 2);
 }
@@ -3260,9 +3520,9 @@ async function exportLibrarySnapshot() {
     });
 
     ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
-    const tweetText = `Operator Archive snapshot: ${state.library.length} transmissions recorded. The texts are compounding. @CodexHub @Applications`;
+    const tweetText = `Operator Archive snapshot: ${state.library.length} transmissions recorded. The texts are compounding. @Codex @Applications`;
     await shareVisualForX(c, 'library-snapshot', tweetText, 3);
 }
 
@@ -3295,13 +3555,13 @@ function logMediaTransmission() {
     ctx.fillText('MOVIES/TV FIELD NOTE', 90, 120);
 
     ctx.fillStyle = '#888'; ctx.font = '16px JetBrains Mono';
-    ctx.fillText('Agent Mesh Specialist • @CodexHub @Applications', 90, 155);
+    ctx.fillText('Agent Mesh Specialist • @Codex @Applications', 90, 155);
 
     ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
     wrapText(entry.text, 44).forEach((l,i) => ctx.fillText(l, 90, 220 + i*30));
 
     ctx.fillStyle = '#D4AF37'; ctx.font = '16px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
     const tweetText = `${entry.text} Cinema as another court.`;
     shareVisualForX(c, 'cinema-transmission', tweetText, 3);
@@ -3722,10 +3982,11 @@ function init() {
     const localRunsEl = document.getElementById('local-runs');
     if (localRunsEl) localRunsEl.textContent = localRuns;
     updateMechanicPreview();
+    updateLeadCaptureUI();
     updateAllUI();
     updateBookUI();
     updateCodexUI();
-    // Ensure CodexHub list renders on load
+    // Ensure Codex list renders on load
     if (typeof updateCodexUI === 'function') updateCodexUI();
 
     // Render @Library on load
@@ -4297,7 +4558,7 @@ async function submitMeshBridge() {
     if (!state.codex) state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
     state.codex.fragments = (state.codex.fragments || 0) + 3;
 
-    const transmission = `Agent Mesh transmission received.\n${text}\n\nVault and simulation now speak the same language. @CodexHub @Applications`;
+    const transmission = `Agent Mesh transmission received.\n${text}\n\nVault and simulation now speak the same language. @Codex @Applications`;
 
     // Archive to Library as a special type
     autoArchive('agent-mesh', transmission, { source: 'obsidian-bridge', fragmentsAwarded: 3 });
@@ -4317,9 +4578,9 @@ async function submitMeshBridge() {
     ctx.fillStyle = '#E8E8E8'; ctx.font = '20px Inter, system-ui';
     wrapText(transmission, 40).forEach((l,i) => ctx.fillText(l, 90, 230 + i*32));
     ctx.fillStyle = '#D4AF37'; ctx.font = '15px JetBrains Mono';
-    ctx.fillText('basinleon.github.io/play  •  @CodexHub @Applications', 90, 980);
+    ctx.fillText('basinleon.github.io/play  •  @Codex @Applications', 90, 980);
 
-    const tweet = text.replace(/\n/g,' ').slice(0,220) + ' — Mesh runs now move the field. @CodexHub @Applications';
+    const tweet = text.replace(/\n/g,' ').slice(0,220) + ' — Mesh runs now move the field. @Codex @Applications';
     await shareVisualForX(c, 'mesh-bridge', tweet, 6);
 
     updateAllUI();
@@ -4387,7 +4648,7 @@ async function logDemoArsenalRun() {
     if (!state.codex) state.codex = { fragments: 0, powerups: [], initiatedKeter: false, rectifications: 0 };
     state.codex.fragments = (state.codex.fragments || 0) + 2;
 
-    const transmission = `Demo Arsenal deployment executed.\nTopic: ${topic}\nScripts engaged: start-demo.sh + record-demo.sh\n\nReal environment. Real audio captured. Now feeding @Library/Audio and the field.\n\n@CodexHub @Applications @DemoArsenal`;
+    const transmission = `Demo Arsenal deployment executed.\nTopic: ${topic}\nScripts engaged: start-demo.sh + record-demo.sh\n\nReal environment. Real audio captured. Now feeding @Library/Audio and the field.\n\n@Codex @Applications @DemoArsenal`;
 
     autoArchive('demo-arsenal', transmission, { 
         scripts: ['start-demo.sh', 'record-demo.sh'], 
@@ -4412,7 +4673,7 @@ async function logDemoArsenalRun() {
     ctx.fillStyle = '#D4AF37'; ctx.font = '15px JetBrains Mono';
     ctx.fillText('~/Demo-Arsenal/scripts  •  @Library/Audio  •  basinleon.github.io/play', 90, 980);
 
-    const tweet = `${topic} — Arsenal deployed. Scripts + recording now live as operator transmission. @CodexHub @Applications @DemoArsenal`;
+    const tweet = `${topic} — Arsenal deployed. Scripts + recording now live as operator transmission. @Codex @Applications @DemoArsenal`;
     await shareVisualForX(c, 'demo-arsenal', tweet, 6);
 
     updateAllUI();
