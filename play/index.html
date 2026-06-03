@@ -61,16 +61,34 @@
             position: sticky; top: 0; background: rgba(5,5,4,0.82); backdrop-filter: blur(18px); z-index: 100;
         }
         .header-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--gold); }
+        .logo { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--gold); text-decoration: none; }
         .logo span { margin-left: 8px; color: var(--text-dim) !important; letter-spacing: 0.5px; }
         .status-bar { display: flex; gap: 10px; font-size: 11px; color: var(--text-dim); letter-spacing: 1px; flex-wrap: wrap; justify-content: flex-end; }
         .status-pill {
+            color: var(--text-dim);
+            text-decoration: none;
             border: 1px solid rgba(216,182,106,0.18);
             background: rgba(216,182,106,0.055);
             border-radius: 999px;
             padding: 7px 10px;
             white-space: nowrap;
+            cursor: pointer;
+            transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
         }
+        .status-pill:hover,
+        .status-pill:focus-visible {
+            color: var(--gold-bright);
+            border-color: rgba(216,182,106,0.55);
+            background: rgba(216,182,106,0.11);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        .logo:hover,
+        .logo:focus-visible {
+            color: var(--gold-bright);
+            outline: none;
+        }
+        #sim, #capture, #court-section { scroll-margin-top: 92px; }
 
         .hero {
             min-height: clamp(300px, 42vh, 460px);
@@ -848,11 +866,11 @@
 <header>
     <div class="container">
         <div class="header-inner">
-            <div class="logo">THE GAME <span style="color:#555; font-size:12px;">@leonbasinwriter</span></div>
+            <a class="logo" href="https://x.com/leonbasinwriter" target="_blank" rel="noopener">THE GAME <span style="color:#555; font-size:12px;">@leonbasinwriter</span></a>
             <div class="status-bar">
-                <div class="status-pill">COURT LIVE</div>
-                <div class="status-pill">LAYERED SIM</div>
-                <div class="status-pill">EXPORT READY</div>
+                <a class="status-pill" href="#court-section">COURT LIVE</a>
+                <a class="status-pill" href="#sim">LAYERED SIM</a>
+                <a class="status-pill" href="#capture">EXPORT READY</a>
             </div>
         </div>
     </div>
@@ -899,7 +917,7 @@
     </div>
 
     <!-- X-NATIVE SIM LAYER -->
-    <section class="x-sim" aria-label="X simulator command deck">
+    <section class="x-sim" id="sim" aria-label="X simulator command deck">
         <div class="sim-panel">
             <div class="sim-topline">
                 <div class="sim-kicker">X COMMAND DECK</div>
@@ -942,7 +960,7 @@
         </div>
     </section>
 
-    <section class="capture-grid" aria-label="Open library and GTM capture">
+    <section class="capture-grid" id="capture" aria-label="Open library and GTM capture">
         <div class="capture-panel">
             <div class="sim-kicker">OPEN LIBRARY · GTM CAPTURE</div>
             <p>Get the playbook, the Operator OS notes, or a teardown of what this sim is modeling. This static page captures intent locally and packages it for email/Odysseus until the backend is wired.</p>
@@ -999,7 +1017,7 @@
     </section>
 
     <!-- THE COURT -->
-    <div class="court-section">
+    <div class="court-section" id="court-section">
         <div class="section-label">THE COURT — SURFACE LAYER</div>
         <div class="court-container">
             <div class="ability-grid" id="ability-grid" aria-label="Chess-like shot abilities"></div>
