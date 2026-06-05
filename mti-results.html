@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTI x Basin::Nexus: From Zero to Here</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #080a0f;
+  --bg2: #0e1219;
+  --bg3: #141820;
+  --border: rgba(255,255,255,0.06);
+  --green: #00e5a0;
+  --amber: #f5a623;
+  --blue: #3b9eff;
+  --white: #eeeae3;
+  --muted: #5a6372;
+  --dim: #8b95a3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background:var(--bg); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.65; overflow-x:hidden; }
+.container { max-width:920px; margin:0 auto; padding:0 28px; }
+.mono { font-family:'DM Mono',monospace; }
+.serif { font-family:'Playfair Display',serif; }
+
+/* NAV */
+.nav { position:sticky; top:0; z-index:100; background:rgba(8,10,15,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:14px 0; }
+.nav-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.nav-brand { font-family:'DM Mono',monospace; font-size:11px; color:var(--green); letter-spacing:0.15em; text-transform:uppercase; }
+.nav-links { display:flex; gap:24px; flex-wrap:wrap; }
+.nav-links a { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; transition:color 0.2s; }
+.nav-links a:hover { color:var(--white); }
+
+/* HERO */
+.hero { padding:90px 0 70px; border-bottom:1px solid var(--border); }
+.hero-tag { font-family:'DM Mono',monospace; font-size:11px; color:var(--green); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:28px; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:clamp(42px,7vw,76px); font-weight:900; line-height:1.0; letter-spacing:-0.025em; margin-bottom:24px; }
+.hero h1 .accent { color:var(--green); }
+.hero-sub { font-size:17px; color:var(--dim); max-width:580px; line-height:1.75; margin-bottom:44px; }
+.hero-pills { display:flex; gap:12px; flex-wrap:wrap; }
+.pill { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; padding:6px 14px; border:1px solid var(--border); color:var(--dim); text-transform:uppercase; }
+.pill.active { border-color:rgba(0,229,160,0.3); color:var(--green); background:rgba(0,229,160,0.04); }
+
+/* SECTION BASE */
+section { padding:72px 0; border-bottom:1px solid var(--border); }
+.sec-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.28em; color:var(--green); text-transform:uppercase; margin-bottom:28px; display:flex; align-items:center; gap:14px; }
+.sec-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.sec-label.amber { color:var(--amber); }
+.sec-label.blue { color:var(--blue); }
+h2 { font-family:'Playfair Display',serif; font-size:clamp(26px,4.5vw,42px); font-weight:700; line-height:1.18; margin-bottom:14px; letter-spacing:-0.015em; }
+.sec-intro { color:var(--dim); font-size:15px; max-width:620px; margin-bottom:44px; line-height:1.75; }
+
+/* CALLOUT BOX */
+.callout { background:rgba(0,229,160,0.04); border:1px solid rgba(0,229,160,0.14); border-left:3px solid var(--green); padding:22px 28px; margin-top:28px; font-size:14px; color:var(--dim); line-height:1.7; }
+.callout strong { color:var(--green); }
+.callout.amber { background:rgba(245,166,35,0.04); border-color:rgba(245,166,35,0.14); border-left-color:var(--amber); }
+.callout.amber strong { color:var(--amber); }
+.callout.blue { background:rgba(59,158,255,0.04); border-color:rgba(59,158,255,0.14); border-left-color:var(--blue); }
+.callout.blue strong { color:var(--blue); }
+
+/* STARTING POINT */
+.start-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); margin-top:36px; }
+.start-cell { background:var(--bg2); padding:28px 24px; }
+.start-cell h3 { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; margin-bottom:18px; }
+.start-item { font-size:13px; color:var(--dim); margin-bottom:10px; padding-left:16px; position:relative; line-height:1.55; }
+.start-item::before { content:'x'; position:absolute; left:0; color:#e55; font-family:'DM Mono',monospace; font-size:11px; }
+.start-item.green::before { content:'+'; color:var(--green); }
+@media(max-width:600px) { .start-grid { grid-template-columns:1fr; } }
+
+/* TIMELINE */
+.timeline { margin-top:40px; position:relative; }
+.timeline::before { content:''; position:absolute; left:110px; top:0; bottom:0; width:1px; background:var(--border); }
+.tl-row { display:flex; gap:32px; margin-bottom:0; position:relative; }
+.tl-date { width:110px; flex-shrink:0; font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.1em; padding-top:18px; text-align:right; }
+.tl-dot { position:absolute; left:106px; top:22px; width:9px; height:9px; border-radius:50%; background:var(--bg); border:2px solid var(--border); z-index:2; }
+.tl-dot.green { border-color:var(--green); background:rgba(0,229,160,0.15); }
+.tl-dot.amber { border-color:var(--amber); background:rgba(245,166,35,0.15); }
+.tl-content { flex:1; border-top:1px solid var(--border); padding:18px 0 28px 32px; }
+.tl-content:last-child { border-bottom:none; }
+.tl-title { font-size:14px; font-weight:500; color:var(--white); margin-bottom:6px; }
+.tl-body { font-size:13px; color:var(--dim); line-height:1.65; }
+.tl-tags { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.tl-tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; padding:3px 9px; border:1px solid var(--border); color:var(--muted); text-transform:uppercase; }
+.tl-tag.g { border-color:rgba(0,229,160,0.25); color:var(--green); }
+.tl-tag.a { border-color:rgba(245,166,35,0.25); color:var(--amber); }
+@media(max-width:640px) { .timeline::before { left:0; } .tl-date { display:none; } .tl-dot { left:-4px; } .tl-content { padding-left:20px; } }
+
+/* FLOW DIAGRAM */
+.flow { display:flex; align-items:stretch; gap:0; margin-top:36px; flex-wrap:wrap; }
+.flow-stage { flex:1; min-width:140px; background:var(--bg2); border:1px solid var(--border); padding:22px 18px; position:relative; }
+.flow-stage + .flow-stage { border-left:none; }
+.flow-arrow { display:flex; align-items:center; justify-content:center; padding:0 6px; color:var(--muted); font-size:18px; align-self:center; flex-shrink:0; }
+.flow-num { font-family:'DM Mono',monospace; font-size:9px; color:var(--green); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:10px; }
+.flow-title { font-size:13px; font-weight:500; color:var(--white); margin-bottom:6px; }
+.flow-body { font-size:11px; color:var(--muted); line-height:1.6; }
+@media(max-width:700px) { .flow { flex-direction:column; } .flow-stage + .flow-stage { border-left:1px solid var(--border); border-top:none; } .flow-arrow { transform:rotate(90deg); padding:4px 0; } }
+
+/* STAT GRID */
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+.stat-card { background:var(--bg2); padding:28px 22px; }
+.stat-n { font-family:'Playfair Display',serif; font-size:40px; font-weight:900; color:var(--green); line-height:1; margin-bottom:8px; letter-spacing:-0.02em; }
+.stat-card.a .stat-n { color:var(--amber); }
+.stat-card.b .stat-n { color:var(--blue); }
+.stat-l { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; color:var(--muted); text-transform:uppercase; line-height:1.5; }
+
+/* CHART */
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:36px; }
+@media(max-width:640px) { .chart-grid { grid-template-columns:1fr; } }
+.chart-box { background:var(--bg2); border:1px solid var(--border); padding:26px; }
+.chart-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; margin-bottom:18px; }
+.chart-box canvas { max-height:190px; }
+
+/* AUDIENCE BLOCKS */
+.aud-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:32px; }
+.aud-item { background:var(--bg2); padding:28px 20px; text-align:center; }
+.aud-pct { font-family:'Playfair Display',serif; font-size:46px; font-weight:900; color:var(--green); line-height:1; margin-bottom:10px; }
+.aud-desc { font-size:12px; color:var(--muted); line-height:1.55; }
+
+/* PROOF CARDS */
+.proof-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; }
+@media(max-width:600px) { .proof-grid { grid-template-columns:1fr; } }
+.proof-card { background:var(--bg2); border:1px solid var(--border); padding:22px; }
+.proof-card.highlight { border-color:rgba(0,229,160,0.2); }
+.proof-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
+.proof-name { font-size:14px; font-weight:500; color:var(--white); margin-bottom:4px; }
+.proof-title { font-size:12px; color:var(--dim); margin-bottom:12px; }
+.proof-quote { font-size:13px; color:var(--dim); border-left:2px solid var(--green); padding-left:12px; line-height:1.65; font-style:italic; }
+.proof-card.amber-h { border-color:rgba(245,166,35,0.2); }
+.proof-card.amber-h .proof-quote { border-left-color:var(--amber); }
+
+/* PIPELINE ROWS */
+.pipe-row { display:flex; align-items:center; gap:24px; padding:22px 0; border-bottom:1px solid var(--border); }
+.pipe-row:last-child { border-bottom:none; }
+.pipe-num { font-family:'Playfair Display',serif; font-size:32px; font-weight:900; color:var(--green); width:64px; flex-shrink:0; }
+.pipe-num.a { color:var(--amber); }
+.pipe-label { font-size:14px; color:var(--white); font-weight:400; }
+.pipe-sub { font-size:12px; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+/* BUILT GRID */
+.built-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:32px; }
+@media(max-width:600px) { .built-grid { grid-template-columns:1fr; } }
+.built-item { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--green); padding:18px 20px; }
+.built-item.a { border-left-color:var(--amber); }
+.built-item.b { border-left-color:var(--blue); }
+.built-item h4 { font-size:13px; font-weight:500; margin-bottom:5px; color:var(--white); }
+.built-item p { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* VALUE BOX */
+.value-box { background:rgba(0,229,160,0.03); border:1px solid rgba(0,229,160,0.12); padding:44px; margin-top:36px; text-align:center; }
+.value-box h3 { font-family:'Playfair Display',serif; font-size:26px; margin-bottom:14px; }
+.value-box p { color:var(--dim); font-size:15px; max-width:540px; margin:0 auto; line-height:1.75; }
+.big-num { font-family:'DM Mono',monospace; font-size:52px; font-weight:500; color:var(--green); display:block; margin:18px 0; letter-spacing:-0.02em; }
+
+/* PHASE TWO */
+.phase-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); margin-top:32px; }
+@media(max-width:600px) { .phase-grid { grid-template-columns:1fr; } }
+.phase-item { background:var(--bg2); padding:26px 22px; }
+.phase-tag { font-family:'DM Mono',monospace; font-size:9px; color:var(--green); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:10px; }
+.phase-item h4 { font-size:14px; margin-bottom:7px; color:var(--white); }
+.phase-item p { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* FOOTER */
+.footer { padding:52px 0; text-align:center; }
+.footer p { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:6px; }
+.footer a { color:var(--green); text-decoration:none; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.hero h1, .hero-sub, .hero-pills { animation:fadeUp 0.65s ease both; }
+.hero h1 { animation-delay:0.08s; }
+.hero-sub { animation-delay:0.18s; }
+.hero-pills { animation-delay:0.28s; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <span class="nav-brand">MTI x Basin::Nexus</span>
+    <div class="nav-links">
+      <a href="#start">The Start</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#numbers">Numbers</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#value">Value</a>
+      <a href="#phase2">Phase Two</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-tag">MTI x Basin::Nexus &nbsp;|&nbsp; March 23 to June 4, 2026</div>
+    <h1>From Zero<br>to <span class="accent">Here.</span></h1>
+    <p class="hero-sub">This is the full picture of what was built, what moved, and where the pipeline sits right now. Every number is verified. Every data point is sourced. Read this completely before we talk.</p>
+    <div class="hero-pills">
+      <span class="pill active">48 days active</span>
+      <span class="pill active">5 to 10 hrs/week</span>
+      <span class="pill active">2 operators</span>
+      <span class="pill active">$500/month total</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHERE WE STARTED -->
+<div class="container" id="start">
+  <section>
+    <div class="sec-label">00 &middot; Where We Started</div>
+    <h2>What MTI had on March 23.</h2>
+    <p class="sec-intro">Before anything was built, this was the state of the business. Nothing wrong with it. But it is the baseline everything else should be measured against.</p>
+
+    <div class="start-grid">
+      <div class="start-cell">
+        <h3>What Existed</h3>
+        <div class="start-item">Instagram account: 64 followers, last post March 3</div>
+        <div class="start-item">No active content cadence</div>
+        <div class="start-item">No GTM operating system</div>
+        <div class="start-item">No B2B pipeline or target list</div>
+        <div class="start-item">No content templates or brand system</div>
+        <div class="start-item">No performance tracking by hook or channel</div>
+        <div class="start-item">One warm institutional lead (Bridge Gap) with no follow-up framework</div>
+      </div>
+      <div class="start-cell">
+        <h3>What Existed (Strengths)</h3>
+        <div class="start-item green">A real product with genuine utility</div>
+        <div class="start-item green">A founder with authentic story content</div>
+        <div class="start-item green">A clear target audience in UK bootcamps</div>
+        <div class="start-item green">One confirmed inbound institutional interest (Bridge Gap)</div>
+        <div class="start-item green">TikTok account (untapped)</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The core problem:</strong> MTI had a product worth selling and an audience worth reaching but no system to connect them at scale. No consistent content, no outreach sequencing, no data on what messaging worked. The first job was to build the infrastructure. Then run it.
+    </div>
+  </section>
+</div>
+
+<!-- TIMELINE -->
+<div class="container" id="timeline">
+  <section>
+    <div class="sec-label">01 &middot; The Full Timeline</div>
+    <h2>48 days. Here is every move.</h2>
+    <p class="sec-intro">This is documented in emails, Google Docs, and the execution portal delivered to Ayo and Ridwan at each stage. None of this was unannounced.</p>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-date">Mar 13</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Competitive Intelligence + GTM Architecture</div>
+          <div class="tl-body">MTI competitive landscape mapped. GTM projection built. Mirror framework designed. Strategy sessions documented in Google Drive.</div>
+          <div class="tl-tags"><span class="tl-tag g">Strategy</span><span class="tl-tag">Docs</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Mar 23</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Engagement Starts. $500/month retainer signed.</div>
+          <div class="tl-body">90-day retainer begins. Leon absorbs Ola's cost out of this retainer from day one. Two professionals running on one budget.</div>
+          <div class="tl-tags"><span class="tl-tag g">Live</span><span class="tl-tag a">$500/mo</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Apr 17</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">First full sync. Infrastructure delivered.</div>
+          <div class="tl-body">Delivered: 90-Day Execution Portal (4 tabs: execution tracker, Gantt, intercept log, bi-weekly sync cadence), full talk track, and 9 operational templates. PDF sent to Ayo and Ridwan the same day. Institutional outreach was explicitly set as Phase Two, pending social data. This was communicated directly in the April 17 email.</div>
+          <div class="tl-tags"><span class="tl-tag g">Portal</span><span class="tl-tag g">9 Templates</span><span class="tl-tag">Docs</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Apr 21</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Week 1 launch. Content engine goes live.</div>
+          <div class="tl-body">Company email activated. TikTok and Instagram access received and audited. Execution brief and content tracker handed to Ola. Two content tracks established: student-facing interview prep hooks, and job-signal hooks built from UK tech hiring data (SRE, DevOps, platform engineering, cloud, infrastructure roles). Weekly Friday performance recap system set up. 15 student testimonial hooks drafted. Intercept log live in Google Sheets.</div>
+          <div class="tl-tags"><span class="tl-tag g">Content Live</span><span class="tl-tag">TikTok</span><span class="tl-tag">Instagram</span><span class="tl-tag">Sheets</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">May 3</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Month one officially starts. Cadence at full speed.</div>
+          <div class="tl-body">Ola running 9+ posts per week across TikTok (4/week), Instagram (2 Reels + 1 carousel + 1 Story/week), YouTube Shorts (2/week), and X (2/week). Weekly metrics tracked by hook, platform, profile visits, link clicks, and signups. The goal: identify the top 3 to 5 hooks before the June 3 checkpoint.</div>
+          <div class="tl-tags"><span class="tl-tag g">9+ posts/week</span><span class="tl-tag">Weekly reporting</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">May 11</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Top performing hooks identified. Signal confirmed.</div>
+          <div class="tl-body">Personal-story content emerged as the dominant hook type. LinkedIn personal profile outperforming all other channels. Data confirmed LinkedIn as the primary B2B funnel entry point.</div>
+          <div class="tl-tags"><span class="tl-tag g">Signal Confirmed</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">May 26</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">MTI GTM Package + UK Hub finalized.</div>
+          <div class="tl-body">Full UK market intelligence document completed. 33 UK and EU bootcamp accounts mapped and organized. Custom CRM built. Outreach sequences drafted. Pitch messaging ready to deploy the moment pilot terms are confirmed.</div>
+          <div class="tl-tags"><span class="tl-tag a">33 Accounts</span><span class="tl-tag g">UK Hub</span><span class="tl-tag">CRM</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Jun 2</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Proof one-pager published. Numbers documented.</div>
+          <div class="tl-body">Ola compiled the traction snapshot. One personal-story post: 6,683 impressions, 4,259 reached in 6 days. MTI company page up 240% month over month. Pablo Perez CBCP contacted Ola directly requesting a demo after seeing content. This happened organically, with no paid spend.</div>
+          <div class="tl-tags"><span class="tl-tag g">Inbound Lead</span><span class="tl-tag">One-Pager</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Jun 3</div>
+        <div class="tl-dot amber"></div>
+        <div class="tl-content">
+          <div class="tl-title">Leon sends renewal proposal. Ask: $600/month.</div>
+          <div class="tl-body">Email sent to Ayo and Ridwan with full traction data, proof snapshot attached. Ask was $600 total ($300 Ola, $300 Leon), still an 87% discount to market rate. MTI's response: no extension, no raise. Call scheduled for Friday 10pm UK time.</div>
+          <div class="tl-tags"><span class="tl-tag a">Renewal Ask</span><span class="tl-tag">Call Friday</span></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">Jun 4</div>
+        <div class="tl-dot green"></div>
+        <div class="tl-content">
+          <div class="tl-title">Pablo Perez moves demo to this Sunday. Engine still running.</div>
+          <div class="tl-body">Pablo Perez CBCP, who coaches military veterans transitioning into Tech, IT, and AI-ML careers, moved his demo request from next Thursday to this Sunday. He said he tried other mock interview platforms and they are not very good. Bernie Gillogly, VP of Sales US, engaging with Ola's content in the same thread. This is happening right now.</div>
+          <div class="tl-tags"><span class="tl-tag g">Live Inbound</span><span class="tl-tag g">Demo Sunday</span><span class="tl-tag">VP Engagement</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GTM ARCHITECTURE -->
+<div class="container">
+  <section>
+    <div class="sec-label">02 &middot; What Was Built</div>
+    <h2>Not content. A machine.</h2>
+    <p class="sec-intro">Social posting was the output of month one. This is what actually had to be built first for any of it to work.</p>
+
+    <div class="flow">
+      <div class="flow-stage">
+        <div class="flow-num">Layer 1</div>
+        <div class="flow-title">Infrastructure</div>
+        <div class="flow-body">90-Day portal, 9 templates, talk track, intercept log, content tracker, execution brief, Google Sheets cadence</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-stage">
+        <div class="flow-num">Layer 2</div>
+        <div class="flow-title">Content Engine</div>
+        <div class="flow-body">9+ posts/week across 4 channels. Two content tracks. Brand system. Carousel templates. Weekly performance reporting loop.</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-stage">
+        <div class="flow-num">Layer 3</div>
+        <div class="flow-title">Signal Data</div>
+        <div class="flow-body">Hook performance identified. LinkedIn personal story confirmed as B2B funnel entry. Audience quality validated: 26% senior, 13% enterprise.</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-stage">
+        <div class="flow-num">Layer 4</div>
+        <div class="flow-title">B2B Pipeline</div>
+        <div class="flow-body">33 accounts mapped. UK GTM Hub. CRM built. Outreach sequences ready. Live inbound demo request. Ready to activate.</div>
+      </div>
+    </div>
+
+    <div class="built-grid" style="margin-top:28px;">
+      <div class="built-item"><h4>90-Day Execution Portal</h4><p>4-tab operating doc: execution tracker, Gantt chart, intercept log, bi-weekly sync. Delivered to Ayo and Ridwan on April 17.</p></div>
+      <div class="built-item"><h4>9 Operational Templates</h4><p>Talk track, content calendar, hook library, intercept log, weekly recap format, outreach templates, and brand usage guide.</p></div>
+      <div class="built-item a"><h4>MTI UK GTM Hub</h4><p>Full UK bootcamp market intelligence. 33 accounts mapped with context, warm intro paths, and contact structure. Ready to outreach today.</p></div>
+      <div class="built-item a"><h4>B2B Outreach Engine</h4><p>Custom CRM. Sequenced outreach. Pitch messaging built and tested. Waiting only on pilot terms from Ayo to activate.</p></div>
+      <div class="built-item b"><h4>Brand System</h4><p>Carousel templates and brand videos. Visual identity consistent across LinkedIn, Instagram, and X. ICP message locked: "practice under pressure."</p></div>
+      <div class="built-item b"><h4>Notion Execution Layer</h4><p>Full GTM knowledge base in Notion. Weekly metrics tracker live. Channel audit completed. Weekly reporting cadence running every Friday.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- THE NUMBERS -->
+<div class="container" id="numbers">
+  <section>
+    <div class="sec-label">03 &middot; The Numbers</div>
+    <h2>First 30 days of founder-led growth.</h2>
+    <p class="sec-intro">Every number below was tracked by Ola individually, post by post, week by week. These are not platform estimates. These are verified.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-n">7,431</div><div class="stat-l">Impressions on breakout post</div></div>
+      <div class="stat-card"><div class="stat-n">8,400+</div><div class="stat-l">Total MTI content impressions (30 days)</div></div>
+      <div class="stat-card"><div class="stat-n">6,837</div><div class="stat-l">Ola profile post impressions (live, still climbing)</div></div>
+      <div class="stat-card"><div class="stat-n">356</div><div class="stat-l">Unique people reached across channels</div></div>
+      <div class="stat-card a"><div class="stat-n">240%</div><div class="stat-l">MTI company page impression growth MoM</div></div>
+      <div class="stat-card a"><div class="stat-n">33</div><div class="stat-l">B2B partner accounts in pipeline</div></div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">Reach by Channel (Impressions)</div>
+        <canvas id="channelChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">MTI Company Page Growth (MoM Index)</div>
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <strong>Before vs. After:</strong> Instagram started at 64 followers with a last post on March 3. Now: consistent daily posting across 4 channels, 9+ posts per week, weekly performance data, and a live inbound B2B lead. That change did not happen by itself.
+    </div>
+  </section>
+</div>
+
+<!-- AUDIENCE QUALITY -->
+<div class="container">
+  <section>
+    <div class="sec-label">04 &middot; Audience Quality</div>
+    <h2>This is not random traffic.</h2>
+    <p class="sec-intro">One personal-story LinkedIn post: 6,683 impressions, 4,259 people reached in six days. The profile of who that reach landed on is the whole point.</p>
+
+    <div class="aud-grid">
+      <div class="aud-item"><div class="aud-pct">26%</div><div class="aud-desc">Senior-level professionals. The exact person who signs bootcamp and university partnership deals.</div></div>
+      <div class="aud-item"><div class="aud-pct">13%</div><div class="aud-desc">At companies with 10,000 or more employees. Enterprise decision makers seeing MTI content.</div></div>
+      <div class="aud-item"><div class="aud-pct">8%</div><div class="aud-desc">London Area. MTI's primary institutional target market is already in the feed.</div></div>
+      <div class="aud-item"><div class="aud-pct">127</div><div class="aud-desc">Profile viewers on Ola's account. People actively researching who he is and what MTI does.</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:24px;">
+      <strong>On Ola's personal reach:</strong> The audience above lives on Ola's personal LinkedIn profile. His personal brand equity is what is pulling senior professionals into the MTI funnel. That equity does not transfer if this engagement ends. What MTI keeps permanently: the company page growth, the content templates, and any leads that close. The distribution amplifier is Ola.
+    </div>
+  </section>
+</div>
+
+<!-- LIVE PIPELINE -->
+<div class="container" id="pipeline">
+  <section>
+    <div class="sec-label amber">05 &middot; The Live Pipeline</div>
+    <h2>These conversations are happening right now.</h2>
+    <p class="sec-intro">None of this was built through paid advertising. All of it came through the content engine. This is what organic, founder-led GTM looks like when it is working.</p>
+
+    <div class="proof-grid">
+      <div class="proof-card highlight">
+        <div class="proof-label">Inbound Demo Request &middot; Active Now</div>
+        <div class="proof-name">Pablo Perez CBCP</div>
+        <div class="proof-title">Certified Business Continuity Professional | Central Standard Time</div>
+        <div class="proof-quote">"I've tried a few other mock interview platforms, but they are not very good."</div>
+        <div style="margin-top:14px; font-size:12px; color:var(--dim); line-height:1.65;">
+          His audience: military veterans transitioning into Tech, IT, and AI-ML careers. He requested a demo after seeing Ola's content organically. Originally proposed Thursday next week, then moved to this Sunday. That acceleration is a buying signal.
+        </div>
+      </div>
+      <div class="proof-card amber-h">
+        <div class="proof-label">Enterprise Engagement</div>
+        <div class="proof-name">Bernie Gillogly</div>
+        <div class="proof-title">VP of Sales, United States</div>
+        <div class="proof-quote">VP-level US sales leader engaging with Ola's content in the same post thread as Pablo Perez. Not a like. An actual comment interaction.</div>
+        <div style="margin-top:14px; font-size:12px; color:var(--dim);">Enterprise-level signal from content built on $0 in paid spend.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <div class="pipe-row">
+        <div class="pipe-num">33</div>
+        <div>
+          <div class="pipe-label">UK and EU bootcamp accounts identified, mapped, and ready for outreach</div>
+          <div class="pipe-sub">Custom CRM built. Sequences written. Pilot terms from Ayo are the only unlock required to activate this lane.</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-num">1</div>
+        <div>
+          <div class="pipe-label">Live inbound B2B prospect, demo this Sunday</div>
+          <div class="pipe-sub">Pablo Perez CBCP. Military-to-tech vertical. Self-qualified. Moved his own meeting earlier because he is motivated. This came from the content engine, zero paid spend.</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-num">7+</div>
+        <div>
+          <div class="pipe-label">Active LinkedIn conversations in Ola's inbox</div>
+          <div class="pipe-sub">Including David Jemilohun, Imani Cracknell, Natasha Odeyemi, Adebiyi Olamilekan, Anna Glinkowska, and others. All from organic content.</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-num a">0</div>
+        <div>
+          <div class="pipe-label">Institutional meetings that existed before March 23</div>
+          <div class="pipe-sub">Not a criticism. Just the baseline. Every number above this line was built in 48 days from scratch.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout blue" style="margin-top:24px;">
+      <strong>ICP Discovery (bonus):</strong> Through Pablo Perez's conversation, we learned that military veterans transitioning into Tech and AI-ML careers represent a specific high-intent segment for MTI. This is market intelligence MTI now has for free, discovered through content we ran, that can shape targeting and messaging for the next phase.
+    </div>
+  </section>
+</div>
+
+<!-- COMPETITIVE VALIDATION -->
+<div class="container">
+  <section>
+    <div class="sec-label blue">06 &middot; Competitive Validation</div>
+    <h2>The market is telling you something.</h2>
+    <p class="sec-intro">Pablo Perez said, unprompted, that he tried other mock interview platforms and they are not very good. That is not an opinion. That is a product differentiation signal delivered directly to MTI for free through the content engine.</p>
+
+    <div class="callout blue">
+      <strong>What this means:</strong> MTI has a real competitive advantage in the market and the content engine is surfacing proof of it through organic conversations. This is the kind of voice-of-customer data that paid research firms charge thousands of dollars to collect. It came from 5 to 10 hours of work per week over 30 days.
+    </div>
+  </section>
+</div>
+
+<!-- THE DEAL -->
+<div class="container">
+  <section>
+    <div class="sec-label">07 &middot; What MTI Paid vs. What MTI Got</div>
+    <h2>Two operators. One budget.</h2>
+    <p class="sec-intro">Leon absorbs Ola's cost out of the $500 retainer. That was a deliberate decision to get this off the ground. Here is what that math actually looks like.</p>
+
+    <div class="start-grid">
+      <div class="start-cell">
+        <h3>What MTI Paid</h3>
+        <div class="start-item green">$500/month total retainer</div>
+        <div class="start-item green">Claude access (a GTM tool that processes their data, produces outputs they keep, and retains nothing between sessions. This is an operating expense that belongs on the client's books, the same way HubSpot or Notion access does.)</div>
+        <div class="start-item green">In-house design assets used as content inputs</div>
+      </div>
+      <div class="start-cell">
+        <h3>What MTI Got</h3>
+        <div class="start-item green">Leon Basin: 15 years across Google, HP, NetApp, SurveyMonkey. GTM architecture, B2B sequencing, institutional strategy.</div>
+        <div class="start-item green">Ola Odusanya: 5+ years content execution, business development, and sales strategy. Running the daily content engine across 4 channels.</div>
+        <div class="start-item green">Full GTM operating system built from nothing in 30 days.</div>
+        <div class="start-item green">Live B2B pipeline with 33 mapped accounts and an active inbound demo request.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- VALUE MATH -->
+<div class="container" id="value">
+  <section>
+    <div class="sec-label">08 &middot; The Value Equation</div>
+    <h2>What this costs on the open market.</h2>
+    <p class="sec-intro">A fractional GTM lead at this experience level runs $150 to $250 per hour. A content operator with Ola's background and track record runs $75 to $100 per hour. MTI has had access to both for $500 per month.</p>
+
+    <div class="value-box">
+      <h3>Market rate for equivalent talent</h3>
+      <span class="big-num">$4,000 to $8,000/mo</span>
+      <p>The renewal ask was $600. That is still an 87% discount to the low end of market. It reflects two professionals, not one, doing work that generated 8,400+ impressions, 33 B2B accounts, and a live inbound demo request in 30 days.</p>
+    </div>
+
+    <div class="chart-grid" style="margin-top:28px;">
+      <div class="chart-box">
+        <div class="chart-title">What You Paid vs. Market Rate</div>
+        <canvas id="valueChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Hours of Work This Represents</div>
+        <canvas id="hoursChart"></canvas>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PHASE TWO -->
+<div class="container" id="phase2">
+  <section>
+    <div class="sec-label">09 &middot; What Phase Two Looks Like</div>
+    <h2>The machine is ready. Month two converts.</h2>
+    <p class="sec-intro">Month one was infrastructure and proof. The June 3 checkpoint was always the institutional activation gate. That gate is now open. The proof exists. The pipeline is built. The inbound lead is live.</p>
+
+    <div class="phase-grid">
+      <div class="phase-item">
+        <div class="phase-tag">B2B Outreach</div>
+        <h4>Activate the 33-account pipeline</h4>
+        <p>Sequences are built. Contacts are mapped. Pilot terms from Ayo are the only thing between the current state and outreach going live this week.</p>
+      </div>
+      <div class="phase-item">
+        <div class="phase-tag">Inbound Conversion</div>
+        <h4>Close Pablo Perez this Sunday</h4>
+        <p>Live prospect, self-qualified, moved his meeting earlier because he is motivated. Military-to-tech niche is a confirmed ICP fit. First institutional win is within reach.</p>
+      </div>
+      <div class="phase-item">
+        <div class="phase-tag">Paid Amplification</div>
+        <h4>Scale what is already working</h4>
+        <p>Personal-story LinkedIn content is the proven top-of-funnel. London Area is 8% of organic reach with zero paid spend. Paid media now has something real to amplify.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <strong>The ask is simple:</strong> Continue the engagement for three months at a fee that reflects two operators, not one. The infrastructure is done. The data layer exists. The pipeline is live. Month two is where this converts from reach into revenue. Walking away right now means leaving active pipeline on the table that was built with MTI's brand.
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<div class="container">
+  <div class="footer">
+    <p>Prepared by Leon Basin &middot; <a href="https://basinleon.github.io">basinleon.github.io</a> &middot; Basin::Nexus</p>
+    <p>In partnership with Ola Odusanya &middot; Olaoluwa.odusanya.oo@gmail.com</p>
+    <p style="margin-top:8px;">Data from LinkedIn analytics, Instagram Insights, post-level tracking by Ola Odusanya, and Gmail/Docs records &middot; March 23 to June 4, 2026</p>
+  </div>
+</div>
+
+<script>
+const gOpts = {responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5a6372',font:{family:'DM Mono',size:9}}},x:{grid:{display:false},ticks:{color:'#5a6372',font:{family:'DM Mono',size:8},maxRotation:20}}}};
+
+new Chart(document.getElementById('channelChart').getContext('2d'),{type:'bar',data:{labels:['LinkedIn Founder','LinkedIn MTI Page','Instagram','X + Substack'],datasets:[{data:[6900,830,210,60],backgroundColor:['rgba(0,229,160,0.75)','rgba(0,229,160,0.4)','rgba(59,158,255,0.5)','rgba(59,158,255,0.25)'],borderColor:['#00e5a0','#00e5a0','#3b9eff','#3b9eff'],borderWidth:1,borderRadius:2}]},options:gOpts});
+
+new Chart(document.getElementById('growthChart').getContext('2d'),{type:'line',data:{labels:['Week 0','Week 1','Week 2','Week 3','Week 4'],datasets:[{data:[100,140,195,272,340],borderColor:'#00e5a0',backgroundColor:'rgba(0,229,160,0.06)',borderWidth:2,pointBackgroundColor:'#00e5a0',pointRadius:5,fill:true,tension:0.4}]},options:gOpts});
+
+new Chart(document.getElementById('valueChart').getContext('2d'),{type:'bar',data:{labels:['MTI Paid','Market Low','Market High'],datasets:[{data:[500,4000,8000],backgroundColor:['rgba(0,229,160,0.7)','rgba(245,166,35,0.4)','rgba(245,166,35,0.2)'],borderColor:['#00e5a0','#f5a623','#f5a623'],borderWidth:1,borderRadius:2}]},options:{...gOpts,plugins:{legend:{display:false}}}});
+
+new Chart(document.getElementById('hoursChart').getContext('2d'),{type:'doughnut',data:{labels:['Strategy (Leon)','Execution (Ola)','Infrastructure'],datasets:[{data:[40,120,40],backgroundColor:['rgba(0,229,160,0.7)','rgba(59,158,255,0.6)','rgba(245,166,35,0.5)'],borderColor:['#00e5a0','#3b9eff','#f5a623'],borderWidth:1}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#5a6372',font:{family:'DM Mono',size:9},padding:12}}}}});
+</script>
+</body>
+</html>
