@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basin::Nexus | Signal-to-Deal Pipeline Architecture</title>
+  <meta name="description" content="Basin::Nexus is a pipeline architecture system for founders and operators who need to turn scattered market signal into account decisions, proof assets, outreach, and closed-loop revenue motion.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://basinleon.github.io/basin-nexus/">
+  <meta property="og:title" content="Basin::Nexus | Signal-to-Deal Pipeline Architecture">
+  <meta property="og:description" content="A productized consulting system for turning messy signal into clean GTM motion: account decisions, proof assets, outreach, and deal follow-through.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://basinleon.github.io/basin-nexus/">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Basin::Nexus | Signal-to-Deal Pipeline Architecture">
+  <meta name="twitter:description" content="The operating layer between public signal, buyer intent, outreach, and deal follow-through.">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2310110f'/%3E%3Cpath d='M13 38h14V14h10v24h14v10H13z' fill='%23c99309'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "name": "Basin::Nexus Signal-to-Deal Pipeline Architecture",
+        "serviceType": "Pipeline architecture, GTM systems, signal interpretation, and founder-led outbound consulting",
+        "provider": {
+          "@type": "Person",
+          "name": "Leon Basin",
+          "url": "https://basinleon.github.io/"
+        },
+        "url": "https://basinleon.github.io/basin-nexus/",
+        "description": "A productized consulting system that helps teams capture market signal, interpret account urgency, package proof, route action, and close the loop on pipeline motion.",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Founder-led B2B companies, early GTM teams, services firms, and operators"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Basin::Nexus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Basin::Nexus is a pipeline architecture system for turning scattered market signal into account decisions, proof assets, outreach, and deal follow-through."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Who is Basin::Nexus for?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It is built for founders, early GTM teams, services firms, and operators who have market signal but lack a repeatable system for deciding what matters and what happens next."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does a Pipeline Architecture Sprint produce?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A sprint produces a signal map, target account logic, proof narrative, outbound assets, tracker or CRM spine, and a weekly deal-review operating loop."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --ink: #10110f;
+      --paper: #f6f0e6;
+      --paper-2: #eee4d4;
+      --panel: #fffaf0;
+      --line: rgba(16, 17, 15, 0.13);
+      --muted: #676052;
+      --gold: #c99309;
+      --gold-2: #e4b333;
+      --green: #11644f;
+      --blue: #244c73;
+      --red: #8e3523;
+      --shadow: 0 26px 72px rgba(36, 29, 16, 0.13);
+      --sans: "DM Sans", Arial, sans-serif;
+      --mono: "IBM Plex Mono", "Courier New", monospace;
+      --display: "Orbitron", var(--sans);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--paper); color: var(--ink); scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--sans);
+      line-height: 1.55;
+      overflow-x: hidden;
+      background:
+        linear-gradient(rgba(16,17,15,0.024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,17,15,0.024) 1px, transparent 1px),
+        radial-gradient(circle at 12% 12%, rgba(201, 147, 9, 0.16), transparent 24%),
+        radial-gradient(circle at 84% 10%, rgba(17, 100, 79, 0.10), transparent 21%),
+        var(--paper);
+      background-size: 34px 34px, 34px 34px, auto, auto, auto;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+
+    .skip-link {
+      position: absolute;
+      top: -44px;
+      left: 18px;
+      z-index: 50;
+      background: var(--ink);
+      color: var(--panel);
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 14px; }
+
+    .shell {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(246, 240, 230, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar .shell {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      font-family: var(--display);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 0;
+    }
+
+    .nav a:hover { color: var(--ink); }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      padding: 66px 0 54px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.78fr);
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(46px, 7.2vw, 88px);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+      margin-bottom: 24px;
+    }
+
+    .hero-copy {
+      max-width: 670px;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 22px);
+      margin-bottom: 28px;
+    }
+
+    .hero-copy strong { color: var(--ink); }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 18px;
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(16, 17, 15, 0.13);
+    }
+
+    .btn-primary { background: var(--ink); color: var(--panel); }
+    .btn-secondary { background: transparent; color: var(--ink); }
+
+    .hero-note {
+      max-width: 620px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .command-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .command-screen {
+      background: #080a0d;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .screen-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-family: var(--mono);
+      color: #d8c48c;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-flex;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #60d394;
+      box-shadow: 0 0 18px #60d394;
+      margin-right: 8px;
+    }
+
+    .screen-image {
+      aspect-ratio: 1.36 / 1;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .screen-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      opacity: 0.92;
+    }
+
+    .command-body {
+      padding: 20px;
+    }
+
+    .command-body h2 {
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .command-body p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      padding: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-family: var(--display);
+      color: var(--gold);
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 5px;
+      white-space: nowrap;
+    }
+
+    .metric span {
+      display: block;
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .ticker {
+      margin: 0 calc((100vw - min(1180px, calc(100vw - 40px))) / -2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--ink);
+      color: var(--panel);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-track {
+      display: inline-block;
+      padding: 13px 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      animation: marquee 28s linear infinite;
+    }
+
+    .ticker-track span {
+      margin-right: 30px;
+      color: #e8d69e;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    section {
+      padding: 78px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.5fr);
+      gap: 42px;
+      align-items: end;
+      margin-bottom: 36px;
+    }
+
+    h2 {
+      font-size: clamp(32px, 4.8vw, 62px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      max-width: 780px;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .card {
+      min-height: 250px;
+      background: var(--panel);
+      padding: 28px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .card h3,
+    .offer-card h3,
+    .faq h3 {
+      font-size: 24px;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .card p,
+    .offer-card p,
+    .faq p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      counter-reset: step;
+    }
+
+    .loop-step {
+      counter-increment: step;
+      background: var(--ink);
+      color: var(--panel);
+      min-height: 232px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .loop-step::before {
+      content: "0" counter(step);
+      font-family: var(--mono);
+      color: #e6cb77;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .loop-step h3 {
+      font-size: 21px;
+      line-height: 1.03;
+      letter-spacing: -0.025em;
+      margin: 20px 0 10px;
+    }
+
+    .loop-step p {
+      color: rgba(255, 250, 240, 0.68);
+      font-size: 14px;
+    }
+
+    .console-band {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.75fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .console-panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 28px;
+    }
+
+    .rows {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .row {
+      background: var(--paper);
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .row strong {
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      padding: 5px 8px;
+      color: var(--green);
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .framework {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 28px;
+      min-height: 270px;
+      display: grid;
+      align-content: space-between;
+      gap: 22px;
+    }
+
+    .framework h3 {
+      font-size: 27px;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      margin-bottom: 12px;
+    }
+
+    .framework p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .framework-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .framework-meta div {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .framework-meta strong {
+      display: block;
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .framework-meta span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .stack-card {
+      background: var(--panel);
+      padding: 28px;
+      min-height: 300px;
+      display: grid;
+      align-content: space-between;
+      gap: 20px;
+    }
+
+    .stack-card h3 {
+      font-size: 28px;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      margin-bottom: 12px;
+    }
+
+    .stack-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .stack-role {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      line-height: 1.55;
+      text-transform: uppercase;
+    }
+
+    .offer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .offer-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 28px;
+    }
+
+    .offer-card.featured {
+      background: var(--ink);
+      color: var(--panel);
+      border-color: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    .offer-card.featured p,
+    .offer-card.featured li { color: rgba(255, 250, 240, 0.70); }
+
+    .price {
+      font-family: var(--display);
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--gold);
+      margin: 16px 0 12px;
+    }
+
+    .offer-card ul {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .offer-card li {
+      list-style: none;
+      color: var(--muted);
+      position: relative;
+      padding-left: 24px;
+      font-size: 14px;
+    }
+
+    .offer-card li::before {
+      content: "+";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--mono);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .deployment {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      counter-reset: deploy;
+    }
+
+    .deploy-step {
+      counter-increment: deploy;
+      background: var(--panel);
+      min-height: 210px;
+      padding: 24px;
+    }
+
+    .deploy-step::before {
+      content: "0" counter(deploy);
+      display: block;
+      font-family: var(--display);
+      color: var(--gold);
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .deploy-step h3 {
+      font-size: 20px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .deploy-step p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .faq {
+      border-top: 3px solid var(--ink);
+      padding-top: 18px;
+    }
+
+    .final {
+      background: var(--ink);
+      color: var(--panel);
+      padding: 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .final h2 {
+      color: var(--panel);
+      max-width: 820px;
+    }
+
+    .final p {
+      color: rgba(255, 250, 240, 0.70);
+      margin-top: 14px;
+      max-width: 640px;
+      font-size: 17px;
+    }
+
+    .final .btn {
+      border-color: var(--panel);
+      color: var(--panel);
+      white-space: nowrap;
+    }
+
+    footer {
+      padding: 38px 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    footer a {
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .section-head,
+      .console-band,
+      .final {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3,
+      .faq-grid,
+      .framework-grid,
+      .stack-grid,
+      .offer-grid,
+      .deployment {
+        grid-template-columns: 1fr;
+      }
+
+      .loop {
+        grid-template-columns: 1fr;
+      }
+
+      .loop-step,
+      .deploy-step { min-height: 170px; }
+
+      .nav { display: none; }
+      .command-card { max-width: 620px; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100vw - 28px, 1180px); }
+      .hero { padding: 42px 0; }
+      h1 { font-size: clamp(38px, 13vw, 58px); }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .framework-meta { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .final { padding: 30px; }
+      section { padding: 56px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">Basin::Nexus</a>
+      <nav class="nav" aria-label="Page navigation">
+        <a href="#cost">Cost</a>
+        <a href="#system">System</a>
+        <a href="#frameworks">Frameworks</a>
+        <a href="#stack">Stack</a>
+        <a href="#offers">Offers</a>
+        <a href="#deploy">Deploy</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Pipeline architecture for signal-rich teams</div>
+        <h1 id="hero-title">Stop losing revenue in the space between signal and action.</h1>
+        <p class="hero-copy">
+          Basin::Nexus is the operating layer for founders and GTM teams who already see market movement, but need a cleaner system for deciding <strong>who matters, why now, what to send, and how to follow through.</strong>
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="mailto:lbasin23@gmail.com?subject=Basin%3A%3ANexus%20Pipeline%20Architecture%20Diagnostic">Book a Diagnostic</a>
+          <a class="btn btn-secondary" href="#system">Inspect the System</a>
+        </div>
+        <p class="hero-note">Original Basin::Nexus architecture. Inspired by the economics of tool consolidation, built around operator judgment, proof, and deal movement.</p>
+      </div>
+
+      <aside class="command-card" aria-label="Basin Nexus command preview">
+        <div class="command-screen">
+          <div class="screen-top"><span><span class="status-dot"></span>Signal layer live</span><span>Refinery / Routing / Proof</span></div>
+          <div class="screen-image">
+            <img src="../assets/img/frameworks/signal_refinery_hud_actual.png?v=5" alt="Basin Nexus signal refinery dashboard preview">
+          </div>
+        </div>
+        <div class="command-body">
+          <h2>One operating loop. No mystery between activity and pipeline.</h2>
+          <p>Current public-sector GTM sprint plus prior enterprise systems proof.</p>
+          <div class="metrics-grid">
+            <div class="metric"><strong>256+</strong><span>activities logged</span></div>
+            <div class="metric"><strong>196+</strong><span>calls dialed</span></div>
+            <div class="metric"><strong>72</strong><span>accounts in pipeline</span></div>
+            <div class="metric"><strong>260</strong><span>contacts in system</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Signal capture</span><span>Account interpretation</span><span>Proof packaging</span><span>Founder-led outbound</span><span>CRM spine</span><span>Deal review</span>
+        <span>Signal capture</span><span>Account interpretation</span><span>Proof packaging</span><span>Founder-led outbound</span><span>CRM spine</span><span>Deal review</span>
+      </div>
+    </div>
+
+    <section id="cost" aria-labelledby="cost-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">The hidden cost</div>
+          <h2 id="cost-title">The problem is not that you lack tools. It is that the tools do not tell you what to do next.</h2>
+        </div>
+        <p class="section-copy">Most GTM teams can buy a CRM, enrichment tool, sequencer, dialer, and dashboard. The hard part is the human operating layer between them: judgment, timing, proof, and follow-up.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="kicker">Leak 01</div>
+          <h3>Signal gets noticed, then forgotten.</h3>
+          <p>A job change, funding event, LinkedIn post, referral, or site visit appears. Nobody owns the interpretation.</p>
+        </article>
+        <article class="card">
+          <div class="kicker">Leak 02</div>
+          <h3>Proof exists, but not in buyer language.</h3>
+          <p>The team has real work, but the market cannot inspect it quickly. The artifact is missing.</p>
+        </article>
+        <article class="card">
+          <div class="kicker">Leak 03</div>
+          <h3>Follow-up depends on memory.</h3>
+          <p>Great operators remember more than most people, but memory is not a system. The loop has to survive a busy week.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="system" aria-labelledby="system-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">The Basin::Nexus method</div>
+          <h2 id="system-title">The Signal-to-Deal Loop</h2>
+        </div>
+        <p class="section-copy">Five layers that turn raw market movement into a deliberate commercial motion. Not more tabs. A sharper operating rhythm.</p>
+      </div>
+      <div class="loop">
+        <article class="loop-step"><div><h3>Capture signal</h3><p>Pull in account movement, public posts, hiring shifts, funding, traffic, referrals, and relationship context.</p></div></article>
+        <article class="loop-step"><div><h3>Interpret urgency</h3><p>Decide whether the account is urgent, strategic, warm, useful, or noise.</p></div></article>
+        <article class="loop-step"><div><h3>Package proof</h3><p>Create the memo, diagnostic, one-pager, page, or short artifact that makes the work legible.</p></div></article>
+        <article class="loop-step"><div><h3>Route action</h3><p>Choose the next move: founder note, warm intro, comment, audit email, call, or nurture.</p></div></article>
+        <article class="loop-step"><div><h3>Close the loop</h3><p>Track replies, objections, meetings, deal movement, and the language buyers repeat back.</p></div></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="console-title">
+      <div class="console-band">
+        <div class="console-panel">
+          <div class="eyebrow">Command layer</div>
+          <h2 id="console-title">A CRM spine with the playbook already loaded.</h2>
+          <p class="section-copy">Basin::Nexus can sit on top of HubSpot, Sheets, Airtable, Notion, or a lightweight custom tracker. The point is not the database. The point is the operating truth it preserves.</p>
+        </div>
+        <div class="rows" aria-label="Operating layer rows">
+          <div class="row"><span>Signal</span><strong>New market movement</strong><span class="badge">Review</span></div>
+          <div class="row"><span>Intent</span><strong>Why this account, why now</strong><span class="badge">Score</span></div>
+          <div class="row"><span>Proof</span><strong>Artifact matched to buyer context</strong><span class="badge">Package</span></div>
+          <div class="row"><span>Action</span><strong>Next touch, owner, date, and reason</strong><span class="badge">Route</span></div>
+          <div class="row"><span>Loop</span><strong>Reply, objection, meeting, or nurture path</strong><span class="badge">Learn</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="frameworks" aria-labelledby="frameworks-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Operator frameworks</div>
+          <h2 id="frameworks-title">The work ships as frameworks your team can actually use.</h2>
+        </div>
+        <p class="section-copy">Each framework turns a vague GTM problem into a reusable operating artifact: a map, score, sequence, brief, or review loop.</p>
+      </div>
+      <div class="framework-grid">
+        <article class="framework">
+          <div>
+            <div class="kicker">Framework 01</div>
+            <h3>Signal Refinery</h3>
+            <p>Turns scattered market movement into prioritized account signal. Useful when a team has plenty of activity but no shared interpretation of what matters.</p>
+          </div>
+          <div class="framework-meta">
+            <div><strong>Use when</strong><span>Accounts are visible, but priority is fuzzy.</span></div>
+            <div><strong>Output</strong><span>Signal map, scoring rules, action queue.</span></div>
+          </div>
+        </article>
+        <article class="framework">
+          <div>
+            <div class="kicker">Framework 02</div>
+            <h3>Proof Packet</h3>
+            <p>Packages real work into buyer-readable evidence: a short diagnostic, visual brief, one-pager, or page that makes the conversation easier to trust.</p>
+          </div>
+          <div class="framework-meta">
+            <div><strong>Use when</strong><span>The offer is real, but hard to inspect.</span></div>
+            <div><strong>Output</strong><span>Memo, page, audit, proof artifact.</span></div>
+          </div>
+        </article>
+        <article class="framework">
+          <div>
+            <div class="kicker">Framework 03</div>
+            <h3>Route-to-Action</h3>
+            <p>Defines what happens after a signal appears: who owns it, what gets sent, when follow-up happens, and what counts as progress.</p>
+          </div>
+          <div class="framework-meta">
+            <div><strong>Use when</strong><span>Follow-up depends on memory or heroics.</span></div>
+            <div><strong>Output</strong><span>Owner map, next-action logic, cadence.</span></div>
+          </div>
+        </article>
+        <article class="framework">
+          <div>
+            <div class="kicker">Framework 04</div>
+            <h3>Operator Audit Log</h3>
+            <p>Captures the actual repetitions behind growth: dials, replies, objections, shipped assets, routing fixes, and decisions worth preserving.</p>
+          </div>
+          <div class="framework-meta">
+            <div><strong>Use when</strong><span>The team needs truth, not vibes.</span></div>
+            <div><strong>Output</strong><span>Weekly brief, KPI snapshot, learning loop.</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="stack" aria-labelledby="stack-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Stack doctrine</div>
+          <h2 id="stack-title">Do not ask one tool to be the whole machine.</h2>
+        </div>
+        <p class="section-copy">Basin::Nexus sits above the tools. The framework decides what each platform is allowed to do, so the stack does not turn into another pile of tabs.</p>
+      </div>
+      <div class="stack-grid">
+        <article class="stack-card">
+          <div>
+            <div class="kicker">Outbound cannon</div>
+            <h3>Instantly</h3>
+            <p>Use for scaled outbound once the offer, list, suppression logic, and reply triage are ready. It is strongest when volume is disciplined by clear account logic.</p>
+          </div>
+          <div class="stack-role">Best for: lead database, verification, outreach, deliverability, AI sales/reply agents, campaign performance.</div>
+        </article>
+        <article class="stack-card">
+          <div>
+            <div class="kicker">Operating room</div>
+            <h3>Lark</h3>
+            <p>Use as the internal command layer: Base for pipeline systems, Docs for briefs, Sheets for analysis, project templates for cadence, and CRM views for lightweight operations.</p>
+          </div>
+          <div class="stack-role">Best for: Base workflows, docs, dashboards, CRM templates, internal collaboration, operating memory.</div>
+        </article>
+        <article class="stack-card">
+          <div>
+            <div class="kicker">Trust channel</div>
+            <h3>Gmail</h3>
+            <p>Use for high-trust founder notes, warm intros, sensitive follow-up, and low-volume relationship motion. It should not be abused as the bulk cold-outbound engine.</p>
+          </div>
+          <div class="stack-role">Best for: business email, personal replies, mail merge, templates, calendar handoff, relationship continuity.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="offers" aria-labelledby="offers-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Engagement ladder</div>
+          <h2 id="offers-title">Start with the smallest useful system.</h2>
+        </div>
+        <p class="section-copy">This is consulting packaged like infrastructure: clear entry, clear build, clear expansion. No twelve-month fog.</p>
+      </div>
+      <div class="offer-grid">
+        <article class="offer-card">
+          <div class="kicker">Entry</div>
+          <h3>Pipeline Diagnostic</h3>
+          <div class="price">1 session</div>
+          <p>Find the leak between signal and next action.</p>
+          <ul>
+            <li>Signal-source review</li>
+            <li>Pipeline leak map</li>
+            <li>14-day intervention plan</li>
+          </ul>
+        </article>
+        <article class="offer-card featured">
+          <div class="kicker">Core build</div>
+          <h3>Architecture Sprint</h3>
+          <div class="price">2-4 weeks</div>
+          <p>Build the operating system and launch the first live motions.</p>
+          <ul>
+            <li>ICP and target account logic</li>
+            <li>Proof narrative and outreach assets</li>
+            <li>CRM/tracker spine</li>
+            <li>Weekly deal-review loop</li>
+          </ul>
+        </article>
+        <article class="offer-card">
+          <div class="kicker">Ongoing</div>
+          <h3>Embedded Operator</h3>
+          <div class="price">Monthly</div>
+          <p>Keep the system alive while the market keeps moving.</p>
+          <ul>
+            <li>Account research and prioritization</li>
+            <li>Founder-led outbound support</li>
+            <li>Deal review and objection capture</li>
+            <li>Offer and proof iteration</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="deploy" aria-labelledby="deploy-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Deployment sequence</div>
+          <h2 id="deploy-title">From scattered motion to operating loop in four moves.</h2>
+        </div>
+        <p class="section-copy">The system does not need to be huge before it is useful. It needs a live signal source, a decision rule, an artifact, and a follow-up rhythm.</p>
+      </div>
+      <div class="deployment">
+        <article class="deploy-step"><h3>Audit the current motion</h3><p>Review accounts, messages, proof, replies, tools, and where follow-up breaks.</p></article>
+        <article class="deploy-step"><h3>Define the decision logic</h3><p>Clarify which signals matter, how urgency is scored, and who owns the next move.</p></article>
+        <article class="deploy-step"><h3>Build the proof kit</h3><p>Create the assets buyers need before they trust the conversation.</p></article>
+        <article class="deploy-step"><h3>Run the weekly loop</h3><p>Review replies, objections, meetings, next actions, and language worth reusing.</p></article>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Straight answers</div>
+          <h2 id="faq-title">Questions a serious buyer will ask.</h2>
+        </div>
+        <p class="section-copy">The offer is intentionally practical. If it cannot change the motion, it does not belong in the system.</p>
+      </div>
+      <div class="faq-grid">
+        <article class="faq">
+          <div class="kicker">FAQ</div>
+          <h3>Is this a CRM?</h3>
+          <p>No. It can use a CRM, but Basin::Nexus is the operating architecture around the CRM: signal, interpretation, proof, routing, and review.</p>
+        </article>
+        <article class="faq">
+          <div class="kicker">FAQ</div>
+          <h3>Is this lead generation?</h3>
+          <p>Lead generation is one possible output. The deeper work is making sure the team knows which signals deserve action and how to convert them into conversations.</p>
+        </article>
+        <article class="faq">
+          <div class="kicker">FAQ</div>
+          <h3>Who should buy this?</h3>
+          <p>Founder-led B2B teams, early GTM teams, consultants, agencies, and operators with real market signal but weak follow-through infrastructure.</p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="final-title">
+      <div class="final">
+        <div>
+          <h2 id="final-title">Stop asking whether you need more activity. First, make the signal legible.</h2>
+          <p>When the system knows what matters, the next move becomes easier to trust.</p>
+        </div>
+        <a class="btn" href="mailto:lbasin23@gmail.com?subject=Basin%3A%3ANexus%20Pipeline%20Architecture%20Diagnostic">Book the Diagnostic</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <span>Basin::Nexus / Signal-to-Deal Pipeline Architecture</span>
+    <span><a href="/">Portfolio</a> / <a href="/case-studies/">Case Studies</a> / <a href="/docs/frameworks/">Frameworks</a></span>
+  </footer>
+</body>
+</html>

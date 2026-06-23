@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools — Leon Basin</title>
+  <meta name="description" content="Interactive operator tools built by Leon Basin for revenue modeling, GTM diagnosis, pipeline architecture, and sharper preparation.">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold-primary: #C8880C;
+      --gold-light: #E89A18;
+      --gold-dark: #8B5A03;
+      --gold-border: rgba(200, 136, 12, 0.28);
+      --bg-deep: #0D0803;
+      --bg-card: #180C05;
+      --bg-warm: #201005;
+      --text-primary: #F2E4C8;
+      --text-secondary: #9B7D52;
+      --text-muted: #6B5030;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 20% 10%, #1a0a02 0%, #0D0803 60%, #050200 100%);
+      color: var(--text-primary);
+      font-family: 'Crimson Pro', Georgia, serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 8, 3, 0.97);
+      border-bottom: 1px solid var(--gold-border);
+      backdrop-filter: blur(8px);
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-primary); }
+
+    /* MASTHEAD */
+    .masthead {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 24px 44px;
+      position: relative;
+    }
+    .masthead-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gold-primary);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .masthead-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .masthead-sub {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      font-style: normal;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 24px 80px;
+    }
+
+    .section { margin-bottom: 56px; }
+    .section-header {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      font-style: normal;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    /* TOOL GRID */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 28px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .tool-card:hover {
+      border-top-color: var(--gold-light);
+      background: #1f0e04;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(200, 136, 12, 0.14);
+    }
+    .tool-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--gold-border);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--gold-primary);
+      font-size: .72rem;
+      margin-bottom: 16px;
+    }
+    .tool-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--gold-primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tool-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.45rem;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .tool-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    .tool-cta {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gold-primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--gold-border);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .tool-card:hover .tool-cta { border-color: var(--gold-primary); }
+
+    /* FEATURED TOOL — full width */
+    .tool-card-featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .tool-card-featured .tool-content { flex: 1; }
+    .tool-card-featured .tool-icon { margin-bottom: 0; flex-shrink: 0; }
+
+    .intent-panel {
+      margin-bottom: 28px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      border: 1px solid var(--gold-border);
+      border-radius: 18px;
+      background: rgba(24, 12, 5, .72);
+    }
+    .intent-button {
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 12px;
+      color: var(--text-secondary);
+      background: transparent;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .66rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .intent-button:hover,
+    .intent-button.active {
+      color: var(--bg-deep);
+      background: var(--gold-light);
+    }
+    .start-panel {
+      min-height: 350px;
+      margin-bottom: 54px;
+      padding: 46px;
+      border: 1px solid var(--gold-border);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      background:
+        linear-gradient(90deg, rgba(8, 4, 1, .98), rgba(8, 4, 1, .6) 65%, rgba(8, 4, 1, .18)),
+        url('/assets/img/frameworks/gtm_arch_live_screenshot.png') center / cover no-repeat;
+      box-shadow: 0 24px 70px rgba(0,0,0,.32);
+    }
+    .start-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 78% 25%, rgba(232,154,24,.16), transparent 30%);
+      pointer-events: none;
+    }
+    .start-content { position: relative; z-index: 1; max-width: 670px; }
+    .start-kicker {
+      color: var(--gold-light);
+      font: 700 .62rem/1.4 'JetBrains Mono', monospace;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .start-title {
+      margin: 10px 0 10px;
+      font: 700 clamp(2.1rem, 5vw, 4rem)/1 'Playfair Display', serif;
+    }
+    .start-desc {
+      max-width: 610px;
+      color: #d8c5a5;
+      font-size: 1.08rem;
+      line-height: 1.55;
+    }
+    .start-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+    .start-cta, .start-secondary {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font: 700 .64rem 'JetBrains Mono', monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .start-cta { background: var(--gold-light); color: var(--bg-deep); }
+    .start-secondary { border: 1px solid var(--gold-border); color: var(--text-primary); }
+    .tool-card[hidden] { display: none; }
+    .tool-proof {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font: .58rem 'JetBrains Mono', monospace;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 640px) {
+      .tool-card-featured { flex-direction: column; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 0.65rem; }
+      .nav-links a:nth-child(3), .nav-links a:nth-child(4) { display: none; }
+      .intent-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .start-panel { min-height: 430px; padding: 28px; }
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--gold-border);
+      text-align: center;
+      padding: 32px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    footer a { color: var(--text-muted); text-decoration: none; margin: 0 12px; }
+    footer a:hover { color: var(--gold-primary); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <a class="nav-logo" href="/">BASIN::NEXUS</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/blog/">Blog</a>
+      <a href="/library/">Library</a>
+      <a href="/case-studies/">Case Studies</a>
+      <a href="/tools/" class="active">Tools</a>
+      <a href="https://github.com/BasinLeon" rel="noopener noreferrer" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="masthead">
+  <div class="masthead-label">// Working Instruments</div>
+  <h1 class="masthead-title">Choose the problem.</h1>
+  <p class="masthead-sub">These are working systems, not portfolio props. Start with the decision in front of you. The right instrument will meet you there.</p>
+</div>
+
+<div class="main">
+  <div class="intent-panel" aria-label="Choose what you need">
+    <button class="intent-button active" type="button" data-intent="architecture">Design a system</button>
+    <button class="intent-button" type="button" data-intent="diagnose">Find the break</button>
+    <button class="intent-button" type="button" data-intent="model">Test the math</button>
+    <button class="intent-button" type="button" data-intent="prepare">Prepare sharper</button>
+  </div>
+
+  <section class="start-panel" id="start-panel">
+    <div class="start-content">
+      <div class="start-kicker" id="start-kicker">Start here • System architecture</div>
+      <h2 class="start-title" id="start-title">GTM Architecture Live</h2>
+      <p class="start-desc" id="start-desc">See the whole motion as one operating system. Trace signal, qualification, sequencing, ownership, and execution before changing another isolated tactic.</p>
+      <div class="start-actions">
+        <a class="start-cta" id="start-link" href="/gtm-architecture-live/index-v2.html">Open the architecture</a>
+        <a class="start-secondary" href="#instrument-library">See every instrument</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section" id="instrument-library">
+    <div class="section-header">Core operator instruments</div>
+    <div class="tool-grid">
+
+      <a class="tool-card tool-card-featured" data-tool-intent="architecture" href="/gtm-architecture-live/index-v2.html">
+        <div class="tool-icon">01</div>
+        <div class="tool-content">
+          <div class="tool-tag">Interactive Architecture Model</div>
+          <div class="tool-name">GTM Architecture Live</div>
+          <div class="tool-desc">Trace signal ingestion, ICP qualification, sequencing, ownership, and execution as one living system.</div>
+          <span class="tool-cta">Open architecture →</span>
+          <div class="tool-proof">Best for: redesigning the whole motion</div>
+        </div>
+      </a>
+
+      <a class="tool-card" data-tool-intent="model" href="/revenue_architecture_simulator.html">
+        <div class="tool-icon">02</div>
+        <div class="tool-tag">Revenue Simulator</div>
+        <div class="tool-name">Revenue Architecture Simulator</div>
+        <div class="tool-desc">Change headcount, coverage, and conversion assumptions. See the consequence before committing people or budget.</div>
+        <span class="tool-cta">Run Simulation →</span>
+        <div class="tool-proof">Best for: pressure testing a revenue plan</div>
+      </a>
+
+      <a class="tool-card" data-tool-intent="diagnose" href="/diagnostic.html">
+        <div class="tool-icon">03</div>
+        <div class="tool-tag">GTM Diagnostic</div>
+        <div class="tool-name">GTM Motion Diagnostic</div>
+        <div class="tool-desc">Locate the actual break across pipeline generation, qualification, conversion, ownership, and operating cadence.</div>
+        <span class="tool-cta">Run Diagnostic →</span>
+        <div class="tool-proof">Best for: finding why the motion feels stuck</div>
+      </a>
+
+      <a class="tool-card" data-tool-intent="architecture" href="/crm.html">
+        <div class="tool-icon">04</div>
+        <div class="tool-tag">Pipeline Tool</div>
+        <div class="tool-name">NEXUS::CRM</div>
+        <div class="tool-desc">Track pipeline, signal, and context without recreating enterprise CRM overhead.</div>
+        <span class="tool-cta">Open CRM →</span>
+        <div class="tool-proof">Best for: operating a focused pipeline</div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">Specialized instruments</div>
+    <div class="tool-grid">
+
+      <a class="tool-card" data-tool-intent="prepare" href="/docs/start-here/">
+        <div class="tool-icon">05</div>
+        <div class="tool-tag">Operator Guide</div>
+        <div class="tool-name">Start Here</div>
+        <div class="tool-desc">Choose a public route through the systems, proof, writing, and practical tools without exposing private working material.</div>
+        <span class="tool-cta">Choose a route →</span>
+      </a>
+
+      <a class="tool-card" data-tool-intent="prepare" href="/docs/best-of/">
+        <div class="tool-icon">06</div>
+        <div class="tool-tag">Writing Index</div>
+        <div class="tool-name">Best of the Archive</div>
+        <div class="tool-desc">Read the clearest essays and field notes on systems, signal, leadership, and commercial judgment.</div>
+        <span class="tool-cta">Read the collection →</span>
+      </a>
+
+      <a class="tool-card" data-tool-intent="model" href="/gtm-architecture-live/index-v2.html">
+        <div class="tool-icon">07</div>
+        <div class="tool-tag">Interactive Model</div>
+        <div class="tool-name">GTM Architecture Live</div>
+        <div class="tool-desc">Trace signal, qualification, ownership, action, and revenue as one operating system.</div>
+        <span class="tool-cta">Open the architecture →</span>
+      </a>
+
+      <a class="tool-card" data-tool-intent="diagnose" href="/case-studies/">
+        <div class="tool-icon">08</div>
+        <div class="tool-tag">Decision Proof</div>
+        <div class="tool-name">Operating Records</div>
+        <div class="tool-desc">Inspect how specific decisions changed routing, throughput, pipeline quality, and execution.</div>
+        <span class="tool-cta">Read the cases →</span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/">Portfolio</a>
+  <a href="/blog/">Blog</a>
+  <a href="/library/">Library</a>
+  <a href="/case-studies/">Case Studies</a>
+  <br><br>© 2026 Leon Basin • BASIN::NEXUS
+</footer>
+
+<script>
+  const intentStates = {
+    architecture: {
+      kicker: 'Start here • System architecture',
+      title: 'GTM Architecture Live',
+      desc: 'See the whole motion as one operating system. Trace signal, qualification, sequencing, ownership, and execution before changing another isolated tactic.',
+      href: '/gtm-architecture-live/index-v2.html',
+      cta: 'Open the architecture',
+      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.6) 65%, rgba(8,4,1,.18)), url('/assets/img/frameworks/gtm_arch_live_screenshot.png') center / cover no-repeat"
+    },
+    diagnose: {
+      kicker: 'Start here • Motion diagnosis',
+      title: 'Find the real break',
+      desc: 'Walk the motion from signal to execution. The diagnostic helps separate a pipeline problem from a qualification, conversion, ownership, or cadence problem.',
+      href: '/diagnostic.html',
+      cta: 'Run the diagnostic',
+      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.62) 68%, rgba(8,4,1,.2)), url('/assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
+    },
+    model: {
+      kicker: 'Start here • Revenue modeling',
+      title: 'Test the math before the build',
+      desc: 'Change the assumptions. Watch the system respond. Use the simulator to pressure-test coverage, conversion, capacity, and cost before the plan becomes expensive.',
+      href: '/revenue_architecture_simulator.html',
+      cta: 'Run the simulation',
+      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.62) 68%, rgba(8,4,1,.2)), url('/assets/img/frameworks/revenue-blueprint.png') center / cover no-repeat"
+    },
+    prepare: {
+      kicker: 'Start here • Signal delivery',
+      title: 'Prepare sharper',
+      desc: 'Strong experience can still disappear inside a vague answer. Use the refinery to make the thinking, evidence, and voice easier to hear.',
+      href: '/docs/start-here/',
+      cta: 'Choose a route',
+      background: 'radial-gradient(circle at 78% 28%, rgba(200,136,12,.28), transparent 28%), linear-gradient(145deg, #1b0e05, #080402 68%, #170b04)'
+    }
+  };
+
+  const buttons = document.querySelectorAll('.intent-button');
+  const panel = document.getElementById('start-panel');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    const state = intentStates[button.dataset.intent];
+    buttons.forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('start-kicker').textContent = state.kicker;
+    document.getElementById('start-title').textContent = state.title;
+    document.getElementById('start-desc').textContent = state.desc;
+    const link = document.getElementById('start-link');
+    link.href = state.href;
+    link.textContent = state.cta;
+    panel.style.background = state.background;
+    document.querySelectorAll('[data-tool-intent]').forEach(card => {
+      card.hidden = card.dataset.toolIntent !== button.dataset.intent;
+    });
+  }));
+
+  document.querySelector('.start-secondary').addEventListener('click', () => {
+    document.querySelectorAll('[data-tool-intent]').forEach(card => card.hidden = false);
+  });
+</script>
+</body>
+</html>

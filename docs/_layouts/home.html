@@ -1,0 +1,180 @@
+---
+layout: default
+---
+<section class="journal-intro">
+  <div class="hero-eyebrow">Operator Journal / Public Working Memory</div>
+  <h1 class="journal-intro-title">Enter through the problem.</h1>
+  <p class="journal-intro-copy">Field notes, operating decisions, and frameworks from the work itself. Choose the question that brought you here.</p>
+</section>
+
+<div class="journal-paths" aria-label="Choose a journal path">
+  <button class="journal-path active" type="button" data-journal-path="diagnose">Diagnose</button>
+  <button class="journal-path" type="button" data-journal-path="build">Build</button>
+  <button class="journal-path" type="button" data-journal-path="write">Write</button>
+</div>
+
+<section class="journal-stage" id="journal-stage">
+  <div class="journal-stage-content">
+    <div class="hero-eyebrow" id="journal-stage-kicker">Start here / Interpretation</div>
+    <h2 id="journal-stage-title">Pipeline breaks before outreach begins.</h2>
+    <p id="journal-stage-copy">Most teams do not have an activity problem. They have an interpretation problem: weak signals enter the system, ownership blurs, and execution inherits the confusion.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" id="journal-stage-link" href="{{ '/gtm-systems/revenue-architecture/operator-notes/2026/03/09/why-pipeline-breaks-at-interpretation/' | relative_url }}">Read the field note</a>
+      <a class="button button-secondary" id="journal-stage-secondary" href="{{ '/best-of/' | relative_url }}">See the best of</a>
+    </div>
+  </div>
+  <aside class="journal-stage-note">
+    <div class="meta-kicker">What to notice</div>
+    <strong id="journal-stage-note-title">Diagnosis before prescription</strong>
+    <p id="journal-stage-note-copy">The useful move is not adding another channel. It is finding where signal loses meaning before a person acts on it.</p>
+  </aside>
+</section>
+
+<details class="journal-archive-disclosure">
+  <summary>Open the journal map</summary>
+  <section class="surface-card">
+    <div class="surface-card-inner journal-prose">
+      {{ content }}
+    </div>
+  </section>
+</details>
+
+<section class="home-grid">
+  <div class="surface-card">
+    <div class="surface-card-inner">
+      <div class="section-kicker">Recent Dispatches</div>
+      <div class="post-list">
+        {% if site.posts.size > 0 %}
+          {% for post in site.posts limit:6 %}
+            <a class="post-card" href="{{ post.url | relative_url }}">
+              <div class="meta">{{ post.date | date: "%b %-d, %Y" }}{% if post.categories.size > 0 %} / {{ post.categories | join: " · " }}{% endif %}</div>
+              <h3>{{ post.title }}</h3>
+              {% if post.excerpt %}
+                <p>{{ post.excerpt | strip_html | truncate: 160 }}</p>
+              {% endif %}
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class="post-card">
+            <div class="meta">Publishing queue</div>
+            <h3>No posts are live yet.</h3>
+            <p>Use this space for operator notes, frameworks, field memos, and case-style thinking as they publish.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar-stack">
+    <section class="sidebar-card">
+      <div class="meta-kicker">Why This Exists</div>
+      <h3>Writing that makes the system legible</h3>
+      <p>This journal turns raw operating intelligence into artifacts founders, CEOs, and hiring teams can pressure-test. It is where implementation, explanation, and teaching all meet.</p>
+      <div class="signal-grid">
+        <div class="signal-card">
+          <strong>For founders</strong>
+          <span>Leverage, clarity, and system design under real constraints.</span>
+        </div>
+        <div class="signal-card">
+          <strong>For operators</strong>
+          <span>Frameworks, decision models, and working doctrine.</span>
+        </div>
+        <div class="signal-card">
+          <strong>For hiring teams</strong>
+          <span>Proof of thinking, communication, and implementation range.</span>
+        </div>
+        <div class="signal-card">
+          <strong>For technical teams</strong>
+          <span>Cleaner logic, better handoffs, and systems that can survive scrutiny.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sidebar-card">
+      <div class="meta-kicker">Pressure-Test The Work</div>
+      <div class="collection-list">
+        <a class="collection-card" href="{{ '/best-of/' | relative_url }}">
+          <div class="meta">Best of the journal</div>
+          <h3>Start with the sharpest memos</h3>
+          <p>The fastest path for someone evaluating how I frame tradeoffs, diagnose friction, and explain complex systems clearly.</p>
+        </a>
+        <a class="collection-card" href="{{ '/frameworks/' | relative_url }}">
+          <div class="meta">Framework Library</div>
+          <h3>Reusable models</h3>
+          <p>Routing logic, operating principles, and anti-slop doctrine you can adapt quickly.</p>
+        </a>
+        <a class="collection-card" href="{{ '/topics/' | relative_url }}">
+          <div class="meta">Role-based topics</div>
+          <h3>Read by lane</h3>
+          <p>Entry points for founders, RevOps leaders, builders, and technical teams.</p>
+        </a>
+        <a class="collection-card" href="{{ '/editorial-os/' | relative_url }}">
+          <div class="meta">Publishing architecture</div>
+          <h3>Editorial OS</h3>
+          <p>The system behind capture, refinement, publishing, and distribution.</p>
+        </a>
+      </div>
+    </section>
+  </aside>
+</section>
+
+<script>
+  const journalPaths = {
+    diagnose: {
+      kicker: 'Start here / Interpretation',
+      title: 'Pipeline breaks before outreach begins.',
+      copy: 'Most teams do not have an activity problem. They have an interpretation problem: weak signals enter the system, ownership blurs, and execution inherits the confusion.',
+      href: '{{ "/gtm-systems/revenue-architecture/operator-notes/2026/03/09/why-pipeline-breaks-at-interpretation/" | relative_url }}',
+      cta: 'Read the field note',
+      secondaryHref: '{{ "/best-of/" | relative_url }}',
+      secondary: 'See the best of',
+      noteTitle: 'Diagnosis before prescription',
+      noteCopy: 'The useful move is not adding another channel. It is finding where signal loses meaning before a person acts on it.',
+      background: "linear-gradient(90deg, rgba(13,16,22,.98), rgba(13,16,22,.82) 64%, rgba(13,16,22,.46)), url('/assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
+    },
+    build: {
+      kicker: 'Start here / System design',
+      title: 'Automate judgment carefully.',
+      copy: 'The first AI workflow should not be the flashiest one. It should remove repetitive interpretation while preserving the point where human judgment actually changes the outcome.',
+      href: '{{ "/ai-workflow/gtm-systems/operator-notes/2026/03/11/what-ai-should-automate-first/" | relative_url }}',
+      cta: 'Read the build note',
+      secondaryHref: '{{ "/frameworks/" | relative_url }}',
+      secondary: 'Browse frameworks',
+      noteTitle: 'A system must survive adoption',
+      noteCopy: 'Technical possibility is only one constraint. Ownership, review, trust, and exception handling determine whether the workflow lives.',
+      background: "linear-gradient(90deg, rgba(13,16,22,.98), rgba(13,16,22,.82) 64%, rgba(13,16,22,.46)), url('/assets/img/frameworks/nexus_agents_ui.png') center / cover no-repeat"
+    },
+    write: {
+      kicker: 'Start here / Language',
+      title: 'Make the thinking legible.',
+      copy: 'Writing is part of the operating system. It reveals whether the decision is clear enough to teach, challenge, and hand to someone else without losing its shape.',
+      href: '{{ "/writing/systems/operator-notes/2026/02/20/launching-the-writing-blog/" | relative_url }}',
+      cta: 'Read why this exists',
+      secondaryHref: '{{ "/literary/" | relative_url }}',
+      secondary: 'Enter the literary lane',
+      noteTitle: 'Clarity is operational',
+      noteCopy: 'A framework that cannot be explained cannot be inspected. A decision that cannot be inspected cannot improve.',
+      background: 'radial-gradient(circle at 78% 28%, rgba(200,162,77,.26), transparent 28%), linear-gradient(145deg, #171b24, #0d1016 68%, #282116)'
+    }
+  };
+
+  document.querySelectorAll('.journal-path').forEach(button => {
+    button.addEventListener('click', () => {
+      const state = journalPaths[button.dataset.journalPath];
+      document.querySelectorAll('.journal-path').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById('journal-stage-kicker').textContent = state.kicker;
+      document.getElementById('journal-stage-title').textContent = state.title;
+      document.getElementById('journal-stage-copy').textContent = state.copy;
+      document.getElementById('journal-stage-note-title').textContent = state.noteTitle;
+      document.getElementById('journal-stage-note-copy').textContent = state.noteCopy;
+      const primary = document.getElementById('journal-stage-link');
+      primary.href = state.href;
+      primary.textContent = state.cta;
+      const secondary = document.getElementById('journal-stage-secondary');
+      secondary.href = state.secondaryHref;
+      secondary.textContent = state.secondary;
+      document.getElementById('journal-stage').style.background = state.background;
+    });
+  });
+</script>

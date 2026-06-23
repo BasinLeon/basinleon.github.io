@@ -1,0 +1,135 @@
+---
+layout: default
+---
+<section class="framework-intro">
+  <div class="hero-eyebrow">Framework Library / Working Reference</div>
+  <h1>Use the model when the work gets noisy.</h1>
+  <p>Choose the point where you are stuck. The framework should reduce the decision, not add ceremony around it.</p>
+</section>
+
+<div class="framework-paths" aria-label="Choose a framework problem">
+  <button class="framework-path active" type="button" data-framework="signal">Read the signal</button>
+  <button class="framework-path" type="button" data-framework="write">Write the message</button>
+  <button class="framework-path" type="button" data-framework="explain">Explain the work</button>
+  <button class="framework-path" type="button" data-framework="distribute">Move it outward</button>
+</div>
+
+<section class="framework-stage" id="framework-stage">
+  <div class="framework-stage-main">
+    <div class="hero-eyebrow" id="framework-kicker">Core model / GTM interpretation</div>
+    <h2 id="framework-title">Signal → intent → route</h2>
+    <p id="framework-copy">Do not route raw activity. Capture the signal, interpret what it means now, then assign a path and owner.</p>
+    <ol class="framework-steps" id="framework-steps">
+      <li>Capture role changes, engagement, referrals, and problem language.</li>
+      <li>Classify stage, urgency, confidence, and likely motion.</li>
+      <li>Route to nurture, conversation, partner, not now, or urgent.</li>
+    </ol>
+    <div class="hero-actions">
+      <a class="button button-primary" id="framework-link" href="{{ '/gtm-systems/routing/operator-notes/2026/03/11/how-i-define-urgent-in-routing-systems/' | relative_url }}">See it applied</a>
+      <a class="button button-secondary" href="https://basinleon.github.io/tools/">Open the tools</a>
+    </div>
+  </div>
+  <aside class="framework-test">
+    <div class="meta-kicker">Pressure test</div>
+    <strong id="framework-test-title">Can two operators route it the same way?</strong>
+    <p id="framework-test-copy">If the state depends on instinct alone, the system has not made the decision legible yet.</p>
+  </aside>
+</section>
+
+<details class="framework-library">
+  <summary>Open all nine reference frameworks</summary>
+  <section class="surface-card">
+    <div class="surface-card-inner journal-prose">
+      {{ content }}
+    </div>
+  </section>
+</details>
+
+<script>
+  const frameworkStates = {
+    signal: {
+      kicker: 'Core model / GTM interpretation',
+      title: 'Signal → intent → route',
+      copy: 'Do not route raw activity. Capture the signal, interpret what it means now, then assign a path and owner.',
+      steps: [
+        'Capture role changes, engagement, referrals, and problem language.',
+        'Classify stage, urgency, confidence, and likely motion.',
+        'Route to nurture, conversation, partner, not now, or urgent.'
+      ],
+      testTitle: 'Can two operators route it the same way?',
+      testCopy: 'If the state depends on instinct alone, the system has not made the decision legible yet.',
+      href: '{{ "/gtm-systems/routing/operator-notes/2026/03/11/how-i-define-urgent-in-routing-systems/" | relative_url }}',
+      cta: 'See it applied',
+      background: "linear-gradient(90deg, rgba(13,16,22,.98), rgba(13,16,22,.82) 64%, rgba(13,16,22,.42)), url('/assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
+    },
+    write: {
+      kicker: 'Core model / Human communication',
+      title: 'Context → insight → bridge → ask',
+      copy: 'A useful message earns attention by proving relevance before asking for time.',
+      steps: [
+        'Name why this person and why now.',
+        'Offer one specific pattern or useful observation.',
+        'Bridge to relevant proof, then make one low-friction ask.'
+      ],
+      testTitle: 'Could this message only be sent to this person?',
+      testCopy: 'If the name can change without changing the message, the context is not specific enough.',
+      href: '{{ "/best-of/" | relative_url }}',
+      cta: 'Read the sharpest writing',
+      background: 'radial-gradient(circle at 78% 28%, rgba(200,162,77,.28), transparent 28%), linear-gradient(145deg, #171b24, #0d1016 68%, #282116)'
+    },
+    explain: {
+      kicker: 'Core model / Speaking and proof',
+      title: 'Context → action → result → lesson',
+      copy: 'Lead with the answer. Add depth only where it changes how the listener understands the decision.',
+      steps: [
+        'Set the constraint and stakes without narrating every detail.',
+        'Name the decision and the action you owned.',
+        'Give the measured result, then say what the experience changed.'
+      ],
+      testTitle: 'Is the causal chain visible?',
+      testCopy: 'A metric without the decision behind it sounds polished but teaches the listener nothing.',
+      href: 'https://basinleon.github.io/case-studies/',
+      cta: 'Inspect the case studies',
+      background: "linear-gradient(90deg, rgba(13,16,22,.98), rgba(13,16,22,.82) 64%, rgba(13,16,22,.42)), url('/assets/img/frameworks/revenue-blueprint.png') center / cover no-repeat"
+    },
+    distribute: {
+      kicker: 'Core model / Distribution pairing',
+      title: 'Publish once. Interpret twice.',
+      copy: 'Distribution should extend the idea, not repeat the same link with different punctuation.',
+      steps: [
+        'Publish the canonical piece with a short tension-led teaser.',
+        'Use the first reply for one actionable excerpt.',
+        'Return with a question, reader signal, or useful clarification.'
+      ],
+      testTitle: 'Does each touch add a new reason to care?',
+      testCopy: 'If every post says “new article,” distribution has become repetition instead of interpretation.',
+      href: '{{ "/distribution/" | relative_url }}',
+      cta: 'Open distribution notes',
+      background: "linear-gradient(90deg, rgba(13,16,22,.98), rgba(13,16,22,.82) 64%, rgba(13,16,22,.42)), url('/assets/img/frameworks/gtm_arch_live_screenshot.png') center / cover no-repeat"
+    }
+  };
+
+  document.querySelectorAll('.framework-path').forEach(button => {
+    button.addEventListener('click', () => {
+      const state = frameworkStates[button.dataset.framework];
+      document.querySelectorAll('.framework-path').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById('framework-kicker').textContent = state.kicker;
+      document.getElementById('framework-title').textContent = state.title;
+      document.getElementById('framework-copy').textContent = state.copy;
+      document.getElementById('framework-test-title').textContent = state.testTitle;
+      document.getElementById('framework-test-copy').textContent = state.testCopy;
+      const steps = document.getElementById('framework-steps');
+      steps.innerHTML = '';
+      state.steps.forEach(step => {
+        const item = document.createElement('li');
+        item.textContent = step;
+        steps.appendChild(item);
+      });
+      const link = document.getElementById('framework-link');
+      link.href = state.href;
+      link.textContent = state.cta;
+      document.getElementById('framework-stage').style.background = state.background;
+    });
+  });
+</script>

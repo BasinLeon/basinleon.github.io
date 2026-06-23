@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE PIPELINE GAME | Basin::Nexus</title>
+    <meta name="description" content="A playable Basin::Nexus GTM field simulator. Leads are visible. Pipeline is the invisible pressure system underneath.">
+    <meta property="og:title" content="THE PIPELINE GAME | Basin::Nexus">
+    <meta property="og:description" content="The lead is visible. The pipeline is not. A playable GTM field pressure model.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basinleon.github.io/pipeline-game/">
+    <meta property="og:image" content="https://basinleon.github.io/pipeline-game/pipeline-game-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="THE PIPELINE GAME | Basin::Nexus">
+    <meta name="twitter:description" content="The lead is visible. The pipeline is not.">
+    <meta name="twitter:image" content="https://basinleon.github.io/pipeline-game/pipeline-game-card.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23050403'/%3E%3Cpath d='M8 16h48M8 32h48M8 48h48' stroke='%23D8B66A' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%235BB7A8'/%3E%3Ccircle cx='39' cy='32' r='5' fill='%23D8B66A'/%3E%3Ccircle cx='52' cy='48' r='5' fill='%23E36B55'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050403;
+            --panel: #0d0d0a;
+            --panel-2: #14130f;
+            --gold: #d8b66a;
+            --gold-bright: #f2d88f;
+            --teal: #5bb7a8;
+            --red: #e36b55;
+            --ink: #f3efe5;
+            --dim: #8d8676;
+            --line: rgba(216, 182, 106, 0.18);
+            --line-strong: rgba(216, 182, 106, 0.42);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            color: var(--ink);
+            font-family: "Manrope", system-ui, sans-serif;
+            background:
+                linear-gradient(90deg, rgba(216,182,106,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(216,182,106,0.025) 1px, transparent 1px),
+                radial-gradient(circle at 18% 0%, rgba(216,182,106,0.18), transparent 26%),
+                radial-gradient(circle at 82% 12%, rgba(91,183,168,0.15), transparent 24%),
+                linear-gradient(180deg, #090806 0%, #020202 58%, #080604 100%);
+            background-size: 42px 42px, 42px 42px, auto, auto, auto;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            background: repeating-linear-gradient(transparent, transparent 3px, rgba(255,255,255,0.014) 3px, rgba(255,255,255,0.014) 6px);
+        }
+
+        button, input, select, textarea { font: inherit; }
+
+        .shell {
+            width: min(1280px, calc(100% - 42px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid var(--line);
+            background: rgba(5, 4, 3, 0.82);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav {
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-weight: 800;
+            font-size: 15px;
+            letter-spacing: 3px;
+        }
+
+        .brand span {
+            color: var(--dim);
+            font: 600 11px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .pill {
+            border: 1px solid rgba(216,182,106,0.2);
+            color: var(--dim);
+            background: rgba(216,182,106,0.055);
+            border-radius: 999px;
+            padding: 7px 10px;
+            font: 600 11px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .18s ease;
+        }
+
+        .pill:hover, .pill:focus-visible {
+            color: var(--gold-bright);
+            border-color: var(--line-strong);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.72fr);
+            gap: 36px;
+            align-items: end;
+            padding: 42px 0 24px;
+        }
+
+        .kicker {
+            color: var(--gold);
+            font: 700 11px "JetBrains Mono", monospace;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-top: 14px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-weight: 800;
+            font-size: clamp(54px, 9vw, 132px);
+            line-height: 0.8;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin-top: 22px;
+            color: #d8d0bf;
+            font-size: clamp(17px, 2vw, 24px);
+            line-height: 1.35;
+        }
+
+        .field-card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(216,182,106,0.1), rgba(10,10,8,0.88) 48%, rgba(91,183,168,0.08));
+            padding: 20px;
+            box-shadow: 0 28px 90px rgba(0,0,0,0.42);
+        }
+
+        .pressure-core {
+            margin: 16px 0 6px;
+            border: 1px solid rgba(216,182,106,0.18);
+            border-radius: 8px;
+            background:
+                linear-gradient(90deg, rgba(216,182,106,0.07) 1px, transparent 1px),
+                linear-gradient(rgba(216,182,106,0.045) 1px, transparent 1px),
+                rgba(0,0,0,0.28);
+            background-size: 18px 18px;
+            padding: 16px;
+        }
+
+        .pressure-core strong {
+            display: block;
+            color: var(--gold-bright);
+            font: 800 clamp(54px, 7vw, 82px)/0.9 "Bricolage Grotesque", sans-serif;
+            letter-spacing: 0;
+            margin: 8px 0 10px;
+        }
+
+        .pressure-core span {
+            display: block;
+            color: #bcb3a2;
+            font-size: 13px;
+            line-height: 1.42;
+        }
+
+        .pressure-track {
+            height: 7px;
+            border: 1px solid rgba(216,182,106,0.18);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.045);
+            overflow: hidden;
+            margin-top: 14px;
+        }
+
+        .pressure-fill {
+            display: block;
+            height: 100%;
+            width: 67%;
+            background: linear-gradient(90deg, var(--red), var(--gold), var(--teal));
+            box-shadow: 0 0 26px rgba(216,182,106,0.28);
+            transition: width .35s ease;
+        }
+
+        .signal-row {
+            display: grid;
+            grid-template-columns: 36px minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 1px solid rgba(216,182,106,0.13);
+            color: #bcb3a2;
+            font-size: 13px;
+        }
+
+        .signal-row:first-of-type { border-top: 0; }
+        .mark {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(216,182,106,0.1);
+            color: var(--gold);
+            font: 700 11px "JetBrains Mono", monospace;
+        }
+        .signal-row strong { display: block; color: var(--ink); margin-bottom: 3px; }
+        .tag { color: var(--teal); font: 700 11px "JetBrains Mono", monospace; letter-spacing: 1px; }
+
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 10px;
+            margin: 12px 0 26px;
+        }
+
+        .instructions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: -12px 0 18px;
+        }
+
+        .instruction {
+            border: 1px solid rgba(216,182,106,0.13);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.22);
+            padding: 11px;
+            color: #bcb3a2;
+            font-size: 12px;
+            line-height: 1.42;
+        }
+
+        .instruction strong {
+            display: block;
+            color: var(--gold-bright);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .stat {
+            border: 1px solid rgba(216,182,106,0.13);
+            border-radius: 6px;
+            background: rgba(12,12,10,0.72);
+            padding: 12px;
+            color: var(--dim);
+            font: 700 11px "JetBrains Mono", monospace;
+        }
+
+        .stat strong {
+            display: block;
+            margin-top: 5px;
+            color: var(--gold-bright);
+            font-size: 18px;
+        }
+
+        .stat.pressure {
+            border-color: rgba(216,182,106,0.35);
+            background: linear-gradient(135deg, rgba(216,182,106,0.12), rgba(91,183,168,0.055));
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(290px, 0.78fr) minmax(0, 1.45fr) minmax(300px, 0.86fr);
+            gap: 14px;
+            align-items: start;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(18,18,14,0.92), rgba(7,7,5,0.94));
+            padding: 16px;
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .btn {
+            border: 1px solid rgba(216,182,106,0.24);
+            border-radius: 4px;
+            background: rgba(255,255,255,0.025);
+            color: var(--ink);
+            padding: 10px 13px;
+            cursor: pointer;
+            font: 700 11px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: .18s ease;
+        }
+
+        .btn:hover, .btn:focus-visible {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .btn.primary {
+            background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+            border-color: var(--gold);
+            color: #070604;
+        }
+
+        .btn:disabled {
+            opacity: 0.42;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .signals {
+            display: grid;
+            gap: 9px;
+        }
+
+        .signal {
+            border: 1px solid rgba(255,255,255,0.07);
+            border-left: 3px solid rgba(216,182,106,0.45);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.025);
+            padding: 10px;
+            cursor: pointer;
+            transition: .18s ease;
+        }
+
+        .signal:hover, .signal.active {
+            border-color: rgba(216,182,106,0.48);
+            border-left-color: var(--teal);
+            background: rgba(91,183,168,0.06);
+        }
+
+        .signal-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .signal-meta {
+            margin-top: 6px;
+            color: var(--dim);
+            font: 600 11px/1.45 "JetBrains Mono", monospace;
+        }
+
+        .board {
+            position: relative;
+            min-height: 520px;
+            overflow: hidden;
+        }
+
+        .board::before {
+            content: "";
+            position: absolute;
+            inset: 52px 24px auto 24px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(216,182,106,0.08), rgba(216,182,106,0.65), rgba(91,183,168,0.45), rgba(216,182,106,0.08));
+        }
+
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stage {
+            min-height: 142px;
+            border: 1px solid rgba(216,182,106,0.14);
+            border-radius: 7px;
+            background: rgba(0,0,0,0.24);
+            padding: 12px;
+            display: grid;
+            align-content: start;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .stage.active {
+            border-color: rgba(91,183,168,0.55);
+            box-shadow: inset 0 0 0 1px rgba(91,183,168,0.12), 0 0 32px rgba(91,183,168,0.08);
+        }
+
+        .stage-num {
+            color: var(--gold);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+        }
+
+        .stage-name {
+            color: var(--ink);
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 20px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .stage-desc {
+            color: var(--dim);
+            font-size: 12px;
+            line-height: 1.42;
+        }
+
+        .stage-score {
+            margin-top: auto;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+
+        .stage-score span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            transition: width .35s ease;
+        }
+
+        .flow-card {
+            margin-top: 12px;
+            border: 1px solid rgba(91,183,168,0.23);
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(91,183,168,0.08), rgba(216,182,106,0.045));
+            padding: 14px;
+            min-height: 120px;
+        }
+
+        .readout {
+            color: #c9c0af;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .receipt {
+            margin-top: 12px;
+            border: 1px solid rgba(216,182,106,0.18);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.26);
+            padding: 10px;
+            color: var(--dim);
+            font: 700 11px/1.45 "JetBrains Mono", monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .receipt strong {
+            color: var(--gold-bright);
+        }
+
+        .levers {
+            display: grid;
+            gap: 16px;
+        }
+
+        .lever label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--dim);
+            font: 700 11px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--gold);
+        }
+
+        .stage-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .archive {
+            max-height: 210px;
+            overflow-y: auto;
+            display: grid;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        .archive-entry {
+            border-left: 2px solid rgba(216,182,106,0.45);
+            background: rgba(255,255,255,0.025);
+            padding: 9px 10px;
+            color: #aaa293;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .archive-entry strong {
+            display: block;
+            color: var(--gold-bright);
+            font: 700 11px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .archive-month {
+            color: var(--gold);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .archive-line {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .outcome {
+            color: var(--teal);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .composer {
+            margin-top: 14px;
+            border: 1px solid rgba(216,182,106,0.14);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.22);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 156px;
+            resize: vertical;
+            border: 0;
+            border-bottom: 1px solid rgba(216,182,106,0.12);
+            background: rgba(0,0,0,0.34);
+            color: var(--ink);
+            padding: 13px;
+            outline: none;
+            font: 12px/1.55 "JetBrains Mono", monospace;
+        }
+
+        .composer-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+        .layers {
+            margin: 34px 0 0;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .layer {
+            border: 1px solid rgba(216,182,106,0.13);
+            border-radius: 7px;
+            background: rgba(12,12,10,0.66);
+            padding: 13px;
+        }
+
+        .layer div:first-child {
+            color: var(--gold);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+        }
+
+        .layer strong {
+            display: block;
+            color: var(--ink);
+            font-size: 14px;
+            margin: 7px 0;
+        }
+
+        .layer span {
+            color: var(--dim);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .capture-grid {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .capture-copy {
+            color: #c9c0af;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .capture-copy p {
+            margin-top: 10px;
+            color: var(--dim);
+        }
+
+        .field-notes-score {
+            margin-top: 14px;
+            border: 1px solid rgba(216,182,106,0.16);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.24);
+            padding: 12px;
+            color: var(--dim);
+            font: 700 11px/1.55 "JetBrains Mono", monospace;
+        }
+
+        .field-notes-score strong {
+            color: var(--gold-bright);
+        }
+
+        .visitor-line {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--dim);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .capture-form {
+            display: grid;
+            gap: 8px;
+        }
+
+        .capture-form input,
+        .capture-form select {
+            width: 100%;
+            border: 1px solid rgba(216,182,106,0.18);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.42);
+            color: var(--ink);
+            padding: 10px 11px;
+            outline: none;
+            font: 12px "JetBrains Mono", monospace;
+        }
+
+        .capture-form input:focus,
+        .capture-form select:focus {
+            border-color: rgba(91,183,168,0.62);
+            box-shadow: 0 0 0 2px rgba(91,183,168,0.11);
+        }
+
+        .capture-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .capture-status {
+            min-height: 18px;
+            color: var(--teal);
+            font: 700 10px "JetBrains Mono", monospace;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            padding: 52px 0 36px;
+            text-align: center;
+            color: #39352f;
+            font: 700 11px "JetBrains Mono", monospace;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 1080px) {
+            .hero, .main-grid { grid-template-columns: 1fr; }
+            .hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .instructions { grid-template-columns: 1fr; }
+            .layers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .capture-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 720px) {
+            .shell { width: min(100% - 28px, 1280px); }
+            header { position: static; }
+            .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; }
+            h1 { font-size: clamp(48px, 18vw, 76px); }
+            .field-card { padding: 15px; }
+            .signal-row { grid-template-columns: 32px 1fr; }
+            .tag { grid-column: 2; }
+            .hud, .stage-grid, .layers { grid-template-columns: 1fr 1fr; }
+            .stage-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 480px) {
+            .hud, .stage-grid, .layers { grid-template-columns: 1fr; }
+            .btn { width: 100%; }
+            .stage-actions { grid-template-columns: 1fr; }
+            .composer-actions { display: grid; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="shell nav">
+        <a class="brand" href="#field">THE PIPELINE GAME <span>BASIN::NEXUS</span></a>
+        <nav class="nav-links" aria-label="Page sections">
+            <a class="pill" href="#field">GTM FIELD</a>
+            <a class="pill" href="#levers">LEVERS</a>
+            <a class="pill" href="#archive">ARCHIVE</a>
+            <a class="pill" href="/play/">SIBLING GAME</a>
+        </nav>
+    </div>
+</header>
+
+<main class="shell">
+    <section class="hero" aria-label="Pipeline Game introduction">
+        <div>
+            <div class="kicker">PUBLIC DEMO · INVISIBLE PRESSURE SYSTEM</div>
+            <h1>THE PIPELINE GAME</h1>
+            <p>The lead is visible. The actual pipeline is the invisible pressure system underneath it.</p>
+        </div>
+        <aside class="field-card">
+            <div class="kicker">FIELD READOUT</div>
+            <div class="pressure-core" aria-label="Field pressure score">
+                <div class="kicker">FIELD PRESSURE</div>
+                <strong id="heroPressure">67</strong>
+                <span>Increase pressure before a meeting exists. The lead comes later.</span>
+                <div class="pressure-track"><span class="pressure-fill" id="pressureFill"></span></div>
+            </div>
+            <div class="signal-row">
+                <div class="mark">01</div>
+                <div><strong>Surface</strong>Raw signals arrive from public motion, replies, referrals, and procurement traces.</div>
+                <div class="tag">VISIBLE</div>
+            </div>
+            <div class="signal-row">
+                <div class="mark">02</div>
+                <div><strong>Levers</strong>Aggression, patience, and clarity decide whether the field opens or resists.</div>
+                <div class="tag">TUNABLE</div>
+            </div>
+            <div class="signal-row">
+                <div class="mark">03</div>
+                <div><strong>Refinery</strong>Qualify, enrich, angle, sequence, trigger, meeting, proof, revenue.</div>
+                <div class="tag">COMPOUNDS</div>
+            </div>
+        </aside>
+    </section>
+
+    <section class="hud" aria-label="Run metrics">
+        <div class="stat pressure">FIELD PRESSURE <strong id="fieldPressure">67</strong></div>
+        <div class="stat">SIGNAL <strong id="signalScore">50</strong></div>
+        <div class="stat">NOISE <strong id="noiseScore">22</strong></div>
+        <div class="stat">MEETING ODDS <strong id="meetingOdds">18%</strong></div>
+        <div class="stat">PIPELINE <strong id="pipeline">$0</strong></div>
+        <div class="stat">READS <strong id="reads">0</strong></div>
+    </section>
+
+    <section class="instructions" aria-label="How to play">
+        <div class="instruction"><strong>1. Pick movement</strong>Select a raw signal. It is not a lead yet. It is a clue.</div>
+        <div class="instruction"><strong>2. Route the clue</strong>Choose qualify, enrich, angle, sequence, trigger, call, proof, or ignore.</div>
+        <div class="instruction"><strong>3. Read pressure</strong>Good routes increase Field Pressure. Bad routes create Noise. The archive remembers.</div>
+    </section>
+
+    <section class="main-grid" id="field">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="kicker">RAW SIGNALS</div>
+                <button class="btn" type="button" onclick="drawSignal()">DRAW</button>
+            </div>
+            <div class="signals" id="signals"></div>
+        </div>
+
+        <div class="panel board" aria-label="Pipeline stage board">
+            <div class="panel-head">
+                <div>
+                    <div class="kicker">GTM FIELD</div>
+                </div>
+                <button class="btn primary" type="button" onclick="routeActiveSignal()">ROUTE SIGNAL</button>
+            </div>
+            <div class="stage-grid" id="stageGrid"></div>
+            <div class="flow-card">
+                <div class="kicker">FIELD READING</div>
+                <div class="readout" id="fieldRead">Select a raw signal. Interpret the pressure. Route it. Signal rises or noise spreads.</div>
+                <div class="receipt" id="outcomeReceipt"><strong>NO RECEIPT YET</strong><br>Route a signal to see what the field remembers.</div>
+            </div>
+        </div>
+
+        <div class="panel" id="levers">
+            <div class="panel-head">
+                <div class="kicker">OPERATOR LEVERS</div>
+                <button class="btn" type="button" onclick="resetRun()">RESET</button>
+            </div>
+            <div class="levers">
+                <div class="lever">
+                    <label for="agg">AGGRESSION <span id="aggVal">48</span></label>
+                    <input id="agg" type="range" min="0" max="100" value="48" oninput="updateLevers()">
+                </div>
+                <div class="lever">
+                    <label for="pat">PATIENCE <span id="patVal">56</span></label>
+                    <input id="pat" type="range" min="0" max="100" value="56" oninput="updateLevers()">
+                </div>
+                <div class="lever">
+                    <label for="cla">CLARITY <span id="claVal">62</span></label>
+                    <input id="cla" type="range" min="0" max="100" value="62" oninput="updateLevers()">
+                </div>
+            </div>
+            <div class="stage-actions">
+                <button class="btn" type="button" onclick="applyMove('qualify')">QUALIFY</button>
+                <button class="btn" type="button" onclick="applyMove('enrich')">ENRICH</button>
+                <button class="btn" type="button" onclick="applyMove('angle')">ANGLE</button>
+                <button class="btn" type="button" onclick="applyMove('sequence')">SEQUENCE</button>
+                <button class="btn" type="button" onclick="applyMove('trigger')">TRIGGER</button>
+                <button class="btn" type="button" onclick="applyMove('meeting')">CALL</button>
+                <button class="btn" type="button" onclick="applyMove('proof')">PROOF</button>
+                <button class="btn" type="button" onclick="ignoreSignal()">IGNORE</button>
+            </div>
+            <div class="composer">
+                <textarea id="xDraft" aria-label="X draft">Route a signal to generate an X-ready field note.</textarea>
+                <div class="composer-actions">
+                    <button class="btn" type="button" onclick="generateDraft('operator')">OPERATOR</button>
+                    <button class="btn" type="button" onclick="generateDraft('plain')">PLAIN</button>
+                    <button class="btn primary" type="button" onclick="copyDraft()">COPY</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="layers" aria-label="Pipeline layers">
+        <div class="layer"><div>MALKHUT</div><strong>The Lead</strong><span>The visible contact, account, or event.</span></div>
+        <div class="layer"><div>YESOD</div><strong>The Pull</strong><span>The hidden reason this signal is moving now.</span></div>
+        <div class="layer"><div>HOD</div><strong>The Angle</strong><span>The language that makes the pressure legible.</span></div>
+        <div class="layer"><div>NETZACH</div><strong>The Motion</strong><span>The sustained sequence that earns a reply.</span></div>
+        <div class="layer"><div>KETER</div><strong>The Revenue</strong><span>The moment proof and timing become inevitable.</span></div>
+    </section>
+
+    <section class="main-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;" id="archive">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="kicker">OPERATOR ARCHIVE</div>
+                <button class="btn" type="button" onclick="copyPacket()">PACKET</button>
+            </div>
+            <div class="archive" id="archiveLog"></div>
+        </div>
+        <div class="panel">
+            <div class="panel-head">
+                <div class="kicker">SIGNAL REFINERY</div>
+                <button class="btn" type="button" onclick="exportCard()">CARD</button>
+            </div>
+            <div class="readout" id="refineryOutput">Every routed signal changes the invisible system: Signal, Noise, trust, meeting odds, proof, and revenue.</div>
+        </div>
+    </section>
+
+    <section class="capture-grid" id="capture" aria-label="Field notes lead capture">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="kicker">EXPORT FIELD NOTES</div>
+            </div>
+            <div class="capture-copy">
+                Your run creates a field note: signals identified, routes chosen, pressure score, and archive entries.
+                <p id="fieldNotesPrompt">Route 3 signals, then export the notes or ask me to review the pattern.</p>
+            </div>
+            <div class="field-notes-score" id="fieldNotesScore">FIELD NOTES LOCKED · 0/3 READS</div>
+            <div class="visitor-line">
+                <img src="https://visitor-badge.laobi.icu/badge?page_id=basinleon.pipeline-game&left_text=plays" alt="Visitor count for Pipeline Game">
+                <span>LOCAL LEADS <strong id="leadCount" style="color:var(--gold-bright);">0</strong></span>
+            </div>
+        </div>
+        <div class="panel">
+            <form class="capture-form" onsubmit="submitLeadCapture(event)">
+                <input id="leadEmail" type="email" autocomplete="email" placeholder="you@company.com" required>
+                <input id="leadIdentity" type="text" autocomplete="name" placeholder="Name, company, or role">
+                <input id="leadSocial" type="text" placeholder="LinkedIn or X profile">
+                <select id="leadIntent">
+                    <option value="Send me future field notes">Send me future field notes</option>
+                    <option value="Review my field notes">Review my field notes</option>
+                    <option value="Teardown my signal map">Teardown my signal map</option>
+                    <option value="I want the Basin::Nexus model">I want the Basin::Nexus model</option>
+                    <option value="I want to talk pipeline">I want to talk pipeline</option>
+                    <option value="Just tracking the work">Just tracking the work</option>
+                </select>
+                <div class="capture-actions">
+                    <button class="btn primary" type="submit" id="leadSubmit">SEND FUTURE NOTES</button>
+                    <button class="btn" type="button" onclick="copyLeadPacket()">EXPORT NOTES</button>
+                    <button class="btn" type="button" onclick="exportLeadsCsv()">CSV</button>
+                </div>
+                <div class="capture-status" id="leadStatus">Play first. Capture becomes useful after the archive has memory.</div>
+            </form>
+        </div>
+    </section>
+
+    <div class="footer">BUILT AS A SIBLING TO THE GAME · PUBLIC, PLAYABLE, WEIRD, USEFUL</div>
+</main>
+
+<script>
+const signalPool = [
+    { type: "Founder post", account: "Series A infra founder", clue: "complains that enterprise deals keep stalling after security review", intent: 74, value: 42000, route: "angle" },
+    { type: "Job change", account: "New CRO at vertical SaaS", clue: "first 90 days, rebuilding outbound motion and hiring RevOps", intent: 68, value: 36000, route: "enrich" },
+    { type: "Funding event", account: "AI workflow startup", clue: "seed extension announced, hiring GTM engineer and partnerships lead", intent: 71, value: 52000, route: "qualify" },
+    { type: "City council agenda", account: "Regional municipality", clue: "line item for constituent engagement and procurement modernization", intent: 63, value: 88000, route: "trigger" },
+    { type: "LinkedIn comment", account: "VP Sales at compliance vendor", clue: "asks for examples of outbound that does not sound automated", intent: 58, value: 24000, route: "angle" },
+    { type: "Inbound reply", account: "Founder-led services firm", clue: "says timing is not perfect but asks for the short version", intent: 82, value: 18000, route: "meeting" },
+    { type: "Website visit", account: "Mid-market cybersecurity company", clue: "three visits to proof pages and pricing adjacent content", intent: 66, value: 31000, route: "proof" },
+    { type: "Referral", account: "Portfolio operator", clue: "warm intro says they need someone who can read messy GTM systems", intent: 79, value: 64000, route: "meeting" },
+    { type: "Procurement clue", account: "County health network", clue: "RFI language matches your signal-to-prediction architecture", intent: 69, value: 125000, route: "trigger" }
+];
+
+const stages = [
+    { id: "qualify", name: "Qualify", desc: "Separate curiosity from pain." },
+    { id: "enrich", name: "Enrich", desc: "Attach context, people, timing, and stakes." },
+    { id: "angle", name: "Angle", desc: "Find the sentence that makes the field readable." },
+    { id: "sequence", name: "Sequence", desc: "Turn the read into a controlled motion." },
+    { id: "trigger", name: "Trigger", desc: "Time the move against the real-world event." },
+    { id: "meeting", name: "Meeting", desc: "Convert pressure into a live room." },
+    { id: "proof", name: "Proof", desc: "Show receipts before asking for belief." },
+    { id: "revenue", name: "Revenue", desc: "Make the invisible pressure visible in dollars." }
+];
+
+let state = {
+    fieldPressure: 67,
+    signalScore: 50,
+    noiseScore: 22,
+    reputation: 50,
+    meetingOdds: 18,
+    pipeline: 0,
+    reads: 0,
+    lastOutcome: null,
+    activeSignal: 0,
+    activeStage: "qualify",
+    stageScores: {},
+    signals: signalPool.slice(0, 5),
+    archive: []
+};
+
+let levers = { aggression: 48, patience: 56, clarity: 62 };
+const LEAD_STORAGE_KEY = "pipeline_game_leads_v1";
+const GTM_INBOX = "lbasin23@gmail.com";
+
+function save() {
+    localStorage.setItem("pipeline_game_state_v1", JSON.stringify(state));
+    localStorage.setItem("pipeline_game_levers_v1", JSON.stringify(levers));
+}
+
+function load() {
+    try {
+        const savedState = JSON.parse(localStorage.getItem("pipeline_game_state_v1") || "null");
+        const savedLevers = JSON.parse(localStorage.getItem("pipeline_game_levers_v1") || "null");
+        if (savedState) state = { ...state, ...savedState, stageScores: { ...state.stageScores, ...(savedState.stageScores || {}) } };
+        if (typeof state.fieldPressure !== "number") state.fieldPressure = clamp(state.signalScore - state.noiseScore + 39, 0, 100);
+        if (savedLevers) levers = { ...levers, ...savedLevers };
+    } catch (err) {}
+}
+
+function money(n) {
+    if (n >= 1000000) return "$" + (n / 1000000).toFixed(1) + "M";
+    if (n >= 1000) return "$" + Math.round(n / 1000) + "k";
+    return "$" + Math.round(n);
+}
+
+function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+}
+
+function activeSignal() {
+    return state.signals[state.activeSignal] || state.signals[0];
+}
+
+function renderSignals() {
+    const el = document.getElementById("signals");
+    el.innerHTML = state.signals.map((signal, index) => `
+        <button class="signal ${index === state.activeSignal ? "active" : ""}" type="button" onclick="selectSignal(${index})">
+            <div class="signal-title"><span>${signal.type}</span><span>${signal.intent}</span></div>
+            <div class="signal-meta">${signal.account}<br>${signal.clue}</div>
+        </button>
+    `).join("");
+}
+
+function renderStages() {
+    const el = document.getElementById("stageGrid");
+    el.innerHTML = stages.map((stage, index) => {
+        const score = state.stageScores[stage.id] || 0;
+        return `
+            <button class="stage ${stage.id === state.activeStage ? "active" : ""}" type="button" onclick="selectStage('${stage.id}')">
+                <div class="stage-num">${String(index + 1).padStart(2, "0")}</div>
+                <div class="stage-name">${stage.name}</div>
+                <div class="stage-desc">${stage.desc}</div>
+                <div class="stage-score"><span style="width:${clamp(score, 0, 100)}%"></span></div>
+            </button>
+        `;
+    }).join("");
+}
+
+function renderStats() {
+    document.getElementById("fieldPressure").textContent = Math.round(state.fieldPressure);
+    document.getElementById("heroPressure").textContent = Math.round(state.fieldPressure);
+    document.getElementById("pressureFill").style.width = clamp(state.fieldPressure, 0, 100) + "%";
+    document.getElementById("signalScore").textContent = Math.round(state.signalScore);
+    document.getElementById("noiseScore").textContent = Math.round(state.noiseScore);
+    document.getElementById("meetingOdds").textContent = Math.round(state.meetingOdds) + "%";
+    document.getElementById("pipeline").textContent = money(state.pipeline);
+    document.getElementById("reads").textContent = state.reads;
+    document.getElementById("agg").value = levers.aggression;
+    document.getElementById("pat").value = levers.patience;
+    document.getElementById("cla").value = levers.clarity;
+    document.getElementById("aggVal").textContent = levers.aggression;
+    document.getElementById("patVal").textContent = levers.patience;
+    document.getElementById("claVal").textContent = levers.clarity;
+}
+
+function renderArchive() {
+    const el = document.getElementById("archiveLog");
+    let lastMonth = "";
+    el.innerHTML = state.archive.length
+        ? state.archive.map(entry => {
+            const month = entry.month || "Current Run";
+            const monthLabel = month !== lastMonth ? `<div class="archive-month">${month}</div>` : "";
+            lastMonth = month;
+            if (entry.signal && entry.route && entry.outcome) {
+                return `${monthLabel}<div class="archive-entry">
+                    <div class="archive-line">
+                        <strong>${entry.signal} · Route: ${entry.route}</strong>
+                        <span class="outcome">${entry.outcome}</span>
+                    </div>
+                    ${entry.text}
+                </div>`;
+            }
+            return `${monthLabel}<div class="archive-entry"><strong>${entry.label}</strong>${entry.text}</div>`;
+        }).join("")
+        : `<div class="archive-entry"><strong>ARCHIVE EMPTY</strong>Route a signal and the field will start remembering.</div>`;
+}
+
+function stageName(id) {
+    return (stages.find(stage => stage.id === id) || stages[0]).name;
+}
+
+function buildRead() {
+    const signal = activeSignal();
+    const match = signal.route === state.activeStage;
+    const balance = 100 - Math.abs(levers.aggression - levers.patience);
+    const clarityLift = levers.clarity * 0.34;
+    const noiseCost = levers.aggression > levers.clarity ? 9 : -4;
+    const pressureLift = state.fieldPressure * 0.18;
+    const odds = clamp(signal.intent * 0.28 + clarityLift + balance * 0.1 + pressureLift + (match ? 16 : -10), 4, 94);
+    return { signal, match, odds, noiseCost };
+}
+
+function renderRead() {
+    const read = buildRead();
+    const stage = stageName(state.activeStage);
+    document.getElementById("fieldRead").textContent = `${read.signal.type} at ${read.signal.account}. Current route: ${stage}. ${read.match ? "The route fits the hidden pressure." : "The route is possible, but the field is resisting."} Field Pressure: ${Math.round(state.fieldPressure)}. Signal > Noise: ${Math.round(state.signalScore)} > ${Math.round(state.noiseScore)}.`;
+    document.getElementById("refineryOutput").textContent = `Active clue: ${read.signal.clue}. Best native route: ${stageName(read.signal.route)}. Your current lever balance is ${100 - Math.abs(levers.aggression - levers.patience)} and clarity is ${levers.clarity}.`;
+    renderOutcomeReceipt();
+}
+
+function renderOutcomeReceipt() {
+    const el = document.getElementById("outcomeReceipt");
+    if (!el) return;
+    if (!state.lastOutcome) {
+        el.innerHTML = `<strong>NO RECEIPT YET</strong><br>Route a signal to see what the field remembers.`;
+        return;
+    }
+    el.innerHTML = `<strong>${state.lastOutcome.outcome}</strong> · ${state.lastOutcome.signal} through ${state.lastOutcome.route}<br>${state.lastOutcome.summary}`;
+}
+
+function renderAll() {
+    renderSignals();
+    renderStages();
+    renderStats();
+    renderArchive();
+    renderRead();
+    updateLeadCaptureUI();
+}
+
+function selectSignal(index) {
+    state.activeSignal = index;
+    state.reads += 1;
+    save();
+    renderAll();
+}
+
+function selectStage(id) {
+    state.activeStage = id;
+    save();
+    renderAll();
+}
+
+function updateLevers() {
+    levers.aggression = parseInt(document.getElementById("agg").value, 10);
+    levers.patience = parseInt(document.getElementById("pat").value, 10);
+    levers.clarity = parseInt(document.getElementById("cla").value, 10);
+    renderStats();
+    renderRead();
+    save();
+}
+
+function routeActiveSignal() {
+    const read = buildRead();
+    const stage = state.activeStage;
+    const signal = read.signal;
+    const signalGain = Math.round(read.odds / 7 + (read.match ? 12 : 2));
+    const noiseDelta = read.noiseCost + (read.match ? -7 : 10);
+    const repDelta = read.match ? 4 : -1;
+    const pressureDelta = read.match
+        ? Math.round(6 + signal.intent / 12 + levers.clarity / 24)
+        : -Math.round(4 + Math.max(0, 70 - levers.clarity) / 12 + Math.max(0, noiseDelta) / 8);
+    const outcome = getOutcome(read.match, read.odds, pressureDelta);
+    const pipelineGain = (outcome === "Meeting" || outcome === "Opportunity") ? Math.round(signal.value * (read.odds / 100)) : 0;
+
+    state.fieldPressure = clamp(state.fieldPressure + pressureDelta, 0, 100);
+    state.signalScore = clamp(state.signalScore + signalGain, 0, 999);
+    state.noiseScore = clamp(state.noiseScore + noiseDelta, 0, 999);
+    state.reputation = clamp(state.reputation + repDelta + levers.clarity / 50, 0, 100);
+    state.meetingOdds = read.odds;
+    state.pipeline += pipelineGain;
+    state.reads += 1;
+    state.stageScores[stage] = clamp((state.stageScores[stage] || 0) + signalGain + (read.match ? 10 : 3), 0, 100);
+
+    const route = stageName(stage);
+    const text = read.match
+        ? `${signal.account}. Clean read. Pressure ${pressureDelta >= 0 ? "+" + pressureDelta : pressureDelta}. Signal +${signalGain}. Noise ${noiseDelta <= 0 ? noiseDelta : "+" + noiseDelta}.`
+        : `${signal.account}. Partial read. ${route} created motion, but ${stageName(signal.route)} was the truer route. Pressure ${pressureDelta}. Noise +${Math.max(1, noiseDelta)}.`;
+    state.lastOutcome = {
+        outcome,
+        signal: signal.type,
+        route,
+        summary: text
+    };
+    state.archive = [{
+        month: archiveMonth(),
+        signal: signal.type,
+        route,
+        outcome,
+        account: signal.account,
+        text
+    }, ...state.archive].slice(0, 16);
+    generateDraft("operator", false);
+    save();
+    renderAll();
+}
+
+function applyMove(stage) {
+    state.activeStage = stage;
+    routeActiveSignal();
+}
+
+function ignoreSignal() {
+    const signal = activeSignal();
+    const pressureDelta = -3;
+    const noiseDelta = 4;
+    state.fieldPressure = clamp(state.fieldPressure + pressureDelta, 0, 100);
+    state.noiseScore = clamp(state.noiseScore + noiseDelta, 0, 999);
+    state.reads += 1;
+    state.lastOutcome = {
+        outcome: "Ignored",
+        signal: signal.type,
+        route: "Ignore",
+        summary: `${signal.account}. Signal ignored. Pressure ${pressureDelta}. Noise +${noiseDelta}.`
+    };
+    state.archive = [{
+        month: archiveMonth(),
+        signal: signal.type,
+        route: "Ignore",
+        outcome: "Ignored",
+        account: signal.account,
+        text: state.lastOutcome.summary
+    }, ...state.archive].slice(0, 16);
+    generateDraft("operator", false);
+    save();
+    renderAll();
+}
+
+function getOutcome(match, odds, pressureDelta) {
+    if (match && odds >= 76) return "Meeting";
+    if (match && odds >= 62) return "Opportunity";
+    if (match) return "Nurture";
+    if (!match && pressureDelta <= -6) return "Noise";
+    return "No Response";
+}
+
+function archiveMonth(date = new Date()) {
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+function drawSignal() {
+    const existing = new Set(state.signals.map(signal => signal.type + signal.account));
+    const next = signalPool.find(signal => !existing.has(signal.type + signal.account)) || signalPool[Math.floor(Math.random() * signalPool.length)];
+    state.signals = [next, ...state.signals].slice(0, 6);
+    state.activeSignal = 0;
+    state.reads += 1;
+    state.archive = [{ month: archiveMonth(), label: "NEW RAW SIGNAL", text: `${next.type} surfaced from ${next.account}. The field is asking to be read.` }, ...state.archive].slice(0, 16);
+    save();
+    renderAll();
+}
+
+function getLeadLedger() {
+    try {
+        return JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || "[]");
+    } catch (err) {
+        return [];
+    }
+}
+
+function saveLeadLedger(leads) {
+    localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads.slice(-100)));
+    updateLeadCaptureUI();
+}
+
+function updateLeadCaptureUI() {
+    const leadCount = document.getElementById("leadCount");
+    if (leadCount) leadCount.textContent = getLeadLedger().length;
+    const needed = Math.max(0, 3 - state.reads);
+    const ready = needed === 0;
+    const score = document.getElementById("fieldNotesScore");
+    const prompt = document.getElementById("fieldNotesPrompt");
+    const submit = document.getElementById("leadSubmit");
+    if (score) {
+        score.innerHTML = ready
+            ? `FIELD NOTES READY · <strong>${state.reads}</strong> READS · PRESSURE <strong>${Math.round(state.fieldPressure)}</strong>`
+            : `FIELD NOTES WARMING UP · <strong>${state.reads}/3</strong> READS`;
+    }
+    if (prompt) {
+        prompt.textContent = ready
+            ? "Export the notes, or ask me to review the pattern you just created."
+            : `Route ${needed} more signal${needed === 1 ? "" : "s"}, then export the notes or ask me to review the pattern.`;
+    }
+    if (submit) {
+        submit.disabled = !ready;
+        submit.textContent = ready ? "SEND FUTURE NOTES" : "PLAY FIRST";
+    }
+}
+
+function buildLeadPacket(lead = null) {
+    const leads = getLeadLedger();
+    const latest = lead || leads[leads.length - 1] || null;
+    return JSON.stringify({
+        source: "THE_PIPELINE_GAME",
+        url: "https://basinleon.github.io/pipeline-game/",
+        capturedAt: new Date().toISOString(),
+        captureMode: "Static GitHub Pages: localStorage first, then mailto/CSV/copy packet.",
+        latestLead: latest,
+        localLeadCount: leads.length,
+        activeSignal: activeSignal(),
+        activeStage: state.activeStage,
+        metrics: {
+            fieldPressure: Math.round(state.fieldPressure),
+            signalScore: Math.round(state.signalScore),
+            noiseScore: Math.round(state.noiseScore),
+            meetingOdds: Math.round(state.meetingOdds),
+            pipeline: state.pipeline,
+            reads: state.reads
+        },
+        lastOutcome: state.lastOutcome,
+        xDraft: document.getElementById("xDraft")?.value || ""
+    }, null, 2);
+}
+
+function submitLeadCapture(event) {
+    event.preventDefault();
+    const email = document.getElementById("leadEmail").value.trim();
+    const identity = document.getElementById("leadIdentity").value.trim();
+    const social = document.getElementById("leadSocial").value.trim();
+    const intent = document.getElementById("leadIntent").value;
+    const status = document.getElementById("leadStatus");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = "Enter a valid email.";
+        return;
+    }
+    const lead = {
+        email,
+        identity,
+        social,
+        intent,
+        capturedAt: new Date().toISOString(),
+        fieldPressure: Math.round(state.fieldPressure),
+        lastOutcome: state.lastOutcome?.outcome || ""
+    };
+    const leads = getLeadLedger();
+    leads.push(lead);
+    saveLeadLedger(leads);
+    state.archive = [{ month: archiveMonth(), label: "FIELD NOTES REQUEST", text: `${intent} · ${identity || email}` }, ...state.archive].slice(0, 16);
+    save();
+    renderArchive();
+    status.textContent = `Saved locally. Opening email packet to ${GTM_INBOX}.`;
+    emailLeadPacket(lead);
+}
+
+function emailLeadPacket(lead = null) {
+    const packet = buildLeadPacket(lead);
+    const mailtoUrl = `mailto:${GTM_INBOX}?subject=${encodeURIComponent("Pipeline Game field notes lead")}&body=${encodeURIComponent(packet)}`;
+    window.open(mailtoUrl, "_self");
+}
+
+function copyLeadPacket() {
+    const packet = buildLeadPacket();
+    const status = document.getElementById("leadStatus");
+    copyText(packet, "Copy this lead packet:");
+    if (status) status.textContent = "Lead packet copied.";
+}
+
+function exportLeadsCsv() {
+    const leads = getLeadLedger();
+    const headers = ["capturedAt", "email", "identity", "social", "intent", "fieldPressure", "lastOutcome"];
+    const csv = [
+        headers.join(","),
+        ...leads.map(lead => headers.map(key => `"${String(lead[key] || "").replace(/"/g, '""')}"`).join(","))
+    ].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `pipeline-game-leads-${archiveMonth().replace(/\s+/g, "-").toLowerCase()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    const status = document.getElementById("leadStatus");
+    if (status) status.textContent = `CSV exported. ${leads.length} local leads.`;
+}
+
+function generateDraft(style = "operator", shouldRender = true) {
+    const signal = activeSignal();
+    const stage = stageName(state.activeStage);
+    const stats = `Field Pressure ${Math.round(state.fieldPressure)} · Signal ${Math.round(state.signalScore)} · Noise ${Math.round(state.noiseScore)} · Pipeline ${money(state.pipeline)}`;
+    const line = "the lead is visible. the actual pipeline is the invisible pressure system underneath it.";
+    const text = style === "plain"
+        ? `I built THE PIPELINE GAME as a playable GTM field reader.\n\nSignal: ${signal.type} from ${signal.account}.\nRoute: ${stage}.\n${stats}.\n\n${line}\n\nhttps://basinleon.github.io/pipeline-game/`
+        : `Basin::Nexus field note:\n\n${signal.type} is only the surface.\n\nActual read: ${signal.clue}\n\nRoute: ${stage}\n${stats}\n\n${line}\n\nhttps://basinleon.github.io/pipeline-game/`;
+    document.getElementById("xDraft").value = text;
+    if (shouldRender) {
+        state.archive = [{ month: archiveMonth(), label: "X DRAFT", text: `Generated ${style} field note for the current route.` }, ...state.archive].slice(0, 16);
+        save();
+        renderArchive();
+    }
+    return text;
+}
+
+function copyText(text, fallback) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).catch(() => prompt(fallback, text));
+    } else {
+        prompt(fallback, text);
+    }
+}
+
+function copyDraft() {
+    copyText(document.getElementById("xDraft").value, "Copy this draft:");
+    state.archive = [{ month: archiveMonth(), label: "COPY", text: "Draft copied for X or operator notes." }, ...state.archive].slice(0, 16);
+    save();
+    renderArchive();
+}
+
+function copyPacket() {
+    const packet = {
+        source: "THE_PIPELINE_GAME",
+        url: "https://basinleon.github.io/pipeline-game/",
+        createdAt: new Date().toISOString(),
+        activeSignal: activeSignal(),
+        activeStage: state.activeStage,
+        levers,
+        metrics: {
+            fieldPressure: Math.round(state.fieldPressure),
+            signalScore: Math.round(state.signalScore),
+            noiseScore: Math.round(state.noiseScore),
+            reputation: Math.round(state.reputation),
+            meetingOdds: Math.round(state.meetingOdds),
+            pipeline: state.pipeline,
+            reads: state.reads
+        },
+        archive: state.archive.slice(0, 5)
+    };
+    copyText(JSON.stringify(packet, null, 2), "Copy this operator packet:");
+}
+
+function exportCard() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 675;
+    const g = canvas.getContext("2d");
+    const signal = activeSignal();
+    g.fillStyle = "#050403";
+    g.fillRect(0, 0, canvas.width, canvas.height);
+    const grad = g.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, "rgba(216,182,106,0.28)");
+    grad.addColorStop(1, "rgba(91,183,168,0.2)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, canvas.width, canvas.height);
+    g.strokeStyle = "#d8b66a";
+    g.lineWidth = 3;
+    g.strokeRect(42, 42, canvas.width - 84, canvas.height - 84);
+    g.fillStyle = "#f3efe5";
+    g.font = "bold 72px Bricolage Grotesque, sans-serif";
+    g.fillText("THE PIPELINE GAME", 76, 142);
+    g.fillStyle = "#d8b66a";
+    g.font = "22px JetBrains Mono, monospace";
+    g.fillText("BASIN::NEXUS FIELD READER", 82, 194);
+    g.fillStyle = "#f3efe5";
+    g.font = "31px Manrope, sans-serif";
+    wrap(`${signal.type}: ${signal.clue}`, 58).forEach((line, index) => g.fillText(line, 82, 284 + index * 42));
+    g.fillStyle = "#d8b66a";
+    g.font = "24px JetBrains Mono, monospace";
+    g.fillText(`FIELD PRESSURE ${Math.round(state.fieldPressure)}   SIGNAL ${Math.round(state.signalScore)}   NOISE ${Math.round(state.noiseScore)}`, 82, 555);
+    g.fillText("basinleon.github.io/pipeline-game", 82, 608);
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "pipeline-game-field-card.png";
+    a.click();
+}
+
+function wrap(text, max) {
+    const words = text.split(" ");
+    const lines = [];
+    let line = "";
+    words.forEach(word => {
+        const next = line ? line + " " + word : word;
+        if (next.length > max) {
+            lines.push(line);
+            line = word;
+        } else {
+            line = next;
+        }
+    });
+    if (line) lines.push(line);
+    return lines.slice(0, 5);
+}
+
+function resetRun() {
+    localStorage.removeItem("pipeline_game_state_v1");
+    localStorage.removeItem("pipeline_game_levers_v1");
+    state = {
+        fieldPressure: 67,
+        signalScore: 50,
+        noiseScore: 22,
+        reputation: 50,
+        meetingOdds: 18,
+        pipeline: 0,
+        reads: 0,
+        lastOutcome: null,
+        activeSignal: 0,
+        activeStage: "qualify",
+        stageScores: {},
+        signals: signalPool.slice(0, 5),
+        archive: []
+    };
+    levers = { aggression: 48, patience: 56, clarity: 62 };
+    renderAll();
+}
+
+load();
+renderAll();
+generateDraft("operator", false);
+updateLeadCaptureUI();
+</script>
+</body>
+</html>

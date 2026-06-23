@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTM Architecture Simulator | Market Entry</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    :root {
+      --navy: #0D1B2A;
+      --navy-2: #112233;
+      --teal: #00A896;
+      --slate: #F0F4F8;
+      --row: #E8EDF2;
+      --dark: #1C2B3A;
+      --muted: #8492A6;
+      --white: #FFFFFF;
+      --border: #D8E2EA;
+      --active: #8492A6;
+      --active-soft: #F0F4F8;
+    }
+
+    [data-mode="signal"] {
+      --active: var(--teal);
+      --active-soft: #E6F7F4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--slate);
+      color: var(--dark);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    .simulator {
+      width: min(980px, 100%);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 18px 50px rgba(13, 27, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 22px;
+      padding: 26px 30px 22px;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 9px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .subhead {
+      max-width: 620px;
+      margin: 0;
+      color: #C7D2DE;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .score-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .metric {
+      min-height: 78px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .metric span {
+      display: block;
+      margin-bottom: 7px;
+      color: #AAB8C7;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--white);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .metric .active-text { color: var(--active); }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 22px;
+      padding: 26px 30px 30px;
+    }
+
+    .trace {
+      padding: 17px 18px;
+      border: 1px solid var(--active);
+      border-radius: 8px;
+      background: var(--active-soft);
+      transition: 0.2s ease;
+    }
+
+    .trace-title {
+      margin-bottom: 7px;
+      color: var(--active);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .trace p {
+      margin: 0;
+      color: var(--dark);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .decision-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .tier {
+      padding: 15px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      opacity: 0.58;
+      transition: 0.2s ease;
+    }
+
+    .tier.active {
+      opacity: 1;
+      border-color: var(--active);
+      background: var(--active-soft);
+      box-shadow: 0 8px 20px rgba(13, 27, 42, 0.08);
+    }
+
+    .tier small {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+
+    .tier strong {
+      display: block;
+      color: var(--dark);
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .tier.active strong { color: var(--active); }
+
+    .gauge-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--slate);
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 220px;
+      height: 120px;
+      margin: 8px auto 18px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .gauge-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    .gauge-fill {
+      fill: none;
+      stroke: var(--active);
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke 0.2s ease, stroke-dashoffset 0.25s ease;
+    }
+
+    .gauge-score {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .gauge-score span {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 14px;
+      border: 1px solid var(--active);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    .mode-toggle strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14px;
+    }
+
+    .mode-toggle span {
+      display: block;
+      color: var(--active);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .switch {
+      position: relative;
+      width: 48px;
+      height: 27px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      background: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      transition: 0.2s ease;
+    }
+
+    input:checked + .slider {
+      background: var(--teal);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(21px);
+    }
+
+    .controls {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .control {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 13px;
+      color: var(--dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .control output {
+      color: var(--active);
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--active);
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 30px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 850px) {
+      body { padding: 0; }
+      .simulator { border-radius: 0; }
+      .top, .main { grid-template-columns: 1fr; }
+      .controls, .decision-row, .score-panel { grid-template-columns: 1fr; }
+      .bottom { flex-direction: column; }
+    }
+  </style>
+</head>
+<body data-mode="manual">
+  <main class="simulator">
+    <section class="top">
+      <div>
+        <p class="eyebrow">Country Manager Bridge</p>
+        <h1>Market Entry Decision Simulator</h1>
+        <p class="subhead">Use the same kind of inputs from the simulation. First run the manual baseline, then flip to signal-driven execution and compare decision speed.</p>
+      </div>
+
+      <div class="score-panel">
+        <div class="metric">
+          <span>Total score</span>
+          <strong id="headerScore">64</strong>
+        </div>
+        <div class="metric">
+          <span>Recommendation</span>
+          <strong class="active-text" id="headerTier">Partner first</strong>
+        </div>
+        <div class="metric">
+          <span>Mode</span>
+          <strong class="active-text" id="headerMode">Manual</strong>
+        </div>
+        <div class="metric">
+          <span>Decision speed</span>
+          <strong class="active-text" id="headerSpeed">Rounds</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="main">
+      <div>
+        <div class="trace">
+          <div class="trace-title" id="traceTitle">Manual baseline</div>
+          <p id="traceText"><strong>Manual GTM:</strong> The team debates the market, adds people, and waits for the next round of results. The decision can be right, but it moves slowly.</p>
+        </div>
+
+        <div class="decision-row">
+          <div class="tier" id="tier1">
+            <small>&lt; 40</small>
+            <strong>Wait</strong>
+          </div>
+          <div class="tier active" id="tier2">
+            <small>40 - 75</small>
+            <strong>Partner first</strong>
+          </div>
+          <div class="tier" id="tier3">
+            <small>&gt; 75</small>
+            <strong>Go direct</strong>
+          </div>
+        </div>
+      </div>
+
+      <aside class="gauge-card">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 100 55" aria-hidden="true">
+            <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+            <path class="gauge-fill" id="gaugeFill" d="M 10 50 A 40 40 0 0 1 90 50" stroke-dasharray="125.6" stroke-dashoffset="45.216"></path>
+          </svg>
+          <div class="gauge-score"><span id="centerScore">64</span><span>/100</span></div>
+        </div>
+
+        <div class="mode-toggle">
+          <div>
+            <strong>Run model</strong>
+            <span id="toggleLabelText">Manual baseline</span>
+          </div>
+          <label class="switch" aria-label="Toggle signal-driven mode">
+            <input type="checkbox" id="modeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </aside>
+
+      <div class="controls">
+        <div class="control">
+          <label for="valDemand">Market demand <output id="dispDemand">18</output></label>
+          <input id="valDemand" type="range" min="0" max="30" value="18">
+        </div>
+        <div class="control">
+          <label for="valIcp">ICP fit <output id="dispIcp">20</output></label>
+          <input id="valIcp" type="range" min="0" max="30" value="20">
+        </div>
+        <div class="control">
+          <label for="valCoverage">Channel coverage <output id="dispCoverage">12</output></label>
+          <input id="valCoverage" type="range" min="0" max="20" value="12">
+        </div>
+        <div class="control">
+          <label for="valBudget">Budget room <output id="dispBudget">14</output></label>
+          <input id="valBudget" type="range" min="0" max="20" value="14">
+        </div>
+      </div>
+    </section>
+
+    <footer class="bottom">
+      <span>Basin::Nexus</span>
+      <span>SCU MKTG 3590 - Session 14</span>
+    </footer>
+  </main>
+
+  <script>
+    const body = document.body;
+    const modeToggle = document.getElementById('modeToggle');
+    const headerScore = document.getElementById('headerScore');
+    const headerTier = document.getElementById('headerTier');
+    const headerMode = document.getElementById('headerMode');
+    const headerSpeed = document.getElementById('headerSpeed');
+    const centerScore = document.getElementById('centerScore');
+    const gaugeFill = document.getElementById('gaugeFill');
+    const traceTitle = document.getElementById('traceTitle');
+    const traceText = document.getElementById('traceText');
+    const toggleLabelText = document.getElementById('toggleLabelText');
+
+    const inputs = {
+      demand: document.getElementById('valDemand'),
+      icp: document.getElementById('valIcp'),
+      coverage: document.getElementById('valCoverage'),
+      budget: document.getElementById('valBudget'),
+    };
+
+    const outputs = {
+      demand: document.getElementById('dispDemand'),
+      icp: document.getElementById('dispIcp'),
+      coverage: document.getElementById('dispCoverage'),
+      budget: document.getElementById('dispBudget'),
+    };
+
+    const tiers = [
+      document.getElementById('tier1'),
+      document.getElementById('tier2'),
+      document.getElementById('tier3'),
+    ];
+
+    const gaugeLength = 125.6;
+
+    modeToggle.addEventListener('change', updateMode);
+    Object.values(inputs).forEach(input => input.addEventListener('input', calculateScore));
+
+    function updateMode() {
+      const signalMode = modeToggle.checked;
+      body.setAttribute('data-mode', signalMode ? 'signal' : 'manual');
+      headerMode.textContent = signalMode ? 'Signal' : 'Manual';
+      headerSpeed.textContent = signalMode ? 'Hours' : 'Rounds';
+      toggleLabelText.textContent = signalMode ? 'Signal-driven execution' : 'Manual baseline';
+      traceTitle.textContent = signalMode ? 'Signal-driven execution' : 'Manual baseline';
+      traceText.innerHTML = signalMode
+        ? '<strong>Signal-driven GTM:</strong> The team reads demand, fit, coverage, and budget signals first. The same decision gets made faster, with less guessing.'
+        : '<strong>Manual GTM:</strong> The team debates the market, adds people, and waits for the next round of results. The decision can be right, but it moves slowly.';
+      calculateScore();
+    }
+
+    function calculateScore() {
+      const demand = Number(inputs.demand.value);
+      const icp = Number(inputs.icp.value);
+      const coverage = Number(inputs.coverage.value);
+      const budget = Number(inputs.budget.value);
+      const total = demand + icp + coverage + budget;
+
+      outputs.demand.textContent = demand;
+      outputs.icp.textContent = icp;
+      outputs.coverage.textContent = coverage;
+      outputs.budget.textContent = budget;
+      headerScore.textContent = total;
+      centerScore.textContent = total;
+      gaugeFill.style.strokeDashoffset = gaugeLength - ((total / 100) * gaugeLength);
+
+      tiers.forEach(tier => tier.classList.remove('active'));
+      if (total < 40) {
+        tiers[0].classList.add('active');
+        headerTier.textContent = 'Wait';
+      } else if (total <= 75) {
+        tiers[1].classList.add('active');
+        headerTier.textContent = 'Partner first';
+      } else {
+        tiers[2].classList.add('active');
+        headerTier.textContent = 'Go direct';
+      }
+    }
+
+    updateMode();
+  </script>
+</body>
+</html>

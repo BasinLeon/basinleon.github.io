@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leon Basin | Case Studies</title>
+    <meta name="description" content="Operator-grade case studies showing how Leon Basin designs GTM systems, cleans routing logic, and improves pipeline quality across founder-led and technical teams.">
+    <meta property="og:title" content="Leon Basin | Case Studies">
+    <meta property="og:description" content="Three operator-grade case studies on systems construction, scale architecture, and AI signal operations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basinleon.github.io/case-studies/">
+    <link rel="canonical" href="https://basinleon.github.io/case-studies/">
+    <style>
+        :root {
+            --bg: #0d0803;
+            --panel: #180c05;
+            --panel-soft: rgba(255, 255, 255, 0.04);
+            --line: rgba(255, 255, 255, 0.12);
+            --line-soft: rgba(255, 255, 255, 0.08);
+            --text: #f2e4c8;
+            --muted: rgba(245, 240, 231, 0.74);
+            --gold: #e89a18;
+            --gold-soft: rgba(214, 170, 73, 0.16);
+            --shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 20% 0%, rgba(232, 154, 24, 0.16), transparent 25%),
+                linear-gradient(180deg, #160b04 0%, var(--bg) 100%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .shell {
+            width: min(calc(100% - 32px), 1240px);
+            margin: 18px auto 32px;
+        }
+
+        .frame {
+            overflow: hidden;
+            border-radius: 24px;
+            border: 1px solid var(--line-soft);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+                rgba(6, 8, 13, 0.92);
+            box-shadow: var(--shadow);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--line-soft);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .badge {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(214, 170, 73, 0.2), rgba(214, 170, 73, 0.05));
+            border: 1px solid rgba(214, 170, 73, 0.24);
+            color: var(--gold);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .brand-copy strong {
+            display: block;
+            font-size: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .brand-copy span {
+            display: block;
+            margin-top: 0.2rem;
+            color: var(--muted);
+            font-size: 0.84rem;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .top-links a,
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 16px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .top-links a:hover,
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .top-links .accent,
+        .button.primary {
+            background: linear-gradient(135deg, #efc24b, var(--gold));
+            border-color: transparent;
+            color: #090b10;
+        }
+
+        .content {
+            padding: 28px 24px 30px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .case-switcher {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin: 22px 0 14px;
+            padding: 8px;
+            border: 1px solid rgba(232, 154, 24, .24);
+            border-radius: 18px;
+            background: rgba(13, 8, 3, .82);
+        }
+
+        .case-switch {
+            min-height: 54px;
+            border: 0;
+            border-radius: 12px;
+            color: var(--muted);
+            background: transparent;
+            cursor: pointer;
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: .2s ease;
+        }
+
+        .case-switch:hover {
+            color: var(--text);
+            background: rgba(232, 154, 24, .12);
+        }
+
+        .case-switch.active {
+            color: #0d0803;
+            background: var(--gold);
+        }
+
+        .case-stage {
+            min-height: 520px;
+            padding: 46px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
+            gap: 42px;
+            align-items: end;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(232, 154, 24, .22);
+            border-radius: 26px;
+            background:
+                linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)),
+                url('../assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat;
+            box-shadow: var(--shadow);
+        }
+
+        .case-stage::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 78% 22%, rgba(232,154,24,.2), transparent 28%);
+            pointer-events: none;
+        }
+
+        .case-stage > * { position: relative; z-index: 1; }
+
+        .case-stage h2 {
+            max-width: 12ch;
+            margin: 10px 0 18px;
+            font-size: clamp(3rem, 7vw, 6.3rem);
+        }
+
+        .case-stage-copy {
+            max-width: 680px;
+            color: rgba(245,240,231,.82);
+            font-size: 1.05rem;
+            line-height: 1.65;
+        }
+
+        .case-proof {
+            padding: 26px;
+            border: 1px solid rgba(232,154,24,.24);
+            border-radius: 20px;
+            background: rgba(12,7,3,.84);
+            backdrop-filter: blur(14px);
+        }
+
+        .case-proof-label {
+            color: var(--gold);
+            font-size: .66rem;
+            font-weight: 900;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .case-proof-metric {
+            margin: 10px 0 14px;
+            color: var(--text);
+            font-size: clamp(1.7rem, 3vw, 2.7rem);
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .case-proof-note {
+            color: var(--muted);
+            font-size: .92rem;
+            line-height: 1.55;
+        }
+
+        .case-stage-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .record-disclosure {
+            margin-top: 36px;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 24px;
+        }
+
+        .record-disclosure > summary {
+            color: var(--gold);
+            cursor: pointer;
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .hero-panel,
+        .sidebar-panel,
+        .study-card,
+        .bottom-panel {
+            border-radius: 28px;
+            border: 1px solid var(--line-soft);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+        }
+
+        .hero-panel {
+            padding: 34px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 26px 26px;
+            opacity: 0.28;
+            pointer-events: none;
+        }
+
+        .hero-panel > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow,
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--gold);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            letter-spacing: -0.04em;
+            line-height: 0.98;
+        }
+
+        h1 {
+            max-width: 11ch;
+            font-size: clamp(3rem, 6vw, 5.6rem);
+        }
+
+        .hero-copy {
+            max-width: 58rem;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 1.08rem;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .sidebar-panel {
+            padding: 26px;
+        }
+
+        .sidebar-panel h2 {
+            margin-bottom: 14px;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-panel p,
+        .sidebar-panel li {
+            color: var(--muted);
+            font-size: 0.96rem;
+            line-height: 1.7;
+        }
+
+        .sidebar-panel ul {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .studies {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .study-card {
+            padding: 22px;
+        }
+
+        .study-card.featured {
+            position: relative;
+            background:
+                radial-gradient(circle at top right, rgba(214, 170, 73, 0.14), transparent 34%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+            border-color: rgba(214, 170, 73, 0.24);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.26);
+        }
+
+        .study-card.featured::after {
+            content: "Inspectable Artifact";
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(214, 170, 73, 0.14);
+            border: 1px solid rgba(214, 170, 73, 0.28);
+            color: var(--gold);
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .study-tag {
+            display: inline-flex;
+            margin-bottom: 16px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: var(--gold-soft);
+            color: var(--gold);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .study-card h3 {
+            font-size: 1.45rem;
+            margin-bottom: 12px;
+        }
+
+        .metric {
+            display: inline-block;
+            margin-top: 16px;
+            color: var(--gold);
+            font-size: 0.84rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .artifact-panel {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(214, 170, 73, 0.18);
+            background: linear-gradient(180deg, rgba(214, 170, 73, 0.08), rgba(255, 255, 255, 0.02));
+        }
+
+        .artifact-panel strong {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: var(--text);
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .artifact-panel p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        .artifact-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .artifact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(214, 170, 73, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .artifact-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(214, 170, 73, 0.42);
+            background: rgba(214, 170, 73, 0.1);
+        }
+
+        .study-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .study-row {
+            padding-top: 10px;
+            border-top: 1px solid var(--line-soft);
+        }
+
+        .study-row strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--text);
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .study-row span {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .bottom-panel {
+            padding: 24px;
+        }
+
+        .bottom-panel p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .pill {
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: center;
+            padding: 0 24px 24px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .studies,
+            .bottom-grid,
+            .footer {
+                grid-template-columns: 1fr;
+                display: grid;
+            }
+
+            .case-stage {
+                grid-template-columns: 1fr;
+                min-height: 620px;
+            }
+
+            .footer {
+                padding-top: 18px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .shell {
+                width: min(calc(100% - 16px), 1240px);
+                margin: 8px auto 18px;
+            }
+
+            .topbar,
+            .content,
+            .footer {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-panel,
+            .sidebar-panel,
+            .study-card,
+            .bottom-panel {
+                padding: 20px;
+            }
+
+            .case-switcher {
+                grid-template-columns: 1fr;
+            }
+
+            .case-stage {
+                min-height: 680px;
+                padding: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <div class="frame">
+            <header class="topbar">
+                <div class="brand">
+                    <div class="badge">CS</div>
+                    <div class="brand-copy">
+                        <strong>Leon Basin Case Studies</strong>
+                        <span>Operator-grade proof for founders, CEOs, hiring managers, and technical teams.</span>
+                    </div>
+                </div>
+                <div class="top-links">
+                    <a class="accent" href="https://basinleon.github.io/">Main Portfolio</a>
+                    <a href="https://basinleon.github.io/docs/">Operator Journal</a>
+                    <a href="mailto:lbasin23@gmail.com">Contact</a>
+                </div>
+            </header>
+
+            <main class="content">
+                <section class="hero">
+                    <div class="hero-panel">
+                        <div class="eyebrow">Proof Layer / Three Operating Decisions</div>
+                        <h1>The work is easier to trust when you can see the decision.</h1>
+                        <p class="hero-copy">
+                            Each case begins where activity stopped being useful. The proof is not a heroic story. It is the judgment that changed the system, the constraint it survived, and the measurable result that followed.
+                        </p>
+                        <div class="hero-actions">
+                            <a class="button primary" href="#case-navigator">Explore the cases</a>
+                            <a class="button" href="https://basinleon.github.io/#architecture">Inspect the systems</a>
+                        </div>
+                    </div>
+
+                    <aside class="sidebar-panel">
+                        <div class="kicker">The Test</div>
+                        <h2>Can another operator understand why it worked?</h2>
+                        <p>A result without its decision logic is decoration. These records preserve the chain from problem to intervention to outcome.</p>
+                        <ul>
+                            <li>Problem framing under real constraints</li>
+                            <li>System design instead of activity inflation</li>
+                            <li>Measured outcomes tied to routing and execution</li>
+                            <li>Inspectable proof when the artifact is shareable</li>
+                            <li>Reflection on what I would improve next</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section id="case-navigator">
+                    <div class="case-switcher" aria-label="Choose a case study">
+                        <button class="case-switch active" type="button" data-case="sentinel">Sentinel / Pipeline</button>
+                        <button class="case-switch" type="button" data-case="delight">Delight / Routing</button>
+                        <button class="case-switch" type="button" data-case="aurora">Aurora / AI Signal</button>
+                    </div>
+                    <article class="case-stage" id="case-stage">
+                        <div>
+                            <div class="eyebrow" id="case-kicker">Project::Sentinel / Systems Construction</div>
+                            <h2 id="case-title">Turn noise into qualified motion.</h2>
+                            <p class="case-stage-copy" id="case-copy">Enterprise security demand was buried under noisy prospecting and inconsistent qualification. The decision was to stop treating every account as one motion and build two lanes with explicit rules, ownership, and signal preservation.</p>
+                            <div class="case-stage-actions">
+                                <a class="button primary" id="case-link" href="#sentinel">Read the operating record</a>
+                                <a class="button" href="/work-with-me/">Request a walkthrough</a>
+                            </div>
+                        </div>
+                        <aside class="case-proof">
+                            <div class="case-proof-label">Measured outcome</div>
+                            <div class="case-proof-metric" id="case-metric">160% YoY pipeline growth</div>
+                            <div class="case-proof-note" id="case-note">A cleaner qualification and routing system increased pipeline velocity without using headcount to absorb the noise.</div>
+                        </aside>
+                    </article>
+                </section>
+
+                <details class="record-disclosure">
+                    <summary>Open all three operating records</summary>
+                <section class="studies">
+                    <article class="study-card" id="sentinel">
+                        <div class="study-tag">Systems Construction</div>
+                        <h3>Project::Sentinel</h3>
+                        <div class="study-list">
+                            <div class="study-row">
+                                <strong>Problem</strong>
+                                <span>Enterprise security demand was buried under noisy prospecting and inconsistent qualification.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Constraints</strong>
+                                <span>Lean team, strict ICP, and no headcount expansion to absorb the mess manually.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>System Design</strong>
+                                <span>Built a two-lane routing model with rule-based qualification, cleaner ownership, and stronger signal preservation.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Result</strong>
+                                <span>Built a $2M enterprise pipeline with steadier monthly velocity and less wasted SDR effort.</span>
+                            </div>
+                        </div>
+                        <div class="metric">160% Pipeline Growth / 77 Meetings Per Month</div>
+                    </article>
+
+                    <article class="study-card" id="delight">
+                        <div class="study-tag">Scale Architecture</div>
+                        <h3>Project::Delight</h3>
+                        <div class="study-list">
+                            <div class="study-row">
+                                <strong>Problem</strong>
+                                <span>One-size-fits-all routing logic was slowing both enterprise and SMB motion at the same time.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Constraints</strong>
+                                <span>Existing stack only. No extra hiring budget. No appetite for heavy operational drag.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>System Design</strong>
+                                <span>Split enterprise and SMB into parallel lanes with shared governance instead of shared confusion.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Result</strong>
+                                <span>Scaled inbound and outbound coverage more cleanly without adding headcount to compensate.</span>
+                            </div>
+                        </div>
+                        <div class="metric">Bifurcated Routing / Scaled Efficiently</div>
+                    </article>
+
+                    <article class="study-card featured" id="aurora">
+                        <div class="study-tag">AI Signal Ops</div>
+                        <h3>Project::Aurora</h3>
+                        <div class="study-list">
+                            <div class="study-row">
+                                <strong>Problem</strong>
+                                <span>Technical account briefs took too long to produce and signal quality varied too much across researchers.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Constraints</strong>
+                                <span>F500 security accounts, high accuracy threshold, and no room for generic AI output.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>System Design</strong>
+                                <span>Designed an AI-assisted research pipeline with confidence-gated brief generation, operator review logic, and a clearer signal-to-prediction model for high-trust accounts.</span>
+                            </div>
+                            <div class="study-row">
+                                <strong>Result</strong>
+                                <span>Reached 92% intent accuracy while improving research throughput roughly 4x.</span>
+                            </div>
+                        </div>
+                        <div class="metric">92% Intent Accuracy / 4x Research Efficiency</div>
+                        <div class="artifact-panel">
+                            <strong>Architecture Review</strong>
+                            <p>The public record shows the decision and measured result. Deeper operating specifications stay private and are reviewed only when the work, permission, and context make that appropriate.</p>
+                            <div class="artifact-actions">
+                                <a class="artifact-link" style="background: var(--gold); color: #000; border: none; font-weight: 900;" href="/work-with-me/">Request a Review</a>
+                                <a class="artifact-link" href="../#architecture">Inspect More Systems</a>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                </details>
+
+                <section class="bottom-grid">
+                    <article class="bottom-panel">
+                        <div class="kicker">Context</div>
+                        <h2>What these studies are really showing</h2>
+                        <p>Across different companies and stages, the pattern is consistent: I am usually brought into a motion where signal is noisy, ownership is blurry, and too much of the system depends on manual recovery work. The fix is rarely more activity. The fix is better interpretation, cleaner routing, and a model people can actually understand.</p>
+                        <div class="pill-grid">
+                            <div class="pill">Google</div>
+                            <div class="pill">Obvio.ai</div>
+                            <div class="pill">SurveyMonkey</div>
+                            <div class="pill">Fudo Security</div>
+                            <div class="pill">Sense</div>
+                            <div class="pill">EtherAI</div>
+                            <div class="pill">TalSmart</div>
+                        </div>
+                    </article>
+
+                    <article class="bottom-panel">
+                        <div class="kicker">Next Step</div>
+                        <h2>If you want the deeper proof</h2>
+                        <p>The case studies are the entry point. The systems portfolio and operator journal show the public machinery underneath: frameworks, lecture models, routing logic, and working prototypes that make the work easier to pressure-test.</p>
+                        <div class="hero-actions">
+                            <a class="button primary" href="https://basinleon.github.io/#architecture">Inspect Systems</a>
+                            <a class="button" href="https://basinleon.github.io/docs/">Read Journal</a>
+                            <a class="button" href="/work-with-me/">Request Architecture Review</a>
+                        </div>
+                    </article>
+                </section>
+            </main>
+
+            <footer class="footer">
+                <div>Leon Basin / GTM systems, operator design, and revenue architecture</div>
+                <div class="footer-links">
+                    <a href="https://basinleon.github.io/">Portfolio</a>
+                    <a href="https://basinleon.github.io/docs/">Journal</a>
+                    <a href="https://linkedin.com/in/leonbasin">LinkedIn</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script>
+        const caseStates = {
+            sentinel: {
+                kicker: 'Project::Sentinel / Systems Construction',
+                title: 'Turn noise into qualified motion.',
+                copy: 'Enterprise security demand was buried under noisy prospecting and inconsistent qualification. The decision was to stop treating every account as one motion and build two lanes with explicit rules, ownership, and signal preservation.',
+                metric: '160% YoY pipeline growth',
+                note: 'A cleaner qualification and routing system increased pipeline velocity without using headcount to absorb the noise.',
+                href: '#sentinel',
+                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
+            },
+            delight: {
+                kicker: 'Project::Delight / Scale Architecture',
+                title: 'Separate the motions without splitting the company.',
+                copy: 'Enterprise and SMB were moving through the same routing logic, slowing both. The intervention created parallel lanes with shared governance, so each motion could move at its own speed without creating a second operating system.',
+                metric: 'Two motions, one governance layer',
+                note: 'Coverage scaled more cleanly using the existing stack and team, without hiring people to compensate for confused routing.',
+                href: '#delight',
+                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/revenue-blueprint.png') center / cover no-repeat"
+            },
+            aurora: {
+                kicker: 'Project::Aurora / AI Signal Operations',
+                title: 'Make AI earn operator trust.',
+                copy: 'Technical account briefs were slow and uneven. The system introduced confidence gates, explicit review logic, and a shared signal-to-prediction model instead of allowing generic AI output to masquerade as research.',
+                metric: '92% intent accuracy / 4x throughput',
+                note: 'Higher research speed did not require lowering the accuracy threshold for high-trust enterprise accounts.',
+                href: '#aurora',
+                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/nexus_agents_ui.png') center / cover no-repeat"
+            }
+        };
+
+        document.querySelectorAll('.case-switch').forEach(button => {
+            button.addEventListener('click', () => {
+                const state = caseStates[button.dataset.case];
+                document.querySelectorAll('.case-switch').forEach(item => item.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById('case-kicker').textContent = state.kicker;
+                document.getElementById('case-title').textContent = state.title;
+                document.getElementById('case-copy').textContent = state.copy;
+                document.getElementById('case-metric').textContent = state.metric;
+                document.getElementById('case-note').textContent = state.note;
+                document.getElementById('case-link').href = state.href;
+                document.getElementById('case-stage').style.background = state.background;
+            });
+        });
+
+        document.getElementById('case-link').addEventListener('click', () => {
+            document.querySelector('.record-disclosure').open = true;
+        });
+    </script>
+</body>
+</html>
