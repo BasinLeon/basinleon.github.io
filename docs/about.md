@@ -40,11 +40,10 @@ The best work is not just functional. It is legible. Sales, marketing, RevOps, p
 
 ## Selected Outcomes
 
-- Contributed to $35M+ in pipeline by rebuilding execution architecture instead of layering on more activity
 - Scaled pipeline 160% year over year by redesigning channel and routing infrastructure
 - Generated $424K in annual operating savings through workflow redesign and automation
 - Reduced onboarding and ramp from 90 days to 5 days through systems-led enablement design
-- Supported enterprise revenue portfolios exceeding $300M across strategic account environments
+- Built and supported pipeline, expansion, and operating systems across enterprise and founder-led environments
 
 ## Where This Gets Pressure-Tested
 
