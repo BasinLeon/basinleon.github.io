@@ -1365,6 +1365,158 @@ body {
     color: #0d0803;
     background: var(--gold-primary);
 }
+.world-map {
+    margin: 0 0 34px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 78% 12%, rgba(224,168,93,.16), transparent 26%),
+        radial-gradient(circle at 18% 82%, rgba(143,165,142,.14), transparent 30%),
+        rgba(255,255,255,.025);
+}
+.world-map-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-end;
+    margin-bottom: 18px;
+}
+.world-map-kicker {
+    color: var(--gold-light);
+    font: 700 .62rem 'JetBrains Mono', monospace;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+.world-map-title {
+    margin: 4px 0 0;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.02;
+}
+.world-map-note {
+    max-width: 360px;
+    color: var(--text-secondary);
+    font-size: .92rem;
+    line-height: 1.5;
+}
+.world-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+.world-card {
+    display: flex;
+    min-height: 172px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    background: rgba(12,14,12,.68);
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.world-card:hover,
+.world-card.active {
+    transform: translateY(-2px);
+    border-color: rgba(224,168,93,.42);
+    background: rgba(224,168,93,.075);
+}
+.world-card-label {
+    color: var(--sage);
+    font: 700 .56rem 'JetBrains Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+.world-card-title {
+    margin: 5px 0 7px;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 500;
+    line-height: 1;
+}
+.world-card-desc {
+    color: var(--text-secondary);
+    font-size: .86rem;
+    line-height: 1.42;
+}
+.world-card-action {
+    color: var(--gold-light);
+    font: 700 .58rem 'JetBrains Mono', monospace;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.world-itinerary {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 12px;
+}
+.itinerary-panel,
+.signal-panel {
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.075);
+    border-radius: 18px;
+    background: rgba(255,255,255,.025);
+}
+.itinerary-panel h2,
+.signal-panel h2 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.28rem;
+    font-weight: 500;
+}
+.itinerary-panel p,
+.signal-panel p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: .9rem;
+    line-height: 1.5;
+}
+.itinerary-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+.itinerary-links a,
+.signal-reset {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 13px;
+    border: 1px solid rgba(224,168,93,.25);
+    border-radius: 999px;
+    color: var(--text-primary);
+    background: rgba(224,168,93,.055);
+    text-decoration: none;
+    font: 700 .56rem 'JetBrains Mono', monospace;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.signal-reset {
+    margin-top: 14px;
+    cursor: pointer;
+}
+.signal-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+.signal-list li {
+    margin: 8px 0;
+    color: var(--text-secondary);
+    font-size: .88rem;
+}
+.signal-list strong { color: var(--text-primary); }
 .archive-disclosure { margin-top: 24px; }
 .archive-disclosure > summary {
     cursor: pointer;
@@ -1429,6 +1581,8 @@ footer { border-color: rgba(255,255,255,.07); }
     .main-content, .sidebar { grid-column: 1; grid-row: auto; }
     .sidebar { position: static; max-height: none; overflow: visible; order: 2; }
     .featured-main { min-height: 390px; padding: 28px; }
+    .world-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .world-itinerary { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
     html, body { max-width: 100%; overflow-x: hidden; }
@@ -1464,6 +1618,11 @@ footer { border-color: rgba(255,255,255,.07); }
     .featured-excerpt { font-size: 1rem; line-height: 1.45; }
     .featured-meta { font-size: .58rem; line-height: 1.5; }
     .reading-doors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .world-map { padding: 18px; border-radius: 18px; }
+    .world-map-header { display: block; }
+    .world-map-note { margin-top: 10px; }
+    .world-grid { grid-template-columns: 1fr; }
+    .world-card { min-height: 142px; }
     .dual-section, .post-grid { grid-template-columns: 1fr; }
     .dual-section { gap: 20px; margin-bottom: 38px; }
     .post-card { min-height: 0; padding: 21px 0; }
@@ -1696,6 +1855,69 @@ footer { border-color: rgba(255,255,255,.07); }
 <h1 class="masthead-title">The Archive</h1>
 <p class="masthead-subtitle">Field notes, fragments, and systems I keep returning to.</p>
 </header>
+<section class="world-map" aria-labelledby="world-map-title">
+<div class="world-map-header">
+<div>
+<div class="world-map-kicker">Map of the archive</div>
+<h2 class="world-map-title" id="world-map-title">Four rooms. One recurring question.</h2>
+</div>
+<p class="world-map-note">The archive is not chronological first. It is a set of rooms: operator, builder, human, and signal. Pick the room that matches what you are trying to understand.</p>
+</div>
+<div class="world-grid">
+<button class="world-card active" type="button" data-world-filter="all" data-world-title="Latest field notes" data-world-copy="Start here if you want the current surface: the latest essays, useful fragments, and whatever has been recently pulled back into view.">
+<span class="world-card-label">Entry</span>
+<span>
+<strong class="world-card-title">Latest Field Notes</strong>
+<span class="world-card-desc">The front door. Newest essays, live questions, fresh signal.</span>
+</span>
+<span class="world-card-action">Open latest</span>
+</button>
+<button class="world-card" type="button" data-world-filter="gtm" data-world-title="Operator room" data-world-copy="For founders, GTM teams, and hiring managers. This path follows revenue architecture, pipeline leakage, routing, ownership, and proof.">
+<span class="world-card-label">Room 01</span>
+<span>
+<strong class="world-card-title">Operator Room</strong>
+<span class="world-card-desc">Revenue architecture, GTM systems, routing, proof.</span>
+</span>
+<span class="world-card-action">Trace motion</span>
+</button>
+<button class="world-card" type="button" data-world-filter="ai" data-world-title="Builder room" data-world-copy="For people trying to see the system underneath the writing: interfaces, AI loops, agent thinking, tooling, and memory.">
+<span class="world-card-label">Room 02</span>
+<span>
+<strong class="world-card-title">Builder Room</strong>
+<span class="world-card-desc">Interfaces, agents, memory loops, prototypes.</span>
+</span>
+<span class="world-card-action">Inspect build</span>
+</button>
+<button class="world-card" type="button" data-world-filter="creative" data-world-title="Human room" data-world-copy="For the reflective lane: language, fatherhood, memory, family, rooms, silence, and the observer beneath the systems.">
+<span class="world-card-label">Room 03</span>
+<span>
+<strong class="world-card-title">Human Room</strong>
+<span class="world-card-desc">Language, memory, family, fragments, meaning.</span>
+</span>
+<span class="world-card-action">Read inward</span>
+</button>
+</div>
+<div class="world-itinerary">
+<div class="itinerary-panel">
+<h2 id="world-itinerary-title">Latest field notes</h2>
+<p id="world-itinerary-copy">Start here if you want the current surface: the latest essays, useful fragments, and whatever has been recently pulled back into view.</p>
+<div class="itinerary-links" aria-label="Recommended routes">
+<a href="/case-studies/">Proof layer</a>
+<a href="/docs/best-of/">Best of</a>
+<a href="/work-with-me/">Start a conversation</a>
+</div>
+</div>
+<div class="signal-panel">
+<h2>Your trail</h2>
+<p>The archive remembers only on this device. Read a few pieces and it starts showing the themes you keep circling.</p>
+<ul class="signal-list" id="world-signal-list">
+<li><strong>0</strong> essays explored.</li>
+<li>No pattern yet. Good. Begin anywhere.</li>
+</ul>
+<button class="signal-reset" type="button" id="reset-trail">Reset trail</button>
+</div>
+</div>
+</section>
 <!-- Featured Hero -->
 <section class="featured-hero">
 <a class="featured-link" id="reading-path-link" href="https://open.substack.com/pub/basinandassociates/p/the-archive-was-empty?r=39727y&amp;utm_campaign=post&amp;utm_medium=web" rel="noopener" target="_blank">
@@ -2030,9 +2252,8 @@ footer { border-color: rgba(255,255,255,.07); }
             const count = document.getElementById('mirror-count');
             const themes = document.getElementById('mirror-themes');
             const message = document.getElementById('mirror-message');
-            if (!count || !themes || !message) return;
+            const worldSignalList = document.getElementById('world-signal-list');
 
-            count.textContent = trail.length;
             const tagCounts = new Map();
             trail.forEach(item => {
                 if (!item || typeof item === 'string') return;
@@ -2042,15 +2263,35 @@ footer { border-color: rgba(255,255,255,.07); }
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 3)
                 .map(([tag]) => tag);
-            themes.textContent = topThemes.length ? topThemes.join(' · ') : 'No pattern yet';
-            if (trail.length === 0) {
-                message.textContent = 'Read what pulls you. The archive will quietly remember your path on this device and reveal the ideas you keep returning to.';
-            } else if (trail.length < 3) {
-                message.textContent = 'Your trail has begun. A few more stories will make the recurring ideas visible.';
-            } else {
-                message.textContent = `You keep returning to ${topThemes.join(', ') || 'a shape that has not named itself yet'}. The archive is beginning to answer back.`;
+
+            if (count && themes && message) {
+                count.textContent = trail.length;
+                themes.textContent = topThemes.length ? topThemes.join(' · ') : 'No pattern yet';
+                if (trail.length === 0) {
+                    message.textContent = 'Read what pulls you. The archive will quietly remember your path on this device and reveal the ideas you keep returning to.';
+                } else if (trail.length < 3) {
+                    message.textContent = 'Your trail has begun. A few more stories will make the recurring ideas visible.';
+                } else {
+                    message.textContent = `You keep returning to ${topThemes.join(', ') || 'a shape that has not named itself yet'}. The archive is beginning to answer back.`;
+                }
+            }
+
+            if (worldSignalList) {
+                const themeText = topThemes.length
+                    ? `Recurring signal: ${topThemes.join(' / ')}.`
+                    : 'No pattern yet. Good. Begin anywhere.';
+                worldSignalList.innerHTML = `
+                    <li><strong>${trail.length}</strong> essay${trail.length === 1 ? '' : 's'} explored.</li>
+                    <li>${themeText}</li>
+                `;
             }
         }
+
+        document.getElementById('reset-trail')?.addEventListener('click', () => {
+            localStorage.removeItem(TRAIL_KEY);
+            updateMirror();
+            renderPosts();
+        });
 
         document.getElementById('recover-story')?.addEventListener('click', () => {
             const read = new Set(getReadingTrail().map(item => typeof item === 'string' ? item : item.url));
@@ -2134,6 +2375,26 @@ footer { border-color: rgba(255,255,255,.07); }
                 setReadingPath(filter);
                 const matchingBubble = document.querySelector(`.cat-bubble[data-filter="${filter}"]`);
                 if (matchingBubble) matchingBubble.click();
+            });
+        });
+
+        document.querySelectorAll('.world-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.world-card').forEach(item => item.classList.remove('active'));
+                card.classList.add('active');
+                const filter = card.dataset.worldFilter || 'all';
+                const title = document.getElementById('world-itinerary-title');
+                const copy = document.getElementById('world-itinerary-copy');
+                if (title) title.textContent = card.dataset.worldTitle || card.textContent.trim();
+                if (copy) copy.textContent = card.dataset.worldCopy || '';
+                const door = document.querySelector(`.reading-door[data-door-filter="${filter}"]`);
+                if (door) {
+                    door.click();
+                } else {
+                    setReadingPath(filter);
+                    const matchingBubble = document.querySelector(`.cat-bubble[data-filter="${filter}"]`);
+                    if (matchingBubble) matchingBubble.click();
+                }
             });
         });
 
