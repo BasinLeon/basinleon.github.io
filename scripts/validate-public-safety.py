@@ -32,8 +32,14 @@ FORBIDDEN_EXACT = {
 
 TEXT_PATTERNS = {
     "absolute local user path": re.compile(r"/Users/" + r"basin/", re.I),
+    "AWS access key": re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
+    "GitHub token": re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{30,}\b|github_pat_[A-Za-z0-9_]{60,}\b"),
+    "Google API key": re.compile(r"\bAIza[0-9A-Za-z_-]{35}\b"),
+    "OpenAI API key": re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{32,}\b"),
+    "Slack token": re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{20,}\b"),
     "private key": re.compile(r"BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY"),
     "Telegram token assignment": re.compile(r"TELEGRAM_(?:BOT_TOKEN|CHAT_ID)\s*=", re.I),
+    "Telegram bot token": re.compile(r"\b\d{8,12}:AA[0-9A-Za-z_-]{30,}\b"),
     "US phone number": re.compile(r"(?<!\d)(?:\+?1[\s().-]*)?\d{3}[\s().-]*\d{3}[\s.-]*\d{4}(?!\d)"),
     "browser-side passcode": re.compile(r"(?:passcode|password)\s*(?:===|==|:|=)\s*[\"'][^\"']+[\"']", re.I),
 }
