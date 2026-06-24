@@ -2,7 +2,7 @@
 layout: home
 title: Leon Basin Operator Journal
 intro: Writing for founders, hiring managers, operators, and technical teams who want to inspect how GTM systems are actually designed, explained, and improved.
-deck: This is the public proof layer behind basinleon.github.io. It is where I publish operator memos, reusable frameworks, and field notes that make the work legible enough to pressure-test, teach, and adopt.
+deck: This is the public proof layer behind basinleon.github.io. It is where I publish operator memos, reusable frameworks, and field notes that make the work legible enough to inspect, teach, and adopt.
 ---
 
 ## What You’ll Find Here
@@ -15,7 +15,7 @@ deck: This is the public proof layer behind basinleon.github.io. It is where I p
 <div class="intent-grid">
   <a class="intent-card" href="{{ '/start-here/' | relative_url }}">
     <span class="intent-label">For founders</span>
-    <strong>See where leverage comes from</strong>
+    <strong>See where the motion changes</strong>
     <p>Start with the reading path for teams trying to scale without adding chaos, headcount bloat, or fuzzy ownership.</p>
   </a>
   <a class="intent-card" href="{{ '/best-of/' | relative_url }}">
@@ -32,6 +32,6 @@ deck: This is the public proof layer behind basinleon.github.io. It is where I p
 
 ## Why It Matters
 
-This journal is not content marketing for its own sake. It is a working layer between the private Obsidian brain and the public portfolio. The goal is simple: make the thinking inspectable enough that a founder, CEO, hiring manager, or operator can tell whether the work is real.
+This journal is not content marketing for its own sake. It is the public layer behind the portfolio. The goal is simple: make the thinking inspectable enough that a founder, CEO, hiring manager, or operator can tell whether the work is real.
 
 <a class="share-sticky" href="{{ '/share/' | relative_url }}" aria-label="Open share kit">Share Kit</a>

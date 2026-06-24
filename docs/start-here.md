@@ -35,7 +35,7 @@ Start with [Literary]({{ '/literary/' | relative_url }}). That side of the journ
 
 ## Who This Is For
 
-- Founders and CEOs who want leverage without more process drag
+- Founders and CEOs who want cleaner motion without more process drag
 - Hiring managers evaluating systems judgment, communication, and range
 - Operators building AI-assisted GTM systems
 - Engineers and technical teams who want to inspect the logic behind the motion
@@ -47,7 +47,7 @@ Start with [Literary]({{ '/literary/' | relative_url }}). That side of the journ
 - Playbooks with concrete operating steps
 - Case-style writing tied to real execution decisions
 - Notes that read like operator memos, class notes, and working doctrine
-- A public layer that stays useful without oversharing private operating detail
+- A public layer that stays useful without exposing private operating detail
 
 ## Canonical Post Policy
 
