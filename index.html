@@ -145,6 +145,76 @@
             letter-spacing: -0.01em;
         }
 
+        body.theme-night {
+            --bg-premium: #090806;
+            --bg-card: #12100d;
+            --text-main: #f6efe3;
+            --text-dim: #b9b0a2;
+            --border-soft: rgba(212, 175, 55, 0.2);
+            --shadow-premium: 0 30px 70px rgba(0,0,0,0.34);
+            background: radial-gradient(circle at 18% 0%, #241704 0%, #090806 44%, #030303 100%);
+        }
+
+        body.theme-night nav {
+            background: rgba(8, 7, 5, 0.94);
+        }
+
+        body.theme-night .nav-logo,
+        body.theme-night .nav-links a,
+        body.theme-night .section-label,
+        body.theme-night .hero-subtitle,
+        body.theme-night .hero-role-strip,
+        body.theme-night .cta-note,
+        body.theme-night .metric-context {
+            color: #f6efe3;
+        }
+
+        body.theme-night .hero-copy-panel,
+        body.theme-night .hero-proof-panel,
+        body.theme-night .stat-card,
+        body.theme-night .value-card,
+        body.theme-night .proof-card,
+        body.theme-night .audience-pill,
+        body.theme-night .experience-switcher {
+            background: rgba(18, 16, 13, 0.88);
+            border-color: rgba(212, 175, 55, 0.18);
+        }
+
+        body.theme-night .btn-outline,
+        body.theme-night .experience-tab {
+            color: #f6efe3;
+        }
+
+        body.theme-night .experience-tab.active {
+            background: rgba(212, 175, 55, 0.18);
+            color: #fff;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 120;
+            border: 1px solid rgba(184, 134, 11, 0.34);
+            border-radius: 999px;
+            padding: 0.75rem 0.95rem;
+            background: rgba(255, 255, 255, 0.88);
+            color: #111;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.14);
+            backdrop-filter: blur(14px);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        body.theme-night .theme-toggle {
+            background: rgba(12, 10, 8, 0.88);
+            color: #f6efe3;
+        }
+
         .skip-link {
             position: absolute;
             left: 1rem;
@@ -764,7 +834,7 @@
             grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
             gap: clamp(1.5rem, 5vw, 4rem);
             align-items: end;
-            min-height: 56vh;
+            min-height: 48vh;
             padding: clamp(2rem, 6vw, 5rem);
             border-radius: 2rem;
             background: #050505;
@@ -824,6 +894,56 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.72rem;
             letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .experience-body {
+            margin-top: 1.2rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .experience-card {
+            min-height: 9rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.055);
+        }
+
+        .experience-card strong {
+            display: block;
+            margin-bottom: 0.55rem;
+            color: var(--gold-light);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .experience-card span {
+            display: block;
+            color: #e7e7e7;
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+
+        .experience-card.locked {
+            position: relative;
+            border-style: dashed;
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.12), rgba(255, 255, 255, 0.035));
+        }
+
+        .experience-card.locked::after {
+            content: "private";
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            color: rgba(255, 255, 255, 0.48);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
@@ -972,6 +1092,10 @@
                 grid-template-columns: 1fr;
                 min-height: auto;
                 padding: 2rem 1.35rem;
+            }
+
+            .experience-body {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1418,6 +1542,7 @@
 <body>
 
 <a class="skip-link" href="#main-content">Skip to Main Content</a>
+<button class="theme-toggle" type="button" id="theme-toggle" aria-label="Toggle day and night site mode">Night mode</button>
 
 <nav>
     <a href="/" class="nav-logo">LEON BASIN</a>
@@ -1447,9 +1572,9 @@
                     <span class="hero-badge"><span class="vibrant-dot"></span>Founding GTM Member, Business Development at Obvio.ai</span>
                     <h1>I build the system between signal and revenue.</h1>
                     <div class="hero-subtitle">Pipeline architecture // lead generation // outbound execution</div>
-                    <div class="hero-role-strip">Ex-Google, HP, NetApp, SurveyMonkey, Sense, and Fudo Security. Current focus: pipeline architecture and business development at Obvio.ai.</div>
+                    <div class="hero-role-strip">Ex-Google, HP, NetApp, SurveyMonkey, Sense, and Fudo Security. Current focus: public-sector GTM and pipeline buildout at Obvio.ai.</div>
                     <p class="manifesto">
-                        I turn noisy markets into cleaner account lists, sharper outbound, better handoffs, and pipeline a team can actually operate.
+                        I turn messy market signal into account strategy, outbound motion, cleaner handoffs, and pipeline a team can trust.
                     </p>
 
                     <div class="cta-group">
@@ -1457,7 +1582,7 @@
                         <a href="https://basinleon.github.io/basin-nexus/" class="btn btn-outline">Inspect Systems</a>
                         <a href="mailto:lbasin23@gmail.com?subject=Leon%20Basin%20Intro" class="btn btn-outline">Contact</a>
                     </div>
-                    <p class="cta-note">Start with proof, then inspect the operating models. Direct line: <a href="mailto:lbasin23@gmail.com" style="color: var(--gold-primary); font-weight: 700;">lbasin23@gmail.com</a></p>
+                    <p class="cta-note">Start with proof. If the logic holds up, reach out directly: <a href="mailto:lbasin23@gmail.com" style="color: var(--gold-primary); font-weight: 700;">lbasin23@gmail.com</a></p>
                 </div>
 
                 <aside class="hero-proof-panel" aria-label="Selected GTM systems proof">
@@ -1466,13 +1591,13 @@
                     </div>
                     <div class="hero-proof-content">
                         <div class="hero-proof-kicker">Inspectable build layer</div>
-                        <h2>Working routing logic, dashboards, and operating loops.</h2>
-                        <p>Current work includes pipeline architecture, lead generation, outbound, and direct business development for a public-sector motion.</p>
+                        <h2>Working routing logic, research loops, and pipeline systems.</h2>
+                        <p>Current work spans territory design, contact research, outbound execution, and direct business development for public-sector GTM.</p>
                         <div class="hero-proof-metrics">
-                            <div class="hero-proof-metric"><strong>01</strong><span>territory design</span></div>
-                            <div class="hero-proof-metric"><strong>02</strong><span>contact research</span></div>
-                            <div class="hero-proof-metric"><strong>03</strong><span>outbound motion</span></div>
-                            <div class="hero-proof-metric"><strong>04</strong><span>pipeline feedback</span></div>
+                            <div class="hero-proof-metric"><strong>01</strong><span>territory map</span></div>
+                            <div class="hero-proof-metric"><strong>02</strong><span>contact logic</span></div>
+                            <div class="hero-proof-metric"><strong>03</strong><span>outbound system</span></div>
+                            <div class="hero-proof-metric"><strong>04</strong><span>feedback loop</span></div>
                         </div>
                     </div>
                 </aside>
@@ -1503,7 +1628,12 @@
                     <h2>Signal into motion.</h2>
                 </div>
                 <div class="experience-lead-copy">
-                    I read where commercial systems lose meaning between market signal, human judgment, and execution. Then I rebuild the handoffs so teams can move.
+                    I look for the place commercial systems lose meaning: weak signal, unclear ownership, fragile handoffs, or too much manual recovery. Then I rebuild the motion so teams can move with less guessing.
+                    <div class="experience-body">
+                        <div class="experience-card"><strong>Diagnose</strong><span>Find where the motion is leaking before asking the team to do more activity.</span></div>
+                        <div class="experience-card"><strong>Rebuild</strong><span>Turn loose signal into routing, ownership, and operating cadence.</span></div>
+                        <div class="experience-card locked"><strong>Proof room</strong><span>Client-specific screenshots and notes stay behind the curtain. Public pages show the pattern, not private residue.</span></div>
+                    </div>
                     <div class="experience-links">
                         <a href="/case-studies/">See proof</a>
                         <a href="#architecture">Inspect systems</a>
@@ -1520,7 +1650,12 @@
                     <h2>The language came later.</h2>
                 </div>
                 <div class="experience-lead-copy">
-                    Before I could read the menu, I learned to read the room. The writing follows that instinct through movement, technology, family, fatherhood, and the long work of being understood.
+                    The writing is the slow room. It is where systems, memory, work, family, and voice get tested without turning everything into a pitch.
+                    <div class="experience-body">
+                        <div class="experience-card"><strong>Best of</strong><span>A shorter path through the archive for readers who want the cleanest signal first.</span></div>
+                        <div class="experience-card"><strong>Fragments</strong><span>Personal essays and field notes that keep the human layer visible.</span></div>
+                        <div class="experience-card"><strong>Style rule</strong><span>Plain language, lived detail, fewer polished slogans, more sentences that sound human out loud.</span></div>
+                    </div>
                     <div class="experience-links">
                         <a href="/blog/">Enter the archive</a>
                         <a href="/docs/best-of/">Read the best of</a>
@@ -1538,6 +1673,11 @@
                 </div>
                 <div class="experience-lead-copy">
                     Interfaces, agent skills, routing logic, memory loops, and working prototypes. The point is not more software. The point is a system that compounds judgment.
+                    <div class="experience-body">
+                        <div class="experience-card"><strong>Instruments</strong><span>Tools for architecture, simulation, diagnosis, and sharper preparation.</span></div>
+                        <div class="experience-card"><strong>Loops</strong><span>Models that turn evidence into review, action, and better next decisions.</span></div>
+                        <div class="experience-card locked"><strong>Private layer</strong><span>Some system screenshots can be shown as locked proof. Details that reveal clients, credentials, or live operating notes stay out.</span></div>
+                    </div>
                     <div class="experience-links">
                         <a href="/basin-nexus/">Basin::Nexus</a>
                         <a href="/play/">Enter the lab</a>
@@ -1554,7 +1694,12 @@
                     <h2>The observer beneath the systems.</h2>
                 </div>
                 <div class="experience-lead-copy">
-                    I grew up translating between worlds. Sales sharpened my sense of rooms. Fatherhood changed what I thought the work was for. The same question keeps returning: what is signal, and what is noise?
+                    The human layer is quieter: reading rooms, noticing patterns, learning what ambition costs, and keeping enough tenderness in the system that the work does not eat the person doing it.
+                    <div class="experience-body">
+                        <div class="experience-card"><strong>Rooms</strong><span>What is said, what is avoided, who owns the silence, and where the real decision is hiding.</span></div>
+                        <div class="experience-card"><strong>Memory</strong><span>A public archive can feel alive without exposing private notes or turning life into content.</span></div>
+                        <div class="experience-card"><strong>Question</strong><span>What keeps returning? What is signal? What is noise? What is actually worth carrying?</span></div>
+                    </div>
                     <div class="experience-links">
                         <a href="/blog/">Read the fragments</a>
                         <a href="/docs/about/">About Leon</a>
@@ -1951,7 +2096,7 @@
             <a href="https://basinleon.github.io/docs/frameworks/">Frameworks</a>
         </div>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #aaa; letter-spacing: 2px;">
-            &copy; 2026 LEON BASIN | FOUNDING GTM MEMBER, BUSINESS DEVELOPMENT AT OBVIO.AI
+            &copy; 2026 Leon Basin. Founding GTM Member, Business Development at Obvio.ai.
         </p>
         <div style="margin-top: 14px;">
             <a href="https://hits.sh/basinleon.github.io/" rel="noopener noreferrer" target="_blank">
@@ -1962,6 +2107,18 @@
 </footer>
 
 <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('basin-theme');
+    if (savedTheme === 'night') {
+        document.body.classList.add('theme-night');
+        themeToggle.textContent = 'Day mode';
+    }
+    themeToggle.addEventListener('click', () => {
+        const night = document.body.classList.toggle('theme-night');
+        localStorage.setItem('basin-theme', night ? 'night' : 'day');
+        themeToggle.textContent = night ? 'Day mode' : 'Night mode';
+    });
+
     const experienceTabs = document.querySelectorAll('.experience-tab');
     const experiencePanels = document.querySelectorAll('.experience-panel');
 
