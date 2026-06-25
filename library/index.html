@@ -108,8 +108,105 @@
     .masthead-sub {
       font-size: 1.2rem;
       color: var(--text-secondary);
-      max-width: 600px;
+      max-width: 680px;
       font-style: italic;
+    }
+
+    .room-map {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 24px 10px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .room-card {
+      display: block;
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid var(--gold-border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(200,136,12,0.035));
+      color: inherit;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .room-card::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      right: -50px;
+      bottom: -50px;
+      border-radius: 50%;
+      background: rgba(200, 136, 12, 0.12);
+      pointer-events: none;
+    }
+
+    .room-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(232, 154, 24, 0.58);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(200,136,12,0.06));
+    }
+
+    .room-index {
+      color: var(--gold-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .room-card h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .room-card p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      position: relative;
+      z-index: 1;
+    }
+
+    .keeper-note {
+      max-width: 1100px;
+      margin: 22px auto 0;
+      padding: 0 24px;
+    }
+
+    .keeper-note-inner {
+      border: 1px solid var(--gold-border);
+      border-radius: 18px;
+      padding: 22px 24px;
+      background: rgba(255,255,255,0.035);
+      display: grid;
+      grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .keeper-note strong {
+      color: var(--gold-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .keeper-note p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.55;
     }
 
     /* MAIN LAYOUT */
@@ -279,6 +376,8 @@
       .main { grid-template-columns: 1fr; }
       .sidebar { order: -1; }
       .card-grid { grid-template-columns: 1fr; }
+      .room-map { grid-template-columns: 1fr; padding-top: 22px; }
+      .keeper-note-inner { grid-template-columns: 1fr; }
       .nav-container { padding: 0 16px; }
       .nav-links { gap: 12px; min-width: 0; }
       .nav-links a { font-size: 0.65rem; }
@@ -313,6 +412,36 @@
   <h1 class="masthead-title">The Library</h1>
   <p class="masthead-sub">A curated shelf of systems, tools, and public proof. Start with the room you need: architecture, diagnosis, evidence, or the human layer behind the work.</p>
 </div>
+
+<section class="room-map" aria-label="Choose a library room">
+  <a class="room-card" href="/docs/start-here/">
+    <div class="room-index">Room 01</div>
+    <h2>Start at the desk.</h2>
+    <p>A guided route through the work by role, stage, and what you need to evaluate first.</p>
+  </a>
+  <a class="room-card" href="/tools/">
+    <div class="room-index">Room 02</div>
+    <h2>Use an instrument.</h2>
+    <p>Open the simulators, diagnostics, and architecture models when you want the system to move.</p>
+  </a>
+  <a class="room-card" href="/case-studies/">
+    <div class="room-index">Room 03</div>
+    <h2>Check the proof.</h2>
+    <p>Read the public operating records where claims are tied to decisions, constraints, and outcomes.</p>
+  </a>
+  <a class="room-card" href="/blog/">
+    <div class="room-index">Room 04</div>
+    <h2>Enter the archive.</h2>
+    <p>Follow the essays, notes, and return signals when you want the human thread under the systems.</p>
+  </a>
+</section>
+
+<section class="keeper-note" aria-label="Library note">
+  <div class="keeper-note-inner">
+    <strong>Keeper note</strong>
+    <p>This library is a public reading room, not a dump of every artifact. The useful layer is visible. Client-specific screenshots, credentials, and private operating notes stay locked.</p>
+  </div>
+</section>
 
 <div class="main">
   <div class="content">
