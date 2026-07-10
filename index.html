@@ -1013,6 +1013,100 @@
             margin-bottom: 3rem;
         }
 
+        .proof-index {
+            margin: clamp(4rem, 8vw, 7rem) 0 0;
+            padding: clamp(2.4rem, 5vw, 4rem) 0 0;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .proof-index-head {
+            display: grid;
+            grid-template-columns: minmax(0, 0.85fr) minmax(280px, 1.15fr);
+            gap: clamp(1.5rem, 5vw, 5rem);
+            align-items: end;
+            margin-bottom: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        .proof-index-kicker,
+        .proof-index-number,
+        .proof-index-metric {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.67rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .proof-index-kicker,
+        .proof-index-number { color: var(--gold-primary); }
+
+        .proof-index h2 {
+            max-width: 10ch;
+            margin-top: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.4rem, 6vw, 5.4rem);
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+            text-wrap: balance;
+        }
+
+        .proof-index-intro {
+            max-width: 38rem;
+            color: var(--text-dim);
+            font-size: clamp(1rem, 1.7vw, 1.18rem);
+            line-height: 1.72;
+        }
+
+        .proof-index-list { border-top: 1px solid var(--border-soft); }
+
+        .proof-index-item {
+            display: grid;
+            grid-template-columns: 4rem minmax(0, 1.4fr) minmax(9rem, 0.55fr) 2rem;
+            gap: 1.25rem;
+            align-items: center;
+            min-height: 9rem;
+            padding: 1.35rem 0;
+            border-bottom: 1px solid var(--border-soft);
+            color: inherit;
+            text-decoration: none;
+            transition: padding 0.25s ease, background-color 0.25s ease;
+        }
+
+        .proof-index-item:hover,
+        .proof-index-item:focus-visible {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            background: rgba(184, 134, 11, 0.055);
+        }
+
+        .proof-index-copy h3 {
+            margin-bottom: 0.45rem;
+            font-size: clamp(1.25rem, 2.3vw, 1.85rem);
+            line-height: 1.1;
+        }
+
+        .proof-index-copy p {
+            max-width: 56ch;
+            color: var(--text-dim);
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        .proof-index-metric {
+            color: var(--text-main);
+            line-height: 1.55;
+        }
+
+        .proof-index-arrow {
+            font-size: 1.4rem;
+            transition: transform 0.25s ease;
+        }
+
+        .proof-index-item:hover .proof-index-arrow,
+        .proof-index-item:focus-visible .proof-index-arrow {
+            transform: translateX(0.35rem);
+        }
+
         .audience-pill {
             padding: 0.8rem 1rem;
             border: 1px solid var(--border-soft);
@@ -1142,6 +1236,25 @@
 
             .experience-body {
                 grid-template-columns: 1fr;
+            }
+
+            .proof-index-head {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+
+            .proof-index-item {
+                grid-template-columns: 2.3rem minmax(0, 1fr) 1.5rem;
+                gap: 0.8rem;
+                min-height: 0;
+                padding: 1.5rem 0;
+            }
+
+            .proof-index-metric { grid-column: 2 / 3; }
+
+            .proof-index-arrow {
+                grid-column: 3;
+                grid-row: 1;
             }
         }
 
@@ -1598,11 +1711,10 @@
         <span></span>
     </button>
     <div class="nav-links" id="site-nav">
-        <a href="#comparison-heading">Problem</a>
-        <a href="#architecture">System</a>
-        <a href="#case-studies">Proof</a>
-        <a href="#plan-90">Plan</a>
-        <a href="https://basinleon.github.io/blog/">Blog</a>
+        <a href="/case-studies/">Work</a>
+        <a href="/basin-nexus/">Systems</a>
+        <a href="/blog/">Writing</a>
+        <a href="/docs/about/">About</a>
         <a href="mailto:lbasin23@gmail.com">Contact</a>
     </div>
 </nav>
@@ -1651,23 +1763,15 @@
         </div>
     </header>
 
-    <section class="audience-strip" aria-label="Primary audiences">
-        <div class="audience-pill">Hiring Managers</div>
-        <div class="audience-pill">Founders & CEOs</div>
-        <div class="audience-pill">Creators & Writers</div>
-        <div class="audience-pill">Engineers & Operators</div>
-        <div class="audience-pill">AI-Native Teams</div>
-    </section>
-
     <section aria-label="Choose how to experience Leon Basin's work">
         <div class="experience-switcher" role="tablist" aria-label="Experience modes">
-            <button class="experience-tab active" type="button" role="tab" aria-selected="true" data-experience="operator">Operator</button>
-            <button class="experience-tab" type="button" role="tab" aria-selected="false" data-experience="writer">Writer</button>
-            <button class="experience-tab" type="button" role="tab" aria-selected="false" data-experience="builder">Builder</button>
-            <button class="experience-tab" type="button" role="tab" aria-selected="false" data-experience="human">Human</button>
+            <button class="experience-tab active" id="tab-operator" type="button" role="tab" aria-selected="true" aria-controls="panel-operator" tabindex="0" data-experience="operator">Operator</button>
+            <button class="experience-tab" id="tab-writer" type="button" role="tab" aria-selected="false" aria-controls="panel-writer" tabindex="-1" data-experience="writer">Writer</button>
+            <button class="experience-tab" id="tab-builder" type="button" role="tab" aria-selected="false" aria-controls="panel-builder" tabindex="-1" data-experience="builder">Builder</button>
+            <button class="experience-tab" id="tab-human" type="button" role="tab" aria-selected="false" aria-controls="panel-human" tabindex="-1" data-experience="human">Human</button>
         </div>
 
-        <div class="experience-panel active" data-panel="operator">
+        <div class="experience-panel active" id="panel-operator" role="tabpanel" aria-labelledby="tab-operator" tabindex="0" data-panel="operator">
             <div class="experience-lead">
                 <div>
                     <div class="experience-kicker">Operator</div>
@@ -1689,7 +1793,7 @@
             </div>
         </div>
 
-        <div class="experience-panel" data-panel="writer">
+        <div class="experience-panel" id="panel-writer" role="tabpanel" aria-labelledby="tab-writer" tabindex="0" data-panel="writer" hidden>
             <div class="experience-lead">
                 <div>
                     <div class="experience-kicker">Writer</div>
@@ -1711,7 +1815,7 @@
             </div>
         </div>
 
-        <div class="experience-panel" data-panel="builder">
+        <div class="experience-panel" id="panel-builder" role="tabpanel" aria-labelledby="tab-builder" tabindex="0" data-panel="builder" hidden>
             <div class="experience-lead">
                 <div>
                     <div class="experience-kicker">Builder</div>
@@ -1733,7 +1837,7 @@
             </div>
         </div>
 
-        <div class="experience-panel" data-panel="human">
+        <div class="experience-panel" id="panel-human" role="tabpanel" aria-labelledby="tab-human" tabindex="0" data-panel="human" hidden>
             <div class="experience-lead">
                 <div>
                     <div class="experience-kicker">Human</div>
@@ -1753,6 +1857,36 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="proof-index" id="selected-work" aria-labelledby="selected-work-title">
+        <div class="proof-index-head">
+            <div>
+                <div class="proof-index-kicker">Selected evidence</div>
+                <h2 id="selected-work-title">Work you can inspect.</h2>
+            </div>
+            <p class="proof-index-intro">Three paths into the operating record: a market-entry build, a working systems layer, and the writing that makes the logic reusable.</p>
+        </div>
+        <div class="proof-index-list">
+            <a class="proof-index-item" href="/case-studies/#sentinel">
+                <span class="proof-index-number">01</span>
+                <div class="proof-index-copy"><h3>Project::Sentinel</h3><p>How a lean security team turned noisy prospecting into a governed enterprise pipeline.</p></div>
+                <span class="proof-index-metric">160% YoY pipeline growth</span>
+                <span class="proof-index-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="proof-index-item" href="/basin-nexus/">
+                <span class="proof-index-number">02</span>
+                <div class="proof-index-copy"><h3>Basin::Nexus</h3><p>Inspectable signal-routing, research, and execution interfaces built around operating decisions.</p></div>
+                <span class="proof-index-metric">Signal → route → action</span>
+                <span class="proof-index-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="proof-index-item" href="/docs/best-of/">
+                <span class="proof-index-number">03</span>
+                <div class="proof-index-copy"><h3>Operator Field Notes</h3><p>The shortest route through the writing on pipeline interpretation, ownership, and AI-assisted work.</p></div>
+                <span class="proof-index-metric">Best-of reading path</span>
+                <span class="proof-index-arrow" aria-hidden="true">→</span>
+            </a>
         </div>
     </section>
 
@@ -2168,19 +2302,46 @@
     const experienceTabs = document.querySelectorAll('.experience-tab');
     const experiencePanels = document.querySelectorAll('.experience-panel');
 
-    experienceTabs.forEach((tab) => {
-        tab.addEventListener('click', () => {
+    function activateExperience(tab, moveFocus = false) {
             const target = tab.dataset.experience;
             experienceTabs.forEach((item) => {
                 const active = item === tab;
                 item.classList.toggle('active', active);
                 item.setAttribute('aria-selected', String(active));
+                item.setAttribute('tabindex', active ? '0' : '-1');
             });
             experiencePanels.forEach((panel) => {
-                panel.classList.toggle('active', panel.dataset.panel === target);
+                const active = panel.dataset.panel === target;
+                panel.classList.toggle('active', active);
+                panel.hidden = !active;
             });
+            if (moveFocus) tab.focus();
+    }
+
+    experienceTabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => activateExperience(tab));
+        tab.addEventListener('keydown', (event) => {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            let nextIndex = index;
+            if (event.key === 'ArrowRight') nextIndex = (index + 1) % experienceTabs.length;
+            if (event.key === 'ArrowLeft') nextIndex = (index - 1 + experienceTabs.length) % experienceTabs.length;
+            if (event.key === 'Home') nextIndex = 0;
+            if (event.key === 'End') nextIndex = experienceTabs.length - 1;
+            activateExperience(experienceTabs[nextIndex], true);
         });
     });
+
+    const deepArchive = document.querySelector('.deep-archive');
+
+    function revealArchivedTarget(hash) {
+        if (!hash || hash === '#') return;
+        const target = document.querySelector(hash);
+        if (target && deepArchive.contains(target)) deepArchive.open = true;
+    }
+
+    revealArchivedTarget(window.location.hash);
+    window.addEventListener('hashchange', () => revealArchivedTarget(window.location.hash));
 
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');

@@ -11,13 +11,22 @@ const todayRfc = new Date().toUTCString();
 const postsPath = path.join(siteRoot, "data", "posts.json");
 const posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
 
+const escapeXml = (value) => String(value)
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&apos;");
+
 const normalizedPosts = posts
   .filter((post) => post && post.url && post.url !== "#")
   .map((post) => {
-    const relative = String(post.url).replace(/^\/+/, "");
+    const rawUrl = String(post.url).trim();
+    const external = /^https?:\/\//i.test(rawUrl);
+    const relative = rawUrl.replace(/^\/+/, "");
     const fullPath = relative.startsWith("blog/") ? `/${relative}` : `/blog/${relative}`;
-    const cleanPath = fullPath.replace(/\/+/g, "/");
-    const url = `${baseUrl}${cleanPath}`;
+    const cleanPath = external ? null : fullPath.replace(/\/+/g, "/");
+    const url = external ? rawUrl : `${baseUrl}${cleanPath}`;
     const date = post.date && !Number.isNaN(new Date(post.date).getTime())
       ? new Date(post.date)
       : null;
@@ -30,6 +39,7 @@ const normalizedPosts = posts
       category: String(post.category || "Blog").trim(),
       url,
       path: cleanPath,
+      external,
     };
   })
   .sort((a, b) => {
@@ -47,6 +57,7 @@ const staticPages = [
   { path: "/tools/", priority: "0.85", changefreq: "weekly" },
   { path: "/work-with-me/", priority: "0.9", changefreq: "weekly" },
   { path: "/answers/", priority: "0.88", changefreq: "weekly" },
+  { path: "/basin-nexus/", priority: "0.92", changefreq: "weekly" },
   { path: "/resume.html", priority: "0.75", changefreq: "monthly" },
 ];
 
@@ -54,7 +65,9 @@ const staticUrlXml = staticPages
   .map((page) => `  <url>\n    <loc>${baseUrl}${page.path}</loc>\n    <lastmod>${todayIso}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>`)
   .join("\n");
 
-const postUrlXml = normalizedPosts
+const internalPosts = normalizedPosts.filter((post) => !post.external);
+
+const postUrlXml = internalPosts
   .map((post) => {
     const lastmod = post.date ? post.date.toISOString() : todayIso;
     return `  <url>\n    <loc>${post.url}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
@@ -65,18 +78,11 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http:
 
 const rssItems = normalizedPosts.slice(0, 50).map((post) => {
   const pubDate = post.date ? post.date.toUTCString() : todayRfc;
-  const description = post.excerpt
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-  const title = post.title
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  const description = escapeXml(post.excerpt);
+  const title = escapeXml(post.title);
+  const url = escapeXml(post.url);
 
-  return `    <item>\n      <title>${title}</title>\n      <link>${post.url}</link>\n      <description>${description}</description>\n      <pubDate>${pubDate}</pubDate>\n      <guid>${post.url}</guid>\n    </item>`;
+  return `    <item>\n      <title>${title}</title>\n      <link>${url}</link>\n      <description>${description}</description>\n      <pubDate>${pubDate}</pubDate>\n      <guid>${url}</guid>\n    </item>`;
 }).join("\n");
 
 const rssXml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Leon Basin | The Archive</title>\n    <link>${baseUrl}/blog/</link>\n    <description>Signal-first GTM architecture, deterministic revenue systems, case studies, and operator playbooks.</description>\n    <language>en-us</language>\n    <lastBuildDate>${todayRfc}</lastBuildDate>\n    <atom:link href="${baseUrl}/blog/rss.xml" rel="self" type="application/rss+xml"/>\n${rssItems}\n  </channel>\n</rss>\n`;
@@ -90,6 +96,6 @@ fs.writeFileSync(path.join(siteRoot, "robots.txt"), robotsTxt, "utf8");
 fs.writeFileSync(path.join(siteRoot, "llms.txt"), llmsTxt, "utf8");
 fs.writeFileSync(path.join(siteRoot, "blog", "rss.xml"), rssXml, "utf8");
 
-console.log(`Generated sitemap.xml with ${staticPages.length + normalizedPosts.length} URLs`);
+console.log(`Generated sitemap.xml with ${staticPages.length + internalPosts.length} URLs`);
 console.log(`Generated blog/rss.xml with ${Math.min(50, normalizedPosts.length)} items`);
 console.log("Generated robots.txt and llms.txt");
