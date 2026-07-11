@@ -981,15 +981,25 @@
             background: linear-gradient(135deg, rgba(184, 134, 11, 0.12), rgba(255, 255, 255, 0.035));
         }
 
+        /* Keep the title clear of the corner chip so it never reads as a superscript */
+        .experience-card.locked strong {
+            padding-right: 4.75rem;
+        }
+
         .experience-card.locked::after {
-            content: "private";
+            content: "Private";
             position: absolute;
-            top: 0.8rem;
-            right: 0.8rem;
-            color: rgba(255, 255, 255, 0.48);
+            top: 0.7rem;
+            right: 0.7rem;
+            background: rgba(184, 134, 11, 0.16);
+            border: 1px solid rgba(184, 134, 11, 0.45);
+            color: var(--gold-light);
+            padding: 0.16rem 0.5rem;
+            border-radius: 999px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.52rem;
-            letter-spacing: 0.12em;
+            font-size: 0.5rem;
+            letter-spacing: 0.14em;
+            line-height: 1;
             text-transform: uppercase;
         }
 
@@ -1368,6 +1378,24 @@
             line-height: 1.45;
             margin-bottom: 1rem;
             letter-spacing: 0.05em;
+            color: #1a1206;
+        }
+
+        .framework-card h4 a { color: inherit; }
+
+        /* Flag chip sits in normal flow above the title so it can never overlap it */
+        .framework-flag {
+            display: inline-block;
+            align-self: flex-start;
+            margin-bottom: 0.75rem;
+            padding: 0.28rem 0.6rem;
+            background: #0d0803;
+            color: var(--gold-light);
+            border-radius: 999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.16em;
+            line-height: 1;
         }
 
         .framework-img-container {
@@ -2083,8 +2111,8 @@
             </div>
 
             <!-- Model 6: Signal-to-Prediction Method -->
-            <div class="framework-card" style="border: 1px solid var(--gold-primary); position: relative;">
-                <div style="position: absolute; top: 10px; right: 10px; background: #000; color: #fff; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 2px;">PUBLIC_METHOD</div>
+            <div class="framework-card" style="border: 1px solid var(--gold-primary);">
+                <span class="framework-flag">PUBLIC_METHOD</span>
                 <h4><a href="/docs/frameworks/" style="text-decoration: none; color: inherit;">SIGNAL-TO-PREDICTION METHOD</a></h4>
                 <div class="framework-img-container" style="position: relative;">
                     <a href="/docs/frameworks/">
