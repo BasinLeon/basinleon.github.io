@@ -9,7 +9,16 @@
     <meta property="og:description" content="Three operator-grade case studies on systems construction, scale architecture, and AI signal operations.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://basinleon.github.io/case-studies/">
+    <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual_fixed.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Leon Basin | Case Studies">
+    <meta name="twitter:description" content="Three operator-grade records showing the decision, constraint, system design, and measurable result.">
+    <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual_fixed.png">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://basinleon.github.io/case-studies/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0d0803;
@@ -616,11 +625,12 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/assets/css/site-shell.css">
 </head>
-<body>
+<body data-lb-section="work" data-lb-theme="dark">
     <div class="shell">
         <div class="frame">
-            <header class="topbar">
+            <header class="topbar" data-lb-legacy-nav>
                 <div class="brand">
                     <div class="badge">CS</div>
                     <div class="brand-copy">
@@ -664,12 +674,12 @@
                 </section>
 
                 <section id="case-navigator">
-                    <div class="case-switcher" aria-label="Choose a case study">
-                        <button class="case-switch active" type="button" data-case="sentinel">Sentinel / Pipeline</button>
-                        <button class="case-switch" type="button" data-case="delight">Delight / Routing</button>
-                        <button class="case-switch" type="button" data-case="aurora">Aurora / AI Signal</button>
+                    <div class="case-switcher" role="tablist" aria-label="Choose a case study">
+                        <button class="case-switch active" type="button" role="tab" aria-selected="true" aria-controls="case-stage" data-case="sentinel">Sentinel / Pipeline</button>
+                        <button class="case-switch" type="button" role="tab" aria-selected="false" aria-controls="case-stage" tabindex="-1" data-case="delight">Delight / Routing</button>
+                        <button class="case-switch" type="button" role="tab" aria-selected="false" aria-controls="case-stage" tabindex="-1" data-case="aurora">Aurora / AI Signal</button>
                     </div>
-                    <article class="case-stage" id="case-stage">
+                    <article class="case-stage" id="case-stage" role="tabpanel" aria-live="polite">
                         <div>
                             <div class="eyebrow" id="case-kicker">Project::Sentinel / Systems Construction</div>
                             <h2 id="case-title">Turn noise into qualified motion.</h2>
@@ -801,7 +811,7 @@
                 </section>
             </main>
 
-            <footer class="footer">
+            <footer class="footer" data-lb-legacy-footer>
                 <div>Leon Basin / GTM systems, operator design, and revenue architecture</div>
                 <div class="footer-links">
                     <a href="https://basinleon.github.io/">Portfolio</a>
@@ -844,10 +854,17 @@
             }
         };
 
-        document.querySelectorAll('.case-switch').forEach(button => {
+        const caseButtons = Array.from(document.querySelectorAll('.case-switch'));
+
+        caseButtons.forEach((button, index) => {
             button.addEventListener('click', () => {
                 const state = caseStates[button.dataset.case];
-                document.querySelectorAll('.case-switch').forEach(item => item.classList.remove('active'));
+                caseButtons.forEach(item => {
+                    const active = item === button;
+                    item.classList.toggle('active', active);
+                    item.setAttribute('aria-selected', String(active));
+                    item.tabIndex = active ? 0 : -1;
+                });
                 button.classList.add('active');
                 document.getElementById('case-kicker').textContent = state.kicker;
                 document.getElementById('case-title').textContent = state.title;
@@ -857,11 +874,23 @@
                 document.getElementById('case-link').href = state.href;
                 document.getElementById('case-stage').style.background = state.background;
             });
+            button.addEventListener('keydown', event => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+                event.preventDefault();
+                let next = index;
+                if (event.key === 'ArrowRight') next = (index + 1) % caseButtons.length;
+                if (event.key === 'ArrowLeft') next = (index - 1 + caseButtons.length) % caseButtons.length;
+                if (event.key === 'Home') next = 0;
+                if (event.key === 'End') next = caseButtons.length - 1;
+                caseButtons[next].focus();
+                caseButtons[next].click();
+            });
         });
 
         document.getElementById('case-link').addEventListener('click', () => {
             document.querySelector('.record-disclosure').open = true;
         });
     </script>
+    <script src="/assets/js/site-shell.js"></script>
 </body>
 </html>

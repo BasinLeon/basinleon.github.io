@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tools | Leon Basin</title>
   <meta name="description" content="Interactive operator tools built by Leon Basin for revenue modeling, GTM diagnosis, pipeline architecture, and sharper preparation.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://basinleon.github.io/tools/">
+  <meta property="og:title" content="Tools | Leon Basin">
+  <meta property="og:description" content="Interactive instruments for GTM architecture, diagnosis, revenue modeling, and preparation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://basinleon.github.io/tools/">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tools | Leon Basin">
+  <meta name="twitter:description" content="Choose an instrument for the operating decision in front of you.">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -314,10 +327,11 @@
     footer a { color: var(--text-muted); text-decoration: none; margin: 0 12px; }
     footer a:hover { color: var(--gold-primary); }
   </style>
+  <link rel="stylesheet" href="/assets/css/site-shell.css">
 </head>
-<body>
+<body data-lb-section="tools" data-lb-theme="dark">
 
-<nav>
+<nav data-lb-legacy-nav>
   <div class="nav-container">
     <a class="nav-logo" href="/">BASIN::NEXUS</a>
     <div class="nav-links">
@@ -338,14 +352,14 @@
 </div>
 
 <div class="main">
-  <div class="intent-panel" aria-label="Choose what you need">
-    <button class="intent-button active" type="button" data-intent="architecture">Map the system</button>
-    <button class="intent-button" type="button" data-intent="diagnose">Find the break</button>
-    <button class="intent-button" type="button" data-intent="model">Test the math</button>
-    <button class="intent-button" type="button" data-intent="prepare">Prepare the room</button>
+  <div class="intent-panel" role="tablist" aria-label="Choose what you need">
+    <button class="intent-button active" type="button" role="tab" aria-selected="true" aria-controls="start-panel" data-intent="architecture">Map the system</button>
+    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="diagnose">Find the break</button>
+    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="model">Test the math</button>
+    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="prepare">Prepare the room</button>
   </div>
 
-  <section class="start-panel" id="start-panel">
+  <section class="start-panel" id="start-panel" role="tabpanel" aria-live="polite">
     <div class="start-content">
       <div class="start-kicker" id="start-kicker">Start here • System map</div>
       <h2 class="start-title" id="start-title">GTM Architecture Live</h2>
@@ -443,7 +457,7 @@
 
 </div>
 
-<footer>
+<footer data-lb-legacy-footer>
   <a href="/">Portfolio</a>
   <a href="/blog/">Blog</a>
   <a href="/library/">Library</a>
@@ -489,9 +503,14 @@
 
   const buttons = document.querySelectorAll('.intent-button');
   const panel = document.getElementById('start-panel');
-  buttons.forEach(button => button.addEventListener('click', () => {
+  buttons.forEach((button, index) => button.addEventListener('click', () => {
     const state = intentStates[button.dataset.intent];
-    buttons.forEach(item => item.classList.remove('active'));
+    buttons.forEach(item => {
+      const active = item === button;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+    });
     button.classList.add('active');
     document.getElementById('start-kicker').textContent = state.kicker;
     document.getElementById('start-title').textContent = state.title;
@@ -505,9 +524,22 @@
     });
   }));
 
+  buttons.forEach((button, index) => button.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    let next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % buttons.length;
+    if (event.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
+    if (event.key === 'Home') next = 0;
+    if (event.key === 'End') next = buttons.length - 1;
+    buttons[next].focus();
+    buttons[next].click();
+  }));
+
   document.querySelector('.start-secondary').addEventListener('click', () => {
     document.querySelectorAll('[data-tool-intent]').forEach(card => card.hidden = false);
   });
 </script>
+<script src="/assets/js/site-shell.js"></script>
 </body>
 </html>
