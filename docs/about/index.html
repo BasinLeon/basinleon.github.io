@@ -21,64 +21,363 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/docs/journal.css">
   <link rel="stylesheet" href="/assets/css/site-shell.css">
+  <style>
+    body[data-lb-page="about"] {
+      background: #f7f2e9;
+      color: #0a0a09;
+    }
+
+    .about-editorial {
+      overflow: hidden;
+    }
+
+    .about-hero {
+      min-height: calc(100svh - 72px);
+      display: flex;
+      align-items: end;
+      position: relative;
+      isolation: isolate;
+      padding: clamp(3rem, 8vw, 7rem) max(1rem, calc((100vw - 1180px) / 2));
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.88) 46%, rgba(5, 5, 5, 0.28) 78%, rgba(5, 5, 5, 0.58) 100%),
+        url('/assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat;
+    }
+
+    .about-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 76% 22%, rgba(212, 175, 55, 0.22), transparent 28%);
+    }
+
+    .about-hero-copy {
+      width: min(100%, 850px);
+      animation: about-enter 0.7s cubic-bezier(.2,.7,.2,1) both;
+    }
+
+    .about-kicker,
+    .about-section-label,
+    .about-row-number,
+    .about-proof-value,
+    .about-focus-label {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .about-kicker,
+    .about-section-label,
+    .about-row-number,
+    .about-focus-label { color: #d4af37; }
+
+    .about-hero h1 {
+      max-width: 12ch;
+      margin: 1rem 0 1.35rem;
+      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-size: clamp(3rem, 8vw, 7.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+      text-wrap: balance;
+    }
+
+    .about-hero-deck {
+      max-width: 650px;
+      margin: 0;
+      color: rgba(255,255,255,0.78);
+      font-size: clamp(1rem, 1.6vw, 1.24rem);
+      line-height: 1.65;
+    }
+
+    .about-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .about-actions a {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(255,255,255,0.72);
+      border-radius: 999px;
+      color: #fff;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .about-actions a:first-child {
+      border-color: #d4af37;
+      background: #d4af37;
+      color: #090909;
+    }
+
+    .about-actions a:hover,
+    .about-actions a:focus-visible { transform: translateY(-2px); }
+
+    .about-section {
+      width: min(calc(100% - 2rem), 1180px);
+      margin: 0 auto;
+      padding: clamp(4.5rem, 9vw, 8rem) 0;
+    }
+
+    .about-section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.75fr) minmax(280px, 1.25fr);
+      gap: clamp(2rem, 7vw, 7rem);
+      align-items: end;
+      margin-bottom: clamp(2.5rem, 6vw, 5rem);
+    }
+
+    .about-section h2 {
+      max-width: 11ch;
+      margin: 0.8rem 0 0;
+      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-size: clamp(2.3rem, 5.5vw, 5.2rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+    }
+
+    .about-section-intro {
+      max-width: 620px;
+      margin: 0;
+      color: #625f58;
+      font-size: clamp(1rem, 1.6vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .about-arc-list,
+    .about-proof-list {
+      border-top: 1px solid rgba(184, 134, 11, 0.24);
+    }
+
+    .about-arc-row {
+      display: grid;
+      grid-template-columns: 4rem minmax(160px, 0.6fr) minmax(0, 1.4fr);
+      gap: clamp(1rem, 4vw, 4rem);
+      padding: clamp(1.8rem, 4vw, 3rem) 0;
+      border-bottom: 1px solid rgba(184, 134, 11, 0.24);
+    }
+
+    .about-arc-row h3 {
+      margin: 0;
+      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 2rem);
+      line-height: 1.05;
+    }
+
+    .about-arc-row p {
+      max-width: 650px;
+      margin: 0;
+      color: #625f58;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .about-method {
+      max-width: none;
+      width: 100%;
+      margin: 0;
+      padding: clamp(4.5rem, 9vw, 8rem) max(1rem, calc((100vw - 1180px) / 2));
+      background: #080705;
+      color: #fff;
+    }
+
+    .about-method .about-section-head { margin-bottom: 0; }
+    .about-method .about-section-intro { color: rgba(255,255,255,0.68); }
+
+    .about-proof-row {
+      display: grid;
+      grid-template-columns: minmax(8rem, 0.42fr) minmax(0, 1fr) 2rem;
+      gap: clamp(1rem, 4vw, 4rem);
+      align-items: center;
+      padding: clamp(1.5rem, 3vw, 2.4rem) 0;
+      border-bottom: 1px solid rgba(184, 134, 11, 0.24);
+      color: inherit;
+      text-decoration: none;
+      transition: padding 0.22s ease, background 0.22s ease;
+    }
+
+    .about-proof-row:hover,
+    .about-proof-row:focus-visible {
+      padding-right: 0.8rem;
+      padding-left: 0.8rem;
+      background: rgba(184, 134, 11, 0.055);
+    }
+
+    .about-proof-value {
+      color: #0a0a09;
+      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-size: clamp(1.25rem, 3vw, 2.25rem);
+      letter-spacing: -0.02em;
+    }
+
+    .about-proof-copy strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1.05rem;
+    }
+
+    .about-proof-copy span { color: #68645d; }
+    .about-proof-arrow { font-size: 1.4rem; }
+
+    .about-focus {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: clamp(2rem, 7vw, 7rem);
+      align-items: start;
+    }
+
+    .about-focus h2 { max-width: 12ch; }
+
+    .about-focus-copy {
+      display: grid;
+      gap: 2.5rem;
+    }
+
+    .about-focus-copy p {
+      margin: 0.65rem 0 0;
+      color: #625f58;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    @keyframes about-enter {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 760px) {
+      .about-hero { min-height: calc(100svh - 64px); background-position: 64% center; }
+      .about-section-head,
+      .about-focus { grid-template-columns: 1fr; align-items: start; }
+      .about-arc-row { grid-template-columns: 2.2rem 1fr; }
+      .about-arc-row p { grid-column: 2; }
+      .about-proof-row { grid-template-columns: 1fr 1.5rem; }
+      .about-proof-copy { grid-column: 1; }
+      .about-proof-arrow { grid-column: 2; grid-row: 1 / span 2; }
+      .about-actions { display: grid; }
+      .about-actions a { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .about-hero-copy { animation: none; opacity: 1; transform: none; transition: none; }
+    }
+  </style>
 </head>
 <body data-lb-section="about" data-lb-page="about">
-  <div class="site-shell">
-    <header class="topbar" data-lb-legacy-nav>
-      <a class="brand" href="/docs/">Leon Basin Journal</a>
-      <nav class="nav" aria-label="Journal navigation">
-        <a href="/">Portfolio</a>
-        <a href="/case-studies/">Case Studies</a>
-        <a href="/docs/start-here/">Start Here</a>
-        <a href="/docs/frameworks/">Frameworks</a>
-        <a href="/blog/">Blog</a>
-      </nav>
-    </header>
+  <header class="topbar" data-lb-legacy-nav>
+    <a class="brand" href="/">Leon Basin</a>
+  </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-card">
-          <div class="kicker">About</div>
-          <h1>Operator, writer, builder.</h1>
-          <p class="deck">I am currently Founding GTM Member, Business Development at Obvio.ai. My work sits where market signal, routing, execution, and human judgment have to become one usable operating model.</p>
+  <main class="about-editorial" id="main-content">
+    <section class="about-hero" aria-labelledby="about-title">
+      <div class="about-hero-copy">
+        <div class="about-kicker">Leon Basin / About</div>
+        <h1 id="about-title">Operator first. Builder by necessity. Writer to make it legible.</h1>
+        <p class="about-hero-deck">I work where market signal, commercial execution, technical systems, and human judgment have to become one usable operating model.</p>
+        <div class="about-actions">
+          <a href="/case-studies/">Review the work</a>
+          <a href="mailto:lbasin23@gmail.com?subject=Leon%20Basin%20Intro">Start a conversation</a>
         </div>
-        <aside class="side-card">
-          <div>
-            <div class="meta">Current focus</div>
-            <p>Pipeline architecture, lead generation, outbound execution, and public-sector GTM at Obvio.ai.</p>
-          </div>
-        </aside>
-      </section>
+      </div>
+    </section>
 
-      <section class="grid two">
-        <article class="content-card">
-          <div class="meta">What I build</div>
-          <h2>Systems that make motion legible.</h2>
-          <p>Routing logic, lifecycle design, handoff systems, AI-assisted workflows, and frameworks that teams can inspect, teach, and improve.</p>
+    <section class="about-section about-reveal" aria-labelledby="arc-title">
+      <div class="about-section-head">
+        <div>
+          <div class="about-section-label">The throughline</div>
+          <h2 id="arc-title">Different rooms. The same problem.</h2>
+        </div>
+        <p class="about-section-intro">Across enterprise teams, founder-led companies, and current public-sector GTM work, I keep returning to the point where signal loses meaning and execution inherits the confusion.</p>
+      </div>
+      <div class="about-arc-list">
+        <article class="about-arc-row">
+          <div class="about-row-number">01</div>
+          <h3>Operator</h3>
+          <p>Google, SurveyMonkey, and Sense taught me how scale changes the cost of ambiguity: weak data, unclear ownership, and fragile handoffs compound quickly.</p>
         </article>
-        <article class="content-card">
-          <div class="meta">How I work</div>
-          <h2>Execution as a systems problem.</h2>
-          <p>I translate goals into operating behavior: what happens, who owns it, what the system captures, where automation helps, and where judgment still matters.</p>
+        <article class="about-arc-row">
+          <div class="about-row-number">02</div>
+          <h3>Builder</h3>
+          <p>Security and founder-led work made the response practical. I began building routing logic, lifecycle systems, research loops, and execution tools instead of stopping at the diagnosis.</p>
         </article>
-      </section>
+        <article class="about-arc-row">
+          <div class="about-row-number">03</div>
+          <h3>Writer</h3>
+          <p>The writing turns operating judgment into something another person can inspect, question, teach, and improve. It is the memory layer beneath the systems.</p>
+        </article>
+      </div>
+    </section>
 
-      <section class="section note-card">
-        <div class="meta">Selected outcomes</div>
-        <ul class="list">
-          <li>160% year-over-year pipeline growth through channel and routing redesign.</li>
-          <li>$424K annual operating savings through workflow redesign and automation.</li>
-          <li>90-day ramp reduced to 5 days through systems-led enablement design.</li>
-          <li>Pipeline, expansion, and operating systems across enterprise and founder-led contexts.</li>
-        </ul>
-      </section>
-    </main>
+    <section class="about-method about-reveal" aria-labelledby="method-title">
+      <div class="about-section-head">
+        <div>
+          <div class="about-section-label">Operating method</div>
+          <h2 id="method-title">Make the decision visible.</h2>
+        </div>
+        <p class="about-section-intro">I translate goals into operating behavior: what happens, who owns it, what the system captures, where automation helps, and where judgment still matters. The work should remain legible after the meeting ends.</p>
+      </div>
+    </section>
 
-    <footer class="footer" data-lb-legacy-footer>
-      <span>Leon Basin Operator Journal</span>
-      <span><a href="https://linkedin.com/in/leonbasin">LinkedIn</a> · <a href="mailto:lbasin23@gmail.com">Email</a></span>
-    </footer>
-  </div>
+    <section class="about-section about-reveal" aria-labelledby="proof-title">
+      <div class="about-section-head">
+        <div>
+          <div class="about-section-label">Selected evidence</div>
+          <h2 id="proof-title">Proof before positioning.</h2>
+        </div>
+        <p class="about-section-intro">The useful question is not whether the language sounds credible. It is whether the operating record shows a decision, a constraint, and a measurable change.</p>
+      </div>
+      <div class="about-proof-list">
+        <a class="about-proof-row" href="/case-studies/#sentinel">
+          <span class="about-proof-value">160%</span>
+          <span class="about-proof-copy"><strong>Year-over-year pipeline growth</strong><span>Channel, qualification, and routing redesign.</span></span>
+          <span class="about-proof-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="about-proof-row" href="/resume.html">
+          <span class="about-proof-value">$424K</span>
+          <span class="about-proof-copy"><strong>Annual operating savings</strong><span>Workflow redesign and automation.</span></span>
+          <span class="about-proof-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="about-proof-row" href="/resume.html">
+          <span class="about-proof-value">90→5</span>
+          <span class="about-proof-copy"><strong>Days to productivity</strong><span>Systems-led enablement and reusable operating context.</span></span>
+          <span class="about-proof-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="about-section about-focus about-reveal" aria-labelledby="focus-title">
+      <div>
+        <div class="about-section-label">Current chapter</div>
+        <h2 id="focus-title">Building public-sector GTM at Obvio.ai.</h2>
+      </div>
+      <div class="about-focus-copy">
+        <div>
+          <div class="about-focus-label">Inside the role</div>
+          <p>As Founding GTM Member, Business Development, I work across pipeline architecture, territory design, contact research, outbound execution, and direct business development.</p>
+        </div>
+        <div>
+          <div class="about-focus-label">Outside the role</div>
+          <p>Availability is intentionally limited to speaking, writing, and selected non-conflicting advisory conversations.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-lb-legacy-footer>Leon Basin</footer>
   <script src="/assets/js/site-shell.js"></script>
 </body>
 </html>
