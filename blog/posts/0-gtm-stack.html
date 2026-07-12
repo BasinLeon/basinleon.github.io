@@ -172,8 +172,8 @@
 <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
 <strong style="color: var(--gold-primary);">💡 Try the Tools:</strong>
 <a href="/revenue_architecture_simulator.html" style="color: var(--gold-primary); text-decoration: underline;">ROI Calculator</a> •
-                <a href="/case-studies/" style="color: var(--gold-primary); text-decoration: underline;">Case Study Generator</a> •
-                <a href="../../tools/" style="color: var(--gold-primary); text-decoration: underline;">View All Tools</a>
+ <a href="/case-studies/" style="color: var(--gold-primary); text-decoration: underline;">Case Study Generator</a> •
+ <a href="../../tools/" style="color: var(--gold-primary); text-decoration: underline;">View All Tools</a>
 </p>
 </div>
 <h2>Three-Layer Architecture</h2>
@@ -206,33 +206,33 @@
 <h2>Code Components</h2>
 <h3>URL Ingestion Logic</h3>
 <pre><code>def fetch_text_from_url(url: str) -&gt; str:
-    """Ingest article content from URLs for signal extraction."""
-    response = requests.get(url, timeout=10)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    article = soup.find('article')
-    if article:
-        return article.get_text(separator='\n', strip=True)
-    return soup.body.get_text(separator='\n', strip=True)</code></pre>
+ """Ingest article content from URLs for signal extraction."""
+ response = requests.get(url, timeout=10)
+ soup = BeautifulSoup(response.text, 'html.parser')
+ article = soup.find('article')
+ if article:
+ return article.get_text(separator='\n', strip=True)
+ return soup.body.get_text(separator='\n', strip=True)</code></pre>
 <h3>Lead Scoring Engine</h3>
 <pre><code>def score_lead(company_data: dict) -&gt; float:
-    """Score leads based on signal strength (0.0-1.0)."""
-    score = 0.0
-    if company_data.get('employee_count', 0) &gt; 50:
-        score += 0.2
-    if company_data.get('funding_stage') in ['Series A', 'Series B']:
-        score += 0.3
-    if company_data.get('recent_job_posts', 0) &gt; 5:
-        score += 0.2
-    if company_data.get('tech_stack_match', False):
-        score += 0.3
-    return min(score, 1.0)</code></pre>
+ """Score leads based on signal strength (0.0-1.0)."""
+ score = 0.0
+ if company_data.get('employee_count', 0) &gt; 50:
+ score += 0.2
+ if company_data.get('funding_stage') in ['Series A', 'Series B']:
+ score += 0.3
+ if company_data.get('recent_job_posts', 0) &gt; 5:
+ score += 0.2
+ if company_data.get('tech_stack_match', False):
+ score += 0.3
+ return min(score, 1.0)</code></pre>
 <h3>Brief Generator</h3>
 <pre><code>def generate_executive_brief(company: dict, signals: list) -&gt; str:
-    """Generate McKinsey-style executive briefs from signals."""
-    prompt = f"""Generate executive brief for {company['name']}.
-    Format: 1. Summary (2 sent) 2. Opportunities (3 bullets)
-    3. Action (1 sent) 4. Risk (1 sent)"""
-    return call_llm(prompt)</code></pre>
+ """Generate McKinsey-style executive briefs from signals."""
+ prompt = f"""Generate executive brief for {company['name']}.
+ Format: 1. Summary (2 sent) 2. Opportunities (3 bullets)
+ 3. Action (1 sent) 4. Risk (1 sent)"""
+ return call_llm(prompt)</code></pre>
 <h2>Cost Comparison</h2>
 <table>
 <thead>
