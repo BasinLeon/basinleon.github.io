@@ -1826,16 +1826,17 @@ footer { border-color: rgba(255,255,255,.07); }
 <div class="newsletter-cta">
 <h4>Subscribe</h4>
 <p>Quiet notes from the archive</p>
-<form action="https://formspree.io/f/meeeqyrg" id="blog-newsletter-form" method="POST">
+<form onsubmit="window.open('https://basinandassociates.substack.com/subscribe?email='+encodeURIComponent(this.email.value),'_blank','noopener');this.reset();return false;">
 <input name="email" placeholder="your@email.com" required="" type="email"/>
-<input name="_subject" type="hidden" value="🔔 Signal Feed Subscriber"/>
-<input name="source" type="hidden" value="blog-sidebar"/>
-<input name="interest" type="hidden" value="newsletter"/>
 <button type="submit">SUBSCRIBE</button>
 </form>
 <p style="font-size: 0.6rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
-                    Occasional field notes. No spam. Unsubscribe anytime.
+                    Delivered by email through Substack. No spam. Unsubscribe anytime.
                 </p>
+</div>
+<div class="sidebar-header"><span aria-hidden="true">☆</span> Saved for later</div>
+<div class="newsletter-cta">
+<div id="lb-saved-mount"></div>
 </div>
 </aside>
 <!-- Main Content -->
@@ -2557,5 +2558,6 @@ footer { border-color: rgba(255,255,255,.07); }
         }
     </script>
 <script src="/assets/js/site-shell.js"></script>
+<script src="reader.js" defer></script>
 </body>
 </html>
