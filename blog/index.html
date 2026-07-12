@@ -1783,7 +1783,7 @@ footer { border-color: rgba(255,255,255,.07); }
 <!-- Sidebar -->
 <aside class="sidebar">
 <div class="sidebar-header">The Reading Room</div>
-<p style="margin: -8px 0 24px; color: var(--text-secondary); font-size: .92rem; line-height: 1.5;"><span id="archive-post-count">109</span> essays, notes, and field reports. Choose a shelf, follow a return signal, or wander until the pattern shows itself.</p>
+<p style="margin: -8px 0 24px; color: var(--text-secondary); font-size: .92rem; line-height: 1.5;"><span id="archive-post-count">94</span> essays, notes, and field reports. Choose a shelf, follow a return signal, or wander until the pattern shows itself.</p>
 <!-- Categories as Bubbles -->
 <div class="sidebar-header"><span aria-hidden="true">§</span> Shelves</div>
 <div class="category-bubbles">
@@ -1992,7 +1992,7 @@ footer { border-color: rgba(255,255,255,.07); }
 </div>
 <div>
 <h2 class="section-header"><span aria-hidden="true">🕐</span> Recently Published</h2>
-<a class="mini-post" href="posts/30-60-90-enterprise.html">
+<a class="mini-post" href="posts/30-60-90-ae-playbook.html">
 <div class="mini-post-title">The 30-60-90 Enterprise Playbook</div>
 <div class="mini-post-meta">Jan 14 • GTM • 7 min</div>
 </a>
@@ -2087,9 +2087,7 @@ footer { border-color: rgba(255,255,255,.07); }
             if (!post || post.url === '#') return false;
             if (filter === 'all') return true;
             const searchTerm = filter.toLowerCase();
-            const tagMatch = (post.tags || []).some(t => t.toLowerCase().includes(searchTerm));
-            const titleMatch = (post.title || '').toLowerCase().includes(searchTerm);
-            return tagMatch || titleMatch;
+            return (post.tags || []).some(t => t.toLowerCase().includes(searchTerm));
         }
 
         function updateBubbleCounts(posts) {
