@@ -8,7 +8,7 @@
   const navItems = [
     ['work', 'Work', '/case-studies/'],
     ['systems', 'Systems', '/basin-nexus/'],
-    ['writing', 'Writing', '/blog/'],
+    ['writing', 'Writing', '/writing/'],
     ['library', 'Library', '/library/'],
     ['tools', 'Tools', '/tools/'],
     ['about', 'About', '/docs/about/']
@@ -43,7 +43,7 @@
     if (href.includes('/basin-nexus/') || href.includes('architecture')) return 'Inspect Systems';
     if (href.includes('/work-with-me/')) return 'Availability';
     if (href.includes('/tools/') || href.includes('diagnostic') || href.includes('simulator')) return 'Use Tool';
-    if (href.includes('/blog/') || href.includes('/docs/')) return 'Read';
+    if (href.includes('/writing/') || href.includes('/blog/') || href.includes('/docs/')) return 'Read';
     return '';
   }
 
@@ -126,7 +126,7 @@
           <nav aria-label="Social links">
             <a href="https://linkedin.com/in/leonbasin" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://github.com/BasinLeon" rel="noopener noreferrer">GitHub</a>
-            <a href="/blog/">Archive</a>
+            <a href="/writing/">Archive</a>
           </nav>
         </div>
       </div>`;
