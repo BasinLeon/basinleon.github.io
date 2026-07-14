@@ -1558,6 +1558,7 @@ body {
 .post-grid {
     grid-template-columns: 1fr 1fr;
     gap: 0 32px;
+    scroll-margin-top: 96px;
 }
 .post-card {
     min-height: 170px;
@@ -2437,6 +2438,7 @@ footer { border-color: rgba(255,255,255,.07); }
         const archiveToggleLabel = document.getElementById('archive-toggle-label');
         const archiveMonths = document.getElementById('archive-months');
         const archiveFilterStatus = document.getElementById('archive-filter-status');
+        const archiveDisclosure = document.querySelector('.archive-disclosure');
         archiveToggle.addEventListener('click', () => {
             const isOpen = archiveMonths.classList.toggle('open');
             archiveToggle.classList.toggle('open', isOpen);
@@ -2457,6 +2459,7 @@ footer { border-color: rgba(255,255,255,.07); }
             currentFilter = 'all';
             displayedCount = 15;
             isMonthFilterActive = true;
+            if (archiveDisclosure) archiveDisclosure.open = true;
             allPosts = originalPosts.filter(p => {
                 if (!p.date || !p.url || p.url === '#') return false;
                 const postDate = new Date(p.date);
@@ -2479,8 +2482,10 @@ footer { border-color: rgba(255,255,255,.07); }
             archiveToggle.classList.remove('open');
             archiveMonths.classList.remove('open');
             archiveToggle.setAttribute('aria-expanded', 'false');
-            postGrid.focus({ preventScroll: true });
-            postGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            requestAnimationFrame(() => {
+                postGrid.focus({ preventScroll: true });
+                postGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         });
 
         document.addEventListener('keydown', (e) => {
