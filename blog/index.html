@@ -617,15 +617,29 @@
 
         .archive-month {
             display: block;
+            width: 100%;
             padding: 6px 0;
+            border: 0;
+            background: transparent;
+            text-align: left;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 0.75rem;
             color: var(--text-muted);
             text-decoration: none;
+            cursor: pointer;
         }
 
-        .archive-month:hover {
+        .archive-month:hover,
+        .archive-month:focus-visible,
+        .archive-month.is-active {
             color: var(--gold-primary);
+        }
+
+        .archive-filter-status {
+            margin: 8px 2px 0;
+            color: var(--sage);
+            font: 0.62rem/1.45 'JetBrains Mono', monospace;
+            letter-spacing: 0.04em;
         }
 
         /* About Section */
@@ -1802,18 +1816,19 @@ footer { border-color: rgba(255,255,255,.07); }
 <!-- Archive Dropdown -->
 <div class="sidebar-header"><span aria-hidden="true">⌄</span> Browse by Month</div>
 <div class="archive-dropdown">
-<button class="archive-toggle" id="archive-toggle">
-<span>Browse by Month</span>
+<button aria-controls="archive-months" aria-expanded="false" class="archive-toggle" id="archive-toggle" type="button">
+<span id="archive-toggle-label">Browse by Month</span>
 <span class="archive-toggle-arrow">▼</span>
 </button>
-<div class="archive-months" id="archive-months">
-<a aria-label="Filter posts from January 2026" class="archive-month" data-month="2026-01" href="#">January 2026 (12)</a>
-<a aria-label="Filter posts from December 2025" class="archive-month" data-month="2025-12" href="#">December 2025 (18)</a>
-<a aria-label="Filter posts from November 2025" class="archive-month" data-month="2025-11" href="#">November 2025 (14)</a>
-<a aria-label="Filter posts from October 2025" class="archive-month" data-month="2025-10" href="#">October 2025 (10)</a>
-<a aria-label="Filter posts from September 2025" class="archive-month" data-month="2025-09" href="#">September 2025 (8)</a>
-<a aria-label="Filter posts from 2024" class="archive-month" data-month="2024" href="#">2024 Archive (18)</a>
+<div aria-label="Archive months" class="archive-months" id="archive-months" role="listbox">
+<button aria-label="Filter posts from January 2026" aria-selected="false" class="archive-month" data-month="2026-01" role="option" type="button">January 2026 (12)</button>
+<button aria-label="Filter posts from December 2025" aria-selected="false" class="archive-month" data-month="2025-12" role="option" type="button">December 2025 (18)</button>
+<button aria-label="Filter posts from November 2025" aria-selected="false" class="archive-month" data-month="2025-11" role="option" type="button">November 2025 (14)</button>
+<button aria-label="Filter posts from October 2025" aria-selected="false" class="archive-month" data-month="2025-10" role="option" type="button">October 2025 (10)</button>
+<button aria-label="Filter posts from September 2025" aria-selected="false" class="archive-month" data-month="2025-09" role="option" type="button">September 2025 (8)</button>
+<button aria-label="Filter posts from 2024" aria-selected="false" class="archive-month" data-month="2024" role="option" type="button">2024 Archive (18)</button>
 </div>
+<p aria-live="polite" class="archive-filter-status" hidden id="archive-filter-status"></p>
 </div>
 <!-- About -->
 <div class="sidebar-header"><span aria-hidden="true">👤</span> The Guide</div>
@@ -2047,7 +2062,7 @@ footer { border-color: rgba(255,255,255,.07); }
 <!-- All Posts Grid -->
 <section>
 <h2 class="section-header"><span aria-hidden="true">📚</span> All Posts</h2>
-<div class="post-grid" id="post-grid">
+<div class="post-grid" id="post-grid" tabindex="-1">
 <!-- Populated by JavaScript -->
 </div>
 <div class="load-more">
@@ -2121,7 +2136,7 @@ footer { border-color: rgba(255,255,255,.07); }
                 const [year, month] = key.split('-');
                 const date = new Date(Number(year), Number(month) - 1, 1);
                 const label = `${monthFormatter.format(date)} (${counts.get(key)})`;
-                return `<a aria-label="Filter posts from ${label}" class="archive-month" data-month="${key}" href="#">${label}</a>`;
+                return `<button aria-label="Filter posts from ${label}" aria-selected="false" class="archive-month" data-month="${key}" role="option" type="button">${label}</button>`;
             }).join('');
         }
 
@@ -2401,6 +2416,12 @@ footer { border-color: rgba(255,255,255,.07); }
                 if (isMonthFilterActive && originalPosts.length > 0) {
                     allPosts = [...originalPosts];
                     isMonthFilterActive = false;
+                    archiveToggleLabel.textContent = 'Browse by Month';
+                    archiveFilterStatus.hidden = true;
+                    archiveMonths.querySelectorAll('.archive-month').forEach(item => {
+                        item.classList.remove('is-active');
+                        item.setAttribute('aria-selected', 'false');
+                    });
                 }
                 document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
                 bubble.classList.add('active');
@@ -2413,18 +2434,19 @@ footer { border-color: rgba(255,255,255,.07); }
 
         // Archive dropdown toggle
         const archiveToggle = document.getElementById('archive-toggle');
+        const archiveToggleLabel = document.getElementById('archive-toggle-label');
         const archiveMonths = document.getElementById('archive-months');
+        const archiveFilterStatus = document.getElementById('archive-filter-status');
         archiveToggle.addEventListener('click', () => {
-            archiveToggle.classList.toggle('open');
-            archiveMonths.classList.toggle('open');
+            const isOpen = archiveMonths.classList.toggle('open');
+            archiveToggle.classList.toggle('open', isOpen);
+            archiveToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
         // Archive month filter (event delegation so dynamically-rendered months work)
         archiveMonths.addEventListener('click', (e) => {
             const link = e.target.closest('.archive-month');
             if (!link) return;
-            e.preventDefault();
-
             const month = link.dataset.month;
             if (!month) return;
 
@@ -2443,10 +2465,30 @@ footer { border-color: rgba(255,255,255,.07); }
             });
 
             renderPosts();
+            const selectedLabel = link.textContent.trim().replace(/\s+\(\d+\)$/, '');
+            archiveToggleLabel.textContent = selectedLabel;
+            archiveFilterStatus.textContent = `${allPosts.length} ${allPosts.length === 1 ? 'entry' : 'entries'} from ${selectedLabel}`;
+            archiveFilterStatus.hidden = false;
+            archiveMonths.querySelectorAll('.archive-month').forEach(item => {
+                const active = item === link;
+                item.classList.toggle('is-active', active);
+                item.setAttribute('aria-selected', String(active));
+            });
             document.querySelectorAll('.cat-bubble').forEach(b => b.classList.remove('active'));
             document.querySelector('.cat-bubble[data-filter="all"]')?.classList.add('active');
             archiveToggle.classList.remove('open');
             archiveMonths.classList.remove('open');
+            archiveToggle.setAttribute('aria-expanded', 'false');
+            postGrid.focus({ preventScroll: true });
+            postGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape' || !archiveMonths.classList.contains('open')) return;
+            archiveToggle.classList.remove('open');
+            archiveMonths.classList.remove('open');
+            archiveToggle.setAttribute('aria-expanded', 'false');
+            archiveToggle.focus();
         });
 
         // Ask Archive - Opens NEXUS Intelligence chatbot when the optional control exists.
