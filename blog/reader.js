@@ -53,7 +53,7 @@
 
     var fab = document.createElement("div"); fab.className = "lb-fab";
     fab.innerHTML =
-      '<a class="lb-btn" href="/writing/">← Archive</a>' +
+      '<a class="lb-btn" href="/blog/">← Archive</a>' +
       '<button class="lb-btn lb-save" type="button">☆ Save</button>' +
       '<a class="lb-btn lb-sub" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener">Subscribe</a>';
     document.body.appendChild(fab);
