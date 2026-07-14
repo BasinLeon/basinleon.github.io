@@ -40,5 +40,3 @@ More frameworks and field notes: https://basinleon.github.io/docs/
 
 - LinkedIn share:
   - [Open LinkedIn share dialog](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbasinleon.github.io%2Fdocs%2F)
-- X share:
-  - [Open X share dialog](https://twitter.com/intent/tweet?url=https%3A%2F%2Fbasinleon.github.io%2Fdocs%2F&text=Operator%20notes%20on%20GTM%20systems%20and%20revenue%20architecture)

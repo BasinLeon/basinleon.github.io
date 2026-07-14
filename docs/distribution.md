@@ -21,7 +21,6 @@ Full operating model:
 ## Distribution Checklist
 
 - Share on [LinkedIn](https://www.linkedin.com/) with a native summary + link.
-- Share on [X](https://x.com/) with a short hook + link.
 - Republish/cross-post on:
   - [Medium](https://medium.com/)
   - [Substack](https://substack.com/)
