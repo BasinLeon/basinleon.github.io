@@ -15,6 +15,7 @@
   ];
 
   function ensureAnalytics() {
+    if (body.dataset.lbAnalytics === 'off') return;
     window.plausible = window.plausible || function () {
       (window.plausible.q = window.plausible.q || []).push(arguments);
     };
@@ -122,7 +123,7 @@
           <a href="/basin-nexus/">Inspect systems</a>
         </div>
         <div class="lb-site-footer-meta">
-          <span>© 2026 Leon Basin · Founding GTM Member, Business Development at Obvio.ai</span>
+          <span>© 2026 Leon Basin · GTM systems builder and operator</span>
           <nav aria-label="Social links">
             <a href="https://linkedin.com/in/leonbasin" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://github.com/BasinLeon" rel="noopener noreferrer">GitHub</a>
