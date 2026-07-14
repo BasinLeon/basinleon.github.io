@@ -2,10 +2,10 @@
 layout: page
 title: About
 permalink: /about/
-description: "Executive operator profile for Leon Basin: Founding GTM Member, Business Development at Obvio.ai, with a background in GTM systems, revenue architecture, execution design, and practical frameworks."
+description: "Executive operator profile for Leon Basin: a GTM systems builder working across signal, revenue architecture, execution design, and practical frameworks."
 ---
 
-I am currently Founding GTM Member, Business Development at [Obvio.ai](https://www.obvio.ai/).
+I currently work in public-sector GTM and business development.
 
 The background behind that work is GTM operating systems for teams that have outgrown improvisation.
 
@@ -15,7 +15,7 @@ Across Google, SurveyMonkey, Sense, Fudo Security, and advisory work with founde
 
 I do my best work where founders, operators, and technical teams need one model they can actually run. That means cleaner routing, clearer ownership, better signal quality, and execution that survives scrutiny.
 
-Current focus: Obvio.ai GTM execution, business development, public-sector growth systems, and selected writing/case-study work.
+Current focus: public-sector GTM execution, business development, growth systems, and selected writing/case-study work.
 
 ## What I Build
 
