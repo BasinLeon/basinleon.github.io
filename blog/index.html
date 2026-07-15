@@ -1777,8 +1777,58 @@ footer { border-color: rgba(255,255,255,.07); }
 }
 </style>
 <link rel="stylesheet" href="/assets/css/site-shell.css">
+<style>
+/* Bright reading-room layer: clearer hierarchy, warmer contrast, and a persistent trail. */
+:root {
+    --bg-deep: #171b17;
+    --bg-card: #202720;
+    --bg-warm: #2a3028;
+    --text-primary: #fff8e9;
+    --text-secondary: #d3cbb9;
+    --text-muted: #a3aa9d;
+    --sage: #a9c2a5;
+    --gold-primary: #e8b86a;
+    --gold-light: #ffd995;
+    --gold-border: rgba(232, 184, 106, 0.34);
+}
+body {
+    background:
+        radial-gradient(ellipse 85% 52% at 50% -8%, rgba(232,184,106,.16), transparent 58%),
+        radial-gradient(ellipse 55% 48% at 100% 80%, rgba(169,194,165,.10), transparent 62%),
+        linear-gradient(180deg, #171b17 0%, #101410 100%);
+}
+.newspaper-layout { padding-top: 132px; }
+.sidebar { position: sticky; top: 104px; align-self: start; }
+.reading-doors {
+    border-color: rgba(232,184,106,.36);
+    background: rgba(20,24,20,.9);
+    box-shadow: 0 18px 48px rgba(0,0,0,.25);
+}
+.reading-door.active { background: linear-gradient(135deg, #f1c579, #d99632); color: #17120b; }
+.world-map, .featured-main, .featured-small, .mirror-panel, .newsletter-cta, .about-section {
+    border-color: rgba(232,184,106,.26);
+    background-color: rgba(32,39,32,.88);
+    box-shadow: 0 20px 60px rgba(0,0,0,.22);
+}
+.world-map-title, .featured-title { color: #fff8e9; }
+.world-map-note, .world-card-desc, .featured-excerpt, .sidebar p { color: #d3cbb9; }
+.world-card:hover, .world-card:focus-visible, .featured-small:hover, .featured-small:focus-visible {
+    border-color: rgba(232,184,106,.68);
+    background: rgba(232,184,106,.12);
+}
+.cat-bubble { color: #b8c0b3; border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.045); }
+.cat-bubble.active, .cat-bubble:hover { color: #fff8e9; background: rgba(232,184,106,.15); border-color: rgba(232,184,106,.62); }
+.search-box input, .archive-toggle { background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.16); color: #fff8e9; }
+.sidebar-header { color: #d8cdb9; border-color: rgba(232,184,106,.24); }
+@media (max-width: 700px) {
+    .newspaper-layout { padding-top: 96px; }
+    .sidebar { position: static; }
+    .masthead-title { font-size: clamp(3.4rem, 18vw, 5.4rem); }
+    .world-map, .featured-main, .featured-small { border-radius: 18px; }
+}
+</style>
 </head>
-<body data-lb-section="writing" data-lb-theme="dark">
+<body data-lb-section="writing" data-lb-theme="dark" data-lb-analytics="off">
 <!-- Navigation -->
 <nav class="nav" data-lb-legacy-nav>
 <div class="nav-container">
@@ -2082,11 +2132,6 @@ footer { border-color: rgba(255,255,255,.07); }
 <a href="https://github.com/BasinLeon">GitHub</a>
 </div>
 <div class="footer-copyright">© 2026 Leon Basin • BASIN::NEXUS</div>
-<div style="margin-top: 14px;">
-  <a href="https://hits.sh/basinleon.github.io/blog/" rel="noopener noreferrer" target="_blank">
-    <img alt="Visitor count" src="https://hits.sh/basinleon.github.io/blog.svg?style=flat-square&color=C8880C&labelColor=0D0803&label=visitors" style="height:20px; border-radius:4px;" />
-  </a>
-</div>
 </footer>
 <script>
         let allPosts = [];
@@ -2552,9 +2597,6 @@ footer { border-color: rgba(255,255,255,.07); }
 <script src="js/blog-features.js?v=2.0"></script>
 <!-- Blog Search -->
 <script src="js/blog-search.js?v=2.0"></script>
-<!-- hits.sh badge handles visit tracking via the footer img tag -->
-<!-- Blog Analytics -->
-<script src="js/blog-analytics.js?v=2.0"></script>
 <!-- Auto-add social sharing to all posts -->
 <script src="js/add-social-sharing.js"></script>
 <!-- Article Recommendations -->
