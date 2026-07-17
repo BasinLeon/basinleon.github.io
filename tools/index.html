@@ -1,545 +1,987 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tools | Leon Basin</title>
-  <meta name="description" content="Interactive operator tools built by Leon Basin for revenue modeling, GTM diagnosis, pipeline architecture, and sharper preparation.">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://basinleon.github.io/tools/">
-  <meta property="og:title" content="Tools | Leon Basin">
-  <meta property="og:description" content="Interactive instruments for GTM architecture, diagnosis, revenue modeling, and preparation.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://basinleon.github.io/tools/">
-  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tools | Leon Basin">
-  <meta name="twitter:description" content="Choose an instrument for the operating decision in front of you.">
-  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --gold-primary: #C8880C;
-      --gold-light: #E89A18;
-      --gold-dark: #8B5A03;
-      --gold-border: rgba(200, 136, 12, 0.28);
-      --bg-deep: #0D0803;
-      --bg-card: #180C05;
-      --bg-warm: #201005;
-      --text-primary: #F2E4C8;
-      --text-secondary: #9B7D52;
-      --text-muted: #6B5030;
-    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Tool Bench | Leon Basin</title>
+    <meta name="description" content="Interactive instruments by Leon Basin for GTM architecture, revenue modeling, motion diagnosis, pipeline operation, and sharper preparation.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://basinleon.github.io/tools/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta property="og:title" content="The Tool Bench | Leon Basin">
+    <meta property="og:description" content="Choose the operating decision in front of you. Launch an instrument built to help you see the system, find the break, test the math, or run the motion.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basinleon.github.io/tools/">
+    <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
+    <meta property="og:site_name" content="Leon Basin">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Tool Bench | Leon Basin">
+    <meta name="twitter:description" content="Interactive instruments for GTM architecture, diagnosis, revenue modeling, and execution.">
+    <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
 
-    body {
-      background: radial-gradient(ellipse at 20% 10%, #1a0a02 0%, #0D0803 60%, #050200 100%);
-      color: var(--text-primary);
-      font-family: 'Crimson Pro', Georgia, serif;
-      min-height: 100vh;
-      line-height: 1.7;
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "The Tool Bench | Leon Basin",
+        "url": "https://basinleon.github.io/tools/",
+        "description": "Interactive operator tools for GTM architecture, revenue modeling, motion diagnosis, pipeline operation, and preparation.",
+        "author": { "@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/" },
+        "hasPart": [
+            { "@type": "SoftwareApplication", "name": "GTM Architecture Live", "applicationCategory": "BusinessApplication", "url": "https://basinleon.github.io/gtm-architecture-live/index-v2.html" },
+            { "@type": "SoftwareApplication", "name": "Revenue Architecture Simulator", "applicationCategory": "BusinessApplication", "url": "https://basinleon.github.io/revenue_architecture_simulator.html" },
+            { "@type": "SoftwareApplication", "name": "GTM Motion Diagnostic", "applicationCategory": "BusinessApplication", "url": "https://basinleon.github.io/diagnostic.html" },
+            { "@type": "SoftwareApplication", "name": "NEXUS CRM", "applicationCategory": "BusinessApplication", "url": "https://basinleon.github.io/crm.html" }
+        ]
     }
+    </script>
 
-    /* NAV */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(13, 8, 3, 0.97);
-      border-bottom: 1px solid var(--gold-border);
-      backdrop-filter: blur(8px);
-    }
-    .nav-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--gold-primary);
-      text-decoration: none;
-      letter-spacing: 2px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-    .nav-links a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      letter-spacing: 0.5px;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold-primary); }
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 
-    /* MASTHEAD */
-    .masthead {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 72px 24px 44px;
-      position: relative;
-    }
-    .masthead-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--gold-primary);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .masthead-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(3.2rem, 9vw, 7rem);
-      font-weight: 700;
-      font-style: italic;
-      color: var(--text-primary);
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    .masthead-sub {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      max-width: 720px;
-      font-style: normal;
-    }
+    <style>
+        :root {
+            --ink: #070706;
+            --ink-soft: #11110f;
+            --paper: #f1eee7;
+            --paper-alt: #e6e0d5;
+            --white: #fffdf8;
+            --gold: #d9ab45;
+            --gold-bright: #f3c85d;
+            --muted-light: #bdb7aa;
+            --muted-dark: #6c675e;
+            --line-dark: rgba(255,255,255,0.14);
+            --line-light: rgba(7,7,6,0.17);
+            --max: 1280px;
+            --gutter: clamp(1.25rem, 4vw, 4.5rem);
+        }
 
-    /* MAIN */
-    .main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 18px 24px 80px;
-    }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            margin: 0;
+            background: var(--ink);
+            color: var(--white);
+            font-family: "DM Sans", Arial, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        body.menu-open { overflow: hidden; }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        button { font: inherit; }
+        ::selection { background: var(--gold); color: var(--ink); }
 
-    .section { margin-bottom: 56px; }
-    .section-header {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.4rem;
-      font-style: normal;
-      color: var(--text-primary);
-      margin-bottom: 28px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--gold-border);
-    }
+        .skip-link {
+            position: fixed;
+            top: .75rem;
+            left: .75rem;
+            z-index: 300;
+            padding: .7rem 1rem;
+            background: var(--white);
+            color: var(--ink);
+            transform: translateY(-160%);
+            transition: transform 180ms ease;
+        }
+        .skip-link:focus { transform: translateY(0); }
 
-    /* TOOL GRID */
-    .tool-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
+        .site-header {
+            position: absolute;
+            inset: 0 0 auto;
+            z-index: 100;
+            border-bottom: 1px solid var(--line-dark);
+        }
+        .nav-shell,
+        .section-shell {
+            width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
+            margin: 0 auto;
+            padding-inline: var(--gutter);
+        }
+        .nav-shell {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .brand {
+            text-decoration: none;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .93rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+        .brand span { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: clamp(1.25rem, 2.5vw, 2.7rem); }
+        .nav-links a {
+            position: relative;
+            padding: .6rem 0;
+            color: rgba(255,253,248,.76);
+            text-decoration: none;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: .35rem;
+            left: 0;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 220ms ease;
+        }
+        .nav-links a:hover::after,
+        .nav-links a:focus-visible::after,
+        .nav-links a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+        .nav-links .nav-cta {
+            min-height: 42px;
+            padding: .7rem 1rem;
+            border: 1px solid rgba(217,171,69,.65);
+            color: var(--white);
+        }
+        .nav-links .nav-cta::after { display: none; }
+        .nav-links .nav-cta:hover,
+        .nav-links .nav-cta:focus-visible { background: var(--gold); color: var(--ink); }
+        .menu-toggle {
+            display: none;
+            width: 46px;
+            height: 46px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--white);
+            cursor: pointer;
+        }
+        .menu-toggle span,
+        .menu-toggle::before,
+        .menu-toggle::after {
+            content: "";
+            display: block;
+            width: 22px;
+            height: 1px;
+            margin: 5px auto;
+            background: currentColor;
+            transition: transform 180ms ease, opacity 180ms ease;
+        }
+        .menu-open .menu-toggle span { opacity: 0; }
+        .menu-open .menu-toggle::before { transform: translateY(6px) rotate(45deg); }
+        .menu-open .menu-toggle::after { transform: translateY(-6px) rotate(-45deg); }
 
-    .tool-card {
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-card);
-      border: 1px solid var(--gold-border);
-      border-radius: 16px;
-      padding: 28px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .tool-card:hover {
-      border-top-color: var(--gold-light);
-      background: #1f0e04;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(200, 136, 12, 0.14);
-    }
-    .tool-icon {
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--gold-border);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--gold-primary);
-      font-size: .72rem;
-      margin-bottom: 16px;
-    }
-    .tool-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
-      color: var(--gold-primary);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .tool-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.45rem;
-      color: var(--text-primary);
-      margin-bottom: 10px;
-      line-height: 1.25;
-    }
-    .tool-desc {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      flex: 1;
-      margin-bottom: 20px;
-    }
-    .tool-cta {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--gold-primary);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--gold-border);
-      padding-bottom: 2px;
-      transition: border-color 0.2s;
-    }
-    .tool-card:hover .tool-cta { border-color: var(--gold-primary); }
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin: 0 0 1.5rem;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .67rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        .eyebrow::before { content: ""; width: 34px; height: 1px; background: currentColor; }
 
-    /* FEATURED TOOL: full width */
-    .tool-card-featured {
-      grid-column: 1 / -1;
-      flex-direction: row;
-      gap: 32px;
-      align-items: flex-start;
-    }
-    .tool-card-featured .tool-content { flex: 1; }
-    .tool-card-featured .tool-icon { margin-bottom: 0; flex-shrink: 0; }
+        .hero {
+            position: relative;
+            isolation: isolate;
+            min-height: 100svh;
+            overflow: hidden;
+            background: var(--ink);
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            z-index: -2;
+            inset: 0;
+            background:
+                radial-gradient(circle at 74% 45%, rgba(217,171,69,.17), transparent 23%),
+                linear-gradient(90deg, rgba(7,7,6,.99) 0%, rgba(7,7,6,.94) 40%, rgba(7,7,6,.48) 73%, rgba(7,7,6,.82) 100%);
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            opacity: .24;
+            background-image:
+                linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+            background-size: 68px 68px;
+            mask-image: linear-gradient(90deg, transparent 20%, #000 58%, #000 100%);
+        }
+        .hero-shell {
+            position: relative;
+            min-height: 100svh;
+            display: grid;
+            grid-template-columns: minmax(0, .86fr) minmax(420px, 1.14fr);
+            align-items: center;
+            gap: clamp(2rem, 5vw, 6rem);
+            padding-top: 120px;
+            padding-bottom: 72px;
+        }
+        .hero-copy { position: relative; z-index: 4; }
+        .hero .eyebrow { color: var(--gold-bright); opacity: 0; animation: rise-in 700ms 120ms ease forwards; }
+        .hero-title {
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(4.4rem, 9.7vw, 10.6rem);
+            font-weight: 800;
+            letter-spacing: -.085em;
+            line-height: .78;
+            text-transform: uppercase;
+        }
+        .hero-title span { display: block; opacity: 0; transform: translateY(34px); animation: title-in 820ms cubic-bezier(.2,.7,.2,1) forwards; }
+        .hero-title span:nth-child(2) { color: var(--gold); animation-delay: 90ms; }
+        .hero-intro {
+            max-width: 490px;
+            margin: 2rem 0 0;
+            color: rgba(255,253,248,.72);
+            font-size: clamp(1rem, 1.4vw, 1.18rem);
+            opacity: 0;
+            animation: rise-in 700ms 360ms ease forwards;
+        }
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.4rem;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: rise-in 700ms 460ms ease forwards;
+        }
+        .primary-link,
+        .text-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .78rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .primary-link { padding: .8rem 1.15rem; background: var(--gold); color: var(--ink); }
+        .primary-link:hover,
+        .primary-link:focus-visible { background: var(--gold-bright); }
+        .text-link { gap: .55rem; color: var(--white); }
+        .text-link::after { content: "↘"; color: var(--gold); font-size: 1.1rem; transition: transform 180ms ease; }
+        .text-link:hover::after,
+        .text-link:focus-visible::after { transform: translate(3px, 3px); }
 
-    .intent-panel {
-      margin-bottom: 28px;
-      padding: 10px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      border: 1px solid var(--gold-border);
-      border-radius: 18px;
-      background: rgba(24, 12, 5, .72);
-    }
-    .intent-button {
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 12px;
-      color: var(--text-secondary);
-      background: transparent;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .66rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-    .intent-button:hover,
-    .intent-button.active {
-      color: var(--bg-deep);
-      background: var(--gold-light);
-    }
-    .start-panel {
-      min-height: 350px;
-      margin-bottom: 54px;
-      padding: 46px;
-      border: 1px solid var(--gold-border);
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      background:
-        linear-gradient(90deg, rgba(8, 4, 1, .98), rgba(8, 4, 1, .6) 65%, rgba(8, 4, 1, .18)),
-        url('/assets/img/frameworks/gtm_arch_live_screenshot.png') center / cover no-repeat;
-      box-shadow: 0 24px 70px rgba(0,0,0,.32);
-    }
-    .start-panel::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 78% 25%, rgba(232,154,24,.16), transparent 30%);
-      pointer-events: none;
-    }
-    .start-content { position: relative; z-index: 1; max-width: 670px; }
-    .start-kicker {
-      color: var(--gold-light);
-      font: 700 .62rem/1.4 'JetBrains Mono', monospace;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-    }
-    .start-title {
-      margin: 10px 0 10px;
-      font: 700 clamp(2.1rem, 5vw, 4rem)/1 'Playfair Display', serif;
-    }
-    .start-desc {
-      max-width: 610px;
-      color: #d8c5a5;
-      font-size: 1.08rem;
-      line-height: 1.55;
-    }
-    .start-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
-    .start-cta, .start-secondary {
-      display: inline-flex;
-      align-items: center;
-      min-height: 42px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font: 700 .64rem 'JetBrains Mono', monospace;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-    .start-cta { background: var(--gold-light); color: var(--bg-deep); }
-    .start-secondary { border: 1px solid var(--gold-border); color: var(--text-primary); }
-    .tool-card[hidden] { display: none; }
-    .tool-proof {
-      margin-top: 12px;
-      color: var(--text-muted);
-      font: .58rem 'JetBrains Mono', monospace;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
+        .hero-visual {
+            position: relative;
+            height: min(68vw, 700px);
+            min-height: 520px;
+            opacity: 0;
+            animation: visual-in 1200ms 180ms cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .hero-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: min(50vw, 670px);
+            aspect-ratio: 1.04;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.25);
+            box-shadow: 0 38px 100px rgba(0,0,0,.62);
+            transform: translate(-45%, -50%) perspective(1200px) rotateY(-9deg) rotateZ(2.5deg);
+            will-change: transform;
+        }
+        .hero-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.82) contrast(1.08); }
+        .hero-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, rgba(217,171,69,.08), transparent 35%, rgba(7,7,6,.32));
+            pointer-events: none;
+        }
+        .hero-index {
+            position: absolute;
+            right: 0;
+            bottom: 5%;
+            z-index: 2;
+            color: var(--gold);
+            font-family: "JetBrains Mono", monospace;
+            font-size: clamp(3.5rem, 7vw, 7rem);
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: -.08em;
+        }
+        .hero-index small {
+            display: block;
+            margin: 0 0 .65rem .35rem;
+            color: rgba(255,253,248,.52);
+            font-size: .58rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        .hero-note {
+            position: absolute;
+            top: 8%;
+            right: 1%;
+            writing-mode: vertical-rl;
+            color: rgba(255,253,248,.46);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .58rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
 
-    @media (max-width: 640px) {
-      .tool-card-featured { flex-direction: column; }
-      .tool-grid { grid-template-columns: 1fr; }
-      .nav-links { gap: 14px; }
-      .nav-links a { font-size: 0.65rem; }
-      .nav-links a:nth-child(3), .nav-links a:nth-child(4) { display: none; }
-      .intent-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .start-panel { min-height: 430px; padding: 28px; }
-    }
+        .signal-strip {
+            overflow: hidden;
+            border-block: 1px solid rgba(7,7,6,.3);
+            background: var(--gold);
+            color: var(--ink);
+        }
+        .signal-track {
+            display: flex;
+            width: max-content;
+            padding: .8rem 0;
+            animation: marquee 28s linear infinite;
+        }
+        .signal-track span {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-right: 2rem;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .62rem;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+        .signal-track span::after { content: "+"; font-size: 1rem; }
 
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--gold-border);
-      text-align: center;
-      padding: 32px 24px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      letter-spacing: 1px;
-    }
-    footer a { color: var(--text-muted); text-decoration: none; margin: 0 12px; }
-    footer a:hover { color: var(--gold-primary); }
-  </style>
-  <link rel="stylesheet" href="/assets/css/site-shell.css">
+        .chooser {
+            padding: clamp(5.5rem, 10vw, 10rem) 0;
+            background: var(--paper);
+            color: var(--ink);
+        }
+        .chooser-heading {
+            display: grid;
+            grid-template-columns: minmax(0, .8fr) minmax(300px, 1.2fr);
+            align-items: end;
+            gap: 3rem;
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+        }
+        .chooser .eyebrow { color: var(--muted-dark); }
+        .section-title {
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(2.8rem, 6vw, 6.4rem);
+            font-weight: 800;
+            letter-spacing: -.07em;
+            line-height: .92;
+        }
+        .chooser-lede {
+            max-width: 560px;
+            margin: 0 0 .35rem auto;
+            color: var(--muted-dark);
+            font-size: 1.02rem;
+        }
+        .intent-nav {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            border-block: 1px solid var(--line-light);
+        }
+        .intent-button {
+            position: relative;
+            min-height: 94px;
+            padding: 1.3rem 1rem;
+            border: 0;
+            border-right: 1px solid var(--line-light);
+            background: transparent;
+            color: var(--muted-dark);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .78rem;
+            font-weight: 800;
+            text-align: left;
+            cursor: pointer;
+            transition: background 220ms ease, color 220ms ease;
+        }
+        .intent-button:last-child { border-right: 0; }
+        .intent-button span {
+            display: block;
+            margin-bottom: .65rem;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .58rem;
+            letter-spacing: .12em;
+        }
+        .intent-button:hover,
+        .intent-button:focus-visible { background: var(--paper-alt); color: var(--ink); }
+        .intent-button[aria-selected="true"] { background: var(--ink); color: var(--white); }
+        .intent-button[aria-selected="true"] span { color: var(--gold-bright); }
+
+        .instrument-stage {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(330px, .85fr);
+            min-height: 620px;
+            background: var(--ink);
+            color: var(--white);
+        }
+        .stage-copy {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: clamp(2rem, 5vw, 5rem);
+        }
+        .stage-number {
+            color: var(--gold);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .66rem;
+            letter-spacing: .17em;
+            text-transform: uppercase;
+        }
+        .stage-kicker {
+            margin: 0 0 1rem;
+            color: var(--gold-bright);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+        .stage-title {
+            max-width: 720px;
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(2.5rem, 5.4vw, 5.8rem);
+            font-weight: 800;
+            letter-spacing: -.065em;
+            line-height: .92;
+        }
+        .stage-desc { max-width: 620px; margin: 1.5rem 0 0; color: var(--muted-light); font-size: 1.02rem; }
+        .stage-action { margin-top: 2.2rem; }
+        .stage-visual { position: relative; min-height: 480px; overflow: hidden; background: #12110f; }
+        .stage-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 180ms ease, transform 700ms cubic-bezier(.2,.7,.2,1);
+        }
+        .instrument-stage.is-changing .stage-visual img { opacity: .25; transform: scale(1.04); }
+        .stage-visual::after { content: ""; position: absolute; inset: 0; box-shadow: inset 24px 0 45px rgba(7,7,6,.48); pointer-events: none; }
+        .stage-status {
+            position: absolute;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            padding: .6rem .75rem;
+            background: rgba(7,7,6,.78);
+            backdrop-filter: blur(8px);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .56rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .stage-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-bright); box-shadow: 0 0 14px var(--gold); animation: pulse 1.8s ease-in-out infinite; }
+
+        .library {
+            padding: clamp(5.5rem, 10vw, 10rem) 0;
+            background: var(--ink);
+            color: var(--white);
+        }
+        .library-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+        }
+        .library .eyebrow { color: var(--gold); }
+        .library-count {
+            color: rgba(255,253,248,.45);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .63rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+        .tool-list { border-top: 1px solid var(--line-dark); }
+        .tool-row {
+            position: relative;
+            display: grid;
+            grid-template-columns: 70px minmax(260px, .85fr) minmax(300px, 1.15fr) 44px;
+            align-items: center;
+            gap: clamp(1rem, 3vw, 3rem);
+            min-height: 156px;
+            border-bottom: 1px solid var(--line-dark);
+            text-decoration: none;
+            isolation: isolate;
+        }
+        .tool-row::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            background: var(--gold);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 280ms cubic-bezier(.2,.7,.2,1);
+        }
+        .tool-row:hover::before,
+        .tool-row:focus-visible::before { transform: scaleY(1); }
+        .tool-no { color: var(--gold); font-family: "JetBrains Mono", monospace; font-size: .67rem; letter-spacing: .12em; }
+        .tool-name { font-family: "Manrope", Arial, sans-serif; font-size: clamp(1.35rem, 2.2vw, 2.25rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.05; }
+        .tool-copy { color: var(--muted-light); font-size: .9rem; }
+        .tool-copy span { display: block; margin-bottom: .45rem; color: var(--gold-bright); font-family: "JetBrains Mono", monospace; font-size: .57rem; letter-spacing: .12em; text-transform: uppercase; }
+        .tool-arrow { color: var(--gold); font-size: 1.6rem; transition: transform 180ms ease; }
+        .tool-row:hover,
+        .tool-row:focus-visible { color: var(--ink); outline: 0; }
+        .tool-row:hover .tool-no,
+        .tool-row:hover .tool-copy,
+        .tool-row:hover .tool-copy span,
+        .tool-row:hover .tool-arrow,
+        .tool-row:focus-visible .tool-no,
+        .tool-row:focus-visible .tool-copy,
+        .tool-row:focus-visible .tool-copy span,
+        .tool-row:focus-visible .tool-arrow { color: var(--ink); }
+        .tool-row:hover .tool-arrow,
+        .tool-row:focus-visible .tool-arrow { transform: translate(4px, 4px); }
+
+        .field-kit {
+            padding: clamp(5rem, 9vw, 9rem) 0;
+            background: var(--paper-alt);
+            color: var(--ink);
+        }
+        .kit-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(3rem, 8vw, 8rem); }
+        .kit-copy { position: sticky; top: 3rem; align-self: start; }
+        .kit-copy .eyebrow { color: var(--muted-dark); }
+        .kit-copy p { max-width: 420px; margin: 1.5rem 0 0; color: var(--muted-dark); }
+        .kit-links { border-top: 1px solid var(--line-light); }
+        .kit-link {
+            display: grid;
+            grid-template-columns: 42px 1fr auto;
+            align-items: center;
+            gap: 1.2rem;
+            min-height: 118px;
+            border-bottom: 1px solid var(--line-light);
+            text-decoration: none;
+        }
+        .kit-link small { color: var(--muted-dark); font-family: "JetBrains Mono", monospace; font-size: .58rem; }
+        .kit-link strong { display: block; font-family: "Manrope", Arial, sans-serif; font-size: clamp(1.25rem, 2vw, 1.9rem); letter-spacing: -.04em; }
+        .kit-link span { display: block; margin-top: .3rem; color: var(--muted-dark); font-size: .83rem; }
+        .kit-link b { font-size: 1.25rem; font-weight: 400; transition: transform 180ms ease; }
+        .kit-link:hover b,
+        .kit-link:focus-visible b { transform: translate(4px, 4px); }
+
+        .final-cta {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(6rem, 13vw, 12rem) 0;
+            background: var(--gold);
+            color: var(--ink);
+        }
+        .final-cta::after {
+            content: "BUILD";
+            position: absolute;
+            right: -2vw;
+            bottom: -6vw;
+            color: rgba(7,7,6,.07);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: min(30vw, 30rem);
+            font-weight: 800;
+            letter-spacing: -.1em;
+            line-height: .7;
+            pointer-events: none;
+        }
+        .cta-shell { position: relative; z-index: 1; }
+        .final-cta .eyebrow { color: rgba(7,7,6,.6); }
+        .cta-title { max-width: 1000px; margin: 0; font-family: "Manrope", Arial, sans-serif; font-size: clamp(3rem, 8vw, 8rem); font-weight: 800; letter-spacing: -.075em; line-height: .87; }
+        .cta-action {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            margin-top: 2.5rem;
+            padding-bottom: .4rem;
+            border-bottom: 2px solid var(--ink);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .9rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .cta-action::after { content: "↘"; font-size: 1.2rem; transition: transform 180ms ease; }
+        .cta-action:hover::after,
+        .cta-action:focus-visible::after { transform: translate(4px, 4px); }
+
+        footer { background: var(--ink); color: var(--white); border-top: 1px solid var(--line-dark); }
+        .footer-shell {
+            min-height: 118px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .footer-brand { font-family: "Manrope", Arial, sans-serif; font-size: .76rem; font-weight: 800; letter-spacing: .08em; }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { color: var(--muted-light); font-size: .72rem; text-decoration: none; }
+        .footer-links a:hover,
+        .footer-links a:focus-visible { color: var(--gold); }
+        .footer-meta { color: rgba(255,253,248,.4); font-family: "JetBrains Mono", monospace; font-size: .57rem; letter-spacing: .1em; text-transform: uppercase; }
+
+        .js .reveal { opacity: 0; transform: translateY(34px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }
+        .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+        @keyframes rise-in { to { opacity: 1; transform: translateY(0); } }
+        @keyframes title-in { to { opacity: 1; transform: translateY(0); } }
+        @keyframes visual-in { from { opacity: 0; transform: translate(5%, 4%) scale(.96); } to { opacity: 1; transform: none; } }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+        @keyframes pulse { 50% { opacity: .35; transform: scale(.75); } }
+
+        @media (max-width: 980px) {
+            .hero-shell { grid-template-columns: minmax(0, .92fr) minmax(330px, 1.08fr); gap: 1rem; }
+            .hero-frame { width: min(57vw, 600px); }
+            .chooser-heading { grid-template-columns: 1fr; }
+            .chooser-lede { margin-left: 0; }
+            .instrument-stage { grid-template-columns: 1fr; }
+            .stage-visual { min-height: 420px; }
+            .tool-row { grid-template-columns: 50px minmax(220px, .8fr) minmax(260px, 1.2fr) 30px; }
+            .kit-layout { grid-template-columns: 1fr; }
+            .kit-copy { position: static; }
+        }
+
+        @media (max-width: 760px) {
+            .nav-links {
+                position: fixed;
+                inset: 78px 0 auto;
+                display: grid;
+                gap: 0;
+                padding: 1rem var(--gutter) 1.5rem;
+                border-bottom: 1px solid var(--line-dark);
+                background: rgba(7,7,6,.98);
+                transform: translateY(-130%);
+                transition: transform 240ms ease;
+            }
+            .menu-open .nav-links { transform: translateY(0); }
+            .nav-links a { padding: .9rem 0; }
+            .nav-links .nav-cta { margin-top: .6rem; padding-inline: 1rem; }
+            .menu-toggle { display: block; }
+            .hero-shell {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: center;
+                gap: 1rem;
+                padding-top: 118px;
+                padding-bottom: 2rem;
+            }
+            .hero-copy { z-index: 5; }
+            .hero-title { font-size: clamp(4rem, 20vw, 7rem); }
+            .hero-intro { max-width: 90%; margin-top: 1.4rem; }
+            .hero-actions { margin-top: 1.4rem; }
+            .hero-visual { position: absolute; right: -18%; bottom: 0; width: 78%; height: 48%; min-height: 300px; opacity: .48; }
+            .hero-frame { width: 100%; transform: translate(-45%, -42%) rotateZ(4deg); }
+            .hero-index { right: 14%; bottom: 3%; }
+            .hero-note { display: none; }
+            .hero::before { z-index: 0; background: linear-gradient(90deg, rgba(7,7,6,.99), rgba(7,7,6,.8) 60%, rgba(7,7,6,.38)); }
+            .hero::after { z-index: 1; }
+            .intent-nav { grid-template-columns: repeat(2, 1fr); }
+            .intent-button:nth-child(2) { border-right: 0; }
+            .intent-button:nth-child(-n+2) { border-bottom: 1px solid var(--line-light); }
+            .instrument-stage { min-height: 0; }
+            .stage-copy { min-height: 520px; }
+            .stage-visual { min-height: 340px; }
+            .library-heading { display: block; }
+            .library-count { margin-top: 1.5rem; }
+            .tool-row { grid-template-columns: 42px 1fr 30px; min-height: 142px; }
+            .tool-copy { display: none; }
+            .footer-shell { align-items: flex-start; flex-direction: column; padding-block: 2.2rem; }
+            .footer-links { flex-wrap: wrap; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 18vw; }
+            .hero-actions { align-items: flex-start; flex-direction: column; gap: .8rem; }
+            .hero-visual { width: 92%; right: -32%; }
+            .intent-button { min-height: 88px; padding: 1rem .8rem; font-size: .7rem; }
+            .stage-copy { min-height: 500px; padding: 1.5rem; }
+            .stage-title { font-size: clamp(2.55rem, 13vw, 4.2rem); }
+            .stage-visual { min-height: 285px; }
+            .tool-row { grid-template-columns: 34px 1fr 22px; gap: .7rem; }
+            .kit-link { grid-template-columns: 32px 1fr 18px; gap: .7rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .js .reveal { opacity: 1; transform: none; }
+        }
+    </style>
 </head>
-<body data-lb-section="tools" data-lb-theme="dark">
+<body>
+    <a class="skip-link" href="#main">Skip to tools</a>
 
-<nav data-lb-legacy-nav>
-  <div class="nav-container">
-    <a class="nav-logo" href="/">BASIN::NEXUS</a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="/blog/">Blog</a>
-      <a href="/library/">Library</a>
-      <a href="/case-studies/">Case Studies</a>
-      <a href="/tools/" class="active">Tools</a>
-      <a href="https://github.com/BasinLeon" rel="noopener noreferrer" target="_blank">GitHub</a>
-    </div>
-  </div>
-</nav>
+    <header class="site-header">
+        <nav class="nav-shell" aria-label="Primary navigation">
+            <a class="brand" href="/">LEON <span>BASIN.</span></a>
+            <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span></button>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/case-studies/">Work</a>
+                <a href="/blog/">Archive</a>
+                <a href="/tools/" aria-current="page">Tools</a>
+                <a class="nav-cta" href="/work-with-me/">Work with me</a>
+            </div>
+        </nav>
+    </header>
 
-<div class="masthead">
-  <div class="masthead-label">// Working Instruments</div>
-  <h1 class="masthead-title">Choose the instrument.</h1>
-  <p class="masthead-sub">A small tool bench for GTM architecture, diagnosis, revenue math, and preparation. Start with the decision in front of you.</p>
-</div>
+    <main id="main">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-shell section-shell">
+                <div class="hero-copy">
+                    <p class="eyebrow">Operator instruments / 2026</p>
+                    <h1 class="hero-title" id="hero-title"><span>The tool</span><span>bench.</span></h1>
+                    <p class="hero-intro">Interactive systems for seeing the motion, finding the break, testing the math, and operating with more signal.</p>
+                    <div class="hero-actions">
+                        <a class="primary-link" href="#choose">Choose an instrument</a>
+                        <a class="text-link" href="/gtm-architecture-live/index-v2.html">Launch the flagship</a>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="hero-frame">
+                        <img src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="" width="2280" height="2190">
+                    </div>
+                    <div class="hero-index"><small>Active instruments</small>07</div>
+                    <div class="hero-note">Built to be used / not presented</div>
+                </div>
+            </div>
+        </section>
 
-<div class="main">
-  <div class="intent-panel" role="tablist" aria-label="Choose what you need">
-    <button class="intent-button active" type="button" role="tab" aria-selected="true" aria-controls="start-panel" data-intent="architecture">Map the system</button>
-    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="diagnose">Find the break</button>
-    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="model">Test the math</button>
-    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="start-panel" tabindex="-1" data-intent="prepare">Prepare the room</button>
-  </div>
-
-  <section class="start-panel" id="start-panel" role="tabpanel" aria-live="polite">
-    <div class="start-content">
-      <div class="start-kicker" id="start-kicker">Start here • System map</div>
-      <h2 class="start-title" id="start-title">GTM Architecture Live</h2>
-      <p class="start-desc" id="start-desc">See the whole motion as one operating system. Trace signal, qualification, sequencing, ownership, and execution before changing another tactic.</p>
-      <div class="start-actions">
-        <a class="start-cta" id="start-link" href="/gtm-architecture-live/index-v2.html">Open the architecture</a>
-        <a class="start-secondary" href="#instrument-library">See every instrument</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="section" id="instrument-library">
-    <div class="section-header">Core instruments</div>
-    <div class="tool-grid">
-
-      <a class="tool-card tool-card-featured" data-tool-intent="architecture" href="/gtm-architecture-live/index-v2.html">
-        <div class="tool-icon">01</div>
-        <div class="tool-content">
-          <div class="tool-tag">Interactive Architecture Model</div>
-          <div class="tool-name">GTM Architecture Live</div>
-        <div class="tool-desc">Trace signal, qualification, sequencing, ownership, and execution as one system.</div>
-          <span class="tool-cta">Open architecture →</span>
-          <div class="tool-proof">Best for: redesigning the whole motion</div>
+        <div class="signal-strip" aria-hidden="true">
+            <div class="signal-track">
+                <span>Architecture</span><span>Diagnosis</span><span>Revenue math</span><span>Pipeline</span><span>Preparation</span><span>Execution</span>
+                <span>Architecture</span><span>Diagnosis</span><span>Revenue math</span><span>Pipeline</span><span>Preparation</span><span>Execution</span>
+            </div>
         </div>
-      </a>
 
-      <a class="tool-card" data-tool-intent="model" href="/revenue_architecture_simulator.html">
-        <div class="tool-icon">02</div>
-        <div class="tool-tag">Revenue Simulator</div>
-        <div class="tool-name">Revenue Architecture Simulator</div>
-        <div class="tool-desc">Change headcount, coverage, and conversion assumptions. See the consequence before committing people or budget.</div>
-        <span class="tool-cta">Run Simulation →</span>
-        <div class="tool-proof">Best for: pressure testing a revenue plan</div>
-      </a>
+        <section class="chooser" id="choose" aria-labelledby="chooser-title">
+            <div class="section-shell">
+                <div class="chooser-heading reveal">
+                    <div>
+                        <p class="eyebrow">Start with the decision</p>
+                        <h2 class="section-title" id="chooser-title">What needs<br>solving?</h2>
+                    </div>
+                    <p class="chooser-lede">Select the problem in front of you. The bench will surface the strongest starting point without hiding the rest of the kit.</p>
+                </div>
 
-      <a class="tool-card" data-tool-intent="diagnose" href="/diagnostic.html">
-        <div class="tool-icon">03</div>
-        <div class="tool-tag">GTM Diagnostic</div>
-        <div class="tool-name">GTM Motion Diagnostic</div>
-        <div class="tool-desc">Locate the actual break across pipeline generation, qualification, conversion, ownership, and operating cadence.</div>
-        <span class="tool-cta">Run Diagnostic →</span>
-        <div class="tool-proof">Best for: finding why the motion feels stuck</div>
-      </a>
+                <div class="intent-nav reveal" role="tablist" aria-label="Choose the problem to solve">
+                    <button class="intent-button" type="button" role="tab" aria-selected="true" aria-controls="instrument-stage" data-intent="architecture"><span>01 / Map</span>See the whole system</button>
+                    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="instrument-stage" tabindex="-1" data-intent="diagnose"><span>02 / Diagnose</span>Find the real break</button>
+                    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="instrument-stage" tabindex="-1" data-intent="model"><span>03 / Model</span>Pressure-test the math</button>
+                    <button class="intent-button" type="button" role="tab" aria-selected="false" aria-controls="instrument-stage" tabindex="-1" data-intent="operate"><span>04 / Operate</span>Run the pipeline</button>
+                </div>
 
-      <a class="tool-card" data-tool-intent="architecture" href="/crm.html">
-        <div class="tool-icon">04</div>
-        <div class="tool-tag">Pipeline Tool</div>
-        <div class="tool-name">NEXUS::CRM</div>
-        <div class="tool-desc">Track pipeline, signal, and context without recreating enterprise CRM overhead.</div>
-        <span class="tool-cta">Open CRM →</span>
-        <div class="tool-proof">Best for: operating a focused pipeline</div>
-      </a>
+                <article class="instrument-stage reveal" id="instrument-stage" role="tabpanel" aria-live="polite">
+                    <div class="stage-copy">
+                        <div class="stage-number" id="stage-number">Instrument 01 / 07</div>
+                        <div>
+                            <p class="stage-kicker" id="stage-kicker">Interactive architecture model</p>
+                            <h3 class="stage-title" id="stage-title">GTM Architecture Live</h3>
+                            <p class="stage-desc" id="stage-desc">Trace signal, qualification, sequencing, ownership, and execution as one connected operating system.</p>
+                            <div class="stage-action"><a class="primary-link" id="stage-link" href="/gtm-architecture-live/index-v2.html">Open the architecture</a></div>
+                        </div>
+                    </div>
+                    <div class="stage-visual">
+                        <img id="stage-image" src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="GTM Architecture Live interface" width="2280" height="2190">
+                        <div class="stage-status">Live instrument</div>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-    </div>
-  </div>
+        <section class="library" id="library" aria-labelledby="library-title">
+            <div class="section-shell">
+                <div class="library-heading reveal">
+                    <div>
+                        <p class="eyebrow">Complete bench</p>
+                        <h2 class="section-title" id="library-title">All instruments.</h2>
+                    </div>
+                    <div class="library-count">07 tools / open access</div>
+                </div>
 
-  <div class="section">
-    <div class="section-header">Reference instruments</div>
-    <div class="tool-grid">
+                <div class="tool-list">
+                    <a class="tool-row reveal" href="/gtm-architecture-live/index-v2.html">
+                        <span class="tool-no">01</span>
+                        <span class="tool-name">GTM Architecture Live</span>
+                        <span class="tool-copy"><span>Architecture</span>Trace the entire commercial motion from signal through execution.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/revenue_architecture_simulator.html">
+                        <span class="tool-no">02</span>
+                        <span class="tool-name">Revenue Architecture Simulator</span>
+                        <span class="tool-copy"><span>Modeling</span>Change coverage, conversion, capacity, and cost assumptions in real time.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/diagnostic.html">
+                        <span class="tool-no">03</span>
+                        <span class="tool-name">GTM Motion Diagnostic</span>
+                        <span class="tool-copy"><span>Diagnosis</span>Separate pipeline problems from qualification, conversion, ownership, or cadence.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/crm.html">
+                        <span class="tool-no">04</span>
+                        <span class="tool-name">NEXUS::CRM</span>
+                        <span class="tool-copy"><span>Pipeline</span>Track accounts, signal, and context without enterprise software overhead.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/hazel-demo/">
+                        <span class="tool-no">05</span>
+                        <span class="tool-name">Hazel AI Prep</span>
+                        <span class="tool-copy"><span>Preparation</span>Sharpen positioning and signal vocabulary for AI-era commercial roles.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/docs/start-here/">
+                        <span class="tool-no">06</span>
+                        <span class="tool-name">Operator Route Finder</span>
+                        <span class="tool-copy"><span>Orientation</span>Choose a path through systems, proof, writing, and practical tools.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                    <a class="tool-row reveal" href="/assets/signal-refinery-whitepaper.html">
+                        <span class="tool-no">07</span>
+                        <span class="tool-name">Signal Refinery</span>
+                        <span class="tool-copy"><span>Signal design</span>Inspect the framework for filtering noise and routing commercial intent.</span>
+                        <span class="tool-arrow" aria-hidden="true">↘</span>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-      <a class="tool-card" data-tool-intent="prepare" href="/docs/start-here/">
-        <div class="tool-icon">05</div>
-        <div class="tool-tag">Operator Guide</div>
-        <div class="tool-name">Start Here</div>
-        <div class="tool-desc">Choose a route through the systems, proof, writing, and practical tools.</div>
-        <span class="tool-cta">Choose a route →</span>
-      </a>
+        <section class="field-kit" aria-labelledby="kit-title">
+            <div class="section-shell kit-layout">
+                <div class="kit-copy reveal">
+                    <p class="eyebrow">Reference kit</p>
+                    <h2 class="section-title" id="kit-title">Bring context<br>to the bench.</h2>
+                    <p>The instruments work better with evidence. Use these routes to inspect the operating record, read the underlying thinking, or find the right starting point.</p>
+                </div>
+                <div class="kit-links reveal">
+                    <a class="kit-link" href="/case-studies/"><small>01</small><span><strong>Operating Records</strong><span>Proof behind the systems and decisions.</span></span><b aria-hidden="true">↘</b></a>
+                    <a class="kit-link" href="/docs/best-of/"><small>02</small><span><strong>Best of the Archive</strong><span>The clearest essays and field notes.</span></span><b aria-hidden="true">↘</b></a>
+                    <a class="kit-link" href="/library/"><small>03</small><span><strong>System Library</strong><span>Frameworks, references, and source material.</span></span><b aria-hidden="true">↘</b></a>
+                </div>
+            </div>
+        </section>
 
-      <a class="tool-card" data-tool-intent="prepare" href="/docs/best-of/">
-        <div class="tool-icon">06</div>
-        <div class="tool-tag">Writing Index</div>
-        <div class="tool-name">Best of the Archive</div>
-        <div class="tool-desc">Read the clearest essays and field notes on systems, signal, voice, and commercial judgment.</div>
-        <span class="tool-cta">Read the collection →</span>
-      </a>
+        <section class="final-cta" aria-labelledby="cta-title">
+            <div class="section-shell cta-shell reveal">
+                <p class="eyebrow">When the tool is not enough</p>
+                <h2 class="cta-title" id="cta-title">Bring me the real operating problem.</h2>
+                <a class="cta-action" href="/work-with-me/">See how I work</a>
+            </div>
+        </section>
+    </main>
 
-      <a class="tool-card" data-tool-intent="model" href="/gtm-architecture-live/index-v2.html">
-        <div class="tool-icon">07</div>
-        <div class="tool-tag">Interactive Model</div>
-        <div class="tool-name">GTM Architecture Live</div>
-        <div class="tool-desc">Trace signal, qualification, ownership, action, and revenue as one operating system.</div>
-        <span class="tool-cta">Open the architecture →</span>
-      </a>
+    <footer>
+        <div class="section-shell footer-shell">
+            <div class="footer-brand">LEON <span style="color:var(--gold)">BASIN.</span></div>
+            <div class="footer-links"><a href="/">Home</a><a href="/case-studies/">Work</a><a href="/blog/">Archive</a><a href="/tools/">Tools</a><a href="/work-with-me/">Contact</a></div>
+            <div class="footer-meta">© 2026 / Built in public</div>
+        </div>
+    </footer>
 
-      <a class="tool-card" data-tool-intent="diagnose" href="/case-studies/">
-        <div class="tool-icon">08</div>
-        <div class="tool-tag">Decision Proof</div>
-        <div class="tool-name">Operating Records</div>
-        <div class="tool-desc">Inspect how specific decisions changed routing, throughput, pipeline quality, and execution.</div>
-        <span class="tool-cta">Read the cases →</span>
-      </a>
+    <script>
+        const intentStates = {
+            architecture: {
+                number: 'Instrument 01 / 07', kicker: 'Interactive architecture model', title: 'GTM Architecture Live',
+                desc: 'Trace signal, qualification, sequencing, ownership, and execution as one connected operating system.',
+                href: '/gtm-architecture-live/index-v2.html', cta: 'Open the architecture',
+                image: '/assets/img/frameworks/gtm_arch_live_screenshot.png', alt: 'GTM Architecture Live interface'
+            },
+            diagnose: {
+                number: 'Instrument 03 / 07', kicker: 'Structured motion diagnostic', title: 'Find the real break',
+                desc: 'Walk the motion from signal to execution and isolate whether the failure lives in pipeline, qualification, conversion, ownership, or cadence.',
+                href: '/diagnostic.html', cta: 'Run the diagnostic',
+                image: '/assets/img/frameworks/signal_refinery_hud_actual_fixed.png', alt: 'Signal refinery diagnostic interface'
+            },
+            model: {
+                number: 'Instrument 02 / 07', kicker: 'Interactive revenue simulator', title: 'Test the math before the build',
+                desc: 'Change coverage, conversion, capacity, and cost assumptions. See the consequence before the operating plan becomes expensive.',
+                href: '/revenue_architecture_simulator.html', cta: 'Run the simulation',
+                image: '/assets/img/frameworks/revenue-blueprint.png', alt: 'Revenue architecture blueprint'
+            },
+            operate: {
+                number: 'Instrument 04 / 07', kicker: 'Focused pipeline workspace', title: 'NEXUS::CRM',
+                desc: 'Track accounts, opportunity signal, next actions, and commercial context without recreating enterprise CRM overhead.',
+                href: '/crm.html', cta: 'Open the CRM',
+                image: '/assets/img/frameworks/nexus-dashboard.png', alt: 'NEXUS CRM pipeline interface'
+            }
+        };
 
-    </div>
-  </div>
+        const stage = document.getElementById('instrument-stage');
+        const intentButtons = [...document.querySelectorAll('.intent-button')];
 
-</div>
+        function selectIntent(button) {
+            const state = intentStates[button.dataset.intent];
+            intentButtons.forEach(item => {
+                const active = item === button;
+                item.setAttribute('aria-selected', String(active));
+                item.tabIndex = active ? 0 : -1;
+            });
+            stage.classList.add('is-changing');
+            window.setTimeout(() => {
+                document.getElementById('stage-number').textContent = state.number;
+                document.getElementById('stage-kicker').textContent = state.kicker;
+                document.getElementById('stage-title').textContent = state.title;
+                document.getElementById('stage-desc').textContent = state.desc;
+                const link = document.getElementById('stage-link');
+                link.href = state.href;
+                link.textContent = state.cta;
+                const image = document.getElementById('stage-image');
+                image.src = state.image;
+                image.alt = state.alt;
+                stage.classList.remove('is-changing');
+            }, 180);
+        }
 
-<footer data-lb-legacy-footer>
-  <a href="/">Portfolio</a>
-  <a href="/blog/">Blog</a>
-  <a href="/library/">Library</a>
-  <a href="/case-studies/">Case Studies</a>
-  <br><br>© 2026 Leon Basin • BASIN::NEXUS
-</footer>
+        intentButtons.forEach((button, index) => {
+            button.addEventListener('click', () => selectIntent(button));
+            button.addEventListener('keydown', event => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+                event.preventDefault();
+                let next = index;
+                if (event.key === 'ArrowRight') next = (index + 1) % intentButtons.length;
+                if (event.key === 'ArrowLeft') next = (index - 1 + intentButtons.length) % intentButtons.length;
+                if (event.key === 'Home') next = 0;
+                if (event.key === 'End') next = intentButtons.length - 1;
+                intentButtons[next].focus();
+                selectIntent(intentButtons[next]);
+            });
+        });
 
-<script>
-  const intentStates = {
-    architecture: {
-      kicker: 'Start here • System map',
-      title: 'GTM Architecture Live',
-      desc: 'See the whole motion as one operating system. Trace signal, qualification, sequencing, ownership, and execution before changing another isolated tactic.',
-      href: '/gtm-architecture-live/index-v2.html',
-      cta: 'Open the architecture',
-      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.6) 65%, rgba(8,4,1,.18)), url('/assets/img/frameworks/gtm_arch_live_screenshot.png') center / cover no-repeat"
-    },
-    diagnose: {
-      kicker: 'Start here • Motion diagnosis',
-      title: 'Find the real break',
-      desc: 'Walk the motion from signal to execution. The diagnostic helps separate a pipeline problem from a qualification, conversion, ownership, or cadence problem.',
-      href: '/diagnostic.html',
-      cta: 'Run the diagnostic',
-      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.62) 68%, rgba(8,4,1,.2)), url('/assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
-    },
-    model: {
-      kicker: 'Start here • Revenue modeling',
-      title: 'Test the math before the build',
-      desc: 'Change the assumptions. Watch the system respond. Use the simulator to pressure-test coverage, conversion, capacity, and cost before the plan becomes expensive.',
-      href: '/revenue_architecture_simulator.html',
-      cta: 'Run the simulation',
-      background: "linear-gradient(90deg, rgba(8,4,1,.98), rgba(8,4,1,.62) 68%, rgba(8,4,1,.2)), url('/assets/img/frameworks/revenue-blueprint.png') center / cover no-repeat"
-    },
-    prepare: {
-      kicker: 'Start here • Room preparation',
-      title: 'Prepare the room',
-      desc: 'Strong experience can still disappear inside a vague answer. Use the public routes to make the thinking, evidence, and voice easier to hear.',
-      href: '/docs/start-here/',
-      cta: 'Choose a route',
-      background: 'radial-gradient(circle at 78% 28%, rgba(200,136,12,.28), transparent 28%), linear-gradient(145deg, #1b0e05, #080402 68%, #170b04)'
-    }
-  };
+        const menuToggle = document.querySelector('.menu-toggle');
+        menuToggle.addEventListener('click', () => {
+            const open = document.body.classList.toggle('menu-open');
+            menuToggle.setAttribute('aria-expanded', String(open));
+            menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => {
+            document.body.classList.remove('menu-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open menu');
+        }));
 
-  const buttons = document.querySelectorAll('.intent-button');
-  const panel = document.getElementById('start-panel');
-  buttons.forEach((button, index) => button.addEventListener('click', () => {
-    const state = intentStates[button.dataset.intent];
-    buttons.forEach(item => {
-      const active = item === button;
-      item.classList.toggle('active', active);
-      item.setAttribute('aria-selected', String(active));
-      item.tabIndex = active ? 0 : -1;
-    });
-    button.classList.add('active');
-    document.getElementById('start-kicker').textContent = state.kicker;
-    document.getElementById('start-title').textContent = state.title;
-    document.getElementById('start-desc').textContent = state.desc;
-    const link = document.getElementById('start-link');
-    link.href = state.href;
-    link.textContent = state.cta;
-    panel.style.background = state.background;
-    document.querySelectorAll('[data-tool-intent]').forEach(card => {
-      card.hidden = card.dataset.toolIntent !== button.dataset.intent;
-    });
-  }));
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+            });
+        }, { threshold: .12 });
+        document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
 
-  buttons.forEach((button, index) => button.addEventListener('keydown', event => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    let next = index;
-    if (event.key === 'ArrowRight') next = (index + 1) % buttons.length;
-    if (event.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = buttons.length - 1;
-    buttons[next].focus();
-    buttons[next].click();
-  }));
-
-  document.querySelector('.start-secondary').addEventListener('click', () => {
-    document.querySelectorAll('[data-tool-intent]').forEach(card => card.hidden = false);
-  });
-</script>
-<script src="/assets/js/site-shell.js"></script>
+        if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const frame = document.querySelector('.hero-frame');
+            document.querySelector('.hero').addEventListener('pointermove', event => {
+                const x = (event.clientX / innerWidth - .5) * 12;
+                const y = (event.clientY / innerHeight - .5) * 8;
+                frame.style.transform = `translate(calc(-45% + ${x}px), calc(-50% + ${y}px)) perspective(1200px) rotateY(${-9 + x * .12}deg) rotateZ(2.5deg)`;
+            });
+        }
+    </script>
 </body>
 </html>

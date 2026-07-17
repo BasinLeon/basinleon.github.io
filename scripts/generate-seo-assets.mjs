@@ -85,7 +85,7 @@ const rssItems = normalizedPosts.slice(0, 50).map((post) => {
   return `    <item>\n      <title>${title}</title>\n      <link>${url}</link>\n      <description>${description}</description>\n      <pubDate>${pubDate}</pubDate>\n      <guid>${url}</guid>\n    </item>`;
 }).join("\n");
 
-const rssXml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Leon Basin | The Archive</title>\n    <link>${baseUrl}/blog/</link>\n    <description>Signal-first GTM architecture, deterministic revenue systems, case studies, and operator playbooks.</description>\n    <language>en-us</language>\n    <lastBuildDate>${todayRfc}</lastBuildDate>\n    <atom:link href="${baseUrl}/blog/rss.xml" rel="self" type="application/rss+xml"/>\n${rssItems}\n  </channel>\n</rss>\n`;
+const rssXml = `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/blog/rss.xsl"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Leon Basin | The Archive</title>\n    <link>${baseUrl}/blog/</link>\n    <description>Signal-first GTM architecture, deterministic revenue systems, case studies, and operator playbooks.</description>\n    <language>en-us</language>\n    <lastBuildDate>${todayRfc}</lastBuildDate>\n    <atom:link href="${baseUrl}/blog/rss.xml" rel="self" type="application/rss+xml"/>\n${rssItems}\n  </channel>\n</rss>\n`;
 
 const robotsTxt = `User-agent: *\nAllow: /\n\n# Prioritize canonical crawl targets\nSitemap: ${baseUrl}/sitemap.xml\n\n# Respectful crawl guidance for large static archives\nCrawl-delay: 2\n`;
 
