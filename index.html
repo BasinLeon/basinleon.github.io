@@ -437,7 +437,7 @@
         .proof-row {
             min-height: 96px;
             display: grid;
-            grid-template-columns: 1fr 1.25fr auto;
+            grid-template-columns: minmax(140px, 0.8fr) minmax(240px, 1.2fr) minmax(220px, 1fr) auto;
             align-items: center;
             gap: 2rem;
             border-top: 1px solid var(--line-light);
@@ -448,9 +448,15 @@
         .proof-domain { color: #8b6415; }
         .proof-row h3 { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.38rem); font-weight: 600; }
         .proof-result { color: var(--muted-dark); font-size: 0.88rem; text-align: right; }
-        .proof-row::after { content: "↗"; color: #8b6415; }
+        .proof-row::after {
+            content: "↗";
+            color: #8b6415;
+            transition: transform 180ms ease;
+        }
         .proof-row:hover h3,
         .proof-row:focus-visible h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.25rem; }
+        .proof-row:hover::after,
+        .proof-row:focus-visible::after { transform: translate(2px, -2px); }
         .proof-link { margin-top: 1.6rem; }
         .text-link {
             display: inline-flex;
