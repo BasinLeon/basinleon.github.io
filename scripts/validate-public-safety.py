@@ -42,6 +42,10 @@ TEXT_PATTERNS = {
     "Telegram bot token": re.compile(r"\b\d{8,12}:AA[0-9A-Za-z_-]{30,}\b"),
     "US phone number": re.compile(r"(?<!\d)(?:\+?1[\s().-]*)?\d{3}[\s().-]*\d{3}[\s.-]*\d{4}(?!\d)"),
     "browser-side passcode": re.compile(r"(?:passcode|password)\s*(?:===|==|:|=)\s*[\"'][^\"']+[\"']", re.I),
+    "provider-specific email compose URL": re.compile(
+        r"https?://(?:mail\.google\.com/mail|outlook\.(?:live|office|office365)\.com/mail|compose\.mail\.yahoo\.com)",
+        re.I,
+    ),
 }
 
 TEXT_SUFFIXES = {
