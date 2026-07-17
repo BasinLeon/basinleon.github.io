@@ -2,824 +2,242 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f0ebe1">
+  <meta name="color-scheme" content="light">
   <title>The Library | Leon Basin</title>
-  <meta name="description" content="Leon Basin's working library of GTM systems, operator tools, case studies, and field notes.">
+  <meta name="description" content="Leon Basin's working library of GTM systems, operator tools, evidence, and field notes—organized around the decision you need to make next.">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="https://basinleon.github.io/library/">
-  <meta name="theme-color" content="#efe9de">
   <meta property="og:title" content="The Library | Leon Basin">
-  <meta property="og:description" content="A working library of models, tools, proof, and writing for people building revenue systems.">
+  <meta property="og:description" content="Working models, usable instruments, operating proof, and field notes for people building revenue systems.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://basinleon.github.io/library/">
-  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/final_v4_patent_dark.jpg">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/gtm_arch_live_screenshot.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="The Library | Leon Basin">
-  <meta name="twitter:description" content="Models, tools, proof, and field notes—organized by what you need to do next.">
-  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/final_v4_patent_dark.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --paper: #efe9de;
-      --paper-soft: #f7f3ec;
-      --ink: #151512;
-      --muted: #706d65;
-      --line: rgba(21, 21, 18, .2);
-      --gold: #b88729;
-      --acid: #e0af43;
-      --max: 1500px;
-      --pad: clamp(20px, 5vw, 76px);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: "DM Sans", Arial, sans-serif;
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; }
-    button, input { font: inherit; }
-    img { display: block; max-width: 100%; }
-    ::selection { color: var(--ink); background: var(--acid); }
-
-    .skip-link {
-      position: fixed;
-      top: 8px;
-      left: 8px;
-      z-index: 1000;
-      padding: 10px 14px;
-      background: var(--ink);
-      color: #fff;
-      transform: translateY(-150%);
-    }
-    .skip-link:focus { transform: none; }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(239, 233, 222, .92);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(14px);
-    }
-    .nav {
-      width: min(100%, var(--max));
-      min-height: 74px;
-      margin: 0 auto;
-      padding: 0 var(--pad);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-    .brand {
-      text-decoration: none;
-      font-family: "Manrope", sans-serif;
-      font-size: .87rem;
-      font-weight: 800;
-      letter-spacing: .11em;
-    }
-    .brand span { color: var(--gold); }
-    .nav-links { display: flex; align-items: center; gap: 30px; }
-    .nav-links a {
-      text-decoration: none;
-      font-size: .87rem;
-      font-weight: 600;
-    }
-    .nav-links a:not(.nav-cta) { position: relative; }
-    .nav-links a:not(.nav-cta)::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -6px;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform .25s ease;
-    }
-    .nav-links a:hover::after,
-    .nav-links a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
-    .nav-cta {
-      padding: 12px 17px;
-      border: 1px solid var(--ink);
-      transition: background .2s, color .2s;
-    }
-    .nav-cta:hover { background: var(--ink); color: var(--paper); }
-    .menu-toggle {
-      display: none;
-      border: 0;
-      padding: 8px 0;
-      background: transparent;
-      color: var(--ink);
-      font-weight: 700;
-    }
-
-    .hero {
-      min-height: calc(100svh - 74px);
-      border-bottom: 1px solid var(--line);
-      display: grid;
-      grid-template-columns: minmax(0, 1.07fr) minmax(440px, .93fr);
-    }
-    .hero-copy {
-      min-height: 720px;
-      padding: clamp(68px, 10vw, 148px) var(--pad) 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .eyebrow,
-    .section-label,
-    .folio-label,
-    .catalog-no,
-    .catalog-type,
-    .footer-label {
-      font-family: "Manrope", sans-serif;
-      font-size: .71rem;
-      font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-    .eyebrow { display: flex; align-items: center; gap: 13px; }
-    .eyebrow::before { content: ""; width: 36px; height: 2px; background: var(--gold); }
-    h1 {
-      margin: 26px 0 28px;
-      max-width: 820px;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(4.1rem, 8.7vw, 9rem);
-      line-height: .82;
-      letter-spacing: -.075em;
-      text-transform: uppercase;
-    }
-    .hero-intro {
-      max-width: 690px;
-      margin: 0;
-      font-size: clamp(1.18rem, 1.7vw, 1.65rem);
-      letter-spacing: -.02em;
-      color: #3e3d38;
-    }
-    .hero-foot {
-      margin-top: 74px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-    }
-    .hero-count { font-family: "Manrope"; font-size: 1.05rem; font-weight: 700; }
-    .hero-count strong { display: block; font-size: 2.9rem; line-height: .95; letter-spacing: -.07em; }
-    .scroll-cue { text-decoration: none; font-weight: 600; }
-
-    .hero-visual {
-      position: relative;
-      min-height: 720px;
-      overflow: hidden;
-      background: var(--ink);
-      color: #fff;
-    }
-    .hero-visual::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 52%, rgba(0, 0, 0, .7));
-      pointer-events: none;
-    }
-    .hero-art {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(.55) contrast(1.12);
-      transform: scale(1.035);
-      transition: transform 1.2s cubic-bezier(.2,.75,.2,1), filter .8s ease;
-    }
-    .hero-visual:hover .hero-art { transform: scale(1.01); filter: saturate(.8) contrast(1.08); }
-    .folio-label {
-      position: absolute;
-      z-index: 2;
-      top: 32px;
-      left: 34px;
-      padding: 9px 12px;
-      border: 1px solid rgba(255,255,255,.55);
-      background: rgba(21,21,18,.75);
-    }
-    .folio-caption {
-      position: absolute;
-      z-index: 2;
-      right: 34px;
-      bottom: 32px;
-      left: 34px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 30px;
-      align-items: end;
-    }
-    .folio-caption strong { font-family: "Manrope"; font-size: 1.5rem; letter-spacing: -.03em; }
-    .folio-caption span { max-width: 360px; color: rgba(255,255,255,.74); font-size: .91rem; }
-    .folio-caption b { font-size: 2.1rem; font-weight: 400; }
-
-    .routes { border-bottom: 1px solid var(--line); }
-    .section-head {
-      width: min(100%, var(--max));
-      margin: 0 auto;
-      padding: 74px var(--pad) 35px;
-      display: grid;
-      grid-template-columns: minmax(180px, .35fr) 1fr;
-      gap: 36px;
-      align-items: end;
-    }
-    .section-head h2 {
-      margin: 0;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(2.35rem, 5.4vw, 5.6rem);
-      line-height: .92;
-      letter-spacing: -.065em;
-      max-width: 1000px;
-    }
-    .route-list { border-top: 1px solid var(--line); }
-    .route {
-      display: grid;
-      grid-template-columns: minmax(95px, .28fr) minmax(260px, .75fr) 1fr auto;
-      gap: clamp(20px, 4vw, 64px);
-      align-items: center;
-      min-height: 156px;
-      padding: 28px var(--pad);
-      border-bottom: 1px solid var(--line);
-      text-decoration: none;
-      transition: color .25s, background .25s;
-    }
-    .route:last-child { border-bottom: 0; }
-    .route-no { color: var(--muted); font-weight: 600; }
-    .route h3 {
-      margin: 0;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(1.8rem, 3.1vw, 3.8rem);
-      line-height: 1;
-      letter-spacing: -.055em;
-    }
-    .route p { max-width: 520px; margin: 0; color: var(--muted); font-size: 1rem; }
-    .route-arrow { font-size: 2rem; transition: transform .25s; }
-    .route:hover { color: var(--paper); background: var(--ink); }
-    .route:hover p, .route:hover .route-no { color: rgba(255,255,255,.67); }
-    .route:hover .route-arrow { transform: translate(6px, -6px); }
-
-    .featured {
-      padding: clamp(80px, 10vw, 150px) var(--pad);
-      color: #f5f1e9;
-      background: var(--ink);
-    }
-    .featured-inner {
-      width: min(100%, var(--max));
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.16fr) minmax(340px, .84fr);
-      gap: clamp(44px, 8vw, 130px);
-      align-items: center;
-    }
-    .featured-frame {
-      position: relative;
-      border: 1px solid rgba(255,255,255,.2);
-      overflow: hidden;
-      background: #24272a;
-    }
-    .featured-frame::before {
-      content: "Featured system / 01";
-      position: absolute;
-      z-index: 2;
-      top: 17px;
-      left: 18px;
-      padding: 8px 10px;
-      color: #fff;
-      background: var(--ink);
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .featured-frame img { width: 100%; aspect-ratio: 1 / .82; object-fit: cover; transition: transform .8s ease; }
-    .featured-frame:hover img { transform: scale(1.025); }
-    .featured-copy .section-label { color: var(--acid); }
-    .featured-copy h2 {
-      margin: 20px 0 24px;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(2.8rem, 5.5vw, 6.1rem);
-      line-height: .91;
-      letter-spacing: -.067em;
-    }
-    .featured-copy p { margin: 0 0 20px; max-width: 600px; color: rgba(255,255,255,.65); font-size: 1.1rem; }
-    .text-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 22px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid currentColor;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .text-link span { transition: transform .25s; }
-    .text-link:hover span { transform: translate(5px, -5px); }
-
-    .catalog { background: var(--paper-soft); }
-    .catalog-top {
-      width: min(100%, var(--max));
-      margin: 0 auto;
-      padding: clamp(80px, 10vw, 145px) var(--pad) 42px;
-    }
-    .catalog-title-row { display: flex; justify-content: space-between; gap: 40px; align-items: end; }
-    .catalog-title-row h2 {
-      margin: 15px 0 0;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(3rem, 7vw, 7.6rem);
-      line-height: .85;
-      letter-spacing: -.075em;
-      text-transform: uppercase;
-    }
-    .catalog-note { max-width: 340px; color: var(--muted); }
-    .catalog-controls {
-      margin-top: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 26px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-    }
-    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
-    .filter {
-      border: 1px solid var(--line);
-      padding: 10px 15px;
-      color: var(--ink);
-      background: transparent;
-      cursor: pointer;
-      font-size: .81rem;
-      font-weight: 700;
-      transition: background .2s, color .2s, border-color .2s;
-    }
-    .filter:hover, .filter.is-active { color: var(--paper-soft); background: var(--ink); border-color: var(--ink); }
-    .search-wrap { position: relative; width: min(100%, 290px); }
-    .search-wrap::before { content: "⌕"; position: absolute; left: 0; top: 10px; font-size: 1.1rem; }
-    .catalog-search {
-      width: 100%;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      border-radius: 0;
-      padding: 10px 2px 10px 25px;
-      outline: 0;
-      color: var(--ink);
-      background: transparent;
-    }
-    .catalog-search:focus { border-color: var(--ink); }
-    .catalog-list { border-top: 1px solid var(--line); }
-    .catalog-item { border-bottom: 1px solid var(--line); }
-    .catalog-item[hidden] { display: none; }
-    .catalog-link {
-      min-height: 150px;
-      padding: 27px var(--pad);
-      display: grid;
-      grid-template-columns: minmax(62px, .13fr) minmax(260px, .57fr) minmax(210px, .45fr) minmax(86px, .18fr) auto;
-      gap: clamp(18px, 3vw, 48px);
-      align-items: center;
-      text-decoration: none;
-      transition: color .25s, background .25s;
-    }
-    .catalog-item:hover .catalog-link { color: var(--paper-soft); background: var(--ink); }
-    .catalog-no { color: var(--muted); }
-    .catalog-name {
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(1.45rem, 2.5vw, 2.8rem);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -.045em;
-    }
-    .catalog-desc { color: var(--muted); font-size: .94rem; }
-    .catalog-type { color: var(--gold); }
-    .catalog-go { font-size: 1.55rem; transition: transform .25s; }
-    .catalog-item:hover .catalog-no,
-    .catalog-item:hover .catalog-desc { color: rgba(255,255,255,.62); }
-    .catalog-item:hover .catalog-type { color: var(--acid); }
-    .catalog-item:hover .catalog-go { transform: translate(5px, -5px); }
-    .catalog-empty { display: none; padding: 50px var(--pad) 80px; color: var(--muted); }
-    .catalog-empty.is-visible { display: block; }
-
-    .keeper {
-      display: grid;
-      grid-template-columns: .7fr 1.3fr;
-      min-height: 420px;
-      border-top: 1px solid var(--line);
-      background: var(--acid);
-    }
-    .keeper-label { padding: 58px var(--pad); border-right: 1px solid rgba(21,21,18,.25); }
-    .keeper-note { padding: 58px var(--pad); display: flex; flex-direction: column; justify-content: space-between; }
-    .keeper-note blockquote {
-      margin: 0;
-      max-width: 920px;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(2rem, 4.4vw, 5rem);
-      font-weight: 700;
-      line-height: .98;
-      letter-spacing: -.06em;
-    }
-    .keeper-note p { margin: 42px 0 0; max-width: 660px; }
-
-    .cta {
-      min-height: 590px;
-      padding: 88px var(--pad);
-      display: flex;
-      align-items: center;
-      color: #fff;
-      background: var(--ink);
-    }
-    .cta-inner { width: min(100%, var(--max)); margin: 0 auto; }
-    .cta h2 {
-      max-width: 1100px;
-      margin: 18px 0 38px;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(3.2rem, 8vw, 8.5rem);
-      line-height: .87;
-      letter-spacing: -.078em;
-    }
-    .cta .section-label { color: var(--acid); }
-    .cta-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 45px;
-      min-width: min(100%, 390px);
-      padding: 21px 24px;
-      color: var(--ink);
-      background: var(--acid);
-      text-decoration: none;
-      font-weight: 800;
-      transition: transform .2s, background .2s;
-    }
-    .cta-link:hover { transform: translateY(-3px); background: #efc052; }
-    footer {
-      padding: 27px var(--pad);
-      border-top: 1px solid rgba(255,255,255,.15);
-      color: rgba(255,255,255,.55);
-      background: var(--ink);
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      font-size: .75rem;
-    }
-    footer a { text-decoration: none; }
-
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.is-visible { opacity: 1; transform: none; }
-
-    @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-copy { min-height: auto; }
-      .hero-visual { min-height: 72svh; }
-      .route { grid-template-columns: 70px 1fr auto; }
-      .route p { grid-column: 2; }
-      .featured-inner { grid-template-columns: 1fr; }
-      .featured-frame { max-width: 800px; }
-      .catalog-link { grid-template-columns: 58px 1fr auto; min-height: 138px; }
-      .catalog-desc { grid-column: 2; }
-      .catalog-type { grid-column: 3; grid-row: 1; }
-      .catalog-go { grid-column: 3; grid-row: 2; justify-self: end; }
-    }
-
-    @media (max-width: 760px) {
-      .nav { min-height: 66px; }
-      .menu-toggle { display: block; }
-      .nav-links {
-        position: absolute;
-        top: 66px;
-        right: 0;
-        left: 0;
-        display: none;
-        align-items: stretch;
-        padding: 15px var(--pad) 24px;
-        background: var(--paper);
-        border-bottom: 1px solid var(--line);
-        flex-direction: column;
-        gap: 0;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links a { padding: 14px 0; }
-      .nav-cta { margin-top: 8px; text-align: center; }
-      .hero-copy { min-height: 630px; padding-top: 78px; }
-      h1 { font-size: clamp(3.8rem, 19vw, 6.4rem); }
-      .hero-foot { margin-top: 64px; }
-      .hero-visual { min-height: 560px; }
-      .folio-caption { grid-template-columns: 1fr; gap: 5px; }
-      .folio-caption b { display: none; }
-      .section-head { grid-template-columns: 1fr; gap: 16px; padding-top: 64px; }
-      .route { min-height: 170px; grid-template-columns: 42px 1fr auto; gap: 16px; }
-      .route p { font-size: .91rem; }
-      .catalog-title-row { display: block; }
-      .catalog-note { margin-top: 28px; }
-      .catalog-controls { align-items: stretch; flex-direction: column; }
-      .search-wrap { width: 100%; }
-      .catalog-link { grid-template-columns: 40px 1fr auto; gap: 13px; padding-top: 25px; padding-bottom: 25px; }
-      .catalog-name { font-size: 1.55rem; }
-      .catalog-type { writing-mode: vertical-rl; font-size: .62rem; }
-      .keeper { grid-template-columns: 1fr; }
-      .keeper-label { border-right: 0; border-bottom: 1px solid rgba(21,21,18,.25); padding-top: 35px; padding-bottom: 35px; }
-      .keeper-note { min-height: 430px; }
-      .cta { min-height: 560px; }
-      footer { flex-direction: column; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-      .reveal { opacity: 1; transform: none; }
-    }
-  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2311100d'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Georgia' font-size='34' fill='%23d4ad55'%3EL%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css?v=20260716a">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "The Library",
-    "description": "Leon Basin's working library of GTM systems, operator tools, case studies, and field notes.",
+    "description": "Leon Basin's working library of GTM systems, operator tools, evidence, and field notes.",
     "url": "https://basinleon.github.io/library/",
     "author": {"@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/"},
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": 10,
+      "numberOfItems": 16,
       "itemListElement": [
         {"@type":"ListItem","position":1,"name":"GTM Architecture Live","url":"https://basinleon.github.io/gtm-architecture-live/index-v2.html"},
-        {"@type":"ListItem","position":2,"name":"Revenue Architecture Simulator","url":"https://basinleon.github.io/revenue_architecture_simulator.html"},
-        {"@type":"ListItem","position":3,"name":"GTM Diagnostic","url":"https://basinleon.github.io/diagnostic.html"},
-        {"@type":"ListItem","position":4,"name":"Signal-to-Prediction Method","url":"https://basinleon.github.io/docs/frameworks/"},
-        {"@type":"ListItem","position":5,"name":"Case Studies","url":"https://basinleon.github.io/case-studies/"},
-        {"@type":"ListItem","position":6,"name":"Start Here","url":"https://basinleon.github.io/docs/start-here/"},
-        {"@type":"ListItem","position":7,"name":"vCISO Framework","url":"https://basinleon.github.io/vciso-framework.html"},
-        {"@type":"ListItem","position":8,"name":"The Tool Bench","url":"https://basinleon.github.io/tools/"},
-        {"@type":"ListItem","position":9,"name":"Best of the Archive","url":"https://basinleon.github.io/docs/best-of/"},
-        {"@type":"ListItem","position":10,"name":"Signal Refinery Method","url":"https://basinleon.github.io/assets/signal-refinery-whitepaper.html"}
+        {"@type":"ListItem","position":2,"name":"Basin::Nexus","url":"https://basinleon.github.io/basin-nexus/"},
+        {"@type":"ListItem","position":3,"name":"Revenue Architecture Simulator","url":"https://basinleon.github.io/revenue_architecture_simulator.html"},
+        {"@type":"ListItem","position":4,"name":"GTM Diagnostic","url":"https://basinleon.github.io/diagnostic.html"},
+        {"@type":"ListItem","position":5,"name":"Pipeline Game","url":"https://basinleon.github.io/pipeline-game/"},
+        {"@type":"ListItem","position":6,"name":"Career Signal Engine","url":"https://basinleon.github.io/basin-nexus/career/"},
+        {"@type":"ListItem","position":7,"name":"Signal-to-Prediction Method","url":"https://basinleon.github.io/docs/frameworks/"},
+        {"@type":"ListItem","position":8,"name":"Signal Refinery Method","url":"https://basinleon.github.io/assets/signal-refinery-whitepaper.html"},
+        {"@type":"ListItem","position":9,"name":"vCISO Framework","url":"https://basinleon.github.io/vciso-framework.html"},
+        {"@type":"ListItem","position":10,"name":"CRM Architecture","url":"https://basinleon.github.io/crm.html"},
+        {"@type":"ListItem","position":11,"name":"Case Studies","url":"https://basinleon.github.io/case-studies/"},
+        {"@type":"ListItem","position":12,"name":"GTM Execution Proof","url":"https://basinleon.github.io/gtm-execution-proof.html"},
+        {"@type":"ListItem","position":13,"name":"The Tool Bench","url":"https://basinleon.github.io/tools/"},
+        {"@type":"ListItem","position":14,"name":"Start Here","url":"https://basinleon.github.io/docs/start-here/"},
+        {"@type":"ListItem","position":15,"name":"Best of the Archive","url":"https://basinleon.github.io/docs/best-of/"},
+        {"@type":"ListItem","position":16,"name":"The Archive","url":"https://basinleon.github.io/blog/"}
       ]
     }
   }
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
   <header class="site-header">
-    <nav class="nav" aria-label="Primary navigation">
-      <a class="brand" href="/">LEON <span>BASIN</span></a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
-      <div class="nav-links" id="nav-links">
-        <a href="/">Home</a>
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Leon Basin, home"><span>Leon</span><span>Basin</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-label">Menu</span><span class="menu-lines" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a href="/case-studies/">Work</a>
-        <a href="/library/" aria-current="page">Library</a>
-        <a href="/blog/">Archive</a>
+        <a href="https://basinleon.github.io/basin-nexus/">Systems</a>
+        <a href="/blog/">Writing</a>
+        <a class="nav-current" href="/library/" aria-current="page">Library</a>
         <a href="/tools/">Tools</a>
-        <a class="nav-cta" href="/work-with-me/">Work with me</a>
-      </div>
-    </nav>
+        <a class="nav-contact" href="/work-with-me/">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <main id="main">
+  <main id="main-content">
     <section class="hero" aria-labelledby="library-title">
-      <div class="hero-copy">
-        <div>
-          <div class="eyebrow">The working collection</div>
-          <h1 id="library-title">The<br>Library.</h1>
-          <p class="hero-intro">Models, tools, proof, and field notes for people building revenue systems. Organized by what you need to do next—not by what sounds impressive.</p>
-        </div>
-        <div class="hero-foot">
-          <div class="hero-count"><strong>10</strong> public artifacts</div>
-          <a class="scroll-cue" href="#routes">Find your route &darr;</a>
+      <div class="shell hero-top">
+        <p class="index-line reveal">Leon Basin <span>/</span> Working library <span>/</span> 16 public artifacts</p>
+        <h1 id="library-title" class="reveal">The working<br>library.</h1>
+        <div class="hero-intro reveal">
+          <p>Models, instruments, proof, and field notes for people building revenue systems. Organized around the decision in front of you.</p>
+          <a class="text-link" href="#catalog">Open the complete index <span aria-hidden="true">↓</span></a>
         </div>
       </div>
-      <div class="hero-visual" aria-label="Signal Refinery revenue optimization schematic">
-        <img class="hero-art" src="/assets/img/frameworks/final_v4_patent_dark.jpg" alt="Signal Refinery schematic showing data ingestion, signal scoring, routing, and conversion" width="800" height="794">
-        <span class="folio-label">Folio 01 / Signal systems</span>
-        <div class="folio-caption">
-          <span><strong>Signal Refinery</strong><br>A working schematic, not decorative wallpaper.</span>
-          <b aria-hidden="true">&searr;</b>
+
+      <a class="hero-feature reveal" href="/gtm-architecture-live/index-v2.html" aria-label="Open GTM Architecture Live">
+        <div class="feature-image">
+          <img src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="GTM Architecture Live scoring console and architecture trace" width="2280" height="2190" fetchpriority="high">
+        </div>
+        <div class="shell feature-caption">
+          <span>Featured system / 001</span>
+          <strong>GTM Architecture Live</strong>
+          <span class="feature-action">Open the working model <b aria-hidden="true">↗</b></span>
+        </div>
+      </a>
+    </section>
+
+    <section class="routes section-dark" aria-labelledby="routes-title">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <p class="section-label">Choose by intent</p>
+          <h2 id="routes-title">What do you need to do next?</h2>
+        </div>
+        <div class="route-grid">
+          <a class="route reveal" href="#catalog" data-route-filter="models">
+            <span>01 / Models</span><h3>Understand the system.</h3><p>Inspect the logic behind signal, scoring, routing, and commercial execution.</p><b aria-hidden="true">↘</b>
+          </a>
+          <a class="route reveal" href="#catalog" data-route-filter="tools">
+            <span>02 / Instruments</span><h3>Use the machinery.</h3><p>Run a diagnostic, test a model, or open an operating surface built to be used.</p><b aria-hidden="true">↘</b>
+          </a>
+          <a class="route reveal" href="#catalog" data-route-filter="proof">
+            <span>03 / Evidence</span><h3>Verify the work.</h3><p>Review outcomes, operating constraints, interventions, and the receipts behind them.</p><b aria-hidden="true">↘</b>
+          </a>
+          <a class="route reveal" href="#catalog" data-route-filter="writing">
+            <span>04 / Field notes</span><h3>Read the thinking.</h3><p>Start with the essential essays, then follow the questions into the complete archive.</p><b aria-hidden="true">↘</b>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="routes" id="routes" aria-labelledby="routes-title">
-      <div class="section-head reveal">
-        <div class="section-label">Choose by intent</div>
-        <h2 id="routes-title">What do you need<br>to do next?</h2>
+    <section class="essentials shell" aria-labelledby="essentials-title">
+      <div class="section-heading section-heading-light reveal">
+        <p class="section-label">Start with these</p>
+        <h2 id="essentials-title">Three doors into the work.</h2>
       </div>
-      <div class="route-list">
-        <a class="route" href="#catalog" data-route-filter="models">
-          <span class="route-no">01</span>
-          <h3>Understand the system</h3>
-          <p>See the architecture behind signal capture, scoring, routing, and revenue execution.</p>
-          <span class="route-arrow" aria-hidden="true">&nearr;</span>
+      <div class="essential-list">
+        <a class="essential reveal" href="/gtm-architecture-live/index-v2.html">
+          <span class="essential-no">01</span><div><p>Operating model</p><h3>GTM Architecture Live</h3></div><p>See how signal quality, priority, ownership, and feedback change the revenue outcome.</p><b aria-hidden="true">↗</b>
         </a>
-        <a class="route" href="#catalog" data-route-filter="tools">
-          <span class="route-no">02</span>
-          <h3>Use an instrument</h3>
-          <p>Run a diagnostic, model a revenue system, or open a tool built for actual operator work.</p>
-          <span class="route-arrow" aria-hidden="true">&nearr;</span>
+        <a class="essential reveal" href="/revenue_architecture_simulator.html">
+          <span class="essential-no">02</span><div><p>Interactive instrument</p><h3>Revenue Architecture Simulator</h3></div><p>Pressure-test how inputs, conversion, and velocity affect the commercial system.</p><b aria-hidden="true">↗</b>
         </a>
-        <a class="route" href="#catalog" data-route-filter="proof">
-          <span class="route-no">03</span>
-          <h3>Verify the work</h3>
-          <p>Inspect case studies, operating outcomes, and the evidence behind the headline numbers.</p>
-          <span class="route-arrow" aria-hidden="true">&nearr;</span>
+        <a class="essential reveal" href="/case-studies/">
+          <span class="essential-no">03</span><div><p>Operating proof</p><h3>Case Studies</h3></div><p>Inspect the constraints, decisions, build work, and measurable outcomes.</p><b aria-hidden="true">↗</b>
         </a>
-        <a class="route" href="#catalog" data-route-filter="writing">
-          <span class="route-no">04</span>
-          <h3>Read the thinking</h3>
-          <p>Start with the essential field notes, then go deeper into the complete archive.</p>
-          <span class="route-arrow" aria-hidden="true">&nearr;</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="featured" aria-labelledby="featured-title">
-      <div class="featured-inner">
-        <a class="featured-frame reveal" href="/gtm-architecture-live/index-v2.html" aria-label="Open GTM Architecture Live">
-          <img src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="GTM Architecture Live interactive system interface" width="1600" height="900" loading="lazy">
-        </a>
-        <div class="featured-copy reveal">
-          <div class="section-label">Open the flagship system</div>
-          <h2 id="featured-title">GTM Architecture Live.</h2>
-          <p>A visual operating model for how market signal becomes account priority, buyer-ready proof, clear ownership, and pipeline a team can trust.</p>
-          <p>Explore the system directly, then use the catalog below to inspect its component methods and instruments.</p>
-          <a class="text-link" href="/gtm-architecture-live/index-v2.html">Enter the architecture <span aria-hidden="true">&nearr;</span></a>
-        </div>
       </div>
     </section>
 
     <section class="catalog" id="catalog" aria-labelledby="catalog-title">
-      <div class="catalog-top">
-        <div class="catalog-title-row reveal">
-          <div>
-            <div class="section-label">Complete public index</div>
-            <h2 id="catalog-title">The catalog.</h2>
-          </div>
-          <p class="catalog-note">One entry per artifact. No repeated shelves, no invented abundance. Filter by what you came to find.</p>
+      <div class="shell catalog-head">
+        <div class="catalog-title reveal">
+          <p class="section-label">Complete public index</p>
+          <h2 id="catalog-title">The catalog.</h2>
         </div>
-        <div class="catalog-controls" aria-label="Catalog filters">
-          <div class="filters" role="group" aria-label="Filter by type">
-            <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">All 10</button>
-            <button class="filter" type="button" data-filter="models" aria-pressed="false">Models</button>
-            <button class="filter" type="button" data-filter="tools" aria-pressed="false">Tools</button>
-            <button class="filter" type="button" data-filter="proof" aria-pressed="false">Proof</button>
-            <button class="filter" type="button" data-filter="writing" aria-pressed="false">Writing</button>
-          </div>
-          <label class="search-wrap">
-            <span class="skip-link">Search the catalog</span>
-            <input class="catalog-search" id="catalog-search" type="search" placeholder="Search the catalog" autocomplete="off">
-          </label>
+        <div class="catalog-summary reveal">
+          <strong id="visible-count">16</strong><span>artifacts visible</span>
+          <p>Search by title, problem, or operating idea.</p>
         </div>
+      </div>
+      <div class="shell catalog-controls" aria-label="Catalog controls">
+        <div class="filters" role="group" aria-label="Filter by type">
+          <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="models" aria-pressed="false">Models</button>
+          <button class="filter" type="button" data-filter="tools" aria-pressed="false">Tools</button>
+          <button class="filter" type="button" data-filter="proof" aria-pressed="false">Proof</button>
+          <button class="filter" type="button" data-filter="writing" aria-pressed="false">Writing</button>
+        </div>
+        <label class="search-wrap">
+          <span class="visually-hidden">Search the catalog</span>
+          <input class="catalog-search" id="catalog-search" type="search" placeholder="Search the library" autocomplete="off">
+        </label>
       </div>
 
       <div class="catalog-list" id="catalog-list">
-        <article class="catalog-item" data-category="models" data-search="gtm architecture live signal routing operating model">
-          <a class="catalog-link" href="/gtm-architecture-live/index-v2.html">
-            <span class="catalog-no">001</span><span class="catalog-name">GTM Architecture Live</span><span class="catalog-desc">The complete visual operating model, opened for inspection.</span><span class="catalog-type">Model</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="models" data-search="gtm architecture live signal scoring routing operating model">
+          <a href="/gtm-architecture-live/index-v2.html"><span class="catalog-no">001</span><div><span class="catalog-type">Model</span><h3>GTM Architecture Live</h3></div><p>The complete visual operating model, open for inspection and interaction.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="tools" data-search="revenue architecture simulator pipeline model interactive">
-          <a class="catalog-link" href="/revenue_architecture_simulator.html">
-            <span class="catalog-no">002</span><span class="catalog-name">Revenue Architecture Simulator</span><span class="catalog-desc">Pressure-test how inputs, conversion, and velocity affect the system.</span><span class="catalog-type">Tool</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="models" data-search="basin nexus signal system revenue architecture">
+          <a href="https://basinleon.github.io/basin-nexus/"><span class="catalog-no">002</span><div><span class="catalog-type">Model</span><h3>Basin::Nexus</h3></div><p>The system portfolio connecting market signal, judgment, ownership, and action.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="tools" data-search="gtm diagnostic diagnose bottleneck system">
-          <a class="catalog-link" href="/diagnostic.html">
-            <span class="catalog-no">003</span><span class="catalog-name">GTM Diagnostic</span><span class="catalog-desc">Find the constraint before prescribing another campaign.</span><span class="catalog-type">Tool</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="tools" data-search="revenue architecture simulator pipeline conversion velocity interactive">
+          <a href="/revenue_architecture_simulator.html"><span class="catalog-no">003</span><div><span class="catalog-type">Tool</span><h3>Revenue Architecture Simulator</h3></div><p>Pressure-test the variables that govern pipeline and revenue performance.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="models" data-search="signal to prediction method framework intent scoring routing">
-          <a class="catalog-link" href="/docs/frameworks/">
-            <span class="catalog-no">004</span><span class="catalog-name">Signal-to-Prediction Method</span><span class="catalog-desc">The logic for turning noisy market movement into usable decisions.</span><span class="catalog-type">Model</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="tools" data-search="gtm diagnostic constraint bottleneck diagnose">
+          <a href="/diagnostic.html"><span class="catalog-no">004</span><div><span class="catalog-type">Tool</span><h3>GTM Diagnostic</h3></div><p>Find the commercial constraint before prescribing another campaign.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="tools" data-search="pipeline game sales strategy simulation deal">
+          <a href="/pipeline-game/"><span class="catalog-no">005</span><div><span class="catalog-type">Tool</span><h3>The Pipeline Game</h3></div><p>A playable field exercise for testing pipeline decisions under pressure.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="tools" data-search="career signal engine roles evidence opportunities interview">
+          <a href="https://basinleon.github.io/basin-nexus/career/"><span class="catalog-no">006</span><div><span class="catalog-type">Tool</span><h3>Career Signal Engine</h3></div><p>A private-workspace concept for turning experience into targeted career motion.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="models" data-search="signal prediction method intent scoring routing framework">
+          <a href="/docs/frameworks/"><span class="catalog-no">007</span><div><span class="catalog-type">Model</span><h3>Signal-to-Prediction Method</h3></div><p>The logic for turning noisy market movement into usable commercial decisions.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="models" data-search="signal refinery ingestion classification scoring routing whitepaper">
+          <a href="/assets/signal-refinery-whitepaper.html"><span class="catalog-no">008</span><div><span class="catalog-type">Model</span><h3>Signal Refinery Method</h3></div><p>The public method for ingestion, classification, scoring, and routing.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="models" data-search="vciso security commercialization trust framework">
+          <a href="/vciso-framework.html"><span class="catalog-no">009</span><div><span class="catalog-type">Model</span><h3>vCISO Framework</h3></div><p>A commercialization model for security expertise, trust, and executive value.</p><b aria-hidden="true">↗</b></a>
+        </article>
+        <article class="catalog-item" data-category="models" data-search="crm architecture lifecycle governance operations">
+          <a href="/crm.html"><span class="catalog-no">010</span><div><span class="catalog-type">Model</span><h3>CRM Architecture</h3></div><p>Lifecycle, ownership, routing, and governance for the commercial source of truth.</p><b aria-hidden="true">↗</b></a>
         </article>
         <article class="catalog-item" data-category="proof" data-search="case studies proof evidence results pipeline revenue">
-          <a class="catalog-link" href="/case-studies/">
-            <span class="catalog-no">005</span><span class="catalog-name">Case Studies</span><span class="catalog-desc">Operating outcomes, constraints, interventions, and receipts.</span><span class="catalog-type">Proof</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+          <a href="/case-studies/"><span class="catalog-no">011</span><div><span class="catalog-type">Proof</span><h3>Case Studies</h3></div><p>Operating constraints, interventions, outcomes, and the receipts behind them.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="writing" data-search="start here reading guide writing field notes">
-          <a class="catalog-link" href="/docs/start-here/">
-            <span class="catalog-no">006</span><span class="catalog-name">Start Here</span><span class="catalog-desc">A short route into the ideas without reading everything.</span><span class="catalog-type">Writing</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="proof" data-search="gtm execution proof outcomes business development">
+          <a href="/gtm-execution-proof.html"><span class="catalog-no">012</span><div><span class="catalog-type">Proof</span><h3>GTM Execution Proof</h3></div><p>A compact evidence record spanning pipeline, expansion, and operating leverage.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="models" data-search="vciso framework security commercialization go to market">
-          <a class="catalog-link" href="/vciso-framework.html">
-            <span class="catalog-no">007</span><span class="catalog-name">vCISO Framework</span><span class="catalog-desc">A commercialization framework for security expertise and trust.</span><span class="catalog-type">Model</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="tools" data-search="tool bench operator calculators utilities instruments">
+          <a href="/tools/"><span class="catalog-no">013</span><div><span class="catalog-type">Tool</span><h3>The Tool Bench</h3></div><p>Practical instruments, calculators, and live operating surfaces.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="tools" data-search="tool bench operator instruments calculators utilities">
-          <a class="catalog-link" href="/tools/">
-            <span class="catalog-no">008</span><span class="catalog-name">The Tool Bench</span><span class="catalog-desc">Practical instruments, calculators, and live operating surfaces.</span><span class="catalog-type">Tool</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="writing" data-search="start here reading guide field notes essays">
+          <a href="/docs/start-here/"><span class="catalog-no">014</span><div><span class="catalog-type">Writing</span><h3>Start Here</h3></div><p>A short route into the ideas without having to read everything.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="writing" data-search="best archive essays articles writing essential">
-          <a class="catalog-link" href="/docs/best-of/">
-            <span class="catalog-no">009</span><span class="catalog-name">Best of the Archive</span><span class="catalog-desc">The strongest essays and field notes, edited down to the essentials.</span><span class="catalog-type">Writing</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="writing" data-search="best archive essays articles essential writing">
+          <a href="/docs/best-of/"><span class="catalog-no">015</span><div><span class="catalog-type">Writing</span><h3>Best of the Archive</h3></div><p>The strongest essays and field notes, edited down to the essentials.</p><b aria-hidden="true">↗</b></a>
         </article>
-        <article class="catalog-item" data-category="models" data-search="signal refinery public method white paper signals scoring routing">
-          <a class="catalog-link" href="/assets/signal-refinery-whitepaper.html">
-            <span class="catalog-no">010</span><span class="catalog-name">Signal Refinery Method</span><span class="catalog-desc">The public method for ingestion, classification, scoring, and routing.</span><span class="catalog-type">Model</span><span class="catalog-go" aria-hidden="true">&nearr;</span>
-          </a>
+        <article class="catalog-item" data-category="writing" data-search="archive all writing essays stories notes">
+          <a href="/blog/"><span class="catalog-no">016</span><div><span class="catalog-type">Writing</span><h3>The Archive</h3></div><p>The complete collection of essays, stories, field notes, and working ideas.</p><b aria-hidden="true">↗</b></a>
         </article>
       </div>
-      <p class="catalog-empty" id="catalog-empty">No artifact matches that search. Try a broader term or reset the filter.</p>
+      <p class="catalog-empty shell" id="catalog-empty">No artifact matches that search. Try a broader term or reset the filter.</p>
     </section>
 
     <aside class="keeper" aria-labelledby="keeper-title">
-      <div class="keeper-label"><span class="section-label" id="keeper-title">A note from the keeper</span></div>
-      <div class="keeper-note">
-        <blockquote>Public logic stays open. Private trust stays private.</blockquote>
-        <p>The models, methods, and useful abstractions are here to inspect. Client credentials, internal screenshots, customer data, and private operating notes are not.</p>
+      <div class="shell keeper-grid">
+        <p class="section-label" id="keeper-title">The boundary</p>
+        <blockquote>Public logic stays open.<br>Private trust stays private.</blockquote>
+        <p>The useful models and abstractions are here to inspect. Client credentials, customer data, internal screenshots, and private operating notes are not.</p>
       </div>
     </aside>
 
-    <section class="cta" aria-labelledby="cta-title">
-      <div class="cta-inner reveal">
-        <div class="section-label">Need the operator, not just the artifact?</div>
-        <h2 id="cta-title">Put the system<br>to work.</h2>
-        <a class="cta-link" href="/work-with-me/">Work with Leon <span aria-hidden="true">&nearr;</span></a>
+    <section class="contact section-dark" aria-labelledby="contact-title">
+      <div class="shell contact-grid reveal">
+        <p class="section-label">Need the operator, not another artifact?</p>
+        <h2 id="contact-title">Put the system to work.</h2>
+        <div class="contact-actions">
+          <a class="button button-brass" href="/work-with-me/">Work with Leon <span aria-hidden="true">↗</span></a>
+          <a class="text-link text-link-light" href="mailto:lbasin23@gmail.com?subject=Library%20conversation">Write directly <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <span class="footer-label">&copy; <span id="year">2026</span> Leon Basin</span>
-    <span class="footer-label"><a href="/blog/rss.xml">RSS</a> &middot; Built in public</span>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p>© 2026 Leon Basin</p>
+      <nav aria-label="Footer navigation"><a href="/blog/">Writing</a><a href="/blog/rss.xml">RSS</a><a href="https://github.com/BasinLeon">GitHub</a></nav>
+    </div>
   </footer>
-
-  <script>
-    (() => {
-      const menuButton = document.querySelector('.menu-toggle');
-      const navLinks = document.querySelector('.nav-links');
-      menuButton?.addEventListener('click', () => {
-        const open = navLinks.classList.toggle('is-open');
-        menuButton.setAttribute('aria-expanded', String(open));
-      });
-      navLinks?.addEventListener('click', (event) => {
-        if (event.target.closest('a')) {
-          navLinks.classList.remove('is-open');
-          menuButton?.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      const items = [...document.querySelectorAll('.catalog-item')];
-      const filterButtons = [...document.querySelectorAll('.filter')];
-      const search = document.querySelector('#catalog-search');
-      const empty = document.querySelector('#catalog-empty');
-      let activeFilter = 'all';
-
-      const applyCatalogState = () => {
-        const query = search.value.trim().toLowerCase();
-        let visible = 0;
-        items.forEach((item) => {
-          const categoryMatch = activeFilter === 'all' || item.dataset.category === activeFilter;
-          const searchMatch = !query || `${item.dataset.search} ${item.textContent}`.toLowerCase().includes(query);
-          item.hidden = !(categoryMatch && searchMatch);
-          if (!item.hidden) visible += 1;
-        });
-        empty.classList.toggle('is-visible', visible === 0);
-      };
-
-      const activateFilter = (filter) => {
-        activeFilter = filter;
-        filterButtons.forEach((button) => {
-          const active = button.dataset.filter === filter;
-          button.classList.toggle('is-active', active);
-          button.setAttribute('aria-pressed', String(active));
-        });
-        applyCatalogState();
-      };
-
-      filterButtons.forEach((button) => button.addEventListener('click', () => activateFilter(button.dataset.filter)));
-      search?.addEventListener('input', applyCatalogState);
-      document.querySelectorAll('[data-route-filter]').forEach((route) => {
-        route.addEventListener('click', () => activateFilter(route.dataset.routeFilter));
-      });
-
-      const revealNodes = document.querySelectorAll('.reveal');
-      if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: .14 });
-        revealNodes.forEach((node) => observer.observe(node));
-      } else {
-        revealNodes.forEach((node) => node.classList.add('is-visible'));
-      }
-
-      document.querySelector('#year').textContent = new Date().getFullYear();
-    })();
-  </script>
+  <script src="./app.js?v=20260716a" defer></script>
 </body>
 </html>
