@@ -430,12 +430,12 @@
         }
         .metrics {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             border-top: 1px solid var(--line-light);
             border-bottom: 1px solid var(--line-light);
         }
         .metric {
-            min-height: 230px;
+            min-height: 210px;
             padding: 2.1rem clamp(1rem, 2.8vw, 2.6rem) 2rem 0;
             display: flex;
             flex-direction: column;
@@ -446,46 +446,85 @@
         .metric:last-child { border-right: 0; }
         .metric strong {
             font-family: "Manrope", Arial, sans-serif;
-            font-size: clamp(3.8rem, 7vw, 7.2rem);
+            font-size: clamp(3.2rem, 5.5vw, 5.8rem);
             font-weight: 600;
             line-height: 0.9;
             letter-spacing: -0.07em;
         }
         .metric span { max-width: 190px; color: var(--muted-dark); font-size: 0.9rem; }
         .metric:hover strong { color: #9a6d0e; }
-        .proof-ledger { margin-top: clamp(3.5rem, 7vw, 6.5rem); }
-        .proof-ledger-title {
-            margin-bottom: 1rem;
+        .career-ledger { margin-top: clamp(3.5rem, 7vw, 6.5rem); }
+        .career-ledger-title {
+            margin-bottom: 1.1rem;
             color: var(--muted-dark);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
+            font-family: "DM Sans", Arial, sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
-        .proof-row {
-            min-height: 96px;
+        .career-row {
             display: grid;
-            grid-template-columns: minmax(140px, 0.8fr) minmax(240px, 1.2fr) minmax(220px, 1fr) auto;
+            grid-template-columns: 120px minmax(190px, .7fr) minmax(0, 1.5fr) auto;
             align-items: center;
-            gap: 2rem;
+            gap: clamp(1.2rem, 3vw, 3rem);
+            min-height: 150px;
+            padding: 1.6rem 0;
             border-top: 1px solid var(--line-light);
+        }
+        .career-row:last-of-type { border-bottom: 1px solid var(--line-light); }
+        .career-years {
+            color: var(--muted-dark);
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .career-meta strong {
+            display: block;
+            margin-bottom: .35rem;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+            line-height: 1.1;
+            letter-spacing: -.035em;
+        }
+        .career-meta span { color: var(--muted-dark); font-size: .78rem; }
+        .career-outcomes {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem 1.5rem;
+        }
+        .career-outcome {
+            min-height: 44px;
+            padding-left: .85rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 2px solid rgba(154,109,14,.48);
+            color: var(--muted-dark);
+            font-size: .76rem;
+            line-height: 1.35;
+        }
+        .career-outcome strong {
             color: var(--ink);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 1rem;
+            letter-spacing: -.02em;
+        }
+        .career-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            color: #765309;
+            font-size: .72rem;
+            font-weight: 700;
             text-decoration: none;
+            white-space: nowrap;
         }
-        .proof-row:last-of-type { border-bottom: 1px solid var(--line-light); }
-        .proof-domain { color: #8b6415; }
-        .proof-row h3 { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.38rem); font-weight: 600; }
-        .proof-result { color: var(--muted-dark); font-size: 0.88rem; text-align: right; }
-        .proof-row::after {
-            content: "↗";
-            color: #8b6415;
-            transition: transform 180ms ease;
-        }
-        .proof-row:hover h3,
-        .proof-row:focus-visible h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.25rem; }
-        .proof-row:hover::after,
-        .proof-row:focus-visible::after { transform: translate(2px, -2px); }
-        .proof-link { margin-top: 1.6rem; }
+        .career-link::after { content: "↗"; transition: transform 180ms ease; }
+        .career-link:hover::after,
+        .career-link:focus-visible::after { transform: translate(2px, -2px); }
+        .proof-links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.6rem; }
         .text-link {
             display: inline-flex;
             align-items: center;
@@ -676,8 +715,12 @@
             }
             .section-intro { grid-template-columns: 1fr; gap: 1.2rem; }
             .section-index { padding-top: 0; }
-            .proof-row { grid-template-columns: 0.75fr 1.25fr auto; }
-            .proof-result { display: none; }
+            .metrics { grid-template-columns: repeat(2, 1fr); }
+            .metric:nth-child(2) { border-right: 0; }
+            .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line-light); }
+            .metric:nth-child(3) { padding-left: 0; }
+            .career-row { grid-template-columns: 100px minmax(0, 1fr) auto; }
+            .career-outcomes { grid-column: 2 / -1; }
             .system-stage { min-height: 600px; }
             .system-caption { align-items: flex-start; flex-direction: column; }
             .system-loop { grid-template-columns: repeat(2, 1fr); }
@@ -725,18 +768,25 @@
             }
             .hero-foot span:last-child { text-align: left; }
             .portrait-label { display: none; }
-            .metrics { grid-template-columns: 1fr; }
             .metric,
             .metric + .metric {
-                min-height: 160px;
-                padding: 1.7rem 0;
-                border-right: 0;
-                border-bottom: 1px solid var(--line-light);
+                min-height: 150px;
+                padding: 1.4rem 1rem 1.4rem 0;
+                border-right: 1px solid var(--line-light);
             }
-            .metric:last-child { border-bottom: 0; }
-            .proof-row { min-height: 84px; grid-template-columns: 0.78fr 1.3fr auto; gap: 1rem; }
-            .proof-domain { font-size: 0.58rem; }
-            .proof-row h3 { font-size: 1rem; }
+            .metric:nth-child(even) { padding-right: 0; padding-left: 1rem; border-right: 0; }
+            .metric:nth-child(3) { padding-left: 0; }
+            .metric strong { font-size: clamp(2.5rem, 11vw, 3.15rem); }
+            .metric span { font-size: .76rem; }
+            .career-row {
+                grid-template-columns: 1fr auto;
+                gap: .75rem 1rem;
+                padding: 1.5rem 0;
+            }
+            .career-years { grid-column: 1 / -1; }
+            .career-outcomes { grid-column: 1 / -1; margin-top: .5rem; gap: .8rem; }
+            .career-link { align-self: start; }
+            .proof-links { align-items: flex-start; flex-direction: column; gap: 1rem; }
             .system-stage { min-height: 500px; }
             .system-image { object-position: 44% top; }
             .system-caption p { display: none; }
@@ -812,21 +862,25 @@
         <section class="proof-section" id="proof" aria-labelledby="proof-title">
             <div class="section-shell">
                 <div class="section-intro reveal">
-                    <div class="section-index">01 / Selected results</div>
+                    <div class="section-index">01 / Career ledger</div>
                     <div class="section-heading">
-                        <h2 id="proof-title">Work with<br>numbers attached.</h2>
-                        <p>Market entry, pipeline creation, enterprise expansion, and workflow automation across companies from startups to Google.</p>
+                        <h2 id="proof-title">A decade of work,<br>in detail.</h2>
+                        <p>From index operations at Google to enterprise expansion at SurveyMonkey, global BD at Sense, U.S. market entry at Fudo Security, and founding GTM at Obvio.ai.</p>
                     </div>
                 </div>
 
-                <div class="metrics reveal" aria-label="Selected outcomes">
+                <div class="metrics reveal" aria-label="Headline career outcomes">
+                    <div class="metric">
+                        <strong>$10M+</strong>
+                        <span>pipeline built while leading global business development at Sense</span>
+                    </div>
                     <div class="metric">
                         <strong>160%</strong>
                         <span>year-over-year U.S. pipeline growth at Fudo Security</span>
                     </div>
                     <div class="metric">
-                        <strong>$10M+</strong>
-                        <span>pipeline built while leading global business development at Sense</span>
+                        <strong>$3.1M</strong>
+                        <span>crowdfunding launch managed at Sanho / Hyper</span>
                     </div>
                     <div class="metric">
                         <strong>$424K</strong>
@@ -834,30 +888,98 @@
                     </div>
                 </div>
 
-                <div class="proof-ledger reveal">
-                    <div class="proof-ledger-title">Selected work</div>
-                    <a class="proof-row" href="/case-studies/#sentinel">
-                        <span class="proof-domain">Market entry</span>
-                        <h3>Project::Sentinel</h3>
-                        <span class="proof-result">Pipeline growth · operating savings</span>
-                    </a>
-                    <a class="proof-row" href="/case-studies/">
-                        <span class="proof-domain">Global BD</span>
-                        <h3>Sense pipeline system</h3>
-                        <span class="proof-result">$10M+ built · 125% response lift</span>
-                    </a>
-                    <a class="proof-row" href="/case-studies/">
-                        <span class="proof-domain">Enterprise</span>
-                        <h3>SurveyMonkey expansion</h3>
-                        <span class="proof-result">$300K+ expansion revenue</span>
-                    </a>
-                    <a class="proof-row" href="/case-studies/">
-                        <span class="proof-domain">Launch</span>
-                        <h3>Sanho / Hyper campaign</h3>
-                        <span class="proof-result">$3.1M crowdfunding launch</span>
-                    </a>
-                    <div class="proof-link">
-                        <a class="text-link" href="/case-studies/">Read the evidence behind the numbers</a>
+                <div class="career-ledger">
+                    <div class="career-ledger-title reveal">Role-by-role evidence</div>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2026—Now</div>
+                        <div class="career-meta"><strong>Obvio.ai</strong><span>Founding GTM · Business Development</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>Public sector</strong>market-entry motion</span>
+                            <span class="career-outcome"><strong>Direct ownership</strong>accounts · partners · pipeline</span>
+                        </div>
+                        <a class="career-link" href="https://www.obvio.ai/" target="_blank" rel="noopener noreferrer">Company</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2024—26</div>
+                        <div class="career-meta"><strong>Fudo Security</strong><span>Senior Manager · U.S. GTM &amp; Partnerships</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>$600K+</strong>influenced pipeline</span>
+                            <span class="career-outcome"><strong>90 → 5 days</strong>SDR ramp time</span>
+                            <span class="career-outcome"><strong>8 hires</strong>first GTM team buildout</span>
+                            <span class="career-outcome"><strong>$100K+</strong>enterprise opportunities</span>
+                        </div>
+                        <a class="career-link" href="/case-studies/#sentinel">Case</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2021—23</div>
+                        <div class="career-meta"><strong>Sense</strong><span>Group Manager · Global Business Development</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>125%</strong>response-rate lift</span>
+                            <span class="career-outcome"><strong>12%</strong>churn reduction</span>
+                            <span class="career-outcome"><strong>3× promoted</strong>into global leadership</span>
+                            <span class="career-outcome"><strong>Full-funnel</strong>attribution and analytics</span>
+                        </div>
+                        <a class="career-link" href="/resume.html">Résumé</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2019—21</div>
+                        <div class="career-meta"><strong>SurveyMonkey</strong><span>Enterprise Business Development</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>$300K+</strong>expansion revenue</span>
+                            <span class="career-outcome"><strong>Enterprise pilots</strong>with product and engineering</span>
+                        </div>
+                        <a class="career-link" href="/resume.html">Résumé</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2015—19</div>
+                        <div class="career-meta"><strong>Sanho / Hyper</strong><span>Infrastructure &amp; GTM Strategy</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>30%</strong>lower partner-data latency</span>
+                            <span class="career-outcome"><strong>Apple + Best Buy</strong>supply-chain data loops</span>
+                        </div>
+                        <a class="career-link" href="/resume.html">Résumé</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">2014—15</div>
+                        <div class="career-meta"><strong>Google</strong><span>Shopping Index Operations</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>High-scale validation</strong>data quality and uptime</span>
+                            <span class="career-outcome"><strong>Global modeling</strong>revenue and financial reporting</span>
+                        </div>
+                        <a class="career-link" href="/resume.html">Résumé</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">Selected builds</div>
+                        <div class="career-meta"><strong>Fractional systems</strong><span>TalSmart · MockThatInterview · Braintrust</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>30% → 90%</strong>acceptance rate</span>
+                            <span class="career-outcome"><strong>7–10% → 28%</strong>active response</span>
+                            <span class="career-outcome"><strong>60%+</strong>manual ops reduction</span>
+                            <span class="career-outcome"><strong>10K+</strong>record-scale routing</span>
+                        </div>
+                        <a class="career-link" href="/resume.html">Résumé</a>
+                    </article>
+
+                    <article class="career-row reveal">
+                        <div class="career-years">System proof</div>
+                        <div class="career-meta"><strong>Project::Aurora</strong><span>Research and intent operations</span></div>
+                        <div class="career-outcomes">
+                            <span class="career-outcome"><strong>92%</strong>evaluated intent accuracy</span>
+                            <span class="career-outcome"><strong>≈4×</strong>research throughput</span>
+                        </div>
+                        <a class="career-link" href="/case-studies/#aurora">Case</a>
+                    </article>
+
+                    <div class="proof-links reveal">
+                        <a class="text-link" href="/case-studies/">Read the case studies</a>
+                        <a class="text-link" href="/resume.html">Open the full résumé</a>
                     </div>
                 </div>
             </div>
