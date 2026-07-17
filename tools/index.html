@@ -74,6 +74,7 @@
         a { color: inherit; }
         button, a { -webkit-tap-highlight-color: transparent; }
         button { font: inherit; }
+        figure { margin: 0; }
         ::selection { background: var(--gold); color: var(--ink); }
 
         .skip-link {
@@ -219,7 +220,7 @@
             position: relative;
             min-height: 100svh;
             display: grid;
-            grid-template-columns: minmax(0, .86fr) minmax(420px, 1.14fr);
+            grid-template-columns: minmax(0, .84fr) minmax(440px, 1.16fr);
             align-items: center;
             gap: clamp(2rem, 5vw, 6rem);
             padding-top: 120px;
@@ -275,62 +276,51 @@
 
         .hero-visual {
             position: relative;
-            height: min(68vw, 700px);
-            min-height: 520px;
+            width: 100%;
+            max-width: 700px;
+            justify-self: end;
             opacity: 0;
             animation: visual-in 1200ms 180ms cubic-bezier(.2,.7,.2,1) forwards;
         }
         .hero-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: min(50vw, 670px);
-            aspect-ratio: 1.04;
+            position: relative;
+            display: block;
+            width: 100%;
+            aspect-ratio: 2280 / 2190;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,.25);
-            box-shadow: 0 38px 100px rgba(0,0,0,.62);
-            transform: translate(-45%, -50%) perspective(1200px) rotateY(-9deg) rotateZ(2.5deg);
-            will-change: transform;
+            background: #08111d;
+            box-shadow: 0 30px 80px rgba(0,0,0,.58);
+            text-decoration: none;
         }
-        .hero-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.82) contrast(1.08); }
+        .hero-frame img { width: 100%; height: 100%; object-fit: contain; object-position: center; filter: saturate(.82) contrast(1.08); }
         .hero-frame::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(145deg, rgba(217,171,69,.08), transparent 35%, rgba(7,7,6,.32));
+            border: 1px solid rgba(217,171,69,.15);
+            background: linear-gradient(145deg, rgba(217,171,69,.06), transparent 32%, rgba(7,7,6,.14));
             pointer-events: none;
         }
-        .hero-index {
-            position: absolute;
-            right: 0;
-            bottom: 5%;
-            z-index: 2;
-            color: var(--gold);
+        .hero-frame:hover,
+        .hero-frame:focus-visible { border-color: rgba(217,171,69,.7); }
+        .hero-caption {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 1rem;
+            margin-top: .9rem;
+            padding-top: .8rem;
+            border-top: 1px solid var(--line-dark);
+            color: rgba(255,253,248,.5);
             font-family: "JetBrains Mono", monospace;
-            font-size: clamp(3.5rem, 7vw, 7rem);
-            font-weight: 600;
-            line-height: 1;
-            letter-spacing: -.08em;
-        }
-        .hero-index small {
-            display: block;
-            margin: 0 0 .65rem .35rem;
-            color: rgba(255,253,248,.52);
-            font-size: .58rem;
-            letter-spacing: .18em;
+            font-size: .56rem;
+            letter-spacing: .12em;
+            line-height: 1.4;
             text-transform: uppercase;
         }
-        .hero-note {
-            position: absolute;
-            top: 8%;
-            right: 1%;
-            writing-mode: vertical-rl;
-            color: rgba(255,253,248,.46);
-            font-family: "JetBrains Mono", monospace;
-            font-size: .58rem;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-        }
+        .hero-caption strong { color: var(--white); font-weight: 600; text-align: center; }
+        .hero-caption span:last-child { color: var(--gold-bright); text-align: right; }
 
         .signal-strip {
             overflow: hidden;
@@ -636,7 +626,6 @@
 
         @media (max-width: 980px) {
             .hero-shell { grid-template-columns: minmax(0, .92fr) minmax(330px, 1.08fr); gap: 1rem; }
-            .hero-frame { width: min(57vw, 600px); }
             .chooser-heading { grid-template-columns: 1fr; }
             .chooser-lede { margin-left: 0; }
             .instrument-stage { grid-template-columns: 1fr; }
@@ -663,22 +652,19 @@
             .nav-links .nav-cta { margin-top: .6rem; padding-inline: 1rem; }
             .menu-toggle { display: block; }
             .hero-shell {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-                justify-content: center;
-                gap: 1rem;
+                min-height: auto;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                align-items: start;
+                gap: 3rem;
                 padding-top: 118px;
-                padding-bottom: 2rem;
+                padding-bottom: 3rem;
             }
             .hero-copy { z-index: 5; }
             .hero-title { font-size: clamp(4rem, 20vw, 7rem); }
             .hero-intro { max-width: 90%; margin-top: 1.4rem; }
             .hero-actions { margin-top: 1.4rem; }
-            .hero-visual { position: absolute; right: -18%; bottom: 0; width: 78%; height: 48%; min-height: 300px; opacity: .48; }
-            .hero-frame { width: 100%; transform: translate(-45%, -42%) rotateZ(4deg); }
-            .hero-index { right: 14%; bottom: 3%; }
-            .hero-note { display: none; }
+            .hero-visual { width: 100%; max-width: none; justify-self: stretch; }
             .hero::before { z-index: 0; background: linear-gradient(90deg, rgba(7,7,6,.99), rgba(7,7,6,.8) 60%, rgba(7,7,6,.38)); }
             .hero::after { z-index: 1; }
             .intent-nav { grid-template-columns: repeat(2, 1fr); }
@@ -698,7 +684,10 @@
         @media (max-width: 480px) {
             .hero-title { font-size: 18vw; }
             .hero-actions { align-items: flex-start; flex-direction: column; gap: .8rem; }
-            .hero-visual { width: 92%; right: -32%; }
+            .hero-caption { grid-template-columns: 1fr auto; }
+            .hero-caption strong { grid-column: 1 / -1; grid-row: 1; text-align: left; }
+            .hero-caption span:first-child { grid-column: 1; grid-row: 2; }
+            .hero-caption span:last-child { grid-column: 2; grid-row: 2; }
             .intent-button { min-height: 88px; padding: 1rem .8rem; font-size: .7rem; }
             .stage-copy { min-height: 500px; padding: 1.5rem; }
             .stage-title { font-size: clamp(2.55rem, 13vw, 4.2rem); }
@@ -743,13 +732,16 @@
                         <a class="text-link" href="/gtm-architecture-live/index-v2.html">Launch the flagship</a>
                     </div>
                 </div>
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="hero-frame">
-                        <img src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="" width="2280" height="2190">
-                    </div>
-                    <div class="hero-index"><small>Active instruments</small>07</div>
-                    <div class="hero-note">Built to be used / not presented</div>
-                </div>
+                <figure class="hero-visual">
+                    <a class="hero-frame" href="/gtm-architecture-live/index-v2.html" aria-label="Open GTM Architecture Live">
+                        <img src="/assets/img/frameworks/gtm_arch_live_screenshot.png" alt="GTM Architecture Live scoring console and architecture trace" width="2280" height="2190">
+                    </a>
+                    <figcaption class="hero-caption">
+                        <span>01 / Featured</span>
+                        <strong>GTM Architecture Live</strong>
+                        <span>07 open instruments</span>
+                    </figcaption>
+                </figure>
             </div>
         </section>
 
@@ -974,14 +966,6 @@
         }, { threshold: .12 });
         document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
 
-        if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            const frame = document.querySelector('.hero-frame');
-            document.querySelector('.hero').addEventListener('pointermove', event => {
-                const x = (event.clientX / innerWidth - .5) * 12;
-                const y = (event.clientY / innerHeight - .5) * 8;
-                frame.style.transform = `translate(calc(-45% + ${x}px), calc(-50% + ${y}px)) perspective(1200px) rotateY(${-9 + x * .12}deg) rotateZ(2.5deg)`;
-            });
-        }
     </script>
 </body>
 </html>
