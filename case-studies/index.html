@@ -1,894 +1,872 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leon Basin | Case Studies</title>
-    <meta name="description" content="Operator-grade case studies showing how Leon Basin designs GTM systems, cleans routing logic, and improves pipeline quality across founder-led and technical teams.">
-    <meta property="og:title" content="Leon Basin | Case Studies">
-    <meta property="og:description" content="Three operator-grade case studies on systems construction, scale architecture, and AI signal operations.">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case Studies | Leon Basin</title>
+    <meta name="description" content="Three operating records showing how Leon Basin turns noisy signal, broken routing, and uneven research into measurable GTM systems.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://basinleon.github.io/case-studies/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+
+    <meta property="og:title" content="Case Studies | Leon Basin">
+    <meta property="og:description" content="Decision records for pipeline architecture, routing design, and AI-assisted signal operations.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://basinleon.github.io/case-studies/">
     <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual_fixed.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Leon Basin | Case Studies">
-    <meta name="twitter:description" content="Three operator-grade records showing the decision, constraint, system design, and measurable result.">
+    <meta name="twitter:title" content="Case Studies | Leon Basin">
+    <meta name="twitter:description" content="The problem, constraint, system decision, and measured result behind the work.">
     <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual_fixed.png">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <link rel="canonical" href="https://basinleon.github.io/case-studies/">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Leon Basin Case Studies",
+        "url": "https://basinleon.github.io/case-studies/",
+        "description": "Operating records for GTM systems, routing architecture, and AI-assisted signal operations.",
+        "author": { "@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/" },
+        "hasPart": [
+            { "@type": "CreativeWork", "name": "Project::Sentinel" },
+            { "@type": "CreativeWork", "name": "Project::Delight" },
+            { "@type": "CreativeWork", "name": "Project::Aurora" }
+        ]
+    }
+    </script>
+
+    <script>document.documentElement.classList.add("js");</script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #0d0803;
-            --panel: #180c05;
-            --panel-soft: rgba(255, 255, 255, 0.04);
-            --line: rgba(255, 255, 255, 0.12);
-            --line-soft: rgba(255, 255, 255, 0.08);
-            --text: #f2e4c8;
-            --muted: rgba(245, 240, 231, 0.74);
-            --gold: #e89a18;
-            --gold-soft: rgba(214, 170, 73, 0.16);
-            --shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+            --ink: #070706;
+            --ink-soft: #11110f;
+            --paper: #f1eee7;
+            --paper-alt: #e8e3d9;
+            --white: #fffdf8;
+            --gold: #d9ab45;
+            --gold-bright: #f1c765;
+            --muted-light: #bdb7aa;
+            --muted-dark: #6f6a61;
+            --line-dark: rgba(255,255,255,0.14);
+            --line-light: rgba(7,7,6,0.16);
+            --max: 1280px;
+            --gutter: clamp(1.25rem, 4vw, 4.5rem);
         }
 
-        * { box-sizing: border-box; }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
         body {
             margin: 0;
-            font-family: "Inter", "Segoe UI", sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 20% 0%, rgba(232, 154, 24, 0.16), transparent 25%),
-                linear-gradient(180deg, #160b04 0%, var(--bg) 100%);
+            background: var(--ink);
+            color: var(--white);
+            font-family: "DM Sans", Arial, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
+        body.menu-open { overflow: hidden; }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        ::selection { background: var(--gold); color: var(--ink); }
 
-        a {
-            color: inherit;
-            text-decoration: none;
+        .skip-link {
+            position: fixed;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 300;
+            padding: 0.7rem 1rem;
+            background: var(--white);
+            color: var(--ink);
+            transform: translateY(-160%);
+            transition: transform 180ms ease;
         }
+        .skip-link:focus { transform: translateY(0); }
 
-        .shell {
-            width: min(calc(100% - 32px), 1240px);
-            margin: 18px auto 32px;
+        .site-header {
+            position: absolute;
+            inset: 0 0 auto;
+            z-index: 100;
+            border-bottom: 1px solid var(--line-dark);
         }
-
-        .frame {
-            overflow: hidden;
-            border-radius: 24px;
-            border: 1px solid var(--line-soft);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-                rgba(6, 8, 13, 0.92);
-            box-shadow: var(--shadow);
+        .nav-shell,
+        .section-shell {
+            width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
+            margin: 0 auto;
+            padding-inline: var(--gutter);
         }
-
-        .topbar {
+        .nav-shell {
+            min-height: 78px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            padding: 18px 24px;
-            border-bottom: 1px solid var(--line-soft);
-            background: rgba(255, 255, 255, 0.02);
+            gap: 2rem;
         }
-
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .badge {
-            width: 42px;
-            height: 42px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            background: linear-gradient(135deg, rgba(214, 170, 73, 0.2), rgba(214, 170, 73, 0.05));
-            border: 1px solid rgba(214, 170, 73, 0.24);
-            color: var(--gold);
-            font-size: 0.78rem;
+            text-decoration: none;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 0.93rem;
             font-weight: 800;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
-
-        .brand-copy strong {
-            display: block;
-            font-size: 1rem;
-            letter-spacing: -0.03em;
-        }
-
-        .brand-copy span {
-            display: block;
-            margin-top: 0.2rem;
-            color: var(--muted);
-            font-size: 0.84rem;
-        }
-
-        .top-links {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .top-links a,
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 46px;
-            padding: 0 16px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
+        .brand span { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: clamp(1.25rem, 2.5vw, 2.7rem); }
+        .nav-links a {
+            position: relative;
+            padding: 0.6rem 0;
+            color: rgba(255,253,248,0.76);
+            text-decoration: none;
             font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+            font-weight: 600;
         }
-
-        .top-links a:hover,
-        .button:hover {
-            transform: translateY(-2px);
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0.35rem;
+            left: 0;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 220ms ease;
         }
-
-        .top-links .accent,
-        .button.primary {
-            background: linear-gradient(135deg, #efc24b, var(--gold));
-            border-color: transparent;
-            color: #090b10;
+        .nav-links a:hover::after,
+        .nav-links a:focus-visible::after,
+        .nav-links a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+        .nav-links .nav-cta {
+            min-height: 42px;
+            padding: 0.7rem 1rem;
+            border: 1px solid rgba(217,171,69,0.65);
+            color: var(--white);
         }
-
-        .content {
-            padding: 28px 24px 30px;
+        .nav-links .nav-cta::after { display: none; }
+        .nav-links .nav-cta:hover,
+        .nav-links .nav-cta:focus-visible { background: var(--gold); color: var(--ink); }
+        .menu-toggle {
+            display: none;
+            width: 46px;
+            height: 46px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--white);
+            cursor: pointer;
         }
+        .menu-toggle span,
+        .menu-toggle::before,
+        .menu-toggle::after {
+            content: "";
+            display: block;
+            width: 22px;
+            height: 1px;
+            margin: 5px auto;
+            background: currentColor;
+            transition: transform 180ms ease, opacity 180ms ease;
+        }
+        .menu-open .menu-toggle span { opacity: 0; }
+        .menu-open .menu-toggle::before { transform: translateY(6px) rotate(45deg); }
+        .menu-open .menu-toggle::after { transform: translateY(-6px) rotate(-45deg); }
 
         .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-            gap: 22px;
-            align-items: stretch;
-        }
-
-        .case-switcher {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            margin: 22px 0 14px;
-            padding: 8px;
-            border: 1px solid rgba(232, 154, 24, .24);
-            border-radius: 18px;
-            background: rgba(13, 8, 3, .82);
-        }
-
-        .case-switch {
-            min-height: 54px;
-            border: 0;
-            border-radius: 12px;
-            color: var(--muted);
-            background: transparent;
-            cursor: pointer;
-            font-size: .72rem;
-            font-weight: 900;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            transition: .2s ease;
-        }
-
-        .case-switch:hover {
-            color: var(--text);
-            background: rgba(232, 154, 24, .12);
-        }
-
-        .case-switch.active {
-            color: #0d0803;
-            background: var(--gold);
-        }
-
-        .case-stage {
-            min-height: 520px;
-            padding: 46px;
-            display: grid;
-            grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
-            gap: 42px;
-            align-items: end;
-            overflow: hidden;
             position: relative;
-            border: 1px solid rgba(232, 154, 24, .22);
-            border-radius: 26px;
-            background:
-                linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)),
-                url('../assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat;
-            box-shadow: var(--shadow);
+            isolation: isolate;
+            min-height: 88svh;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            background: var(--ink);
         }
-
-        .case-stage::after {
-            content: '';
+        .hero-art {
             position: absolute;
+            z-index: -3;
+            inset: -3%;
+            width: 106%;
+            height: 106%;
+            object-fit: cover;
+            object-position: center 22%;
+            opacity: 0.58;
+            transform: scale(1.06);
+            animation: image-in 1300ms cubic-bezier(.2,.7,.2,1) both;
+            will-change: transform;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            z-index: -2;
             inset: 0;
-            background: radial-gradient(circle at 78% 22%, rgba(232,154,24,.2), transparent 28%);
-            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgba(7,7,6,0.99) 0%, rgba(7,7,6,0.93) 42%, rgba(7,7,6,0.38) 76%, rgba(7,7,6,0.7) 100%),
+                linear-gradient(0deg, rgba(7,7,6,0.98) 0%, transparent 50%, rgba(7,7,6,0.35) 100%);
         }
-
-        .case-stage > * { position: relative; z-index: 1; }
-
-        .case-stage h2 {
-            max-width: 12ch;
-            margin: 10px 0 18px;
-            font-size: clamp(3rem, 7vw, 6.3rem);
+        .hero::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            opacity: 0.23;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(90deg, black, transparent 72%);
         }
-
-        .case-stage-copy {
-            max-width: 680px;
-            color: rgba(245,240,231,.82);
-            font-size: 1.05rem;
-            line-height: 1.65;
+        .hero-inner {
+            width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
+            margin: 0 auto;
+            padding: 9.5rem var(--gutter) clamp(3rem, 7vh, 5.25rem);
         }
+        .eyebrow,
+        .record-index,
+        .field-label,
+        .metric-label,
+        .case-nav a,
+        .final-label {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold-bright);
+            opacity: 0;
+            animation: rise-in 700ms 250ms ease-out forwards;
+        }
+        .eyebrow::before { content: ""; width: 2.6rem; height: 1px; background: currentColor; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1, h2, h3 { font-family: "Manrope", Arial, sans-serif; }
+        h1 {
+            max-width: 920px;
+            margin-bottom: 1.45rem;
+            font-size: clamp(3.6rem, 8vw, 7.8rem);
+            font-weight: 600;
+            line-height: 0.9;
+            letter-spacing: -0.07em;
+            text-wrap: balance;
+            opacity: 0;
+            transform: translateY(22px);
+            animation: rise-in 850ms 390ms cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .hero-lede {
+            max-width: 650px;
+            margin-bottom: 2rem;
+            color: rgba(255,253,248,0.76);
+            font-size: clamp(1rem, 1.7vw, 1.22rem);
+            line-height: 1.6;
+            opacity: 0;
+            animation: rise-in 700ms 580ms ease-out forwards;
+        }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; opacity: 0; animation: rise-in 700ms 720ms ease-out forwards; }
+        .button {
+            min-height: 50px;
+            padding: 0.85rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 0.84rem;
+            font-weight: 700;
+            transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease;
+        }
+        .button::after { content: "↗"; }
+        .button:hover,
+        .button:focus-visible { transform: translateY(-2px); }
+        .button-gold { background: var(--gold); color: var(--ink); }
+        .button-gold:hover,
+        .button-gold:focus-visible { background: var(--gold-bright); }
+        .button-ghost { border-color: rgba(255,255,255,0.35); color: var(--white); }
+        .button-ghost:hover,
+        .button-ghost:focus-visible { border-color: var(--white); background: rgba(255,255,255,0.08); }
 
-        .case-proof {
-            padding: 26px;
-            border: 1px solid rgba(232,154,24,.24);
-            border-radius: 20px;
-            background: rgba(12,7,3,.84);
+        .case-nav {
+            position: sticky;
+            top: 0;
+            z-index: 80;
+            background: rgba(7,7,6,0.96);
+            border-top: 1px solid var(--line-dark);
+            border-bottom: 1px solid var(--line-dark);
             backdrop-filter: blur(14px);
         }
-
-        .case-proof-label {
-            color: var(--gold);
-            font-size: .66rem;
-            font-weight: 900;
-            letter-spacing: .16em;
-            text-transform: uppercase;
+        .case-nav-inner {
+            width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
+            min-height: 66px;
+            margin: 0 auto;
+            padding-inline: var(--gutter);
+            display: grid;
+            grid-template-columns: auto repeat(3, 1fr);
+            align-items: stretch;
         }
-
-        .case-proof-metric {
-            margin: 10px 0 14px;
-            color: var(--text);
-            font-size: clamp(1.7rem, 3vw, 2.7rem);
-            font-weight: 900;
-            line-height: 1.05;
-        }
-
-        .case-proof-note {
-            color: var(--muted);
-            font-size: .92rem;
-            line-height: 1.55;
-        }
-
-        .case-stage-actions {
+        .case-nav-label {
+            padding-right: clamp(1.5rem, 4vw, 4.5rem);
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 24px;
-        }
-
-        .record-disclosure {
-            margin-top: 36px;
-            border-top: 1px solid var(--line-soft);
-            padding-top: 24px;
-        }
-
-        .record-disclosure > summary {
-            color: var(--gold);
-            cursor: pointer;
-            font-size: .72rem;
-            font-weight: 900;
-            letter-spacing: .14em;
+            align-items: center;
+            color: var(--muted-light);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
-
-        .hero-panel,
-        .sidebar-panel,
-        .study-card,
-        .bottom-panel {
-            border-radius: 28px;
-            border: 1px solid var(--line-soft);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-        }
-
-        .hero-panel {
-            padding: 34px;
+        .case-nav a {
             position: relative;
-            overflow: hidden;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid var(--line-dark);
+            color: var(--muted-light);
+            text-decoration: none;
+            transition: color 180ms ease, background 180ms ease;
         }
+        .case-nav a::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -1px;
+            left: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 180ms ease;
+        }
+        .case-nav a:hover,
+        .case-nav a:focus-visible,
+        .case-nav a.active { color: var(--white); background: rgba(255,255,255,0.035); }
+        .case-nav a.active::after { transform: scaleX(1); }
 
-        .hero-panel::before {
+        .records { background: var(--paper); color: var(--ink); }
+        .record {
+            padding: clamp(5.5rem, 10vw, 9rem) 0;
+            border-bottom: 1px solid var(--line-light);
+        }
+        .record:nth-child(even) { background: var(--paper-alt); }
+        .record-head {
+            display: grid;
+            grid-template-columns: minmax(140px, 0.45fr) minmax(0, 1.25fr) minmax(220px, 0.7fr);
+            gap: clamp(1.5rem, 4vw, 4rem);
+            align-items: end;
+            margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+        }
+        .record-index { align-self: start; padding-top: 0.7rem; color: #8b6415; }
+        .record-title h2 {
+            margin-bottom: 0.8rem;
+            font-size: clamp(2.8rem, 6vw, 6rem);
+            font-weight: 600;
+            line-height: 0.92;
+            letter-spacing: -0.065em;
+        }
+        .record-title p { max-width: 560px; margin: 0; color: var(--muted-dark); font-size: 1rem; }
+        .metric-block { padding-left: clamp(1.25rem, 3vw, 2.5rem); border-left: 1px solid var(--line-light); }
+        .metric-label { display: block; margin-bottom: 1rem; color: var(--muted-dark); }
+        .metric-block strong {
+            display: block;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(2.2rem, 4.2vw, 4.4rem);
+            font-weight: 600;
+            line-height: 0.95;
+            letter-spacing: -0.055em;
+        }
+        .metric-block span { display: block; margin-top: 0.85rem; color: var(--muted-dark); font-size: 0.86rem; }
+        .record-media {
+            position: relative;
+            min-height: clamp(430px, 57vw, 760px);
+            margin: 0 0 clamp(3rem, 6vw, 5.5rem);
+            overflow: hidden;
+            background: #070a12;
+            border-top: 1px solid var(--line-light);
+            border-bottom: 1px solid var(--line-light);
+        }
+        .record-media img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            object-fit: cover;
+            object-position: center top;
+            transform: scale(1.015);
+            transition: transform 700ms cubic-bezier(.2,.7,.2,1), opacity 350ms ease;
+        }
+        .record-media:hover img { transform: scale(1); }
+        .record-media::after {
             content: "";
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-            background-size: 26px 26px;
-            opacity: 0.28;
+            background: linear-gradient(180deg, transparent 62%, rgba(3,5,9,0.72));
             pointer-events: none;
         }
-
-        .hero-panel > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow,
-        .kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            color: var(--gold);
-            font-size: 0.76rem;
-            font-weight: 800;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-
-        h1, h2, h3 {
-            margin: 0;
-            letter-spacing: -0.04em;
-            line-height: 0.98;
-        }
-
-        h1 {
-            max-width: 11ch;
-            font-size: clamp(3rem, 6vw, 5.6rem);
-        }
-
-        .hero-copy {
-            max-width: 58rem;
-            margin-top: 18px;
-            color: var(--muted);
-            font-size: 1.08rem;
-            line-height: 1.75;
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .sidebar-panel {
-            padding: 26px;
-        }
-
-        .sidebar-panel h2 {
-            margin-bottom: 14px;
-            font-size: 1.3rem;
-        }
-
-        .sidebar-panel p,
-        .sidebar-panel li {
-            color: var(--muted);
-            font-size: 0.96rem;
-            line-height: 1.7;
-        }
-
-        .sidebar-panel ul {
-            margin: 0;
-            padding-left: 1.2rem;
-        }
-
-        .studies {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-            margin-top: 22px;
-        }
-
-        .study-card {
-            padding: 22px;
-        }
-
-        .study-card.featured {
-            position: relative;
-            background:
-                radial-gradient(circle at top right, rgba(214, 170, 73, 0.14), transparent 34%),
-                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
-            border-color: rgba(214, 170, 73, 0.24);
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.26);
-        }
-
-        .study-card.featured::after {
-            content: "Inspectable Artifact";
+        .media-caption {
             position: absolute;
-            top: 18px;
-            right: 18px;
-            padding: 7px 10px;
-            border-radius: 999px;
-            background: rgba(214, 170, 73, 0.14);
-            border: 1px solid rgba(214, 170, 73, 0.28);
-            color: var(--gold);
-            font-size: 0.62rem;
-            font-weight: 900;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-        .study-tag {
-            display: inline-flex;
-            margin-bottom: 16px;
-            padding: 8px 10px;
-            border-radius: 999px;
-            background: var(--gold-soft);
-            color: var(--gold);
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .study-card h3 {
-            font-size: 1.45rem;
-            margin-bottom: 12px;
-        }
-
-        .metric {
-            display: inline-block;
-            margin-top: 16px;
-            color: var(--gold);
-            font-size: 0.84rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .artifact-panel {
-            margin-top: 18px;
-            padding: 16px;
-            border-radius: 18px;
-            border: 1px solid rgba(214, 170, 73, 0.18);
-            background: linear-gradient(180deg, rgba(214, 170, 73, 0.08), rgba(255, 255, 255, 0.02));
-        }
-
-        .artifact-panel strong {
-            display: block;
-            margin-bottom: 0.45rem;
-            color: var(--text);
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .artifact-panel p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.93rem;
-            line-height: 1.6;
-        }
-
-        .artifact-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .artifact-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 42px;
-            padding: 0 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(214, 170, 73, 0.2);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text);
-            font-size: 0.74rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .artifact-link:hover {
-            transform: translateY(-2px);
-            border-color: rgba(214, 170, 73, 0.42);
-            background: rgba(214, 170, 73, 0.1);
-        }
-
-        .study-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .study-row {
-            padding-top: 10px;
-            border-top: 1px solid var(--line-soft);
-        }
-
-        .study-row strong {
-            display: block;
-            margin-bottom: 0.35rem;
-            color: var(--text);
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .study-row span {
-            color: var(--muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .bottom-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-            gap: 18px;
-            margin-top: 18px;
-        }
-
-        .bottom-panel {
-            padding: 24px;
-        }
-
-        .bottom-panel p {
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .pill-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .pill {
-            padding: 10px 14px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-
-        .footer {
+            z-index: 2;
+            right: 1.4rem;
+            bottom: 1.25rem;
+            left: 1.4rem;
             display: flex;
             justify-content: space-between;
-            gap: 18px;
-            align-items: center;
-            padding: 0 24px 24px;
-            color: var(--muted);
-            font-size: 0.88rem;
+            gap: 2rem;
+            color: rgba(255,253,248,0.78);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.63rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
+        .field-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--line-light);
+            border-bottom: 1px solid var(--line-light);
+        }
+        .field {
+            min-height: 245px;
+            padding: 1.8rem clamp(1rem, 2.4vw, 2rem) 1.8rem 0;
+            border-right: 1px solid var(--line-light);
+        }
+        .field + .field { padding-left: clamp(1rem, 2.4vw, 2rem); }
+        .field:last-child { border-right: 0; }
+        .field-label { display: block; margin-bottom: 2.7rem; color: #8b6415; }
+        .field p { margin: 0; color: #3e3b35; font-size: 0.93rem; line-height: 1.65; }
+        .reflection {
+            margin-top: 2.2rem;
+            display: grid;
+            grid-template-columns: minmax(140px, 0.45fr) minmax(0, 1.95fr);
+            gap: clamp(1.5rem, 4vw, 4rem);
+        }
+        .reflection .field-label { margin: 0; }
+        .reflection p { max-width: 760px; margin: 0; color: var(--muted-dark); }
 
-        .footer-links {
+        .pattern-section {
+            padding: clamp(5.5rem, 10vw, 9rem) 0;
+            background: var(--ink-soft);
+        }
+        .pattern-head {
+            display: grid;
+            grid-template-columns: minmax(140px, 0.45fr) minmax(0, 1.95fr);
+            gap: clamp(1.5rem, 4vw, 4rem);
+            margin-bottom: clamp(3.5rem, 7vw, 6rem);
+        }
+        .pattern-head h2 {
+            max-width: 900px;
+            margin-bottom: 1.1rem;
+            font-size: clamp(2.8rem, 6vw, 6rem);
+            font-weight: 600;
+            line-height: 0.94;
+            letter-spacing: -0.065em;
+        }
+        .pattern-head p { max-width: 650px; margin: 0; color: var(--muted-light); }
+        .principles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--line-dark);
+            border-bottom: 1px solid var(--line-dark);
+            counter-reset: principle;
+        }
+        .principle {
+            counter-increment: principle;
+            min-height: 260px;
+            padding: 1.8rem clamp(1rem, 2.8vw, 2.4rem) 1.8rem 0;
+            border-right: 1px solid var(--line-dark);
+        }
+        .principle + .principle { padding-left: clamp(1rem, 2.8vw, 2.4rem); }
+        .principle:last-child { border-right: 0; }
+        .principle::before {
+            content: "0" counter(principle);
+            display: block;
+            margin-bottom: 3.3rem;
+            color: var(--gold);
+            font: 600 0.68rem "JetBrains Mono", monospace;
+        }
+        .principle h3 { margin-bottom: 0.7rem; font-size: clamp(1.25rem, 2vw, 1.7rem); }
+        .principle p { max-width: 330px; margin: 0; color: var(--muted-light); font-size: 0.9rem; }
+
+        .final-section {
+            min-height: 74svh;
+            padding: clamp(5.5rem, 10vw, 9rem) 0 2.5rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--gold);
+            color: var(--ink);
         }
-
-        @media (max-width: 980px) {
-            .hero,
-            .studies,
-            .bottom-grid,
-            .footer {
-                grid-template-columns: 1fr;
-                display: grid;
-            }
-
-            .case-stage {
-                grid-template-columns: 1fr;
-                min-height: 620px;
-            }
-
-            .footer {
-                padding-top: 18px;
-            }
+        .final-copy { max-width: 1040px; }
+        .final-label { margin-bottom: 1.6rem; }
+        .final-copy h2 {
+            margin-bottom: 1.5rem;
+            font-size: clamp(3.2rem, 8vw, 8rem);
+            font-weight: 600;
+            line-height: 0.89;
+            letter-spacing: -0.07em;
+            text-wrap: balance;
         }
+        .final-copy p { max-width: 620px; margin-bottom: 2rem; font-size: clamp(1rem, 1.7vw, 1.2rem); }
+        .final-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .button-dark { background: var(--ink); color: var(--white); }
+        .button-dark:hover,
+        .button-dark:focus-visible { background: #24231f; }
+        .button-line-dark { border-color: rgba(7,7,6,0.55); color: var(--ink); }
+        .button-line-dark:hover,
+        .button-line-dark:focus-visible { border-color: var(--ink); background: rgba(255,255,255,0.16); }
+        .site-footer {
+            width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
+            margin: clamp(5rem, 12vw, 10rem) auto 0;
+            padding: 1.4rem var(--gutter) 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            border-top: 1px solid rgba(7,7,6,0.35);
+            font-size: 0.78rem;
+        }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+        .footer-links a { text-decoration: none; }
+        .footer-links a:hover,
+        .footer-links a:focus-visible { text-decoration: underline; text-underline-offset: 0.2rem; }
 
-        @media (max-width: 720px) {
-            .shell {
-                width: min(calc(100% - 16px), 1240px);
-                margin: 8px auto 18px;
-            }
+        .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }
+        .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
-            .topbar,
-            .content,
-            .footer {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
+        :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 4px; }
+        .records :focus-visible,
+        .final-section :focus-visible { outline-color: var(--ink); }
 
-            .topbar {
+        @keyframes rise-in { to { opacity: 1; transform: translateY(0); } }
+        @keyframes image-in { from { opacity: 0; transform: scale(1.12); } }
+
+        @media (max-width: 900px) {
+            .nav-shell { min-height: 70px; }
+            .menu-toggle { display: block; position: relative; z-index: 2; }
+            .nav-links {
+                position: fixed;
+                inset: 0;
+                padding: 7rem var(--gutter) 3rem;
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 0.7rem;
+                background: rgba(7,7,6,0.985);
+                visibility: hidden;
+                opacity: 0;
+                transform: translateY(-1rem);
+                transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
             }
+            .nav-links a { width: 100%; padding: 0.7rem 0; font-size: clamp(1.6rem, 7vw, 2.8rem); }
+            .nav-links .nav-cta { width: auto; margin-top: 1rem; padding: 0.8rem 1rem; font-size: 0.9rem; }
+            .menu-open .nav-links { visibility: visible; opacity: 1; transform: translateY(0); }
+            .record-head { grid-template-columns: minmax(110px, 0.35fr) minmax(0, 1.2fr); }
+            .metric-block { grid-column: 2; padding: 1.6rem 0 0; border-top: 1px solid var(--line-light); border-left: 0; }
+            .field-grid { grid-template-columns: repeat(2, 1fr); }
+            .field:nth-child(2) { border-right: 0; }
+            .field:nth-child(-n+2) { border-bottom: 1px solid var(--line-light); }
+            .principles { grid-template-columns: 1fr; }
+            .principle,
+            .principle + .principle { min-height: 180px; padding: 1.5rem 0; border-right: 0; border-bottom: 1px solid var(--line-dark); }
+            .principle:last-child { border-bottom: 0; }
+            .principle::before { margin-bottom: 1.5rem; }
+        }
 
-            .hero-panel,
-            .sidebar-panel,
-            .study-card,
-            .bottom-panel {
-                padding: 20px;
+        @media (max-width: 640px) {
+            html { scroll-padding-top: 58px; }
+            .hero { min-height: 780px; }
+            .hero-art { object-position: 57% top; opacity: 0.48; }
+            .hero::before { background: linear-gradient(90deg, rgba(7,7,6,0.96), rgba(7,7,6,0.63)), linear-gradient(0deg, rgba(7,7,6,0.98), transparent 55%); }
+            .hero-inner { padding-top: 8.5rem; padding-bottom: 2.7rem; }
+            h1 { font-size: clamp(3.4rem, 16vw, 5.4rem); }
+            .hero-actions { flex-direction: column; }
+            .button { width: 100%; }
+            .case-nav { overflow-x: auto; }
+            .case-nav-inner { width: max-content; min-width: 100%; min-height: 58px; padding: 0; grid-template-columns: repeat(3, minmax(150px, 1fr)); }
+            .case-nav-label { display: none; }
+            .case-nav a { padding: 0 1rem; }
+            .record-head,
+            .reflection,
+            .pattern-head { grid-template-columns: 1fr; gap: 1.1rem; }
+            .record-index { padding: 0; }
+            .metric-block { grid-column: auto; }
+            .record-media { min-height: 330px; }
+            .record-media img { object-position: 42% top; }
+            .media-caption span:last-child { display: none; }
+            .field-grid { grid-template-columns: 1fr; }
+            .field,
+            .field + .field {
+                min-height: 0;
+                padding: 1.35rem 0 1.5rem;
+                border-right: 0;
+                border-bottom: 1px solid var(--line-light);
             }
+            .field:last-child { border-bottom: 0; }
+            .field-label { margin-bottom: 0.8rem; }
+            .reflection .field-label { margin-bottom: 0.2rem; }
+            .final-section { min-height: 720px; }
+            .final-actions { flex-direction: column; }
+            .site-footer { align-items: flex-start; flex-direction: column; gap: 1rem; }
+        }
 
-            .case-switcher {
-                grid-template-columns: 1fr;
-            }
-
-            .case-stage {
-                min-height: 680px;
-                padding: 26px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+            .js .reveal { opacity: 1; transform: none; }
         }
     </style>
-    <link rel="stylesheet" href="/assets/css/site-shell.css">
 </head>
-<body data-lb-section="work" data-lb-theme="dark" data-lb-analytics="off">
-    <div class="shell">
-        <div class="frame">
-            <header class="topbar" data-lb-legacy-nav>
-                <div class="brand">
-                    <div class="badge">CS</div>
-                    <div class="brand-copy">
-                        <strong>Leon Basin Case Studies</strong>
-                        <span>Operator-grade proof for founders, CEOs, hiring managers, and technical teams.</span>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <nav class="nav-shell" aria-label="Primary navigation">
+            <a class="brand" href="/" aria-label="Leon Basin home">LEON <span>BASIN</span></a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links" aria-label="Open menu"><span></span></button>
+            <div class="nav-links" id="primary-links">
+                <a aria-current="page" href="/case-studies/">Case studies</a>
+                <a href="https://basinleon.github.io/basin-nexus/">Basin::Nexus</a>
+                <a href="/blog/">Writing</a>
+                <a href="/tools/">Lab</a>
+                <a class="nav-cta" href="/work-with-me/">Work with Leon</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <img class="hero-art" src="/assets/img/frameworks/signal_refinery_hud_actual_fixed.png" alt="Signal Refinery system interface showing market signal moving through qualification and action logic" width="1600" height="1600" fetchpriority="high">
+            <div class="hero-inner">
+                <div class="eyebrow">Case studies · Decision records</div>
+                <h1 id="hero-title">Trust the decision, not the adjective.</h1>
+                <p class="hero-lede">Three records showing where the motion broke, what constraint mattered, which system decision changed the outcome, and what I would improve next.</p>
+                <div class="hero-actions">
+                    <a class="button button-gold" href="#sentinel">Read the records</a>
+                    <a class="button button-ghost" href="https://basinleon.github.io/basin-nexus/">Inspect Basin::Nexus</a>
+                </div>
+            </div>
+        </section>
+
+        <nav class="case-nav" aria-label="Case study index">
+            <div class="case-nav-inner">
+                <div class="case-nav-label">Operating records</div>
+                <a class="active" href="#sentinel" data-record="sentinel">01 · Sentinel</a>
+                <a href="#delight" data-record="delight">02 · Delight</a>
+                <a href="#aurora" data-record="aurora">03 · Aurora</a>
+            </div>
+        </nav>
+
+        <div class="records">
+            <article class="record" id="sentinel" data-record-section="sentinel" aria-labelledby="sentinel-title">
+                <div class="section-shell">
+                    <header class="record-head reveal">
+                        <div class="record-index">01 / Market entry</div>
+                        <div class="record-title">
+                            <h2 id="sentinel-title">Project::<br>Sentinel</h2>
+                            <p>Turn noisy security demand into qualified commercial motion.</p>
+                        </div>
+                        <div class="metric-block">
+                            <span class="metric-label">Measured outcome</span>
+                            <strong>160%</strong>
+                            <span>year-over-year U.S. pipeline growth</span>
+                        </div>
+                    </header>
+
+                    <figure class="record-media reveal">
+                        <img src="/assets/img/frameworks/signal_refinery_hud_actual_fixed.png" alt="Signal Refinery interface used to make qualification and routing logic inspectable" width="1600" height="1600" loading="lazy">
+                        <figcaption class="media-caption"><span>Public-safe system view</span><span>Signal · qualification · route</span></figcaption>
+                    </figure>
+
+                    <div class="field-grid reveal">
+                        <section class="field"><span class="field-label">Problem</span><p>Enterprise security demand was buried under noisy prospecting and inconsistent qualification.</p></section>
+                        <section class="field"><span class="field-label">Constraint</span><p>Lean team, strict ICP, and no headcount expansion to absorb the mess manually.</p></section>
+                        <section class="field"><span class="field-label">Decision</span><p>Build two routing lanes with explicit qualification rules, clear ownership, and stronger signal preservation.</p></section>
+                        <section class="field"><span class="field-label">Result</span><p>Pipeline velocity improved while commercial workflow automation generated $424K in annual operating savings.</p></section>
+                    </div>
+
+                    <div class="reflection reveal">
+                        <span class="field-label">What I would improve</span>
+                        <p>Instrument sales-stage conversion earlier, so closed-lost language and stage movement sharpen the qualification model sooner.</p>
                     </div>
                 </div>
-                <div class="top-links">
-                    <a class="accent" href="https://basinleon.github.io/">Main Portfolio</a>
-                    <a href="https://basinleon.github.io/docs/">Operator Journal</a>
-                    <a href="mailto:lbasin23@gmail.com">Contact</a>
+            </article>
+
+            <article class="record" id="delight" data-record-section="delight" aria-labelledby="delight-title">
+                <div class="section-shell">
+                    <header class="record-head reveal">
+                        <div class="record-index">02 / Scale architecture</div>
+                        <div class="record-title">
+                            <h2 id="delight-title">Project::<br>Delight</h2>
+                            <p>Separate the motions without splitting the operating truth.</p>
+                        </div>
+                        <div class="metric-block">
+                            <span class="metric-label">Operating outcome</span>
+                            <strong>2 lanes</strong>
+                            <span>one shared governance layer</span>
+                        </div>
+                    </header>
+
+                    <figure class="record-media reveal">
+                        <img src="/assets/img/frameworks/revenue-blueprint.png" alt="Revenue Signal Refinery blueprint showing market inputs routed into enterprise and nurture outcomes" width="1024" height="1024" loading="lazy">
+                        <figcaption class="media-caption"><span>Routing blueprint</span><span>Enterprise · SMB · governance</span></figcaption>
+                    </figure>
+
+                    <div class="field-grid reveal">
+                        <section class="field"><span class="field-label">Problem</span><p>One-size-fits-all routing was slowing enterprise and SMB motion at the same time.</p></section>
+                        <section class="field"><span class="field-label">Constraint</span><p>Existing stack only, no additional hiring budget, and no appetite for heavy operating drag.</p></section>
+                        <section class="field"><span class="field-label">Decision</span><p>Split enterprise and SMB into parallel lanes while preserving shared definitions, ownership, and governance.</p></section>
+                        <section class="field"><span class="field-label">Result</span><p>Inbound and outbound coverage scaled more cleanly without adding headcount to compensate for confused routing.</p></section>
+                    </div>
+
+                    <div class="reflection reveal">
+                        <span class="field-label">What I would improve</span>
+                        <p>Introduce intent scoring one quarter earlier and review threshold drift before routing behavior becomes habit.</p>
+                    </div>
                 </div>
-            </header>
+            </article>
 
-            <main class="content">
-                <section class="hero">
-                    <div class="hero-panel">
-                        <div class="eyebrow">Proof Layer / Decision Records</div>
-                        <h1>Trust the decision, not the adjective.</h1>
-                        <p class="hero-copy">
-                            Each case begins where activity stopped being useful. The proof is not a heroic story. It is the judgment that changed the system, the constraint it survived, and the measurable result that followed.
-                        </p>
-                        <div class="hero-actions">
-                            <a class="button primary" href="#case-navigator">Explore the cases</a>
-                            <a class="button" href="https://basinleon.github.io/#architecture">Inspect the systems</a>
+            <article class="record" id="aurora" data-record-section="aurora" aria-labelledby="aurora-title">
+                <div class="section-shell">
+                    <header class="record-head reveal">
+                        <div class="record-index">03 / AI signal operations</div>
+                        <div class="record-title">
+                            <h2 id="aurora-title">Project::<br>Aurora</h2>
+                            <p>Make AI earn operator trust before it earns more autonomy.</p>
                         </div>
+                        <div class="metric-block">
+                            <span class="metric-label">Measured outcome</span>
+                            <strong>92%</strong>
+                            <span>intent accuracy · roughly 4× throughput</span>
+                        </div>
+                    </header>
+
+                    <figure class="record-media reveal">
+                        <img src="/assets/img/frameworks/nexus_agents_ui.png" alt="Basin Nexus agent orchestration interface for research and commercial operations" width="1024" height="704" loading="lazy">
+                        <figcaption class="media-caption"><span>Agent orchestration view</span><span>Research · confidence · review</span></figcaption>
+                    </figure>
+
+                    <div class="field-grid reveal">
+                        <section class="field"><span class="field-label">Problem</span><p>Technical account briefs took too long to produce, and signal quality varied across researchers.</p></section>
+                        <section class="field"><span class="field-label">Constraint</span><p>Fortune 500 security accounts, a high accuracy threshold, and no room for generic AI output.</p></section>
+                        <section class="field"><span class="field-label">Decision</span><p>Build confidence-gated brief generation with explicit review logic and a shared signal-to-prediction model.</p></section>
+                        <section class="field"><span class="field-label">Result</span><p>Research throughput improved roughly fourfold while intent accuracy reached 92% on the evaluated workflow.</p></section>
                     </div>
 
-                    <aside class="sidebar-panel">
-                        <div class="kicker">The Test</div>
-                        <h2>Can another operator follow why it worked?</h2>
-                        <p>A result without its decision logic is decoration. These records preserve the chain from problem to intervention to outcome without exposing private client residue.</p>
-                        <ul>
-                            <li>Problem framing under real constraints</li>
-                            <li>System design instead of activity inflation</li>
-                            <li>Measured outcomes tied to routing and execution</li>
-                            <li>Permission-safe proof when the artifact is shareable</li>
-                            <li>Reflection on what I would improve next</li>
-                        </ul>
-                    </aside>
-                </section>
-
-                <section id="case-navigator">
-                    <div class="case-switcher" role="tablist" aria-label="Choose a case study">
-                        <button class="case-switch active" type="button" role="tab" aria-selected="true" aria-controls="case-stage" data-case="sentinel">Sentinel / Pipeline</button>
-                        <button class="case-switch" type="button" role="tab" aria-selected="false" aria-controls="case-stage" tabindex="-1" data-case="delight">Delight / Routing</button>
-                        <button class="case-switch" type="button" role="tab" aria-selected="false" aria-controls="case-stage" tabindex="-1" data-case="aurora">Aurora / AI Signal</button>
+                    <div class="reflection reveal">
+                        <span class="field-label">What I would improve</span>
+                        <p>Feed closed-lost analysis into the model earlier and keep deeper operating specifications private unless permission and context support review.</p>
                     </div>
-                    <article class="case-stage" id="case-stage" role="tabpanel" aria-live="polite">
-                        <div>
-                            <div class="eyebrow" id="case-kicker">Project::Sentinel / Systems Construction</div>
-                            <h2 id="case-title">Turn noise into qualified motion.</h2>
-                            <p class="case-stage-copy" id="case-copy">Enterprise security demand was buried under noisy prospecting and inconsistent qualification. The decision was to stop treating every account as one motion and build two lanes with explicit rules, ownership, and signal preservation.</p>
-                            <div class="case-stage-actions">
-                                <a class="button primary" id="case-link" href="#sentinel">Read the operating record</a>
-                                <a class="button" href="/work-with-me/">Request a walkthrough</a>
-                            </div>
-                        </div>
-                        <aside class="case-proof">
-                            <div class="case-proof-label">Measured outcome</div>
-                            <div class="case-proof-metric" id="case-metric">160% YoY pipeline growth</div>
-                            <div class="case-proof-note" id="case-note">A cleaner qualification and routing system increased pipeline velocity without using headcount to absorb the noise.</div>
-                        </aside>
-                    </article>
-                </section>
+                </div>
+            </article>
+        </div>
 
-                <details class="record-disclosure">
-                    <summary>Open all three operating records</summary>
-                <section class="studies">
-                    <article class="study-card" id="sentinel">
-                        <div class="study-tag">Systems Construction</div>
-                        <h3>Project::Sentinel</h3>
-                        <div class="study-list">
-                            <div class="study-row">
-                                <strong>Problem</strong>
-                                <span>Enterprise security demand was buried under noisy prospecting and inconsistent qualification.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Constraints</strong>
-                                <span>Lean team, strict ICP, and no headcount expansion to absorb the mess manually.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>System Design</strong>
-                                <span>Built a two-lane routing model with rule-based qualification, cleaner ownership, and stronger signal preservation.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Result</strong>
-                                <span>Built a $2M enterprise pipeline with steadier monthly velocity and less wasted SDR effort.</span>
-                            </div>
-                        </div>
-                        <div class="metric">160% Pipeline Growth / 77 Meetings Per Month</div>
-                    </article>
+        <section class="pattern-section" aria-labelledby="pattern-title">
+            <div class="section-shell">
+                <div class="pattern-head reveal">
+                    <div class="record-index">04 / The pattern</div>
+                    <div>
+                        <h2 id="pattern-title">What repeats across the work.</h2>
+                        <p>The industries and tools change. The underlying operating failure is remarkably consistent.</p>
+                    </div>
+                </div>
 
-                    <article class="study-card" id="delight">
-                        <div class="study-tag">Scale Architecture</div>
-                        <h3>Project::Delight</h3>
-                        <div class="study-list">
-                            <div class="study-row">
-                                <strong>Problem</strong>
-                                <span>One-size-fits-all routing logic was slowing both enterprise and SMB motion at the same time.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Constraints</strong>
-                                <span>Existing stack only. No extra hiring budget. No appetite for heavy operational drag.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>System Design</strong>
-                                <span>Split enterprise and SMB into parallel lanes with shared governance instead of shared confusion.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Result</strong>
-                                <span>Scaled inbound and outbound coverage more cleanly without adding headcount to compensate.</span>
-                            </div>
-                        </div>
-                        <div class="metric">Bifurcated Routing / Scaled Efficiently</div>
-                    </article>
+                <div class="principles reveal">
+                    <article class="principle"><h3>Interpret before automating.</h3><p>Speed only compounds value after the team agrees on what the signal means.</p></article>
+                    <article class="principle"><h3>Make ownership explicit.</h3><p>A routing model is incomplete until one person owns the next action and the feedback loop.</p></article>
+                    <article class="principle"><h3>Keep the work legible.</h3><p>The system should be explainable enough to inspect, teach, challenge, and improve.</p></article>
+                </div>
+            </div>
+        </section>
 
-                    <article class="study-card featured" id="aurora">
-                        <div class="study-tag">AI Signal Ops</div>
-                        <h3>Project::Aurora</h3>
-                        <div class="study-list">
-                            <div class="study-row">
-                                <strong>Problem</strong>
-                                <span>Technical account briefs took too long to produce and signal quality varied too much across researchers.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Constraints</strong>
-                                <span>F500 security accounts, high accuracy threshold, and no room for generic AI output.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>System Design</strong>
-                                <span>Designed an AI-assisted research pipeline with confidence-gated brief generation, operator review logic, and a clearer signal-to-prediction model for high-trust accounts.</span>
-                            </div>
-                            <div class="study-row">
-                                <strong>Result</strong>
-                                <span>Reached 92% intent accuracy while improving research throughput roughly 4x.</span>
-                            </div>
-                        </div>
-                        <div class="metric">92% Intent Accuracy / 4x Research Efficiency</div>
-                        <div class="artifact-panel">
-                            <strong>Architecture Review</strong>
-                            <p>The public record shows the decision and measured result. Deeper operating specifications stay private and are reviewed only when the work, permission, and context make that appropriate.</p>
-                            <div class="artifact-actions">
-                                <a class="artifact-link" style="background: var(--gold); color: #000; border: none; font-weight: 900;" href="/work-with-me/">Request a Review</a>
-                                <a class="artifact-link" href="../#architecture">Inspect More Systems</a>
-                            </div>
-                        </div>
-                    </article>
-                </section>
-                </details>
+        <section class="final-section" aria-labelledby="contact-title">
+            <div class="section-shell">
+                <div class="final-copy">
+                    <div class="final-label">05 / Next conversation</div>
+                    <h2 id="contact-title">Bring me the broken motion.</h2>
+                    <p>If the signal exists but the operating layer is leaking meaning, ownership, or momentum, that is the work I know how to inspect.</p>
+                    <div class="final-actions">
+                        <a class="button button-dark" href="mailto:lbasin23@gmail.com?subject=Case%20study%20conversation">Start a conversation</a>
+                        <a class="button button-line-dark" href="https://basinleon.github.io/basin-nexus/">Inspect Basin::Nexus</a>
+                    </div>
+                </div>
+            </div>
 
-                <section class="bottom-grid">
-                    <article class="bottom-panel">
-                        <div class="kicker">Context</div>
-                        <h2>What repeats across the work</h2>
-                        <p>Across different stages and operating contexts, the pattern is consistent: signal is noisy, ownership is blurry, and too much of the system depends on manual recovery work. The fix is rarely more activity. The fix is better interpretation, cleaner routing, and an operating model people can actually understand.</p>
-                        <div class="pill-grid">
-                            <div class="pill">Enterprise GTM</div>
-                            <div class="pill">Founder-led systems</div>
-                            <div class="pill">Public-sector motion</div>
-                            <div class="pill">Security workflows</div>
-                            <div class="pill">AI-assisted research</div>
-                            <div class="pill">Revenue architecture</div>
-                            <div class="pill">Operator enablement</div>
-                        </div>
-                    </article>
-
-                    <article class="bottom-panel">
-                        <div class="kicker">Next Step</div>
-                        <h2>If you want the deeper proof</h2>
-                        <p>The case studies are the entry point. The systems portfolio and operator journal show the public machinery underneath: frameworks, decision models, routing logic, and working prototypes that make the work easier to inspect.</p>
-                        <div class="hero-actions">
-                            <a class="button primary" href="https://basinleon.github.io/#architecture">Inspect Systems</a>
-                            <a class="button" href="https://basinleon.github.io/docs/">Read Journal</a>
-                            <a class="button" href="/work-with-me/">Request a Review</a>
-                        </div>
-                    </article>
-                </section>
-            </main>
-
-            <footer class="footer" data-lb-legacy-footer>
-                <div>Leon Basin / GTM systems, operator design, and revenue architecture</div>
+            <footer class="site-footer">
+                <div>© 2026 Leon Basin</div>
                 <div class="footer-links">
-                    <a href="https://basinleon.github.io/">Portfolio</a>
-                    <a href="https://basinleon.github.io/docs/">Journal</a>
-                    <a href="https://linkedin.com/in/leonbasin">LinkedIn</a>
+                    <a href="/">Portfolio</a>
+                    <a href="/blog/">Writing</a>
+                    <a href="/library/">Frameworks</a>
+                    <a href="https://www.linkedin.com/in/leonbasin/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/BasinLeon" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </footer>
-        </div>
-    </div>
+        </section>
+    </main>
+
     <script>
-        const caseStates = {
-            sentinel: {
-                kicker: 'Project::Sentinel / Systems Construction',
-                title: 'Turn noise into qualified motion.',
-                copy: 'Enterprise security demand was buried under noisy prospecting and inconsistent qualification. The decision was to stop treating every account as one motion and build two lanes with explicit rules, ownership, and signal preservation.',
-                metric: '160% YoY pipeline growth',
-                note: 'A cleaner qualification and routing system increased pipeline velocity without using headcount to absorb the noise.',
-                href: '#sentinel',
-                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/signal_refinery_hud_actual_fixed.png') center / cover no-repeat"
-            },
-            delight: {
-                kicker: 'Project::Delight / Scale Architecture',
-                title: 'Separate the motions without splitting the company.',
-                copy: 'Enterprise and SMB were moving through the same routing logic, slowing both. The intervention created parallel lanes with shared governance, so each motion could move at its own speed without creating a second operating system.',
-                metric: 'Two motions, one governance layer',
-                note: 'Coverage scaled more cleanly using the existing stack and team, without hiring people to compensate for confused routing.',
-                href: '#delight',
-                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/revenue-blueprint.png') center / cover no-repeat"
-            },
-            aurora: {
-                kicker: 'Project::Aurora / AI Signal Operations',
-                title: 'Make AI earn operator trust.',
-                copy: 'Technical account briefs were slow and uneven. The system introduced confidence gates, explicit review logic, and a shared signal-to-prediction model instead of allowing generic AI output to masquerade as research.',
-                metric: '92% intent accuracy / 4x throughput',
-                note: 'Higher research speed did not require lowering the accuracy threshold for high-trust enterprise accounts.',
-                href: '#aurora',
-                background: "linear-gradient(90deg, rgba(10,5,2,.98), rgba(10,5,2,.76) 58%, rgba(10,5,2,.24)), url('../assets/img/frameworks/nexus_agents_ui.png') center / cover no-repeat"
-            }
-        };
+        (function () {
+            const body = document.body;
+            const menuToggle = document.querySelector('.menu-toggle');
+            const primaryLinks = document.getElementById('primary-links');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const caseButtons = Array.from(document.querySelectorAll('.case-switch'));
-
-        caseButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                const state = caseStates[button.dataset.case];
-                caseButtons.forEach(item => {
-                    const active = item === button;
-                    item.classList.toggle('active', active);
-                    item.setAttribute('aria-selected', String(active));
-                    item.tabIndex = active ? 0 : -1;
+            if (menuToggle && primaryLinks) {
+                const closeMenu = () => {
+                    body.classList.remove('menu-open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-label', 'Open menu');
+                };
+                menuToggle.addEventListener('click', () => {
+                    const open = body.classList.toggle('menu-open');
+                    menuToggle.setAttribute('aria-expanded', String(open));
+                    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
                 });
-                button.classList.add('active');
-                document.getElementById('case-kicker').textContent = state.kicker;
-                document.getElementById('case-title').textContent = state.title;
-                document.getElementById('case-copy').textContent = state.copy;
-                document.getElementById('case-metric').textContent = state.metric;
-                document.getElementById('case-note').textContent = state.note;
-                document.getElementById('case-link').href = state.href;
-                document.getElementById('case-stage').style.background = state.background;
-            });
-            button.addEventListener('keydown', event => {
-                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-                event.preventDefault();
-                let next = index;
-                if (event.key === 'ArrowRight') next = (index + 1) % caseButtons.length;
-                if (event.key === 'ArrowLeft') next = (index - 1 + caseButtons.length) % caseButtons.length;
-                if (event.key === 'Home') next = 0;
-                if (event.key === 'End') next = caseButtons.length - 1;
-                caseButtons[next].focus();
-                caseButtons[next].click();
-            });
-        });
+                primaryLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+                document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+            }
 
-        document.getElementById('case-link').addEventListener('click', () => {
-            document.querySelector('.record-disclosure').open = true;
-        });
+            const revealItems = document.querySelectorAll('.reveal');
+            if (reducedMotion || !('IntersectionObserver' in window)) {
+                revealItems.forEach(item => item.classList.add('is-visible'));
+            } else {
+                const revealObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.classList.add('is-visible');
+                        revealObserver.unobserve(entry.target);
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -4% 0px' });
+                revealItems.forEach(item => revealObserver.observe(item));
+            }
+
+            const navLinks = [...document.querySelectorAll('.case-nav a[data-record]')];
+            const recordSections = [...document.querySelectorAll('[data-record-section]')];
+            if ('IntersectionObserver' in window) {
+                const recordObserver = new IntersectionObserver(entries => {
+                    const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                    if (!visible) return;
+                    const id = visible.target.dataset.recordSection;
+                    navLinks.forEach(link => link.classList.toggle('active', link.dataset.record === id));
+                }, { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.1, 0.3] });
+                recordSections.forEach(section => recordObserver.observe(section));
+            }
+
+            if (!reducedMotion) {
+                const heroArt = document.querySelector('.hero-art');
+                let ticking = false;
+                const updateParallax = () => {
+                    heroArt.style.translate = `0 ${Math.min(window.scrollY * 0.05, 38)}px`;
+                    ticking = false;
+                };
+                window.addEventListener('scroll', () => {
+                    if (ticking) return;
+                    ticking = true;
+                    requestAnimationFrame(updateParallax);
+                }, { passive: true });
+            }
+        })();
     </script>
-    <script src="/assets/js/site-shell.js"></script>
 </body>
 </html>
