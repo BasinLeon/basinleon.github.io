@@ -569,42 +569,54 @@
 
         .final-cta {
             position: relative;
-            overflow: hidden;
-            padding: clamp(6rem, 13vw, 12rem) 0;
+            padding: clamp(5.5rem, 10vw, 9rem) 0;
             background: var(--gold);
             color: var(--ink);
         }
-        .final-cta::after {
-            content: "BUILD";
-            position: absolute;
-            right: -2vw;
-            bottom: -6vw;
-            color: rgba(7,7,6,.07);
-            font-family: "Manrope", Arial, sans-serif;
-            font-size: min(30vw, 30rem);
-            font-weight: 800;
-            letter-spacing: -.1em;
-            line-height: .7;
-            pointer-events: none;
+        .cta-shell {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: clamp(2.5rem, 7vw, 7rem);
         }
-        .cta-shell { position: relative; z-index: 1; }
         .final-cta .eyebrow { color: rgba(7,7,6,.6); }
-        .cta-title { max-width: 1000px; margin: 0; font-family: "Manrope", Arial, sans-serif; font-size: clamp(3rem, 8vw, 8rem); font-weight: 800; letter-spacing: -.075em; line-height: .87; }
+        .cta-title {
+            max-width: 900px;
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(3rem, 6.5vw, 7.2rem);
+            font-weight: 800;
+            letter-spacing: -.075em;
+            line-height: .9;
+        }
+        .cta-note {
+            max-width: 670px;
+            margin: 1.6rem 0 0;
+            color: rgba(7,7,6,.68);
+            font-size: clamp(.95rem, 1.3vw, 1.08rem);
+        }
         .cta-action {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: .7rem;
-            margin-top: 2.5rem;
-            padding-bottom: .4rem;
-            border-bottom: 2px solid var(--ink);
+            min-width: 210px;
+            min-height: 58px;
+            padding: .9rem 1.25rem;
+            background: var(--ink);
+            color: var(--white);
             font-family: "Manrope", Arial, sans-serif;
             font-size: .9rem;
             font-weight: 800;
             text-decoration: none;
+            transition: background 180ms ease, color 180ms ease;
         }
-        .cta-action::after { content: "↘"; font-size: 1.2rem; transition: transform 180ms ease; }
+        .cta-action::after { content: "↗"; color: var(--gold-bright); font-size: 1.1rem; transition: transform 180ms ease; }
+        .cta-action:hover,
+        .cta-action:focus-visible { background: var(--white); color: var(--ink); }
         .cta-action:hover::after,
-        .cta-action:focus-visible::after { transform: translate(4px, 4px); }
+        .cta-action:focus-visible::after { transform: translate(3px, -3px); }
 
         footer { background: var(--ink); color: var(--white); border-top: 1px solid var(--line-dark); }
         .footer-shell {
@@ -683,6 +695,8 @@
             .library-count { margin-top: 1.5rem; }
             .tool-row { grid-template-columns: 42px 1fr 30px; min-height: 142px; }
             .tool-copy { display: none; }
+            .cta-shell { grid-template-columns: 1fr; align-items: start; gap: 2.5rem; }
+            .cta-action { justify-self: start; }
             .footer-shell { align-items: flex-start; flex-direction: column; padding-block: 2.2rem; }
             .footer-links { flex-wrap: wrap; }
         }
@@ -867,9 +881,12 @@
 
         <section class="final-cta" aria-labelledby="cta-title">
             <div class="section-shell cta-shell reveal">
-                <p class="eyebrow">When the tool is not enough</p>
-                <h2 class="cta-title" id="cta-title">Bring me the real operating problem.</h2>
-                <a class="cta-action" href="/work-with-me/">See how I work</a>
+                <div>
+                    <p class="eyebrow">When the problem outgrows the tool</p>
+                    <h2 class="cta-title" id="cta-title">The tool shows the break. The work starts there.</h2>
+                    <p class="cta-note">For operating problems that need judgment, architecture, and ownership—not another template.</p>
+                </div>
+                <a class="cta-action" href="/work-with-me/">Start a conversation</a>
             </div>
         </section>
     </main>
