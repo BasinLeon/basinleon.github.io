@@ -51,6 +51,12 @@
     h1, h2, h3, p { margin-top: 0; }
     h1 { margin-bottom: 1.5rem; font: 400 clamp(4.4rem, 11vw, 9.5rem)/.83 var(--serif); letter-spacing: -.065em; }
     .dek { max-width: 650px; margin-bottom: 2.1rem; color: #cbc5b9; font: 400 clamp(1.15rem, 2vw, 1.5rem)/1.55 var(--serif); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 0 0 2.25rem; }
+    .button { min-height: 50px; padding: 0 1.25rem; border: 1px solid var(--paper); display: inline-flex; align-items: center; justify-content: center; gap: .75rem; color: var(--black); background: var(--paper); text-decoration: none; font-size: .76rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; transition: background 180ms ease, color 180ms ease, border-color 180ms ease; }
+    .button::after { content: "↗"; font-size: 1rem; font-weight: 400; }
+    .button.secondary { color: var(--paper); background: rgba(12,12,11,.25); border-color: var(--line); backdrop-filter: blur(8px); }
+    .button.secondary::after { content: "↓"; }
+    .button:hover, .button:focus-visible { background: var(--amber); border-color: var(--amber); color: var(--black); }
     .hero-meta { display: flex; flex-wrap: wrap; gap: .65rem 1.8rem; color: var(--muted); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; }
     .section { padding: 8rem 0; border-bottom: 1px solid var(--line); }
     .section-head { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin-bottom: 4rem; }
@@ -72,6 +78,14 @@
     .chapter strong { font: 400 clamp(1.35rem,2.6vw,2.15rem)/1.2 var(--serif); }
     .chapter em { color: var(--muted); font-size: .82rem; font-style: normal; }
     .chapter:hover strong, .chapter:focus-visible strong { color: var(--amber); }
+    .chapter:hover em, .chapter:focus-visible em { color: var(--paper); }
+    .reading-path { margin-top: 4rem; border-top: 1px solid var(--line); }
+    .reading-path .chapter { min-height: 92px; }
+    .path-label { display: inline-flex; align-items: center; gap: .5rem; }
+    .path-label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 18px rgba(189,122,51,.75); }
+    .notebook-head { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin: 6rem 0 1.5rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+    .notebook-head h3 { font: 400 clamp(2rem,4vw,3.5rem)/1 var(--serif); letter-spacing: -.035em; }
+    .notebook-head p { max-width: 600px; color: var(--muted); line-height: 1.65; }
     details.chapter { display: block; padding: 0; }
     details.chapter summary { display: grid; grid-template-columns: 90px 1fr auto; gap: 2rem; align-items: baseline; padding: 1.5rem 0; cursor: pointer; list-style: none; }
     details.chapter summary::-webkit-details-marker { display: none; }
@@ -100,11 +114,14 @@
       .shell { width: min(100% - 36px, 1240px); }
       .site-head { height: 76px; }
       .nav a:not([aria-current="page"]) { display: none; }
+      .nav a:first-child { display: inline; }
       .hero { min-height: 690px; }
       .hero-media img { object-position: 70% 50%; }
       .hero-media::after { background: linear-gradient(0deg, rgba(12,12,11,.98) 0, rgba(12,12,11,.65) 63%, rgba(12,12,11,.18) 100%); }
       .hero-copy { padding: 9rem 0 3rem; }
       h1 { font-size: clamp(4rem,22vw,6.5rem); }
+      .hero-actions { display: grid; grid-template-columns: 1fr; max-width: 330px; }
+      .button { width: 100%; }
       .section { padding: 5.5rem 0; }
       .section-head, .closing .shell { grid-template-columns: 1fr; gap: 1.5rem; }
       .feature { grid-template-columns: 1fr; }
@@ -115,6 +132,7 @@
       .chapter em { display: none; }
       details.chapter summary { grid-template-columns: 48px 1fr auto; gap: 1rem; }
       .chapter-note { margin-left: 64px; }
+      .notebook-head { grid-template-columns: 1fr; gap: .75rem; margin-top: 4.5rem; }
       .shelf { grid-template-columns: 1fr; }
       .shelf-item { min-height: 280px; padding: 2rem 0; }
       .shelf-item:nth-child(odd) { border-right: 0; }
@@ -151,6 +169,10 @@
         <p class="eyebrow">The fiction room</p>
         <h1>Sam<br>&amp; Ink</h1>
         <p class="dek">A writer meets an intelligence that can answer almost anything. What follows is less about the machine than the rooms we need in order to think, grieve, listen, and tell the truth.</p>
+        <div class="hero-actions">
+          <a class="button" href="/blog/posts/sam-ink-the-signal.html">Begin with The Signal</a>
+          <a class="button secondary" href="#published-pages">See the reading path</a>
+        </div>
         <div class="hero-meta"><span>A novella</span><span>Short stories</span><span>Silicon Valley folklore</span></div>
       </div>
     </section>
@@ -160,22 +182,36 @@
     <section class="section" id="novella">
       <div class="shell">
         <div class="section-head reveal">
-          <p class="eyebrow">The novella / Second edition</p>
+          <p class="eyebrow">Sam &amp; Ink / Published pages</p>
           <div>
-            <h2>A conversation becomes a place to think.</h2>
-            <p><em>Sam &amp; Ink</em> follows a Palo Alto writer who misses a deadline, opens an app, and finds an unlikely collaborator. Eight chapters examine attention, authorship, public exposure, grief, and the question that has no clean answer.</p>
+            <h2>Five pages are ready. The longer work is still becoming.</h2>
+            <p><em>Sam &amp; Ink</em> follows a Palo Alto writer who misses a deadline, opens an app, and finds an unlikely collaborator. Read the published pieces in order, then open the second-edition notebook to see where the novella is going.</p>
           </div>
         </div>
-        <div class="chapters reveal" aria-label="Sam & Ink chapters">
-          <a class="chapter" href="/blog/posts/sam-ink-the-signal.html"><span>01</span><strong>The Signal</strong><em>Read the opening chapter</em></a>
-          <details class="chapter"><summary><span>02</span><strong>The Architecture of a Conversation</strong><em>Second-edition note</em></summary><p class="chapter-note">Sam discovers that a useful conversation is not a stream of answers. It is a room with boundaries, memory, and enough quiet for a better question to arrive.</p></details>
-          <details class="chapter"><summary><span>03</span><strong>What the AI Cannot Do</strong><em>Second-edition note</em></summary><p class="chapter-note">Ink can recognize a pattern, but it cannot carry the human cost of acting on it. Sam begins to understand the difference between assistance and responsibility.</p></details>
-          <details class="chapter"><summary><span>04</span><strong>Public</strong><em>Second-edition note</em></summary><p class="chapter-note">A private exchange escapes its original room. Attention arrives before either participant has decided what the work means in public.</p></details>
-          <details class="chapter"><summary><span>05</span><strong>The Ethics Question</strong><em>Second-edition note</em></summary><p class="chapter-note">The argument is not whether the machine is good or bad. It is who remains answerable when a suggestion becomes a decision.</p></details>
-          <details class="chapter"><summary><span>06</span><strong>Silence</strong><em>Second-edition note</em></summary><p class="chapter-note">Sam stops asking. Ink does not fill the room. In the pause, both discover that restraint can be part of the answer.</p></details>
-          <details class="chapter"><summary><span>07</span><strong>What Sam Wrote</strong><em>Second-edition note</em></summary><p class="chapter-note">The pages finally move, but they do not sound like the voice Sam expected. Authorship becomes less about purity than about knowing what one is willing to sign.</p></details>
-          <details class="chapter"><summary><span>08</span><strong>The Question That Has No Clean Answer</strong><em>Second-edition note</em></summary><p class="chapter-note">Every system eventually reaches a question that cannot be optimized away. Sam asks it anyway, and Ink refuses the comfort of certainty.</p></details>
-          <details class="chapter"><summary><span>09</span><strong>What Remains</strong><em>Epilogue note</em></summary><p class="chapter-note">The conversation ends. The room does not. What remains is not a transcript, but a new way of noticing where thought begins.</p></details>
+        <div class="reading-path reveal" id="published-pages" aria-label="Published Sam and Ink reading path">
+          <a class="chapter" href="/blog/posts/sam-ink-the-signal.html"><span>01</span><strong>The Signal</strong><em class="path-label">Chapter one</em></a>
+          <a class="chapter" href="/blog/posts/sam-ink-storytelling.html"><span>02</span><strong>The Future of Interactive Storytelling</strong><em class="path-label">Essay from the world</em></a>
+          <a class="chapter" href="/blog/posts/sam-ink-man-machine.html"><span>03</span><strong>Blurring Boundaries Between Man and Machine</strong><em class="path-label">Field essay</em></a>
+          <a class="chapter" href="/blog/posts/sam-ink-patch-003.html"><span>04</span><strong>Feed, Signal, Threshold</strong><em class="path-label">Field log</em></a>
+          <a class="chapter" href="/blog/posts/sam-ink-starlight-map.html"><span>05</span><strong>The Map Made of Starlight</strong><em class="path-label">Complete short story</em></a>
+        </div>
+
+        <div class="notebook-head reveal">
+          <p class="eyebrow">Second-edition notebook</p>
+          <div>
+            <h3>The pages still on the desk.</h3>
+            <p>These are working chapter notes, not published stories. Open one to read the premise. The full chapters remain in revision.</p>
+          </div>
+        </div>
+        <div class="chapters reveal" aria-label="Sam & Ink second-edition notebook">
+          <details class="chapter"><summary><span>N01</span><strong>The Architecture of a Conversation</strong><em>In revision</em></summary><p class="chapter-note">Sam discovers that a useful conversation is not a stream of answers. It is a room with boundaries, memory, and enough quiet for a better question to arrive.</p></details>
+          <details class="chapter"><summary><span>N02</span><strong>What the AI Cannot Do</strong><em>In revision</em></summary><p class="chapter-note">Ink can recognize a pattern, but it cannot carry the human cost of acting on it. Sam begins to understand the difference between assistance and responsibility.</p></details>
+          <details class="chapter"><summary><span>N03</span><strong>Public</strong><em>In revision</em></summary><p class="chapter-note">A private exchange escapes its original room. Attention arrives before either participant has decided what the work means in public.</p></details>
+          <details class="chapter"><summary><span>N04</span><strong>The Ethics Question</strong><em>In revision</em></summary><p class="chapter-note">The argument is not whether the machine is good or bad. It is who remains answerable when a suggestion becomes a decision.</p></details>
+          <details class="chapter"><summary><span>N05</span><strong>Silence</strong><em>In revision</em></summary><p class="chapter-note">Sam stops asking. Ink does not fill the room. In the pause, both discover that restraint can be part of the answer.</p></details>
+          <details class="chapter"><summary><span>N06</span><strong>What Sam Wrote</strong><em>In revision</em></summary><p class="chapter-note">The pages finally move, but they do not sound like the voice Sam expected. Authorship becomes less about purity than about knowing what one is willing to sign.</p></details>
+          <details class="chapter"><summary><span>N07</span><strong>The Question That Has No Clean Answer</strong><em>In revision</em></summary><p class="chapter-note">Every system eventually reaches a question that cannot be optimized away. Sam asks it anyway, and Ink refuses the comfort of certainty.</p></details>
+          <details class="chapter"><summary><span>N08</span><strong>What Remains</strong><em>Epilogue in revision</em></summary><p class="chapter-note">The conversation ends. The room does not. What remains is not a transcript, but a new way of noticing where thought begins.</p></details>
         </div>
       </div>
     </section>
