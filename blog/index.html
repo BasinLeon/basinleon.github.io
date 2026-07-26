@@ -548,45 +548,49 @@
         .load-more[hidden] { display: none; }
 
         .dispatch-section {
-            min-height: 80svh;
-            padding: clamp(5.5rem, 10vw, 9rem) 0 2.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: var(--gold);
-            color: var(--ink);
+            padding: clamp(5.5rem, 9vw, 8rem) 0 2.5rem;
+            background: #0b0b0a;
+            color: var(--white);
+            border-top: 1px solid rgba(255,255,255,0.14);
         }
-        .dispatch-copy { max-width: 1080px; }
-        .dispatch-label { margin-bottom: 1.6rem; }
+        .dispatch-copy {
+            display: grid;
+            grid-template-columns: minmax(150px, 0.42fr) minmax(0, 1.58fr);
+            gap: clamp(2rem, 6vw, 7rem);
+            align-items: start;
+        }
+        .dispatch-label { color: var(--gold); padding-top: 0.65rem; }
+        .dispatch-body { max-width: 820px; }
         .dispatch-copy h2 {
-            margin-bottom: 1.5rem;
-            font-size: clamp(3.2rem, 8vw, 8rem);
-            font-weight: 600;
-            line-height: 0.89;
-            letter-spacing: -0.07em;
+            margin-bottom: 1.6rem;
+            font-size: clamp(3rem, 6.5vw, 6.8rem);
+            font-weight: 500;
+            line-height: 0.94;
+            letter-spacing: -0.065em;
             text-wrap: balance;
         }
-        .dispatch-copy p { max-width: 620px; margin-bottom: 2rem; font-size: clamp(1rem, 1.7vw, 1.2rem); }
+        .dispatch-copy p { max-width: 590px; margin-bottom: 2.2rem; color: #aaa59b; font-size: clamp(1rem, 1.7vw, 1.15rem); }
         .dispatch-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-        .button-dark { background: var(--ink); color: var(--white); }
+        .button-dark { background: var(--gold); color: var(--ink); }
         .button-dark:hover,
-        .button-dark:focus-visible { background: #24231f; }
-        .button-line-dark { border-color: rgba(7,7,6,0.55); color: var(--ink); }
+        .button-dark:focus-visible { background: #f0c65d; }
+        .button-line-dark { border-color: rgba(255,255,255,0.35); color: var(--white); }
         .button-line-dark:hover,
-        .button-line-dark:focus-visible { border-color: var(--ink); background: rgba(255,255,255,0.16); }
+        .button-line-dark:focus-visible { border-color: var(--gold); color: var(--gold); background: transparent; }
         .site-footer {
             width: min(100%, calc(var(--max) + (var(--gutter) * 2)));
-            margin: clamp(5rem, 12vw, 10rem) auto 0;
+            margin: clamp(5rem, 9vw, 8rem) auto 0;
             padding: 1.4rem var(--gutter) 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 2rem;
-            border-top: 1px solid rgba(7,7,6,0.35);
+            border-top: 1px solid rgba(255,255,255,0.18);
+            color: #918d84;
             font-size: 0.78rem;
         }
         .footer-links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
-        .footer-links a { text-decoration: none; }
+        .footer-links a { color: #c9c4ba; text-decoration: none; }
         .footer-links a:hover,
         .footer-links a:focus-visible { text-decoration: underline; text-underline-offset: 0.2rem; }
 
@@ -595,7 +599,7 @@
         :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 4px; }
         .featured-section :focus-visible,
         .catalog-section :focus-visible,
-        .dispatch-section :focus-visible { outline-color: var(--ink); }
+        .dispatch-section :focus-visible { outline-color: var(--gold); }
 
         @keyframes rise-in { to { opacity: 1; transform: translateY(0); } }
         @keyframes image-in { from { opacity: 0; transform: scale(1.12); } }
@@ -657,7 +661,8 @@
             .catalog-row { min-height: 124px; grid-template-columns: 78px minmax(0, 1fr) auto; gap: 1rem; }
             .catalog-meta { font-size: 0.54rem; }
             .catalog-row h3 { font-size: 1.08rem; }
-            .dispatch-section { min-height: 720px; }
+            .dispatch-copy { grid-template-columns: 1fr; gap: 1.4rem; }
+            .dispatch-label { padding-top: 0; }
             .dispatch-actions { flex-direction: column; }
             .site-footer { align-items: flex-start; flex-direction: column; gap: 1rem; }
         }
@@ -841,11 +846,13 @@
             <div class="section-shell">
                 <div class="dispatch-copy">
                     <div class="dispatch-label">04 / The Dispatch</div>
-                    <h2 id="dispatch-title">Stay close to the signal.</h2>
-                    <p>New essays, operating notes, and the occasional story—sent when there is something worth carrying.</p>
-                    <div class="dispatch-actions">
-                        <a class="button button-dark" href="https://basinandassociates.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe to the Dispatch</a>
-                        <a class="button button-line-dark" href="/work-with-me/">Work with Leon</a>
+                    <div class="dispatch-body">
+                        <h2 id="dispatch-title">The next piece arrives when it is ready.</h2>
+                        <p>New essays, operating notes, and occasional stories. No schedule. No filler.</p>
+                        <div class="dispatch-actions">
+                            <a class="button button-dark" href="https://basinandassociates.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe to the Dispatch</a>
+                            <a class="button button-line-dark" href="/work-with-me/">Work with Leon</a>
+                        </div>
                     </div>
                 </div>
             </div>
