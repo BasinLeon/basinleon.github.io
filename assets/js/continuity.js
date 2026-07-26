@@ -10,6 +10,7 @@
   const route = document.createElement("div");
   route.className = "lb-continuity-route";
   route.setAttribute("aria-hidden", "true");
+  route.dataset.destination = document.title.split("|")[0].trim() || "Leon Basin";
 
   document.body.prepend(route);
   document.body.prepend(progress);
@@ -72,8 +73,9 @@
     if (destination.protocol !== "http:" && destination.protocol !== "https:") return;
     if (destination.pathname === location.pathname && destination.search === location.search) return;
     event.preventDefault();
+    route.dataset.destination = (link.textContent || "Continue").replace(/\s+/g, " ").trim().slice(0, 42);
     root.classList.add("lb-route-leaving");
-    window.setTimeout(() => { location.href = destination.href; }, 150);
+    window.setTimeout(() => { location.href = destination.href; }, 240);
   });
 
   window.addEventListener("pageshow", () => root.classList.remove("lb-route-leaving"));
