@@ -8,18 +8,19 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://basinleon.github.io/blog/">
     <link rel="alternate" type="application/rss+xml" title="The Archive RSS" href="https://basinleon.github.io/blog/rss.xml">
+    <link rel="preload" as="image" href="/assets/img/archive-writing-photo-1600.jpg" imagesrcset="/assets/img/archive-writing-photo-960.jpg 960w, /assets/img/archive-writing-photo-1600.jpg 1600w" imagesizes="100vw" fetchpriority="high">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
 
     <meta property="og:title" content="The Archive | Leon Basin">
     <meta property="og:description" content="Notes from the operating edge: signal, systems, revenue, memory, and the human layer beneath the work.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://basinleon.github.io/blog/">
-    <meta property="og:image" content="https://basinleon.github.io/assets/img/archive-writing-photo.jpeg?v=7edf9d7">
+    <meta property="og:image" content="https://basinleon.github.io/assets/img/archive-writing-photo-1600.jpg">
     <meta property="og:site_name" content="Leon Basin">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="The Archive | Leon Basin">
     <meta name="twitter:description" content="Essays and field notes on systems, revenue, AI, leadership, and memory.">
-    <meta name="twitter:image" content="https://basinleon.github.io/assets/img/archive-writing-photo.jpeg?v=7edf9d7">
+    <meta name="twitter:image" content="https://basinleon.github.io/assets/img/archive-writing-photo-1600.jpg">
 
     <script type="application/ld+json">
     {
@@ -572,6 +573,21 @@
         }
         .dispatch-copy p { max-width: 590px; margin-bottom: 2.2rem; color: #aaa59b; font-size: clamp(1rem, 1.7vw, 1.15rem); }
         .dispatch-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .dispatch-paths {
+            margin: 0 0 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem 1.5rem;
+            color: #c9c4ba;
+            font-size: 0.78rem;
+        }
+        .dispatch-paths a {
+            color: inherit;
+            text-decoration-color: rgba(217,171,69,.55);
+            text-underline-offset: .25rem;
+        }
+        .dispatch-paths a:hover,
+        .dispatch-paths a:focus-visible { color: var(--gold-bright); }
         .button-dark { background: var(--gold); color: var(--ink); }
         .button-dark:hover,
         .button-dark:focus-visible { background: #f0c65d; }
@@ -665,6 +681,7 @@
             .dispatch-copy { grid-template-columns: 1fr; gap: 1.4rem; }
             .dispatch-label { padding-top: 0; }
             .dispatch-actions { flex-direction: column; }
+            .dispatch-paths { flex-direction: column; gap: 0.65rem; }
             .site-footer { align-items: flex-start; flex-direction: column; gap: 1rem; }
         }
 
@@ -688,6 +705,7 @@
                 <a href="https://basinleon.github.io/basin-nexus/">Basin::Nexus</a>
                 <a aria-current="page" href="/blog/">Writing</a>
                 <a href="/blog/fiction/">Fiction</a>
+                <a href="/blog/rss.xml">RSS</a>
                 <a href="/library/">Frameworks</a>
                 <a class="nav-cta" href="/work-with-me/">Work with Leon</a>
             </div>
@@ -697,7 +715,7 @@
     <main id="main-content">
         <section class="hero" aria-labelledby="hero-title">
             <!-- Photo: Artem Podrez / Pexels, photo 8518728. -->
-            <img class="hero-art" src="/assets/img/archive-writing-photo.jpeg?v=7edf9d7" alt="Hands writing notes in a paper notebook" width="2400" height="1350" fetchpriority="high">
+            <img class="hero-art" src="/assets/img/archive-writing-photo-1600.jpg" srcset="/assets/img/archive-writing-photo-960.jpg 960w, /assets/img/archive-writing-photo-1600.jpg 1600w" sizes="100vw" alt="Hands writing notes in a paper notebook" width="1600" height="900" fetchpriority="high" decoding="async">
             <div class="hero-inner">
                 <div class="eyebrow"><span id="hero-post-count">95</span> essays · field notes · stories</div>
                 <h1 id="hero-title">The Archive</h1>
@@ -850,6 +868,11 @@
                     <div class="dispatch-body">
                         <h2 id="dispatch-title">The next piece arrives when it is ready.</h2>
                         <p>New essays, operating notes, and occasional stories. No schedule. No filler.</p>
+                        <div class="dispatch-paths" aria-label="Ways to follow or work with Leon">
+                            <a href="/blog/rss.xml">Follow quietly by RSS</a>
+                            <a href="mailto:lbasin23@gmail.com?subject=Writing%20commission">Commission a piece</a>
+                            <a href="/work-with-me/">Discuss an operating mandate</a>
+                        </div>
                         <div class="dispatch-actions">
                             <a class="button button-dark" href="https://basinandassociates.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe to the Dispatch</a>
                             <a class="button button-line-dark" href="/work-with-me/">Work with Leon</a>
@@ -997,7 +1020,7 @@
                 revealItems.forEach(item => observer.observe(item));
             }
 
-            if (!reducedMotion) {
+            if (!reducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                 const heroArt = document.querySelector('.hero-art');
                 let ticking = false;
                 const updateParallax = () => {

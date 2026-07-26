@@ -71,6 +71,16 @@
                     .subscribe strong { font-size: 1.15rem; }
                     .subscribe p { margin: .35rem 0 0; color: var(--muted); font-size: .84rem; }
                     .feed-url { padding: 1rem 1.1rem; border: 1px solid var(--line); color: var(--gold); font-family: monospace; font-size: .75rem; overflow-wrap: anywhere; user-select: all; }
+                    .reader-links { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1rem; }
+                    .reader-links a {
+                        padding: .55rem .75rem;
+                        border: 1px solid var(--line);
+                        color: var(--muted);
+                        font-size: .7rem;
+                        font-weight: 700;
+                        text-decoration: none;
+                    }
+                    .reader-links a:hover { border-color: var(--gold); color: var(--gold); }
                     main { padding: clamp(4rem, 8vw, 7rem) 0; }
                     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
                     h2 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); letter-spacing: -.06em; line-height: .92; }
@@ -113,7 +123,12 @@
                 <section class="shell subscribe">
                     <div>
                         <strong>Subscribe in any RSS reader.</strong>
-                        <p>Copy the feed address, then add it to Feedly, NetNewsWire, Inoreader, Reeder, or the reader you already use.</p>
+                        <p>Copy the feed address, then add it to the reader you already use. RSS keeps the archive chronological, private, and free of an algorithm.</p>
+                        <div class="reader-links">
+                            <a href="https://feedly.com/i/subscription/feed/https://basinleon.github.io/blog/rss.xml">Add to Feedly</a>
+                            <a href="https://www.inoreader.com/feed/https://basinleon.github.io/blog/rss.xml">Add to Inoreader</a>
+                            <a href="https://basinandassociates.substack.com/subscribe">Email instead</a>
+                        </div>
                     </div>
                     <div class="feed-url">https://basinleon.github.io/blog/rss.xml</div>
                 </section>
