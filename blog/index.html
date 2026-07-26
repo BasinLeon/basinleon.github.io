@@ -340,72 +340,111 @@
             letter-spacing: -0.065em;
         }
         .section-heading p { max-width: 630px; margin: 0; color: var(--muted-dark); }
-        .featured-story {
-            display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(330px, 0.9fr);
-            min-height: 650px;
+        .start-shelf {
             border-top: 1px solid var(--line-light);
             border-bottom: 1px solid var(--line-light);
         }
-        .story-image {
+        .start-primary {
+            min-height: 540px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(330px, 0.9fr);
+            border-bottom: 1px solid var(--line-light);
+        }
+        .start-primary-visual {
             position: relative;
-            overflow: hidden;
-            background: #26292e;
-        }
-        .story-image img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transform: scale(1.02);
-            transition: transform 700ms cubic-bezier(.2,.7,.2,1);
-        }
-        .story-cover {
+            min-height: 540px;
             padding: clamp(2rem, 5vw, 4.5rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
             background:
-                linear-gradient(rgba(241,238,231,0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(241,238,231,0.08) 1px, transparent 1px),
+                radial-gradient(circle at 76% 28%, rgba(217,171,69,0.2), transparent 24%),
+                linear-gradient(rgba(241,238,231,0.075) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(241,238,231,0.075) 1px, transparent 1px),
                 #11110f;
-            background-size: 34px 34px;
+            background-size: auto, 34px 34px, 34px 34px, auto;
             color: var(--white);
             text-decoration: none;
         }
-        .story-cover::before {
-            content: "THE FALLOW YEAR";
+        .start-primary-visual::after {
+            content: "01";
+            position: absolute;
+            right: clamp(1.4rem, 4vw, 3.5rem);
+            bottom: clamp(1.2rem, 3vw, 2.7rem);
+            color: rgba(217,171,69,0.16);
+            font: 500 clamp(8rem, 20vw, 18rem)/0.72 "Manrope", Arial, sans-serif;
+            letter-spacing: -0.1em;
+            transition: color 240ms ease, transform 500ms cubic-bezier(.2,.7,.2,1);
+        }
+        .start-primary-visual:hover::after,
+        .start-primary-visual:focus-visible::after {
+            color: rgba(217,171,69,0.28);
+            transform: translate(-0.3rem, -0.2rem);
+        }
+        .start-label,
+        .start-entry-label {
+            position: relative;
+            z-index: 1;
             color: var(--gold);
             font: 600 0.68rem "JetBrains Mono", monospace;
             letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
-        .story-cover::after {
-            content: "The graph shows the harvest date. It does not show the planting.";
-            max-width: 620px;
-            font-size: clamp(2.8rem, 6vw, 6rem);
-            font-weight: 600;
-            line-height: 0.92;
-            letter-spacing: -0.06em;
+        .story-kicker { margin-bottom: 1.4rem; color: #8b6415; }
+        .start-primary-visual strong {
+            position: relative;
+            z-index: 1;
+            max-width: 690px;
+            font: 600 clamp(2.8rem, 6vw, 6rem)/0.92 "Manrope", Arial, sans-serif;
+            letter-spacing: -0.065em;
         }
-        .featured-story:hover .story-image img { transform: scale(1); }
-        .story-copy {
+        .start-primary-copy {
             padding: clamp(2rem, 5vw, 4.5rem);
             display: flex;
             flex-direction: column;
             justify-content: center;
             border-left: 1px solid var(--line-light);
         }
-        .story-kicker { margin-bottom: 1.4rem; color: #8b6415; }
-        .story-copy h3 {
+        .start-primary-copy h3 {
             margin-bottom: 1.2rem;
             font-size: clamp(2.4rem, 4.8vw, 5rem);
             font-weight: 600;
             line-height: 0.96;
             letter-spacing: -0.06em;
         }
-        .story-copy p { max-width: 500px; margin-bottom: 2rem; color: var(--muted-dark); font-size: 1.02rem; }
+        .start-primary-copy p { max-width: 500px; margin-bottom: 2rem; color: var(--muted-dark); font-size: 1.02rem; }
+        .start-secondary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .start-entry {
+            min-height: 290px;
+            padding: clamp(1.7rem, 3.4vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            color: var(--ink);
+            text-decoration: none;
+        }
+        .start-entry:first-child { border-right: 1px solid var(--line-light); }
+        .start-entry-label { margin-bottom: auto; color: #8b6415; }
+        .start-entry h3 {
+            max-width: 520px;
+            margin: 3rem 0 0.75rem;
+            font-size: clamp(1.8rem, 3vw, 3rem);
+            line-height: 1;
+            letter-spacing: -0.05em;
+        }
+        .start-entry p { max-width: 520px; margin: 0; color: var(--muted-dark); }
+        .start-entry::after {
+            content: "Read ↗";
+            margin-top: 1.35rem;
+            color: #8b6415;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+        .start-entry:hover h3,
+        .start-entry:focus-visible h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.28rem; }
         .text-link {
             display: inline-flex;
             align-items: center;
@@ -443,6 +482,13 @@
         .reading-path + .reading-path { padding-left: clamp(1rem, 2.8vw, 2.5rem); }
         .reading-path:last-child { border-right: 0; }
         .path-index { margin-bottom: auto; color: var(--gold); }
+        .path-count {
+            display: block;
+            margin-top: 0.5rem;
+            color: #817c72;
+            font: 500 0.62rem "JetBrains Mono", monospace;
+            letter-spacing: 0.05em;
+        }
         .reading-path h3 { margin: 3rem 0 0.8rem; font-size: clamp(1.8rem, 3.3vw, 3.3rem); line-height: 0.98; letter-spacing: -0.055em; }
         .reading-path p { max-width: 330px; margin: 0; color: var(--muted-light); }
         .reading-path::after { content: "Explore ↗"; margin-top: 1.6rem; color: var(--gold-bright); font-size: 0.8rem; font-weight: 700; }
@@ -503,6 +549,13 @@
         .filter-button:hover,
         .filter-button:focus-visible,
         .filter-button.active { background: var(--ink); color: var(--white); }
+        .filter-count {
+            display: block;
+            margin-top: 0.22rem;
+            font-size: 0.55rem;
+            letter-spacing: 0.04em;
+            opacity: 0.62;
+        }
         .catalog-status {
             min-height: 56px;
             display: flex;
@@ -514,6 +567,15 @@
         }
         .catalog-count { font-size: 0.63rem; }
         .catalog-list { border-bottom: 1px solid var(--line-light); }
+        .catalog-list[data-empty="true"]::after {
+            content: "No page matches that search. Try a broader phrase or another room.";
+            min-height: 180px;
+            padding: 3rem 0;
+            display: flex;
+            align-items: center;
+            color: var(--muted-dark);
+            font: 500 clamp(1.2rem, 2vw, 1.6rem) "Manrope", Arial, sans-serif;
+        }
         .catalog-row {
             min-height: 150px;
             display: grid;
@@ -641,9 +703,8 @@
             .nav-links a { width: 100%; padding: 0.7rem 0; font-size: clamp(1.6rem, 7vw, 2.8rem); }
             .nav-links .nav-cta { width: auto; margin-top: 1rem; padding: 0.8rem 1rem; font-size: 0.9rem; }
             .menu-open .nav-links { visibility: visible; opacity: 1; transform: translateY(0); }
-            .featured-story { grid-template-columns: 1fr; }
-            .story-image { min-height: 580px; }
-            .story-copy { border-top: 1px solid var(--line-light); border-left: 0; }
+            .start-primary { grid-template-columns: 1fr; }
+            .start-primary-copy { border-top: 1px solid var(--line-light); border-left: 0; }
             .reading-paths { grid-template-columns: 1fr; }
             .reading-path,
             .reading-path + .reading-path { min-height: 230px; padding: 1.5rem 0; border-right: 0; border-bottom: 1px solid var(--line-dark); }
@@ -669,10 +730,14 @@
             .hero-foot { margin-top: 3.5rem; flex-direction: column; gap: 0.6rem; }
             .section-intro { grid-template-columns: 1fr; gap: 1.1rem; }
             .section-index { padding: 0; }
-            .featured-story { min-height: 0; }
-            .story-image { min-height: 440px; }
-            .story-copy { padding: 1.8rem 0; }
-            .story-copy h3 { font-size: 2.7rem; }
+            .start-primary,
+            .start-primary-visual { min-height: 440px; }
+            .start-primary-visual { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+            .start-primary-copy { padding: 2rem 0; }
+            .start-primary-copy h3 { font-size: 2.7rem; }
+            .start-secondary { grid-template-columns: 1fr; }
+            .start-entry { min-height: 245px; padding-inline: 0; }
+            .start-entry:first-child { border-right: 0; border-bottom: 1px solid var(--line-light); }
             .catalog-tools { margin-inline: calc(var(--gutter) * -1); }
             .catalog-status { align-items: flex-start; flex-direction: column; justify-content: center; gap: 0.2rem; }
             .catalog-row { min-height: 124px; grid-template-columns: 78px minmax(0, 1fr) auto; gap: 1rem; }
@@ -722,8 +787,8 @@
                 <div class="hero-subtitle">Notes from the operating edge.</div>
                 <p class="hero-lede">Revenue systems, artificial intelligence, leadership, memory, and the judgment the dashboards leave out.</p>
                 <div class="hero-actions">
-                    <a class="button button-gold" href="posts/the-souls-algorithm-fallow-year.html">Read the latest</a>
-                    <a class="button button-ghost" href="#catalog">Explore all writing</a>
+                    <a class="button button-gold" href="#start-here">Start with three pieces</a>
+                    <a class="button button-ghost" href="/blog/fiction/">Enter the fiction room</a>
                 </div>
                 <div class="hero-foot">
                     <span>Operator · Builder · Human</span>
@@ -734,56 +799,77 @@
 
         <div data-archive-ledger></div>
 
-        <section class="featured-section" aria-labelledby="featured-title">
+        <section class="featured-section" id="start-here" aria-labelledby="featured-title">
             <div class="section-shell">
                 <div class="section-intro reveal">
-                    <div class="section-index">01 / New site edition</div>
+                    <div class="section-index">01 / Start here</div>
                     <div class="section-heading">
-                        <h2 id="featured-title">The dashboard reports yesterday.</h2>
-                        <p>A story first published on X, now preserved here with a new ending about how to work when the harvest has not arrived.</p>
+                        <h2 id="featured-title">Three doors into the archive.</h2>
+                        <p>An essay, an operating record, and a piece of fiction. Together they show the range of the work.</p>
                     </div>
                 </div>
 
-                <article class="featured-story reveal">
-                    <a class="story-image story-cover" href="posts/the-souls-algorithm-fallow-year.html" aria-label="Read The Soul's Algorithm: The Fallow Year"></a>
-                    <div class="story-copy">
-                        <div class="story-kicker">Site edition · July 26, 2026</div>
-                        <h3>The Soul's Algorithm</h3>
-                        <p>What a flat subscriber graph taught me about Shmita, pipeline lag, and why dashboards always report yesterday.</p>
-                        <a class="text-link" href="posts/the-souls-algorithm-fallow-year.html">Read the continued story</a>
+                <div class="start-shelf reveal">
+                    <article class="start-primary">
+                        <a class="start-primary-visual" href="posts/the-souls-algorithm-fallow-year.html" aria-label="Read The Soul's Algorithm: The Fallow Year">
+                            <span class="start-label">Essay / The Fallow Year</span>
+                            <strong>The graph shows the harvest date. It does not show the planting.</strong>
+                        </a>
+                        <div class="start-primary-copy">
+                            <div class="story-kicker">Site edition · July 26, 2026</div>
+                            <h3>The Soul's Algorithm</h3>
+                            <p>What a flat subscriber graph taught me about Shmita, pipeline lag, and the work that happens before a result becomes visible.</p>
+                            <a class="text-link" href="posts/the-souls-algorithm-fallow-year.html">Read the continued story</a>
+                        </div>
+                    </article>
+                    <div class="start-secondary">
+                        <a class="start-entry" href="posts/how-i-replaced-10-sdrs.html">
+                            <span class="start-entry-label">Operating record / Automation</span>
+                            <h3>How I Replaced 10 SDRs with One Architect</h3>
+                            <p>The full breakdown of a commercial system that cut annual operating cost by $424K while increasing output.</p>
+                        </a>
+                        <a class="start-entry" href="posts/the-archivist-letter-004.html">
+                            <span class="start-entry-label">Fiction / The Archivist</span>
+                            <h3>Letter Found Between Two Notebooks</h3>
+                            <p>Sam finds the missing fourth letter and learns what an archive is meant to carry forward.</p>
+                        </a>
                     </div>
-                </article>
+                </div>
             </div>
         </section>
 
         <section class="paths-section" aria-labelledby="paths-title">
             <div class="section-shell">
                 <div class="section-intro reveal">
-                    <div class="section-index">02 / Choose a room</div>
+                    <div class="section-index">02 / Choose what you need</div>
                     <div class="section-heading">
-                        <h2 id="paths-title">Four ways into the work.</h2>
-                        <p>Follow the subject that brought you here. The borders are porous by design.</p>
+                        <h2 id="paths-title">Read by purpose.</h2>
+                        <p>Choose a subject and the catalog will open with the right pages already selected.</p>
                     </div>
                 </div>
 
                 <div class="reading-paths reveal">
                     <a class="reading-path" href="#catalog" data-start-filter="operator">
                         <div class="path-index">01 / Operator</div>
+                        <span class="path-count" data-path-count="operator">Counting pages</span>
                         <h3>Revenue under pressure.</h3>
                         <p>GTM systems, signal quality, market entry, pipeline architecture, sales, and leadership.</p>
                     </a>
                     <a class="reading-path" href="#catalog" data-start-filter="builder">
                         <div class="path-index">02 / Builder</div>
+                        <span class="path-count" data-path-count="builder">Counting pages</span>
                         <h3>The machine beneath the method.</h3>
                         <p>Artificial intelligence, Python, agent systems, experiments, interfaces, and code.</p>
                     </a>
                     <a class="reading-path" href="#catalog" data-start-filter="human">
                         <div class="path-index">03 / Human</div>
+                        <span class="path-count" data-path-count="human">Counting pages</span>
                         <h3>The observer beneath the systems.</h3>
                         <p>Memory, silence, philosophy, family, imagination, and the stories that resist optimization.</p>
                     </a>
                     <a class="reading-path" href="/blog/fiction/">
                         <div class="path-index">04 / Fiction</div>
+                        <span class="path-count" data-path-count="fiction">Counting stories</span>
                         <h3>Enter the fiction room.</h3>
                         <p>Sam &amp; Ink, The Archivist, complete stories, recovered letters, and Silicon Valley folklore.</p>
                     </a>
@@ -794,10 +880,10 @@
         <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
             <div class="section-shell">
                 <div class="section-intro reveal">
-                    <div class="section-index">03 / Full catalog</div>
+                    <div class="section-index">03 / All writing</div>
                     <div class="section-heading">
-                        <h2 id="catalog-title">Find the signal you came for.</h2>
-                        <p>Search every published essay, note, case study, and field report in the archive.</p>
+                        <h2 id="catalog-title">Search the complete archive.</h2>
+                        <p>Search by title, subject, company, idea, or phrase. Press / anywhere on the page to begin.</p>
                     </div>
                 </div>
 
@@ -806,11 +892,12 @@
                         <input class="search-input" id="archive-search" type="search" placeholder="Title, idea, or phrase" autocomplete="off">
                     </label>
                     <div class="filters" role="group" aria-label="Filter archive by reading path">
-                        <button class="filter-button active" type="button" data-filter="all">All</button>
-                        <button class="filter-button" type="button" data-filter="operator">Operator</button>
-                        <button class="filter-button" type="button" data-filter="builder">Builder</button>
-                        <button class="filter-button" type="button" data-filter="human">Human</button>
-                        <button class="filter-button" type="button" data-filter="security">Security</button>
+                        <button class="filter-button active" type="button" data-filter="all">All<span class="filter-count" data-filter-count="all">96</span></button>
+                        <button class="filter-button" type="button" data-filter="operator">Operator<span class="filter-count" data-filter-count="operator">··</span></button>
+                        <button class="filter-button" type="button" data-filter="builder">Builder<span class="filter-count" data-filter-count="builder">··</span></button>
+                        <button class="filter-button" type="button" data-filter="human">Human<span class="filter-count" data-filter-count="human">··</span></button>
+                        <button class="filter-button" type="button" data-filter="fiction">Fiction<span class="filter-count" data-filter-count="fiction">··</span></button>
+                        <button class="filter-button" type="button" data-filter="security">Security<span class="filter-count" data-filter-count="security">··</span></button>
                     </div>
                 </div>
 
@@ -909,6 +996,8 @@
             const searchInput = document.getElementById('archive-search');
             const filterButtons = [...document.querySelectorAll('.filter-button')];
             const pathLinks = [...document.querySelectorAll('[data-start-filter]')];
+            const pathCounts = [...document.querySelectorAll('[data-path-count]')];
+            const filterCounts = [...document.querySelectorAll('[data-filter-count]')];
             let allPosts = [];
             let currentFilter = 'all';
             let query = '';
@@ -918,6 +1007,7 @@
                 operator: ['gtm', 'revenue', 'sales', 'pipeline', 'business', 'leadership', 'market', 'career', 'account'],
                 builder: ['ai', 'artificial intelligence', 'python', 'technology', 'agent', 'automation', 'code', 'github', 'build'],
                 human: ['writing', 'memory', 'creative', 'philosophy', 'silence', 'labyrinth', 'story', 'fiction', 'parenthood', 'inner'],
+                fiction: ['fiction', 'sam & ink', 'the archivist', 'novella', 'short story', 'folklore'],
                 security: ['cyber', 'security', 'zero trust', 'pam', 'tprm', 'compliance']
             };
 
@@ -927,12 +1017,15 @@
 
             function matchesLane(post, lane) {
                 if (lane === 'all') return true;
+                if (lane === 'fiction' && String(post.category).toLowerCase() === 'fiction') return true;
                 const text = postText(post);
                 return (lanes[lane] || []).some(term => text.includes(term));
             }
 
             function getLane(post) {
                 const text = postText(post);
+                if (matchesLane(post, 'fiction')) return 'Fiction';
+                if (lanes.security.some(term => text.includes(term))) return 'Security';
                 if (lanes.human.some(term => text.includes(term))) return 'Human';
                 if (lanes.builder.some(term => text.includes(term))) return 'Builder';
                 return 'Operator';
@@ -976,8 +1069,20 @@
                 const filtered = filteredPosts();
                 const visible = filtered.slice(0, visibleCount);
                 catalogList.replaceChildren(...visible.map(createPostRow));
+                catalogList.dataset.empty = String(filtered.length === 0);
                 catalogCount.textContent = `Showing ${visible.length} of ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`;
                 loadMoreButton.hidden = visible.length >= filtered.length;
+            }
+
+            function updateLaneCounts() {
+                const countFor = lane => lane === 'all'
+                    ? allPosts.length
+                    : allPosts.filter(post => matchesLane(post, lane)).length;
+                filterCounts.forEach(node => { node.textContent = countFor(node.dataset.filterCount); });
+                pathCounts.forEach(node => {
+                    const total = countFor(node.dataset.pathCount);
+                    node.textContent = `${total} ${node.dataset.pathCount === 'fiction' ? 'stories' : 'pages'}`;
+                });
             }
 
             function setFilter(filter) {
@@ -1041,6 +1146,21 @@
                 visibleCount = 12;
                 renderCatalog();
             });
+            document.addEventListener('keydown', event => {
+                const activeTag = document.activeElement?.tagName;
+                const isTyping = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || document.activeElement?.isContentEditable;
+                if (event.key === '/' && !isTyping) {
+                    event.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                }
+                if (event.key === 'Escape' && document.activeElement === searchInput && searchInput.value) {
+                    searchInput.value = '';
+                    query = '';
+                    visibleCount = 12;
+                    renderCatalog();
+                }
+            });
             loadMoreButton.addEventListener('click', () => {
                 visibleCount += 12;
                 renderCatalog();
@@ -1056,7 +1176,8 @@
                         .filter(post => post.url && post.url !== '#')
                         .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
                     document.getElementById('hero-post-count').textContent = allPosts.length;
-                    renderCatalog();
+                    updateLaneCounts();
+                    setFilter(currentFilter);
                 })
                 .catch(error => {
                     console.error(error);
