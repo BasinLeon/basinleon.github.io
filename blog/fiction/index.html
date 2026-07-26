@@ -71,6 +71,12 @@
     .chapter strong { font: 400 clamp(1.35rem,2.6vw,2.15rem)/1.2 var(--serif); }
     .chapter em { color: var(--muted); font-size: .82rem; font-style: normal; }
     .chapter:hover strong, .chapter:focus-visible strong { color: var(--amber); }
+    details.chapter { display: block; padding: 0; }
+    details.chapter summary { display: grid; grid-template-columns: 90px 1fr auto; gap: 2rem; align-items: baseline; padding: 1.5rem 0; cursor: pointer; list-style: none; }
+    details.chapter summary::-webkit-details-marker { display: none; }
+    details.chapter summary::after { content: "+"; color: var(--amber); font: 400 1.2rem/1 var(--sans); }
+    details.chapter[open] summary::after { content: "−"; }
+    .chapter-note { max-width: 760px; margin: 0 0 1.75rem 122px; color: #aaa49a; font: 400 1.05rem/1.65 var(--serif); }
     .shelf { display: grid; grid-template-columns: repeat(2,1fr); border-top: 1px solid var(--line); }
     .shelf-item { min-height: 340px; padding: 2.5rem; border-bottom: 1px solid var(--line); text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; }
     .shelf-item:nth-child(odd) { border-right: 1px solid var(--line); }
@@ -106,6 +112,8 @@
       .feature h3 { margin-top: 2rem; }
       .chapter { grid-template-columns: 48px 1fr; gap: 1rem; }
       .chapter em { display: none; }
+      details.chapter summary { grid-template-columns: 48px 1fr auto; gap: 1rem; }
+      .chapter-note { margin-left: 64px; }
       .shelf { grid-template-columns: 1fr; }
       .shelf-item { min-height: 280px; padding: 2rem 0; }
       .shelf-item:nth-child(odd) { border-right: 0; }
@@ -146,6 +154,8 @@
       </div>
     </section>
 
+    <div data-archive-ledger></div>
+
     <section class="section" id="novella">
       <div class="shell">
         <div class="section-head reveal">
@@ -157,14 +167,14 @@
         </div>
         <div class="chapters reveal" aria-label="Sam & Ink chapters">
           <a class="chapter" href="/blog/posts/sam-ink-the-signal.html"><span>01</span><strong>The Signal</strong><em>Read the opening chapter</em></a>
-          <div class="chapter"><span>02</span><strong>The Architecture of a Conversation</strong><em>Novella</em></div>
-          <div class="chapter"><span>03</span><strong>What the AI Cannot Do</strong><em>Novella</em></div>
-          <div class="chapter"><span>04</span><strong>Public</strong><em>Novella</em></div>
-          <div class="chapter"><span>05</span><strong>The Ethics Question</strong><em>Novella</em></div>
-          <div class="chapter"><span>06</span><strong>Silence</strong><em>Novella</em></div>
-          <div class="chapter"><span>07</span><strong>What Sam Wrote</strong><em>Novella</em></div>
-          <div class="chapter"><span>08</span><strong>The Question That Has No Clean Answer</strong><em>Novella</em></div>
-          <div class="chapter"><span>09</span><strong>What Remains</strong><em>Epilogue</em></div>
+          <details class="chapter"><summary><span>02</span><strong>The Architecture of a Conversation</strong><em>Second-edition note</em></summary><p class="chapter-note">Sam discovers that a useful conversation is not a stream of answers. It is a room with boundaries, memory, and enough quiet for a better question to arrive.</p></details>
+          <details class="chapter"><summary><span>03</span><strong>What the AI Cannot Do</strong><em>Second-edition note</em></summary><p class="chapter-note">Ink can recognize a pattern, but it cannot carry the human cost of acting on it. Sam begins to understand the difference between assistance and responsibility.</p></details>
+          <details class="chapter"><summary><span>04</span><strong>Public</strong><em>Second-edition note</em></summary><p class="chapter-note">A private exchange escapes its original room. Attention arrives before either participant has decided what the work means in public.</p></details>
+          <details class="chapter"><summary><span>05</span><strong>The Ethics Question</strong><em>Second-edition note</em></summary><p class="chapter-note">The argument is not whether the machine is good or bad. It is who remains answerable when a suggestion becomes a decision.</p></details>
+          <details class="chapter"><summary><span>06</span><strong>Silence</strong><em>Second-edition note</em></summary><p class="chapter-note">Sam stops asking. Ink does not fill the room. In the pause, both discover that restraint can be part of the answer.</p></details>
+          <details class="chapter"><summary><span>07</span><strong>What Sam Wrote</strong><em>Second-edition note</em></summary><p class="chapter-note">The pages finally move, but they do not sound like the voice Sam expected. Authorship becomes less about purity than about knowing what one is willing to sign.</p></details>
+          <details class="chapter"><summary><span>08</span><strong>The Question That Has No Clean Answer</strong><em>Second-edition note</em></summary><p class="chapter-note">Every system eventually reaches a question that cannot be optimized away. Sam asks it anyway, and Ink refuses the comfort of certainty.</p></details>
+          <details class="chapter"><summary><span>09</span><strong>What Remains</strong><em>Epilogue note</em></summary><p class="chapter-note">The conversation ends. The room does not. What remains is not a transcript, but a new way of noticing where thought begins.</p></details>
         </div>
       </div>
     </section>
@@ -252,5 +262,6 @@
     <div class="shell"><span>© 2026 Leon Basin</span><span>Fiction written in the San Francisco Bay Area</span></div>
   </footer>
 
+  <script src="/blog/archive-ledger.js" defer></script>
 </body>
 </html>
