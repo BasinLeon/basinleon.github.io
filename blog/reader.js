@@ -24,13 +24,19 @@
   .lb-endcta{margin:3.5rem auto 1rem;max-width:720px;padding:1.6rem 1.5rem;border-radius:16px;\
     border:1px solid rgba(212,175,55,.35);background:linear-gradient(180deg,rgba(212,175,55,.08),rgba(255,255,255,.02));\
     text-align:center;font-family:'JetBrains Mono',ui-monospace,monospace;}\
-  .lb-endcta h3{font-family:'Orbitron',sans-serif;color:#f0e6d3;margin:0 0 .5rem;font-size:1.1rem;letter-spacing:.04em;}\
+  .lb-endcta h3{font-family:'DM Sans',system-ui,sans-serif;color:#f0e6d3;margin:0 0 .5rem;font-size:1.1rem;letter-spacing:.02em;}\
   .lb-endcta p{color:#b7ad97;margin:0 0 1.1rem;font-size:.95rem;line-height:1.6;}\
   .lb-endcta-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}\
   .lb-endcta .lb-btn{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.1rem;\
     border-radius:999px;text-decoration:none;cursor:pointer;border:1px solid var(--lb-gold);}\
   .lb-endcta .lb-sub{background:var(--lb-gold);color:#0d0803;font-weight:700;}\
   .lb-endcta .lb-save2{background:transparent;color:#f0e6d3;}\
+  .lb-endcta.lb-light{border-color:rgba(183,131,31,.42);\
+    background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(183,131,31,.055));}\
+  .lb-endcta.lb-light h3{color:#171510;}\
+  .lb-endcta.lb-light p{color:#625c50;}\
+  .lb-endcta.lb-light .lb-save2{color:#171510;border-color:#b7831f;}\
+  .lb-endcta.lb-light .lb-save2:hover{background:rgba(183,131,31,.1);}\
   .lb-saved-wrap{font-family:'JetBrains Mono',ui-monospace,monospace;}\
   .lb-saved-item{display:flex;justify-content:space-between;gap:12px;align-items:center;\
     padding:.6rem 0;border-bottom:1px solid rgba(212,175,55,.15);}\
@@ -69,6 +75,11 @@
 
     var art = document.querySelector("article") || document.querySelector("main") || document.body;
     var cta = document.createElement("div"); cta.className = "lb-endcta";
+    var bodyColor = window.getComputedStyle(document.body).backgroundColor.match(/\d+(?:\.\d+)?/g);
+    if (bodyColor && bodyColor.length >= 3) {
+      var luminance = (Number(bodyColor[0]) * 299 + Number(bodyColor[1]) * 587 + Number(bodyColor[2]) * 114) / 1000;
+      if (luminance > 150) cta.classList.add("lb-light");
+    }
     cta.innerHTML =
       "<h3>Keep the signal coming.</h3>" +
       "<p>New field notes by email when they land. Save this one to come back to it.</p>" +
