@@ -105,6 +105,127 @@
   --lb-flow-y: 14px;
 }
 
+.lb-studio-clock {
+  position: fixed;
+  z-index: 10020;
+  right: clamp(0.8rem, 2.4vw, 2rem);
+  bottom: clamp(0.8rem, 2.4vw, 2rem);
+  width: min(25rem, calc(100vw - 1.6rem));
+  padding: 1rem;
+  border: 1px solid rgba(237, 199, 110, 0.48);
+  background:
+    linear-gradient(135deg, rgba(201, 155, 62, 0.12), transparent 38%),
+    rgba(8, 8, 7, 0.97);
+  color: #f2eee5;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.46);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.985);
+  transform-origin: right bottom;
+  transition:
+    opacity 180ms ease,
+    transform 260ms cubic-bezier(.2,.7,.2,1);
+}
+
+.lb-studio-clock.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.lb-studio-clock__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #edc76e;
+  font: 600 0.63rem/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.lb-studio-clock__close {
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.7rem -0.6rem -0.7rem 0;
+  border: 0;
+  background: transparent;
+  color: #bdb7aa;
+  font: inherit;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.lb-studio-clock__close:hover,
+.lb-studio-clock__close:focus-visible {
+  color: #fffdf8;
+}
+
+.lb-studio-clock__time {
+  display: block;
+  margin-top: 1rem;
+  color: #fffdf8;
+  font: 400 clamp(2.25rem, 8vw, 4.25rem)/0.95 "Instrument Serif", Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
+}
+
+.lb-studio-clock__date {
+  margin-top: 0.5rem;
+  color: #bdb7aa;
+  font: 500 0.72rem/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.06em;
+}
+
+.lb-studio-clock__ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.2rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.lb-studio-clock__ledger > div {
+  min-width: 0;
+  padding: 0.72rem 0.65rem 0.72rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lb-studio-clock__ledger > div:nth-child(even) {
+  padding-right: 0;
+  padding-left: 0.65rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lb-studio-clock__ledger > div:last-child {
+  grid-column: 1 / -1;
+  padding-left: 0;
+  border-left: 0;
+}
+
+.lb-studio-clock__ledger dt {
+  color: #817b70;
+  font: 600 0.56rem/1.25 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.lb-studio-clock__ledger dd {
+  margin: 0.24rem 0 0;
+  overflow: hidden;
+  color: #f2eee5;
+  font: 500 0.88rem/1.25 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-studio-clock__privacy {
+  margin: 0.8rem 0 0;
+  color: #817b70;
+  font: 500 0.58rem/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.03em;
+}
+
 .lb-continuity .lb-flow-ready [data-lb-flow] {
   opacity: 0;
   transform: translateY(var(--lb-flow-y));
@@ -137,6 +258,7 @@
 @media (prefers-reduced-motion: reduce) {
   .lb-continuity-progress,
   .lb-continuity-route,
+  .lb-studio-clock,
   .lb-continuity .lb-flow-ready [data-lb-flow] {
     transition: none !important;
   }
@@ -149,5 +271,13 @@
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .lb-studio-clock {
+    right: 0.7rem;
+    bottom: max(0.7rem, env(safe-area-inset-bottom));
+    width: calc(100vw - 1.4rem);
   }
 }
