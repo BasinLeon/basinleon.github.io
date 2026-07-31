@@ -6,6 +6,13 @@
 (function () {
     'use strict';
 
+    if (!window.__lbInsightsLoaded && !document.querySelector('script[src="/assets/js/insights.js"]')) {
+        const insights = document.createElement('script');
+        insights.src = '/assets/js/insights.js';
+        insights.defer = true;
+        document.head.appendChild(insights);
+    }
+
     // ═══════════════════════════════════════════════════════════════
     // READ ANALYTICS - localStorage-based tracking
     // ═══════════════════════════════════════════════════════════════

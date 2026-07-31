@@ -14,19 +14,13 @@
     ['about', 'About', '/docs/about/']
   ];
 
-  function ensureAnalytics() {
-    if (body.dataset.lbAnalytics === 'off') return;
-    window.plausible = window.plausible || function () {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
-
-    if (!document.querySelector('script[data-domain="basinleon.github.io"]')) {
-      const script = document.createElement('script');
-      script.defer = true;
-      script.dataset.domain = 'basinleon.github.io';
-      script.src = 'https://plausible.io/js/script.js';
-      document.head.appendChild(script);
-    }
+  function ensureInsights() {
+    if (body.dataset.lbAnalytics === 'off' || window.__lbInsightsLoaded) return;
+    if (document.querySelector('script[src="/assets/js/insights.js"]')) return;
+    const script = document.createElement('script');
+    script.src = '/assets/js/insights.js';
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   function ensureFavicon() {
@@ -35,34 +29,6 @@
     icon.rel = 'icon';
     icon.href = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090909'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23D4AF37'/%3E%3C/svg%3E";
     document.head.appendChild(icon);
-  }
-
-  function classifyLink(link) {
-    const href = link.getAttribute('href') || '';
-    if (href.startsWith('mailto:')) return 'Contact';
-    if (href.includes('/case-studies/')) return 'Review Proof';
-    if (href.includes('/basin-nexus/') || href.includes('architecture')) return 'Inspect Systems';
-    if (href.includes('/work-with-me/')) return 'Availability';
-    if (href.includes('/tools/') || href.includes('diagnostic') || href.includes('simulator')) return 'Use Tool';
-    if (href.includes('/blog/') || href.includes('/docs/')) return 'Read';
-    return '';
-  }
-
-  function trackConversions() {
-    document.addEventListener('click', function (event) {
-      const link = event.target.closest('a[href]');
-      if (!link) return;
-      const eventName = link.dataset.track || classifyLink(link);
-      if (!eventName) return;
-
-      window.plausible(eventName, {
-        props: {
-          source: section,
-          destination: link.getAttribute('href'),
-          label: (link.textContent || '').trim().slice(0, 80)
-        }
-      });
-    });
   }
 
   function buildHeader() {
@@ -128,6 +94,7 @@
             <a href="https://linkedin.com/in/leonbasin" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://github.com/BasinLeon" rel="noopener noreferrer">GitHub</a>
             <a href="/blog/">Archive</a>
+            <a href="/privacy/">Privacy</a>
           </nav>
         </div>
       </div>`;
@@ -141,9 +108,8 @@
     });
   }
 
-  ensureAnalytics();
+  ensureInsights();
   ensureFavicon();
-  trackConversions();
   improveMedia();
 
   if (shellEnabled) {

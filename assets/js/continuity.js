@@ -1,4 +1,11 @@
 (() => {
+  if (!window.__lbInsightsLoaded && !document.querySelector('script[src="/assets/js/insights.js"]')) {
+    const insights = document.createElement("script");
+    insights.src = "/assets/js/insights.js";
+    insights.defer = true;
+    document.head.appendChild(insights);
+  }
+
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   root.classList.add("lb-continuity");
