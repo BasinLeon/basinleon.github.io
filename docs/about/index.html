@@ -11,14 +11,14 @@
   <meta property="og:description" content="Building AI and GTM infrastructure. Writing stories from Silicon Valley about what machines can’t replace.">
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://basinleon.github.io/docs/about/">
-  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/signal-refinery-hud-1800.jpg">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/leon-basin-portrait.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About Leon Basin">
   <meta name="twitter:description" content="Building AI and GTM infrastructure. Writing stories from Silicon Valley about what machines can’t replace.">
-  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/signal-refinery-hud-1800.jpg">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/leon-basin-portrait.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700;800&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/docs/journal.css">
   <link rel="stylesheet" href="/assets/css/site-shell.css">
   <link rel="stylesheet" href="/assets/css/continuity.css">
@@ -34,15 +34,15 @@
 
     .about-hero {
       min-height: calc(100svh - 72px);
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: clamp(2rem, 7vw, 7rem);
       align-items: end;
       position: relative;
       isolation: isolate;
       padding: clamp(3rem, 8vw, 7rem) max(1rem, calc((100vw - 1180px) / 2));
       color: #fff;
-      background:
-        linear-gradient(90deg, rgba(5, 5, 5, 0.995) 0%, rgba(5, 5, 5, 0.94) 46%, rgba(5, 5, 5, 0.72) 78%, rgba(5, 5, 5, 0.82) 100%),
-        url('/assets/img/frameworks/signal-refinery-hud-1800.jpg') center / cover no-repeat;
+      background: #050505;
     }
 
     .about-hero::after {
@@ -56,6 +56,29 @@
     .about-hero-copy {
       width: min(100%, 850px);
       animation: about-enter 0.7s cubic-bezier(.2,.7,.2,1) both;
+    }
+
+    .about-portrait {
+      width: min(100%, 430px);
+      margin: 0;
+      justify-self: end;
+      animation: about-enter 0.7s 0.08s cubic-bezier(.2,.7,.2,1) both;
+    }
+
+    .about-portrait img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      filter: saturate(0.88) contrast(1.04);
+    }
+
+    .about-portrait figcaption {
+      padding-top: 0.85rem;
+      color: rgba(255,255,255,0.52);
+      font: 700 0.62rem/1.4 "JetBrains Mono", ui-monospace, monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .about-kicker,
@@ -78,10 +101,10 @@
     .about-hero h1 {
       max-width: 12ch;
       margin: 1rem 0 1.35rem;
-      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-family: "Instrument Serif", Georgia, serif;
       font-size: clamp(3rem, 8vw, 7.8rem);
-      line-height: 0.92;
-      letter-spacing: -0.055em;
+      line-height: 0.94;
+      letter-spacing: -0.045em;
       text-wrap: balance;
     }
 
@@ -144,7 +167,7 @@
     .about-section h2 {
       max-width: 11ch;
       margin: 0.8rem 0 0;
-      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-family: "Instrument Serif", Georgia, serif;
       font-size: clamp(2.3rem, 5.5vw, 5.2rem);
       line-height: 0.98;
       letter-spacing: -0.045em;
@@ -174,7 +197,7 @@
 
     .about-arc-row h3 {
       margin: 0;
-      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-family: "Manrope", Arial, sans-serif;
       font-size: clamp(1.3rem, 2.5vw, 2rem);
       line-height: 1.05;
     }
@@ -220,7 +243,7 @@
 
     .about-proof-value {
       color: #0a0a09;
-      font-family: "Orbitron", "JetBrains Mono", sans-serif;
+      font-family: "Manrope", Arial, sans-serif;
       font-size: clamp(1.25rem, 3vw, 2.25rem);
       letter-spacing: -0.02em;
     }
@@ -261,8 +284,9 @@
     }
 
     @media (max-width: 760px) {
-      .about-hero { min-height: calc(100svh - 64px); background-position: 72% center; }
+      .about-hero { min-height: calc(100svh - 64px); grid-template-columns: 1fr; align-items: start; }
       .about-hero h1 { max-width: 10ch; font-size: clamp(2.35rem, 14vw, 4.6rem); letter-spacing: -0.06em; }
+      .about-portrait { width: min(100%, 330px); justify-self: start; }
       .about-section-head,
       .about-focus { grid-template-columns: 1fr; align-items: start; }
       .about-arc-row { grid-template-columns: 2.2rem 1fr; }
@@ -275,7 +299,8 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .about-hero-copy { animation: none; opacity: 1; transform: none; transition: none; }
+      .about-hero-copy,
+      .about-portrait { animation: none; opacity: 1; transform: none; transition: none; }
     }
   </style>
 </head>
@@ -289,13 +314,17 @@
       <div class="about-hero-copy">
         <div class="about-kicker">Leon Basin / About</div>
         <h1 id="about-title">I build systems. I write toward what endures.</h1>
-        <p class="about-hero-deck">I build AI and GTM infrastructure that turns noisy signal into clear decisions. I also write stories from Silicon Valley about what machines can’t replace.</p>
+        <p class="about-hero-deck">I have spent more than a decade selling into complex markets, building the systems behind the work, and writing about the parts no dashboard can hold.</p>
         <div class="about-actions">
-          <a href="/case-studies/">Review the work</a>
-          <a href="/fiction/">Enter the fiction room</a>
           <a href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Start a conversation</a>
+          <a href="/case-studies/">Review the work</a>
+          <a href="/blog/fiction/">Enter the fiction room</a>
         </div>
       </div>
+      <figure class="about-portrait">
+        <img src="/assets/img/leon-basin-portrait.png" alt="Portrait of Leon Basin" width="460" height="460" fetchpriority="high" decoding="async">
+        <figcaption>Operator · Seller · Writer · Builder</figcaption>
+      </figure>
     </section>
 
     <section class="about-section about-reveal" aria-labelledby="arc-title">
@@ -304,23 +333,28 @@
           <div class="about-section-label">The throughline</div>
           <h2 id="arc-title">Different materials. The same attention.</h2>
         </div>
-        <p class="about-section-intro">In systems and stories alike, I return to the same practice: notice what is hidden, reduce the noise around it, and make room for a more honest next step.</p>
+        <p class="about-section-intro">The work changes, but the practice does not: pay attention, find what the surface is hiding, and leave people with a clearer next move.</p>
       </div>
       <div class="about-arc-list">
         <article class="about-arc-row">
           <div class="about-row-number">01</div>
           <h3>Operator</h3>
-          <p>Enterprise operating work taught me how scale changes the cost of ambiguity: weak data, unclear ownership, and fragile handoffs compound quickly.</p>
+          <p>I learned the work inside Hewlett Packard, Google, SurveyMonkey, Sense, Fudo Security, and now Obvio.ai. Scale changes the cost of ambiguity. Weak data, unclear ownership, and fragile handoffs compound quickly.</p>
         </article>
         <article class="about-arc-row">
           <div class="about-row-number">02</div>
-          <h3>Builder</h3>
-          <p>Security and founder-led work made the response practical. I build routing logic, lifecycle systems, research loops, and execution tools instead of stopping at the diagnosis.</p>
+          <h3>Seller</h3>
+          <p>I have carried accounts, opened markets, built pipeline, closed expansion revenue, and worked directly with buyers when the path forward was not obvious.</p>
         </article>
         <article class="about-arc-row">
           <div class="about-row-number">03</div>
+          <h3>Builder</h3>
+          <p>I began building because the same commercial problems kept returning. When the routing, research, context, or follow-through does not exist, I make the missing system inspectable and usable.</p>
+        </article>
+        <article class="about-arc-row">
+          <div class="about-row-number">04</div>
           <h3>Writer</h3>
-          <p>I write stories from Silicon Valley about attention, memory, fatherhood, faith, and the human lives unfolding beside intelligent machines. The stories do not explain the signal. They make room to recognize it.</p>
+          <p>I write stories from Silicon Valley about attention, memory, fatherhood, faith, and life beside intelligent machines. The writing is where questions that cannot become workflow are allowed to remain questions.</p>
         </article>
       </div>
     </section>
@@ -328,10 +362,10 @@
     <section class="about-method about-reveal" aria-labelledby="method-title">
       <div class="about-section-head">
         <div>
-          <div class="about-section-label">Operating method</div>
-          <h2 id="method-title">Make the decision visible.</h2>
+          <div class="about-section-label">What connects the work</div>
+          <h2 id="method-title">Attention before automation.</h2>
         </div>
-        <p class="about-section-intro">I translate goals into operating behavior: what happens, who owns it, what the system captures, where automation helps, and where judgment still matters. The output is a system people can inspect, use, and improve after the meeting ends.</p>
+        <p class="about-section-intro">I use automation to remove mechanical work, not human judgment. A useful system should make the decision clearer, the ownership visible, and the people inside it more capable.</p>
       </div>
     </section>
 
@@ -345,13 +379,13 @@
       </div>
       <div class="about-proof-list">
         <a class="about-proof-row" href="/case-studies/#fudo">
-          <span class="about-proof-value">160%</span>
-          <span class="about-proof-copy"><strong>Year-over-year pipeline growth</strong><span>Channel, qualification, and routing redesign.</span></span>
+          <span class="about-proof-value">$2M+</span>
+          <span class="about-proof-copy"><strong>U.S. expansion pipeline generated</strong><span>Market entry, partnerships, qualification, and direct execution.</span></span>
           <span class="about-proof-arrow" aria-hidden="true">→</span>
         </a>
         <a class="about-proof-row" href="/resume.html">
-          <span class="about-proof-value">Automation</span>
-          <span class="about-proof-copy"><strong>Manual work reduced</strong><span>Qualification and research workflow redesign.</span></span>
+          <span class="about-proof-value">$300M+</span>
+          <span class="about-proof-copy"><strong>Enterprise portfolio managed</strong><span>More than 700 accounts at SurveyMonkey.</span></span>
           <span class="about-proof-arrow" aria-hidden="true">→</span>
         </a>
         <a class="about-proof-row" href="/resume.html">
@@ -370,11 +404,11 @@
       <div class="about-focus-copy">
         <div>
           <div class="about-focus-label">Inside the role</div>
-          <p>In a current operating role, I work across pipeline architecture, territory design, research, outbound execution, and direct business development.</p>
+          <p>I am currently building public-sector GTM at Obvio.ai across territory design, research, outbound execution, partnerships, and direct business development.</p>
         </div>
         <div>
           <div class="about-focus-label">Outside the role</div>
-          <p>Outside the operating work, I write, speak, and take a limited number of non-conflicting advisory conversations. The fiction lives in the same world, but asks different questions.</p>
+          <p>Outside the role, I write, speak, and take a limited number of non-conflicting advisory conversations. The fiction lives beside the operating work, but it is not there to explain it.</p>
         </div>
       </div>
     </section>
