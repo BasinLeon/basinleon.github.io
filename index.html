@@ -634,6 +634,111 @@
             transition: filter 350ms ease, transform 700ms cubic-bezier(.2,.7,.2,1);
         }
         .system-stage:hover .system-image { filter: saturate(.94) brightness(1.12) contrast(1.03); transform: scale(1.006); }
+        .system-map {
+            padding: clamp(1.8rem, 4.5vw, 4.5rem);
+            color: #12110f;
+            background: #f2ede3;
+        }
+        .system-map-head { padding-bottom: clamp(2rem, 4vw, 3.8rem); border-top: 2px solid #12110f; }
+        .system-map-brand {
+            display: inline-block;
+            padding-top: .8rem;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .09em;
+        }
+        .system-map h3 {
+            max-width: 980px;
+            margin-top: clamp(1.8rem, 4vw, 3.6rem);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.3rem, 5vw, 5rem);
+            font-weight: 500;
+            line-height: .98;
+            letter-spacing: -.045em;
+        }
+        .system-map-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: clamp(1.5rem, 3.8vw, 4rem);
+        }
+        .system-map-stage { position: relative; border-top: 2px solid #b88b2f; }
+        .system-map-stage:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            top: .3rem;
+            right: clamp(-2.8rem, -2.5vw, -1.5rem);
+            color: #b88b2f;
+            font-size: 1.6rem;
+        }
+        .system-map-stage header { padding: .9rem 0 1rem; }
+        .system-map-stage header span {
+            display: block;
+            color: #9d721d;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .66rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+        .system-map-stage header strong {
+            display: block;
+            margin-top: .55rem;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(1rem, 1.6vw, 1.35rem);
+            line-height: 1;
+            letter-spacing: -.035em;
+            text-transform: uppercase;
+        }
+        .system-map-item {
+            min-height: 4.5rem;
+            padding: .9rem 0;
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            border-top: 1px solid rgba(18,17,15,.24);
+            font-size: clamp(.82rem, 1.1vw, 1rem);
+            line-height: 1.15;
+        }
+        .system-map-item b {
+            width: 1.95rem;
+            height: 1.95rem;
+            flex: 0 0 1.95rem;
+            display: grid;
+            place-items: center;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            color: #9d721d;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .58rem;
+        }
+        .system-map-stage:last-child .system-map-item b { color: #1d6654; }
+        .system-map-rail {
+            position: relative;
+            margin-top: clamp(2rem, 5vw, 4.5rem);
+            padding-top: 1.35rem;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: .5rem;
+            border-top: 2px solid #b88b2f;
+        }
+        .system-map-rail::after {
+            content: "";
+            position: absolute;
+            top: -.42rem;
+            right: 0;
+            width: .75rem;
+            height: .75rem;
+            border-radius: 50%;
+            background: #1d6654;
+        }
+        .system-map-rail span {
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+        }
+        .system-map-rail span:last-child { color: #1d6654; text-align: right; }
         .system-caption {
             position: relative;
             z-index: 2;
@@ -864,6 +969,8 @@
             .career-outcomes { grid-column: 2 / -1; }
             .system-caption { align-items: flex-start; flex-direction: column; }
             .system-loop { grid-template-columns: repeat(2, 1fr); }
+            .system-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .system-map-stage:not(:last-child)::after { display: none; }
             .loop-step { border-bottom: 1px solid var(--line-dark); }
             .loop-step:nth-child(2) { border-right: 0; }
             .loop-step:last-child { border-bottom: 0; }
@@ -937,6 +1044,14 @@
             .system-caption p { display: none; }
             .system-caption .button { width: auto; }
             .system-loop { grid-template-columns: 1fr; }
+            .system-map { padding: 1.4rem; }
+            .system-map h3 { font-size: clamp(2.1rem, 10vw, 2.8rem); }
+            .system-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 1rem; }
+            .system-map-item { min-height: 3.4rem; gap: .45rem; font-size: .74rem; }
+            .system-map-item b { width: 1.7rem; height: 1.7rem; flex-basis: 1.7rem; font-size: .48rem; }
+            .system-map-rail { grid-template-columns: repeat(5, 1fr); gap: .2rem; }
+            .system-map-rail span { font-size: .43rem; letter-spacing: .02em; }
+            .system-map-rail span:last-child { text-align: right; }
             .loop-step,
             .loop-step + .loop-step {
                 min-height: 110px;
@@ -1172,17 +1287,21 @@
                 </div>
 
                 <figure class="system-stage reveal">
-                    <picture>
-                        <source
-                            srcset="/assets/img/frameworks/signal-refinery-hud-1000.jpg 1000w, /assets/img/frameworks/signal-refinery-hud-1800.jpg 1800w"
-                            sizes="(max-width: 700px) 100vw, min(1280px, 100vw)">
-                        <img class="system-image" src="/assets/img/frameworks/signal-refinery-hud-1800.jpg" alt="Basin Nexus Signal Refinery interface showing signal ingestion, qualification, and action routing" width="1800" height="1220" loading="lazy" decoding="async">
-                    </picture>
+                    <div class="system-map" role="img" aria-label="Basin Nexus operating map from raw market signal through judgment and commercial action to a learning loop">
+                        <div class="system-map-head"><span class="system-map-brand">Basin::Nexus</span><h3>Turn market noise into owned commercial action.</h3></div>
+                        <div class="system-map-grid">
+                            <div class="system-map-stage"><header><span>01</span><strong>Raw signal</strong></header><div class="system-map-item"><b>MC</b><span>Market change</span></div><div class="system-map-item"><b>AM</b><span>Account movement</span></div><div class="system-map-item"><b>BI</b><span>Buyer intent</span></div></div>
+                            <div class="system-map-stage"><header><span>02</span><strong>Judgment</strong></header><div class="system-map-item"><b>?</b><span>What changed?</span></div><div class="system-map-item"><b>N</b><span>Why now?</span></div><div class="system-map-item"><b>O</b><span>Who owns it?</span></div></div>
+                            <div class="system-map-stage"><header><span>03</span><strong>Commercial action</strong></header><div class="system-map-item"><b>TA</b><span>Target account</span></div><div class="system-map-item"><b>SB</b><span>Seller brief</span></div><div class="system-map-item"><b>NA</b><span>Next action</span></div></div>
+                            <div class="system-map-stage"><header><span>04</span><strong>Learning loop</strong></header><div class="system-map-item"><b>R</b><span>Response</span></div><div class="system-map-item"><b>P</b><span>Pipeline movement</span></div><div class="system-map-item"><b>PR</b><span>Proof</span></div></div>
+                        </div>
+                        <div class="system-map-rail" aria-hidden="true"><span>Signal</span><span>Interpretation</span><span>Ownership</span><span>Action</span><span>Learning</span></div>
+                    </div>
                     <figcaption class="system-caption">
                         <div class="system-caption-copy">
-                            <span class="system-kicker">Working prototype</span>
-                            <h3>Account research and routing</h3>
-                            <p>A practical interface for prioritization, proof, ownership, and follow-through.</p>
+                            <span class="system-kicker">Operating logic</span>
+                            <h3>Signal becomes owned commercial action.</h3>
+                            <p>A practical map for interpretation, prioritization, ownership, and follow-through.</p>
                         </div>
                         <a class="button button-gold" href="/basin-nexus/">Inspect the system</a>
                     </figcaption>

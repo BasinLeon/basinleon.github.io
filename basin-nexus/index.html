@@ -11,11 +11,11 @@
   <meta property="og:description" content="For people with work too important to explain badly.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://basinleon.github.io/basin-nexus/">
-  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual.png">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/frameworks/basin-nexus-operating-map-v2.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Basin::Nexus | Executive Positioning &amp; Operating Systems">
   <meta name="twitter:description" content="For people with work too important to explain badly.">
-  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/signal_refinery_hud_actual.png">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/frameworks/basin-nexus-operating-map-v2.png">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2310110f'/%3E%3Cpath d='M13 38h14V14h10v24h14v10H13z' fill='%23c99309'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -883,22 +883,126 @@
 
     .hero-proof-inner { width: min(1440px, 100%); margin: 0 auto; }
 
-    .hero-proof-screen {
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.14);
-      background: #07080b;
+    .hero-proof-screen { border: 1px solid rgba(255,255,255,.14); }
+
+    .nexus-map {
+      padding: clamp(28px, 4.6vw, 66px);
+      color: #12110f;
+      background: #f2ede3;
     }
 
-    .hero-proof-screen img {
-      width: 100%;
-      filter: saturate(.84) brightness(1.08) contrast(1.03);
-      transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .35s ease;
+    .nexus-map-head {
+      padding-bottom: clamp(28px, 4vw, 54px);
+      border-top: 2px solid #12110f;
     }
 
-    .hero-proof:hover .hero-proof-screen img {
-      transform: scale(1.008);
-      filter: saturate(.94) brightness(1.12) contrast(1.03);
+    .nexus-map-brand {
+      display: inline-block;
+      padding: 13px 0 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
     }
+
+    .nexus-map h3 {
+      max-width: 1100px;
+      margin-top: clamp(28px, 4vw, 52px);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 5vw, 72px);
+      font-weight: 500;
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .nexus-map-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(24px, 4vw, 64px);
+    }
+
+    .nexus-map-stage { position: relative; border-top: 2px solid #b88b2f; }
+    .nexus-map-stage:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      top: 4px;
+      right: clamp(-43px, -2.7vw, -25px);
+      color: #b88b2f;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .nexus-map-stage header { padding: 14px 0 16px; }
+    .nexus-map-stage header span {
+      display: block;
+      color: #a87919;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+    }
+    .nexus-map-stage header strong {
+      display: block;
+      margin-top: 9px;
+      font-family: var(--display);
+      font-size: clamp(17px, 1.6vw, 23px);
+      letter-spacing: -.035em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .nexus-map-item {
+      min-height: 72px;
+      padding: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid rgba(18,17,15,.24);
+      font-size: clamp(14px, 1.1vw, 17px);
+      line-height: 1.15;
+    }
+    .nexus-map-item b {
+      width: 31px;
+      height: 31px;
+      flex: 0 0 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      color: #a87919;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+    .nexus-map-stage:last-child .nexus-map-item b { color: #1d6654; }
+
+    .nexus-map-rail {
+      position: relative;
+      margin-top: clamp(30px, 5vw, 70px);
+      padding-top: 23px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      border-top: 2px solid #b88b2f;
+    }
+    .nexus-map-rail::after {
+      content: "";
+      position: absolute;
+      top: -7px;
+      right: -1px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1d6654;
+      box-shadow: 17px 0 0 -2px #f2ede3, 25px 0 0 -4px #1d6654;
+    }
+    .nexus-map-rail span {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .nexus-map-rail span:last-child { color: #1d6654; text-align: right; }
 
     .hero-proof figcaption {
       padding: 24px 0 2px;
@@ -1021,6 +1125,8 @@
       .command-card { max-width: 620px; }
       .author-section { grid-template-columns: 1fr; }
       .author-portrait { min-height: 540px; max-height: 720px; }
+      .nexus-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .nexus-map-stage:not(:last-child)::after { display: none; }
     }
 
     @media (max-width: 620px) {
@@ -1042,6 +1148,14 @@
       .audience-row { grid-template-columns: 38px 1fr; gap: 16px; }
       .audience-row p { grid-column: 2; }
       .author-portrait { min-height: 460px; }
+      .nexus-map { padding: 24px; }
+      .nexus-map h3 { font-size: clamp(34px, 10vw, 44px); }
+      .nexus-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+      .nexus-map-item { min-height: 54px; gap: 7px; font-size: 12px; }
+      .nexus-map-item b { width: 27px; height: 27px; flex-basis: 27px; font-size: 8px; }
+      .nexus-map-rail { grid-template-columns: repeat(5, 1fr); gap: 3px; }
+      .nexus-map-rail span { font-size: 7px; letter-spacing: .03em; }
+      .nexus-map-rail span:last-child { text-align: right; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1085,11 +1199,18 @@
     <figure class="hero-proof" aria-labelledby="proof-caption">
       <div class="hero-proof-inner">
         <div class="screen-top"><span><span class="status-dot"></span>Inspectable build layer</span><span>Refinery / Routing / Proof</span></div>
-        <div class="hero-proof-screen">
-          <img src="../assets/img/frameworks/signal_refinery_hud_actual_fixed.png" alt="Basin Nexus Signal Refinery interface showing account signal, scoring, proof, and action routing" width="3408" height="2310">
+        <div class="hero-proof-screen nexus-map" role="img" aria-label="Basin Nexus operating map from raw market signal through judgment and commercial action to a learning loop">
+          <div class="nexus-map-head"><span class="nexus-map-brand">Basin::Nexus</span><h3>Turn market noise into owned commercial action.</h3></div>
+          <div class="nexus-map-grid">
+            <div class="nexus-map-stage"><header><span>01</span><strong>Raw signal</strong></header><div class="nexus-map-item"><b>MC</b><span>Market change</span></div><div class="nexus-map-item"><b>AM</b><span>Account movement</span></div><div class="nexus-map-item"><b>BI</b><span>Buyer intent</span></div></div>
+            <div class="nexus-map-stage"><header><span>02</span><strong>Judgment</strong></header><div class="nexus-map-item"><b>?</b><span>What changed?</span></div><div class="nexus-map-item"><b>N</b><span>Why now?</span></div><div class="nexus-map-item"><b>O</b><span>Who owns it?</span></div></div>
+            <div class="nexus-map-stage"><header><span>03</span><strong>Commercial action</strong></header><div class="nexus-map-item"><b>TA</b><span>Target account</span></div><div class="nexus-map-item"><b>SB</b><span>Seller brief</span></div><div class="nexus-map-item"><b>NA</b><span>Next action</span></div></div>
+            <div class="nexus-map-stage"><header><span>04</span><strong>Learning loop</strong></header><div class="nexus-map-item"><b>R</b><span>Response</span></div><div class="nexus-map-item"><b>P</b><span>Pipeline movement</span></div><div class="nexus-map-item"><b>PR</b><span>Proof</span></div></div>
+          </div>
+          <div class="nexus-map-rail" aria-hidden="true"><span>Signal</span><span>Interpretation</span><span>Ownership</span><span>Action</span><span>Learning</span></div>
         </div>
         <figcaption id="proof-caption">
-          <div><span>Working system / not a concept render</span><strong>Signal Refinery: judgment made operational.</strong></div>
+          <div><span>Operating logic / open for inspection</span><strong>Signal becomes owned commercial action.</strong></div>
           <a class="btn" href="#system">Follow the method</a>
         </figcaption>
       </div>
