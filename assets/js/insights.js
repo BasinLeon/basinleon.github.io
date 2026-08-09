@@ -16,7 +16,13 @@
   window.__lbInsightsLoaded = true;
 
   const body = document.body;
-  if (!body || body.dataset.lbAnalytics === "off") return;
+  if (!body) return;
+  const ownerMode = readOwnerMode();
+  if (ownerMode) {
+    applyOwnerMode(ownerMode);
+    return;
+  }
+  if (body.dataset.lbAnalytics === "off" || isOwnerExcluded()) return;
   if (navigator.globalPrivacyControl === true || navigator.doNotTrack === "1") return;
 
   const endpoint = (
@@ -34,6 +40,59 @@
   let activeSeconds = 0;
   let lastTick = Date.now();
   let engagementSent = false;
+
+  function readOwnerMode() {
+    const value = new URLSearchParams(location.search).get("lb_owner");
+    if (value === "1") return "exclude";
+    if (value === "0") return "include";
+    return "";
+  }
+
+  function isOwnerExcluded() {
+    try {
+      return localStorage.getItem("lb:insights:owner-optout:v1") === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function applyOwnerMode(mode) {
+    try {
+      if (mode === "exclude") {
+        localStorage.setItem("lb:insights:owner-optout:v1", "1");
+      } else {
+        localStorage.removeItem("lb:insights:owner-optout:v1");
+      }
+    } catch (_) {
+      // The confirmation still explains the requested state if storage is unavailable.
+    }
+
+    const url = new URL(location.href);
+    url.searchParams.delete("lb_owner");
+    history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+
+    const notice = document.createElement("div");
+    notice.setAttribute("role", "status");
+    notice.dataset.lbOwnerStatus = mode;
+    notice.textContent = mode === "exclude"
+      ? "Owner analytics disabled on this browser."
+      : "Owner analytics enabled on this browser.";
+    Object.assign(notice.style, {
+      position: "fixed",
+      right: "16px",
+      bottom: "16px",
+      zIndex: "10000",
+      maxWidth: "min(360px, calc(100vw - 32px))",
+      padding: "14px 16px",
+      border: "1px solid #c58a08",
+      background: "#090909",
+      color: "#fff",
+      font: "700 12px/1.45 'JetBrains Mono', ui-monospace, monospace",
+      boxShadow: "0 14px 40px rgba(0,0,0,.2)"
+    });
+    body.appendChild(notice);
+    window.setTimeout(function () { notice.remove(); }, 5000);
+  }
 
   function cleanPath(value) {
     try {

@@ -12,6 +12,8 @@ Private, first-party measurement for `basinleon.github.io`.
 
 The collector does not store raw IP addresses, user-agent strings, email addresses or personal profiles. Session and visitor identifiers are HMAC-hashed before D1 storage. A daily cron removes events after 90 days. Global Privacy Control and Do Not Track are respected by the browser client.
 
+The dashboard's **Exclude this browser** control opens the public site once with `?lb_owner=1`. The tracker stores a browser-local opt-out and removes the parameter from the address. To re-enable measurement on that browser, open `https://basinleon.github.io/?lb_owner=0` once.
+
 ## Conversion definitions
 
 | Category | Current signals |

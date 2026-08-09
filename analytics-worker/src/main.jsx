@@ -20,6 +20,12 @@ const DEPTHS = [
   { depth: 75, label: "Deep read" },
   { depth: 100, label: "Completed" }
 ];
+const DISTRIBUTION_LINKS = [
+  { label: "LinkedIn", source: "linkedin", medium: "social" },
+  { label: "X", source: "x", medium: "social" },
+  { label: "Email signature", source: "email-signature", medium: "signature", campaign: "always-on" },
+  { label: "Introduction", source: "direct-intro", medium: "introduction" }
+];
 
 function number(value) {
   return new Intl.NumberFormat("en-US").format(Number(value || 0));
@@ -32,6 +38,59 @@ function Metric({ label, value, note }) {
       <strong>{number(value)}</strong>
       <small>{note}</small>
     </div>
+  );
+}
+
+function trackedLink(item) {
+  const month = new Date().toISOString().slice(0, 7);
+  const url = new URL("https://basinleon.github.io/");
+  url.searchParams.set("utm_source", item.source);
+  url.searchParams.set("utm_medium", item.medium);
+  url.searchParams.set("utm_campaign", item.campaign || `${month}-site`);
+  return url.toString();
+}
+
+async function copyText(value) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  const field = document.createElement("textarea");
+  field.value = value;
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+  document.body.appendChild(field);
+  field.select();
+  document.execCommand("copy");
+  field.remove();
+}
+
+function QuickActions() {
+  const [copied, setCopied] = useState("");
+
+  async function copy(item) {
+    await copyText(trackedLink(item));
+    setCopied(item.label);
+    window.setTimeout(() => setCopied(""), 1800);
+  }
+
+  return (
+    <section className="quick-actions" aria-label="Owner and distribution controls">
+      <div className="owner-action">
+        <div><h2>Owner browser</h2><p>Keep your own visits out of the numbers.</p></div>
+        <button onClick={() => window.location.assign("https://basinleon.github.io/?lb_owner=1")}>Exclude this browser</button>
+      </div>
+      <div className="distribution-action">
+        <div><h2>Tracked links</h2><p>Copy the homepage link for each channel.</p></div>
+        <div className="channel-buttons">
+          {DISTRIBUTION_LINKS.map((item) => (
+            <button key={item.label} onClick={() => copy(item)} aria-label={`Copy ${item.label} tracked link`}>
+              {copied === item.label ? "Copied" : item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -189,6 +248,8 @@ function Dashboard() {
           <Metric label="Engaged visits" value={summary.engaged_visits} note={collecting ? "Collecting first-party events" : "15+ active seconds"} />
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>
+
+        <QuickActions />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>

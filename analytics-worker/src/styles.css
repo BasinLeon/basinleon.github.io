@@ -51,6 +51,16 @@ h1 { margin: 0; font: 700 clamp(2.1rem, 4vw, 3.7rem)/1 "Orbitron", sans-serif; l
 .metric strong { display: block; margin: .45rem 0; font: 700 1.8rem/1 "Orbitron", sans-serif; }
 .metric small { color: var(--muted); font-size: .62rem; }
 
+.quick-actions { display: grid; grid-template-columns: .9fr 1.45fr; border-bottom: 1px solid var(--line); }
+.quick-actions > div { min-height: 98px; display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.15rem 1rem; }
+.quick-actions > div:first-child { border-right: 1px solid var(--line); }
+.quick-actions h2 { margin: 0 0 .35rem; font-size: .67rem; font-weight: 600; }
+.quick-actions p { margin: 0; color: var(--muted); font-size: .61rem; }
+.quick-actions button { min-height: 38px; padding: .62rem .75rem; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: .61rem; font-weight: 700; white-space: nowrap; }
+.owner-action button { background: var(--ink); color: white; }
+.channel-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .45rem; }
+.channel-buttons button { min-width: 72px; }
+
 .panel { min-width: 0; }
 .panel h2 { margin: 0 0 1.2rem; font-size: .71rem; font-weight: 600; }
 .primary-grid { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(330px, 1fr); border-bottom: 1px solid var(--line); }
@@ -112,6 +122,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .detail-grid { grid-template-columns: repeat(2, 1fr); }
   .detail-grid > .panel:nth-child(2) { border-right: 0; }
   .detail-grid > .panel:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .quick-actions { grid-template-columns: 1fr; }
+  .quick-actions > div:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
 @media (max-width: 620px) {
@@ -123,4 +135,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .metric, .detail-grid > .panel { border-right: 0; border-bottom: 1px solid var(--line); padding-left: .4rem; padding-right: .4rem; }
   .metric:last-child, .detail-grid > .panel:last-child { border-bottom: 0; }
   .login-shell form { padding: 2rem 1.25rem; }
+  .quick-actions > div { align-items: stretch; flex-direction: column; padding-right: .4rem; padding-left: .4rem; }
+  .quick-actions button { width: 100%; }
+  .channel-buttons { display: grid; grid-template-columns: repeat(2, 1fr); }
 }
