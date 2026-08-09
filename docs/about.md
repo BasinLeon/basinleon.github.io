@@ -41,7 +41,7 @@ The best work is not just functional. It is legible. Sales, marketing, RevOps, p
 ## Selected Outcomes
 
 - Scaled pipeline 160% year over year by redesigning channel and routing infrastructure
-- Generated $424K in annual operating savings through workflow redesign and automation
+- Estimated $424K in annualized manual-work savings through workflow redesign and automation
 - Reduced onboarding and ramp from 90 days to 5 days through systems-led enablement design
 - Built and supported pipeline, expansion, and operating systems across enterprise and founder-led environments
 

@@ -441,6 +441,21 @@
             background: var(--cream);
             color: var(--ink);
         }
+        .proof-bridge {
+            max-width: 930px;
+            margin: 0 0 clamp(4.5rem, 9vw, 8rem) auto;
+            padding: 0 0 clamp(2.2rem, 4vw, 3.5rem);
+            border-bottom: 1px solid var(--line-light);
+        }
+        .proof-bridge p {
+            max-width: 880px;
+            margin: 0;
+            font-family: "Instrument Serif", Georgia, serif;
+            font-size: clamp(1.75rem, 3.5vw, 3.3rem);
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+            text-wrap: balance;
+        }
         .section-intro {
             display: grid;
             grid-template-columns: minmax(130px, 0.35fr) minmax(0, 1.65fr);
@@ -759,32 +774,6 @@
             letter-spacing: -0.045em;
         }
         .system-caption p { margin: 0; color: var(--muted-light); }
-        .system-loop {
-            margin-top: clamp(3rem, 6vw, 5.5rem);
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            counter-reset: loop;
-            border-top: 1px solid var(--line-dark);
-        }
-        .loop-step {
-            counter-increment: loop;
-            min-height: 170px;
-            padding: 1.5rem 1.2rem 1.5rem 0;
-            border-right: 1px solid var(--line-dark);
-        }
-        .loop-step + .loop-step { padding-left: 1.2rem; }
-        .loop-step:last-child { border-right: 0; }
-        .loop-step::before {
-            content: "0" counter(loop);
-            display: block;
-            margin-bottom: 2.5rem;
-            color: var(--gold);
-            font-family: "Manrope", Arial, sans-serif;
-            font-size: 0.68rem;
-        }
-        .loop-step strong { display: block; margin-bottom: 0.45rem; font-family: "Manrope", Arial, sans-serif; }
-        .loop-step span { color: var(--muted-light); font-size: 0.84rem; }
-
         .writing-section {
             padding: clamp(5.5rem, 11vw, 10rem) 0;
             background: var(--paper);
@@ -968,12 +957,8 @@
             .career-row { grid-template-columns: 100px minmax(0, 1fr) auto; }
             .career-outcomes { grid-column: 2 / -1; }
             .system-caption { align-items: flex-start; flex-direction: column; }
-            .system-loop { grid-template-columns: repeat(2, 1fr); }
             .system-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .system-map-stage:not(:last-child)::after { display: none; }
-            .loop-step { border-bottom: 1px solid var(--line-dark); }
-            .loop-step:nth-child(2) { border-right: 0; }
-            .loop-step:last-child { border-bottom: 0; }
             .writing-row { grid-template-columns: 120px minmax(0,1fr) auto; }
             .writing-row p { grid-column: 2 / -1; }
         }
@@ -1043,7 +1028,6 @@
             .proof-links { align-items: flex-start; flex-direction: column; gap: 1rem; }
             .system-caption p { display: none; }
             .system-caption .button { width: auto; }
-            .system-loop { grid-template-columns: 1fr; }
             .system-map { padding: 1.4rem; }
             .system-map h3 { font-size: clamp(2.1rem, 10vw, 2.8rem); }
             .system-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 1rem; }
@@ -1052,17 +1036,6 @@
             .system-map-rail { grid-template-columns: repeat(5, 1fr); gap: .2rem; }
             .system-map-rail span { font-size: .43rem; letter-spacing: .02em; }
             .system-map-rail span:last-child { text-align: right; }
-            .loop-step,
-            .loop-step + .loop-step {
-                min-height: 110px;
-                padding: 1.25rem 0;
-                display: grid;
-                grid-template-columns: 3rem 1fr;
-                column-gap: 1rem;
-                border-right: 0;
-                border-bottom: 1px solid var(--line-dark);
-            }
-            .loop-step::before { grid-row: 1 / 3; margin: 0; }
             .writing-row { min-height: 0; grid-template-columns: 1fr auto; padding: 1.7rem 0; }
             .writing-row small { grid-column: 1 / -1; }
             .writing-row h3 { grid-column: 1; }
@@ -1126,8 +1099,8 @@
                     <p class="hero-statement">What does it mean to build a life?</p>
                     <p class="hero-lede">Companies, families, stories, faith, memory. I build the practical systems and write about the invisible ones.</p>
                     <div class="hero-actions">
-                        <a class="button button-gold" href="/blog/">Enter the writing</a>
-                        <a class="button button-ghost" href="#proof">Inspect the work</a>
+                        <a class="button button-gold" href="#proof">Inspect the work</a>
+                        <a class="button button-ghost" href="/blog/">Enter the writing</a>
                     </div>
                 </div>
                 <div class="hero-foot" aria-label="Current role and background">
@@ -1139,8 +1112,11 @@
 
         <section class="proof-section" id="proof" aria-labelledby="proof-title">
             <div class="section-shell">
+                <div class="proof-bridge reveal">
+                    <p>My operating record is one part of that answer: markets entered, revenue created, teams built, and systems left stronger than I found them.</p>
+                </div>
                 <div class="section-intro reveal">
-                    <div class="section-index">01 / Career ledger</div>
+                    <div class="section-index">01 / Operating record</div>
                     <div class="section-heading">
                         <h2 id="proof-title">More than a decade<br>of work, in detail.</h2>
                         <p>From Hewlett Packard and index operations at Google to enterprise expansion at SurveyMonkey, global BD at Sense, U.S. market entry at Fudo Security, and founding GTM at Obvio.ai.</p>
@@ -1149,20 +1125,20 @@
 
                 <div class="metrics reveal" aria-label="Headline career outcomes">
                     <div class="metric">
-                        <strong>$10M+</strong>
-                        <span>pipeline built while leading global business development at Sense</span>
+                        <strong>$300K+</strong>
+                        <span>closed enterprise expansion revenue at SurveyMonkey</span>
                     </div>
                     <div class="metric">
                         <strong>160%</strong>
                         <span>year-over-year U.S. pipeline growth at Fudo Security</span>
                     </div>
                     <div class="metric">
-                        <strong>$300K+</strong>
-                        <span>closed enterprise expansion revenue at SurveyMonkey</span>
+                        <strong>$10M+</strong>
+                        <span>qualified pipeline supported while leading global business development at Sense</span>
                     </div>
                     <div class="metric">
-                        <strong>$424K</strong>
-                        <span>annual operating savings from commercial workflow automation</span>
+                        <strong>90 → 5</strong>
+                        <span>days for SDR onboarding and certification after rebuilding enablement</span>
                     </div>
                 </div>
 
@@ -1184,7 +1160,7 @@
                         <div class="career-meta"><strong>Fudo Security</strong><span>Senior Manager · U.S. GTM &amp; Partnerships</span></div>
                         <div class="career-outcomes">
                             <span class="career-outcome"><strong>$600K+</strong>influenced pipeline</span>
-                            <span class="career-outcome"><strong>90 → 5 days</strong>SDR ramp time</span>
+                            <span class="career-outcome"><strong>90 → 5 days</strong>SDR onboarding and certification</span>
                             <span class="career-outcome"><strong>8 hires</strong>first GTM team buildout</span>
                             <span class="career-outcome"><strong>$100K+</strong>enterprise opportunities</span>
                         </div>
@@ -1197,7 +1173,7 @@
                         <div class="career-outcomes">
                             <span class="career-outcome"><strong>125%</strong>response-rate lift</span>
                             <span class="career-outcome"><strong>12%</strong>churn reduction</span>
-                            <span class="career-outcome"><strong>3× promoted</strong>into global leadership</span>
+                            <span class="career-outcome"><strong>Promoted 3 times</strong>into global leadership</span>
                             <span class="career-outcome"><strong>Full-funnel</strong>attribution and analytics</span>
                         </div>
                         <a class="career-link" href="/resume.html">Résumé</a>
@@ -1307,13 +1283,6 @@
                     </figcaption>
                 </figure>
 
-                <div class="system-loop reveal" aria-label="Basin Nexus operating loop">
-                    <div class="loop-step"><strong>Capture</strong><span>Market movement and relationship context</span></div>
-                    <div class="loop-step"><strong>Interpret</strong><span>Urgency, fit, trust, and timing</span></div>
-                    <div class="loop-step"><strong>Package</strong><span>Proof in the buyer's language</span></div>
-                    <div class="loop-step"><strong>Route</strong><span>Owner, next action, and date</span></div>
-                    <div class="loop-step"><strong>Learn</strong><span>Replies, objections, and deal movement</span></div>
-                </div>
             </div>
         </section>
 
