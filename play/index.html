@@ -1772,7 +1772,7 @@ function submitLeadCapture(event) {
     leads.push(lead);
     saveLeadLedger(leads);
     recordSimAction('lead', { summary: `Intent captured: ${lead.intent}.`, clarity: levers.clarity, success: true });
-    if (statusEl) statusEl.textContent = `SAVED · OPENING EMAIL TO ${GTM_INBOX.toUpperCase()}`;
+    if (statusEl) statusEl.textContent = `SAVED · OPENING GMAIL TO ${GTM_INBOX.toUpperCase()}`;
     if (roleEl) roleEl.value = '';
     emailLeadPacket();
 }
@@ -1792,9 +1792,9 @@ function copyLeadPacket() {
 function emailLeadPacket() {
     const packet = buildLeadPacket();
     const statusEl = document.getElementById('lead-status');
-    if (statusEl) statusEl.textContent = 'OPENING EMAIL PACKET';
-    const mailtoUrl = `mailto:${GTM_INBOX}?subject=${encodeURIComponent('THE GAME lead packet')}&body=${encodeURIComponent(packet)}`;
-    window.open(mailtoUrl, '_self');
+    if (statusEl) statusEl.textContent = 'OPENING GMAIL PACKET';
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(GTM_INBOX)}&su=${encodeURIComponent('THE GAME lead packet')}&body=${encodeURIComponent(packet)}`;
+    window.location.assign(gmailUrl);
 }
 
 function exportLeadsCsv() {

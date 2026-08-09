@@ -237,7 +237,7 @@ def conversation(c):
     c.setFont("Times-Roman", 17)
     c.drawString(MARGIN, y, "lbasin23@gmail.com")
     c.drawRightString(W - MARGIN, y, "basinleon.github.io")
-    c.linkURL("mailto:lbasin23@gmail.com?subject=GTM%20diagnostic", (MARGIN, y - 5, MARGIN + 170, y + 18), relative=0)
+    c.linkURL("https://basinleon.github.io/work-with-me/?subject=GTM%20diagnostic#contact", (MARGIN, y - 5, MARGIN + 170, y + 18), relative=0)
     c.linkURL("https://basinleon.github.io/work-with-me/", (W - MARGIN - 160, y - 5, W - MARGIN, y + 18), relative=0)
     footer(c)
     c.showPage()

@@ -68,4 +68,4 @@ Connect:
 - [LinkedIn](https://linkedin.com/in/leonbasin)
 - [Portfolio](https://basinleon.github.io)
 - [Case Studies](https://basinleon.github.io/case-studies/)
-- [Email](mailto:lbasin23@gmail.com)
+- [Email](/work-with-me/?subject=Leon%20Basin%20Intro#contact)

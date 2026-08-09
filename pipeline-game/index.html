@@ -1320,14 +1320,14 @@ function submitLeadCapture(event) {
     state.archive = [{ month: archiveMonth(), label: "FIELD NOTES REQUEST", text: `${intent} · ${identity || email}` }, ...state.archive].slice(0, 16);
     save();
     renderArchive();
-    status.textContent = `Saved locally. Opening email packet to ${GTM_INBOX}.`;
+    status.textContent = `Saved locally. Opening Gmail packet to ${GTM_INBOX}.`;
     emailLeadPacket(lead);
 }
 
 function emailLeadPacket(lead = null) {
     const packet = buildLeadPacket(lead);
-    const mailtoUrl = `mailto:${GTM_INBOX}?subject=${encodeURIComponent("Pipeline Game field notes lead")}&body=${encodeURIComponent(packet)}`;
-    window.open(mailtoUrl, "_self");
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(GTM_INBOX)}&su=${encodeURIComponent("Pipeline Game field notes lead")}&body=${encodeURIComponent(packet)}`;
+    window.location.assign(gmailUrl);
 }
 
 function copyLeadPacket() {

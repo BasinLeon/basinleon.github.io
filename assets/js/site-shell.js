@@ -45,7 +45,7 @@
         <button class="lb-site-menu-toggle" type="button" aria-expanded="false" aria-controls="lb-site-links">Menu</button>
         <nav class="lb-site-links" id="lb-site-links" aria-label="Primary navigation" data-open="false">
           ${navItems.map(([key, label, href]) => `<a href="${href}"${section === key ? ' aria-current="page"' : ''}>${label}</a>`).join('')}
-          <a class="lb-site-contact" href="mailto:lbasin23@gmail.com?subject=Leon%20Basin%20Intro">Contact</a>
+          <a class="lb-site-contact" href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Contact</a>
         </nav>
       </div>`;
 
@@ -84,7 +84,7 @@
         <div class="lb-site-footer-kicker">Next conversation</div>
         <h2>Make the system legible.</h2>
         <div class="lb-site-footer-actions">
-          <a href="mailto:lbasin23@gmail.com?subject=Leon%20Basin%20Intro">Write to Leon</a>
+          <a href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Write to Leon</a>
           <a href="/case-studies/">Review proof</a>
           <a href="/basin-nexus/">Inspect systems</a>
         </div>

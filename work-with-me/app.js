@@ -41,6 +41,27 @@
   }
 
   const copyButton = document.querySelector('.copy-email');
+
+  const contactParams = new URLSearchParams(window.location.search);
+  const contactSubject = (contactParams.get('subject') || 'Leon Basin conversation').slice(0, 160);
+  const contactBody = (contactParams.get('body') || 'Company:\nBroken motion:\nWhat success must change:').slice(0, 4000);
+  const gmailLink = document.querySelector('[data-track="Contact: open Gmail"]');
+  const emailAppLinks = document.querySelectorAll('a[href^="mailto:lbasin23@gmail.com"]');
+
+  if (gmailLink) {
+    const gmailUrl = new URL('https://mail.google.com/mail/');
+    gmailUrl.searchParams.set('view', 'cm');
+    gmailUrl.searchParams.set('fs', '1');
+    gmailUrl.searchParams.set('to', 'lbasin23@gmail.com');
+    gmailUrl.searchParams.set('su', contactSubject);
+    gmailUrl.searchParams.set('body', contactBody);
+    gmailLink.href = gmailUrl.toString();
+  }
+
+  emailAppLinks.forEach((link) => {
+    link.href = `mailto:lbasin23@gmail.com?subject=${encodeURIComponent(contactSubject)}&body=${encodeURIComponent(contactBody)}`;
+  });
+
   if (copyButton) {
     copyButton.addEventListener('click', async () => {
       const email = copyButton.dataset.email || '';
