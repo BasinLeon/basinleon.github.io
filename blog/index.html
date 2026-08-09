@@ -320,7 +320,7 @@
         }
 
         .featured-section {
-            padding: clamp(5.5rem, 10vw, 9rem) 0;
+            padding: clamp(4.25rem, 7vw, 6.5rem) 0;
             background: var(--paper);
             color: var(--ink);
         }
@@ -328,7 +328,7 @@
             display: grid;
             grid-template-columns: minmax(140px, 0.42fr) minmax(0, 1.58fr);
             gap: clamp(1.5rem, 4vw, 4rem);
-            margin-bottom: clamp(3.5rem, 7vw, 6rem);
+            margin-bottom: clamp(2.5rem, 4vw, 3.75rem);
         }
         .section-index { padding-top: 0.65rem; color: var(--muted-dark); }
         .section-heading h2 {
@@ -445,6 +445,17 @@
         }
         .start-entry:hover h3,
         .start-entry:focus-visible h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.28rem; }
+        .archive-invite {
+            min-height: 88px;
+            padding: 1.35rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            border-bottom: 1px solid var(--line-light);
+            color: var(--muted-dark);
+        }
+        .archive-invite p { margin: 0; }
         .text-link {
             display: inline-flex;
             align-items: center;
@@ -482,13 +493,6 @@
         .reading-path + .reading-path { padding-left: clamp(1rem, 2.8vw, 2.5rem); }
         .reading-path:last-child { border-right: 0; }
         .path-index { margin-bottom: auto; color: var(--gold); }
-        .path-count {
-            display: block;
-            margin-top: 0.5rem;
-            color: #817c72;
-            font: 500 0.62rem "JetBrains Mono", monospace;
-            letter-spacing: 0.05em;
-        }
         .reading-path h3 { margin: 3rem 0 0.8rem; font-size: clamp(1.8rem, 3.3vw, 3.3rem); line-height: 0.98; letter-spacing: -0.055em; }
         .reading-path p { max-width: 330px; margin: 0; color: var(--muted-light); }
         .reading-path::after { content: "Explore ↗"; margin-top: 1.6rem; color: var(--gold-bright); font-size: 0.8rem; font-weight: 700; }
@@ -766,13 +770,11 @@
             <a class="brand" href="/" aria-label="Leon Basin home">LEON <span>BASIN</span></a>
             <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links" aria-label="Open menu"><span></span></button>
             <div class="nav-links" id="primary-links">
-                <a href="/case-studies/">Case studies</a>
-                <a href="https://basinleon.github.io/basin-nexus/">Basin::Nexus</a>
+                <a href="/case-studies/">Work</a>
+                <a href="/basin-nexus/">Nexus</a>
                 <a aria-current="page" href="/blog/">Writing</a>
                 <a href="/blog/fiction/">Fiction</a>
-                <a href="/blog/rss.xml">RSS</a>
-                <a href="/library/">Frameworks</a>
-                <a class="nav-cta" href="/work-with-me/">Work with Leon</a>
+                <a class="nav-cta" href="/work-with-me/">Contact</a>
             </div>
         </nav>
     </header>
@@ -782,7 +784,7 @@
             <!-- Photo: Artem Podrez / Pexels, photo 8518728. -->
             <img class="hero-art" src="/assets/img/archive-writing-photo-1600.jpg" srcset="/assets/img/archive-writing-photo-960.jpg 960w, /assets/img/archive-writing-photo-1600.jpg 1600w" sizes="100vw" alt="Hands writing notes in a paper notebook" width="1600" height="900" fetchpriority="high" decoding="async">
             <div class="hero-inner">
-                <div class="eyebrow"><span id="hero-post-count">95</span> essays · field notes · stories</div>
+                <div class="eyebrow">Selected essays · field notes · stories</div>
                 <h1 id="hero-title">The Archive</h1>
                 <div class="hero-subtitle">Notes from the operating edge.</div>
                 <p class="hero-lede">Revenue systems, artificial intelligence, leadership, memory, and the judgment the dashboards leave out.</p>
@@ -828,12 +830,16 @@
                             <h3>How I Rebuilt a Manual SDR Workflow</h3>
                             <p>The decisions and operating systems behind a measurable commercial workflow redesign.</p>
                         </a>
-                        <a class="start-entry" href="posts/the-archivist-letter-004.html">
-                            <span class="start-entry-label">Fiction / The Archivist</span>
-                            <h3>Letter Found Between Two Notebooks</h3>
-                            <p>Sam finds the missing fourth letter and learns what an archive is meant to carry forward.</p>
+                        <a class="start-entry" href="posts/sam-ink-note-in-the-other-room.html">
+                            <span class="start-entry-label">Fiction / Sam &amp; Ink</span>
+                            <h3>The Note in the Other Room</h3>
+                            <p>A piano answers from across the room. The recording keeps only the louder note.</p>
                         </a>
                     </div>
+                </div>
+                <div class="archive-invite reveal">
+                    <p>If one of these stays with you, the next piece can find you.</p>
+                    <a class="text-link" href="https://basinandassociates.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe to the Dispatch</a>
                 </div>
             </div>
         </section>
@@ -851,25 +857,21 @@
                 <div class="reading-paths reveal">
                     <a class="reading-path" href="#catalog" data-start-filter="operator">
                         <div class="path-index">01 / Operator</div>
-                        <span class="path-count" data-path-count="operator">Counting pages</span>
                         <h3>Revenue under pressure.</h3>
                         <p>GTM systems, signal quality, market entry, pipeline architecture, sales, and leadership.</p>
                     </a>
                     <a class="reading-path" href="#catalog" data-start-filter="builder">
                         <div class="path-index">02 / Builder</div>
-                        <span class="path-count" data-path-count="builder">Counting pages</span>
                         <h3>The machine beneath the method.</h3>
                         <p>Artificial intelligence, Python, agent systems, experiments, interfaces, and code.</p>
                     </a>
                     <a class="reading-path" href="#catalog" data-start-filter="human">
                         <div class="path-index">03 / Human</div>
-                        <span class="path-count" data-path-count="human">Counting pages</span>
                         <h3>The observer beneath the systems.</h3>
                         <p>Memory, silence, philosophy, family, imagination, and the stories that resist optimization.</p>
                     </a>
                     <a class="reading-path" href="/blog/fiction/">
                         <div class="path-index">04 / Fiction</div>
-                        <span class="path-count" data-path-count="fiction">Counting stories</span>
                         <h3>Enter the fiction room.</h3>
                         <p>Sam &amp; Ink, The Archivist, complete stories, recovered letters, and Silicon Valley folklore.</p>
                     </a>
@@ -880,10 +882,10 @@
         <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
             <div class="section-shell">
                 <div class="section-intro reveal">
-                    <div class="section-index">03 / All writing</div>
+                    <div class="section-index">03 / Selected and complete</div>
                     <div class="section-heading">
-                        <h2 id="catalog-title">Search the complete archive.</h2>
-                        <p>Search by title, subject, company, idea, or phrase. Press / anywhere on the page to begin.</p>
+                        <h2 id="catalog-title">Begin with the essentials.</h2>
+                        <p>Twelve pieces give you the clearest view of the work. Switch to All for the complete archive, or search by title, subject, company, idea, or phrase.</p>
                     </div>
                 </div>
 
@@ -892,17 +894,17 @@
                         <input class="search-input" id="archive-search" type="search" placeholder="Title, idea, or phrase" autocomplete="off">
                     </label>
                     <div class="filters" role="group" aria-label="Filter archive by reading path">
-                        <button class="filter-button active" type="button" data-filter="all">All<span class="filter-count" data-filter-count="all">96</span></button>
+                        <button class="filter-button active" type="button" data-filter="essential">Essential<span class="filter-count" data-filter-count="essential">12</span></button>
+                        <button class="filter-button" type="button" data-filter="all">All<span class="filter-count" data-filter-count="all">96</span></button>
                         <button class="filter-button" type="button" data-filter="operator">Operator<span class="filter-count" data-filter-count="operator">··</span></button>
                         <button class="filter-button" type="button" data-filter="builder">Builder<span class="filter-count" data-filter-count="builder">··</span></button>
                         <button class="filter-button" type="button" data-filter="human">Human<span class="filter-count" data-filter-count="human">··</span></button>
                         <button class="filter-button" type="button" data-filter="fiction">Fiction<span class="filter-count" data-filter-count="fiction">··</span></button>
-                        <button class="filter-button" type="button" data-filter="security">Security<span class="filter-count" data-filter-count="security">··</span></button>
                     </div>
                 </div>
 
                 <div class="catalog-status" aria-live="polite">
-                    <span class="catalog-count" id="catalog-count">Showing 7 of 95 entries</span>
+                    <span class="catalog-count" id="catalog-count">Showing 7 essential entries</span>
                     <a class="text-link" href="rss.xml">Follow via RSS</a>
                 </div>
 
@@ -996,19 +998,32 @@
             const searchInput = document.getElementById('archive-search');
             const filterButtons = [...document.querySelectorAll('.filter-button')];
             const pathLinks = [...document.querySelectorAll('[data-start-filter]')];
-            const pathCounts = [...document.querySelectorAll('[data-path-count]')];
             const filterCounts = [...document.querySelectorAll('[data-filter-count]')];
             let allPosts = [];
-            let currentFilter = 'all';
+            let currentFilter = 'essential';
             let query = '';
             let visibleCount = 12;
+
+            const essentialUrls = new Set([
+                'posts/sam-ink-note-in-the-other-room.html',
+                'posts/the-souls-algorithm-fallow-year.html',
+                'posts/how-i-replaced-10-sdrs.html',
+                'posts/the-archive-was-empty.html',
+                'posts/architecture-of-the-inward-machine.html',
+                'posts/the-silence-architect.html',
+                'posts/stop-selling-start-architecting-rise-of-gtm-engineer.html',
+                'posts/gtm-systemization-framework.html',
+                'posts/architecture-of-revenue.html',
+                'posts/system-finds-the-role.html',
+                'posts/revenue-is-not-math.html',
+                'posts/interview-as-architecture.html'
+            ]);
 
             const lanes = {
                 operator: ['gtm', 'revenue', 'sales', 'pipeline', 'business', 'leadership', 'market', 'career', 'account'],
                 builder: ['ai', 'artificial intelligence', 'python', 'technology', 'agent', 'automation', 'code', 'github', 'build'],
                 human: ['writing', 'memory', 'creative', 'philosophy', 'silence', 'labyrinth', 'story', 'fiction', 'parenthood', 'inner'],
-                fiction: ['fiction', 'sam & ink', 'the archivist', 'novella', 'short story', 'folklore'],
-                security: ['cyber', 'security', 'zero trust', 'pam', 'tprm', 'compliance']
+                fiction: ['fiction', 'sam & ink', 'the archivist', 'novella', 'short story', 'folklore']
             };
 
             function postText(post) {
@@ -1017,6 +1032,7 @@
 
             function matchesLane(post, lane) {
                 if (lane === 'all') return true;
+                if (lane === 'essential') return essentialUrls.has(String(post.url).replace(/^\/blog\//, ''));
                 if (lane === 'fiction' && String(post.category).toLowerCase() === 'fiction') return true;
                 const text = postText(post);
                 return (lanes[lane] || []).some(term => text.includes(term));
@@ -1025,7 +1041,6 @@
             function getLane(post) {
                 const text = postText(post);
                 if (matchesLane(post, 'fiction')) return 'Fiction';
-                if (lanes.security.some(term => text.includes(term))) return 'Security';
                 if (lanes.human.some(term => text.includes(term))) return 'Human';
                 if (lanes.builder.some(term => text.includes(term))) return 'Builder';
                 return 'Operator';
@@ -1052,7 +1067,10 @@
                 meta.className = 'catalog-meta';
                 meta.append(document.createTextNode(formatDate(post.date)));
                 meta.append(document.createElement('br'));
-                meta.append(document.createTextNode(getLane(post)));
+                const selectedLane = ['operator', 'builder', 'human', 'fiction'].includes(currentFilter)
+                    ? currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)
+                    : getLane(post);
+                meta.append(document.createTextNode(selectedLane));
 
                 const title = document.createElement('h3');
                 title.textContent = post.title;
@@ -1079,10 +1097,6 @@
                     ? allPosts.length
                     : allPosts.filter(post => matchesLane(post, lane)).length;
                 filterCounts.forEach(node => { node.textContent = countFor(node.dataset.filterCount); });
-                pathCounts.forEach(node => {
-                    const total = countFor(node.dataset.pathCount);
-                    node.textContent = `${total} ${node.dataset.pathCount === 'fiction' ? 'stories' : 'pages'}`;
-                });
             }
 
             function setFilter(filter) {
@@ -1175,7 +1189,6 @@
                     allPosts = posts
                         .filter(post => post.url && post.url !== '#')
                         .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-                    document.getElementById('hero-post-count').textContent = allPosts.length;
                     updateLaneCounts();
                     setFilter(currentFilter);
                 })

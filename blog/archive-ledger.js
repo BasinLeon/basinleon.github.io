@@ -33,11 +33,34 @@
     state.visits += 1;
   }
 
+  const isStoryLink = (link) => link?.matches('a[href*="/blog/posts/"], a[href^="posts/"]');
+  const labelFor = (link) => {
+    const container = link.closest("article, .chapter, .shelf-item, .archive-record, .catalog-row");
+    return container?.querySelector("h2, h3, strong")?.textContent.trim()
+      || link.getAttribute("aria-label")?.replace(/^Read\s+/i, "")
+      || link.textContent.trim()
+      || "the last page";
+  };
+
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a");
+    if (!isStoryLink(link)) return;
+    const href = new URL(link.href, location.href).pathname;
+    state.opened = [...new Set([...state.opened, href])];
+    state.recent = { href, title: labelFor(link) };
+    writeState(state);
+  });
+
+  if (!state.recent?.href) {
+    mount.hidden = true;
+    return;
+  }
+
   const styles = document.createElement("style");
   styles.textContent = `
     .archive-ledger{background:#0c0c0b;color:#f3efe6;border-bottom:1px solid rgba(255,255,255,.14)}
     .archive-ledger__inner{width:min(1240px,calc(100% - 64px));margin:0 auto;padding:1.15rem 0}
-    .archive-ledger__bar{width:100%;display:grid;grid-template-columns:1fr auto auto auto;gap:1.5rem;align-items:center;border:0;background:none;color:inherit;padding:0;text-align:left;cursor:pointer;font:inherit}
+    .archive-ledger__bar{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:1.5rem;align-items:center;border:0;background:none;color:inherit;padding:0;text-align:left;cursor:pointer;font:inherit}
     .archive-ledger__label,.archive-ledger__stat small{font-size:.68rem;letter-spacing:.17em;text-transform:uppercase}
     .archive-ledger__label{color:#e1b345}
     .archive-ledger__stat{display:flex;align-items:baseline;gap:.5rem;color:#f3efe6}
@@ -67,13 +90,12 @@
   mount.innerHTML = `
     <div class="archive-ledger__inner">
       <button class="archive-ledger__bar" type="button" aria-expanded="false" aria-controls="archive-ledger-panel">
-        <span class="archive-ledger__label">Your reading ledger</span>
-        <span class="archive-ledger__stat"><strong data-ledger-visits>00</strong><small>visits</small></span>
+        <span class="archive-ledger__label">Continue reading</span>
         <span class="archive-ledger__stat"><strong data-ledger-opened>00</strong><small>opened</small></span>
         <span class="archive-ledger__mark" aria-hidden="true">+</span>
       </button>
       <div class="archive-ledger__panel" id="archive-ledger-panel" hidden>
-        <p>This is a private counter stored only in this browser. It remembers rooms entered and stories opened so you can find your way back. It is not a public traffic claim.</p>
+        <p>Your last page and reading history are stored only in this browser so you can find your way back.</p>
         <div class="archive-ledger__actions">
           <a class="archive-ledger__action" data-ledger-continue hidden>Continue reading</a>
           <button class="archive-ledger__action" type="button" data-ledger-random>Open a random page</button>
@@ -83,14 +105,12 @@
     </div>
   `;
 
-  const visits = mount.querySelector("[data-ledger-visits]");
   const opened = mount.querySelector("[data-ledger-opened]");
   const continueLink = mount.querySelector("[data-ledger-continue]");
   const panel = mount.querySelector("#archive-ledger-panel");
   const toggle = mount.querySelector(".archive-ledger__bar");
 
   const render = () => {
-    visits.textContent = String(state.visits).padStart(2, "0");
     opened.textContent = String(state.opened.length).padStart(2, "0");
     if (state.recent?.href) {
       continueLink.hidden = false;
@@ -101,24 +121,6 @@
     }
   };
 
-  const storyLinks = [...document.querySelectorAll('main a[href*="/blog/posts/"], main a[href^="posts/"]')];
-  const labelFor = (link) => {
-    const container = link.closest("article, .chapter, .shelf-item, .archive-record, .catalog-row");
-    return container?.querySelector("h2, h3, strong")?.textContent.trim()
-      || link.getAttribute("aria-label")?.replace(/^Read\s+/i, "")
-      || link.textContent.trim()
-      || "the last page";
-  };
-
-  storyLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      const href = new URL(link.href, location.href).pathname;
-      state.opened = [...new Set([...state.opened, href])];
-      state.recent = { href, title: labelFor(link) };
-      writeState(state);
-    });
-  });
-
   toggle.addEventListener("click", () => {
     const expanded = toggle.getAttribute("aria-expanded") === "true";
     toggle.setAttribute("aria-expanded", String(!expanded));
@@ -126,6 +128,7 @@
   });
 
   mount.querySelector("[data-ledger-random]").addEventListener("click", () => {
+    const storyLinks = [...document.querySelectorAll('main a[href*="/blog/posts/"], main a[href^="posts/"]')];
     if (!storyLinks.length) return;
     storyLinks[Math.floor(Math.random() * storyLinks.length)].click();
   });
@@ -133,7 +136,7 @@
   mount.querySelector("[data-ledger-clear]").addEventListener("click", () => {
     state = { visits: 1, opened: [], recent: null };
     writeState(state);
-    render();
+    mount.remove();
   });
 
   render();
