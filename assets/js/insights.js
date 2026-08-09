@@ -22,13 +22,14 @@
   const endpoint = (
     document.querySelector('meta[name="lb-insights-endpoint"]')?.content ||
     window.LB_INSIGHTS_ENDPOINT ||
-    ""
+    "https://basin-site-insights.basin-site-insights.workers.dev/v1/event"
   ).trim();
   const source = body.dataset.lbSection || body.dataset.lbPage || "site";
   const page = cleanPath(location.href);
   const referrer = safeHost(document.referrer);
   const campaign = readCampaign();
   const sessionId = getSessionId();
+  const visitorId = getVisitorId();
   const sentDepths = new Set();
   let activeSeconds = 0;
   let lastTick = Date.now();
@@ -81,6 +82,30 @@
     }
   }
 
+  function getVisitorId() {
+    const key = "lb:insights:visitor:v1";
+    const createdKey = "lb:insights:visitor-created:v1";
+    const maxAge = 90 * 24 * 60 * 60 * 1000;
+    try {
+      let value = localStorage.getItem(key);
+      let created = Number(localStorage.getItem(createdKey) || 0);
+      if (value && !created) {
+        created = Date.now();
+        localStorage.setItem(createdKey, String(created));
+      }
+      if (!value || Date.now() - created > maxAge) {
+        value = crypto.randomUUID
+          ? crypto.randomUUID()
+          : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+        localStorage.setItem(key, value);
+        localStorage.setItem(createdKey, String(Date.now()));
+      }
+      return value;
+    } catch (_) {
+      return sessionId;
+    }
+  }
+
   function ensurePlausible() {
     window.plausible = window.plausible || function () {
       (window.plausible.q = window.plausible.q || []).push(arguments);
@@ -110,6 +135,7 @@
       source,
       referrer,
       session: sessionId,
+      visitor: visitorId,
       campaign,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
       language: navigator.language || "",
@@ -178,6 +204,36 @@
     };
   }
 
+  function conversionDetail(link, click) {
+    const path = click.detail.destination || "";
+    const label = click.detail.label.toLowerCase();
+    let category = "";
+    let action = "";
+
+    if (["Email Click", "Phone Click"].includes(click.type)) {
+      category = "Commercial intent";
+      action = click.type === "Email Click" ? "email" : "phone";
+    } else if (/resume|case-stud|availability|work-with-me/.test(`${path} ${label}`)) {
+      category = "Commercial intent";
+      action = "commercial-proof";
+    } else if (/basin-nexus|nexus|system|tools?/.test(`${path} ${label}`)) {
+      category = "Operating interest";
+      action = "system";
+    } else if (/blog|writing|fiction|archive|essay|dispatch|substack|subscribe/.test(`${path} ${label}`)) {
+      category = "Reader interest";
+      action = "read";
+    }
+
+    if (!category) return null;
+    return {
+      category,
+      action,
+      destination: path,
+      label: click.detail.label,
+      region: click.detail.region
+    };
+  }
+
   function updateActiveTime() {
     const now = Date.now();
     const elapsed = Math.min(2, Math.max(0, (now - lastTick) / 1000));
@@ -208,6 +264,8 @@
     if (!link) return;
     const item = clickDetail(link);
     record(item.type, item.detail, { beacon: true });
+    const conversion = conversionDetail(link, item);
+    if (conversion) record("Conversion", conversion, { beacon: true });
   }, { capture: true });
 
   let scrollQueued = false;

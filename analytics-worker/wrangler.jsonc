@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "basin-site-insights",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-08",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/v1/*", "/health"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "basin-site-insights",
+      "database_id": "d25b001e-9fed-495d-a5a0-8a976488438a",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["17 3 * * *"]
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://basinleon.github.io,http://localhost:4173,http://localhost:5173,http://127.0.0.1:4173,http://127.0.0.1:5173",
+    "RETENTION_DAYS": "90"
+  }
+}

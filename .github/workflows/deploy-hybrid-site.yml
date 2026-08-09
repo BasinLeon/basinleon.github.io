@@ -36,7 +36,7 @@ jobs:
       - name: Build Root Site (Static)
         run: |
           # Sync all root files to _site, excluding the docs source, .git, and _site itself
-          rsync -av --exclude='.git' --exclude='.github' --exclude='docs' --exclude='_site' --exclude='node_modules' ./ ./_site/
+          rsync -av --exclude='.git' --exclude='.github' --exclude='docs' --exclude='_site' --exclude='node_modules' --exclude='analytics-worker' ./ ./_site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
