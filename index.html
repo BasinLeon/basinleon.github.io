@@ -774,6 +774,42 @@
             letter-spacing: -0.045em;
         }
         .system-caption p { margin: 0; color: var(--muted-light); }
+        .system-proof {
+            margin-top: clamp(3rem, 6vw, 5rem);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            border-top: 1px solid var(--line-dark);
+            border-bottom: 1px solid var(--line-dark);
+        }
+        .system-proof-item {
+            min-height: 210px;
+            padding: 1.8rem clamp(1rem, 2.6vw, 2.4rem) 1.8rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid var(--line-dark);
+        }
+        .system-proof-item + .system-proof-item { padding-left: clamp(1rem, 2.6vw, 2.4rem); }
+        .system-proof-item:last-child { border-right: 0; }
+        .system-proof-item small {
+            color: var(--gold);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+        }
+        .system-proof-item strong {
+            display: block;
+            margin: 2.4rem 0 0.65rem;
+            color: var(--white);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(2.2rem, 4.6vw, 4.8rem);
+            font-weight: 600;
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+        }
+        .system-proof-item p { max-width: 290px; margin: 0; color: var(--muted-light); font-size: 0.88rem; }
         .writing-section {
             padding: clamp(5.5rem, 11vw, 10rem) 0;
             background: var(--paper);
@@ -957,6 +993,16 @@
             .career-row { grid-template-columns: 100px minmax(0, 1fr) auto; }
             .career-outcomes { grid-column: 2 / -1; }
             .system-caption { align-items: flex-start; flex-direction: column; }
+            .system-proof { grid-template-columns: 1fr; }
+            .system-proof-item,
+            .system-proof-item + .system-proof-item {
+                min-height: 0;
+                padding: 1.6rem 0;
+                border-right: 0;
+                border-bottom: 1px solid var(--line-dark);
+            }
+            .system-proof-item:last-child { border-bottom: 0; }
+            .system-proof-item strong { margin-top: 1.5rem; }
             .system-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .system-map-stage:not(:last-child)::after { display: none; }
             .writing-row { grid-template-columns: 120px minmax(0,1fr) auto; }
@@ -1171,8 +1217,8 @@
                         <div class="career-years">2021-23</div>
                         <div class="career-meta"><strong>Sense</strong><span>Group Manager · Global Business Development</span></div>
                         <div class="career-outcomes">
-                            <span class="career-outcome"><strong>125%</strong>response-rate lift</span>
-                            <span class="career-outcome"><strong>12%</strong>churn reduction</span>
+                            <span class="career-outcome"><strong>$10M+</strong>qualified pipeline supported</span>
+                            <span class="career-outcome"><strong>12%</strong>churn reduction, with behavioral risk alerts contributing</span>
                             <span class="career-outcome"><strong>Promoted 3 times</strong>into global leadership</span>
                             <span class="career-outcome"><strong>Full-funnel</strong>attribution and analytics</span>
                         </div>
@@ -1190,7 +1236,7 @@
                     </article>
 
                     <details class="career-history reveal">
-                        <summary>Open the earlier chapters <span>Sanho / Hyper · Google · Hewlett Packard · selected builds</span></summary>
+                        <summary>Open the earlier chapters <span>Sanho / Hyper · Google · Hewlett Packard</span></summary>
 
                     <article class="career-row">
                         <div class="career-years">2015-19</div>
@@ -1221,27 +1267,6 @@
                         <a class="career-link" href="/resume.html">Résumé</a>
                     </article>
 
-                    <article class="career-row">
-                        <div class="career-years">Selected builds</div>
-                        <div class="career-meta"><strong>Fractional systems</strong><span>TalSmart · MockThatInterview · Braintrust</span></div>
-                        <div class="career-outcomes">
-                            <span class="career-outcome"><strong>30% → 90%</strong>acceptance rate</span>
-                            <span class="career-outcome"><strong>7-10% to 28%</strong>active response</span>
-                            <span class="career-outcome"><strong>60%+</strong>manual ops reduction</span>
-                            <span class="career-outcome"><strong>10K+</strong>record-scale routing</span>
-                        </div>
-                        <a class="career-link" href="/resume.html">Résumé</a>
-                    </article>
-
-                    <article class="career-row">
-                        <div class="career-years">System proof</div>
-                        <div class="career-meta"><strong>Project::Aurora</strong><span>Research and intent operations</span></div>
-                        <div class="career-outcomes">
-                            <span class="career-outcome"><strong>92%</strong>evaluated intent accuracy</span>
-                            <span class="career-outcome"><strong>≈4×</strong>research throughput</span>
-                        </div>
-                        <a class="career-link" data-track="Homepage: Aurora proof" href="/gtm-execution-proof.html">Proof</a>
-                    </article>
                     </details>
 
                     <div class="proof-links reveal">
@@ -1282,6 +1307,21 @@
                         <a class="button button-gold" href="/basin-nexus/">Inspect the system</a>
                     </figcaption>
                 </figure>
+
+                <div class="system-proof reveal" aria-label="Anonymized Basin Nexus operating proof">
+                    <article class="system-proof-item">
+                        <small>Controlled workflow comparison</small>
+                        <div><strong>3.4×</strong><p>Verified contact coverage, from 36 manually sourced contacts to 121 email-verified contacts.</p></div>
+                    </article>
+                    <article class="system-proof-item">
+                        <small>Pipeline audit</small>
+                        <div><strong>8 deals</strong><p>Missing closed-lost records surfaced before account reactivation work began.</p></div>
+                    </article>
+                    <article class="system-proof-item">
+                        <small>One verification sweep</small>
+                        <div><strong>3 of 9</strong><p>Accounts with material premise or data errors caught before outreach.</p></div>
+                    </article>
+                </div>
 
             </div>
         </section>
