@@ -542,6 +542,121 @@
         .tool-row:hover .tool-arrow,
         .tool-row:focus-visible .tool-arrow { transform: translate(4px, 4px); }
 
+        .stack-doctrine {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(5.5rem, 10vw, 10rem) 0;
+            background: var(--paper);
+            color: var(--ink);
+        }
+        .stack-doctrine::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: .34;
+            background-image:
+                linear-gradient(rgba(7,7,6,.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(7,7,6,.07) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+        }
+        .stack-doctrine .section-shell { position: relative; }
+        .stack-heading {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+            align-items: end;
+            gap: clamp(2.5rem, 7vw, 7rem);
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+        }
+        .stack-heading .eyebrow { color: #b67d10; }
+        .stack-title {
+            max-width: 900px;
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(3rem, 6.5vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -.07em;
+            line-height: .92;
+        }
+        .stack-lede {
+            max-width: 510px;
+            margin: 0 0 .35rem;
+            color: var(--muted-dark);
+            font-size: clamp(1rem, 1.45vw, 1.18rem);
+        }
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            border-top: 1px solid var(--line-light);
+            border-left: 1px solid var(--line-light);
+            background: rgba(255,253,248,.6);
+        }
+        .stack-card {
+            min-height: 310px;
+            padding: clamp(1.5rem, 3vw, 2.6rem);
+            border-right: 1px solid var(--line-light);
+            border-bottom: 1px solid var(--line-light);
+        }
+        .stack-card-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 0 0 1.7rem;
+            color: #b67d10;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .6rem;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+        .stack-card-label span {
+            color: var(--muted-dark);
+            font-size: .52rem;
+            letter-spacing: .1em;
+        }
+        .stack-card h3 {
+            margin: 0;
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: clamp(1.6rem, 2.4vw, 2.35rem);
+            font-weight: 800;
+            letter-spacing: -.045em;
+            line-height: 1.02;
+        }
+        .stack-card p {
+            margin: 1rem 0 0;
+            color: var(--muted-dark);
+            font-size: .94rem;
+        }
+        .stack-card-tools {
+            margin-top: 1.8rem;
+            padding-top: 1.15rem;
+            border-top: 1px solid var(--line-light);
+            color: var(--muted-dark);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .57rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            line-height: 1.65;
+            text-transform: uppercase;
+        }
+        .stack-note {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: 1.1rem;
+            align-items: start;
+            margin-top: 1.5rem;
+            color: var(--muted-dark);
+            font-size: .85rem;
+        }
+        .stack-note strong {
+            color: #b67d10;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .58rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
         .field-kit {
             padding: clamp(5rem, 9vw, 9rem) 0;
             background: var(--paper-alt);
@@ -650,6 +765,8 @@
             .instrument-stage { grid-template-columns: 1fr; }
             .stage-visual { min-height: 420px; }
             .tool-row { grid-template-columns: 50px minmax(220px, .8fr) minmax(260px, 1.2fr) 30px; }
+            .stack-heading { grid-template-columns: 1fr; }
+            .stack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .kit-layout { grid-template-columns: 1fr; }
             .kit-copy { position: static; }
         }
@@ -696,6 +813,9 @@
             .library-count { margin-top: 1.5rem; }
             .tool-row { grid-template-columns: 42px 1fr 30px; min-height: 142px; }
             .tool-copy { display: none; }
+            .stack-grid { grid-template-columns: 1fr; }
+            .stack-card { min-height: 0; }
+            .stack-note { grid-template-columns: 1fr; gap: .5rem; }
             .cta-shell { grid-template-columns: 1fr; align-items: start; gap: 2.5rem; }
             .cta-action { justify-self: start; }
             .footer-shell { align-items: flex-start; flex-direction: column; padding-block: 2.2rem; }
@@ -862,6 +982,59 @@
                         <span class="tool-arrow" aria-hidden="true">↘</span>
                     </a>
                 </div>
+            </div>
+        </section>
+
+        <section class="stack-doctrine" aria-labelledby="stack-title">
+            <div class="section-shell">
+                <div class="stack-heading reveal">
+                    <div>
+                        <p class="eyebrow">Current operating stack</p>
+                        <h2 class="stack-title" id="stack-title">The stack serves the motion.</h2>
+                    </div>
+                    <p class="stack-lede">Basin::Nexus sits above the tools. Each platform gets a specific job, and judgment stays with the operator.</p>
+                </div>
+
+                <div class="stack-grid reveal">
+                    <article class="stack-card">
+                        <p class="stack-card-label">System of record <span>Current</span></p>
+                        <h3>HubSpot</h3>
+                        <p>Pipeline stages, account hierarchy, ownership, activity, reporting, and data hygiene for a live public-sector motion.</p>
+                        <div class="stack-card-tools">CRM · governance · forecasting · rep adoption</div>
+                    </article>
+                    <article class="stack-card">
+                        <p class="stack-card-label">Signal and execution <span>Current</span></p>
+                        <h3>Pursuit + Unify</h3>
+                        <p>Pursuit surfaces public-sector movement. Unify turns selected accounts into researched, sequenced execution.</p>
+                        <div class="stack-card-tools">Market signals · account research · contacts · outreach</div>
+                    </article>
+                    <article class="stack-card">
+                        <p class="stack-card-label">Reasoning and build <span>Current</span></p>
+                        <h3>Multi-model AI layer</h3>
+                        <p>Claude, Gemini, ChatGPT, Codex, and local Gemma handle research, synthesis, roleplay, drafting, verification, automation, and software work.</p>
+                        <div class="stack-card-tools">LLMs · agents · skills · implementation</div>
+                    </article>
+                    <article class="stack-card">
+                        <p class="stack-card-label">Evidence layer <span>Current</span></p>
+                        <h3>Drive + Docs + Sheets</h3>
+                        <p>Source material, account evidence, trackers, briefs, and operating memory remain inspectable by the people doing the work.</p>
+                        <div class="stack-card-tools">Evidence · analysis · briefs · operating memory</div>
+                    </article>
+                    <article class="stack-card">
+                        <p class="stack-card-label">Build bench <span>As needed</span></p>
+                        <h3>Clay + n8n + Apollo + Instantly</h3>
+                        <p>Used when the motion calls for enrichment, workflow orchestration, contact data, or disciplined scaled outbound.</p>
+                        <div class="stack-card-tools">Enrichment · automation · data · delivery</div>
+                    </article>
+                    <article class="stack-card">
+                        <p class="stack-card-label">Human channels <span>Current</span></p>
+                        <h3>Slack + LinkedIn + Zoom</h3>
+                        <p>Team decisions, relationship context, buyer conversations, and live demonstrations stay in the channels where trust is visible.</p>
+                        <div class="stack-card-tools">Collaboration · relationships · meetings · demos</div>
+                    </article>
+                </div>
+
+                <div class="stack-note reveal"><strong>The rule</strong><span>No platform gets to become the whole machine. Tools can surface, enrich, route, draft, and record. The operator still decides what matters, what is true, and what happens next.</span></div>
             </div>
         </section>
 
