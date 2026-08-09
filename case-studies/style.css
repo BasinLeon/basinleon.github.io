@@ -160,7 +160,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .record-nav-inner {
   min-height: 54px;
   display: grid;
-  grid-template-columns: 0.65fr repeat(4, 1fr);
+  grid-template-columns: 0.55fr repeat(5, 1fr);
   align-items: stretch;
   white-space: nowrap;
 }
@@ -238,6 +238,24 @@ button, a { -webkit-tap-highlight-color: transparent; }
   letter-spacing: -0.05em;
 }
 .headline-result span { max-width: 230px; margin-top: 0.8rem; color: var(--muted); font-size: 0.82rem; }
+
+.current-status {
+  min-height: 150px;
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-left: 2px solid var(--gold);
+  color: var(--gold);
+  font: 700 0.66rem/1.5 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.current-status strong { font-size: .78rem; }
+.current-status span { margin-top: .35rem; color: var(--muted); }
+.case-current { background: var(--paper-light); }
+.current-build strong { font-size: clamp(1.1rem, 2vw, 1.65rem); }
+.current-build span { font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 
 .case-detail {
   margin-top: clamp(3rem, 6vw, 5.5rem);
@@ -323,6 +341,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 960px) {
   .case-header { grid-template-columns: 110px minmax(0, 1fr); }
   .headline-result { grid-column: 2; min-height: 0; padding: 1.5rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  .current-status { grid-column: 2; min-height: 0; padding: 1.5rem 0 0; border-top: 1px solid var(--gold); border-left: 0; }
   .case-detail { grid-template-columns: 1fr; gap: 1.5rem; }
   .case-role { display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 1rem; }
   .case-role strong { margin: 0; }
@@ -351,12 +370,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-context { order: 2; }
   .hero-copy h1 { font-size: clamp(4.1rem, 18vw, 6.4rem); }
   .record-nav { top: 64px; }
-  .record-nav-inner { width: max-content; min-width: 100%; grid-template-columns: repeat(4, minmax(145px, 1fr)); }
+  .record-nav-inner { width: max-content; min-width: 100%; grid-template-columns: repeat(5, minmax(145px, 1fr)); }
   .record-nav span { display: none; }
   .record-nav a { justify-content: center; }
   .case { padding-block: 5rem; }
   .case-header { grid-template-columns: 1fr; gap: 1.5rem; }
   .headline-result { grid-column: auto; }
+  .current-status { grid-column: auto; }
   .case-title h2 { font-size: clamp(3.6rem, 16vw, 5.6rem); }
   .decision-grid { grid-template-columns: 1fr; }
   .decision-grid section { min-height: 0; padding: 1.4rem 0 1.8rem; border-left: 0; border-top: 1px solid var(--line); }

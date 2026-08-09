@@ -59,6 +59,7 @@ const staticPages = [
   { path: "/answers/", priority: "0.88", changefreq: "weekly" },
   { path: "/basin-nexus/", priority: "0.92", changefreq: "weekly" },
   { path: "/resume.html", priority: "0.75", changefreq: "monthly" },
+  { path: "/assets/downloads/leon-basin-broken-gtm-motion.pdf", priority: "0.7", changefreq: "monthly" },
 ];
 
 const staticUrlXml = staticPages
