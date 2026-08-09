@@ -934,6 +934,33 @@
         }
         .final-copy p { max-width: 620px; margin-bottom: 2rem; color: var(--muted-light); font-size: clamp(1rem, 1.7vw, 1.16rem); }
         .final-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .direct-email {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .65rem 1rem;
+            color: var(--muted-light);
+            font-size: .84rem;
+        }
+        .direct-email a {
+            color: var(--gold-bright);
+            text-underline-offset: .22em;
+        }
+        .copy-email {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--white);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: .22em;
+        }
+        .copy-email:hover,
+        .copy-email:focus-visible { color: var(--gold-bright); }
+        .copy-status { min-width: 4.5rem; color: var(--gold); }
         .button-dark { background: var(--gold); color: var(--ink); }
         .button-dark:hover,
         .button-dark:focus-visible { background: var(--gold-bright); }
@@ -1158,7 +1185,7 @@
                 <a href="#system">Nexus</a>
                 <a href="/blog/">Writing</a>
                 <a href="/blog/fiction/">Fiction</a>
-                <a class="nav-cta" href="mailto:lbasin23@gmail.com?subject=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A">Contact</a>
+                <a class="nav-cta" href="#contact">Contact</a>
             </div>
         </nav>
     </header>
@@ -1431,8 +1458,14 @@
                         <h2 id="contact-title">Bring me a real problem.</h2>
                         <p>I’m building public-sector GTM at Obvio.ai. If you are entering a complex market, rebuilding a revenue motion, or need an operator who can turn weak signals into owned action, write to me.</p>
                         <div class="final-actions">
-                            <a class="button button-dark" href="mailto:lbasin23@gmail.com?subject=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A" aria-label="Open an email to Leon Basin">Write to Leon</a>
-                            <a class="button button-line-dark" href="/work-with-me/">See availability</a>
+                            <a class="button button-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=lbasin23%40gmail.com&amp;su=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A" target="_blank" rel="noopener noreferrer" aria-label="Open a Gmail draft to Leon Basin">Open Gmail</a>
+                            <a class="button button-line-dark" href="mailto:lbasin23@gmail.com?subject=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A" aria-label="Open your email app to write to Leon Basin">Use email app</a>
+                        </div>
+                        <div class="direct-email">
+                            <span>Or write directly:</span>
+                            <a href="mailto:lbasin23@gmail.com">lbasin23@gmail.com</a>
+                            <button class="copy-email" type="button" data-email="lbasin23@gmail.com">Copy address</button>
+                            <span class="copy-status" aria-live="polite"></span>
                         </div>
                     </div>
                 </div>
@@ -1459,6 +1492,32 @@
             const toggle = document.querySelector('.menu-toggle');
             const links = document.getElementById('primary-links');
             const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const copyEmail = document.querySelector('.copy-email');
+            const copyStatus = document.querySelector('.copy-status');
+            if (copyEmail) {
+                copyEmail.addEventListener('click', async () => {
+                    const email = copyEmail.dataset.email;
+                    try {
+                        if (navigator.clipboard && window.isSecureContext) {
+                            await navigator.clipboard.writeText(email);
+                        } else {
+                            const field = document.createElement('textarea');
+                            field.value = email;
+                            field.setAttribute('readonly', '');
+                            field.style.position = 'fixed';
+                            field.style.opacity = '0';
+                            document.body.appendChild(field);
+                            field.select();
+                            document.execCommand('copy');
+                            field.remove();
+                        }
+                        copyStatus.textContent = 'Copied';
+                    } catch (error) {
+                        copyStatus.textContent = 'Select the address to copy';
+                    }
+                });
+            }
 
             if (toggle && links) {
                 const closeMenu = () => {
