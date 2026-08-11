@@ -35,8 +35,9 @@
 
   const isStoryLink = (link) => link?.matches('a[href*="/blog/posts/"], a[href^="posts/"]');
   const labelFor = (link) => {
-    const container = link.closest("article, .chapter, .shelf-item, .archive-record, .catalog-row");
-    return container?.querySelector("h2, h3, strong")?.textContent.trim()
+    const container = link.closest("article, .start-entry, .chapter, .shelf-item, .archive-record, .catalog-row");
+    return link.querySelector("h2, h3, strong")?.textContent.trim()
+      || container?.querySelector("h2, h3, strong")?.textContent.trim()
       || link.getAttribute("aria-label")?.replace(/^Read\s+/i, "")
       || link.textContent.trim()
       || "the last page";
