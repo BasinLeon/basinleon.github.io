@@ -36,4 +36,8 @@
     if (!button) return;
     copyEmail(button);
   });
+
+  document.querySelectorAll('[data-copy-email]').forEach(function (button) {
+    button.setAttribute('aria-live', 'polite');
+  });
 }());

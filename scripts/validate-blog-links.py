@@ -8,10 +8,11 @@ Checks internal links and HTML fragments across the public site.
 import re
 import sys
 import os
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-IGNORED_DIRS = {'.git', 'node_modules', 'publishing'}
+IGNORED_DIRS = {'.git', 'node_modules', 'publishing', 'analytics-worker'}
 
 
 def iter_public_files(repo_root):
@@ -245,6 +246,62 @@ def validate_fragments(repo_root):
     return broken
 
 
+def validate_sitemap(repo_root):
+    sitemap_path = repo_root / 'sitemap.xml'
+    if not sitemap_path.exists():
+        return [{'file': 'sitemap.xml', 'link': '', 'normalized': 'missing sitemap'}]
+
+    namespace = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+    try:
+        tree = ET.parse(sitemap_path)
+    except ET.ParseError as error:
+        return [{'file': 'sitemap.xml', 'link': '', 'normalized': f'invalid XML: {error}'}]
+
+    base_url = 'https://basinleon.github.io'
+    locations = [
+        node.text.strip()
+        for node in tree.findall('.//s:loc', namespace)
+        if node.text and node.text.strip()
+    ]
+    issues = []
+
+    for location in sorted(set(locations)):
+        if locations.count(location) > 1:
+            issues.append({'file': 'sitemap.xml', 'link': location, 'normalized': 'duplicate sitemap URL'})
+            continue
+        if not location.startswith(base_url):
+            issues.append({'file': 'sitemap.xml', 'link': location, 'normalized': 'URL is outside the canonical site'})
+            continue
+        route = location[len(base_url):] or '/'
+        target = public_route_to_file(repo_root, route)
+        if not target.exists():
+            issues.append({'file': 'sitemap.xml', 'link': location, 'normalized': 'sitemap target does not exist'})
+            continue
+        if target.suffix.lower() == '.html':
+            content = target.read_text(encoding='utf-8')
+            robots = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']+)', content, re.I)
+            if robots and 'noindex' in robots.group(1).lower():
+                issues.append({'file': 'sitemap.xml', 'link': location, 'normalized': 'noindex page must not appear in sitemap'})
+
+    sitemap_routes = {
+        location[len(base_url):] or '/'
+        for location in locations
+        if location.startswith(base_url)
+    }
+    for post in sorted((repo_root / 'blog' / 'posts').glob('*.html')):
+        if post.name == 'index.html':
+            continue
+        content = post.read_text(encoding='utf-8')
+        robots = re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']+)', content, re.I)
+        if robots and 'noindex' in robots.group(1).lower():
+            continue
+        route = '/' + post.relative_to(repo_root).as_posix()
+        if route not in sitemap_routes:
+            issues.append({'file': 'sitemap.xml', 'link': route, 'normalized': 'indexable blog post missing from sitemap'})
+
+    return issues
+
+
 def main():
     print(f"\n{Colors.BOLD}{Colors.BLUE}╔════════════════════════════════════════╗{Colors.RESET}")
     print(f"{Colors.BOLD}{Colors.BLUE}║   Site Link Validator v2.0            ║{Colors.RESET}")
@@ -258,6 +315,7 @@ def main():
     print_info("Scanning public HTML and Markdown links...")
     broken_links = validate_internal_links(repo_root, valid_paths)
     broken_links.extend(validate_fragments(repo_root))
+    broken_links.extend(validate_sitemap(repo_root))
 
     print(f"\n{Colors.BOLD}Validation Results:{Colors.RESET}\n")
     if not broken_links:
