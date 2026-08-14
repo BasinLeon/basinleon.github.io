@@ -61,7 +61,7 @@ test("allows ordinary browser requests", () => {
 test("uses the clean measurement boundary without rewriting history", () => {
   const clean = rangeSelection(new URL("https://example.com/v1/dashboard?days=clean"));
   assert.equal(clean.mode, "clean");
-  assert.equal(clean.since, "2026-08-14 00:00:00");
+  assert.equal(clean.since, "2026-08-14 21:22:00");
 
   const year = rangeSelection(new URL("https://example.com/v1/dashboard?days=365"));
   assert.equal(year.mode, "range");

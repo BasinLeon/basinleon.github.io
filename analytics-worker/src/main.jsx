@@ -335,8 +335,8 @@ function Dashboard() {
         </section>
 
         <section className="metrics" aria-busy={busy}>
-          <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Collecting first-party events" : days === "clean" ? "Since Aug 14, 2026" : `Last ${days} days`} />
-          <Metric label="Visits" value={summary.visits} note={collecting ? "Collecting first-party events" : days === "clean" ? "Since Aug 14, 2026" : `Last ${days} days`} />
+          <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
+          <Metric label="Visits" value={summary.visits} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
           <Metric label="Engaged visits" value={summary.engaged_visits} note={collecting ? "Collecting first-party events" : "15+ active seconds"} />
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>

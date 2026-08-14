@@ -14,6 +14,7 @@ const EVENT_TYPES = new Set([
 ]);
 
 const MAX_BODY_BYTES = 16_384;
+const CLEAN_MEASUREMENT_START = "2026-08-14 21:22:00";
 const encoder = new TextEncoder();
 
 function json(data, status = 200, headers = {}) {
@@ -194,13 +195,13 @@ function sqlTimestamp(date) {
 export function rangeSelection(url) {
   const requestedValue = url.searchParams.get("days") || "clean";
   if (requestedValue === "clean") {
-    const cleanStart = new Date(Date.UTC(2026, 7, 14));
+    const cleanStart = new Date("2026-08-14T21:22:00Z");
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
     return {
       mode: "clean",
       days: Math.max(1, Math.floor((today - cleanStart) / 86_400_000) + 1),
-      since: "2026-08-14 00:00:00"
+      since: CLEAN_MEASUREMENT_START
     };
   }
 
