@@ -46,7 +46,5 @@ Full operating model:
 
 - Add UTM links when sharing externally (example):
   - `?utm_source=linkedin&utm_medium=social&utm_campaign=blog_post`
-- Enable one analytics provider:
-  - `google_analytics` in `_config.yml`, or
-  - `plausible_domain` in `_config.yml`
+- Use the first-party site-insights dashboard and tracked UTM links.
 - Review top pages weekly and double down on topics with sustained reads.

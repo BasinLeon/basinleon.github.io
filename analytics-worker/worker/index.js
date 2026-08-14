@@ -97,6 +97,13 @@ function allowedOrigin(request, env) {
   return allowed.includes(origin) ? origin : "";
 }
 
+export function isAutomatedRequest(request) {
+  const userAgent = request.headers.get("user-agent") || "";
+  const purpose = `${request.headers.get("purpose") || ""} ${request.headers.get("sec-purpose") || ""}`;
+  return /bot|crawler|spider|headless|playwright|puppeteer|lighthouse|pagespeed|googlebot|bingbot|slurp|facebookexternalhit|twitterbot|linkedinbot/i.test(userAgent)
+    || /prefetch|prerender/i.test(purpose);
+}
+
 function corsHeaders(origin) {
   return origin
     ? {
@@ -112,6 +119,9 @@ function corsHeaders(origin) {
 async function ingest(request, env) {
   const origin = allowedOrigin(request, env);
   if (!origin) return json({ error: "origin_not_allowed" }, 403);
+  if (isAutomatedRequest(request)) {
+    return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  }
   const length = Number(request.headers.get("content-length") || 0);
   if (length > MAX_BODY_BYTES) return json({ error: "payload_too_large" }, 413, corsHeaders(origin));
 
@@ -179,7 +189,7 @@ function authorized(request, env) {
 
 function rangeDays(url) {
   const requested = Number.parseInt(url.searchParams.get("days") || "30", 10);
-  return [7, 30, 90].includes(requested) ? requested : 30;
+  return [7, 30, 90, 365].includes(requested) ? requested : 30;
 }
 
 async function dashboardData(request, env) {
@@ -262,7 +272,7 @@ async function dashboardData(request, env) {
   return json({
     range_days: days,
     generated_at: new Date().toISOString(),
-    retention_days: Number(env.RETENTION_DAYS || 90),
+    retention_days: Number(env.RETENTION_DAYS || 400),
     summary: rows(0)[0] || {},
     trend: rows(1),
     landing_pages: rows(2),
@@ -275,7 +285,7 @@ async function dashboardData(request, env) {
 }
 
 async function cleanup(env) {
-  const retention = Math.min(365, Math.max(30, Number(env.RETENTION_DAYS || 90)));
+  const retention = Math.min(730, Math.max(30, Number(env.RETENTION_DAYS || 400)));
   await env.DB.prepare("DELETE FROM events WHERE received_at < datetime('now', ?)")
     .bind(`-${retention} days`)
     .run();
@@ -291,7 +301,7 @@ export default {
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
     if (request.method === "GET" && url.pathname === "/v1/dashboard") return dashboardData(request, env);
     if (request.method === "GET" && url.pathname === "/health") {
-      return json({ ok: true, storage: "d1", retention_days: Number(env.RETENTION_DAYS || 90) });
+      return json({ ok: true, storage: "d1", retention_days: Number(env.RETENTION_DAYS || 400) });
     }
     return env.ASSETS.fetch(request);
   },

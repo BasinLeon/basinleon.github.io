@@ -11,7 +11,7 @@ const EMPTY = {
   hiring_funnel: [],
   reading_completion: [],
   returning_visitors: 0,
-  retention_days: 90
+  retention_days: 400
 };
 
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
@@ -214,7 +214,7 @@ function Login({ onUnlock, error, busy }) {
         <input id="owner-token" type="password" autoComplete="current-password" value={token} onChange={(event) => setToken(event.target.value)} autoFocus />
         {error && <div className="form-error" role="alert">{error}</div>}
         <button disabled={!token || busy}>{busy ? "Verifying…" : "Unlock dashboard"}</button>
-        <small>No raw IPs · 90-day retention · DNT respected</small>
+        <small>No raw IPs · 400-day retention · DNT respected</small>
       </form>
     </main>
   );
@@ -266,7 +266,7 @@ function Dashboard() {
         <section className="intro">
           <div><h1>Site Traffic</h1><p>Owned, privacy-safe measurement for basinleon.github.io</p></div>
           <nav aria-label="Date range">
-            {[7, 30, 90].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value} days</button>)}
+            {[7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === 365 ? "1 year" : `${value} days`}</button>)}
           </nav>
         </section>
 
@@ -294,7 +294,7 @@ function Dashboard() {
             <div><span>Anonymous repeat visitors</span><strong>{number(data.returning_visitors)}</strong><small>{returningPercent}% of unique visitors</small></div>
           </section>
         </section>
-        <footer>No raw IPs · {data.retention_days || 90}-day retention · DNT respected</footer>
+        <footer>No raw IPs · {data.retention_days || 400}-day retention · DNT respected</footer>
       </main>
     </div>
   );

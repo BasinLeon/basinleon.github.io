@@ -1,9 +1,9 @@
 /**
  * Leon Basin site insights
  *
- * One event vocabulary for the public studio. Plausible receives aggregate
- * page and interaction events. An optional first-party edge collector can be
- * enabled with:
+ * One event vocabulary for the public studio. Events are sent only from the
+ * production site to the private first-party edge collector. The endpoint can
+ * be overridden with:
  *
  *   <meta name="lb-insights-endpoint" content="https://…/v1/event">
  *
@@ -17,12 +17,17 @@
 
   const body = document.body;
   if (!body) return;
+  const productionOrigin = "https://basinleon.github.io";
+  const ownerStorageKey = "lb:insights:owner-optout:v1";
+  const ownerCookie = "lb_owner_optout";
   const ownerMode = readOwnerMode();
+  if (location.origin !== productionOrigin) return;
   if (ownerMode) {
     applyOwnerMode(ownerMode);
     return;
   }
   if (body.dataset.lbAnalytics === "off" || isOwnerExcluded()) return;
+  if (isAutomatedClient()) return;
   if (navigator.globalPrivacyControl === true || navigator.doNotTrack === "1") return;
 
   const endpoint = (
@@ -49,23 +54,34 @@
   }
 
   function isOwnerExcluded() {
+    if (document.cookie.split(";").some(function (item) {
+      return item.trim() === `${ownerCookie}=1`;
+    })) return true;
     try {
-      return localStorage.getItem("lb:insights:owner-optout:v1") === "1";
+      return localStorage.getItem(ownerStorageKey) === "1";
     } catch (_) {
       return false;
     }
   }
 
+  function isAutomatedClient() {
+    if (navigator.webdriver === true) return true;
+    return /bot|crawler|spider|headless|playwright|puppeteer|lighthouse|pagespeed/i.test(navigator.userAgent || "");
+  }
+
   function applyOwnerMode(mode) {
     try {
       if (mode === "exclude") {
-        localStorage.setItem("lb:insights:owner-optout:v1", "1");
+        localStorage.setItem(ownerStorageKey, "1");
       } else {
-        localStorage.removeItem("lb:insights:owner-optout:v1");
+        localStorage.removeItem(ownerStorageKey);
       }
     } catch (_) {
       // The confirmation still explains the requested state if storage is unavailable.
     }
+    document.cookie = mode === "exclude"
+      ? `${ownerCookie}=1; Max-Age=34560000; Path=/; SameSite=Lax; Secure`
+      : `${ownerCookie}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
 
     const url = new URL(location.href);
     url.searchParams.delete("lb_owner");
@@ -144,7 +160,7 @@
   function getVisitorId() {
     const key = "lb:insights:visitor:v1";
     const createdKey = "lb:insights:visitor-created:v1";
-    const maxAge = 90 * 24 * 60 * 60 * 1000;
+    const maxAge = 400 * 24 * 60 * 60 * 1000;
     try {
       let value = localStorage.getItem(key);
       let created = Number(localStorage.getItem(createdKey) || 0);
@@ -163,24 +179,6 @@
     } catch (_) {
       return sessionId;
     }
-  }
-
-  function ensurePlausible() {
-    window.plausible = window.plausible || function () {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
-
-    if (document.querySelector('script[data-domain="basinleon.github.io"]')) return;
-    const script = document.createElement("script");
-    script.defer = true;
-    script.dataset.domain = "basinleon.github.io";
-    script.src = "https://plausible.io/js/script.js";
-    document.head.appendChild(script);
-  }
-
-  function plausibleEvent(name, props) {
-    if (typeof window.plausible !== "function") return;
-    window.plausible(name, { props });
   }
 
   function sendEdge(type, detail, useBeacon) {
@@ -219,13 +217,6 @@
 
   function record(type, detail, options) {
     const data = detail || {};
-    const props = {
-      page,
-      source,
-      referrer: referrer || "direct",
-      ...data
-    };
-    plausibleEvent(type, props);
     sendEdge(type, data, options && options.beacon);
   }
 
@@ -318,7 +309,6 @@
     });
   }
 
-  ensurePlausible();
   sendEdge("Pageview", {});
 
   const funnelStep = body.dataset.lbFunnelStep;
