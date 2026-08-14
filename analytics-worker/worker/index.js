@@ -273,6 +273,14 @@ async function dashboardData(request, env) {
     range_days: days,
     generated_at: new Date().toISOString(),
     retention_days: Number(env.RETENTION_DAYS || 400),
+    integrity: {
+      collection_started: "2026-08-09",
+      clean_measurement_started: "2026-08-14",
+      latest_private_backup: "2026-08-14",
+      production_only: true,
+      automated_traffic_rejected: true,
+      historical_status: "Pre-exclusion data quality uncertain"
+    },
     summary: rows(0)[0] || {},
     trend: rows(1),
     landing_pages: rows(2),

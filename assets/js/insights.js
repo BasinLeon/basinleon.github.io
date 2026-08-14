@@ -107,6 +107,17 @@
       boxShadow: "0 14px 40px rgba(0,0,0,.2)"
     });
     body.appendChild(notice);
+    try {
+      if (window.opener && !window.opener.closed) {
+        window.opener.postMessage({
+          type: "lb-owner-status",
+          excluded: mode === "exclude"
+        }, "https://basin-site-insights.basin-site-insights.workers.dev");
+        window.setTimeout(function () { window.close(); }, 900);
+      }
+    } catch (_) {
+      // Owner exclusion is complete even if the dashboard handshake is unavailable.
+    }
     window.setTimeout(function () { notice.remove(); }, 5000);
   }
 

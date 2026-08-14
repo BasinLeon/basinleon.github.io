@@ -11,8 +11,18 @@ const EMPTY = {
   hiring_funnel: [],
   reading_completion: [],
   returning_visitors: 0,
-  retention_days: 400
+  retention_days: 400,
+  integrity: {
+    collection_started: "2026-08-09",
+    clean_measurement_started: "2026-08-14",
+    latest_private_backup: "2026-08-14",
+    production_only: true,
+    automated_traffic_rejected: true,
+    historical_status: "Pre-exclusion data quality uncertain"
+  }
 };
+
+const OWNER_STATUS_KEY = "lb:owner-exclusion-confirmed:v1";
 
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
 const HIRING_STEPS = [
@@ -72,7 +82,7 @@ async function copyText(value) {
   field.remove();
 }
 
-function QuickActions() {
+function QuickActions({ ownerExcluded, onExcludeOwner }) {
   const [copied, setCopied] = useState("");
 
   async function copy(item) {
@@ -83,9 +93,9 @@ function QuickActions() {
 
   return (
     <section className="quick-actions" aria-label="Owner and distribution controls">
-      <div className="owner-action">
-        <div><h2>Owner browser</h2><p>Keep your own visits out of the numbers.</p></div>
-        <button onClick={() => window.location.assign("https://basinleon.github.io/?lb_owner=1")}>Exclude this browser</button>
+      <div className={`owner-action${ownerExcluded ? " is-excluded" : ""}`}>
+        <div><h2>Owner browser</h2><p>{ownerExcluded ? "Exclusion confirmed for this browser." : "Keep your own visits out of the numbers."}</p></div>
+        <button onClick={onExcludeOwner}>{ownerExcluded ? "Exclusion verified" : "Verify & exclude"}</button>
       </div>
       <div className="distribution-action">
         <div><h2>Tracked links</h2><p>Copy the homepage link for each channel.</p></div>
@@ -96,6 +106,42 @@ function QuickActions() {
             </button>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function formatDate(value) {
+  if (!value) return "Not recorded";
+  return new Date(`${value}T12:00:00`).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+function DataIntegrity({ integrity, retentionDays, ownerExcluded }) {
+  const items = [
+    { label: "Collection started", value: formatDate(integrity.collection_started) },
+    { label: "Clean measurement", value: `${formatDate(integrity.clean_measurement_started)} onward` },
+    { label: "Owner exclusion", value: ownerExcluded ? "Verified in this browser" : "Needs verification", tone: ownerExcluded ? "good" : "warn" },
+    { label: "Production only", value: integrity.production_only ? "Active" : "Check required", tone: integrity.production_only ? "good" : "warn" },
+    { label: "Automated traffic", value: integrity.automated_traffic_rejected ? "Rejected" : "Check required", tone: integrity.automated_traffic_rejected ? "good" : "warn" },
+    { label: "Retention", value: `${retentionDays || 400} days` },
+    { label: "Latest private backup", value: formatDate(integrity.latest_private_backup) },
+    { label: "Earlier records", value: integrity.historical_status || "Review required", tone: "warn" }
+  ];
+
+  return (
+    <section className="integrity-panel" aria-labelledby="integrity-title">
+      <div className="integrity-heading">
+        <div><span>Measurement controls</span><h2 id="integrity-title">Data integrity</h2></div>
+        <p>The backup remains private and is never served by this dashboard.</p>
+      </div>
+      <div className="integrity-grid">
+        {items.map((item) => <div className={`integrity-item ${item.tone || ""}`} key={item.label}>
+          <span>{item.label}</span><strong>{item.value}</strong>
+        </div>)}
       </div>
     </section>
   );
@@ -226,6 +272,24 @@ function Dashboard() {
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(Boolean(token));
+  const [ownerExcluded, setOwnerExcluded] = useState(() => localStorage.getItem(OWNER_STATUS_KEY) === "1");
+
+  useEffect(() => {
+    function receiveOwnerStatus(event) {
+      if (event.origin !== "https://basinleon.github.io" || event.data?.type !== "lb-owner-status") return;
+      const excluded = event.data.excluded === true;
+      if (excluded) localStorage.setItem(OWNER_STATUS_KEY, "1");
+      else localStorage.removeItem(OWNER_STATUS_KEY);
+      setOwnerExcluded(excluded);
+    }
+    window.addEventListener("message", receiveOwnerStatus);
+    return () => window.removeEventListener("message", receiveOwnerStatus);
+  }, []);
+
+  function excludeOwner() {
+    const popup = window.open("https://basinleon.github.io/?lb_owner=1", "lb-owner-exclusion", "popup,width=720,height=640");
+    if (!popup) window.location.assign("https://basinleon.github.io/?lb_owner=1");
+  }
 
   async function load(nextToken = token, nextDays = days) {
     setBusy(true);
@@ -277,7 +341,8 @@ function Dashboard() {
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>
 
-        <QuickActions />
+        <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
+        <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>
