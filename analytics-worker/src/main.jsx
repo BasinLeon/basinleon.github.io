@@ -268,7 +268,7 @@ function Login({ onUnlock, error, busy }) {
 
 function Dashboard() {
   const [token, setToken] = useState(() => sessionStorage.getItem("lb:owner-token") || "");
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState("clean");
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(Boolean(token));
@@ -330,13 +330,13 @@ function Dashboard() {
         <section className="intro">
           <div><h1>Site Traffic</h1><p>Owned, privacy-safe measurement for basinleon.github.io</p></div>
           <nav aria-label="Date range">
-            {[7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === 365 ? "1 year" : `${value} days`}</button>)}
+            {["clean", 7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === "clean" ? "Clean" : value === 365 ? "1 year" : `${value} days`}</button>)}
           </nav>
         </section>
 
         <section className="metrics" aria-busy={busy}>
-          <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Collecting first-party events" : `Last ${days} days`} />
-          <Metric label="Visits" value={summary.visits} note={collecting ? "Collecting first-party events" : `Last ${days} days`} />
+          <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Collecting first-party events" : days === "clean" ? "Since Aug 14, 2026" : `Last ${days} days`} />
+          <Metric label="Visits" value={summary.visits} note={collecting ? "Collecting first-party events" : days === "clean" ? "Since Aug 14, 2026" : `Last ${days} days`} />
           <Metric label="Engaged visits" value={summary.engaged_visits} note={collecting ? "Collecting first-party events" : "15+ active seconds"} />
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>

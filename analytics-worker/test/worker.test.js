@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isAutomatedRequest, normalizeEvent } from "../worker/index.js";
+import { isAutomatedRequest, normalizeEvent, rangeSelection } from "../worker/index.js";
 
 const base = {
   v: 1,
@@ -56,4 +56,14 @@ test("allows ordinary browser requests", () => {
   assert.equal(isAutomatedRequest(new Request("https://example.com", {
     headers: { "user-agent": "Mozilla/5.0 Chrome/140.0 Safari/537.36" }
   })), false);
+});
+
+test("uses the clean measurement boundary without rewriting history", () => {
+  const clean = rangeSelection(new URL("https://example.com/v1/dashboard?days=clean"));
+  assert.equal(clean.mode, "clean");
+  assert.equal(clean.since, "2026-08-14 00:00:00");
+
+  const year = rangeSelection(new URL("https://example.com/v1/dashboard?days=365"));
+  assert.equal(year.mode, "range");
+  assert.equal(year.days, 365);
 });

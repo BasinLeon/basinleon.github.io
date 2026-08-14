@@ -187,15 +187,36 @@ function authorized(request, env) {
   return Boolean(env.ADMIN_TOKEN) && timingSafeEqual(token, env.ADMIN_TOKEN);
 }
 
-function rangeDays(url) {
-  const requested = Number.parseInt(url.searchParams.get("days") || "30", 10);
-  return [7, 30, 90, 365].includes(requested) ? requested : 30;
+function sqlTimestamp(date) {
+  return `${date.toISOString().slice(0, 10)} 00:00:00`;
+}
+
+export function rangeSelection(url) {
+  const requestedValue = url.searchParams.get("days") || "clean";
+  if (requestedValue === "clean") {
+    const cleanStart = new Date(Date.UTC(2026, 7, 14));
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    return {
+      mode: "clean",
+      days: Math.max(1, Math.floor((today - cleanStart) / 86_400_000) + 1),
+      since: "2026-08-14 00:00:00"
+    };
+  }
+
+  const requestedDays = Number.parseInt(requestedValue, 10);
+  const days = [7, 30, 90, 365].includes(requestedDays) ? requestedDays : 30;
+  const since = new Date();
+  since.setUTCHours(0, 0, 0, 0);
+  since.setUTCDate(since.getUTCDate() - (days - 1));
+  return { mode: "range", days, since: sqlTimestamp(since) };
 }
 
 async function dashboardData(request, env) {
   if (!authorized(request, env)) return json({ error: "unauthorized" }, 401);
-  const days = rangeDays(new URL(request.url));
-  const since = `-${days - 1} days`;
+  const range = rangeSelection(new URL(request.url));
+  const days = range.days;
+  const since = range.since;
   const statements = [
     env.DB.prepare(`
       SELECT
@@ -203,17 +224,17 @@ async function dashboardData(request, env) {
         COUNT(DISTINCT session_hash) AS visits,
         COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged_visits,
         COALESCE(SUM(CASE WHEN event_type = 'Conversion' THEN 1 ELSE 0 END), 0) AS conversion_actions
-      FROM events WHERE received_at >= datetime('now', ?)
+      FROM events WHERE received_at >= ?
     `).bind(since),
     env.DB.prepare(`
       WITH RECURSIVE dates(day) AS (
-        SELECT date('now', ?)
+        SELECT date(?)
         UNION ALL SELECT date(day, '+1 day') FROM dates WHERE day < date('now')
       ), daily AS (
         SELECT date(received_at) AS day,
           COUNT(DISTINCT session_hash) AS visits,
           COUNT(DISTINCT visitor_hash) AS visitors
-        FROM events WHERE received_at >= datetime('now', ?) GROUP BY date(received_at)
+        FROM events WHERE received_at >= ? GROUP BY date(received_at)
       )
       SELECT dates.day, COALESCE(daily.visits, 0) AS visits,
         COALESCE(daily.visitors, 0) AS visitors
@@ -223,7 +244,7 @@ async function dashboardData(request, env) {
       WITH ranked AS (
         SELECT page, session_hash,
           ROW_NUMBER() OVER (PARTITION BY session_hash ORDER BY received_at, id) AS position
-        FROM events WHERE event_type = 'Pageview' AND received_at >= datetime('now', ?)
+        FROM events WHERE event_type = 'Pageview' AND received_at >= ?
       )
       SELECT page, COUNT(*) AS visits FROM ranked WHERE position = 1
       GROUP BY page ORDER BY visits DESC, page LIMIT 8
@@ -236,24 +257,24 @@ async function dashboardData(request, env) {
             WHEN referrer != '' THEN referrer ELSE 'Direct'
           END AS source,
           ROW_NUMBER() OVER (PARTITION BY session_hash ORDER BY received_at, id) AS position
-        FROM events WHERE event_type = 'Pageview' AND received_at >= datetime('now', ?)
+        FROM events WHERE event_type = 'Pageview' AND received_at >= ?
       )
       SELECT source, COUNT(*) AS visits FROM ranked WHERE position = 1
       GROUP BY source ORDER BY visits DESC, source LIMIT 8
     `).bind(since),
     env.DB.prepare(`
       SELECT conversion_category AS category, COUNT(*) AS actions
-      FROM events WHERE event_type = 'Conversion' AND received_at >= datetime('now', ?)
+      FROM events WHERE event_type = 'Conversion' AND received_at >= ?
       GROUP BY conversion_category ORDER BY actions DESC
     `).bind(since),
     env.DB.prepare(`
       SELECT depth, COUNT(DISTINCT session_hash) AS visits
-      FROM events WHERE event_type = 'Scroll Depth' AND received_at >= datetime('now', ?)
+      FROM events WHERE event_type = 'Scroll Depth' AND received_at >= ?
       GROUP BY depth ORDER BY depth
     `).bind(since),
     env.DB.prepare(`
       SELECT COUNT(*) AS returning_visitors FROM (
-        SELECT visitor_hash FROM events WHERE received_at >= datetime('now', ?)
+        SELECT visitor_hash FROM events WHERE received_at >= ?
         GROUP BY visitor_hash HAVING COUNT(DISTINCT session_hash) > 1
       )
     `).bind(since),
@@ -262,7 +283,7 @@ async function dashboardData(request, env) {
       FROM events
       WHERE event_type IN ('Hiring Funnel View', 'Hiring Funnel Step')
         AND conversion_action != ''
-        AND received_at >= datetime('now', ?)
+        AND received_at >= ?
       GROUP BY conversion_action
     `).bind(since)
   ];
@@ -271,6 +292,7 @@ async function dashboardData(request, env) {
   const rows = (index) => results[index].results || [];
   return json({
     range_days: days,
+    range_mode: range.mode,
     generated_at: new Date().toISOString(),
     retention_days: Number(env.RETENTION_DAYS || 400),
     integrity: {
