@@ -1098,6 +1098,70 @@
     .author-proof-row span { color: var(--muted); }
     .author-links { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 
+    .worked-example {
+      padding: clamp(34px, 5vw, 64px);
+      color: var(--panel);
+      background: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    .worked-example-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .55fr);
+      gap: clamp(28px, 6vw, 84px);
+      align-items: end;
+      padding-bottom: clamp(30px, 5vw, 58px);
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+
+    .worked-example h2 { margin-top: 14px; color: var(--panel); }
+    .worked-example-head > p { color: #bdb5a8; font-size: 17px; }
+
+    .worked-flow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .worked-step {
+      min-height: 230px;
+      padding: 25px clamp(18px, 2.5vw, 34px) 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+    }
+
+    .worked-step:not(:nth-child(3n + 1)) {
+      padding-left: clamp(18px, 2.5vw, 34px);
+      border-left: 1px solid rgba(255,255,255,.18);
+    }
+
+    .worked-step-no {
+      display: block;
+      margin-bottom: 46px;
+      color: #e6cb77;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .worked-step h3 {
+      margin-bottom: 12px;
+      font-family: var(--display);
+      font-size: clamp(22px, 2.2vw, 31px);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    .worked-step p { color: #bdb5a8; }
+    .worked-step:last-child h3 { color: #e6cb77; }
+    .worked-note {
+      padding-top: 20px;
+      color: #8f887d;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
     @media (max-width: 980px) {
       .hero,
       .section-head,
@@ -1129,6 +1193,10 @@
       .author-portrait { min-height: 540px; max-height: 720px; }
       .nexus-map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .nexus-map-stage:not(:last-child)::after { display: none; }
+      .worked-example-head { grid-template-columns: 1fr; }
+      .worked-flow { grid-template-columns: 1fr 1fr; }
+      .worked-step:not(:nth-child(3n + 1)) { padding-left: 0; border-left: 0; }
+      .worked-step:nth-child(even) { padding-left: 22px; border-left: 1px solid rgba(255,255,255,.18); }
     }
 
     @media (max-width: 620px) {
@@ -1158,6 +1226,12 @@
       .nexus-map-rail { grid-template-columns: repeat(5, 1fr); gap: 3px; }
       .nexus-map-rail span { font-size: 7px; letter-spacing: .03em; }
       .nexus-map-rail span:last-child { text-align: right; }
+      .worked-flow { grid-template-columns: 1fr; }
+      .worked-step,
+      .worked-step:nth-child(even) { min-height: 0; padding: 20px 0; border-left: 0; }
+      .worked-step-no { margin-bottom: 14px; }
+      .worked-step h3 { font-size: 21px; }
+      .worked-step p { font-size: 14px; line-height: 1.55; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1226,9 +1300,30 @@
         <p class="section-copy">Three controlled checks from live commercial work. Evidence first, claims second.</p>
       </div>
       <div class="author-proof" aria-label="Selected Basin Nexus operating evidence">
-        <div class="author-proof-row"><strong>121 verified contacts</strong><span>Work-email contacts produced through Unify, compared with 36 manually sourced records containing no verified emails.</span></div>
+        <div class="author-proof-row"><strong>3.4× contact coverage</strong><span>121 work-email contacts produced through Unify, compared with 36 manually sourced records containing no verified emails.</span></div>
         <div class="author-proof-row"><strong>$2.2M across 8 deals</strong><span>Missing closed-lost deal history restored before account reactivation began.</span></div>
         <div class="author-proof-row"><strong>3 material corrections</strong><span>Incorrect account premises, program status, or buyer data corrected across a nine-account sweep before outreach.</span></div>
+      </div>
+    </section>
+
+    <section id="worked-example" aria-labelledby="worked-example-title">
+      <div class="worked-example">
+        <div class="worked-example-head">
+          <div>
+            <div class="eyebrow">One anonymized record</div>
+            <h2 id="worked-example-title">See the decision move through the system.</h2>
+          </div>
+          <p>A public-safe account journey showing the evidence, judgment, ownership, and observable commercial result.</p>
+        </div>
+        <div class="worked-flow" aria-label="Signal to outcome account journey">
+          <article class="worked-step"><span class="worked-step-no">01 / Signal</span><h3>A stalled account moved.</h3><p>After two months without a meeting, a commander returned the outreach and reopened the conversation.</p></article>
+          <article class="worked-step"><span class="worked-step-no">02 / Evidence</span><h3>The premise was checked.</h3><p>Local planning data and community-safety reports established relevant account context before discovery.</p></article>
+          <article class="worked-step"><span class="worked-step-no">03 / Hypothesis</span><h3>Timing had changed.</h3><p>The response and local evidence suggested a live safety priority, not a generic reason to follow up.</p></article>
+          <article class="worked-step"><span class="worked-step-no">04 / Contact</span><h3>The buyer was known.</h3><p>The responding commander became the verified contact and the conversation had a credible starting point.</p></article>
+          <article class="worked-step"><span class="worked-step-no">05 / Action</span><h3>Ownership became explicit.</h3><p>The seller, account executive, discovery agenda, and timing were aligned before the next touch.</p></article>
+          <article class="worked-step"><span class="worked-step-no">06 / Outcome</span><h3>A meeting was confirmed.</h3><p>A discovery meeting was scheduled with the commander and account executive.</p></article>
+        </div>
+        <p class="worked-note">Anonymized for public use. No customer credentials, private messages, or internal screenshots shown.</p>
       </div>
     </section>
 
