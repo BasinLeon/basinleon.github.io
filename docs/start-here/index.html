@@ -4,80 +4,619 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Start Here | Leon Basin</title>
-  <meta name="description" content="The fastest route into Leon Basin's public proof layer by reader type.">
+  <meta name="description" content="Choose the shortest route through Leon Basin's operating proof, systems, tools, and writing.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://basinleon.github.io/docs/start-here/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Start Here | Leon Basin">
+  <meta property="og:description" content="Five clear routes through the operating proof, systems, tools, and writing.">
+  <meta property="og:url" content="https://basinleon.github.io/docs/start-here/">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/archive-writing-photo.jpeg?v=7edf9d7">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Start Here | Leon Basin">
+  <meta name="twitter:description" content="Choose the shortest route through Leon Basin's public work.">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/img/archive-writing-photo.jpeg?v=7edf9d7">
+
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/docs/journal.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/site-shell.css">
+
+  <style>
+    :root {
+      --start-ink: #090908;
+      --start-paper: #f1eee7;
+      --start-paper-deep: #e5dfd3;
+      --start-white: #fffdf8;
+      --start-gold: #d9ab45;
+      --start-gold-bright: #f1c765;
+      --start-muted: #706b62;
+      --start-line: rgba(9, 9, 8, 0.16);
+      --start-line-dark: rgba(255, 253, 248, 0.18);
+      --start-max: 1320px;
+      --start-gutter: clamp(1.25rem, 4.5vw, 5rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+    body {
+      margin: 0;
+      background: var(--start-paper);
+      color: var(--start-ink);
+      font-family: "Manrope", Arial, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--start-gold); color: var(--start-ink); }
+
+    .start-fallback-header,
+    .start-fallback-footer {
+      padding: 1rem var(--start-gutter);
+      background: var(--start-paper);
+      font-size: 0.8rem;
+    }
+    .start-fallback-header { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--start-line); }
+    .start-fallback-header nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .start-fallback-header a,
+    .start-fallback-footer a { text-decoration: none; }
+    .start-fallback-footer { border-top: 1px solid var(--start-line); }
+
+    .start-main { overflow: hidden; }
+    .start-shell {
+      width: min(100%, calc(var(--start-max) + (var(--start-gutter) * 2)));
+      margin: 0 auto;
+      padding-inline: var(--start-gutter);
+    }
+
+    .start-hero {
+      min-height: calc(100svh - 72px);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      background: var(--start-ink);
+      color: var(--start-white);
+    }
+    .start-hero-grid {
+      width: 100%;
+      min-height: calc(100svh - 72px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(330px, 0.72fr);
+    }
+    .start-hero-copy {
+      position: relative;
+      z-index: 2;
+      padding: clamp(4.5rem, 9vh, 8rem) var(--start-gutter) clamp(3rem, 6vh, 5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background:
+        linear-gradient(90deg, rgba(9,9,8,1), rgba(9,9,8,.96) 78%, rgba(9,9,8,.72)),
+        var(--start-ink);
+    }
+    .start-kicker,
+    .start-section-index,
+    .start-route-audience,
+    .start-proof-kicker,
+    .start-tour-meta {
+      color: var(--start-gold-bright);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .start-kicker {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: start-rise 700ms 140ms ease-out forwards;
+    }
+    .start-kicker::before { content: ""; width: 2.6rem; height: 1px; background: var(--start-gold); }
+    .start-title {
+      max-width: 8.5ch;
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(5rem, 9vw, 9rem);
+      font-weight: 400;
+      letter-spacing: -0.055em;
+      line-height: 0.84;
+      text-wrap: balance;
+      opacity: 0;
+      transform: translateY(28px);
+      animation: start-rise 900ms 240ms cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    .start-deck {
+      max-width: 640px;
+      margin: 2rem 0 0;
+      color: rgba(255,253,248,.72);
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      line-height: 1.7;
+      opacity: 0;
+      animation: start-rise 700ms 460ms ease-out forwards;
+    }
+    .start-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2.2rem;
+      opacity: 0;
+      animation: start-rise 700ms 620ms ease-out forwards;
+    }
+    .start-button {
+      min-height: 52px;
+      padding: 0.85rem 1.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.6rem;
+      border: 1px solid rgba(255,253,248,.4);
+      color: var(--start-white);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+    .start-button::after { content: "↘"; font-size: 1.1rem; transition: transform 180ms ease; }
+    .start-button-primary { border-color: var(--start-gold); background: var(--start-gold); color: var(--start-ink); }
+    .start-button:hover,
+    .start-button:focus-visible { transform: translateY(-2px); border-color: var(--start-gold-bright); }
+    .start-button:hover::after,
+    .start-button:focus-visible::after { transform: translate(3px, 3px); }
+
+    .start-hero-note {
+      max-width: 650px;
+      margin-top: clamp(3rem, 8vh, 6rem);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px solid var(--start-line-dark);
+      color: rgba(255,253,248,.52);
+      font-size: 0.68rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: start-rise 700ms 760ms ease-out forwards;
+    }
+
+    .start-hero-media {
+      position: relative;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      background: #141310;
+    }
+    .start-hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 68% center;
+      filter: grayscale(1) contrast(1.1) brightness(.66);
+      transform: scale(1.04);
+      animation: start-image 1400ms cubic-bezier(.2,.7,.2,1) both;
+      will-change: transform;
+    }
+    .start-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(9,9,8,.6), transparent 45%), linear-gradient(0deg, rgba(9,9,8,.72), transparent 52%);
+      pointer-events: none;
+    }
+    .start-hero-media figcaption {
+      position: absolute;
+      z-index: 2;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      color: rgba(255,253,248,.66);
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .start-routes {
+      padding: clamp(5.5rem, 11vw, 10rem) 0;
+      background: var(--start-paper);
+    }
+    .start-section-head {
+      display: grid;
+      grid-template-columns: minmax(150px, .34fr) minmax(0, 1fr);
+      gap: clamp(2rem, 7vw, 8rem);
+      margin-bottom: clamp(3rem, 7vw, 6rem);
+    }
+    .start-section-index { padding-top: 0.8rem; color: #99711b; }
+    .start-section-copy h2 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(3.6rem, 7vw, 7.2rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+    }
+    .start-section-copy p {
+      max-width: 620px;
+      margin: 1.4rem 0 0;
+      color: var(--start-muted);
+      font-size: 1.04rem;
+      line-height: 1.7;
+    }
+
+    .start-route-list { border-top: 1px solid var(--start-line); }
+    .start-route {
+      min-height: 180px;
+      display: grid;
+      grid-template-columns: minmax(70px, .16fr) minmax(150px, .42fr) minmax(0, 1fr) auto;
+      gap: clamp(1rem, 3vw, 3rem);
+      align-items: center;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--start-line);
+      color: inherit;
+      text-decoration: none;
+      transition: background 220ms ease, padding 220ms ease;
+    }
+    .start-route:hover,
+    .start-route:focus-visible { padding-inline: 1.25rem; background: rgba(9,9,8,.045); }
+    .start-route-number {
+      align-self: start;
+      padding-top: 0.2rem;
+      color: #99711b;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+    .start-route-audience { color: #99711b; }
+    .start-route-question h3 {
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(2rem, 3.3vw, 3.4rem);
+      font-weight: 400;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+    .start-route-question p { max-width: 640px; margin: 0.8rem 0 0; color: var(--start-muted); line-height: 1.65; }
+    .start-route-arrow {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--start-line);
+      border-radius: 50%;
+      font-size: 1.25rem;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+    .start-route:hover .start-route-arrow,
+    .start-route:focus-visible .start-route-arrow { background: var(--start-ink); color: var(--start-white); transform: translate(3px, -3px); }
+
+    .start-proof {
+      padding: clamp(4.5rem, 9vw, 8rem) 0;
+      background: var(--start-gold);
+      color: var(--start-ink);
+    }
+    .start-proof-head { display: flex; justify-content: space-between; gap: 2rem; align-items: end; }
+    .start-proof-kicker { color: rgba(9,9,8,.68); }
+    .start-proof-head h2 {
+      max-width: 13ch;
+      margin: 0.8rem 0 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(3.4rem, 6vw, 6.4rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+    }
+    .start-proof-link { flex: 0 0 auto; padding-bottom: 0.35rem; border-bottom: 1px solid currentColor; font-weight: 700; text-decoration: none; }
+    .start-proof-grid {
+      margin-top: clamp(3rem, 6vw, 5rem);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(9,9,8,.28);
+      border-bottom: 1px solid rgba(9,9,8,.28);
+    }
+    .start-proof-item { min-height: 180px; padding: 1.6rem 1.4rem 1.6rem 0; border-right: 1px solid rgba(9,9,8,.28); }
+    .start-proof-item + .start-proof-item { padding-left: 1.4rem; }
+    .start-proof-item:last-child { border-right: 0; }
+    .start-proof-item strong { display: block; font-size: clamp(2.6rem, 4vw, 4.8rem); letter-spacing: -0.06em; line-height: 1; }
+    .start-proof-item span { display: block; max-width: 22ch; margin-top: 1.6rem; font-size: 0.88rem; line-height: 1.55; }
+
+    .start-tour {
+      padding: clamp(5.5rem, 11vw, 10rem) 0;
+      background: var(--start-ink);
+      color: var(--start-white);
+    }
+    .start-tour-head { display: grid; grid-template-columns: minmax(160px, .34fr) minmax(0, 1fr); gap: clamp(2rem, 7vw, 8rem); }
+    .start-tour-meta { padding-top: 0.8rem; }
+    .start-tour-title {
+      max-width: 10ch;
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(3.8rem, 7vw, 7rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 0.88;
+    }
+    .start-tour-list { margin: clamp(3.5rem, 7vw, 6rem) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--start-line-dark); }
+    .start-tour-step {
+      display: grid;
+      grid-template-columns: minmax(80px, .2fr) minmax(180px, .5fr) minmax(0, 1fr) auto;
+      gap: clamp(1rem, 3vw, 3rem);
+      align-items: center;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--start-line-dark);
+    }
+    .start-tour-step > span { color: var(--start-gold-bright); font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .start-tour-step h3 { margin: 0; font-size: clamp(1.35rem, 2.2vw, 2rem); }
+    .start-tour-step p { margin: 0; color: rgba(255,253,248,.6); line-height: 1.6; }
+    .start-tour-step a { color: var(--start-gold-bright); font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .start-tour-step a::after { content: " ↗"; }
+
+    .js .start-reveal { opacity: 0; transform: translateY(28px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }
+    .js .start-reveal.is-visible { opacity: 1; transform: none; }
+
+    @keyframes start-rise { to { opacity: 1; transform: none; } }
+    @keyframes start-image { from { opacity: 0; transform: scale(1.12); } }
+
+    @media (max-width: 920px) {
+      .start-title { font-size: clamp(4.5rem, 10vw, 7rem); }
+      .start-route { grid-template-columns: 62px minmax(130px, .4fr) minmax(0, 1fr) auto; }
+      .start-proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .start-proof-item:nth-child(2) { border-right: 0; }
+      .start-proof-item:nth-child(-n+2) { border-bottom: 1px solid rgba(9,9,8,.28); }
+      .start-proof-item:nth-child(3) { padding-left: 0; }
+      .start-tour-step { grid-template-columns: 70px minmax(160px, .45fr) minmax(0, 1fr); }
+      .start-tour-step a { grid-column: 2 / -1; }
+    }
+
+    @media (max-width: 700px) {
+      html { scroll-padding-top: 68px; }
+      .start-hero,
+      .start-hero-grid { min-height: calc(100svh - 64px); }
+      .start-hero-grid { position: relative; display: block; }
+      .start-hero-copy {
+        min-height: calc(100svh - 64px);
+        padding: 2.5rem var(--start-gutter) 1.5rem;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(9,9,8,1) 0%, rgba(9,9,8,.96) 62%, rgba(9,9,8,.76) 100%);
+      }
+      .start-title { max-width: 7ch; font-size: clamp(4rem, 18vw, 5.5rem); }
+      .start-deck { margin-top: 1.4rem; line-height: 1.55; }
+      .start-actions { display: grid; margin-top: 1.6rem; }
+      .start-button { width: 100%; justify-content: space-between; }
+      .start-hero-note { margin-top: 1.5rem; display: block; }
+      .start-hero-note span:last-child { display: none; }
+      .start-hero-media { position: absolute; inset: auto 0 0; height: 42%; opacity: .42; }
+      .start-hero-media::after { background: linear-gradient(180deg, rgba(9,9,8,.9), rgba(9,9,8,.28)); }
+      .start-hero-media figcaption { display: none; }
+
+      .start-section-head,
+      .start-tour-head { grid-template-columns: 1fr; gap: 1rem; }
+      .start-section-index,
+      .start-tour-meta { padding-top: 0; }
+      .start-section-copy h2,
+      .start-tour-title { font-size: clamp(3.8rem, 18vw, 5.6rem); }
+      .start-route {
+        position: relative;
+        min-height: 0;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: .7rem 1rem;
+        padding: 1.6rem 0;
+      }
+      .start-route:hover,
+      .start-route:focus-visible { padding-inline: .65rem; }
+      .start-route-audience { grid-column: 2 / 3; }
+      .start-route-question { grid-column: 2 / 3; }
+      .start-route-number { grid-row: 1 / 3; }
+      .start-route-audience { padding-right: 3.2rem; }
+      .start-route-question h3 { font-size: 2rem; }
+      .start-route-arrow { position: absolute; top: 1.3rem; right: 0; width: 42px; height: 42px; }
+
+      .start-proof-head { display: block; }
+      .start-proof-link { display: inline-block; margin-top: 1.5rem; }
+      .start-proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .start-proof-item { min-height: 160px; padding: 1.25rem .9rem 1.25rem 0; }
+      .start-proof-item + .start-proof-item { padding-left: .9rem; }
+      .start-proof-item:nth-child(3) { padding-left: 0; }
+      .start-proof-item strong { font-size: 2.7rem; }
+      .start-proof-item span { margin-top: 1rem; font-size: .78rem; }
+
+      .start-tour-step { grid-template-columns: 46px minmax(0, 1fr); gap: .7rem 1rem; }
+      .start-tour-step > span { grid-row: 1 / 4; }
+      .start-tour-step h3,
+      .start-tour-step p,
+      .start-tour-step a { grid-column: 2; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .js .start-reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body data-lb-section="writing">
-  <div class="site-shell">
-    <header class="topbar" data-lb-legacy-nav>
-      <a class="brand" href="/docs/">Leon Basin Journal</a>
-      <nav class="nav" aria-label="Journal navigation">
-        <a href="/">Portfolio</a>
-        <a href="/case-studies/">Case Studies</a>
-        <a href="/docs/best-of/">Best Of</a>
-        <a href="/docs/frameworks/">Frameworks</a>
-        <a href="/blog/">Blog</a>
-      </nav>
-    </header>
+  <header class="start-fallback-header" data-lb-legacy-nav>
+    <a href="/">Leon Basin</a>
+    <nav aria-label="Fallback navigation">
+      <a href="/case-studies/">Work</a>
+      <a href="/basin-nexus/">Nexus</a>
+      <a href="/blog/">Writing</a>
+      <a href="/blog/fiction/">Fiction</a>
+      <a href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Contact</a>
+    </nav>
+  </header>
 
-    <main id="main-content">
-      <section class="hero">
-        <div class="hero-card">
-          <div class="kicker">Orientation</div>
-          <h1>Choose the door by what you need to know.</h1>
-          <p class="deck">This is the clean route through the public work. It keeps the proof legible without exposing private operating notes.</p>
+  <main class="start-main" id="main-content">
+    <section class="start-hero" aria-labelledby="start-title">
+      <div class="start-hero-grid">
+        <div class="start-hero-copy">
+          <div class="start-kicker">Leon Basin / Start here</div>
+          <h1 class="start-title" id="start-title">What do you need to know?</h1>
+          <p class="start-deck">You do not need to read everything. Choose the route that matches your question: proof, systems, technical craft, or point of view.</p>
+          <div class="start-actions">
+            <a class="start-button start-button-primary" href="#routes">Choose your route</a>
+            <a class="start-button" href="#tour">Take the 10-minute tour</a>
+          </div>
+          <div class="start-hero-note" aria-label="Orientation note">
+            <span>Public proof · no private operating data</span>
+            <span>Five routes · one body of work</span>
+          </div>
         </div>
-        <aside class="side-card">
-          <div class="meta">Use this when</div>
-          <p>You are trying to evaluate range, judgment, systems depth, or writing voice without reading the entire site first.</p>
-        </aside>
-      </section>
+        <figure class="start-hero-media">
+          <img src="/assets/img/archive-writing-photo.jpeg?v=7edf9d7" alt="A hand writing working notes on paper" width="2400" height="1350" fetchpriority="high">
+          <figcaption>Working notes / public layer</figcaption>
+        </figure>
+      </div>
+    </section>
 
-      <section class="section">
-        <div class="grid">
-          <a class="path-card" href="/case-studies/">
-            <div class="meta">Founder or CEO</div>
-            <h3>Start with proof.</h3>
-            <p>See the operating records first, then inspect the frameworks behind the work.</p>
+    <section class="start-routes" id="routes" aria-labelledby="routes-title">
+      <div class="start-shell">
+        <header class="start-section-head start-reveal">
+          <div class="start-section-index">01 / Choose a route</div>
+          <div class="start-section-copy">
+            <h2 id="routes-title">Start with your actual question.</h2>
+            <p>Each route opens with the most useful evidence for that reader. The rest of the site can wait.</p>
+          </div>
+        </header>
+
+        <div class="start-route-list">
+          <a class="start-route start-reveal" href="/case-studies/">
+            <span class="start-route-number">01</span>
+            <span class="start-route-audience">Founder / CEO</span>
+            <div class="start-route-question">
+              <h3>Can he turn opportunity into motion?</h3>
+              <p>Begin with named operating records: the constraint, the decision, the system, and the measurable result.</p>
+            </div>
+            <span class="start-route-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="path-card" href="/docs/best-of/">
-            <div class="meta">Hiring manager</div>
-            <h3>Start with the shortest signal.</h3>
-            <p>Read the best-of path, then return to the homepage for the fast scan.</p>
+
+          <a class="start-route start-reveal" data-hiring-step="resume" data-track="Start Here: hiring manager to resume" href="/resume.html">
+            <span class="start-route-number">02</span>
+            <span class="start-route-audience">Hiring manager</span>
+            <div class="start-route-question">
+              <h3>Does the experience hold up?</h3>
+              <p>Inspect the interactive résumé for role-by-role scope, outcomes, operating range, and the evidence behind the headline.</p>
+            </div>
+            <span class="start-route-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="path-card" href="/docs/frameworks/">
-            <div class="meta">Operator or builder</div>
-            <h3>Start with the models.</h3>
-            <p>Browse routing logic, diagnostic models, and reusable execution frameworks.</p>
+
+          <a class="start-route start-reveal" href="/docs/frameworks/">
+            <span class="start-route-number">03</span>
+            <span class="start-route-audience">Operator / builder</span>
+            <div class="start-route-question">
+              <h3>How does the system actually work?</h3>
+              <p>Open the reusable models for signal, qualification, routing, ownership, experimentation, and learning.</p>
+            </div>
+            <span class="start-route-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="path-card" href="/tools/">
-            <div class="meta">Technical reader</div>
-            <h3>Start with instruments.</h3>
-            <p>Use the tools when you want to see how the work behaves, not just how it is described.</p>
+
+          <a class="start-route start-reveal" href="/tools/">
+            <span class="start-route-number">04</span>
+            <span class="start-route-audience">Technical reader</span>
+            <div class="start-route-question">
+              <h3>Can I inspect something working?</h3>
+              <p>Use the interactive instruments when you want to test the logic, pressure the assumptions, and see the motion behave.</p>
+            </div>
+            <span class="start-route-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="path-card" href="/blog/">
-            <div class="meta">Reader</div>
-            <h3>Start with the archive.</h3>
-            <p>Enter the writing as a world: field notes, systems, voice, and return loops.</p>
-          </a>
-          <a class="path-card" href="/docs/literary/">
-            <div class="meta">Human lane</div>
-            <h3>Start where the system gets quiet.</h3>
-            <p>Read the reflective side when you want voice, memory, and the person behind the operating model.</p>
+
+          <a class="start-route start-reveal" href="/blog/">
+            <span class="start-route-number">05</span>
+            <span class="start-route-audience">Reader / thinker</span>
+            <div class="start-route-question">
+              <h3>What does he notice that dashboards miss?</h3>
+              <p>Enter the archive for field notes on systems, artificial intelligence, leadership, memory, and human judgment.</p>
+            </div>
+            <span class="start-route-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <footer class="footer" data-lb-legacy-footer>
-      <span>Leon Basin Operator Journal</span>
-      <span><a href="/docs/about/">About</a> · <a href="/docs/share/">Share Kit</a></span>
-    </footer>
-  </div>
+    <section class="start-proof" aria-labelledby="proof-title">
+      <div class="start-shell">
+        <header class="start-proof-head start-reveal">
+          <div>
+            <div class="start-proof-kicker">Public operating record</div>
+            <h2 id="proof-title">The work has to survive inspection.</h2>
+          </div>
+          <a class="start-proof-link" href="/case-studies/">Read the cases ↗</a>
+        </header>
+        <div class="start-proof-grid start-reveal" aria-label="Selected operating outcomes">
+          <div class="start-proof-item"><strong>$10M+</strong><span>qualified pipeline supported while leading global business development</span></div>
+          <div class="start-proof-item"><strong>160%</strong><span>year-over-year U.S. pipeline growth</span></div>
+          <div class="start-proof-item"><strong>$300K+</strong><span>closed enterprise expansion revenue</span></div>
+          <div class="start-proof-item"><strong>90 → 5 days</strong><span>SDR onboarding and certification after rebuilding enablement</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="start-tour" id="tour" aria-labelledby="tour-title">
+      <div class="start-shell">
+        <header class="start-tour-head start-reveal">
+          <div class="start-tour-meta">03 / Shortest useful tour</div>
+          <h2 class="start-tour-title" id="tour-title">Ten minutes. Three stops.</h2>
+        </header>
+        <ol class="start-tour-list">
+          <li class="start-tour-step start-reveal">
+            <span>04 min</span>
+            <h3>Proof</h3>
+            <p>Read one complete operating record and see whether the decision logic is credible.</p>
+            <a data-track="Start Here tour: proof" href="/case-studies/">Selected work</a>
+          </li>
+          <li class="start-tour-step start-reveal">
+            <span>03 min</span>
+            <h3>System</h3>
+            <p>Inspect how signal becomes priority, ownership, action, and a learning loop.</p>
+            <a data-track="Start Here tour: Nexus" href="/basin-nexus/">Basin::Nexus</a>
+          </li>
+          <li class="start-tour-step start-reveal">
+            <span>03 min</span>
+            <h3>Judgment</h3>
+            <p>Read the shortest editorial selection for the thinking underneath the machinery.</p>
+            <a data-track="Start Here tour: best of" href="/docs/best-of/">Best of</a>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="start-fallback-footer" data-lb-legacy-footer>
+    <span>© 2026 Leon Basin</span> · <a href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Write to Leon</a>
+  </footer>
+
   <script src="/assets/js/site-shell.js"></script>
+  <script>
+    (function () {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll('.start-reveal');
+
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+        revealItems.forEach(item => observer.observe(item));
+
+        const heroImage = document.querySelector('.start-hero-media img');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+          if (ticking || window.scrollY > window.innerHeight * 1.2) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            heroImage.style.translate = `0 ${Math.min(window.scrollY * 0.04, 28)}px`;
+            ticking = false;
+          });
+        }, { passive: true });
+      }
+    }());
+  </script>
 </body>
 </html>

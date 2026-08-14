@@ -7,11 +7,9 @@
 
   const navItems = [
     ['work', 'Work', '/case-studies/'],
-    ['systems', 'Systems', '/basin-nexus/'],
+    ['systems', 'Nexus', '/basin-nexus/'],
     ['writing', 'Writing', '/blog/'],
-    ['library', 'Library', '/library/'],
-    ['tools', 'Tools', '/tools/'],
-    ['about', 'About', '/docs/about/']
+    ['fiction', 'Fiction', '/blog/fiction/']
   ];
 
   function ensureInsights() {
@@ -84,9 +82,9 @@
         <div class="lb-site-footer-kicker">Next conversation</div>
         <h2>Make the system legible.</h2>
         <div class="lb-site-footer-actions">
-          <a href="/work-with-me/?subject=Leon%20Basin%20Intro#contact">Write to Leon</a>
-          <a href="/case-studies/">Review proof</a>
-          <a href="/basin-nexus/">Inspect systems</a>
+          <a data-track="Contact: open Gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=lbasin23%40gmail.com&amp;su=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A">Open Gmail</a>
+          <a data-hiring-step="email" data-track="Contact: use email app" href="mailto:lbasin23@gmail.com?subject=Hello%20Leon&amp;body=Hi%20Leon%2C%0A%0AI%27d%20like%20to%20talk%20about%3A%0A">Use email app</a>
+          <button type="button" data-copy-email="lbasin23@gmail.com">Copy email</button>
         </div>
         <div class="lb-site-footer-meta">
           <span>© 2026 Leon Basin · GTM systems builder and operator</span>
@@ -99,6 +97,26 @@
         </div>
       </div>`;
     body.appendChild(footer);
+
+    const copyButton = footer.querySelector('[data-copy-email]');
+    copyButton.addEventListener('click', async function () {
+      const email = copyButton.dataset.copyEmail;
+      try {
+        await navigator.clipboard.writeText(email);
+      } catch (_) {
+        const field = document.createElement('textarea');
+        field.value = email;
+        field.setAttribute('readonly', '');
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        body.appendChild(field);
+        field.select();
+        document.execCommand('copy');
+        field.remove();
+      }
+      copyButton.textContent = 'Email copied';
+      window.setTimeout(function () { copyButton.textContent = 'Copy email'; }, 2200);
+    });
   }
 
   function improveMedia() {

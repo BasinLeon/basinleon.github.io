@@ -8,12 +8,19 @@ const EMPTY = {
   landing_pages: [],
   sources: [],
   conversions: [],
+  hiring_funnel: [],
   reading_completion: [],
   returning_visitors: 0,
   retention_days: 90
 };
 
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
+const HIRING_STEPS = [
+  { step: "homepage", label: "Homepage" },
+  { step: "resume", label: "Résumé" },
+  { step: "case-study", label: "Case study" },
+  { step: "email", label: "Email action" }
+];
 const DEPTHS = [
   { depth: 25, label: "Started" },
   { depth: 50, label: "Skimmed" },
@@ -175,6 +182,27 @@ function ReadingPanel({ rows, visits }) {
   );
 }
 
+function HiringFunnel({ rows }) {
+  const counts = new Map(rows.map((item) => [item.step, Number(item.actions || 0)]));
+  const homepage = counts.get("homepage") || 0;
+  return (
+    <section className="panel hiring-panel">
+      <h2>Hiring-manager path</h2>
+      <div className="table-head"><span>Step</span><span>Sessions</span></div>
+      <ol>
+        {HIRING_STEPS.map((item, index) => {
+          const value = counts.get(item.step) || 0;
+          const percent = homepage ? Math.round((value / homepage) * 100) : 0;
+          return <li key={item.step}>
+            <span className="rank">{index + 1}</span><span className="row-name">{item.label}</span>
+            <strong>{number(value)}</strong><em>{percent}%</em>
+          </li>;
+        })}
+      </ol>
+    </section>
+  );
+}
+
 function Login({ onUnlock, error, busy }) {
   const [token, setToken] = useState("");
   return (
@@ -259,6 +287,7 @@ function Dashboard() {
         <section className="detail-grid">
           <RankedList title="Sources & campaigns" rows={data.sources} nameKey="source" emptyLabel="No sources yet" />
           <IntentPanel conversions={data.conversions} />
+          <HiringFunnel rows={data.hiring_funnel || []} />
           <ReadingPanel rows={data.reading_completion} visits={Number(summary.visits || 0)} />
           <section className="panel returning">
             <h2>Returning visitors</h2>

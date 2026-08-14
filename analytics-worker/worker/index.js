@@ -8,7 +8,9 @@ const EVENT_TYPES = new Set([
   "Email Click",
   "Phone Click",
   "Download",
-  "Conversion"
+  "Conversion",
+  "Hiring Funnel View",
+  "Hiring Funnel Step"
 ]);
 
 const MAX_BODY_BYTES = 16_384;
@@ -66,7 +68,7 @@ export function normalizeEvent(input) {
     label: cleanText(detail.label, 120),
     region: cleanText(detail.region, 40),
     conversionCategory: cleanText(detail.category, 40),
-    conversionAction: cleanText(detail.action, 80),
+    conversionAction: cleanText(detail.action || detail.step, 80),
     depth: input.type === "Scroll Depth" ? cleanInteger(detail.depth, 0, 100) : null,
     seconds: ["Reading Time", "Engaged Visit"].includes(input.type)
       ? cleanInteger(detail.seconds, 0, 86_400)
@@ -244,6 +246,14 @@ async function dashboardData(request, env) {
         SELECT visitor_hash FROM events WHERE received_at >= datetime('now', ?)
         GROUP BY visitor_hash HAVING COUNT(DISTINCT session_hash) > 1
       )
+    `).bind(since),
+    env.DB.prepare(`
+      SELECT conversion_action AS step, COUNT(DISTINCT session_hash) AS actions
+      FROM events
+      WHERE event_type IN ('Hiring Funnel View', 'Hiring Funnel Step')
+        AND conversion_action != ''
+        AND received_at >= datetime('now', ?)
+      GROUP BY conversion_action
     `).bind(since)
   ];
 
@@ -259,7 +269,8 @@ async function dashboardData(request, env) {
     sources: rows(3),
     conversions: rows(4),
     reading_completion: rows(5),
-    returning_visitors: Number(rows(6)[0]?.returning_visitors || 0)
+    returning_visitors: Number(rows(6)[0]?.returning_visitors || 0),
+    hiring_funnel: rows(7)
   });
 }
 

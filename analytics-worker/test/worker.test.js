@@ -36,3 +36,9 @@ test("bounds numeric event detail", () => {
   assert.equal(depth.depth, 100);
   assert.equal(reading.seconds, 0);
 });
+
+test("accepts hiring funnel events and preserves the step", () => {
+  const event = normalizeEvent({ ...base, type: "Hiring Funnel Step", detail: { step: "case-study" } });
+  assert.equal(event.type, "Hiring Funnel Step");
+  assert.equal(event.conversionAction, "case-study");
+});

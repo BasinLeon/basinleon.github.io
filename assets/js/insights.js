@@ -244,6 +244,9 @@
     if (link.hasAttribute("download") || /\.(pdf|docx?|xlsx?|csv|zip)$/i.test(url.pathname)) {
       return { type: "Download", destination: cleanPath(url.href) };
     }
+    if (url.hostname === "mail.google.com" && url.searchParams.get("to") === "lbasin23@gmail.com") {
+      return { type: "Email Click", destination: "gmail" };
+    }
     if (url.origin !== location.origin) {
       return { type: "Outbound Click", destination: safeHost(url.href) };
     }
@@ -272,7 +275,7 @@
     if (["Email Click", "Phone Click"].includes(click.type)) {
       category = "Commercial intent";
       action = click.type === "Email Click" ? "email" : "phone";
-    } else if (/resume|case-stud|availability|work-with-me/.test(`${path} ${label}`)) {
+    } else if (/resume|case-stud|availability|work-with-me|gmail|email app/.test(`${path} ${label}`)) {
       category = "Commercial intent";
       action = "commercial-proof";
     } else if (/basin-nexus|nexus|system|tools?/.test(`${path} ${label}`)) {
@@ -318,13 +321,36 @@
   ensurePlausible();
   sendEdge("Pageview", {});
 
+  const funnelStep = body.dataset.lbFunnelStep;
+  if (funnelStep) record("Hiring Funnel View", { step: funnelStep });
+
   document.addEventListener("click", function (event) {
     const link = event.target.closest("a[href]");
-    if (!link) return;
+    if (!link) {
+      const copyButton = event.target.closest("button[data-copy-email], button[data-email]");
+      if (!copyButton) return;
+      const label = cleanLabel(copyButton.dataset.track || copyButton.textContent || "Copy email");
+      record("Conversion", { category: "Commercial intent", action: "copy-email", destination: "email", label, region: "section" }, { beacon: true });
+      record("Hiring Funnel Step", { step: "email", destination: "email", label }, { beacon: true });
+      return;
+    }
     const item = clickDetail(link);
     record(item.type, item.detail, { beacon: true });
     const conversion = conversionDetail(link, item);
     if (conversion) record("Conversion", conversion, { beacon: true });
+    if (link.dataset.hiringStep) {
+      record("Hiring Funnel Step", {
+        step: link.dataset.hiringStep,
+        destination: item.detail.destination,
+        label: item.detail.label
+      }, { beacon: true });
+    } else if (item.type === "Email Click") {
+      record("Hiring Funnel Step", {
+        step: "email",
+        destination: item.detail.destination,
+        label: item.detail.label
+      }, { beacon: true });
+    }
   }, { capture: true });
 
   let scrollQueued = false;

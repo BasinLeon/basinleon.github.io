@@ -46,6 +46,7 @@
   const contactSubject = (contactParams.get('subject') || 'Leon Basin conversation').slice(0, 160);
   const contactBody = (contactParams.get('body') || 'Company:\nBroken motion:\nWhat success must change:').slice(0, 4000);
   const gmailLinks = document.querySelectorAll('[data-gmail-contact]');
+  const emailAppLinks = document.querySelectorAll('[data-email-app-contact]');
 
   if (gmailLinks.length) {
     const gmailUrl = new URL('https://mail.google.com/mail/');
@@ -57,6 +58,11 @@
     gmailLinks.forEach((link) => {
       link.href = gmailUrl.toString();
     });
+  }
+
+  if (emailAppLinks.length) {
+    const mailto = `mailto:lbasin23@gmail.com?subject=${encodeURIComponent(contactSubject)}&body=${encodeURIComponent(contactBody)}`;
+    emailAppLinks.forEach((link) => { link.href = mailto; });
   }
 
   if (copyButton) {

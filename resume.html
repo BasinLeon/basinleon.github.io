@@ -632,6 +632,9 @@
         .contact-action::after { content: "↗"; color: var(--gold-bright); }
         .contact-action:hover,
         .contact-action:focus-visible { background: var(--white); color: var(--ink); }
+        .contact-actions { display: grid; gap: .65rem; min-width: 230px; }
+        .contact-action-outline { border: 1px solid rgba(9,8,7,.45); background: transparent; color: var(--ink); }
+        button.contact-action { font-family: inherit; cursor: pointer; }
         footer { border-top: 1px solid var(--line-dark); background: var(--ink); }
         .footer-shell { min-height: 112px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
         .footer-shell strong { font-size: .72rem; letter-spacing: .07em; }
@@ -818,7 +821,7 @@
         }
     </style>
 </head>
-<body data-lb-section="resume">
+<body data-lb-section="resume" data-lb-funnel-step="resume">
     <a class="skip-link" href="#main-content">Skip to resume</a>
 
     <div class="print-only" aria-hidden="true">
@@ -831,10 +834,10 @@
             <a class="brand" href="/"><strong>LEON BASIN.</strong><span>Executive operating record</span></a>
             <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
             <div class="nav-links" id="nav-links">
-                <a href="#record">Experience</a>
-                <a href="#brief">Mandate</a>
-                <a href="#proof">Proof</a>
-                <a href="#capabilities">Capabilities</a>
+                <a href="/case-studies/">Work</a>
+                <a href="/basin-nexus/">Nexus</a>
+                <a href="/blog/">Writing</a>
+                <a href="/blog/fiction/">Fiction</a>
                 <button class="print-button" type="button" data-print>Print / save PDF</button>
                 <a class="nav-contact" href="/work-with-me/?subject=Senior%20GTM%20mandate#contact">Contact</a>
             </div>
@@ -1071,7 +1074,12 @@
         <section class="contact" aria-labelledby="contact-title">
             <div class="contact-grid shell reveal">
                 <div><p class="eyebrow">Next mandate</p><h2 class="contact-title" id="contact-title">Send the company, the market, and what success needs to change.</h2><p class="contact-copy">Best fit: senior GTM, business development, market expansion, strategic accounts, partnerships, or commercial strategy leadership with meaningful ownership.</p></div>
-                <a class="contact-action" href="/work-with-me/?subject=Senior%20GTM%20mandate#contact">Write to Leon</a>
+                <div class="contact-actions">
+                    <a class="contact-action" data-hiring-step="case-study" data-track="Hiring path: resume to case studies" href="/case-studies/">Review case studies</a>
+                    <a class="contact-action contact-action-outline" data-track="Resume contact: open Gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=lbasin23%40gmail.com&amp;su=Senior%20GTM%20mandate">Open Gmail</a>
+                    <a class="contact-action contact-action-outline" data-hiring-step="email" data-track="Resume contact: use email app" href="mailto:lbasin23@gmail.com?subject=Senior%20GTM%20mandate">Use email app</a>
+                    <button class="contact-action contact-action-outline" type="button" data-copy-email="lbasin23@gmail.com">Copy email</button>
+                </div>
             </div>
         </section>
     </main>
@@ -1079,12 +1087,13 @@
     <footer>
         <div class="footer-shell shell">
             <strong>LEON <span style="color:var(--gold)">BASIN.</span></strong>
-            <div class="footer-links"><a href="/">Home</a><a href="/case-studies/">Case studies</a><a href="/blog/">Writing</a><a href="/tools/">Tools</a><a href="https://linkedin.com/in/leonbasin" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+            <div class="footer-links"><a href="/case-studies/">Work</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/work-with-me/">Contact</a></div>
             <span>© 2026 / San Francisco Bay Area</span>
         </div>
     </footer>
 
     <script src="/assets/js/continuity.js" defer></script>
+    <script src="/assets/js/email-actions.js" defer></script>
     <script>
         const proofData = {
             fudo: {
