@@ -9,6 +9,7 @@ const EMPTY = {
   sources: [],
   conversions: [],
   hiring_funnel: [],
+  contact_submissions: [],
   reading_completion: [],
   returning_visitors: 0,
   retention_days: 400,
@@ -43,6 +44,19 @@ const DISTRIBUTION_LINKS = [
   { label: "Email signature", source: "email-signature", medium: "signature", campaign: "always-on" },
   { label: "Introduction", source: "direct-intro", medium: "introduction" }
 ];
+const DISTRIBUTION_DESTINATIONS = [
+  { label: "Homepage", path: "/" },
+  { label: "Operating proof", path: "/case-studies/" },
+  { label: "Basin::Nexus", path: "/basin-nexus/" },
+  { label: "Writing", path: "/blog/" },
+  { label: "What Does a Moment Become?", path: "/blog/posts/what-does-a-moment-become.html" },
+  { label: "Work with Leon", path: "/work-with-me/" }
+];
+const DISTRIBUTION_EXPERIMENTS = [
+  { label: "LinkedIn · operating proof", path: "/case-studies/", source: "linkedin", medium: "social", campaign: "operator-proof" },
+  { label: "Substack · human writing", path: "/blog/posts/what-does-a-moment-become.html", source: "substack", medium: "newsletter", campaign: "human-writing" },
+  { label: "Warm intro · work with Leon", path: "/work-with-me/", source: "warm-intro", medium: "introduction", campaign: "commercial-intro" }
+];
 
 function number(value) {
   return new Intl.NumberFormat("en-US").format(Number(value || 0));
@@ -58,9 +72,9 @@ function Metric({ label, value, note }) {
   );
 }
 
-function trackedLink(item) {
+function trackedLink(item, destination = "/") {
   const month = new Date().toISOString().slice(0, 7);
-  const url = new URL("https://basinleon.github.io/");
+  const url = new URL(destination, "https://basinleon.github.io/");
   url.searchParams.set("utm_source", item.source);
   url.searchParams.set("utm_medium", item.medium);
   url.searchParams.set("utm_campaign", item.campaign || `${month}-site`);
@@ -84,9 +98,10 @@ async function copyText(value) {
 
 function QuickActions({ ownerExcluded, onExcludeOwner }) {
   const [copied, setCopied] = useState("");
+  const [destination, setDestination] = useState("/");
 
-  async function copy(item) {
-    await copyText(trackedLink(item));
+  async function copy(item, path = destination) {
+    await copyText(trackedLink(item, path));
     setCopied(item.label);
     window.setTimeout(() => setCopied(""), 1800);
   }
@@ -98,15 +113,63 @@ function QuickActions({ ownerExcluded, onExcludeOwner }) {
         <button onClick={onExcludeOwner}>{ownerExcluded ? "Exclusion verified" : "Verify & exclude"}</button>
       </div>
       <div className="distribution-action">
-        <div><h2>Tracked links</h2><p>Copy the homepage link for each channel.</p></div>
-        <div className="channel-buttons">
-          {DISTRIBUTION_LINKS.map((item) => (
-            <button key={item.label} onClick={() => copy(item)} aria-label={`Copy ${item.label} tracked link`}>
-              {copied === item.label ? "Copied" : item.label}
-            </button>
+        <div><h2>Tracked links</h2><p>Choose a destination, then copy the right channel link.</p></div>
+        <div className="distribution-controls">
+          <select aria-label="Tracked link destination" value={destination} onChange={(event) => setDestination(event.target.value)}>
+            {DISTRIBUTION_DESTINATIONS.map((item) => <option value={item.path} key={item.path}>{item.label}</option>)}
+          </select>
+          <div className="channel-buttons">
+            {DISTRIBUTION_LINKS.map((item) => (
+              <button key={item.label} onClick={() => copy(item)} aria-label={`Copy ${item.label} tracked link`}>
+                {copied === item.label ? "Copied" : item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="experiment-links" aria-label="Thirty day distribution experiments">
+          {DISTRIBUTION_EXPERIMENTS.map((item) => (
+            <button key={item.label} onClick={() => copy(item, item.path)}>{copied === item.label ? "Copied" : item.label}</button>
           ))}
         </div>
       </div>
+    </section>
+  );
+}
+
+function ContactInbox({ rows }) {
+  const [copied, setCopied] = useState("");
+
+  async function copyForNexus(item) {
+    const value = [
+      `Route: ${item.intent || "Commercial conversation"}`,
+      `Person: ${item.name} <${item.email}>`,
+      `Company: ${item.company || "Not provided"}`,
+      "Observed signal: Inbound website contact",
+      `Broken motion: ${item.problem}`,
+      `Attribution: ${[item.campaign_source, item.campaign_name].filter(Boolean).join(" / ") || item.page}`,
+      "Next action: Reply and qualify",
+      `Source ref: website-contact-${item.id}`
+    ].join("\n");
+    await copyText(value);
+    setCopied(String(item.id));
+    window.setTimeout(() => setCopied(""), 1800);
+  }
+
+  return (
+    <section className="contact-inbox panel" aria-labelledby="contact-inbox-title">
+      <div className="contact-inbox-heading"><div><span>Private intake</span><h2 id="contact-inbox-title">Website conversations</h2></div><strong>{rows.length} recent</strong></div>
+      {rows.length === 0 ? <p className="contact-empty">No form submissions yet. New conversations will appear here without entering the public proof system.</p> : (
+        <ol>
+          {rows.slice(0, 10).map((item) => (
+            <li key={item.id}>
+              <div className="contact-person"><strong>{item.name}</strong><span>{item.company || item.intent || "Direct inquiry"}</span></div>
+              <p>{item.problem}</p>
+              <div className="contact-meta"><span>{new Date(`${item.received_at.replace(" ", "T")}Z`).toLocaleString()}</span><span>{item.campaign_source || item.page}</span></div>
+              <div className="contact-actions"><a href={`mailto:${item.email}?subject=${encodeURIComponent(`Re: ${item.company || "your note to Leon"}`)}`}>Reply</a><button onClick={() => copyForNexus(item)}>{copied === String(item.id) ? "Copied" : "Copy for Nexus"}</button></div>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }
@@ -343,6 +406,7 @@ function Dashboard() {
 
         <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
         <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
+        <ContactInbox rows={data.contact_submissions || []} />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isAutomatedRequest, normalizeEvent, rangeSelection } from "../worker/index.js";
+import { isAutomatedRequest, normalizeContact, normalizeEvent, rangeSelection } from "../worker/index.js";
 
 const base = {
   v: 1,
@@ -66,4 +66,32 @@ test("uses the clean measurement boundary without rewriting history", () => {
   const year = rangeSelection(new URL("https://example.com/v1/dashboard?days=365"));
   assert.equal(year.mode, "range");
   assert.equal(year.days, 365);
+});
+
+test("normalizes a valid private contact request", () => {
+  const contact = normalizeContact({
+    v: 1,
+    name: " Leon Basin ",
+    email: "LEON@example.com",
+    company: "Example",
+    intent: "Senior role",
+    problem: "We need to build a repeatable public-sector motion.",
+    page: "/work-with-me/",
+    startedAt: Date.now() - 5000,
+    campaign: { source: "linkedin", medium: "social", campaign: "operator-proof" }
+  });
+  assert.equal(contact.email, "leon@example.com");
+  assert.equal(contact.page, "/work-with-me/");
+  assert.equal(contact.campaignSource, "linkedin");
+});
+
+test("rejects malformed and too-fast contact requests", () => {
+  assert.equal(normalizeContact({ v: 1, name: "Leon", email: "bad", problem: "Long enough problem", startedAt: Date.now() - 5000 }), null);
+  assert.deepEqual(normalizeContact({
+    v: 1,
+    name: "Leon",
+    email: "leon@example.com",
+    problem: "This message is long enough.",
+    startedAt: Date.now()
+  }), { spam: true });
 });

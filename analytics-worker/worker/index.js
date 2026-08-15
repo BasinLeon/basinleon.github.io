@@ -14,6 +14,7 @@ const EVENT_TYPES = new Set([
 ]);
 
 const MAX_BODY_BYTES = 16_384;
+const MAX_CONTACT_BODY_BYTES = 12_288;
 const CLEAN_MEASUREMENT_START = "2026-08-14 21:22:00";
 const encoder = new TextEncoder();
 
@@ -42,6 +43,41 @@ function cleanInteger(value, min, max) {
   const number = Number.parseInt(value, 10);
   if (!Number.isFinite(number)) return null;
   return Math.min(max, Math.max(min, number));
+}
+
+function validEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || ""));
+}
+
+export function normalizeContact(input) {
+  if (!input || input.v !== 1) return null;
+  if (cleanText(input.website, 120)) return { spam: true };
+
+  const name = cleanText(input.name, 100);
+  const email = cleanText(input.email, 180).toLowerCase();
+  const company = cleanText(input.company, 140);
+  const intent = cleanText(input.intent, 60);
+  const problem = cleanText(input.problem, 2000);
+  const page = cleanPath(input.page);
+  const referrer = cleanText(input.referrer, 160);
+  const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
+  const startedAt = Number(input.startedAt || 0);
+
+  if (!name || !validEmail(email) || problem.length < 12) return null;
+  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
+
+  return {
+    name,
+    email,
+    company,
+    intent,
+    problem,
+    page,
+    referrer,
+    campaignSource: cleanText(campaign.source, 100),
+    campaignMedium: cleanText(campaign.medium, 100),
+    campaignName: cleanText(campaign.campaign, 120)
+  };
 }
 
 export function normalizeEvent(input) {
@@ -171,6 +207,55 @@ async function ingest(request, env) {
   return json({ accepted: true }, 202, corsHeaders(origin));
 }
 
+async function ingestContact(request, env) {
+  const origin = allowedOrigin(request, env);
+  if (!origin) return json({ error: "origin_not_allowed" }, 403);
+  if (isAutomatedRequest(request)) {
+    return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  }
+  const length = Number(request.headers.get("content-length") || 0);
+  if (length > MAX_CONTACT_BODY_BYTES) return json({ error: "payload_too_large" }, 413, corsHeaders(origin));
+
+  let input;
+  try {
+    input = await request.json();
+  } catch (_) {
+    return json({ error: "invalid_json" }, 400, corsHeaders(origin));
+  }
+
+  const contact = normalizeContact(input);
+  if (contact?.spam) return json({ accepted: true }, 202, corsHeaders(origin));
+  if (!contact) return json({ error: "invalid_contact" }, 422, corsHeaders(origin));
+
+  const recent = await env.DB.prepare(`
+    SELECT id FROM contact_submissions
+    WHERE email = ? AND problem = ? AND received_at >= datetime('now', '-10 minutes')
+    LIMIT 1
+  `).bind(contact.email, contact.problem).first();
+
+  if (!recent) {
+    await env.DB.prepare(`
+      INSERT INTO contact_submissions (
+        name, email, company, intent, problem, page, referrer,
+        campaign_source, campaign_medium, campaign_name
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      contact.name,
+      contact.email,
+      contact.company,
+      contact.intent,
+      contact.problem,
+      contact.page,
+      contact.referrer,
+      contact.campaignSource,
+      contact.campaignMedium,
+      contact.campaignName
+    ).run();
+  }
+
+  return json({ accepted: true }, 202, corsHeaders(origin));
+}
+
 function timingSafeEqual(left, right) {
   const a = encoder.encode(String(left || ""));
   const b = encoder.encode(String(right || ""));
@@ -289,6 +374,14 @@ async function dashboardData(request, env) {
     `).bind(since)
   ];
 
+  statements.push(env.DB.prepare(`
+    SELECT id, received_at, name, email, company, intent, problem, page,
+      campaign_source, campaign_medium, campaign_name, status
+    FROM contact_submissions
+    ORDER BY received_at DESC
+    LIMIT 30
+  `));
+
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -311,7 +404,8 @@ async function dashboardData(request, env) {
     conversions: rows(4),
     reading_completion: rows(5),
     returning_visitors: Number(rows(6)[0]?.returning_visitors || 0),
-    hiring_funnel: rows(7)
+    hiring_funnel: rows(7),
+    contact_submissions: rows(8)
   });
 }
 
@@ -320,16 +414,21 @@ async function cleanup(env) {
   await env.DB.prepare("DELETE FROM events WHERE received_at < datetime('now', ?)")
     .bind(`-${retention} days`)
     .run();
+  const contactRetention = Math.min(365, Math.max(30, Number(env.CONTACT_RETENTION_DAYS || 180)));
+  await env.DB.prepare("DELETE FROM contact_submissions WHERE received_at < datetime('now', ?)")
+    .bind(`-${contactRetention} days`)
+    .run();
 }
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (request.method === "OPTIONS" && url.pathname === "/v1/event") {
+    if (request.method === "OPTIONS" && ["/v1/event", "/v1/contact"].includes(url.pathname)) {
       const origin = allowedOrigin(request, env);
       return new Response(null, { status: origin ? 204 : 403, headers: corsHeaders(origin) });
     }
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
+    if (request.method === "POST" && url.pathname === "/v1/contact") return ingestContact(request, env);
     if (request.method === "GET" && url.pathname === "/v1/dashboard") return dashboardData(request, env);
     if (request.method === "GET" && url.pathname === "/health") {
       return json({ ok: true, storage: "d1", retention_days: Number(env.RETENTION_DAYS || 400) });

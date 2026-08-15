@@ -61,6 +61,11 @@ h1 { margin: 0; font: 700 clamp(2.1rem, 4vw, 3.7rem)/1 "Orbitron", sans-serif; l
 .owner-action.is-excluded button { border-color: var(--gold); background: var(--gold); color: var(--ink); }
 .channel-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .45rem; }
 .channel-buttons button { min-width: 72px; }
+.distribution-action { flex-wrap: wrap; }
+.distribution-controls { display: grid; gap: .55rem; }
+.distribution-controls select { min-height: 38px; padding: .55rem .7rem; border: 1px solid var(--ink); border-radius: 0; background: var(--paper); color: var(--ink); font-size: .61rem; font-weight: 700; }
+.experiment-links { width: 100%; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .45rem; }
+.experiment-links button { border-color: var(--gold); }
 
 .integrity-panel { border-bottom: 1px solid var(--line); }
 .integrity-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding: 1.5rem 1rem 1rem; }
@@ -75,6 +80,20 @@ h1 { margin: 0; font: 700 clamp(2.1rem, 4vw, 3.7rem)/1 "Orbitron", sans-serif; l
 .integrity-item strong { display: block; font-size: .64rem; line-height: 1.45; }
 .integrity-item.good strong::before, .integrity-item.warn strong::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: .45rem; border-radius: 50%; background: #16875f; vertical-align: 1px; }
 .integrity-item.warn strong::before { background: var(--gold); }
+
+.contact-inbox { padding: 1.5rem 1rem; border-bottom: 1px solid var(--line); }
+.contact-inbox-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+.contact-inbox-heading span { display: block; margin-bottom: .3rem; color: var(--gold); font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.contact-inbox-heading h2 { margin: 0; font: 700 1.15rem/1.2 "Orbitron", sans-serif; }
+.contact-inbox-heading > strong { font-size: .62rem; }
+.contact-inbox ol { margin: 1.35rem 0 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+.contact-inbox li { display: grid; grid-template-columns: minmax(150px, .5fr) minmax(260px, 1.5fr) minmax(150px, .6fr) auto; gap: 1.2rem; align-items: start; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.contact-person, .contact-meta { display: grid; gap: .35rem; }
+.contact-person strong { font-size: .72rem; }
+.contact-person span, .contact-meta, .contact-empty { color: var(--muted); font-size: .6rem; }
+.contact-inbox li > p { margin: 0; font-size: .68rem; line-height: 1.5; }
+.contact-actions { display: flex; gap: .4rem; }
+.contact-actions a, .contact-actions button { padding: .6rem .7rem; border: 1px solid var(--line); background: transparent; color: var(--ink); font: 700 .58rem/1 var(--mono); text-decoration: none; white-space: nowrap; cursor: pointer; }
 
 .panel { min-width: 0; }
 .panel h2 { margin: 0 0 1.2rem; font-size: .71rem; font-weight: 600; }
@@ -145,6 +164,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .integrity-item:nth-child(2n) { border-right: 0; }
   .integrity-item:nth-last-child(-n+4) { border-bottom: 1px solid var(--line); }
   .integrity-item:nth-last-child(-n+2) { border-bottom: 0; }
+  .contact-inbox li { grid-template-columns: 1fr 1.5fr; }
 }
 
 @media (max-width: 620px) {
@@ -159,9 +179,12 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .quick-actions > div { align-items: stretch; flex-direction: column; padding-right: .4rem; padding-left: .4rem; }
   .quick-actions button { width: 100%; }
   .channel-buttons { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .experiment-links { display: grid; grid-template-columns: 1fr; }
   .integrity-heading { align-items: flex-start; flex-direction: column; gap: .65rem; padding-right: .4rem; padding-left: .4rem; }
   .integrity-heading p { text-align: left; }
   .integrity-grid { grid-template-columns: 1fr; }
   .integrity-item, .integrity-item:nth-child(4n), .integrity-item:nth-child(2n), .integrity-item:nth-last-child(-n+2) { border-right: 0; border-bottom: 1px solid var(--line); padding-right: .4rem; padding-left: .4rem; }
   .integrity-item:last-child { border-bottom: 0; }
+  .contact-inbox { padding-right: .4rem; padding-left: .4rem; }
+  .contact-inbox li { grid-template-columns: 1fr; gap: .7rem; }
 }

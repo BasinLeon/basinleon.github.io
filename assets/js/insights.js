@@ -231,6 +231,8 @@
     sendEdge(type, data, options && options.beacon);
   }
 
+  window.lbInsightsRecord = record;
+
   function classifyLink(link) {
     const raw = link.getAttribute("href") || "";
     if (raw.startsWith("mailto:")) return { type: "Email Click", destination: "email" };
