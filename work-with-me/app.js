@@ -47,6 +47,16 @@
   const contactBody = (contactParams.get('body') || 'Company:\nBroken motion:\nWhat success must change:').slice(0, 4000);
   const gmailLinks = document.querySelectorAll('[data-gmail-contact]');
   const emailAppLinks = document.querySelectorAll('[data-email-app-contact]');
+  const intentSelect = document.getElementById('contact-intent');
+
+  document.querySelectorAll('[data-contact-intent]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (!intentSelect) return;
+      const requestedIntent = link.dataset.contactIntent || '';
+      const matchingOption = [...intentSelect.options].find((option) => option.value === requestedIntent);
+      if (matchingOption) intentSelect.value = requestedIntent;
+    });
+  });
 
   if (gmailLinks.length) {
     const gmailUrl = new URL('https://mail.google.com/mail/');

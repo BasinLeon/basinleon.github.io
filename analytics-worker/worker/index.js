@@ -375,6 +375,42 @@ async function dashboardData(request, env) {
   ];
 
   statements.push(env.DB.prepare(`
+    WITH ranked AS (
+      SELECT session_hash, LOWER(campaign_source) AS campaign_source, LOWER(referrer) AS referrer,
+        ROW_NUMBER() OVER (PARTITION BY session_hash ORDER BY received_at, id) AS position
+      FROM events WHERE event_type = 'Pageview' AND received_at >= ?
+    ), labeled AS (
+      SELECT session_hash,
+        CASE
+          WHEN campaign_source IN ('chatgpt', 'openai') OR referrer IN ('chatgpt.com', 'chat.openai.com') THEN 'ChatGPT'
+          WHEN campaign_source = 'claude' OR referrer = 'claude.ai' THEN 'Claude'
+          WHEN campaign_source = 'perplexity' OR referrer = 'perplexity.ai' THEN 'Perplexity'
+          WHEN campaign_source = 'gemini' OR referrer = 'gemini.google.com' THEN 'Gemini'
+          WHEN campaign_source = 'copilot' OR referrer IN ('copilot.microsoft.com', 'copilot.cloud.microsoft') THEN 'Copilot'
+          WHEN campaign_source = 'poe' OR referrer = 'poe.com' THEN 'Poe'
+          WHEN campaign_source IN ('you', 'you-com') OR referrer = 'you.com' THEN 'You.com'
+          ELSE ''
+        END AS source
+      FROM ranked WHERE position = 1
+    )
+    SELECT source, COUNT(*) AS visits FROM labeled WHERE source != ''
+    GROUP BY source ORDER BY visits DESC, source
+  `).bind(since));
+
+  statements.push(env.DB.prepare(`
+    SELECT
+      COUNT(DISTINCT CASE WHEN event_type = 'Pageview' THEN session_hash END) AS site_visits,
+      COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged_visits,
+      COUNT(DISTINCT CASE WHEN event_type = 'Pageview' AND page = '/work-with-me/' THEN session_hash END) AS offer_visits,
+      COUNT(DISTINCT CASE WHEN event_type = 'Conversion' AND conversion_category = 'Commercial intent' THEN session_hash END) AS commercial_action_visits
+    FROM events WHERE received_at >= ?
+  `).bind(since));
+
+  statements.push(env.DB.prepare(`
+    SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ?
+  `).bind(since));
+
+  statements.push(env.DB.prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
       campaign_source, campaign_medium, campaign_name, status
     FROM contact_submissions
@@ -392,7 +428,7 @@ async function dashboardData(request, env) {
     integrity: {
       collection_started: "2026-08-09",
       clean_measurement_started: "2026-08-14",
-      latest_private_backup: "2026-08-14",
+      latest_private_backup: "2026-09-02",
       production_only: true,
       automated_traffic_rejected: true,
       historical_status: "Pre-exclusion data quality uncertain"
@@ -405,7 +441,12 @@ async function dashboardData(request, env) {
     reading_completion: rows(5),
     returning_visitors: Number(rows(6)[0]?.returning_visitors || 0),
     hiring_funnel: rows(7),
-    contact_submissions: rows(8)
+    ai_referrals: rows(8),
+    revenue_funnel: {
+      ...(rows(9)[0] || {}),
+      leads: Number(rows(10)[0]?.leads || 0)
+    },
+    contact_submissions: rows(11)
   });
 }
 

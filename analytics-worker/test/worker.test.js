@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isAutomatedRequest, normalizeContact, normalizeEvent, rangeSelection } from "../worker/index.js";
+import worker, { isAutomatedRequest, normalizeContact, normalizeEvent, rangeSelection } from "../worker/index.js";
 
 const base = {
   v: 1,
@@ -94,4 +94,41 @@ test("rejects malformed and too-fast contact requests", () => {
     problem: "This message is long enough.",
     startedAt: Date.now()
   }), { spam: true });
+});
+
+test("dashboard keeps AI referrals, revenue steps and private contacts in their own fields", async () => {
+  const resultSets = Array.from({ length: 12 }, () => ({ results: [] }));
+  resultSets[0] = { results: [{ unique_visitors: 12, visits: 15, engaged_visits: 7, conversion_actions: 2 }] };
+  resultSets[8] = { results: [{ source: "ChatGPT", visits: 2 }] };
+  resultSets[9] = { results: [{ site_visits: 15, engaged_visits: 7, offer_visits: 3, commercial_action_visits: 1 }] };
+  resultSets[10] = { results: [{ leads: 1 }] };
+  resultSets[11] = { results: [{ id: 9, name: "Founder", email: "founder@example.com", problem: "Our activity is not becoming revenue." }] };
+
+  const statement = { bind() { return this; } };
+  const env = {
+    ADMIN_TOKEN: "owner-token",
+    RETENTION_DAYS: "400",
+    DB: {
+      prepare() { return statement; },
+      async batch(statements) {
+        assert.equal(statements.length, 12);
+        return resultSets;
+      }
+    }
+  };
+  const response = await worker.fetch(new Request("https://example.com/v1/dashboard?days=30", {
+    headers: { authorization: "Bearer owner-token" }
+  }), env);
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(data.ai_referrals, [{ source: "ChatGPT", visits: 2 }]);
+  assert.deepEqual(data.revenue_funnel, {
+    site_visits: 15,
+    engaged_visits: 7,
+    offer_visits: 3,
+    commercial_action_visits: 1,
+    leads: 1
+  });
+  assert.equal(data.contact_submissions[0].email, "founder@example.com");
 });

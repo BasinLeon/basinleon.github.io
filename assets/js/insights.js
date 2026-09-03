@@ -39,6 +39,12 @@
   const page = cleanPath(location.href);
   const referrer = safeHost(document.referrer);
   const campaign = readCampaign();
+  const aiSource = inferAiSource(referrer);
+  if (aiSource && !campaign.source) {
+    campaign.source = aiSource;
+    campaign.medium = "ai-referral";
+    campaign.campaign = "organic-ai-discovery";
+  }
   const sessionId = getSessionId();
   const visitorId = getVisitorId();
   const sentDepths = new Set();
@@ -141,6 +147,18 @@
 
   function cleanLabel(value) {
     return String(value || "").replace(/\s+/g, " ").trim().slice(0, 120);
+  }
+
+  function inferAiSource(host) {
+    const value = String(host || "").toLowerCase();
+    if (["chatgpt.com", "chat.openai.com"].includes(value)) return "chatgpt";
+    if (value === "claude.ai") return "claude";
+    if (value === "perplexity.ai") return "perplexity";
+    if (value === "gemini.google.com") return "gemini";
+    if (["copilot.microsoft.com", "copilot.cloud.microsoft"].includes(value)) return "copilot";
+    if (value === "poe.com") return "poe";
+    if (value === "you.com") return "you-com";
+    return "";
   }
 
   function readCampaign() {

@@ -7,6 +7,8 @@ const EMPTY = {
   trend: [],
   landing_pages: [],
   sources: [],
+  ai_referrals: [],
+  revenue_funnel: { site_visits: 0, engaged_visits: 0, offer_visits: 0, commercial_action_visits: 0, leads: 0 },
   conversions: [],
   hiring_funnel: [],
   contact_submissions: [],
@@ -16,7 +18,7 @@ const EMPTY = {
   integrity: {
     collection_started: "2026-08-09",
     clean_measurement_started: "2026-08-14",
-    latest_private_backup: "2026-08-14",
+    latest_private_backup: "2026-09-02",
     production_only: true,
     automated_traffic_rejected: true,
     historical_status: "Pre-exclusion data quality uncertain"
@@ -41,6 +43,7 @@ const DEPTHS = [
 const DISTRIBUTION_LINKS = [
   { label: "LinkedIn", source: "linkedin", medium: "social" },
   { label: "X", source: "x", medium: "social" },
+  { label: "Substack", source: "substack", medium: "newsletter" },
   { label: "Email signature", source: "email-signature", medium: "signature", campaign: "always-on" },
   { label: "Introduction", source: "direct-intro", medium: "introduction" }
 ];
@@ -170,6 +173,47 @@ function ContactInbox({ rows }) {
           ))}
         </ol>
       )}
+    </section>
+  );
+}
+
+function RevenueFunnel({ values }) {
+  const steps = [
+    { key: "site_visits", label: "Site visits" },
+    { key: "engaged_visits", label: "Engaged 15+ seconds" },
+    { key: "offer_visits", label: "Visited Work with Leon" },
+    { key: "commercial_action_visits", label: "Took a commercial action" },
+    { key: "leads", label: "Sent an inbound note" }
+  ];
+  const baseline = Number(values.site_visits || 0);
+  return (
+    <section className="growth-panel revenue-path" aria-labelledby="revenue-path-title">
+      <div className="growth-heading"><span>Monetization</span><h2 id="revenue-path-title">Revenue path</h2></div>
+      <ol>
+        {steps.map((step, index) => {
+          const value = Number(values[step.key] || 0);
+          const percent = baseline ? Math.round((value / baseline) * 100) : 0;
+          return <li key={step.key}>
+            <span className="rank">{index + 1}</span><span className="row-name">{step.label}</span>
+            <strong>{number(value)}</strong><em>{percent}%</em>
+          </li>;
+        })}
+      </ol>
+    </section>
+  );
+}
+
+function AiDiscovery({ rows }) {
+  const display = rows.length ? rows : [{ source: "No attributable AI referrals yet", visits: 0 }];
+  return (
+    <section className="growth-panel ai-discovery" aria-labelledby="ai-discovery-title">
+      <div className="growth-heading"><span>Answer engines</span><h2 id="ai-discovery-title">AI discovery</h2></div>
+      <p>Human visits referred by ChatGPT, Claude, Perplexity, Gemini, Copilot, Poe, or You.com. Crawler requests stay out of visitor totals.</p>
+      <ol>
+        {display.slice(0, 7).map((row, index) => <li key={`${row.source}-${index}`}>
+          <span className="rank">{index + 1}</span><span className="row-name">{row.source}</span><strong>{number(row.visits)}</strong>
+        </li>)}
+      </ol>
     </section>
   );
 }
@@ -405,6 +449,10 @@ function Dashboard() {
         </section>
 
         <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
+        <section className="growth-grid" aria-label="Revenue and AI discovery">
+          <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />
+          <AiDiscovery rows={data.ai_referrals || []} />
+        </section>
         <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
         <ContactInbox rows={data.contact_submissions || []} />
 
