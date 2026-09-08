@@ -7,9 +7,9 @@
 
   const navItems = [
     ['work', 'Work', '/case-studies/'],
+    ['blueprint', 'Blueprint', '/blueprint/'],
     ['systems', 'Nexus', '/basin-nexus/'],
-    ['writing', 'Writing', '/blog/'],
-    ['fiction', 'Fiction', '/blog/fiction/']
+    ['writing', 'Writing', '/blog/']
   ];
 
   function ensureInsights() {
