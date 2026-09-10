@@ -11,6 +11,7 @@
   }
 
   function campaign() {
+    if (window.lbInsightsCampaign) return window.lbInsightsCampaign;
     var params = new URLSearchParams(location.search);
     return {
       source: clean(params.get("utm_source"), 100),
@@ -28,15 +29,6 @@
       if (form.dataset.started === "1") return;
       form.dataset.started = "1";
       startedAt = Date.now();
-      if (window.lbInsightsRecord) {
-        window.lbInsightsRecord("Conversion", {
-          category: "Commercial intent",
-          action: "contact-form-start",
-          destination: location.pathname,
-          label: "Contact form started",
-          region: "section"
-        });
-      }
     }, { once: true });
 
     form.addEventListener("submit", async function (event) {
@@ -69,10 +61,12 @@
           body: JSON.stringify(payload)
         });
         if (!response.ok) throw new Error("send_failed");
+        var result = await response.json();
+        if (result.accepted !== true) throw new Error("not_accepted");
         form.reset();
         startedAt = Date.now();
         status.classList.add("is-success");
-        status.textContent = "Received. Leon will reply personally.";
+        status.textContent = "Received in Leon's private inbox. Thank you for writing.";
         if (window.lbInsightsRecord) {
           window.lbInsightsRecord("Conversion", {
             category: "Commercial intent",
@@ -81,7 +75,7 @@
             label: "Contact form submitted",
             region: "section"
           });
-          window.lbInsightsRecord("Hiring Funnel Step", {
+          if (payload.intent.toLowerCase() === "senior operating role") window.lbInsightsRecord("Hiring Funnel Step", {
             step: "email",
             destination: location.pathname,
             label: "Contact form submitted"

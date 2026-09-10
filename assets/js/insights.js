@@ -163,11 +163,25 @@
 
   function readCampaign() {
     const params = new URLSearchParams(location.search);
-    return {
+    const current = {
       source: cleanLabel(params.get("utm_source")),
       medium: cleanLabel(params.get("utm_medium")),
       campaign: cleanLabel(params.get("utm_campaign"))
     };
+    const key = "lb:insights:campaign:v1";
+    // Preserve the external entry source across internal pages in this tab.
+    // This runs only after production, owner, automation and privacy guards.
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(key) || "null");
+      if (saved && Date.now() - saved.at < 30 * 60 * 1000 && saved.at <= Date.now()) {
+        const result = { source: cleanLabel(saved.source), medium: cleanLabel(saved.medium), campaign: cleanLabel(saved.campaign) };
+        window.lbInsightsCampaign = result;
+        return result;
+      }
+      if (current.source) sessionStorage.setItem(key, JSON.stringify({ ...current, at: Date.now() }));
+    } catch (_) { /* Storage is optional. */ }
+    window.lbInsightsCampaign = current;
+    return current;
   }
 
   function getSessionId() {
