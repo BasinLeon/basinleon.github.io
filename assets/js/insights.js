@@ -222,6 +222,7 @@
       referrer,
       session: sessionId,
       visitor: visitorId,
+      conversation: window.lbConversation ? window.lbConversation.get() : "",
       campaign,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
       language: navigator.language || "",
@@ -347,8 +348,7 @@
 
   document.addEventListener("click", function (event) {
     const link = event.target.closest("a[href]");
-    if (!link) {
-      const copyButton = event.target.closest("button[data-copy-email], button[data-email]");
+    if (!link) {      const copyButton = event.target.closest("button[data-copy-email], button[data-email]");
       if (!copyButton) return;
       const label = cleanLabel(copyButton.dataset.track || copyButton.textContent || "Copy email");
       record("Conversion", { category: "Commercial intent", action: "copy-email", destination: "email", label, region: "section" }, { beacon: true });
@@ -356,6 +356,10 @@
       return;
     }
     const item = clickDetail(link);
+    if (link.hasAttribute("data-lb-engage") && window.lbConversation) {
+      const cid = window.lbConversation.ensure();
+      item.detail.conversation_id = cid;
+    }
     record(item.type, item.detail, { beacon: true });
     const conversion = conversionDetail(link, item);
     if (conversion) record("Conversion", conversion, { beacon: true });

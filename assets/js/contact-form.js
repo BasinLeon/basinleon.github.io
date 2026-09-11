@@ -51,6 +51,7 @@
         problem: clean(data.get("problem"), 2000),
         website: clean(data.get("website"), 120),
         startedAt: startedAt,
+        conversation_id: window.lbConversation ? window.lbConversation.ensure() : "",
         page: location.pathname,
         referrer: document.referrer ? new URL(document.referrer, location.href).hostname : "",
         campaign: campaign()
