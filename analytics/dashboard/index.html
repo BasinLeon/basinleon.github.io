@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Conversion Dashboard — private | Leon Basin</title>
+  <title>Conversion Dashboard (private) | Leon Basin</title>
   <meta name="description" content="Private scoreboard: source → landing page → engagement → conversation → opportunity → revenue.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
@@ -57,7 +57,7 @@
     <div class="eyebrow">Private · not indexed · not linked</div>
     <h1 class="display">The scoreboard is conversations<br>and revenue. Not traffic.</h1>
     <p>Traffic is context. The chain below is the measurement. Every stage has a signal in the analytics pipeline; the last two stages are annotated by hand until the worker dashboard supports them.</p>
-    <span class="private-note">Owner only — analytics disabled on this page (<code>data-lb-analytics="off"</code>)</span>
+    <span class="private-note">Owner only: analytics disabled on this page (<code>data-lb-analytics="off"</code>)</span>
   </div></header>
 
   <main class="shell">
@@ -79,7 +79,7 @@
       <h2 class="display" id="events-t">What each stage emits.</h2>
       <table>
         <tr><th>Stage</th><th>Event</th><th>Where it fires</th></tr>
-        <tr><td>01 Source</td><td><code>Pageview</code> with <code>campaign</code> (utm_*) + <code>referrer</code></td><td><code>assets/js/insights.js</code> — every page</td></tr>
+        <tr><td>01 Source</td><td><code>Pageview</code> with <code>campaign</code> (utm_*) + <code>referrer</code></td><td><code>assets/js/insights.js</code>, on every page</td></tr>
         <tr><td>02 Landing</td><td><code>Pageview</code> on <code>/working-session/</code>, <code>/diagnostic/</code></td><td>same</td></tr>
         <tr><td>03 Engagement</td><td><code>Conversion</code> · <code>diagnostic-completed</code> / CTA click with <code>data-lb-engage</code></td><td><code>/diagnostic/</code>, contextual-close links</td></tr>
         <tr><td>04 Conversation</td><td><code>Conversion</code> · <code>contact-form-submit</code> / <code>diagnostic-email-requested</code> (+ <code>conversation_id</code>)</td><td><code>contact-form.js</code>, <code>/diagnostic/</code></td></tr>
@@ -92,7 +92,7 @@
     <section aria-labelledby="sql-t">
       <div class="eyebrow">D1 queries</div>
       <h2 class="display" id="sql-t">Ask the database directly.</h2>
-      <p class="note" style="margin-top:0">Run against the worker's D1. Stages 1–4 are measurable today; the <code>conversation</code> blob column is a planned worker change (see <code>docs/conversation-id.md</code>) — until then, join stage 4 via the intake payload, which already carries <code>conversation_id</code>.</p>
+      <p class="note" style="margin-top:0">Run against the worker's D1. Stages 1–4 are measurable today; the <code>conversation</code> blob column is a planned worker change (see <code>docs/conversation-id.md</code>). Until then, join stage 4 via the intake payload, which already carries <code>conversation_id</code>.</p>
       <h3 style="font-size:1rem;margin:1.5rem 0 .25rem">Conversations by source, last 30 days</h3>
 <pre>-- stage 4 by source: which distribution path creates conversations
 SELECT
@@ -134,7 +134,7 @@ ORDER BY timestamp ASC;</pre>
           <p class="note">Visits by source, landing-page views, scroll depth, reading time. Useful only for diagnosing <em>why</em> a headline number moved.</p>
         </div>
       </div>
-      <p class="note">Live event data sits in the token-protected worker dashboard (separate deploy). This page is the scoreboard definition — what counts, in what order, and which query proves it. Stages 5–6 are annotated by hand until the dashboard supports them.</p>
+      <p class="note">Live event data sits in the token-protected worker dashboard (separate deploy). This page is the scoreboard definition: what counts, in what order, and which query proves it. Stages 5–6 are annotated by hand until the dashboard supports them.</p>
     </section>
   </main>
 

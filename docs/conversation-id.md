@@ -1,4 +1,4 @@
-# conversation_id — the bridge between site analytics and Basin::Nexus
+# conversation_id: the bridge between site analytics and Basin::Nexus
 
 ## What it is
 
@@ -27,7 +27,7 @@ Example: `conv-20260910-a3f9k2`
 
 - Created by `assets/js/conversation.js` (`window.lbConversation.ensure()`).
 - Stored in `sessionStorage` only (`lb:conversation:id:v1`). One id per browser session; it never follows the visitor across sessions or devices.
-- Contains no PII. It is random — it cannot be reversed into a person. The HMAC-hashed visitor token in the analytics pipeline stays separate.
+- Contains no PII. It is random, so it cannot be reversed into a person. The HMAC-hashed visitor token in the analytics pipeline stays separate.
 
 ## Where it is attached
 
@@ -54,4 +54,4 @@ Remaining follow-up: extend the worker dashboard with a "conversation journey" v
 
 > Which piece of Leon's work created this relationship, and what did that relationship become?
 
-Source (UTM/referrer) → landing page → engagement (conversation_id minted) → email/intake (id in payload) → Leon's reply → opportunity → revenue. The id is the thread that ties the anonymous journey to the named relationship — without ever turning browsing into surveillance.
+Source (UTM/referrer) → landing page → engagement (conversation_id minted) → email/intake (id in payload) → Leon's reply → opportunity → revenue. The id is the thread that ties the anonymous journey to the named relationship, without ever turning browsing into surveillance.

@@ -1,14 +1,14 @@
 /**
- * lbContextualClose — one closing path per page, chosen by context.
+ * lbContextualClose: one closing path per page, chosen by context.
  *
  * Any element with data-lb-close="session|nexus|subscribe" gets the matching
  * closing block appended. No generic homepage links: each variant routes the
  * reader to the page that continues the thought.
  *
  * Variants:
- *   session   — "Working on this problem? Bring me the motion." → /working-session/
- *   nexus     — "Want the operating model? Inspect Basin::Nexus." → /basin-nexus/
- *   subscribe — "Want the next piece? Subscribe." → Substack (UTM-tagged)
+ *   session:   "Working on this problem? Bring me the motion." → /working-session/
+ *   nexus:     "Want the operating model? Inspect Basin::Nexus." → /basin-nexus/
+ *   subscribe: "Want the next piece? Subscribe." → Substack (UTM-tagged)
  */
 (function () {
   "use strict";
@@ -25,7 +25,7 @@
     nexus: {
       eyebrow: "The operating model",
       title: "Want the operating model? Inspect Basin::Nexus.",
-      text: "The experiments, models, and methods behind the work — how signals become systems, and systems become proof.",
+      text: "The experiments, models, and methods behind the work: how signals become systems, and systems become proof.",
       cta: "Inspect Basin::Nexus",
       href: "/basin-nexus/",
       track: "Contextual close: nexus"
