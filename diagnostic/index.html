@@ -261,14 +261,15 @@
       fetch("https://basin-site-insights.basin-site-insights.workers.dev/v1/contact", {
         method: "POST", mode: "cors", headers: {"content-type":"application/json"},
         body: JSON.stringify({
-          v: 1, name: "", email: email, company: "",
+          v: 1, type: "diagnostic-score", name: "", email: email, company: "",
           intent: "Diagnostic score + recommendations",
           problem: "Diagnostic score " + (d.score != null ? d.score : "?") + "/24. Weakest area: " + (d.weakestArea || "unknown") + ". Answers: " + (d.answers || []).join(","),
           website: "", startedAt: Date.now(), conversation_id: d.conversation_id || cid,
           page: "/diagnostic/", referrer: document.referrer ? new URL(document.referrer, location.href).hostname : "",
           campaign: { source: params.get("utm_source") || "", medium: params.get("utm_medium") || "", campaign: params.get("utm_campaign") || "" }
         })
-      }).then(function(r){ if (!r.ok) throw new Error("send_failed");
+      }).then(function(r){ return r.json().then(function(body){
+        if (!r.ok || body.accepted === false) throw new Error("send_failed");
         status.textContent = "Received. I'll send your written recommendations personally.";
         status.classList.add("ok");
         if (window.lbInsightsRecord) {

@@ -53,6 +53,11 @@ export function normalizeContact(input) {
   if (!input || input.v !== 1) return null;
   if (cleanText(input.website, 120)) return { spam: true };
 
+  const intakeType = cleanText(input.type, 40);
+  const isDiagnosticScore = intakeType === "diagnostic-score";
+  const conversationId = cleanText(input.conversation_id || input.conversation, 64);
+  const hasConversation = /^[a-z0-9-]{4,64}$/i.test(conversationId);
+
   const name = cleanText(input.name, 100);
   const email = cleanText(input.email, 180).toLowerCase();
   const company = cleanText(input.company, 140);
@@ -63,8 +68,14 @@ export function normalizeContact(input) {
   const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
   const startedAt = Number(input.startedAt || 0);
 
-  if (!name || !validEmail(email) || problem.length < 12) return null;
-  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
+  if (!validEmail(email) || problem.length < 12) return null;
+  // Name is optional for the diagnostic score path: asking for their score
+  // should not add friction. Every other intake type still requires a name.
+  if (!isDiagnosticScore && !name) return null;
+  // A completed diagnostic with a valid conversation_id is a known, real
+  // engagement — the timing heuristic does not apply to it.
+  const timingSuspect = !Number.isFinite(startedAt) || Date.now() - startedAt < 2_500;
+  if (timingSuspect && !(isDiagnosticScore && hasConversation)) return { spam: true };
 
   return {
     name,
@@ -74,6 +85,8 @@ export function normalizeContact(input) {
     problem,
     page,
     referrer,
+    intakeType: isDiagnosticScore ? intakeType : "",
+    conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
     campaignName: cleanText(campaign.campaign, 120)
@@ -87,6 +100,7 @@ export function normalizeEvent(input) {
   const session = cleanText(input.session, 120);
   const visitor = cleanText(input.visitor, 120);
   if (!session || !visitor) return null;
+  const conversationId = cleanText(input.conversation_id || input.conversation || detail.conversation_id, 64);
 
   return {
     type: input.type,
@@ -96,6 +110,7 @@ export function normalizeEvent(input) {
     referrer: cleanText(input.referrer, 160),
     session,
     visitor,
+    conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
     campaignName: cleanText(campaign.campaign, 120),
@@ -180,8 +195,9 @@ async function ingest(request, env) {
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
       campaign_source, campaign_medium, campaign_name, viewport, language,
-      destination, label, region, conversion_category, conversion_action, depth, seconds
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      destination, label, region, conversion_category, conversion_action, depth, seconds,
+      conversation_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -201,7 +217,8 @@ async function ingest(request, env) {
     event.conversionCategory,
     event.conversionAction,
     event.depth,
-    event.seconds
+    event.seconds,
+    event.conversationId
   ).run();
 
   return json({ accepted: true }, 202, corsHeaders(origin));
@@ -224,7 +241,9 @@ async function ingestContact(request, env) {
   }
 
   const contact = normalizeContact(input);
-  if (contact?.spam) return json({ accepted: true }, 202, corsHeaders(origin));
+  // Spam rejections are explicit, never silent: the caller can always tell
+  // the difference between "stored" and "rejected".
+  if (contact?.spam) return json({ accepted: false, reason: "spam_rejected" }, 202, corsHeaders(origin));
   if (!contact) return json({ error: "invalid_contact" }, 422, corsHeaders(origin));
 
   const recent = await env.DB.prepare(`
@@ -237,8 +256,9 @@ async function ingestContact(request, env) {
     await env.DB.prepare(`
       INSERT INTO contact_submissions (
         name, email, company, intent, problem, page, referrer,
-        campaign_source, campaign_medium, campaign_name
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        campaign_source, campaign_medium, campaign_name,
+        conversation_id, intake_type
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       contact.name,
       contact.email,
@@ -249,7 +269,9 @@ async function ingestContact(request, env) {
       contact.referrer,
       contact.campaignSource,
       contact.campaignMedium,
-      contact.campaignName
+      contact.campaignName,
+      contact.conversationId,
+      contact.intakeType
     ).run();
   }
 
@@ -412,7 +434,7 @@ async function dashboardData(request, env) {
 
   statements.push(env.DB.prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
-      campaign_source, campaign_medium, campaign_name, status
+      campaign_source, campaign_medium, campaign_name, conversation_id, intake_type, status
     FROM contact_submissions
     ORDER BY received_at DESC
     LIMIT 30

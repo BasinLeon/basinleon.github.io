@@ -96,6 +96,61 @@ test("rejects malformed and too-fast contact requests", () => {
   }), { spam: true });
 });
 
+test("diagnostic-score intake accepts an empty name with a valid conversation", () => {
+  const contact = normalizeContact({
+    v: 1,
+    type: "diagnostic-score",
+    name: "",
+    email: "reader@example.com",
+    problem: "Diagnostic score 18/24. Weakest area: Follow-up. Answers: 2,3,1,2,3,2,1,2",
+    startedAt: Date.now(),
+    conversation_id: "conv-20260910-a3f9k2"
+  });
+  assert.ok(contact);
+  assert.equal(contact.email, "reader@example.com");
+  assert.equal(contact.conversationId, "conv-20260910-a3f9k2");
+  assert.equal(contact.intakeType, "diagnostic-score");
+});
+
+test("diagnostic-score without a conversation still trips the timing heuristic", () => {
+  assert.deepEqual(normalizeContact({
+    v: 1,
+    type: "diagnostic-score",
+    name: "",
+    email: "reader@example.com",
+    problem: "Diagnostic score 18/24. Weakest area: Follow-up. Answers: 2,3,1,2,3,2,1,2",
+    startedAt: Date.now(),
+    conversation_id: ""
+  }), { spam: true });
+});
+
+test("non-diagnostic intakes still require a name", () => {
+  assert.equal(normalizeContact({
+    v: 1,
+    name: "",
+    email: "reader@example.com",
+    problem: "This message is long enough to pass.",
+    startedAt: Date.now() - 5000
+  }), null);
+});
+
+test("events and contacts carry the conversation id", () => {
+  const event = normalizeEvent({ ...base, conversation: "conv-20260910-a3f9k2" });
+  assert.equal(event.conversationId, "conv-20260910-a3f9k2");
+  const detailEvent = normalizeEvent({ ...base, detail: { conversation_id: "conv-20260910-zz99" } });
+  assert.equal(detailEvent.conversationId, "conv-20260910-zz99");
+  const contact = normalizeContact({
+    v: 1,
+    name: "Leon",
+    email: "leon@example.com",
+    problem: "We need to build a repeatable public-sector motion.",
+    startedAt: Date.now() - 5000,
+    conversation_id: "conv-20260910-a3f9k2"
+  });
+  assert.equal(contact.conversationId, "conv-20260910-a3f9k2");
+  assert.equal(contact.intakeType, "");
+});
+
 test("dashboard keeps AI referrals, revenue steps and private contacts in their own fields", async () => {
   const resultSets = Array.from({ length: 12 }, () => ({ results: [] }));
   resultSets[0] = { results: [{ unique_visitors: 12, visits: 15, engaged_visits: 7, conversion_actions: 2 }] };
