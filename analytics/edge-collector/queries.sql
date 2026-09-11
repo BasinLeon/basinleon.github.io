@@ -54,3 +54,20 @@ WHERE timestamp >= NOW() - INTERVAL '30' DAY
 GROUP BY page
 ORDER BY pageviews DESC
 LIMIT 200;
+
+-- Conversation journey: every event for one conversation_id, ordered by time
+-- Replace 'conv-...' with the id under review.
+SELECT
+  timestamp,
+  blob18 AS conversation_id,
+  blob1 AS event,
+  blob2 AS page,
+  blob3 AS destination,
+  blob4 AS label,
+  blob6 AS referrer,
+  blob11 AS utm_source,
+  blob14 AS session_id
+FROM leon_site_events
+WHERE blob18 = 'conv-20260910-a3f9k2'
+  AND timestamp >= NOW() - INTERVAL '90' DAY
+ORDER BY timestamp ASC;

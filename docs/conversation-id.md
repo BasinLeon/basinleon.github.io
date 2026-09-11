@@ -44,13 +44,11 @@ Example: `conv-20260910-a3f9k2`
 - The id is meaningless without the visitor's own subsequent actions. It is a thread, not a profile.
 - Contact details are still stored only on explicit form submission and removed after 180 days, per the analytics-worker README.
 
-## Worker follow-up (not yet implemented)
+## Worker implementation (done 2026-09-10)
 
-The edge collector (`analytics/edge-collector`) currently ignores the top-level `conversation` field. To make the join key queryable:
+The edge collector persists the top-level `conversation` field as **blob 18** in `writeDataPoint` (`analytics/edge-collector/src/index.js`; blobs 1–17 unchanged, Analytics Engine allows 20). Empty string until engagement; cleaned to 32 chars max like every other blob. A conversation-journey query (`WHERE blob18 = ... ORDER BY timestamp ASC`) is in `analytics/edge-collector/queries.sql`.
 
-1. Persist it as blob 18 in `writeDataPoint` (blobs 1–17 are taken; Analytics Engine allows 20).
-2. Extend the worker dashboard with a "conversation journey" view: all events for one `conversation_id`, ordered by time — the full path from source to conversation.
-3. Manual stages (qualified opportunity, revenue) are annotated in the dashboard or in Basin::Nexus against the same id.
+Remaining follow-up: extend the worker dashboard with a "conversation journey" view. Manual stages (qualified opportunity, revenue) are annotated in the dashboard or in Basin::Nexus against the same id.
 
 ## The question it answers
 

@@ -6,6 +6,7 @@
  *  6 referrer, 7 country, 8 region, 9 city, 10 device
  * 11 campaign source, 12 campaign medium, 13 campaign name
  * 14 session, 15 title, 16 language, 17 viewport
+ * 18 conversation (conversation_id join key, e.g. conv-20260910-a3f9k2; empty until engagement)
  *
  * Doubles:
  *  1 count, 2 reading seconds, 3 scroll depth
@@ -84,7 +85,8 @@ export default {
         clean(body.session, 80),
         clean(body.title, 160),
         clean(body.language, 24),
-        clean(body.viewport, 32)
+        clean(body.viewport, 32),
+        clean(body.conversation, 32)
       ],
       doubles: [
         1,
