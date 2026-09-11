@@ -7,6 +7,7 @@ Attribution exists to answer one question: **which piece of Leon's work created 
 | Distribution path | `utm_source` | `utm_medium` | `utm_content` |
 |---|---|---|---|
 | X post | `x` | `social` | `post` |
+| X reply in a thread | `x` | `social` | `reply` |
 | X profile bio link | `x` | `social` | `profile-bio` |
 | LinkedIn post | `linkedin` | `social` | `post` |
 | LinkedIn profile / featured | `linkedin` | `social` | `profile-bio` |
@@ -40,7 +41,7 @@ Some sources carry no tags and are detected by other means. Keep them separately
 1. Never invent a source value. If the journey didn't come from a tagged link, it is `direct`, `referral`, `organic-search`, or `ai-referral`, not a guess.
 2. The site's own outbound share paths carry UTMs where the destination is Leon's own property (e.g. the contextual-close subscribe variant tags Substack). Third-party destinations stay untagged.
 3. One campaign per push. A post promoting the diagnostic and a post promoting the working session are different campaigns, even on the same day.
-4. `utm_content` distinguishes the placement (`post` vs `profile-bio`) so a bio link and a post don't merge into one number.
+4. `utm_content` distinguishes the placement (`post` vs `reply` vs `profile-bio`) so a thread reply, an original post, and a bio link don't merge into one number. The X Conversation Engine experiment tags thread placements with `utm_content=reply`.
 
 ## Where this is enforced
 
