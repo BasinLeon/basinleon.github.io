@@ -151,6 +151,36 @@ test("events and contacts carry the conversation id", () => {
   assert.equal(contact.intakeType, "");
 });
 
+test("events and contacts carry utm_content without touching other campaign fields", () => {
+  const event = normalizeEvent({
+    ...base,
+    campaign: { source: "x", medium: "social", campaign: "conversation_engine_2026_09", content: "reply" }
+  });
+  assert.equal(event.campaignContent, "reply");
+  assert.equal(event.campaignSource, "x");
+  assert.equal(event.campaignName, "conversation_engine_2026_09");
+
+  const detailEvent = normalizeEvent({ ...base, detail: { utm_content: "post" } });
+  assert.equal(detailEvent.campaignContent, "post");
+
+  const topLevelEvent = normalizeEvent({ ...base, utm_content: "profile-bio" });
+  assert.equal(topLevelEvent.campaignContent, "profile-bio");
+
+  const contact = normalizeContact({
+    v: 1,
+    name: "Leon",
+    email: "leon@example.com",
+    problem: "We need to build a repeatable public-sector motion.",
+    startedAt: Date.now() - 5000,
+    campaign: { source: "x", medium: "social", campaign: "conversation_engine_2026_09", content: "reply" }
+  });
+  assert.equal(contact.campaignContent, "reply");
+
+  // Missing content stays empty, never breaks normalization.
+  const bare = normalizeEvent({ ...base, campaign: {} });
+  assert.equal(bare.campaignContent, "");
+});
+
 test("dashboard keeps AI referrals, revenue steps and private contacts in their own fields", async () => {
   const resultSets = Array.from({ length: 12 }, () => ({ results: [] }));
   resultSets[0] = { results: [{ unique_visitors: 12, visits: 15, engaged_visits: 7, conversion_actions: 2 }] };

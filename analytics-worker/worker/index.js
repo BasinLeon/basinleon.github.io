@@ -89,7 +89,8 @@ export function normalizeContact(input) {
     conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
-    campaignName: cleanText(campaign.campaign, 120)
+    campaignName: cleanText(campaign.campaign, 120),
+    campaignContent: cleanText(campaign.content || input.utm_content, 120)
   };
 }
 
@@ -114,6 +115,7 @@ export function normalizeEvent(input) {
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
     campaignName: cleanText(campaign.campaign, 120),
+    campaignContent: cleanText(campaign.content || input.utm_content || detail.utm_content, 120),
     viewport: cleanText(input.viewport, 32),
     language: cleanText(input.language, 24),
     destination: cleanText(detail.destination, 300),
@@ -194,10 +196,10 @@ async function ingest(request, env) {
   await env.DB.prepare(`
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
-      campaign_source, campaign_medium, campaign_name, viewport, language,
+      campaign_source, campaign_medium, campaign_name, utm_content, viewport, language,
       destination, label, region, conversion_category, conversion_action, depth, seconds,
       conversation_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -209,6 +211,7 @@ async function ingest(request, env) {
     event.campaignSource,
     event.campaignMedium,
     event.campaignName,
+    event.campaignContent,
     event.viewport,
     event.language,
     event.destination,
@@ -256,9 +259,9 @@ async function ingestContact(request, env) {
     await env.DB.prepare(`
       INSERT INTO contact_submissions (
         name, email, company, intent, problem, page, referrer,
-        campaign_source, campaign_medium, campaign_name,
+        campaign_source, campaign_medium, campaign_name, utm_content,
         conversation_id, intake_type
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       contact.name,
       contact.email,
@@ -270,6 +273,7 @@ async function ingestContact(request, env) {
       contact.campaignSource,
       contact.campaignMedium,
       contact.campaignName,
+      contact.campaignContent,
       contact.conversationId,
       contact.intakeType
     ).run();
@@ -434,7 +438,7 @@ async function dashboardData(request, env) {
 
   statements.push(env.DB.prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
-      campaign_source, campaign_medium, campaign_name, conversation_id, intake_type, status
+      campaign_source, campaign_medium, campaign_name, utm_content, conversation_id, intake_type, status
     FROM contact_submissions
     ORDER BY received_at DESC
     LIMIT 30

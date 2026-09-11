@@ -166,7 +166,8 @@
     return {
       source: cleanLabel(params.get("utm_source")),
       medium: cleanLabel(params.get("utm_medium")),
-      campaign: cleanLabel(params.get("utm_campaign"))
+      campaign: cleanLabel(params.get("utm_campaign")),
+      content: cleanLabel(params.get("utm_content"))
     };
   }
 

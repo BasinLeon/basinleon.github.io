@@ -15,7 +15,8 @@
     return {
       source: clean(params.get("utm_source"), 100),
       medium: clean(params.get("utm_medium"), 100),
-      campaign: clean(params.get("utm_campaign"), 120)
+      campaign: clean(params.get("utm_campaign"), 120),
+      content: clean(params.get("utm_content"), 120)
     };
   }
 
