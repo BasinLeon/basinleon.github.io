@@ -277,6 +277,19 @@ function sqlTimestamp(date) {
   return `${date.toISOString().slice(0, 10)} 00:00:00`;
 }
 
+async function notificationFeed(request, env) {
+  const header = request.headers.get("authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!env.NOTIFIER_TOKEN || !timingSafeEqual(token, env.NOTIFIER_TOKEN)) {
+    return json({ error: "unauthorized" }, 401);
+  }
+  const raw = new URL(request.url).searchParams.get("after") || "0";
+  if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) return json({ error: "invalid_cursor" }, 400);
+  const result = await env.DB.prepare("SELECT id FROM contact_submissions WHERE id > ? ORDER BY id ASC LIMIT 50").bind(Number(raw)).all();
+  // This credential never grants access to message text, contact details or analytics.
+  return json({ ids: (result.results || []).map(row => row.id) });
+}
+
 export function rangeSelection(url) {
   const requestedValue = url.searchParams.get("days") || "clean";
   if (requestedValue === "clean") {
@@ -471,6 +484,7 @@ export default {
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
     if (request.method === "POST" && url.pathname === "/v1/contact") return ingestContact(request, env);
     if (request.method === "GET" && url.pathname === "/v1/dashboard") return dashboardData(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/notifications") return notificationFeed(request, env);
     if (request.method === "GET" && url.pathname === "/health") {
       return json({ ok: true, storage: "d1", retention_days: Number(env.RETENTION_DAYS || 400) });
     }
