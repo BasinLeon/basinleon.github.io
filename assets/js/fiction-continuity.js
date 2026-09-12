@@ -7,6 +7,12 @@
       room: "Listening room"
     },
     {
+      path: "/fiction/the-vanishing-archive",
+      title: "The Vanishing Archive",
+      published: "September 12, 2026",
+      room: "The page"
+    },
+    {
       path: "/blog/posts/sam-ink-the-signal.html",
       title: "The Signal",
       published: "July 26, 2026",
