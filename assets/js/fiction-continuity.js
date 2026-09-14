@@ -32,6 +32,9 @@
   if (index < 0 || !main) return;
 
   const current = stories[index];
+  const shareUrl = new URL(current.path, window.location.origin);
+  shareUrl.search = new URLSearchParams({ utm_source: "reader-share", utm_medium: "referral", utm_campaign: "fiction-share" }).toString();
+  const emailShare = "mailto:?subject=" + encodeURIComponent(current.title) + "&body=" + encodeURIComponent("A story I wanted to pass along:\n\n" + shareUrl.href);
   const previous = stories[index - 1];
   const next = stories[index + 1];
   const storyText = document.querySelector("article")?.textContent || main.textContent || "";
@@ -64,9 +67,22 @@
         <p>${current.room}. New stories arrive slowly.</p>
         <div class="fiction-continuity__links">
           <a href="/blog/fiction/sam-and-ink/" data-track="Fiction: return to Sam and Ink">Return to Sam &amp; Ink</a>
+          <a href="${emailShare}" data-track="Fiction: share by email">Send this story to someone</a>
+          <button type="button" class="fiction-copy-link">Copy story link</button>
+          <span class="fiction-copy-status" role="status"></span>
           <a href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&amp;utm_medium=owned&amp;utm_campaign=fiction&amp;utm_content=story-continuity" target="_blank" rel="noopener noreferrer" data-track="Fiction: subscribe">Receive the next story</a>
         </div>
       </div>
     </div>`;
   main.append(section);
+  section.querySelector(".fiction-copy-link").addEventListener("click", async () => {
+    const status = section.querySelector(".fiction-copy-status");
+    try {
+      await navigator.clipboard.writeText(shareUrl.href);
+      status.textContent = "Story link copied.";
+      window.lbInsightsRecord?.("Conversion", { category: "Reader interest", action: "copy-story-link", destination: current.path, label: current.title, region: "story-continuity" });
+    } catch (_) {
+      status.textContent = "Copy unavailable. You can copy the page address instead.";
+    }
+  });
 })();

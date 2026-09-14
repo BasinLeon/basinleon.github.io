@@ -308,7 +308,13 @@
     let category = "";
     let action = "";
 
-    if (["Email Click", "Phone Click"].includes(click.type)) {
+    if (/^(article|fiction): share/.test(label)) {
+      category = "Reader interest";
+      action = "share";
+    } else if (/substack|subscribe/.test(`${path} ${label}`)) {
+      category = "Reader interest";
+      action = "subscription-outbound";
+    } else if (["Email Click", "Phone Click"].includes(click.type)) {
       category = "Commercial intent";
       action = click.type === "Email Click" ? "email" : "phone";
     } else if (/resume|case-stud|availability|work-with-me|gmail|email app/.test(`${path} ${label}`)) {
@@ -379,7 +385,7 @@
         destination: item.detail.destination,
         label: item.detail.label
       }, { beacon: true });
-    } else if (item.type === "Email Click") {
+    } else if (item.type === "Email Click" && conversion?.category === "Commercial intent") {
       record("Hiring Funnel Step", {
         step: "email",
         destination: item.detail.destination,
