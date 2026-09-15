@@ -21,8 +21,8 @@
     try { await navigator.clipboard.writeText(value); status.textContent = message; record('copy-link'); }
     catch (_) { status.textContent = 'Copy manually: ' + value; }
   };
-  link('X', 'https://twitter.com/intent/tweet?' + new URLSearchParams({text: title + ' by Leon Basin', url}));
-  link('Email', 'mailto:?' + new URLSearchParams({subject: title, body: text}));
+  link('Share on X', 'https://twitter.com/intent/tweet?' + new URLSearchParams({text: title + ' by Leon Basin', url}));
+  link('Send by email', 'mailto:?' + new URLSearchParams({subject: title, body: text}));
   action('Copy for Substack', () => copy(text, 'Copied. Paste into a Substack Note.'));
   action('Copy for Instagram', () => copy(text, 'Copied. Paste into a message, or use the story URL in a Story link sticker.'));
   action('Copy link', () => copy(url, 'Link copied.'));
