@@ -1,0 +1,30 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { DatabaseSync } from 'node:sqlite';
+import { DISTRIBUTION_SQL } from '../worker/distribution.js';
+
+test('distribution preserves entry attribution and deduplicates session outcomes', () => {
+  const db = new DatabaseSync(':memory:');
+  db.exec(`CREATE TABLE events (id INTEGER PRIMARY KEY, received_at TEXT, event_type TEXT, session_hash TEXT, page TEXT, campaign_source TEXT DEFAULT '', campaign_medium TEXT DEFAULT '', campaign_name TEXT DEFAULT '', referrer TEXT DEFAULT '', depth INTEGER, conversion_action TEXT DEFAULT '');`);
+  const insert = db.prepare(`INSERT INTO events(received_at,event_type,session_hash,page,campaign_source,campaign_medium,campaign_name,depth,conversion_action) VALUES (?,?,?,?,?,?,?,?,?)`);
+  const add = (type,session,page,depth=null,action='',source='x') => insert.run('2026-09-14 12:00:00',type,session,page,source,'social','test--a',depth,action);
+  add('Pageview','one','/fiction/a/');
+  add('Pageview','one','/fiction/a/');
+  add('Engaged Visit','one','/fiction/a/');
+  add('Engaged Visit','one','/fiction/a/');
+  add('Scroll Depth','one','/fiction/a/',75);
+  add('Pageview','one','/blog/posts/b.html');
+  add('Conversion','one','/blog/posts/b.html',null,'subscription-outbound');
+  add('Conversion','one','/blog/posts/b.html',null,'subscription-outbound');
+  add('Pageview','two','/fiction/a/');
+  add('Engaged Visit','two','/blog/posts/b.html');
+  const rows = db.prepare(DISTRIBUTION_SQL).all('2026-09-14 00:00:00');
+  assert.equal(rows.length,1);
+  assert.equal(rows[0].visits,2);
+  assert.equal(rows[0].engaged,1);
+  assert.equal(rows[0].deep_scroll,1);
+  assert.equal(rows[0].onward,1);
+  assert.equal(rows[0].subscription_clicks,1);
+  assert.equal(db.prepare(DISTRIBUTION_SQL).all('2026-09-15 00:00:00').length,0);
+  db.close();
+});

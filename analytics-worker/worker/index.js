@@ -1,3 +1,5 @@
+import { DISTRIBUTION_SQL } from './distribution.js';
+
 const EVENT_TYPES = new Set([
   "Pageview",
   "Engaged Visit",
@@ -447,10 +449,13 @@ async function dashboardData(request, env) {
     FROM events WHERE received_at >= ? AND (page LIKE '/blog/%' OR page LIKE '/fiction/%')
     GROUP BY page ORDER BY visits DESC, page LIMIT 50
   `).bind(since));
+  statements.push(env.DB.prepare(DISTRIBUTION_SQL).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
     range_days: days,
+    requested_since: since,
+    coverage_since: since > '2026-08-09 00:00:00' ? since : '2026-08-09 00:00:00',
     range_mode: range.mode,
     generated_at: new Date().toISOString(),
     retention_days: Number(env.RETENTION_DAYS || 400),
@@ -476,7 +481,8 @@ async function dashboardData(request, env) {
       leads: Number(rows(10)[0]?.leads || 0)
     },
     contact_submissions: rows(11),
-    reader_pages: rows(12)
+    reader_pages: rows(12),
+    distribution: rows(13)
   });
 }
 

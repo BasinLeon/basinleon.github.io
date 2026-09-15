@@ -83,12 +83,13 @@
         localStorage.removeItem(ownerStorageKey);
       }
     } catch (_) {
-      // The confirmation still explains the requested state if storage is unavailable.
+      // Cookie storage may still work; confirm by reading both stores below.
     }
     document.cookie = mode === "exclude"
       ? `${ownerCookie}=1; Max-Age=34560000; Path=/; SameSite=Lax; Secure`
       : `${ownerCookie}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
 
+    const excluded = isOwnerExcluded();
     const url = new URL(location.href);
     url.searchParams.delete("lb_owner");
     history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
@@ -96,9 +97,9 @@
     const notice = document.createElement("div");
     notice.setAttribute("role", "status");
     notice.dataset.lbOwnerStatus = mode;
-    notice.textContent = mode === "exclude"
+    notice.textContent = excluded
       ? "Owner analytics disabled on this browser."
-      : "Owner analytics enabled on this browser.";
+      : mode === "exclude" ? "Could not save owner exclusion. Check browser storage settings." : "Owner analytics enabled on this browser.";
     Object.assign(notice.style, {
       position: "fixed",
       right: "16px",
@@ -117,7 +118,7 @@
       if (window.opener && !window.opener.closed) {
         window.opener.postMessage({
           type: "lb-owner-status",
-          excluded: mode === "exclude"
+          excluded
         }, "https://basin-site-insights.basin-site-insights.workers.dev");
         window.setTimeout(function () { window.close(); }, 900);
       }
