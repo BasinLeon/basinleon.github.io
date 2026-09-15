@@ -79,6 +79,7 @@
       article p{font-size:1.12rem}
     }
   </style>
+  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=1">
 </head>
 <body>
   <a class="skip" href="#story">Skip to the story</a>
@@ -94,6 +95,7 @@
     <div class="bar">
       <a href="/">Leon <span>Basin</span></a>
       <a href="/blog/fiction/">Fiction</a>
+      <button type="button" class="reader-theme" aria-pressed="false">Dark reading</button>
     </div>
   </header>
   <main>
@@ -141,22 +143,29 @@
         <a href="/blog/fiction/">Fiction</a>
       </div>
     </article>
+    <section class="reader-next" aria-label="Read another story">
+      <p>Another story about listening</p>
+      <h2><a href="/blog/posts/sam-ink-note-in-the-other-room.html" data-track="Fiction: next story">The Note in the Other Room</a></h2>
+      <p>Sam hears a piano note in a house where there is no piano.</p>
+      <a href="/blog/fiction/">Browse all stories</a>
+      <p class="reader-subscribe">For future stories and essays, <a href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&amp;utm_medium=owned&amp;utm_campaign=fiction&amp;utm_content=vanishing-ending" data-track="Fiction: subscription outbound" target="_blank" rel="noopener noreferrer">subscribe on Substack</a>.</p>
+    </section>
   </main>
   <script>
-    const bar=document.getElementById("progress");
-    const layers=[...document.querySelectorAll("[data-layer]")];
-    const say=document.getElementById("say");
-    setTimeout(()=>say.classList.add("show"),900);
-    const rooms=["library","garden","cafe","glass","desk"];
-    const update=()=>{
-      const max=document.documentElement.scrollHeight-innerHeight;
-      const p=max>0?scrollY/max:0;
-      bar.style.width=(p*100)+"%";
-      const i=Math.min(rooms.length-1,Math.floor(p*rooms.length+.001));
-      layers.forEach(el=>el.classList.toggle("on",el.dataset.layer===rooms[i]));
-    };
-    addEventListener("scroll",update,{passive:true});
-    update();
+    (() => {
+      const button = document.querySelector('.reader-theme');
+      const paint = dark => {
+        document.documentElement.dataset.readingTheme = dark ? 'dark' : 'light';
+        button.setAttribute('aria-pressed', String(dark));
+        button.textContent = dark ? 'Paper reading' : 'Dark reading';
+      };
+      try { paint(localStorage.getItem('fiction-reading-theme') === 'dark'); } catch (_) { paint(false); }
+      button.addEventListener('click', () => {
+        const dark = document.documentElement.dataset.readingTheme !== 'dark';
+        paint(dark);
+        try { localStorage.setItem('fiction-reading-theme', dark ? 'dark' : 'light'); } catch (_) {}
+      });
+    })();
   </script>
 </body>
 </html>
