@@ -141,6 +141,10 @@ function QuickActions({ ownerExcluded, onExcludeOwner }) {
 
 function ContactInbox({ rows }) {
   const [copied, setCopied] = useState("");
+  const [showTests, setShowTests] = useState(false);
+  const genuine = rows.filter(item => !item.is_test);
+  const tests = rows.filter(item => item.is_test);
+  const visible = showTests ? rows : genuine;
 
   async function copyForNexus(item) {
     const value = [
@@ -160,15 +164,18 @@ function ContactInbox({ rows }) {
 
   return (
     <section className="contact-inbox panel" aria-labelledby="contact-inbox-title">
-      <div className="contact-inbox-heading"><div><span>Private intake</span><h2 id="contact-inbox-title">Website conversations</h2></div><strong>{rows.length} recent</strong></div>
-      {rows.length === 0 ? <p className="contact-empty">No form submissions yet. New conversations will appear here without entering the public proof system.</p> : (
+      <div className="contact-inbox-heading"><div><span>Private intake</span><h2 id="contact-inbox-title">Website conversations</h2></div><strong>{genuine.length} recent inquiries · {tests.length} tests</strong></div>
+      <p>Stored form receipts, not bookings. Email alert delivery is not verified by this dashboard.</p>
+      {tests.length > 0 && <button onClick={() => setShowTests(!showTests)}>{showTests ? "Hide test records" : "Show preserved test records"}</button>}
+      {visible.length === 0 ? <p className="contact-empty">No genuine inquiries in the latest 30 receipts. Test records do not count toward inbound notes.</p> : (
         <ol>
-          {rows.slice(0, 10).map((item) => (
+          {visible.slice(0, 10).map((item) => (
             <li key={item.id}>
               <div className="contact-person"><strong>{item.name}</strong><span>{item.company || item.intent || "Direct inquiry"}</span></div>
               <p>{item.problem}</p>
+              {Boolean(item.is_test) && <strong>TEST RECORD · Excluded from inbound totals and alerts</strong>}
               <div className="contact-meta"><span>{new Date(`${item.received_at.replace(" ", "T")}Z`).toLocaleString()}</span><span>{item.campaign_source || item.page}</span></div>
-              <div className="contact-actions"><a href={`mailto:${item.email}?subject=${encodeURIComponent(`Re: ${item.company || "your note to Leon"}`)}`}>Reply</a><button onClick={() => copyForNexus(item)}>{copied === String(item.id) ? "Copied" : "Copy for Nexus"}</button></div>
+              {!item.is_test && <div className="contact-actions"><a href={`mailto:${item.email}?subject=${encodeURIComponent(`Re: ${item.company || "your note to Leon"}`)}`}>Reply</a><button onClick={() => copyForNexus(item)}>{copied === String(item.id) ? "Copied" : "Copy for Nexus"}</button></div>}
             </li>
           ))}
         </ol>
@@ -315,6 +322,18 @@ function IntentPanel({ conversions }) {
   );
 }
 
+function ReaderPages({ rows }) {
+  return <section className="panel reader-pages">
+    <h2>Writing &amp; fiction: page activity</h2>
+    <p>Anonymous sessions by page, not identified people. Deep scroll means 75% of the page, not confirmed story completion. Subscription clicks leave for Substack; they are not confirmed subscribers. Shares and copied links do not prove delivery.</p>
+    <div style={{overflowX: 'auto'}}><table style={{width: '100%', textAlign: 'left', borderCollapse: 'collapse'}}>
+      <thead><tr>{['Page', 'Visits', '15s engaged', '75% scroll', 'Share actions', 'Subscribe clicks'].map(label => <th style={{padding: '12px'}} key={label}>{label}</th>)}</tr></thead>
+      <tbody>{rows.map(row => <tr key={row.page}><td style={{padding: '12px', overflowWrap: 'anywhere'}}>{row.page}</td>{['visits', 'engaged', 'deep_scrolls', 'shares', 'subscription_clicks'].map(key => <td style={{padding: '12px'}} key={key}>{number(row[key])}</td>)}</tr>)}</tbody>
+    </table></div>
+    {!rows.length && <p>No reading-page events in this period.</p>}
+  </section>;
+}
+
 function ReadingPanel({ rows, visits }) {
   const counts = new Map(rows.map((item) => [Number(item.depth), Number(item.visits || 0)]));
   return (
@@ -455,6 +474,7 @@ function Dashboard() {
         </section>
         <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
         <ContactInbox rows={data.contact_submissions || []} />
+        <ReaderPages rows={data.reader_pages || []} />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>

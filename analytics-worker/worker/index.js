@@ -277,6 +277,12 @@ function sqlTimestamp(date) {
   return `${date.toISOString().slice(0, 10)} 00:00:00`;
 }
 
+// Explicitly identified QA receipts only. Preserve rows; never guess from email domains.
+export const TEST_CONTACT_SQL = `(
+  (name = 'Site QA September 12' AND problem LIKE 'QA TEST 20260912:%')
+  OR (name = 'E2E TEST test-preview-001 - DELETE ME' AND problem LIKE 'SYNTHETIC E2E TEST trace test-preview-001%')
+)`;
+
 async function notificationFeed(request, env) {
   const header = request.headers.get("authorization") || "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : "";
@@ -285,7 +291,7 @@ async function notificationFeed(request, env) {
   }
   const raw = new URL(request.url).searchParams.get("after") || "0";
   if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) return json({ error: "invalid_cursor" }, 400);
-  const result = await env.DB.prepare("SELECT id FROM contact_submissions WHERE id > ? ORDER BY id ASC LIMIT 50").bind(Number(raw)).all();
+  const result = await env.DB.prepare(`SELECT id FROM contact_submissions WHERE id > ? AND NOT ${TEST_CONTACT_SQL} ORDER BY id ASC LIMIT 50`).bind(Number(raw)).all();
   // This credential never grants access to message text, contact details or analytics.
   return json({ ids: (result.results || []).map(row => row.id) });
 }
@@ -420,17 +426,27 @@ async function dashboardData(request, env) {
   `).bind(since));
 
   statements.push(env.DB.prepare(`
-    SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ?
+    SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ? AND NOT ${TEST_CONTACT_SQL}
   `).bind(since));
 
   statements.push(env.DB.prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
-      campaign_source, campaign_medium, campaign_name, status
+      campaign_source, campaign_medium, campaign_name, status, ${TEST_CONTACT_SQL} AS is_test
     FROM contact_submissions
     ORDER BY received_at DESC
     LIMIT 30
   `));
 
+  statements.push(env.DB.prepare(`
+    SELECT page,
+      COUNT(DISTINCT CASE WHEN event_type = 'Pageview' THEN session_hash END) AS visits,
+      COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged,
+      COUNT(DISTINCT CASE WHEN event_type = 'Scroll Depth' AND depth >= 75 THEN session_hash END) AS deep_scrolls,
+      SUM(CASE WHEN event_type = 'Conversion' AND conversion_action IN ('share', 'native-share', 'copy-link') THEN 1 ELSE 0 END) AS shares,
+      SUM(CASE WHEN event_type = 'Conversion' AND conversion_action = 'subscription-outbound' THEN 1 ELSE 0 END) AS subscription_clicks
+    FROM events WHERE received_at >= ? AND (page LIKE '/blog/%' OR page LIKE '/fiction/%')
+    GROUP BY page ORDER BY visits DESC, page LIMIT 50
+  `).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -459,7 +475,8 @@ async function dashboardData(request, env) {
       ...(rows(9)[0] || {}),
       leads: Number(rows(10)[0]?.leads || 0)
     },
-    contact_submissions: rows(11)
+    contact_submissions: rows(11),
+    reader_pages: rows(12)
   });
 }
 
