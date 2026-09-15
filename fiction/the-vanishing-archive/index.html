@@ -136,6 +136,8 @@
       <div class="close">
         <p class="name">Leon Basin</p>
         <a href="/blog/fiction/">Fiction</a>
+        <button type="button" class="story-share reader-theme">Share this story</button>
+        <span class="share-status" role="status"></span>
       </div>
     </article>
     <section class="reader-next" aria-label="Read another story">
@@ -152,7 +154,7 @@
       const paint = dark => {
         document.documentElement.dataset.readingTheme = dark ? 'dark' : 'light';
         button.setAttribute('aria-pressed', String(dark));
-        button.textContent = dark ? 'Paper reading' : 'Dark reading';
+        button.textContent = dark ? 'Day reading' : 'Night reading';
       };
       try { paint(localStorage.getItem('fiction-reading-theme') === 'dark'); } catch (_) { paint(false); }
       button.addEventListener('click', () => {
@@ -162,5 +164,7 @@
       });
     })();
   </script>
+  <script src="/assets/js/story-share.js" defer></script>
+  <script src="/assets/js/insights.js" defer></script>
 </body>
 </html>

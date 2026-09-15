@@ -361,6 +361,11 @@
   }
 
   sendEdge("Pageview", {});
+  document.addEventListener('fiction-share-success', function (event) {
+    const method = event.detail?.method;
+    if (!['native-share', 'copy-link'].includes(method)) return;
+    record('Conversion', {category: 'Reader interest', action: method, destination: location.pathname, label: 'Fiction: share', region: 'article'});
+  });
 
   const funnelStep = body.dataset.lbFunnelStep;
   if (funnelStep) record("Hiring Funnel View", { step: funnelStep });

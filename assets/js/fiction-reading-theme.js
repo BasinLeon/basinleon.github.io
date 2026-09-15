@@ -1,5 +1,5 @@
 (() => {
-  const header = document.querySelector('.head .shell');
+  const header = document.querySelector('.reading-controls, .head .shell');
   if (!header) return;
   const button = document.createElement('button');
   button.type = 'button';
@@ -7,7 +7,7 @@
   header.append(button);
   const paint = dark => {
     document.documentElement.dataset.readingTheme = dark ? 'dark' : 'light';
-    button.textContent = dark ? 'Paper reading' : 'Dark reading';
+    button.textContent = dark ? 'Day reading' : 'Night reading';
     button.setAttribute('aria-pressed', String(dark));
   };
   try { paint(localStorage.getItem('fiction-reading-theme') === 'dark'); } catch (_) { paint(false); }
