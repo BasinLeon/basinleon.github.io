@@ -1,0 +1,40 @@
+name: Validate performance budget
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "blog/**"
+      - "library/**"
+      - "tools/**"
+      - "docs/_layouts/**"
+      - "docs/about/**"
+      - "assets/img/**"
+      - "scripts/check-performance-budget.py"
+      - ".github/workflows/validate-performance.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "blog/**"
+      - "library/**"
+      - "tools/**"
+      - "docs/_layouts/**"
+      - "docs/about/**"
+      - "assets/img/**"
+      - "scripts/check-performance-budget.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  performance-budget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check critical-path file sizes
+        run: python3 scripts/check-performance-budget.py
