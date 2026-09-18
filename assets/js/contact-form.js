@@ -90,8 +90,32 @@
           });
         }
       } catch (_) {
+        var subject = "[lb-site] " + payload.intent + " from " + payload.name;
+        var body = [
+          "Name: " + payload.name,
+          "Email: " + payload.email,
+          "Company: " + payload.company,
+          "Intent: " + payload.intent,
+          "Page: " + payload.page,
+          "",
+          "What is broken or changing:",
+          payload.problem
+        ].join("\n");
+        var mailto = "mailto:lbasin23@gmail.com" +
+          "?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
         status.classList.add("is-error");
-        status.textContent = "That did not send. Use Gmail, your email app, or copy the address below.";
+        status.textContent = "";
+        var lead = document.createElement("span");
+        lead.textContent = "Direct route: ";
+        var link = document.createElement("a");
+        link.href = mailto;
+        link.textContent = "open your email app with everything prefilled";
+        var tail = document.createElement("span");
+        tail.textContent = " or write to lbasin23@gmail.com";
+        status.appendChild(lead);
+        status.appendChild(link);
+        status.appendChild(tail);
       } finally {
         form.removeAttribute("aria-busy");
         submit.disabled = false;

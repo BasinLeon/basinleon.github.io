@@ -280,7 +280,24 @@
           }, { beacon: true });
         }
       }).catch(function(){
-        status.textContent = "That did not send. Email me directly and I'll reply with your brief.";
+        var subject = "[lb-site] Diagnostic score " + (d.score != null ? d.score : "?") + "/24";
+        var body = [
+          "My diagnostic score: " + (d.score != null ? d.score : "?") + "/24",
+          "Weakest area: " + (d.weakestArea || "unknown"),
+          "My email: " + email,
+          "",
+          "Please send my written recommendations."
+        ].join("\n");
+        var mailto = "mailto:lbasin23@gmail.com" +
+          "?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
+        status.textContent = "";
+        var lead = document.createTextNode("Direct route: ");
+        var link = document.createElement("a");
+        link.href = mailto;
+        link.textContent = "open your email app with your score prefilled";
+        status.appendChild(lead);
+        status.appendChild(link);
         status.classList.remove("ok");
         btn.disabled = false;
       });
