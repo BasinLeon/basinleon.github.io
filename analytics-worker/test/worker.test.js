@@ -182,7 +182,7 @@ test("events and contacts carry utm_content without touching other campaign fiel
 });
 
 test("dashboard keeps AI referrals, revenue steps and private contacts in their own fields", async () => {
-  const resultSets = Array.from({ length: 12 }, () => ({ results: [] }));
+  const resultSets = Array.from({ length: 14 }, () => ({ results: [] }));
   resultSets[0] = { results: [{ unique_visitors: 12, visits: 15, engaged_visits: 7, conversion_actions: 2 }] };
   resultSets[8] = { results: [{ source: "ChatGPT", visits: 2 }] };
   resultSets[9] = { results: [{ site_visits: 15, engaged_visits: 7, offer_visits: 3, commercial_action_visits: 1 }] };
@@ -196,7 +196,7 @@ test("dashboard keeps AI referrals, revenue steps and private contacts in their 
     DB: {
       prepare() { return statement; },
       async batch(statements) {
-        assert.equal(statements.length, 12);
+        assert.equal(statements.length, 14);
         return resultSets;
       }
     }
@@ -216,4 +216,6 @@ test("dashboard keeps AI referrals, revenue steps and private contacts in their 
     leads: 1
   });
   assert.equal(data.contact_submissions[0].email, "founder@example.com");
+  assert.deepEqual(data.reader_pages, []);
+  assert.deepEqual(data.distribution, []);
 });

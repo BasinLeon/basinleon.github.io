@@ -87,7 +87,7 @@
       var luminance = (Number(bodyColor[0]) * 299 + Number(bodyColor[1]) * 587 + Number(bodyColor[2]) * 114) / 1000;
       if (luminance > 150) cta.classList.add("lb-light");
     }
-    var shareUrl = new URL(location.href);
+    var shareUrl = new URL(location.pathname, location.origin);
     shareUrl.searchParams.set("utm_source", "reader-share");
     shareUrl.searchParams.set("utm_medium", "referral");
     shareUrl.searchParams.set("utm_campaign", "article-share");
@@ -111,7 +111,8 @@
     copyLink.addEventListener("click", async function () {
       try { await navigator.clipboard.writeText(shareUrl.toString()); }
       catch (_) {
-        var input = document.createElement("textarea"); input.value = shareUrl.toString(); document.body.appendChild(input); input.select(); document.execCommand("copy"); input.remove();
+        copyLink.textContent = "Copy unavailable: use your address bar";
+        return;
       }
       copyLink.textContent = "Copied";
       window.setTimeout(function () { copyLink.textContent = "Copy link"; }, 1600);

@@ -83,12 +83,13 @@
         localStorage.removeItem(ownerStorageKey);
       }
     } catch (_) {
-      // The confirmation still explains the requested state if storage is unavailable.
+      // Cookie storage may still work; confirm by reading both stores below.
     }
     document.cookie = mode === "exclude"
       ? `${ownerCookie}=1; Max-Age=34560000; Path=/; SameSite=Lax; Secure`
       : `${ownerCookie}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
 
+    const excluded = isOwnerExcluded();
     const url = new URL(location.href);
     url.searchParams.delete("lb_owner");
     history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
@@ -96,9 +97,9 @@
     const notice = document.createElement("div");
     notice.setAttribute("role", "status");
     notice.dataset.lbOwnerStatus = mode;
-    notice.textContent = mode === "exclude"
+    notice.textContent = excluded
       ? "Owner analytics disabled on this browser."
-      : "Owner analytics enabled on this browser.";
+      : mode === "exclude" ? "Could not save owner exclusion. Check browser storage settings." : "Owner analytics enabled on this browser.";
     Object.assign(notice.style, {
       position: "fixed",
       right: "16px",
@@ -117,7 +118,7 @@
       if (window.opener && !window.opener.closed) {
         window.opener.postMessage({
           type: "lb-owner-status",
-          excluded: mode === "exclude"
+          excluded
         }, "https://basin-site-insights.basin-site-insights.workers.dev");
         window.setTimeout(function () { window.close(); }, 900);
       }
@@ -163,12 +164,26 @@
 
   function readCampaign() {
     const params = new URLSearchParams(location.search);
-    return {
+    const current = {
       source: cleanLabel(params.get("utm_source")),
       medium: cleanLabel(params.get("utm_medium")),
       campaign: cleanLabel(params.get("utm_campaign")),
       content: cleanLabel(params.get("utm_content"))
     };
+    const key = "lb:insights:campaign:v1";
+    // Preserve the external entry source across internal pages in this tab.
+    // This runs only after production, owner, automation and privacy guards.
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(key) || "null");
+      if (saved && Date.now() - saved.at < 30 * 60 * 1000 && saved.at <= Date.now()) {
+        const result = { source: cleanLabel(saved.source), medium: cleanLabel(saved.medium), campaign: cleanLabel(saved.campaign) };
+        window.lbInsightsCampaign = result;
+        return result;
+      }
+      if (current.source) sessionStorage.setItem(key, JSON.stringify({ ...current, at: Date.now() }));
+    } catch (_) { /* Storage is optional. */ }
+    window.lbInsightsCampaign = current;
+    return current;
   }
 
   function getSessionId() {
@@ -296,7 +311,13 @@
     let category = "";
     let action = "";
 
-    if (["Email Click", "Phone Click"].includes(click.type)) {
+    if (/^(article|fiction): share/.test(label)) {
+      category = "Reader interest";
+      action = "share";
+    } else if (/substack|subscribe/.test(`${path} ${label}`)) {
+      category = "Reader interest";
+      action = "subscription-outbound";
+    } else if (["Email Click", "Phone Click"].includes(click.type)) {
       category = "Commercial intent";
       action = click.type === "Email Click" ? "email" : "phone";
     } else if (/resume|case-stud|availability|work-with-me|gmail|email app/.test(`${path} ${label}`)) {
@@ -343,6 +364,11 @@
   }
 
   sendEdge("Pageview", {});
+  document.addEventListener('fiction-share-success', function (event) {
+    const method = event.detail?.method;
+    if (!['native-share', 'copy-link'].includes(method)) return;
+    record('Conversion', {category: 'Reader interest', action: method, destination: location.pathname, label: 'Fiction: share', region: 'article'});
+  });
 
   const funnelStep = body.dataset.lbFunnelStep;
   if (funnelStep) record("Hiring Funnel View", { step: funnelStep });
@@ -370,7 +396,7 @@
         destination: item.detail.destination,
         label: item.detail.label
       }, { beacon: true });
-    } else if (item.type === "Email Click") {
+    } else if (item.type === "Email Click" && conversion?.category === "Commercial intent") {
       record("Hiring Funnel Step", {
         step: "email",
         destination: item.detail.destination,

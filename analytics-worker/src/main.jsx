@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
@@ -25,8 +25,6 @@ const EMPTY = {
   }
 };
 
-const OWNER_STATUS_KEY = "lb:owner-exclusion-confirmed:v1";
-
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
 const HIRING_STEPS = [
   { step: "homepage", label: "Homepage" },
@@ -48,6 +46,8 @@ const DISTRIBUTION_LINKS = [
   { label: "Introduction", source: "direct-intro", medium: "introduction" }
 ];
 const DISTRIBUTION_DESTINATIONS = [
+  { label: "The Vanishing Archive · fiction", path: "/fiction/the-vanishing-archive/" },
+  { label: "Fiction reading room", path: "/blog/fiction/" },
   { label: "Homepage", path: "/" },
   { label: "Operating proof", path: "/case-studies/" },
   { label: "Basin::Nexus", path: "/basin-nexus/" },
@@ -73,6 +73,34 @@ function Metric({ label, value, note }) {
       <small>{note}</small>
     </div>
   );
+}
+
+function DistributionReport({ rows }) {
+  const [filter, setFilter] = useState('all');
+  const [spend, setSpend] = useState('');
+  const [selected, setSelected] = useState('');
+  const visible = (rows || []).filter(row => filter === 'all' || (filter === 'fiction'
+    ? /\/(fiction|sam-ink)/.test(row.destination)
+    : row.destination.startsWith('/blog/') && !/\/(fiction|sam-ink)/.test(row.destination)));
+  const campaigns = [...new Set((rows || []).map(row => row.campaign).filter(Boolean))];
+  const engaged = (rows || []).filter(row => row.campaign === selected).reduce((sum, row) => sum + Number(row.engaged), 0);
+  const cost = spend !== '' && Number(spend) >= 0 && engaged > 0 ? Number(spend) / engaged : null;
+  return <section className="panel distribution-report">
+    <h2>Campaign to reading</h2>
+    <p>First pageview in the selected UTC window assigns each session to one source, campaign and destination. Counts are sessions, not people. Outcomes may overlap and are not an ordered funnel. Maximum 100 entry groups.</p>
+    <label>Entry destination <select value={filter} onChange={event => setFilter(event.target.value)}><option value="all">All destinations</option><option value="fiction">Fiction and Sam &amp; Ink paths</option><option value="blog">Other blog paths</option></select></label>
+    {!rows ? <p>Distribution data is unavailable. Reload after the server update.</p> : !visible.length ? <p>No matching entries in this window. Share a tracked link to begin collecting evidence.</p> : <div className="distribution-table" tabIndex="0" aria-label="Campaign reading results, scroll horizontally"><table>
+      <thead><tr>{['Source / medium','Campaign / variation','Entry page','Visits','15s on entry','Engaged %','75% scroll on entry','Another story or post','Subscription clicks'].map(label => <th key={label}>{label}</th>)}</tr></thead>
+      <tbody>{visible.map((row,index) => <tr key={index}><td>{row.source}<small>{row.medium || 'Not tagged'}</small></td><td>{row.campaign || 'Not tagged'}</td><td>{row.destination}</td><td>{number(row.visits)}</td><td>{number(row.engaged)}</td><td>{row.visits ? `${Math.round(100 * row.engaged / row.visits)}%` : '—'}</td><td>{number(row.deep_scroll)}</td><td>{number(row.onward)}</td><td>{number(row.subscription_clicks)}</td></tr>)}</tbody>
+    </table></div>}
+    <p>15 seconds measures visible-tab time, not attention. Scroll depth does not prove completion. Subscription clicks do not confirm signups. Unattributed includes missing referrers, not just typed addresses. Inquiries remain in the private inbox; they are not linked to anonymous reader sessions.</p>
+    <details><summary>Paid distribution calculator and two-week test</summary>
+      <p>Choose one story and one essay. Share each directly through relevant channels using the same campaign and distinct post variations. Compare entry engagement, onward reading and responses after 14 days. No campaign is launched by these controls.</p>
+      <label>Exact campaign / variation <select value={selected} onChange={event => {setSelected(event.target.value);setSpend('');}}><option value="">Choose a campaign</option>{campaigns.map(value => <option key={value}>{value}</option>)}</select></label>
+      <label>Actual spend in USD for this campaign and selected date window <input type="number" min="0" step="0.01" value={spend} onChange={event => setSpend(event.target.value)} /></label>
+      <p>Calculator only, not saved or connected to an ad account. Include all destinations for the exact campaign above. {rows?.length >= 100 ? 'Results are capped; do not calculate costs until a narrower window returns fewer than 100 groups.' : `Cost per engaged entry visit: ${cost === null ? 'not available' : '$' + cost.toFixed(2)}.`} Confirmed subscribers, qualified inquiries, revenue and acquisition cost are unavailable until reconciled with their original records.</p>
+    </details>
+  </section>;
 }
 
 function trackedLink(item, destination = "/") {
@@ -102,9 +130,11 @@ async function copyText(value) {
 function QuickActions({ ownerExcluded, onExcludeOwner }) {
   const [copied, setCopied] = useState("");
   const [destination, setDestination] = useState("/");
+  const [campaign, setCampaign] = useState("reading-test-01");
+  const [variation, setVariation] = useState("a");
 
   async function copy(item, path = destination) {
-    await copyText(trackedLink(item, path));
+    await copyText(trackedLink({ ...item, campaign: `${campaign.trim() || 'reading-test-01'}--${variation.trim() || 'a'}` }, path));
     setCopied(item.label);
     window.setTimeout(() => setCopied(""), 1800);
   }
@@ -118,6 +148,9 @@ function QuickActions({ ownerExcluded, onExcludeOwner }) {
       <div className="distribution-action">
         <div><h2>Tracked links</h2><p>Choose a destination, then copy the right channel link.</p></div>
         <div className="distribution-controls">
+          <label>Campaign <input maxLength={80} value={campaign} onChange={event => setCampaign(event.target.value)} /></label>
+          <label>Post variation <input maxLength={30} value={variation} onChange={event => setVariation(event.target.value)} /></label>
+          <small>Variation is saved as a campaign suffix, for example reading-test-01--a. Use non-personal labels only.</small>
           <select aria-label="Tracked link destination" value={destination} onChange={(event) => setDestination(event.target.value)}>
             {DISTRIBUTION_DESTINATIONS.map((item) => <option value={item.path} key={item.path}>{item.label}</option>)}
           </select>
@@ -141,6 +174,10 @@ function QuickActions({ ownerExcluded, onExcludeOwner }) {
 
 function ContactInbox({ rows }) {
   const [copied, setCopied] = useState("");
+  const [showTests, setShowTests] = useState(false);
+  const genuine = rows.filter(item => !item.is_test);
+  const tests = rows.filter(item => item.is_test);
+  const visible = showTests ? rows : genuine;
 
   async function copyForNexus(item) {
     const value = [
@@ -160,15 +197,18 @@ function ContactInbox({ rows }) {
 
   return (
     <section className="contact-inbox panel" aria-labelledby="contact-inbox-title">
-      <div className="contact-inbox-heading"><div><span>Private intake</span><h2 id="contact-inbox-title">Website conversations</h2></div><strong>{rows.length} recent</strong></div>
-      {rows.length === 0 ? <p className="contact-empty">No form submissions yet. New conversations will appear here without entering the public proof system.</p> : (
+      <div className="contact-inbox-heading"><div><span>Private intake</span><h2 id="contact-inbox-title">Website conversations</h2></div><strong>{genuine.length} recent inquiries · {tests.length} tests</strong></div>
+      <p>Stored form receipts, not bookings. Email alert delivery is not verified by this dashboard.</p>
+      {tests.length > 0 && <button onClick={() => setShowTests(!showTests)}>{showTests ? "Hide test records" : "Show preserved test records"}</button>}
+      {visible.length === 0 ? <p className="contact-empty">No genuine inquiries in the latest 30 receipts. Test records do not count toward inbound notes.</p> : (
         <ol>
-          {rows.slice(0, 10).map((item) => (
+          {visible.slice(0, 10).map((item) => (
             <li key={item.id}>
               <div className="contact-person"><strong>{item.name}</strong><span>{item.company || item.intent || "Direct inquiry"}</span></div>
               <p>{item.problem}</p>
+              {Boolean(item.is_test) && <strong>TEST RECORD · Excluded from inbound totals and alerts</strong>}
               <div className="contact-meta"><span>{new Date(`${item.received_at.replace(" ", "T")}Z`).toLocaleString()}</span><span>{item.campaign_source || item.page}</span></div>
-              <div className="contact-actions"><a href={`mailto:${item.email}?subject=${encodeURIComponent(`Re: ${item.company || "your note to Leon"}`)}`}>Reply</a><button onClick={() => copyForNexus(item)}>{copied === String(item.id) ? "Copied" : "Copy for Nexus"}</button></div>
+              {!item.is_test && <div className="contact-actions"><a href={`mailto:${item.email}?subject=${encodeURIComponent(`Re: ${item.company || "your note to Leon"}`)}`}>Reply</a><button onClick={() => copyForNexus(item)}>{copied === String(item.id) ? "Copied" : "Copy for Nexus"}</button></div>}
             </li>
           ))}
         </ol>
@@ -315,6 +355,18 @@ function IntentPanel({ conversions }) {
   );
 }
 
+function ReaderPages({ rows }) {
+  return <section className="panel reader-pages">
+    <h2>Writing &amp; fiction: page activity</h2>
+    <p>Anonymous sessions by page, not identified people. Deep scroll means 75% of the page, not confirmed story completion. Subscription clicks leave for Substack; they are not confirmed subscribers. Shares and copied links do not prove delivery.</p>
+    <div style={{overflowX: 'auto'}}><table style={{width: '100%', textAlign: 'left', borderCollapse: 'collapse'}}>
+      <thead><tr>{['Page', 'Visits', '15s engaged', '75% scroll', 'Share actions', 'Subscribe clicks'].map(label => <th style={{padding: '12px'}} key={label}>{label}</th>)}</tr></thead>
+      <tbody>{rows.map(row => <tr key={row.page}><td style={{padding: '12px', overflowWrap: 'anywhere'}}>{row.page}</td>{['visits', 'engaged', 'deep_scrolls', 'shares', 'subscription_clicks'].map(key => <td style={{padding: '12px'}} key={key}>{number(row[key])}</td>)}</tr>)}</tbody>
+    </table></div>
+    {!rows.length && <p>No reading-page events in this period.</p>}
+  </section>;
+}
+
 function ReadingPanel({ rows, visits }) {
   const counts = new Map(rows.map((item) => [Number(item.depth), Number(item.visits || 0)]));
   return (
@@ -379,14 +431,13 @@ function Dashboard() {
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(Boolean(token));
-  const [ownerExcluded, setOwnerExcluded] = useState(() => localStorage.getItem(OWNER_STATUS_KEY) === "1");
+  const [ownerExcluded, setOwnerExcluded] = useState(false);
+  const ownerPopup = useRef(null);
 
   useEffect(() => {
     function receiveOwnerStatus(event) {
-      if (event.origin !== "https://basinleon.github.io" || event.data?.type !== "lb-owner-status") return;
+      if (event.origin !== "https://basinleon.github.io" || event.source !== ownerPopup.current || event.data?.type !== "lb-owner-status") return;
       const excluded = event.data.excluded === true;
-      if (excluded) localStorage.setItem(OWNER_STATUS_KEY, "1");
-      else localStorage.removeItem(OWNER_STATUS_KEY);
       setOwnerExcluded(excluded);
     }
     window.addEventListener("message", receiveOwnerStatus);
@@ -395,6 +446,7 @@ function Dashboard() {
 
   function excludeOwner() {
     const popup = window.open("https://basinleon.github.io/?lb_owner=1", "lb-owner-exclusion", "popup,width=720,height=640");
+    ownerPopup.current = popup;
     if (!popup) window.location.assign("https://basinleon.github.io/?lb_owner=1");
   }
 
@@ -441,6 +493,7 @@ function Dashboard() {
           </nav>
         </section>
 
+        <p className="coverage-note">Selected window: {days === 'clean' ? 'clean measurement' : `${days} days`}. Collection began August 9, 2026; earlier dates are not measured. Clean measurement begins August 14 at 21:22 UTC. Dates use UTC. {data.coverage_since && `Available coverage starts ${data.coverage_since} UTC.`}</p>
         <section className="metrics" aria-busy={busy}>
           <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
           <Metric label="Visits" value={summary.visits} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
@@ -455,6 +508,8 @@ function Dashboard() {
         </section>
         <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
         <ContactInbox rows={data.contact_submissions || []} />
+        <ReaderPages rows={data.reader_pages || []} />
+        <DistributionReport key={days} rows={data.distribution} />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>

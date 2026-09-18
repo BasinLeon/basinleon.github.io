@@ -1,3 +1,5 @@
+import { DISTRIBUTION_SQL } from './distribution.js';
+
 const EVENT_TYPES = new Set([
   "Pageview",
   "Engaged Visit",
@@ -53,11 +55,6 @@ export function normalizeContact(input) {
   if (!input || input.v !== 1) return null;
   if (cleanText(input.website, 120)) return { spam: true };
 
-  const intakeType = cleanText(input.type, 40);
-  const isDiagnosticScore = intakeType === "diagnostic-score";
-  const conversationId = cleanText(input.conversation_id || input.conversation, 64);
-  const hasConversation = /^[a-z0-9-]{4,64}$/i.test(conversationId);
-
   const name = cleanText(input.name, 100);
   const email = cleanText(input.email, 180).toLowerCase();
   const company = cleanText(input.company, 140);
@@ -68,14 +65,8 @@ export function normalizeContact(input) {
   const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
   const startedAt = Number(input.startedAt || 0);
 
-  if (!validEmail(email) || problem.length < 12) return null;
-  // Name is optional for the diagnostic score path: asking for their score
-  // should not add friction. Every other intake type still requires a name.
-  if (!isDiagnosticScore && !name) return null;
-  // A completed diagnostic with a valid conversation_id is a known, real
-  // engagement — the timing heuristic does not apply to it.
-  const timingSuspect = !Number.isFinite(startedAt) || Date.now() - startedAt < 2_500;
-  if (timingSuspect && !(isDiagnosticScore && hasConversation)) return { spam: true };
+  if (!name || !validEmail(email) || problem.length < 12) return null;
+  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
 
   return {
     name,
@@ -85,12 +76,9 @@ export function normalizeContact(input) {
     problem,
     page,
     referrer,
-    intakeType: isDiagnosticScore ? intakeType : "",
-    conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
-    campaignName: cleanText(campaign.campaign, 120),
-    campaignContent: cleanText(campaign.content || input.utm_content, 120)
+    campaignName: cleanText(campaign.campaign, 120)
   };
 }
 
@@ -101,7 +89,6 @@ export function normalizeEvent(input) {
   const session = cleanText(input.session, 120);
   const visitor = cleanText(input.visitor, 120);
   if (!session || !visitor) return null;
-  const conversationId = cleanText(input.conversation_id || input.conversation || detail.conversation_id, 64);
 
   return {
     type: input.type,
@@ -111,11 +98,9 @@ export function normalizeEvent(input) {
     referrer: cleanText(input.referrer, 160),
     session,
     visitor,
-    conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
     campaignName: cleanText(campaign.campaign, 120),
-    campaignContent: cleanText(campaign.content || input.utm_content || detail.utm_content, 120),
     viewport: cleanText(input.viewport, 32),
     language: cleanText(input.language, 24),
     destination: cleanText(detail.destination, 300),
@@ -196,10 +181,9 @@ async function ingest(request, env) {
   await env.DB.prepare(`
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
-      campaign_source, campaign_medium, campaign_name, utm_content, viewport, language,
-      destination, label, region, conversion_category, conversion_action, depth, seconds,
-      conversation_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      campaign_source, campaign_medium, campaign_name, viewport, language,
+      destination, label, region, conversion_category, conversion_action, depth, seconds
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -211,7 +195,6 @@ async function ingest(request, env) {
     event.campaignSource,
     event.campaignMedium,
     event.campaignName,
-    event.campaignContent,
     event.viewport,
     event.language,
     event.destination,
@@ -220,8 +203,7 @@ async function ingest(request, env) {
     event.conversionCategory,
     event.conversionAction,
     event.depth,
-    event.seconds,
-    event.conversationId
+    event.seconds
   ).run();
 
   return json({ accepted: true }, 202, corsHeaders(origin));
@@ -244,9 +226,7 @@ async function ingestContact(request, env) {
   }
 
   const contact = normalizeContact(input);
-  // Spam rejections are explicit, never silent: the caller can always tell
-  // the difference between "stored" and "rejected".
-  if (contact?.spam) return json({ accepted: false, reason: "spam_rejected" }, 202, corsHeaders(origin));
+  if (contact?.spam) return json({ accepted: true }, 202, corsHeaders(origin));
   if (!contact) return json({ error: "invalid_contact" }, 422, corsHeaders(origin));
 
   const recent = await env.DB.prepare(`
@@ -259,9 +239,8 @@ async function ingestContact(request, env) {
     await env.DB.prepare(`
       INSERT INTO contact_submissions (
         name, email, company, intent, problem, page, referrer,
-        campaign_source, campaign_medium, campaign_name, utm_content,
-        conversation_id, intake_type
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        campaign_source, campaign_medium, campaign_name
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       contact.name,
       contact.email,
@@ -272,10 +251,7 @@ async function ingestContact(request, env) {
       contact.referrer,
       contact.campaignSource,
       contact.campaignMedium,
-      contact.campaignName,
-      contact.campaignContent,
-      contact.conversationId,
-      contact.intakeType
+      contact.campaignName
     ).run();
   }
 
@@ -301,6 +277,25 @@ function authorized(request, env) {
 
 function sqlTimestamp(date) {
   return `${date.toISOString().slice(0, 10)} 00:00:00`;
+}
+
+// Explicitly identified QA receipts only. Preserve rows; never guess from email domains.
+export const TEST_CONTACT_SQL = `(
+  (name = 'Site QA September 12' AND problem LIKE 'QA TEST 20260912:%')
+  OR (name = 'E2E TEST test-preview-001 - DELETE ME' AND problem LIKE 'SYNTHETIC E2E TEST trace test-preview-001%')
+)`;
+
+async function notificationFeed(request, env) {
+  const header = request.headers.get("authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!env.NOTIFIER_TOKEN || !timingSafeEqual(token, env.NOTIFIER_TOKEN)) {
+    return json({ error: "unauthorized" }, 401);
+  }
+  const raw = new URL(request.url).searchParams.get("after") || "0";
+  if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) return json({ error: "invalid_cursor" }, 400);
+  const result = await env.DB.prepare(`SELECT id FROM contact_submissions WHERE id > ? AND NOT ${TEST_CONTACT_SQL} ORDER BY id ASC LIMIT 50`).bind(Number(raw)).all();
+  // This credential never grants access to message text, contact details or analytics.
+  return json({ ids: (result.results || []).map(row => row.id) });
 }
 
 export function rangeSelection(url) {
@@ -433,21 +428,34 @@ async function dashboardData(request, env) {
   `).bind(since));
 
   statements.push(env.DB.prepare(`
-    SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ?
+    SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ? AND NOT ${TEST_CONTACT_SQL}
   `).bind(since));
 
   statements.push(env.DB.prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
-      campaign_source, campaign_medium, campaign_name, utm_content, conversation_id, intake_type, status
+      campaign_source, campaign_medium, campaign_name, status, ${TEST_CONTACT_SQL} AS is_test
     FROM contact_submissions
     ORDER BY received_at DESC
     LIMIT 30
   `));
 
+  statements.push(env.DB.prepare(`
+    SELECT page,
+      COUNT(DISTINCT CASE WHEN event_type = 'Pageview' THEN session_hash END) AS visits,
+      COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged,
+      COUNT(DISTINCT CASE WHEN event_type = 'Scroll Depth' AND depth >= 75 THEN session_hash END) AS deep_scrolls,
+      SUM(CASE WHEN event_type = 'Conversion' AND conversion_action IN ('share', 'native-share', 'copy-link') THEN 1 ELSE 0 END) AS shares,
+      SUM(CASE WHEN event_type = 'Conversion' AND conversion_action = 'subscription-outbound' THEN 1 ELSE 0 END) AS subscription_clicks
+    FROM events WHERE received_at >= ? AND (page LIKE '/blog/%' OR page LIKE '/fiction/%')
+    GROUP BY page ORDER BY visits DESC, page LIMIT 50
+  `).bind(since));
+  statements.push(env.DB.prepare(DISTRIBUTION_SQL).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
     range_days: days,
+    requested_since: since,
+    coverage_since: since > '2026-08-09 00:00:00' ? since : '2026-08-09 00:00:00',
     range_mode: range.mode,
     generated_at: new Date().toISOString(),
     retention_days: Number(env.RETENTION_DAYS || 400),
@@ -472,7 +480,9 @@ async function dashboardData(request, env) {
       ...(rows(9)[0] || {}),
       leads: Number(rows(10)[0]?.leads || 0)
     },
-    contact_submissions: rows(11)
+    contact_submissions: rows(11),
+    reader_pages: rows(12),
+    distribution: rows(13)
   });
 }
 
@@ -497,6 +507,7 @@ export default {
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
     if (request.method === "POST" && url.pathname === "/v1/contact") return ingestContact(request, env);
     if (request.method === "GET" && url.pathname === "/v1/dashboard") return dashboardData(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/notifications") return notificationFeed(request, env);
     if (request.method === "GET" && url.pathname === "/health") {
       return json({ ok: true, storage: "d1", retention_days: Number(env.RETENTION_DAYS || 400) });
     }
