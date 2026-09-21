@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Observe Brief | Check the premise before you send</title>
+  <meta name="description" content="A working form of the Basin Blueprint first lesson. Put one real account through the check. Leave with send, verify, or stop. Nothing you type is uploaded.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://basinleon.github.io/observe-brief/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+  <meta property="og:title" content="Observe Brief | Leon Basin">
+  <meta property="og:description" content="Check the premise before you send. A working browser form of the Blueprint first lesson.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://basinleon.github.io/observe-brief/">
+  <meta property="og:site_name" content="Leon Basin">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/continuity.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Observe Brief",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "url": "https://basinleon.github.io/observe-brief/",
+    "description": "A working form of the Basin Blueprint first lesson. Check the premise before you send.",
+    "author": {"@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/"},
+    "isPartOf": {"@type": "CollectionPage", "name": "The Tool Bench", "url": "https://basinleon.github.io/tools/"},
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <style>
+    :root{
+      --ink:#171510; --ink-panel:#12110d; --paper:#f5f2ea; --paper-deep:#ece5d5;
+      --brass:#8a6d3b; --brass-deep:#6d5426; --champagne:#d9c08a;
+      --muted:#6e675c; --muted-dark:#4d483e; --white:#fffdf8;
+      --line:rgba(23,21,16,.16); --line-strong:rgba(23,21,16,.34);
+      --line-light:rgba(245,242,234,.16);
+      --max:1280px; --gutter:clamp(1.25rem,4vw,4.5rem);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Manrope",Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+    body.menu-open{overflow:hidden}
+    a{color:inherit}
+    ::selection{background:var(--brass);color:#fff}
+    :focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+    .closing :focus-visible, footer :focus-visible{outline-color:var(--champagne)}
+    .skip{position:fixed;top:.75rem;left:.75rem;z-index:200;padding:.75rem 1rem;background:var(--white);transform:translateY(-160%)}
+    .skip:focus{transform:none}
+
+    .header{position:sticky;top:0;z-index:100;background:rgba(245,242,234,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--ink);border-bottom:1px solid var(--line)}
+    .nav{width:min(100%,calc(var(--max) + var(--gutter)*2));min-height:78px;margin:auto;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:2rem}
+    .brand{text-decoration:none;font-size:.93rem;font-weight:800;letter-spacing:.08em;color:var(--ink)}
+    .brand span{color:var(--brass-deep)}
+    .links{display:flex;align-items:center;gap:clamp(1.25rem,2.5vw,2.7rem)}
+    .links a{color:var(--muted-dark);text-decoration:none;font-size:.8rem;font-weight:600}
+    .links a:hover{color:var(--ink)}
+    .links a[aria-current="page"]{color:var(--brass-deep)}
+    .links .contact{padding:.7rem 1rem;border:1px solid var(--line-strong);color:var(--ink);font-weight:700;transition:border-color 180ms ease,color 180ms ease}
+    .links .contact:hover{border-color:var(--brass);color:var(--brass-deep)}
+    .menu{display:none;background:none;border:0;color:var(--ink);font:inherit;cursor:pointer}
+
+    .shell{width:min(100%,calc(var(--max) + var(--gutter)*2));margin:auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+    .eyebrow,.index,.label{font-size:.69rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-deep)}
+    h1,h2,h3,p{margin-top:0}
+    .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+      background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 55%),var(--paper)}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(240px,.6fr);gap:clamp(2.5rem,7vw,8rem);padding-top:clamp(4.5rem,10vh,7.5rem);padding-bottom:clamp(3rem,7vh,5.5rem)}
+    .hero h1{max-width:18ch;margin:.65rem 0 1.1rem;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(3.6rem,8vw,7.4rem);font-weight:400;line-height:.82;letter-spacing:-.045em}
+    .hero h1 em{color:var(--brass-deep);font-style:italic}
+    .lede{max-width:640px;margin:0;font-size:clamp(1.12rem,1.8vw,1.45rem);line-height:1.45;color:var(--muted-dark)}
+    .hero-note{align-self:end;padding-left:1.5rem;border-left:1px solid var(--brass);color:var(--muted);font-size:.9rem}
+    .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.8rem}
+    .button{display:inline-flex;min-height:48px;align-items:center;justify-content:center;padding:.8rem 1.1rem;border:1px solid;text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.03em;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;transition:background 180ms ease,color 180ms ease,border-color 180ms ease}
+    .button.gold{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .button.gold:hover,.button.gold:focus-visible{background:#000;border-color:#000}
+    .button.dark{border-color:var(--line-strong);color:var(--ink)}
+    .button.dark:hover,.button.dark:focus-visible{border-color:var(--brass);color:var(--brass-deep)}
+    .button:disabled{opacity:.45;cursor:not-allowed}
+
+    .work{padding:clamp(3.5rem,7vw,6.5rem) 0 5rem}
+    .work-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.7fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+    .group{padding:clamp(1.6rem,3vw,2.2rem) 0;border-top:1px solid var(--line)}
+    .group h2{margin:0 0 .35rem;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;letter-spacing:-.03em}
+    .group .hint{margin:0 0 1.25rem;color:var(--muted);max-width:58ch}
+    .fields{display:grid;gap:1rem}
+    .fields.two{grid-template-columns:1fr 1fr}
+    .field{display:flex;flex-direction:column;gap:.4rem}
+    .field label{font-size:.69rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-deep)}
+    input,textarea{width:100%;border:1px solid var(--line-strong);background:var(--white);color:var(--ink);font:inherit;padding:.85rem .9rem;border-radius:0}
+    textarea{min-height:7.5rem;resize:vertical;line-height:1.5}
+    input:focus,textarea:focus{outline:2px solid var(--brass);outline-offset:2px;border-color:var(--brass)}
+    .after{margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line)}
+
+    .decision{position:sticky;top:6.2rem;padding:1.5rem;background:var(--paper-deep);border:1px solid var(--line)}
+    .decision h2{margin:.4rem 0 .7rem;font-family:"Instrument Serif",Georgia,serif;font-size:2.4rem;font-weight:400;letter-spacing:-.03em}
+    .decision p{margin:0 0 1rem;color:var(--muted);font-size:.92rem}
+    .choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin:1rem 0 1.2rem}
+    .choice{min-height:48px;border:1px solid var(--line-strong);background:transparent;font:inherit;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+    .choice[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .choice:hover{border-color:var(--brass)}
+    .meter{height:3px;background:var(--line);margin:1.1rem 0}
+    .meter span{display:block;height:100%;background:var(--brass);width:0;transition:width 200ms ease}
+    .status{font-size:.78rem;color:var(--muted-dark)}
+    .notice{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+    .notice a{color:var(--brass-deep);font-weight:700}
+    .toast{position:fixed;bottom:1.25rem;right:1.25rem;z-index:150;padding:.8rem 1rem;background:var(--ink);color:var(--paper);font-size:.78rem;font-weight:700;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 180ms ease,transform 180ms ease}
+    .toast.show{opacity:1;transform:none}
+
+    .closing{background:var(--ink-panel);color:var(--paper);padding:clamp(4rem,8vw,7rem) 0}
+    .closing .eyebrow{color:var(--champagne)}
+    .closing-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(3rem,8vw,9rem);align-items:end}
+    .closing h2{margin:.5rem 0 0;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(3.2rem,7vw,6.2rem);font-weight:400;line-height:.9;letter-spacing:-.04em}
+    .route{display:block;padding:1.1rem 0;border-top:1px solid var(--line-light);color:var(--paper);text-decoration:none;font-weight:700}
+    .route:hover{color:var(--champagne)}
+    .route span{float:right;color:var(--champagne)}
+    .route:last-child{border-bottom:1px solid var(--line-light)}
+    footer{background:var(--ink-panel);color:rgba(245,242,234,.55);border-top:1px solid var(--line-light)}
+    .footer{min-height:100px;display:flex;align-items:center;justify-content:space-between;gap:2rem;font-size:.78rem}
+    .footer div{display:flex;gap:1.2rem}
+    .footer a{color:inherit;text-decoration:none}
+    .footer a:hover{color:var(--champagne)}
+
+    @media(max-width:820px){
+      .menu{display:block;position:relative;z-index:2}
+      .links{position:fixed;inset:79px 0 0;display:flex;visibility:hidden;opacity:0;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:.7rem;padding:3rem var(--gutter);background:rgba(18,17,13,.985);transform:translateY(-1rem);transition:opacity 180ms ease,transform 180ms ease,visibility 180ms}
+      .menu-open .links{visibility:visible;opacity:1;transform:none}
+      .menu-open .brand,.menu-open .menu{position:relative;z-index:2;color:var(--paper)}
+      .menu-open .brand span{color:var(--champagne)}
+      .links a{width:100%;padding:.7rem 0;font-family:"Instrument Serif",serif;font-size:2.1rem;color:var(--paper)}
+      .links .contact{width:auto;margin-top:1rem;padding:.8rem 1rem;border:1px solid rgba(245,242,234,.4);color:var(--paper);font-family:"Manrope",sans-serif;font-size:.9rem}
+      .hero-grid,.work-grid,.closing-grid,.fields.two{grid-template-columns:1fr}
+      .hero-note{max-width:420px}
+      .decision{position:static}
+      .choices{grid-template-columns:1fr}
+      .footer{align-items:flex-start;flex-direction:column;padding-top:2rem;padding-bottom:2rem}
+      .footer div{flex-wrap:wrap}
+    }
+    @media(max-width:540px){
+      .hero h1{font-size:3.4rem}
+      .actions{flex-direction:column;align-items:stretch}
+      .footer div{flex-direction:column}
+    }
+    @media print{
+      .header,.menu,.actions,.decision .button,.closing,footer,.toast,.skip{display:none!important}
+      body{background:#fff;color:#000}
+      .work,.hero{padding:0}
+      .hero-note{border:0;padding:0}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body data-lb-section="observe-brief">
+  <a class="skip" href="#brief">Skip to the brief</a>
+  <header class="header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="/">LEON <span>BASIN.</span></a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <div class="links" id="nav-links">
+        <a href="/case-studies/">Work</a><a href="/blueprint/">Blueprint</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a class="contact" href="/work-with-me/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="title">
+      <div class="shell hero-grid">
+        <div>
+          <div class="eyebrow">Instrument 08 / Observe</div>
+          <h1 id="title">Check the premise <em>before you send.</em></h1>
+          <p class="lede">The working form of the first lesson. One account. Ten minutes. One decision you can defend: send, verify, or stop.</p>
+          <div class="actions">
+            <a class="button gold" href="#brief">Start the brief</a>
+            <a class="button dark" href="/blueprint/#first-lesson">Return to the lesson</a>
+            <a class="button dark" href="/assets/worksheets/check-the-premise.txt" download data-track="Observe brief: download worksheet">Download the worksheet</a>
+          </div>
+        </div>
+        <p class="hero-note">Keep confidential evidence in your own secure workspace. This form does not upload your answers. A hypothesis is not a receipt.</p>
+      </div>
+    </section>
+
+    <section class="work" id="brief" aria-labelledby="brief-title">
+      <div class="shell work-grid">
+        <form id="brief-form" novalidate>
+          <div class="index" id="brief-title">The operating receipt</div>
+
+          <section class="group" aria-labelledby="g1">
+            <h2 id="g1">01 / Name the observation</h2>
+            <p class="hint">Write what changed, without explaining why yet.</p>
+            <div class="fields two">
+              <div class="field"><label for="account">Account or decision</label><input id="account" name="account" autocomplete="off" placeholder="Stalled municipal public-safety account"></div>
+              <div class="field"><label for="observation">Observed change (fact, not interpretation)</label><textarea id="observation" name="observation" placeholder="After two months without a meeting, a commander returned the outreach."></textarea></div>
+            </div>
+          </section>
+
+          <section class="group" aria-labelledby="g2">
+            <h2 id="g2">02 / Attach the evidence</h2>
+            <p class="hint">Save the source and its date. Check whether it still describes the current situation.</p>
+            <div class="fields two">
+              <div class="field"><label for="source">Source URL or private reference</label><input id="source" name="source" autocomplete="off" placeholder="Local planning data + community-safety reports"></div>
+              <div class="field"><label for="sourceDate">Source date / date checked</label><input id="sourceDate" name="sourceDate" autocomplete="off" placeholder="This quarter / checked today"></div>
+            </div>
+            <div class="fields" style="margin-top:1rem">
+              <div class="field"><label for="unverified">What remains unverified</label><textarea id="unverified" name="unverified" placeholder="Whether the reply is a live priority or a courtesy close-out."></textarea></div>
+            </div>
+          </section>
+
+          <section class="group" aria-labelledby="g3">
+            <h2 id="g3">03 / Separate the hypothesis</h2>
+            <p class="hint">Write “I think this matters because…” and name what would prove that wrong.</p>
+            <div class="fields">
+              <div class="field"><label for="hypothesis">Hypothesis</label><textarea id="hypothesis" name="hypothesis" placeholder="I think this matters because the reply suggests a live safety priority, not a dead account."></textarea></div>
+              <div class="field"><label for="disprove">What would disprove it</label><textarea id="disprove" name="disprove" placeholder="Wrong if the commander is no longer responsible or the program is defunded."></textarea></div>
+            </div>
+          </section>
+
+          <section class="group" aria-labelledby="g4">
+            <h2 id="g4">04 / Choose the next action</h2>
+            <p class="hint">Identify one owner, one recipient, and a specific question or useful contribution.</p>
+            <div class="fields">
+              <div class="field"><label for="action">Next action</label><textarea id="action" name="action" placeholder="Ask for a 30-minute discovery on current program status and buying committee."></textarea></div>
+            </div>
+            <div class="fields two" style="margin-top:1rem">
+              <div class="field"><label for="owner">Owner</label><input id="owner" name="owner" autocomplete="off" placeholder="Account executive"></div>
+              <div class="field"><label for="recipient">Recipient and why this person</label><input id="recipient" name="recipient" autocomplete="off" placeholder="The commander — they reopened the conversation"></div>
+            </div>
+            <div class="fields" style="margin-top:1rem">
+              <div class="field"><label for="dueDate">Due date</label><input id="dueDate" name="dueDate" autocomplete="off" placeholder="This week"></div>
+            </div>
+          </section>
+
+          <section class="group" aria-labelledby="g5">
+            <h2 id="g5">05 / Set a stop condition</h2>
+            <p class="hint">If the source is stale, the premise is wrong, or the person is not responsible, research again instead of sending.</p>
+            <div class="fields">
+              <div class="field"><label for="stop">Stop condition</label><textarea id="stop" name="stop" placeholder="Stop if the commander is no longer responsible, the program is defunded, or the source is older than 90 days."></textarea></div>
+            </div>
+          </section>
+
+          <section class="group after" aria-labelledby="g6">
+            <h2 id="g6">After the response</h2>
+            <p class="hint">Record what changed. No response is not proof that the hypothesis was right.</p>
+            <div class="fields">
+              <div class="field"><label for="response">Response or outcome</label><textarea id="response" name="response" placeholder="Complete after the action."></textarea></div>
+              <div class="field"><label for="learning">What I learned</label><textarea id="learning" name="learning" placeholder="What the evidence taught you."></textarea></div>
+            </div>
+          </section>
+        </form>
+
+        <aside class="decision" aria-labelledby="decision-title">
+          <div class="label">Decision</div>
+          <h2 id="decision-title">Send, verify, or stop.</h2>
+          <p id="suggest">Fill the lesson. The suggestion updates as the brief becomes inspectable. You still choose.</p>
+          <div class="meter" aria-hidden="true"><span id="meter"></span></div>
+          <p class="status" id="filled">0 / 12 fields</p>
+          <div class="choices" role="group" aria-label="Decision">
+            <button class="choice" type="button" data-decision="send" aria-pressed="false">Send</button>
+            <button class="choice" type="button" data-decision="verify" aria-pressed="false">Verify</button>
+            <button class="choice" type="button" data-decision="stop" aria-pressed="false">Stop</button>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="button gold" type="button" id="copy" data-track="Observe brief: copy">Copy brief</button>
+            <button class="button dark" type="button" id="sample" data-track="Observe brief: load sample">Load worked example</button>
+            <button class="button dark" type="button" id="clear">Clear</button>
+          </div>
+          <p class="notice">Anonymized public example: a nine-account verification sweep surfaced three material corrections before outreach. <a href="/basin-nexus/#worked-example">Inspect the operating example →</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell closing-grid">
+        <div>
+          <div class="eyebrow">The brief is only useful if you use it</div>
+          <h2>Return it to the work.</h2>
+        </div>
+        <div>
+          <a class="route" data-track="Observe brief close: lesson" href="/blueprint/#first-lesson">First lesson <span>↗</span></a>
+          <a class="route" data-track="Observe brief close: tools" href="/tools/">Tool bench <span>↗</span></a>
+          <a class="route" data-track="Observe brief close: contact" href="/work-with-me/">Talk to Leon <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer">
+      <span>© 2026 Leon Basin · Built as one life</span>
+      <div>
+        <a href="/case-studies/">Work</a>
+        <a href="/basin-nexus/">Nexus</a>
+        <a href="/blog/">Writing</a>
+        <a href="/blog/fiction/">Fiction</a>
+        <a href="/work-with-me/">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/assets/js/insights.js" defer></script>
+  <script src="/assets/js/continuity.js" defer></script>
+  <script>
+    (function () {
+      var KEY = "lb-observe-brief";
+      var KEYS = ["account","observation","source","sourceDate","unverified","hypothesis","disprove","action","owner","recipient","dueDate","stop","response","learning"];
+      var CORE = ["account","observation","source","sourceDate","unverified","hypothesis","disprove","action","owner","recipient","dueDate","stop"];
+      var SAMPLE = {
+        account: "Stalled municipal public-safety account",
+        observation: "After two months without a meeting, a commander returned the outreach and reopened the conversation.",
+        source: "Local planning data and community-safety reports (anonymized public operating example).",
+        sourceDate: "This quarter / checked before discovery",
+        unverified: "Whether the reply is a live safety priority or a courtesy close-out. Buying committee still unnamed.",
+        hypothesis: "I think this matters because the response and local evidence suggest a live safety priority, not a dead account.",
+        disprove: "Wrong if the commander is no longer responsible, the program is defunded, or the source is older than 90 days.",
+        action: "Ask for a 30-minute discovery on current program status and buying committee.",
+        owner: "Account executive",
+        recipient: "The commander — they reopened the conversation",
+        dueDate: "This week",
+        stop: "Stop if the commander is no longer responsible, the program is defunded, or the source is older than 90 days.",
+        response: "",
+        learning: ""
+      };
+      var SUGGEST = {
+        incomplete: "The brief is empty. Name one observation before you decide.",
+        stop: "Suggested: STOP. The observation is thin, the evidence is missing, or the stop condition is already live.",
+        verify: "Suggested: VERIFY. The motion is close, but a field still cannot be inspected.",
+        send: "Suggested: SEND. The brief is evidence-linked. You still choose."
+      };
+
+      var form = document.getElementById("brief-form");
+      var meter = document.getElementById("meter");
+      var filledEl = document.getElementById("filled");
+      var suggestEl = document.getElementById("suggest");
+      var toastEl = document.getElementById("toast");
+      var choiceButtons = Array.prototype.slice.call(document.querySelectorAll(".choice"));
+      var decision = "";
+      var toastTimer;
+
+      function empty() {
+        var out = { decision: "" };
+        KEYS.forEach(function (k) { out[k] = ""; });
+        return out;
+      }
+
+      function readForm() {
+        var data = empty();
+        KEYS.forEach(function (k) {
+          var el = form.elements[k];
+          data[k] = el ? String(el.value || "") : "";
+        });
+        data.decision = decision;
+        return data;
+      }
+
+      function writeForm(data) {
+        KEYS.forEach(function (k) {
+          var el = form.elements[k];
+          if (el) el.value = data[k] || "";
+        });
+        decision = data.decision || "";
+        choiceButtons.forEach(function (btn) {
+          btn.setAttribute("aria-pressed", String(btn.getAttribute("data-decision") === decision));
+        });
+        render();
+      }
+
+      function save() {
+        try { localStorage.setItem(KEY, JSON.stringify(readForm())); } catch (e) {}
+      }
+
+      function load() {
+        try {
+          var raw = localStorage.getItem(KEY);
+          if (!raw) return writeForm(empty());
+          writeForm(Object.assign(empty(), JSON.parse(raw)));
+        } catch (e) { writeForm(empty()); }
+      }
+
+      function filledCount(data) {
+        return CORE.filter(function (k) { return String(data[k] || "").trim(); }).length;
+      }
+
+      function suggest(data) {
+        var n = filledCount(data);
+        if (n === 0) return "incomplete";
+        var blob = (data.source + " " + data.unverified + " " + data.stop).toLowerCase();
+        var stale = /stale|outdated|unknown|no source|cannot verify|can't verify/.test(blob);
+        var stopNow = /\b(stop|do not send|don't send|defunded|not responsible|wrong person)\b/.test((data.stop || "").toLowerCase()) && !String(data.action || "").trim();
+        if (!data.observation.trim() || !data.source.trim() || stale || stopNow) return "stop";
+        if (!data.hypothesis.trim() || !data.disprove.trim() || !data.action.trim() || !data.owner.trim() || !data.recipient.trim() || !data.stop.trim()) return "verify";
+        return "send";
+      }
+
+      function render() {
+        var data = readForm();
+        var n = filledCount(data);
+        meter.style.width = Math.round((n / CORE.length) * 100) + "%";
+        filledEl.textContent = n + " / " + CORE.length + " fields" + (decision ? " · chose " + decision.toUpperCase() : "");
+        suggestEl.textContent = SUGGEST[suggest(data)];
+      }
+
+      function formatBrief(data) {
+        return [
+          "CHECK THE PREMISE BEFORE YOU SEND",
+          "The Basin Blueprint | Leon Basin",
+          "https://basinleon.github.io/blueprint/#first-lesson",
+          "",
+          "Account or decision: " + (data.account || ""),
+          "Observed change (fact, not interpretation): " + (data.observation || ""),
+          "Source URL or private reference: " + (data.source || ""),
+          "Source date / date checked: " + (data.sourceDate || ""),
+          "What remains unverified: " + (data.unverified || ""),
+          "",
+          "Hypothesis: " + (data.hypothesis || ""),
+          "What would disprove it: " + (data.disprove || ""),
+          "Next action: " + (data.action || ""),
+          "Owner: " + (data.owner || ""),
+          "Recipient and why this person: " + (data.recipient || ""),
+          "Due date: " + (data.dueDate || ""),
+          "Stop condition: " + (data.stop || ""),
+          "",
+          "Decision: " + ((data.decision || suggest(data)).toUpperCase()),
+          "Response or outcome (complete after action): " + (data.response || ""),
+          "What I learned: " + (data.learning || ""),
+          "",
+          "Keep confidential evidence in your own secure workspace. This form does not upload your answers. A hypothesis is not a receipt."
+        ].join("\n");
+      }
+
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1800);
+      }
+
+      form.addEventListener("input", function () { render(); save(); });
+      choiceButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          decision = btn.getAttribute("data-decision") || "";
+          choiceButtons.forEach(function (other) {
+            other.setAttribute("aria-pressed", String(other === btn));
+          });
+          render();
+          save();
+        });
+      });
+
+      document.getElementById("copy").addEventListener("click", function () {
+        var text = formatBrief(readForm());
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { toast("Brief copied"); }).catch(function () { toast("Copy blocked — select and copy from print"); });
+        } else {
+          toast("Copy blocked in this browser");
+        }
+      });
+      document.getElementById("sample").addEventListener("click", function () {
+        writeForm(Object.assign(empty(), SAMPLE));
+        save();
+        toast("Worked example loaded");
+      });
+      document.getElementById("clear").addEventListener("click", function () {
+        writeForm(empty());
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        toast("Brief cleared");
+      });
+
+      var menu = document.querySelector(".menu");
+      menu.addEventListener("click", function () {
+        var open = document.body.classList.toggle("menu-open");
+        menu.setAttribute("aria-expanded", String(open));
+      });
+      document.querySelectorAll(".links a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          document.body.classList.remove("menu-open");
+          menu.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      load();
+    })();
+  </script>
+</body>
+</html>
