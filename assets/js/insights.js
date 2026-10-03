@@ -311,7 +311,10 @@
     let category = "";
     let action = "";
 
-    if (/^(article|fiction): share/.test(label)) {
+    if (label === "writing: reader reply") {
+      category = "Reader interest";
+      action = "reader-reply";
+    } else if (/^(article|fiction): share/.test(label)) {
       category = "Reader interest";
       action = "share";
     } else if (/substack|subscribe/.test(`${path} ${label}`)) {
