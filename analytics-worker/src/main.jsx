@@ -25,6 +25,28 @@ const EMPTY = {
   }
 };
 
+function countryName(code) {
+  try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code; }
+  catch { return code; }
+}
+function ActivityReport({ recent = {}, geography = {}, generatedAt, busy, onRefresh }) {
+  const countries = (geography.countries || []).map(r => ({ ...r, location: countryName(r.country) }));
+  const regions = (geography.regions || []).map(r => ({ ...r, location: `${r.region}, ${countryName(r.country)}` }));
+  return <section className="activity-report" aria-labelledby="activity-title">
+    <div className="activity-heading"><div><span>Anonymous audience</span><h2 id="activity-title">Recent activity &amp; geography</h2></div>
+      <button onClick={onRefresh} disabled={busy}>{busy ? 'Refreshing…' : 'Refresh activity'}</button></div>
+    <p>Recent means a recorded event, not proof someone is still online. Updated {generatedAt ? new Date(generatedAt).toLocaleTimeString() : 'when loaded'}. Refresh to check again.</p>
+    <div className="activity-counts"><Metric label="Sessions in last 5 minutes" value={recent.sessions_5m || 0} note="At least one recorded event" />
+      <Metric label="Sessions in last 30 minutes" value={recent.sessions_30m || 0} note="Independent of selected date range" />
+      <Metric label="Visits with location" value={geography.located_sessions || 0} note={`${number(geography.total_sessions || 0)} sessions in selected range`} /></div>
+    <div className="activity-grid"><RankedList title="Recent pages · 30 minutes" rows={recent.pages || []} nameKey="page" emptyLabel="No recorded activity in the last 30 minutes" />
+      <RankedList title="Recent sources · 30 minutes" rows={recent.sources || []} nameKey="source" emptyLabel="No recent arrival sources" />
+      <RankedList title="Countries / territories" rows={countries} nameKey="location" emptyLabel="No country group has three recorded visits yet" />
+      <RankedList title="Regions" rows={regions} nameKey="location" emptyLabel="No region group has three recorded visits yet" /></div>
+    <p className="coverage-note">Approximate network locations from Cloudflare, which can differ from a visitor’s actual location. Geography starts with new visits; older records stay unknown. Groups under three sessions are hidden. No cities, IP addresses, names, or subscriber matching are collected here.</p>
+  </section>;
+}
+
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
 const HIRING_STEPS = [
   { step: "homepage", label: "Homepage" },
@@ -507,6 +529,7 @@ function Dashboard() {
         </section>
 
 
+        <ActivityReport recent={data.recent_activity} geography={data.geography} generatedAt={data.generated_at} busy={busy} onRefresh={() => load(token, days)} />
         <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
         <section className="growth-grid" aria-label="Revenue and AI discovery">
           <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />

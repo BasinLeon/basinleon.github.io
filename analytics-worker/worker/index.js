@@ -1,4 +1,5 @@
 import { DISTRIBUTION_SQL } from './distribution.js';
+import { coarseGeography, RECENT_SUMMARY_SQL, RECENT_PAGES_SQL, RECENT_SOURCES_SQL, COUNTRIES_SQL, REGIONS_SQL, GEO_COVERAGE_SQL } from './activity.js';
 
 const EVENT_TYPES = new Set([
   "Pageview",
@@ -181,6 +182,7 @@ async function ingest(request, env) {
   const event = normalizeEvent(input);
   if (!event) return json({ error: "invalid_event" }, 422, corsHeaders(origin));
 
+  const geography = coarseGeography(request.cf);
   const [sessionHash, visitorHash] = await Promise.all([
     digest(env.HASH_SECRET, `session:${event.session}`),
     digest(env.HASH_SECRET, `visitor:${event.visitor}`)
@@ -190,8 +192,8 @@ async function ingest(request, env) {
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
       campaign_source, campaign_medium, campaign_name, viewport, language,
-      destination, label, region, conversion_category, conversion_action, depth, seconds, conversation_id, utm_content
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      destination, label, region, conversion_category, conversion_action, depth, seconds, conversation_id, utm_content, geo_country, geo_region
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -213,7 +215,9 @@ async function ingest(request, env) {
     event.depth,
     event.seconds,
     event.conversationId,
-    event.campaignContent
+    event.campaignContent,
+    geography.country,
+    geography.region
   ).run();
 
   return json({ accepted: true }, 202, corsHeaders(origin));
@@ -463,6 +467,12 @@ async function dashboardData(request, env) {
     GROUP BY page ORDER BY visits DESC, page LIMIT 50
   `).bind(since));
   statements.push(env.DB.prepare(DISTRIBUTION_SQL).bind(since));
+  statements.push(env.DB.prepare(RECENT_SUMMARY_SQL));
+  statements.push(env.DB.prepare(RECENT_PAGES_SQL));
+  statements.push(env.DB.prepare(RECENT_SOURCES_SQL));
+  statements.push(env.DB.prepare(COUNTRIES_SQL).bind(since));
+  statements.push(env.DB.prepare(REGIONS_SQL).bind(since));
+  statements.push(env.DB.prepare(GEO_COVERAGE_SQL).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -495,7 +505,9 @@ async function dashboardData(request, env) {
     },
     contact_submissions: rows(11),
     reader_pages: rows(12),
-    distribution: rows(13)
+    distribution: rows(13),
+    recent_activity: { ...(rows(14)[0] || {}), pages: rows(15), sources: rows(16) },
+    geography: { countries: rows(17), regions: rows(18), ...(rows(19)[0] || {}), minimum_group_size: 3 }
   });
 }
 

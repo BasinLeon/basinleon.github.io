@@ -6,12 +6,16 @@ Private, first-party measurement for `basinleon.github.io`.
 
 - Pageviews, visits, engaged visits, reading time, scroll completion and click activity
 - Anonymous returning-visitor measurement using a random browser identifier
+- Recent recorded sessions and page/source activity over 5- and 30-minute windows
+- Approximate Cloudflare country/territory and region totals, with groups below three sessions suppressed
 - Referral and UTM attribution
 - Human referral visits from ChatGPT, Claude, Perplexity, Gemini, Copilot, Poe and You.com
 - Three conversion categories: commercial intent, operating interest and reader interest
 - A revenue path from site visit through engagement, offer-page visit, commercial action and private inbound note
 - Private contact requests from the homepage and Work With Me page
 - A token-protected owner dashboard at the Worker root
+
+Geography begins with deployment of migration 0005; older events stay unknown. Country/region come only from trusted request.cf metadata, never client payloads. Cities, coordinates, IPs and subscriber identity matching are not collected. Recent activity is event-based, not a live-presence claim.
 
 The analytics collector does not store raw IP addresses, user-agent strings or personal profiles. Session and visitor identifiers are HMAC-hashed before D1 storage. Contact details are stored only when a person explicitly submits a private contact form and are removed after 180 days. A daily cron removes analytics events after 400 days. Global Privacy Control and Do Not Track are respected by the browser client.
 
