@@ -64,11 +64,17 @@ export function normalizeContact(input) {
   const referrer = cleanText(input.referrer, 160);
   const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
   const startedAt = Number(input.startedAt || 0);
+  const intakeType = cleanText(input.type, 60);
+  const conversationId = cleanText(input.conversation_id, 120);
+  const diagnostic = intakeType === "diagnostic-score";
 
-  if (!name || !validEmail(email) || problem.length < 12) return null;
-  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
+  if ((!name && !diagnostic) || !validEmail(email) || problem.length < 12) return null;
+  if (!(diagnostic && /^conv-[a-z0-9-]{8,100}$/i.test(conversationId)) && (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500)) return { spam: true };
 
   return {
+    conversationId,
+    intakeType,
+    campaignContent: cleanText(campaign.content || input.utm_content, 120),
     name,
     email,
     company,
@@ -91,6 +97,8 @@ export function normalizeEvent(input) {
   if (!session || !visitor) return null;
 
   return {
+    conversationId: cleanText(input.conversation || detail.conversation_id, 120),
+    campaignContent: cleanText(campaign.content || detail.utm_content || input.utm_content, 120),
     type: input.type,
     page: cleanPath(input.page),
     title: cleanText(input.title, 160),
@@ -182,8 +190,8 @@ async function ingest(request, env) {
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
       campaign_source, campaign_medium, campaign_name, viewport, language,
-      destination, label, region, conversion_category, conversion_action, depth, seconds
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      destination, label, region, conversion_category, conversion_action, depth, seconds, conversation_id, utm_content
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -203,7 +211,9 @@ async function ingest(request, env) {
     event.conversionCategory,
     event.conversionAction,
     event.depth,
-    event.seconds
+    event.seconds,
+    event.conversationId,
+    event.campaignContent
   ).run();
 
   return json({ accepted: true }, 202, corsHeaders(origin));
@@ -239,8 +249,8 @@ async function ingestContact(request, env) {
     await env.DB.prepare(`
       INSERT INTO contact_submissions (
         name, email, company, intent, problem, page, referrer,
-        campaign_source, campaign_medium, campaign_name
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        campaign_source, campaign_medium, campaign_name, conversation_id, intake_type, utm_content
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       contact.name,
       contact.email,
@@ -251,7 +261,10 @@ async function ingestContact(request, env) {
       contact.referrer,
       contact.campaignSource,
       contact.campaignMedium,
-      contact.campaignName
+      contact.campaignName,
+      contact.conversationId,
+      contact.intakeType,
+      contact.campaignContent
     ).run();
   }
 

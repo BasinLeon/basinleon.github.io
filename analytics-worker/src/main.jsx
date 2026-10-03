@@ -501,6 +501,12 @@ function Dashboard() {
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>
 
+        <section className="primary-grid">
+          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>
+          <RankedList title="Top landing pages" rows={data.landing_pages} nameKey="page" emptyLabel="No landing pages yet" />
+        </section>
+
+
         <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
         <section className="growth-grid" aria-label="Revenue and AI discovery">
           <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />
@@ -508,13 +514,9 @@ function Dashboard() {
         </section>
         <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
         <ContactInbox rows={data.contact_submissions || []} />
-        <ReaderPages rows={data.reader_pages || []} />
-        <DistributionReport key={days} rows={data.distribution} />
+        <details className="report-disclosure"><summary>Writing &amp; fiction activity</summary><ReaderPages rows={data.reader_pages || []} /></details>
+        <details className="report-disclosure"><summary>Campaigns &amp; reading journeys</summary><DistributionReport key={days} rows={data.distribution} /></details>
 
-        <section className="primary-grid">
-          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>
-          <RankedList title="Top landing pages" rows={data.landing_pages} nameKey="page" emptyLabel="No landing pages yet" />
-        </section>
 
         <section className="detail-grid">
           <RankedList title="Sources & campaigns" rows={data.sources} nameKey="source" emptyLabel="No sources yet" />
