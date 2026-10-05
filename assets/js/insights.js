@@ -311,7 +311,10 @@
     let category = "";
     let action = "";
 
-    if (label === "writing: reader reply") {
+    if (label === "writing: support outbound") {
+      category = "Reader interest";
+      action = "support-outbound";
+    } else if (label === "writing: reader reply") {
       category = "Reader interest";
       action = "reader-reply";
     } else if (/^(article|fiction): share/.test(label)) {
