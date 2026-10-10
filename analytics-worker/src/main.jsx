@@ -1,6 +1,8 @@
+import RevenueOperations from './RevenueOperations.jsx';
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import {Library, DraftStudio} from "./Studio.jsx";
 
 const EMPTY = {
   summary: { unique_visitors: 0, visits: 0, engaged_visits: 0, conversion_actions: 0 },
@@ -18,12 +20,34 @@ const EMPTY = {
   integrity: {
     collection_started: "2026-08-09",
     clean_measurement_started: "2026-08-14",
-    latest_private_backup: "2026-09-02",
+    latest_private_backup: "2026-10-04",
     production_only: true,
     automated_traffic_rejected: true,
     historical_status: "Pre-exclusion data quality uncertain"
   }
 };
+
+function countryName(code) {
+  try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code; }
+  catch { return code; }
+}
+function ActivityReport({ recent = {}, geography = {}, generatedAt, busy, onRefresh }) {
+  const countries = (geography.countries || []).map(r => ({ ...r, location: countryName(r.country) }));
+  const regions = (geography.regions || []).map(r => ({ ...r, location: `${r.region}, ${countryName(r.country)}` }));
+  return <section className="activity-report" aria-labelledby="activity-title">
+    <div className="activity-heading"><div><span>Anonymous audience</span><h2 id="activity-title">Recent activity &amp; geography</h2></div>
+      <button onClick={onRefresh} disabled={busy}>{busy ? 'Refreshing…' : 'Refresh activity'}</button></div>
+    <p>Recent means a recorded event, not proof someone is still online. Updated {generatedAt ? new Date(generatedAt).toLocaleTimeString() : 'when loaded'}. Refresh to check again.</p>
+    <div className="activity-counts"><Metric label="Sessions in last 5 minutes" value={recent.sessions_5m || 0} note="At least one recorded event" />
+      <Metric label="Sessions in last 30 minutes" value={recent.sessions_30m || 0} note="Independent of selected date range" />
+      <Metric label="Visits with location" value={geography.located_sessions || 0} note={`${number(geography.total_sessions || 0)} sessions in selected range`} /></div>
+    <div className="activity-grid"><RankedList title="Recent pages · 30 minutes" rows={recent.pages || []} nameKey="page" emptyLabel="No recorded activity in the last 30 minutes" />
+      <RankedList title="Recent sources · 30 minutes" rows={recent.sources || []} nameKey="source" emptyLabel="No recent arrival sources" />
+      <RankedList title="Countries / territories" rows={countries} nameKey="location" emptyLabel="No country group has three recorded visits yet" />
+      <RankedList title="Regions" rows={regions} nameKey="location" emptyLabel="No region group has three recorded visits yet" /></div>
+    <p className="coverage-note">Approximate network locations from Cloudflare, which can differ from a visitor’s actual location. Geography starts with new visits; older records stay unknown. Groups under three sessions are hidden. No cities, IP addresses, names, or subscriber matching are collected here.</p>
+  </section>;
+}
 
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
 const HIRING_STEPS = [
@@ -41,11 +65,13 @@ const DEPTHS = [
 const DISTRIBUTION_LINKS = [
   { label: "LinkedIn", source: "linkedin", medium: "social" },
   { label: "X", source: "x", medium: "social" },
+  { label: "Facebook", source: "facebook", medium: "social" },
   { label: "Substack", source: "substack", medium: "newsletter" },
   { label: "Email signature", source: "email-signature", medium: "signature", campaign: "always-on" },
   { label: "Introduction", source: "direct-intro", medium: "introduction" }
 ];
 const DISTRIBUTION_DESTINATIONS = [
+  { label: "Untitled · opening scene", path: "/plays/untitled/" },
   { label: "The Vanishing Archive · fiction", path: "/fiction/the-vanishing-archive/" },
   { label: "Fiction reading room", path: "/blog/fiction/" },
   { label: "Homepage", path: "/" },
@@ -228,7 +254,8 @@ function RevenueFunnel({ values }) {
   const baseline = Number(values.site_visits || 0);
   return (
     <section className="growth-panel revenue-path" aria-labelledby="revenue-path-title">
-      <div className="growth-heading"><span>Monetization</span><h2 id="revenue-path-title">Revenue path</h2></div>
+      <div className="growth-heading"><span>Monetization</span><h2 id="revenue-path-title">Revenue activity</h2></div>
+      <p>Independent site-wide counts, not a sequential funnel. Offer visits include commercial destinations; landing visits count entry pages.</p>
       <ol>
         {steps.map((step, index) => {
           const value = Number(values[step.key] || 0);
@@ -248,14 +275,24 @@ function AiDiscovery({ rows }) {
   return (
     <section className="growth-panel ai-discovery" aria-labelledby="ai-discovery-title">
       <div className="growth-heading"><span>Answer engines</span><h2 id="ai-discovery-title">AI discovery</h2></div>
-      <p>Human visits referred by ChatGPT, Claude, Perplexity, Gemini, Copilot, Poe, or You.com. Crawler requests stay out of visitor totals.</p>
+      <p>Human visits referred by ChatGPT, Claude, Perplexity, Gemini, Grok, Muse.ai, Copilot, Poe, or You.com. Crawler requests stay out of visitor totals.</p>
       <ol>
-        {display.slice(0, 7).map((row, index) => <li key={`${row.source}-${index}`}>
+        {display.slice(0, 12).map((row, index) => <li key={`${row.source}-${index}`}>
           <span className="rank">{index + 1}</span><span className="row-name">{row.source}</span><strong>{number(row.visits)}</strong>
         </li>)}
       </ol>
+      <AiLinkBuilder />
     </section>
   );
+}
+
+function AiLinkBuilder() {
+  const [engine,setEngine]=useState('chatgpt');
+  const [path,setPath]=useState('/plays/untitled/');
+  const [message,setMessage]=useState('');
+  const url=new URL(path, 'https://basinleon.github.io');
+  url.searchParams.set('utm_source',engine); url.searchParams.set('utm_medium','ai'); url.searchParams.set('utm_campaign','ai-discovery');
+  return <div className="ai-link-builder"><h3>Share a source link</h3><p>Links help attribute reader visits when an app omits its referrer. This does not connect AI accounts or prove that an engine indexed your work.</p><label>Engine<select value={engine} onChange={e=>setEngine(e.target.value)}>{['chatgpt','claude','gemini','grok','muse-ai','perplexity','copilot','poe','you-com'].map(x=><option key={x}>{x}</option>)}</select></label><label>Reading destination<select value={path} onChange={e=>setPath(e.target.value)}><option value="/plays/untitled/">Untitled</option><option value="/blog/">Essays</option><option value="/blog/fiction/">Fiction</option><option value="/work-with-me/">Work with Leon</option></select></label><label>Tracked link<input readOnly value={url.href}/></label><button onClick={async()=>{try{await navigator.clipboard.writeText(url.href);setMessage('Link copied')}catch{setMessage('Select the link above and copy it manually.')}}}>Copy source link</button><p role="status">{message}</p></div>;
 }
 
 function formatDate(value) {
@@ -275,7 +312,7 @@ function DataIntegrity({ integrity, retentionDays, ownerExcluded }) {
     { label: "Production only", value: integrity.production_only ? "Active" : "Check required", tone: integrity.production_only ? "good" : "warn" },
     { label: "Automated traffic", value: integrity.automated_traffic_rejected ? "Rejected" : "Check required", tone: integrity.automated_traffic_rejected ? "good" : "warn" },
     { label: "Retention", value: `${retentionDays || 400} days` },
-    { label: "Latest private backup", value: formatDate(integrity.latest_private_backup) },
+    { label: "Latest verified database backup", value: formatDate(integrity.latest_private_backup) },
     { label: "Earlier records", value: integrity.historical_status || "Review required", tone: "warn" }
   ];
 
@@ -426,6 +463,7 @@ function Login({ onUnlock, error, busy }) {
 }
 
 function Dashboard() {
+  const [section,setSection]=useState("Overview");
   const [token, setToken] = useState(() => sessionStorage.getItem("lb:owner-token") || "");
   const [days, setDays] = useState("clean");
   const [data, setData] = useState(EMPTY);
@@ -455,15 +493,13 @@ function Dashboard() {
     setError("");
     try {
       const response = await fetch(`/v1/dashboard?days=${nextDays}`, { headers: { authorization: `Bearer ${nextToken}` } });
-      if (response.status === 401) throw new Error("That owner token was not accepted.");
+      if (response.status === 401) { sessionStorage.removeItem("lb:owner-token"); setToken(""); throw new Error("That owner token was not accepted."); }
       if (!response.ok) throw new Error("The dashboard could not load. Try again in a moment.");
       const payload = await response.json();
       sessionStorage.setItem("lb:owner-token", nextToken);
       setToken(nextToken);
       setData({ ...EMPTY, ...payload, summary: { ...EMPTY.summary, ...(payload.summary || {}) } });
     } catch (caught) {
-      sessionStorage.removeItem("lb:owner-token");
-      setToken("");
       setError(caught.message);
     } finally {
       setBusy(false);
@@ -480,12 +516,15 @@ function Dashboard() {
   if (!token) return <Login onUnlock={(value) => load(value, days)} error={error} busy={busy} />;
 
   return (
-    <div className="app-shell">
+    <div className="app-shell owner-workspace">
       <header className="topbar">
         <a href="https://basinleon.github.io">LEON <span>BASIN.</span></a>
         <div><span className="secure">Private owner view</span><button onClick={() => { sessionStorage.removeItem("lb:owner-token"); setToken(""); }}>Lock dashboard</button></div>
       </header>
+      <aside className="studio-sidebar"><p className="eyebrow">Creator studio</p><nav aria-label="Owner workspace">{['Overview','Library','Newsletter','Café','Distribution','Conversations','Settings'].map(label=><button key={label} aria-current={section===label?'page':undefined} className={section===label?'selected':''} onClick={()=>setSection(label)}>{label}</button>)}</nav><a href="https://basinleon.github.io" target="_blank" rel="noreferrer">View your website ↗</a><p>Write something.<br/>Give it a home.<br/>Invite people in.</p></aside>
       <main>
+        {error && <p role="alert">{error} <button onClick={()=>load()}>Retry loading</button></p>}
+        <div hidden={section!=='Overview'}>
         <section className="intro">
           <div><h1>Site Traffic</h1><p>Owned, privacy-safe measurement for basinleon.github.io</p></div>
           <nav aria-label="Date range">
@@ -501,20 +540,24 @@ function Dashboard() {
           <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
         </section>
 
-        <QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} />
-        <section className="growth-grid" aria-label="Revenue and AI discovery">
-          <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />
-          <AiDiscovery rows={data.ai_referrals || []} />
-        </section>
-        <DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} />
-        <ContactInbox rows={data.contact_submissions || []} />
-        <ReaderPages rows={data.reader_pages || []} />
-        <DistributionReport key={days} rows={data.distribution} />
-
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>
           <RankedList title="Top landing pages" rows={data.landing_pages} nameKey="page" emptyLabel="No landing pages yet" />
         </section>
+
+
+        <ActivityReport recent={data.recent_activity} geography={data.geography} generatedAt={data.generated_at} busy={busy} onRefresh={() => load(token, days)} />
+
+        <RevenueOperations data={data} token={token} onSaved={() => load()} ownerExcluded={ownerExcluded} />
+        <section className="growth-grid" aria-label="Revenue and AI discovery">
+          <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />
+          <AiDiscovery rows={data.ai_referrals || []} />
+        </section>
+
+
+        <details className="report-disclosure"><summary>Writing &amp; fiction activity</summary><ReaderPages rows={data.reader_pages || []} /></details>
+
+
 
         <section className="detail-grid">
           <RankedList title="Sources & campaigns" rows={data.sources} nameKey="source" emptyLabel="No sources yet" />
@@ -526,6 +569,13 @@ function Dashboard() {
             <div><span>Anonymous repeat visitors</span><strong>{number(data.returning_visitors)}</strong><small>{returningPercent}% of unique visitors</small></div>
           </section>
         </section>
+        </div>
+        <div hidden={section!=='Library'}><Library /></div>
+        <div hidden={section!=='Newsletter'}><DraftStudio token={token} kind="newsletter" /></div>
+        <div hidden={section!=='Café'}><DraftStudio token={token} kind="offer" /></div>
+        <div hidden={section!=='Distribution'}><h1>Distribution desk</h1><p>Prepare a channel link, then follow the reading journey. Published posts remain in their original services.</p><QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} /><DistributionReport key={days} rows={data.distribution} /></div>
+        <div hidden={section!=='Conversations'}><h1>Conversations</h1><ContactInbox rows={data.contact_submissions || []} /></div>
+        <div hidden={section!=='Settings'}><h1>Measurement & privacy</h1><button onClick={excludeOwner}>Verify & exclude my browser</button><DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} /></div>
         <footer>No raw IPs · {data.retention_days || 400}-day retention · DNT respected</footer>
       </main>
     </div>

@@ -1,6 +1,10 @@
+import { SESSION_SQL, CAMPAIGN_SQL, normalizeRevenue } from './career-revenue.js';
 import { DISTRIBUTION_SQL } from './distribution.js';
+import { coarseGeography, RECENT_SUMMARY_SQL, RECENT_PAGES_SQL, RECENT_SOURCES_SQL, COUNTRIES_SQL, REGIONS_SQL, GEO_COVERAGE_SQL } from './activity.js';
 
 const EVENT_TYPES = new Set([
+  "Form Start",
+  "Form Failure",
   "Pageview",
   "Engaged Visit",
   "Reading Time",
@@ -64,11 +68,17 @@ export function normalizeContact(input) {
   const referrer = cleanText(input.referrer, 160);
   const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
   const startedAt = Number(input.startedAt || 0);
+  const intakeType = cleanText(input.type, 60);
+  const conversationId = cleanText(input.conversation_id, 120);
+  const diagnostic = intakeType === "diagnostic-score";
 
-  if (!name || !validEmail(email) || problem.length < 12) return null;
-  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
+  if ((!name && !diagnostic) || !validEmail(email) || problem.length < 12) return null;
+  if (!(diagnostic && /^conv-[a-z0-9-]{8,100}$/i.test(conversationId)) && (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500)) return { spam: true };
 
   return {
+    conversationId,
+    intakeType,
+    campaignContent: cleanText(campaign.content || input.utm_content, 120),
     name,
     email,
     company,
@@ -91,6 +101,8 @@ export function normalizeEvent(input) {
   if (!session || !visitor) return null;
 
   return {
+    conversationId: cleanText(input.conversation || detail.conversation_id, 120),
+    campaignContent: cleanText(campaign.content || detail.utm_content || input.utm_content, 120),
     type: input.type,
     page: cleanPath(input.page),
     title: cleanText(input.title, 160),
@@ -173,6 +185,7 @@ async function ingest(request, env) {
   const event = normalizeEvent(input);
   if (!event) return json({ error: "invalid_event" }, 422, corsHeaders(origin));
 
+  const geography = coarseGeography(request.cf);
   const [sessionHash, visitorHash] = await Promise.all([
     digest(env.HASH_SECRET, `session:${event.session}`),
     digest(env.HASH_SECRET, `visitor:${event.visitor}`)
@@ -182,8 +195,8 @@ async function ingest(request, env) {
     INSERT INTO events (
       event_type, page, title, site_section, referrer, session_hash, visitor_hash,
       campaign_source, campaign_medium, campaign_name, viewport, language,
-      destination, label, region, conversion_category, conversion_action, depth, seconds
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      destination, label, region, conversion_category, conversion_action, depth, seconds, conversation_id, utm_content, geo_country, geo_region
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     event.type,
     event.page,
@@ -203,7 +216,11 @@ async function ingest(request, env) {
     event.conversionCategory,
     event.conversionAction,
     event.depth,
-    event.seconds
+    event.seconds,
+    event.conversationId,
+    event.campaignContent,
+    geography.country,
+    geography.region
   ).run();
 
   return json({ accepted: true }, 202, corsHeaders(origin));
@@ -239,8 +256,8 @@ async function ingestContact(request, env) {
     await env.DB.prepare(`
       INSERT INTO contact_submissions (
         name, email, company, intent, problem, page, referrer,
-        campaign_source, campaign_medium, campaign_name
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        campaign_source, campaign_medium, campaign_name, conversation_id, intake_type, utm_content
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       contact.name,
       contact.email,
@@ -251,7 +268,10 @@ async function ingestContact(request, env) {
       contact.referrer,
       contact.campaignSource,
       contact.campaignMedium,
-      contact.campaignName
+      contact.campaignName,
+      contact.conversationId,
+      contact.intakeType,
+      contact.campaignContent
     ).run();
   }
 
@@ -316,7 +336,7 @@ export function rangeSelection(url) {
   const since = new Date();
   since.setUTCHours(0, 0, 0, 0);
   since.setUTCDate(since.getUTCDate() - (days - 1));
-  return { mode: "range", days, since: sqlTimestamp(since) };
+  return { mode: "range", days, since: sqlTimestamp(since) < "2026-08-09 00:00:00" ? "2026-08-09 00:00:00" : sqlTimestamp(since) };
 }
 
 async function dashboardData(request, env) {
@@ -407,6 +427,8 @@ async function dashboardData(request, env) {
           WHEN campaign_source = 'claude' OR referrer = 'claude.ai' THEN 'Claude'
           WHEN campaign_source = 'perplexity' OR referrer = 'perplexity.ai' THEN 'Perplexity'
           WHEN campaign_source = 'gemini' OR referrer = 'gemini.google.com' THEN 'Gemini'
+          WHEN campaign_source = 'grok' OR referrer IN ('grok.com', 'www.grok.com') THEN 'Grok'
+          WHEN campaign_source IN ('muse', 'muse-ai', 'muse.ai') OR referrer IN ('muse.ai', 'www.muse.ai') THEN 'Muse.ai'
           WHEN campaign_source = 'copilot' OR referrer IN ('copilot.microsoft.com', 'copilot.cloud.microsoft') THEN 'Copilot'
           WHEN campaign_source = 'poe' OR referrer = 'poe.com' THEN 'Poe'
           WHEN campaign_source IN ('you', 'you-com') OR referrer = 'you.com' THEN 'You.com'
@@ -450,6 +472,21 @@ async function dashboardData(request, env) {
     GROUP BY page ORDER BY visits DESC, page LIMIT 50
   `).bind(since));
   statements.push(env.DB.prepare(DISTRIBUTION_SQL).bind(since));
+  statements.push(env.DB.prepare(RECENT_SUMMARY_SQL));
+  statements.push(env.DB.prepare(RECENT_PAGES_SQL));
+  statements.push(env.DB.prepare(RECENT_SOURCES_SQL));
+  statements.push(env.DB.prepare(COUNTRIES_SQL).bind(since));
+  statements.push(env.DB.prepare(REGIONS_SQL).bind(since));
+  statements.push(env.DB.prepare(GEO_COVERAGE_SQL).bind(since));
+  statements.push(env.DB.prepare(SESSION_SQL).bind(since));
+  statements.push(env.DB.prepare(CAMPAIGN_SQL).bind(since));
+  statements.push(env.DB.prepare(`SELECT c.id,c.received_at,c.name,c.company,c.campaign_source,c.campaign_name,
+    COALESCE(p.stage,'inquiry') AS stage,COALESCE(p.paid_cents,0) AS paid_cents,
+    COALESCE(p.potential_cents,0) AS potential_cents,COALESCE(p.next_action,'') AS next_action,COALESCE(p.follow_up,'') AS follow_up
+    FROM contact_submissions c LEFT JOIN lead_progress p ON c.id=p.contact_id WHERE NOT ${TEST_CONTACT_SQL.replaceAll('email','c.email').replaceAll('name','c.name').replaceAll('problem','c.problem')} ORDER BY c.received_at DESC LIMIT 100`));
+  statements.push(env.DB.prepare(`SELECT MAX(received_at) AS last_event,
+    SUM(CASE WHEN conversion_action='contact-form-failed' AND received_at>=? THEN 1 ELSE 0 END) AS failed_submissions
+    FROM events`).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -462,7 +499,7 @@ async function dashboardData(request, env) {
     integrity: {
       collection_started: "2026-08-09",
       clean_measurement_started: "2026-08-14",
-      latest_private_backup: "2026-09-02",
+      latest_private_backup: "2026-10-04",
       production_only: true,
       automated_traffic_rejected: true,
       historical_status: "Pre-exclusion data quality uncertain"
@@ -482,7 +519,13 @@ async function dashboardData(request, env) {
     },
     contact_submissions: rows(11),
     reader_pages: rows(12),
-    distribution: rows(13)
+    working_session: rows(20)[0] || {},
+    session_campaigns: rows(21),
+    lead_progress: rows(22),
+    measurement_health: rows(23)[0] || {},
+    distribution: rows(13),
+    recent_activity: { ...(rows(14)[0] || {}), pages: rows(15), sources: rows(16) },
+    geography: { countries: rows(17), regions: rows(18), ...(rows(19)[0] || {}), minimum_group_size: 3 }
   });
 }
 
@@ -497,6 +540,32 @@ async function cleanup(env) {
     .run();
 }
 
+async function workspace(request, env) {
+  if (!authorized(request, env)) return json({error:"Unauthorized"},401);
+  if (request.method === "GET") {
+    const rows = await env.DB.prepare("SELECT * FROM owner_drafts ORDER BY updated_at DESC LIMIT 200").all();
+    return json({drafts: rows.results.map(row => ({...row, metadata: JSON.parse(row.metadata)}))});
+  }
+  if (request.method !== "POST") return json({error:"Method not allowed"},405);
+  const text = await request.text();
+  if (encoder.encode(text).length > 65536) return json({error:"Draft exceeds 64 KB"},413);
+  let draft; try { draft=JSON.parse(text); } catch { return json({error:"Invalid JSON"},400); }
+  if (!draft || !['newsletter','offer'].includes(draft.kind) || typeof draft.title !== 'string' || !draft.title.trim() || draft.title.length>180 || typeof draft.body !== 'string' || draft.body.length>40000) return json({error:"Add a title and keep the draft under 40,000 characters"},400);
+  if (draft.id && !/^[a-zA-Z0-9-]{1,64}$/.test(draft.id)) return json({error:"Invalid draft ID"},400);
+  const metadata={};
+  for (const key of ['subtitle','tags','price','currency','url']) metadata[key]=cleanText(draft.metadata?.[key],key==='url'?500:240);
+  if (metadata.url) { try { const u=new URL(metadata.url); if(u.protocol!=='https:' || u.username || u.password) throw Error(); } catch { return json({error:"Use a complete HTTPS destination link"},400); } }
+  if (draft.id) {
+    const existing=await env.DB.prepare("SELECT id FROM owner_drafts WHERE id=?").bind(draft.id).first();
+    if (!existing) return json({error:"Draft no longer exists. Start a new draft."},404);
+  }
+  const id=draft.id || crypto.randomUUID();
+  if (!draft.id) { const count=await env.DB.prepare("SELECT count(*) AS total FROM owner_drafts").first(); if(count.total>=200) return json({error:"Workspace holds 200 drafts; edit an existing draft"},409); }
+  const updated_at=new Date().toISOString();
+  await env.DB.prepare("INSERT INTO owner_drafts(id,kind,title,body,metadata,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,title=excluded.title,body=excluded.body,metadata=excluded.metadata,updated_at=excluded.updated_at").bind(id,draft.kind,draft.title.trim(),draft.body,JSON.stringify(metadata),updated_at).run();
+  return json({draft:{id,kind:draft.kind,title:draft.title.trim(),body:draft.body,metadata,updated_at}});
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -506,6 +575,20 @@ export default {
     }
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
     if (request.method === "POST" && url.pathname === "/v1/contact") return ingestContact(request, env);
+    if (url.pathname === "/v1/workspace") return workspace(request, env);
+    if (request.method === "PUT" && url.pathname === "/v1/lead-progress") {
+      if (!authorized(request,env)) return json({error:'unauthorized'},401);
+      let body; try { body=await request.json(); } catch {return json({error:'invalid'},400);}
+      const item=normalizeRevenue(body),id=Number(body.contact_id);
+      if(!item||!Number.isSafeInteger(id)||id<1) return json({error:'invalid'},400);
+      const exists=await env.DB.prepare('SELECT id FROM contact_submissions WHERE id=?').bind(id).first();
+      if(!exists) return json({error:'not_found'},404);
+      await env.DB.prepare(`INSERT INTO lead_progress(contact_id,stage,paid_cents,potential_cents,next_action,follow_up)
+        VALUES(?,?,?,?,?,?) ON CONFLICT(contact_id) DO UPDATE SET stage=excluded.stage,paid_cents=excluded.paid_cents,
+        potential_cents=excluded.potential_cents,next_action=excluded.next_action,follow_up=excluded.follow_up,updated_at=CURRENT_TIMESTAMP`)
+        .bind(id,item.stage,item.paid_cents,item.potential_cents,item.next_action,item.follow_up).run();
+      return json({saved:true});
+    }
     if (request.method === "GET" && url.pathname === "/v1/dashboard") return dashboardData(request, env);
     if (request.method === "GET" && url.pathname === "/v1/notifications") return notificationFeed(request, env);
     if (request.method === "GET" && url.pathname === "/health") {

@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const source = readFileSync(new URL('../../assets/js/contact-form.js', import.meta.url), 'utf8');
 function setup(intent, response = { ok: true, json: async () => ({ accepted: true }) }) {
   const handlers = {}, events = [], requests = [];
-  const status = { classList: { add() {} } }, button = {};
+  const status = { classList: { add() {} }, appendChild(node) { this.textContent=(this.textContent||"")+node.textContent; } }, button = {};
   const form = {
     dataset: {}, querySelector: s => s.startsWith('button') ? button : status,
     addEventListener: (name, fn) => { handlers[name] = fn; },
@@ -14,7 +14,7 @@ function setup(intent, response = { ok: true, json: async () => ({ accepted: tru
   };
   const values = { name: 'Test', email: 'test@example.com', intent, problem: 'A valid test inquiry' };
   vm.runInNewContext(source, {
-    document: { querySelectorAll: () => [form], referrer: '' },
+    document: { querySelectorAll: () => [form], referrer: '', createElement: () => ({textContent:''}) },
     location: { search: '', pathname: '/', href: 'https://basinleon.github.io/' },
     window: { lbInsightsRecord: (...args) => events.push(args), lbInsightsCampaign: { source: 'linkedin' } },
     URLSearchParams, URL, Date,
@@ -24,7 +24,7 @@ function setup(intent, response = { ok: true, json: async () => ({ accepted: tru
   return { handlers, events, requests, status, button };
 }
 test('focus alone is not a conversion', () => {
-  const app = setup('Speaking or writing'); app.handlers.focusin(); assert.equal(app.events.length, 0);
+  const app = setup('Speaking or writing'); app.handlers.focusin(); assert.equal(app.events.filter(e=>e[0]==='Conversion').length, 0);
 });
 test('writing inquiry is not a hiring step and keeps entry attribution', async () => {
   const app = setup('Speaking or writing'); await app.handlers.submit({ preventDefault() {} });
@@ -39,7 +39,7 @@ test('senior operating role records one hiring step', async () => {
 test('HTTP failure or unaccepted response does not record a conversion', async () => {
   for (const response of [{ ok: false }, { ok: true, json: async () => ({}) }]) {
     const app = setup('Senior operating role', response); await app.handlers.submit({ preventDefault() {} });
-    assert.equal(app.events.length, 0); assert.equal(app.button.disabled, false);
-    assert.match(app.status.textContent, /did not send/);
+    assert.equal(app.events.filter(e=>e[0]==='Conversion').length, 0); assert.equal(app.button.disabled, false);
+    assert.match(app.status.textContent, /Direct route/);
   }
 });

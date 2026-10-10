@@ -30,13 +30,14 @@
       if (form.dataset.started === "1") return;
       form.dataset.started = "1";
       startedAt = Date.now();
+      if(window.lbInsightsRecord) window.lbInsightsRecord("Form Start", {category:"Commercial intent",action:"contact-form-start",destination:location.pathname,label:"Contact form started",region:"section"});
     }, { once: true });
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
       var data = new FormData(form);
       var problem = clean(data.get("problem"), 1300);
-      if (data.has("consequence")) problem = "What is broken in GTM right now: " + problem + "\n\nWhat happens if it is still broken 90 days from now: " + clean(data.get("consequence"), 600);
+      if (data.get("consequence") !== null && data.get("consequence") !== "") problem = "What is broken in GTM right now: " + problem + "\n\nWhat happens if it is still broken 90 days from now: " + clean(data.get("consequence"), 600);
       var payload = {
         v: 1,
         name: clean(data.get("name"), 100),
@@ -86,6 +87,7 @@
           });
         }
       } catch (_) {
+        if(window.lbInsightsRecord) window.lbInsightsRecord("Form Failure", {category:"Commercial intent",action:"contact-form-failed",destination:location.pathname,label:"Contact form failed",region:"section"});
         var subject = "[lb-site] " + payload.intent + " from " + payload.name;
         var body = [
           "Name: " + payload.name,
