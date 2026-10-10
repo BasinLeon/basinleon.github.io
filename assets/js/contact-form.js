@@ -35,13 +35,15 @@
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
       var data = new FormData(form);
+      var problem = clean(data.get("problem"), 1300);
+      if (data.has("consequence")) problem = "What is broken in GTM right now: " + problem + "\n\nWhat happens if it is still broken 90 days from now: " + clean(data.get("consequence"), 600);
       var payload = {
         v: 1,
         name: clean(data.get("name"), 100),
         email: clean(data.get("email"), 180),
         company: clean(data.get("company"), 140),
         intent: clean(data.get("intent"), 60),
-        problem: clean(data.get("problem"), 2000),
+        problem: clean(problem, 2000),
         website: clean(data.get("website"), 120),
         startedAt: startedAt,
         conversation_id: window.lbConversation ? window.lbConversation.ensure() : "",
