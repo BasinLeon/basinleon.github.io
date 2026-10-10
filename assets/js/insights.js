@@ -326,6 +326,9 @@
     } else if (["Email Click", "Phone Click"].includes(click.type)) {
       category = "Commercial intent";
       action = click.type === "Email Click" ? "email" : "phone";
+    } else if (/request a session|working session:.*cta/.test(label)) {
+      category = "Commercial intent";
+      action = "working-session-request";
     } else if (/resume|case-stud|availability|work-with-me|gmail|email app/.test(`${path} ${label}`)) {
       category = "Commercial intent";
       action = "commercial-proof";
