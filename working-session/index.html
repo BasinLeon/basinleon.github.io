@@ -150,6 +150,8 @@
     .flow-card .step-number{color:var(--brass-deep);font-size:.75rem;font-weight:800}
     .flow-card h3{font-size:1rem;margin:.4rem 0 .6rem}
     @media(max-width:760px){.capabilities,.decision-flow{grid-template-columns:1fr;gap:.75rem}.capability{display:grid;grid-template-columns:24px 1fr;column-gap:.75rem}.capability svg{grid-row:1/3}.decision-flow{gap:1.5rem}.flow-card:not(:last-child):after{content:"↓";right:auto;left:1.2rem;top:auto;bottom:-1.4rem}}
+    .session-nav-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.7rem 1rem;background:var(--brass-deep);color:var(--white);font-size:.85rem;font-weight:800;text-decoration:none}
+    @media(max-width:480px){.nav{gap:.75rem}.session-nav-cta{padding:.65rem .75rem;font-size:.78rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
   </style>
 </head>
@@ -158,10 +160,7 @@
   <header class="header">
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="/">LEON <span>BASIN.</span></a>
-      <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
-      <div class="links" id="nav-links">
-        <a href="/case-studies/">Work</a><a href="/blueprint/">Blueprint</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/signal/">Signal</a><a class="contact" href="#contact">Request a session</a>
-      </div>
+      <a class="session-nav-cta" href="#contact">Request a session</a>
     </nav>
   </header>
   <main id="main">
@@ -290,17 +289,11 @@
       </div>
     </section>
   </main>
-  <footer><div class="shell footer"><span>© 2026 Leon Basin · Built as one life</span><div><a href="/case-studies/">Work</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/signal/">Signal</a><a href="/work-with-me/">All ways to work</a></div></div></footer>
+  <footer><div class="shell footer"><span>© 2026 Leon Basin · Built as one life</span></div></footer>
   <script src="/assets/js/conversation.js" defer></script>
   <script src="/assets/js/insights.js" defer></script>
   <script src="/assets/js/continuity.js" defer></script>
   <script src="/assets/js/contact-form.js?v=20261009" defer></script>
-  <script>
-    var menu=document.querySelector('.menu');
-    function closeMenu(){document.body.classList.remove('menu-open');menu.setAttribute('aria-expanded','false');}
-    menu.addEventListener('click',function(){var open=document.body.classList.toggle('menu-open');this.setAttribute('aria-expanded',String(open));if(open)document.querySelector('.links a').focus();});
-    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&document.body.classList.contains('menu-open')){closeMenu();menu.focus();}if(event.key==='Tab'&&document.body.classList.contains('menu-open')){var links=document.querySelectorAll('.links a');if(event.shiftKey&&document.activeElement===menu){event.preventDefault();links[links.length-1].focus();}else if(!event.shiftKey&&document.activeElement===links[links.length-1]){event.preventDefault();menu.focus();}}});
-    document.querySelectorAll('.links a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('menu-open');document.querySelector('.menu').setAttribute('aria-expanded','false');});});
-  </script>
+
 </body>
 </html>
