@@ -139,6 +139,17 @@
     .shell,.nav{padding-left:max(var(--gutter),env(safe-area-inset-left));padding-right:max(var(--gutter),env(safe-area-inset-right))}
     .lb-contact-form input,.lb-contact-form textarea{font-size:16px}
     @media(max-width:1020px){.proof{grid-template-columns:1fr}.proof article{max-width:650px}.hero:after{display:none}}
+    .capabilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:0 0 1.5rem}
+    .capability,.flow-card{background:var(--white);border:1px solid var(--brass);padding:1.1rem 1.2rem}
+    .capability svg{width:24px;height:24px;color:var(--brass-deep);margin-bottom:.35rem}
+    .capability h2{font-size:1rem;line-height:1.3;margin:0 0 .4rem}
+    .capability p,.flow-card p{font-size:.9rem;line-height:1.5;color:var(--muted-dark);margin:0}
+    .decision-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5rem;list-style:none;padding:0;margin:1.25rem 0 0}
+    .flow-card{position:relative;border-top:3px solid var(--brass)}
+    .flow-card:not(:last-child):after{content:"→";position:absolute;right:-1.3rem;top:1.1rem;color:var(--brass-deep);font-size:1.1rem}
+    .flow-card .step-number{color:var(--brass-deep);font-size:.75rem;font-weight:800}
+    .flow-card h3{font-size:1rem;margin:.4rem 0 .6rem}
+    @media(max-width:760px){.capabilities,.decision-flow{grid-template-columns:1fr;gap:.75rem}.capability{display:grid;grid-template-columns:24px 1fr;column-gap:.75rem}.capability svg{grid-row:1/3}.decision-flow{gap:1.5rem}.flow-card:not(:last-child):after{content:"↓";right:auto;left:1.2rem;top:auto;bottom:-1.4rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
   </style>
 </head>
@@ -171,6 +182,11 @@
     </section>
 
     <div class="sections shell">
+<section class="capabilities" aria-label="What I bring">
+<article class="capability"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="15" width="6" height="6"/><path d="M6 9v9h9"/></svg><h2>Build the sales system</h2><p>Targeting, CRM workflows and clear ownership.</p></article>
+<article class="capability"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 17l6-6 4 4 8-10M15 5h6v6"/></svg><h2>Move opportunities forward</h2><p>Discovery, solution engineering collaboration and expansion.</p></article>
+<article class="capability"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M8 8l3 7M16 8l-3 7M9 6h6"/></svg><h2>Develop partner channels</h2><p>Co-sell motions and partner execution.</p></article>
+</section>
       <section class="bridge" aria-label="From writing to working together">
         <p>You might have found me through something I wrote. My day-to-day work is different. I build sales systems, work through stalled deals, and help teams figure out why good conversations aren't turning into revenue. This is where we can work on yours.</p>
       </section>
@@ -211,12 +227,12 @@
         <div class="eyebrow">Illustrative · Not a client case</div>
         <h2 class="display" id="example-title">What the $500 brief can look like.</h2>
         <p class="lead">A simple example of the structure. Your diagnosis depends on the evidence we examine.</p>
-        <div class="leave-list">
-          <div class="leave-item"><span class="k">Problem</span><p>Founder is running every sales conversation. Follow-up is inconsistent.</p></div>
-          <div class="leave-item"><span class="k">Diagnosis</span><p>No clear next-step ownership after discovery.</p></div>
-          <div class="leave-item"><span class="k">Decision</span><p>Assign follow-up ownership and define the handoff.</p></div>
-          <div class="leave-item"><span class="k">Next 7 days</span><p>Review active opportunities, assign owners, inspect stalled deals.</p></div>
-        </div>
+        <ol class="decision-flow">
+          <li class="flow-card"><span class="step-number">01</span><h3>Problem</h3><p>Founder is running every sales conversation. Follow-up is inconsistent.</p></li>
+          <li class="flow-card"><span class="step-number">02</span><h3>Diagnosis</h3><p>No clear next-step ownership after discovery.</p></li>
+          <li class="flow-card"><span class="step-number">03</span><h3>Decision</h3><p>Assign follow-up ownership and define the handoff.</p></li>
+          <li class="flow-card"><span class="step-number">04</span><h3>Next 7 days</h3><p>Review active opportunities, assign owners, inspect stalled deals.</p></li>
+        </ol>
       </section>
 
       <section class="block" aria-labelledby="fit-title">
