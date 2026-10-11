@@ -1,5 +1,6 @@
 /* Local share handoffs. No SDK, login token or automatic publishing. */
 (()=>{
+ const preferences=document.createElement("script");preferences.src="/blog/js/reading-preferences.js";document.head.append(preferences);
  function link(path,channel){const u=new URL(path,location.origin);u.search='';u.hash='';u.searchParams.set('utm_source',channel);u.searchParams.set('utm_medium','social');u.searchParams.set('utm_campaign','writing-hub');return u.href;}
  function mount(host,title,path){
  if(host.querySelector('.hub-share'))return;
@@ -27,7 +28,7 @@
  const set=(selector,value)=>{const node=document.querySelector(selector);if(node)node.textContent=value;};
  set('[data-latest-title]',latest.title);set('[data-latest-number]','Fragment '+number);set('[data-latest-excerpt]',latest.excerpt);
  const date=document.querySelector('[data-latest-date]');if(date){date.dateTime=latest.date;date.textContent=new Date(latest.date+'T12:00:00Z').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});}
- const read=document.querySelector('[data-latest-read]');if(read){read.href=latest.url;read.textContent='Read fragment '+number;}
+ const read=document.querySelector('[data-latest-read]');if(read){read.href=latest.url;read.textContent='Read';}
  daily.replaceChildren();valid.slice(1,4).forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;a.append(k,h,t,p);mount(a,x.title,x.url);daily.append(a);});
  }).catch(()=>{/* Retain server-rendered archive entries. */});
  document.querySelectorAll('[data-hub-share]').forEach(el=>mount(el,el.dataset.shareTitle,el.dataset.shareUrl));
