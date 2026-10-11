@@ -15,5 +15,6 @@ fs.writeFileSync(file,page);fragments.push({slug:f.slug,title:f.title,date:f.dat
 const posts=JSON.parse(fs.readFileSync('data/posts.json','utf8'));
 posts.unshift({title:f.title,date:f.date,tags:['Sam & Ink','Fiction','Fragments'],excerpt:f.paragraphs[0].slice(0,180),url:'posts/'+f.slug+'.html',category:'Fiction'});
 fs.writeFileSync('data/posts.json',JSON.stringify(posts,null,2)+'\n');
+execFileSync('python3',['scripts/build-reading-index.py'],{stdio:'inherit'});
 execFileSync(process.execPath,['scripts/generate-seo-assets.mjs'],{stdio:'inherit'});
 console.log('Created '+file+'. Review the diff before publishing.');

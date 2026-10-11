@@ -1,5 +1,6 @@
 /* Local share handoffs. No SDK, login token or automatic publishing. */
 (()=>{
+ const discovery=document.createElement('script');discovery.src='/blog/js/reading-discovery.js';document.head.append(discovery);
  const preferences=document.createElement("script");preferences.src="/blog/js/reading-preferences.js";document.head.append(preferences);
  function link(path,channel){const u=new URL(path,location.origin);u.search='';u.hash='';u.searchParams.set('utm_source',channel);u.searchParams.set('utm_medium','social');u.searchParams.set('utm_campaign','writing-hub');return u.href;}
  function mount(host,title,path){
