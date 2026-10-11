@@ -182,13 +182,15 @@ test("events and contacts carry utm_content without touching other campaign fiel
 });
 
 test("dashboard keeps AI referrals, revenue steps and private contacts in their own fields", async () => {
-  const resultSets = Array.from({ length: 24 }, () => ({ results: [] }));
+  const resultSets = Array.from({ length: 25 }, () => ({ results: [] }));
   resultSets[0] = { results: [{ unique_visitors: 12, visits: 15, engaged_visits: 7, conversion_actions: 2 }] };
   resultSets[8] = { results: [{ source: "ChatGPT", visits: 2 }] };
   resultSets[9] = { results: [{ site_visits: 15, engaged_visits: 7, offer_visits: 3, commercial_action_visits: 1 }] };
   resultSets[10] = { results: [{ leads: 1 }] };
   resultSets[11] = { results: [{ id: 9, name: "Founder", email: "founder@example.com", problem: "Our activity is not becoming revenue." }] };
 
+  resultSets[20] = { results: [{ submitted: 1 }] };
+  resultSets[24] = { results: [{ verified_inquiries: 0 }] };
   const statement = { bind() { return this; } };
   const env = {
     ADMIN_TOKEN: "owner-token",
@@ -196,7 +198,7 @@ test("dashboard keeps AI referrals, revenue steps and private contacts in their 
     DB: {
       prepare() { return statement; },
       async batch(statements) {
-        assert.equal(statements.length, 24);
+        assert.equal(statements.length, 25);
         return resultSets;
       }
     }
@@ -216,6 +218,8 @@ test("dashboard keeps AI referrals, revenue steps and private contacts in their 
     leads: 1
   });
   assert.equal(data.contact_submissions[0].email, "founder@example.com");
+  assert.equal(data.working_session.submitted, 1);
+  assert.equal(data.working_session.verified_inquiries, 0);
   assert.deepEqual(data.reader_pages, []);
   assert.deepEqual(data.distribution, []);
 });

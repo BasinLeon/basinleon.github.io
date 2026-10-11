@@ -487,6 +487,7 @@ async function dashboardData(request, env) {
   statements.push(env.DB.prepare(`SELECT MAX(received_at) AS last_event,
     SUM(CASE WHEN conversion_action='contact-form-failed' AND received_at>=? THEN 1 ELSE 0 END) AS failed_submissions
     FROM events`).bind(since));
+  statements.push(env.DB.prepare(`SELECT COUNT(*) AS verified_inquiries FROM contact_submissions WHERE page='/working-session/' AND received_at>=? AND NOT ${TEST_CONTACT_SQL}`).bind(since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -519,7 +520,7 @@ async function dashboardData(request, env) {
     },
     contact_submissions: rows(11),
     reader_pages: rows(12),
-    working_session: rows(20)[0] || {},
+    working_session: { ...(rows(20)[0] || {}), verified_inquiries: Number(rows(24)[0]?.verified_inquiries || 0) },
     session_campaigns: rows(21),
     lead_progress: rows(22),
     measurement_health: rows(23)[0] || {},
