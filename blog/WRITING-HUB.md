@@ -12,4 +12,4 @@ Run `node scripts/publish-fragment.mjs /absolute/path/to/approved-fragment.json`
 
 Threads opens a prepared draft. Instagram and Substack copy a title and tracked canonical link, then offer the destination. They do not publish automatically. The source URL carries channel attribution, not personal data.
 
-The hub retains existing Sam & Ink archive pieces until approved daily fragments exist. The Amazon button currently searches the confirmed book title and author. Replace it with the exact listing when supplied.
+The hub retains existing Sam & Ink archive pieces until approved daily fragments exist. The Amazon button uses Leon’s confirmed listing: https://www.amazon.com/dp/B0CB9PWL5X.
