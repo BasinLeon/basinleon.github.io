@@ -2,9 +2,10 @@
 (()=>{
  const root=document.documentElement;
  const isHub=document.body.classList.contains('writing-hub');
+ const isShelf=location.pathname==='/blog/fiction/sam-and-ink/';
  const isPost=/^\/blog\/posts\/[a-z0-9-]+\.html$/.test(location.pathname);
- if(!isHub&&!isPost)return;
- if(isPost)document.body.classList.add('hub-reader');
+ if(!isHub&&!isPost&&!isShelf)return;
+ if(isPost||isShelf)document.body.classList.add('hub-reader');
  const read=key=>{try{return JSON.parse(localStorage.getItem(key));}catch{return null;}};
  const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch{/* Reading works without storage. */}};
  const key='basin-reading-preferences-v1';
