@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import worker from '../worker/index.js';
+const request=()=>new Request('https://example.com/v1/contact',{method:'POST',headers:{Origin:'https://basinleon.github.io','Content-Type':'application/json'},body:JSON.stringify({v:1,name:'Local fixture',email:'fixture@example.com',problem:'This is a local persistence test only.',page:'/working-session/',startedAt:Date.now()-5000})});
+for(const fails of [false,true])test(`intake acceptance requires persisted receipt; storage failure=${fails}`,async()=>{let inserted=false;const env={ALLOWED_ORIGINS:'https://basinleon.github.io',DB:{prepare(sql){return {bind(){return this;},async first(){return null;},async run(){assert.match(sql,/INSERT INTO contact_submissions/);if(fails)throw Error('local storage failure');inserted=true;return {success:true};}};}}};if(fails){await assert.rejects(worker.fetch(request(),env),/local storage failure/);assert.equal(inserted,false);}else{const response=await worker.fetch(request(),env);assert.equal(response.status,202);assert.equal(inserted,true);assert.equal((await response.json()).accepted,true);}});
