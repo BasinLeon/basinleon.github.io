@@ -303,6 +303,7 @@ function sqlTimestamp(date) {
 export const TEST_CONTACT_SQL = `(
   (name = 'Site QA September 12' AND problem LIKE 'QA TEST 20260912:%')
   OR (name = 'E2E TEST test-preview-001 - DELETE ME' AND problem LIKE 'SYNTHETIC E2E TEST trace test-preview-001%')
+  OR (name = 'TEST-DELETE' AND problem LIKE '%SYNTHETIC E2E TEST conversion-20261016%')
 )`;
 
 async function notificationFeed(request, env) {
