@@ -39,6 +39,18 @@ export async function systemState(fetcher=fetch) {
    get(`${API}/actions/workflows/validate-public-safety.yml/runs?per_page=1&branch=main`,fetcher)
   ]);
   if(snapshot.status==='fulfilled' && snapshot.value.checked_at >= fallback.checked_at)Object.assign(value,snapshot.value);
+  else if(snapshot.status==='fulfilled') {
+    // File checks may be newer in the Worker, while deployment evidence is
+    // available only in the published Pages snapshot. Keep their dates distinct.
+    if(!value.releases.length && snapshot.value.releases?.length) {
+      value.releases=snapshot.value.releases;
+      value.metadata_checked_at=snapshot.value.metadata_checked_at;
+    }
+    value.validators=value.validators.map(v=>{
+      const recorded=snapshot.value.validators?.find(r=>r.workflow===v.workflow);
+      return v.workflow_status||!recorded?v:{...v,workflow_status:recorded.workflow_status,workflow_commit:recorded.workflow_commit,url:recorded.url};
+    });
+  }
   else if(snapshot.status!=='fulfilled') value.error='Live build snapshot unavailable; showing bundled checks with timestamp';
   if(deploy.status==='fulfilled')value.releases=releaseMarkers((deploy.value.workflow_runs||[]).filter(r=>['Deploy Hybrid Site','pages build and deployment'].includes(r.name)));
   else value.error=[value.error,`Live release refresh unavailable (${deploy.reason?.message||'unknown'}); using recorded snapshot`].filter(Boolean).join('; ');

@@ -42,3 +42,11 @@ test('live API failures retain timestamped recorded release evidence instead of 
  const state=await systemState(async url=>url.includes('/data/system-health.json')?new Response(JSON.stringify({checked_at:'2100-01-01T00:00:00Z',checked_commit:'fixture',releases:[{commit:'ff3270dd',at:'2026-10-17T00:03:40Z'}],validators:[{name:'Site links',workflow_status:'success',status:'success',files:[]},{name:'Public safety',workflow_status:'failure',status:'failure',files:['llms.txt','services/index.html']}],sitemap:{missing:[]}})):new Response('',{status:403}));
  assert.equal(state.releases[0].commit,'ff3270dd');assert.equal(state.validators[1].workflow_status,'failure');assert.match(state.error,/403/);
 });
+
+
+test('an older published snapshot can supply recorded releases without replacing newer file checks',async()=>{
+ const {systemState}=await import('../worker/system-state.js');
+ const state=await systemState(async url=>url.includes('/data/system-health.json')?new Response(JSON.stringify({checked_at:'1970-01-01T00:00:00Z',checked_commit:'old-source',metadata_checked_at:'2026-10-17T00:00:00Z',releases:[{commit:'older-recorded-release',at:'2026-10-16T00:00:00Z'}],validators:[],sitemap:{missing:['do-not-use-old-check']}})):new Response('',{status:403}));
+ assert.notEqual(state.checked_commit,'old-source');assert.ok(!state.sitemap.missing.includes('do-not-use-old-check'));
+ assert.ok(state.releases.length>0);
+});
