@@ -34,13 +34,13 @@ export async function systemState(fetcher=fetch) {
  try {
   const [snapshot,deploy,links,safety]=await Promise.allSettled([
    get('https://basinleon.github.io/data/system-health.json',fetcher),
-   get(`${API}/actions/workflows/deploy-hybrid-site.yml/runs?status=success&per_page=100&branch=main`,fetcher),
+   get(`${API}/actions/runs?status=success&per_page=100&branch=main`,fetcher),
    get(`${API}/actions/workflows/validate-links.yml/runs?per_page=1&branch=main`,fetcher),
    get(`${API}/actions/workflows/validate-public-safety.yml/runs?per_page=1&branch=main`,fetcher)
   ]);
   if(snapshot.status==='fulfilled')Object.assign(value,snapshot.value);
   else value.error='Live build snapshot unavailable; showing bundled checks with timestamp';
-  if(deploy.status==='fulfilled')value.releases=releaseMarkers(deploy.value.workflow_runs||[]);
+  if(deploy.status==='fulfilled')value.releases=releaseMarkers((deploy.value.workflow_runs||[]).filter(r=>['Deploy Hybrid Site','pages build and deployment'].includes(r.name)));
   else value.error=[value.error,'Release history unavailable'].filter(Boolean).join('; ');
   value.validators=value.validators.map((v,i)=>{
    const result=[links,safety][i]; const run=result.status==='fulfilled'?result.value.workflow_runs?.[0]:null;
