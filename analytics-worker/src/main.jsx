@@ -546,7 +546,7 @@ function Dashboard() {
         </section>
 
         <section className="primary-grid">
-          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} releases={data.system_health?.releases||[]} /><details className="release-legend" open><summary>Release markers (UTC)</summary>{(data.system_health?.releases||[]).filter(r=>!data.trend.length||r.at.slice(0,10)>=data.trend[0].day).map(r=><p key={r.commit}><a href={r.url} target="_blank" rel="noreferrer">{r.commit.slice(0,8)}</a> · {r.at}</p>)}<small>Markers use successful Pages workflow completion, deduplicated by commit.</small></details></section>
+          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} releases={data.system_health?.releases||[]} /><details className="release-legend" open><summary>Release markers (UTC)</summary>{(data.system_health?.releases||[]).filter(r=>!data.trend.length||r.at.slice(0,10)>=data.trend[0].day).map(r=><p key={r.commit}><a href={r.url} target="_blank" rel="noreferrer">{r.commit.slice(0,8)}</a> · {r.at}</p>)}<small>Markers use the latest successful Pages workflow completion per commit; parallel deployment workflows can finish out of commit order.</small></details></section>
           <RankedList title="Top landing pages" rows={data.landing_pages} nameKey="page" emptyLabel="No landing pages yet" />
         </section>
 

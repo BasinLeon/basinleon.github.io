@@ -29,7 +29,7 @@ test('attention never calls unavailable states clean and names current file find
 });
 test('release comparison uses successful deduplicated markers and half-open periods',()=>{
  const markers=releaseMarkers([{head_sha:'a',head_branch:'main',conclusion:'success',updated_at:'2026-10-16T10:00:00Z'},{head_sha:'a',head_branch:'main',conclusion:'success',updated_at:'2026-10-16T11:00:00Z'},{head_sha:'b',head_branch:'main',conclusion:'failure',updated_at:'2026-10-15T10:00:00Z'},{head_sha:'c',head_branch:'main',conclusion:'success',updated_at:'2026-10-14T10:00:00Z'}]);
- assert.equal(markers.length,2);assert.equal(markers[0].at,'2026-10-16T10:00:00Z');
+ assert.equal(markers.length,2);assert.equal(markers[0].at,'2026-10-16T11:00:00Z');
  const periods=releasePeriods(markers,new Date('2026-10-17T00:00:00Z'));
  assert.equal(periods.previous.until,periods.current.since);
  assert.equal(compareMetrics({visits:3},{visits:2}).visits.delta,1);

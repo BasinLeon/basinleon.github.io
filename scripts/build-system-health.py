@@ -30,8 +30,8 @@ if os.environ.get('SYSTEM_HEALTH_METADATA') == '1':
         markers={}
         for run in runs:
             if run.get('name') not in ['Deploy Hybrid Site','pages build and deployment'] or run.get('head_branch')!='main' or run.get('conclusion')!='success': continue
-            marker={'commit':run['head_sha'],'at':run['updated_at'],'url':run['html_url'],'source':'Successful Pages deployment workflow completion'}
-            if marker['commit'] not in markers or marker['at']<markers[marker['commit']]['at']: markers[marker['commit']]=marker
+            marker={'commit':run['head_sha'],'at':run['updated_at'],'url':run['html_url'],'source':'Latest successful Pages deployment workflow completion for this commit'}
+            if marker['commit'] not in markers or marker['at']>markers[marker['commit']]['at']: markers[marker['commit']]=marker
         data['releases']=sorted(markers.values(),key=lambda r:r['at'],reverse=True)
         for validator in data['validators']:
             runs=api('actions/workflows/'+validator['workflow']+'/runs?per_page=1&branch=main').get('workflow_runs',[])

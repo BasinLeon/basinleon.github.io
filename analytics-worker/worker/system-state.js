@@ -10,9 +10,9 @@ export function releaseMarkers(runs) {
  const byCommit=new Map();
  for(const run of runs) {
   if(run.conclusion!=='success'||run.head_branch!=='main')continue;
-  const marker={commit:run.head_sha,at:run.updated_at,url:run.html_url,source:'Successful Pages deployment workflow completion'};
+  const marker={commit:run.head_sha,at:run.updated_at,url:run.html_url,source:'Latest successful Pages deployment workflow completion for this commit'};
   const old=byCommit.get(marker.commit);
-  if(!old||marker.at<old.at)byCommit.set(marker.commit,marker);
+  if(!old||marker.at>old.at)byCommit.set(marker.commit,marker);
  }
  return [...byCommit.values()].sort((a,b)=>b.at.localeCompare(a.at));
 }
