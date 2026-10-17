@@ -36,3 +36,9 @@ test('release comparison uses successful deduplicated markers and half-open peri
  const db=database();db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?)').run('2026-10-16 10:00:00','Pageview','v','s','/','','');
  assert.equal(db.prepare(METRICS_SQL).get('2026-10-14 10:00:00','2026-10-16 10:00:00').visits,0);db.close();
 });
+
+test('live API failures retain timestamped recorded release evidence instead of inventing a clean state',async()=>{
+ const {systemState}=await import('../worker/system-state.js');
+ const state=await systemState(async url=>url.includes('/data/system-health.json')?new Response(JSON.stringify({checked_at:'2100-01-01T00:00:00Z',checked_commit:'fixture',releases:[{commit:'ff3270dd',at:'2026-10-17T00:03:40Z'}],validators:[{name:'Site links',workflow_status:'success',status:'success',files:[]},{name:'Public safety',workflow_status:'failure',status:'failure',files:['llms.txt','services/index.html']}],sitemap:{missing:[]}})):new Response('',{status:403}));
+ assert.equal(state.releases[0].commit,'ff3270dd');assert.equal(state.validators[1].workflow_status,'failure');assert.match(state.error,/403/);
+});
