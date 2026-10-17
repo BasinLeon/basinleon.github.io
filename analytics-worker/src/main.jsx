@@ -339,14 +339,16 @@ function Sparkline({ data, releases=[] }) {
   const points = values.length
     ? values.map((value, index) => `${(index / Math.max(1, values.length - 1)) * 100},${76 - (value / max) * 64}`).join(" ")
     : "0,76 100,76";
-  const labels = data.length ? [data[0], data[Math.floor(data.length / 2)], data[data.length - 1]] : [];
+  const labels = data.length ? [...new Set([0, Math.floor(data.length / 2), data.length - 1])].map(i=>data[i]) : [];
   return (
     <div className="chart-wrap" aria-label="Visits over time">
       <svg className="chart" viewBox="0 0 100 84" preserveAspectRatio="none" role="img">
         {[12, 28, 44, 60, 76].map((y) => <line key={y} x1="0" x2="100" y1={y} y2={y} />)}
         <polyline points={points} />
+        {values.length === 1 && <circle cx="50" cy={76-(values[0]/max)*64} r="1.2" fill="var(--gold)"><title>{data[0].day}: {values[0]} pageview sessions in the selected window</title></circle>}
         {releases.filter(r=>data.length&&r.at.slice(0,10)>=data[0].day&&r.at.slice(0,10)<=data[data.length-1].day).map(r=>{const start=Date.parse(data[0].day+'T00:00:00Z'),end=Date.parse(data[data.length-1].day+'T23:59:59Z');const x=(Date.parse(r.at)-start)/Math.max(1,end-start)*100;return <line className="release-marker" key={r.commit} x1={x} x2={x} y1="4" y2="80"><title>{r.commit.slice(0,8)} · {r.at}</title></line>})}
       </svg>
+      {values.length===1 && <small>Single UTC-day window: {values[0]} pageview sessions.</small>}
       {values.every((value) => value === 0) && <div className="chart-empty">Collecting first-party events</div>}
       <div className="chart-labels">
         {labels.map((item) => <span key={item.day}>{new Date(`${item.day}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>)}
