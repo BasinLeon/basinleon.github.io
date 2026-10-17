@@ -1,3 +1,5 @@
+import { METRICS_SQL, EMAIL_SQL, releasePeriods, sqlTime, compareMetrics } from './decision-metrics.js';
+import { systemState } from './system-state.js';
 import { SESSION_SQL, CAMPAIGN_SQL, normalizeRevenue } from './career-revenue.js';
 import { DISTRIBUTION_SQL } from './distribution.js';
 import { coarseGeography, RECENT_SUMMARY_SQL, RECENT_PAGES_SQL, RECENT_SOURCES_SQL, COUNTRIES_SQL, REGIONS_SQL, GEO_COVERAGE_SQL } from './activity.js';
@@ -342,11 +344,24 @@ export function rangeSelection(url) {
 
 async function dashboardData(request, env) {
   if (!authorized(request, env)) return json({ error: "unauthorized" }, 401);
-  const range = rangeSelection(new URL(request.url));
+  const support = env.SYSTEM_STATE || await systemState();
+  const requested = new URL(request.url);
+  const selectedCommit = requested.searchParams.get('release');
+  const orderedReleases = support.releases || [];
+  const selectedIndex = selectedCommit ? orderedReleases.findIndex(r=>r.commit===selectedCommit) : 0;
+  const periods = releasePeriods(selectedIndex>=0?orderedReleases.slice(selectedIndex):[]);
+  const range = rangeSelection(requested);
+  if (requested.searchParams.get('days') === 'release' && !periods) return json({error:'Release history unavailable; choose another window or retry later.'},503);
+  if (requested.searchParams.get('days') === 'release' && periods) {
+    range.mode='release'; range.since=sqlTime(periods.current.since);
+  }
   const days = range.days;
   const since = range.since;
+  const until = sqlTime(new Date());
+  // All event readers share one captured upper boundary for this response.
+  const prepare = sql => env.DB.prepare(sql.replace(/\b(FROM|JOIN) events\b/g, `$1 (SELECT * FROM events WHERE received_at < '${until}')`));
   const statements = [
-    env.DB.prepare(`
+    prepare(`
       SELECT
         COUNT(DISTINCT visitor_hash) AS unique_visitors,
         COUNT(DISTINCT session_hash) AS visits,
@@ -354,7 +369,7 @@ async function dashboardData(request, env) {
         COALESCE(SUM(CASE WHEN event_type = 'Conversion' THEN 1 ELSE 0 END), 0) AS conversion_actions
       FROM events WHERE received_at >= ?
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       WITH RECURSIVE dates(day) AS (
         SELECT date(?)
         UNION ALL SELECT date(day, '+1 day') FROM dates WHERE day < date('now')
@@ -362,13 +377,13 @@ async function dashboardData(request, env) {
         SELECT date(received_at) AS day,
           COUNT(DISTINCT session_hash) AS visits,
           COUNT(DISTINCT visitor_hash) AS visitors
-        FROM events WHERE received_at >= ? GROUP BY date(received_at)
+        FROM events WHERE received_at >= ? AND event_type='Pageview' GROUP BY date(received_at)
       )
       SELECT dates.day, COALESCE(daily.visits, 0) AS visits,
         COALESCE(daily.visitors, 0) AS visitors
       FROM dates LEFT JOIN daily USING(day) ORDER BY dates.day
     `).bind(since, since),
-    env.DB.prepare(`
+    prepare(`
       WITH ranked AS (
         SELECT page, session_hash,
           ROW_NUMBER() OVER (PARTITION BY session_hash ORDER BY received_at, id) AS position
@@ -377,7 +392,7 @@ async function dashboardData(request, env) {
       SELECT page, COUNT(*) AS visits FROM ranked WHERE position = 1
       GROUP BY page ORDER BY visits DESC, page LIMIT 8
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       WITH ranked AS (
         SELECT session_hash,
           CASE
@@ -390,23 +405,23 @@ async function dashboardData(request, env) {
       SELECT source, COUNT(*) AS visits FROM ranked WHERE position = 1
       GROUP BY source ORDER BY visits DESC, source LIMIT 8
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       SELECT conversion_category AS category, COUNT(*) AS actions
       FROM events WHERE event_type = 'Conversion' AND received_at >= ?
       GROUP BY conversion_category ORDER BY actions DESC
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       SELECT depth, COUNT(DISTINCT session_hash) AS visits
       FROM events WHERE event_type = 'Scroll Depth' AND received_at >= ?
       GROUP BY depth ORDER BY depth
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       SELECT COUNT(*) AS returning_visitors FROM (
         SELECT visitor_hash FROM events WHERE received_at >= ?
         GROUP BY visitor_hash HAVING COUNT(DISTINCT session_hash) > 1
       )
     `).bind(since),
-    env.DB.prepare(`
+    prepare(`
       SELECT conversion_action AS step, COUNT(DISTINCT session_hash) AS actions
       FROM events
       WHERE event_type IN ('Hiring Funnel View', 'Hiring Funnel Step')
@@ -416,7 +431,7 @@ async function dashboardData(request, env) {
     `).bind(since)
   ];
 
-  statements.push(env.DB.prepare(`
+  statements.push(prepare(`
     WITH ranked AS (
       SELECT session_hash, LOWER(campaign_source) AS campaign_source, LOWER(referrer) AS referrer,
         ROW_NUMBER() OVER (PARTITION BY session_hash ORDER BY received_at, id) AS position
@@ -441,7 +456,7 @@ async function dashboardData(request, env) {
     GROUP BY source ORDER BY visits DESC, source
   `).bind(since));
 
-  statements.push(env.DB.prepare(`
+  statements.push(prepare(`
     SELECT
       COUNT(DISTINCT CASE WHEN event_type = 'Pageview' THEN session_hash END) AS site_visits,
       COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged_visits,
@@ -450,11 +465,11 @@ async function dashboardData(request, env) {
     FROM events WHERE received_at >= ?
   `).bind(since));
 
-  statements.push(env.DB.prepare(`
+  statements.push(prepare(`
     SELECT COUNT(*) AS leads FROM contact_submissions WHERE received_at >= ? AND NOT ${TEST_CONTACT_SQL}
   `).bind(since));
 
-  statements.push(env.DB.prepare(`
+  statements.push(prepare(`
     SELECT id, received_at, name, email, company, intent, problem, page,
       campaign_source, campaign_medium, campaign_name, status, ${TEST_CONTACT_SQL} AS is_test
     FROM contact_submissions
@@ -462,7 +477,7 @@ async function dashboardData(request, env) {
     LIMIT 30
   `));
 
-  statements.push(env.DB.prepare(`
+  statements.push(prepare(`
     SELECT page,
       COUNT(DISTINCT CASE WHEN event_type = 'Pageview' THEN session_hash END) AS visits,
       COUNT(DISTINCT CASE WHEN event_type = 'Engaged Visit' THEN session_hash END) AS engaged,
@@ -472,23 +487,27 @@ async function dashboardData(request, env) {
     FROM events WHERE received_at >= ? AND (page LIKE '/blog/%' OR page LIKE '/fiction/%')
     GROUP BY page ORDER BY visits DESC, page LIMIT 50
   `).bind(since));
-  statements.push(env.DB.prepare(DISTRIBUTION_SQL).bind(since));
-  statements.push(env.DB.prepare(RECENT_SUMMARY_SQL));
-  statements.push(env.DB.prepare(RECENT_PAGES_SQL));
-  statements.push(env.DB.prepare(RECENT_SOURCES_SQL));
-  statements.push(env.DB.prepare(COUNTRIES_SQL).bind(since));
-  statements.push(env.DB.prepare(REGIONS_SQL).bind(since));
-  statements.push(env.DB.prepare(GEO_COVERAGE_SQL).bind(since));
-  statements.push(env.DB.prepare(SESSION_SQL).bind(since));
-  statements.push(env.DB.prepare(CAMPAIGN_SQL).bind(since));
-  statements.push(env.DB.prepare(`SELECT c.id,c.received_at,c.name,c.company,c.campaign_source,c.campaign_name,
+  statements.push(prepare(DISTRIBUTION_SQL).bind(since));
+  statements.push(prepare(RECENT_SUMMARY_SQL));
+  statements.push(prepare(RECENT_PAGES_SQL));
+  statements.push(prepare(RECENT_SOURCES_SQL));
+  statements.push(prepare(COUNTRIES_SQL).bind(since));
+  statements.push(prepare(REGIONS_SQL).bind(since));
+  statements.push(prepare(GEO_COVERAGE_SQL).bind(since));
+  statements.push(prepare(SESSION_SQL).bind(since));
+  statements.push(prepare(CAMPAIGN_SQL).bind(since));
+  statements.push(prepare(`SELECT c.id,c.received_at,c.name,c.company,c.campaign_source,c.campaign_name,
     COALESCE(p.stage,'inquiry') AS stage,COALESCE(p.paid_cents,0) AS paid_cents,
     COALESCE(p.potential_cents,0) AS potential_cents,COALESCE(p.next_action,'') AS next_action,COALESCE(p.follow_up,'') AS follow_up
     FROM contact_submissions c LEFT JOIN lead_progress p ON c.id=p.contact_id WHERE NOT ${TEST_CONTACT_SQL.replaceAll('email','c.email').replaceAll('name','c.name').replaceAll('problem','c.problem')} ORDER BY c.received_at DESC LIMIT 100`));
-  statements.push(env.DB.prepare(`SELECT MAX(received_at) AS last_event,
+  statements.push(prepare(`SELECT MAX(received_at) AS last_event,
     SUM(CASE WHEN conversion_action='contact-form-failed' AND received_at>=? THEN 1 ELSE 0 END) AS failed_submissions
     FROM events`).bind(since));
-  statements.push(env.DB.prepare(`SELECT COUNT(*) AS verified_inquiries FROM contact_submissions WHERE page='/working-session/' AND received_at>=? AND NOT ${TEST_CONTACT_SQL}`).bind(since));
+  statements.push(prepare(`SELECT COUNT(*) AS verified_inquiries FROM contact_submissions WHERE page='/working-session/' AND received_at>=? AND NOT ${TEST_CONTACT_SQL}`).bind(since));
+  statements.push(prepare(METRICS_SQL).bind(since,until));
+  statements.push(prepare(EMAIL_SQL).bind(since,until));
+  statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.current.since):since,until));
+  statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.previous.since):since,periods?sqlTime(periods.previous.until):since));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -506,22 +525,29 @@ async function dashboardData(request, env) {
       automated_traffic_rejected: true,
       historical_status: "Pre-exclusion data quality uncertain"
     },
-    summary: rows(0)[0] || {},
+    summary: rows(25)[0] || {},
     trend: rows(1),
     landing_pages: rows(2),
     sources: rows(3),
     conversions: rows(4),
     reading_completion: rows(5),
     returning_visitors: Number(rows(6)[0]?.returning_visitors || 0),
-    hiring_funnel: rows(7),
+    hiring_funnel: [...rows(7).filter(r=>r.step!=='email'), {step:'email',actions:Number(rows(25)[0]?.email_actions||0)}],
+    email_ctas: rows(26),
+    system_health: support,
+    release_comparison: periods ? { ...periods, metrics: compareMetrics(rows(27)[0]||{},rows(28)[0]||{}) } : null,
+    range_until: until,
     ai_referrals: rows(8),
     revenue_funnel: {
       ...(rows(9)[0] || {}),
+      site_visits: Number(rows(25)[0]?.visits||0),
+      engaged_visits: Number(rows(25)[0]?.engaged_visits||0),
+      offer_visits: Number(rows(25)[0]?.offer_visits||0),
       leads: Number(rows(10)[0]?.leads || 0)
     },
     contact_submissions: rows(11),
     reader_pages: rows(12),
-    working_session: { ...(rows(20)[0] || {}), verified_inquiries: Number(rows(24)[0]?.verified_inquiries || 0) },
+    working_session: { ...(rows(20)[0] || {}), viewed: Number(rows(25)[0]?.offer_visits||0), clicked: Number(rows(25)[0]?.request_clicks||0), started: Number(rows(25)[0]?.form_starts||0), verified_inquiries: Number(rows(24)[0]?.verified_inquiries || 0) },
     session_campaigns: rows(21),
     lead_progress: rows(22),
     measurement_health: rows(23)[0] || {},

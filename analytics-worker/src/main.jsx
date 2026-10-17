@@ -1,3 +1,4 @@
+import { ReleaseComparison, EmailCounts } from './DecisionPanels.jsx';
 import RevenueOperations from './RevenueOperations.jsx';
 import { readOwnerConfirmation, saveOwnerConfirmation } from './owner-confirmation.js';
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -248,7 +249,7 @@ function RevenueFunnel({ values }) {
   const steps = [
     { key: "site_visits", label: "Site visits" },
     { key: "engaged_visits", label: "Engaged 15+ seconds" },
-    { key: "offer_visits", label: "Visited Work with Leon" },
+    { key: "offer_visits", label: "Visited working-session page" },
     { key: "commercial_action_visits", label: "Took a commercial action" },
     { key: "leads", label: "Sent an inbound note" }
   ];
@@ -256,7 +257,7 @@ function RevenueFunnel({ values }) {
   return (
     <section className="growth-panel revenue-path" aria-labelledby="revenue-path-title">
       <div className="growth-heading"><span>Monetization</span><h2 id="revenue-path-title">Revenue activity</h2></div>
-      <p>Independent site-wide counts, not a sequential funnel. Offer visits include commercial destinations; landing visits count entry pages.</p>
+      <p>Same selected UTC window as Overview. Site visits are sessions with a pageview; working-session visits are sessions with a pageview on /working-session/. These are independent counts, not an ordered funnel.</p>
       <ol>
         {steps.map((step, index) => {
           const value = Number(values[step.key] || 0);
@@ -332,7 +333,7 @@ function DataIntegrity({ integrity, retentionDays, ownerExcluded }) {
   );
 }
 
-function Sparkline({ data }) {
+function Sparkline({ data, releases=[] }) {
   const values = data.map((item) => Number(item.visits || 0));
   const max = Math.max(1, ...values);
   const points = values.length
@@ -344,6 +345,7 @@ function Sparkline({ data }) {
       <svg className="chart" viewBox="0 0 100 84" preserveAspectRatio="none" role="img">
         {[12, 28, 44, 60, 76].map((y) => <line key={y} x1="0" x2="100" y1={y} y2={y} />)}
         <polyline points={points} />
+        {releases.filter(r=>data.length&&r.at.slice(0,10)>=data[0].day&&r.at.slice(0,10)<=data[data.length-1].day).map(r=>{const start=Date.parse(data[0].day+'T00:00:00Z'),end=Date.parse(data[data.length-1].day+'T23:59:59Z');const x=(Date.parse(r.at)-start)/Math.max(1,end-start)*100;return <line className="release-marker" key={r.commit} x1={x} x2={x} y1="4" y2="80"><title>{r.commit.slice(0,8)} · {r.at}</title></line>})}
       </svg>
       {values.every((value) => value === 0) && <div className="chart-empty">Collecting first-party events</div>}
       <div className="chart-labels">
@@ -467,6 +469,7 @@ function Dashboard() {
   const [section,setSection]=useState("Overview");
   const [token, setToken] = useState(() => sessionStorage.getItem("lb:owner-token") || "");
   const [days, setDays] = useState("clean");
+  const [releaseCommit,setReleaseCommit] = useState("");
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(Boolean(token));
@@ -490,13 +493,13 @@ function Dashboard() {
     if (!popup) window.location.assign("https://basinleon.github.io/?lb_owner=1");
   }
 
-  async function load(nextToken = token, nextDays = days) {
+  async function load(nextToken = token, nextDays = days, nextRelease = releaseCommit) {
     setBusy(true);
     setError("");
     try {
-      const response = await fetch(`/v1/dashboard?days=${nextDays}`, { headers: { authorization: `Bearer ${nextToken}` } });
+      const response = await fetch(`/v1/dashboard?days=${nextDays}${nextRelease?`&release=${encodeURIComponent(nextRelease)}`:""}`, { headers: { authorization: `Bearer ${nextToken}` } });
       if (response.status === 401) { sessionStorage.removeItem("lb:owner-token"); setToken(""); throw new Error("That owner token was not accepted."); }
-      if (!response.ok) throw new Error("The dashboard could not load. Try again in a moment.");
+      if (!response.ok) { const failure=await response.json().catch(()=>({})); throw new Error(failure.error || "The dashboard could not load. Try again in a moment."); }
       const payload = await response.json();
       sessionStorage.setItem("lb:owner-token", nextToken);
       setToken(nextToken);
@@ -530,24 +533,27 @@ function Dashboard() {
         <section className="intro">
           <div><h1>Site Traffic</h1><p>Owned, privacy-safe measurement for basinleon.github.io</p></div>
           <nav aria-label="Date range">
-            {["clean", 7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === "clean" ? "Clean" : value === 365 ? "1 year" : `${value} days`}</button>)}
+            {["release", "clean", 7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === "release" ? "Since last release" : value === "clean" ? "Clean" : value === 365 ? "1 year" : `${value} days`}</button>)}
           </nav>
         </section>
 
-        <p className="coverage-note">Selected window: {days === 'clean' ? 'clean measurement' : `${days} days`}. Collection began August 9, 2026; earlier dates are not measured. Clean measurement begins August 14 at 21:22 UTC. Dates use UTC. {data.coverage_since && `Available coverage starts ${data.coverage_since} UTC.`}</p>
+        <p className="coverage-note">Selected window: {days === 'release' ? 'Since last release' : days === 'clean' ? 'clean measurement' : `${days} days`}. Collection began August 9, 2026; earlier dates are not measured. Clean measurement begins August 14 at 21:22 UTC. Dates use UTC. {data.coverage_since && `Available coverage starts ${data.coverage_since} UTC.`}</p>
         <section className="metrics" aria-busy={busy}>
-          <Metric label="Unique visitors" value={summary.unique_visitors} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
-          <Metric label="Visits" value={summary.visits} note={collecting ? "Clean collection started Aug 14 at 2:22 PM PT" : days === "clean" ? "Since Aug 14 at 2:22 PM PT" : `Last ${days} days`} />
-          <Metric label="Engaged visits" value={summary.engaged_visits} note={collecting ? "Collecting first-party events" : "15+ active seconds"} />
-          <Metric label="Conversion actions" value={summary.conversion_actions} note={collecting ? "Collecting first-party events" : "Commercial, operating, reader"} />
+          <Metric label="Unique visitors" value={summary.unique_visitors} note={`Distinct anonymous visitor hashes with a pageview; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
+          <Metric label="Visits" value={summary.visits} note={`Distinct sessions with a pageview; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
+          <Metric label="Engaged visits" value={summary.engaged_visits} note={`Distinct sessions recording 15 active seconds; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
+          <Metric label="Conversion actions" value={summary.conversion_actions} note={`Accepted commercial, operating or reader Conversion events; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
         </section>
 
         <section className="primary-grid">
-          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} /></section>
+          <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} releases={data.system_health?.releases||[]} /><details className="release-legend" open><summary>Release markers (UTC)</summary>{(data.system_health?.releases||[]).filter(r=>!data.trend.length||r.at.slice(0,10)>=data.trend[0].day).map(r=><p key={r.commit}><a href={r.url} target="_blank" rel="noreferrer">{r.commit.slice(0,8)}</a> · {r.at}</p>)}<small>Markers use successful Pages workflow completion, deduplicated by commit.</small></details></section>
           <RankedList title="Top landing pages" rows={data.landing_pages} nameKey="page" emptyLabel="No landing pages yet" />
         </section>
 
 
+        <label className="panel">Release baseline <select value={releaseCommit} onChange={e=>{setReleaseCommit(e.target.value);setDays('release');load(token,'release',e.target.value);}}><option value="">Latest successful release</option>{(data.system_health?.releases||[]).slice(0,-1).map(r=><option key={r.commit} value={r.commit}>{r.commit.slice(0,8)} · {r.at}</option>)}</select></label>
+        <ReleaseComparison comparison={data.release_comparison} />
+        <EmailCounts rows={data.email_ctas||[]} />
         <ActivityReport recent={data.recent_activity} geography={data.geography} generatedAt={data.generated_at} busy={busy} onRefresh={() => load(token, days)} />
 
         <RevenueOperations data={data} token={token} onSaved={() => load()} ownerExcluded={ownerExcluded} />

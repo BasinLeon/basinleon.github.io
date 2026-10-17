@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check source system health
+        run: python3 scripts/build-system-health.py /tmp/basin-system-health.json
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -37,6 +40,11 @@ jobs:
         run: |
           # Sync all root files to _site, excluding the docs source, .git, and _site itself
           rsync -av --exclude='.git' --exclude='.github' --exclude='docs' --exclude='_site' --exclude='node_modules' --exclude='analytics-worker' ./ ./_site/
+
+      - name: Generate sanitized system health
+        run: |
+          mkdir -p _site/data
+          cp /tmp/basin-system-health.json _site/data/system-health.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
