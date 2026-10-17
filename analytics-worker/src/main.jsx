@@ -1,4 +1,5 @@
 import RevenueOperations from './RevenueOperations.jsx';
+import { readOwnerConfirmation, saveOwnerConfirmation } from './owner-confirmation.js';
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
@@ -469,13 +470,14 @@ function Dashboard() {
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(Boolean(token));
-  const [ownerExcluded, setOwnerExcluded] = useState(false);
+  const [ownerExcluded, setOwnerExcluded] = useState(readOwnerConfirmation);
   const ownerPopup = useRef(null);
 
   useEffect(() => {
     function receiveOwnerStatus(event) {
       if (event.origin !== "https://basinleon.github.io" || event.source !== ownerPopup.current || event.data?.type !== "lb-owner-status") return;
       const excluded = event.data.excluded === true;
+      saveOwnerConfirmation(excluded);
       setOwnerExcluded(excluded);
     }
     window.addEventListener("message", receiveOwnerStatus);
