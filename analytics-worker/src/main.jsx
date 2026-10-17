@@ -42,7 +42,7 @@ function ActivityReport({ recent = {}, geography = {}, generatedAt, busy, onRefr
     <p>Recent means a recorded event, not proof someone is still online. Updated {generatedAt ? new Date(generatedAt).toLocaleTimeString() : 'when loaded'}. Refresh to check again.</p>
     <div className="activity-counts"><Metric label="Sessions in last 5 minutes" value={recent.sessions_5m || 0} note="At least one recorded event" />
       <Metric label="Sessions in last 30 minutes" value={recent.sessions_30m || 0} note="Independent of selected date range" />
-      <Metric label="Visits with location" value={geography.located_sessions || 0} note={`${number(geography.total_sessions || 0)} sessions in selected range`} /></div>
+      <Metric label="Located event sessions" value={geography.located_sessions || 0} note={`${number(geography.total_sessions || 0)} sessions with any event in this window; separate from pageview-only Visits`} /></div>
     <div className="activity-grid"><RankedList title="Recent pages · 30 minutes" rows={recent.pages || []} nameKey="page" emptyLabel="No recorded activity in the last 30 minutes" />
       <RankedList title="Recent sources · 30 minutes" rows={recent.sources || []} nameKey="source" emptyLabel="No recent arrival sources" />
       <RankedList title="Countries / territories" rows={countries} nameKey="location" emptyLabel="No country group has three recorded visits yet" />

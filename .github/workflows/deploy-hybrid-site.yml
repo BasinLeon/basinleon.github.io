@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -22,6 +23,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check source system health
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SYSTEM_HEALTH_METADATA: '1'
         run: python3 scripts/build-system-health.py /tmp/basin-system-health.json
 
       - name: Setup Ruby

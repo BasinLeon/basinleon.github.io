@@ -30,7 +30,7 @@ export function healthAttention(health,ownerExcluded) {
 }
 export async function systemState(fetcher=fetch) {
  if(fetcher===fetch&&cached&&cached.expires>Date.now())return cached.value;
- const value={...fallback,releases:[],error:null};
+ const value={...fallback,releases:fallback.releases||[],error:null};
  try {
   const [snapshot,deploy,links,safety]=await Promise.allSettled([
    get('https://basinleon.github.io/data/system-health.json',fetcher),
@@ -38,13 +38,13 @@ export async function systemState(fetcher=fetch) {
    get(`${API}/actions/workflows/validate-links.yml/runs?per_page=1&branch=main`,fetcher),
    get(`${API}/actions/workflows/validate-public-safety.yml/runs?per_page=1&branch=main`,fetcher)
   ]);
-  if(snapshot.status==='fulfilled')Object.assign(value,snapshot.value);
-  else value.error='Live build snapshot unavailable; showing bundled checks with timestamp';
+  if(snapshot.status==='fulfilled' && snapshot.value.checked_at >= fallback.checked_at)Object.assign(value,snapshot.value);
+  else if(snapshot.status!=='fulfilled') value.error='Live build snapshot unavailable; showing bundled checks with timestamp';
   if(deploy.status==='fulfilled')value.releases=releaseMarkers((deploy.value.workflow_runs||[]).filter(r=>['Deploy Hybrid Site','pages build and deployment'].includes(r.name)));
-  else value.error=[value.error,'Release history unavailable'].filter(Boolean).join('; ');
+  else value.error=[value.error,`Live release refresh unavailable (${deploy.reason?.message||'unknown'}); using recorded snapshot`].filter(Boolean).join('; ');
   value.validators=value.validators.map((v,i)=>{
    const result=[links,safety][i]; const run=result.status==='fulfilled'?result.value.workflow_runs?.[0]:null;
-   return {...v,workflow_status:run?(run.conclusion||run.status):'unknown',workflow_commit:run?.head_sha,url:run?.html_url};
+   return {...v,workflow_status:run?(run.conclusion||run.status):(v.workflow_status||'unknown'),workflow_commit:run?.head_sha||v.workflow_commit,url:run?.html_url||v.url};
   });
  } catch(error){value.error=error.message;}
  value.fetched_at=new Date().toISOString();
