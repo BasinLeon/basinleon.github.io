@@ -23,7 +23,7 @@
  const more=document.createElement('details');more.className='hub-share-more';const summary=document.createElement('summary');summary.textContent='More';const choices=document.createElement('div');choices.className='hub-share-choices';['Facebook','Reddit','LinkedIn','Bluesky','Instagram','Substack'].forEach(label=>add(label,choices));more.append(summary,choices);wrap.append(more,status);host.append(wrap);
  }
  const daily=document.querySelector('#fragments .hub-grid, [data-fragment-shelf]');
- if(daily)fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
+ if(daily)fetch('/data/fragments.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
  if(!Array.isArray(items)||!items.length)return;
  const valid=items.filter(x=>typeof x.url==='string' && /^\/blog\/posts\/[a-z0-9-]+\.html$/.test(x.url));if(!valid.length)return;
  const latest=valid[0];const number=latest.slug.split('-').pop();
@@ -31,7 +31,7 @@
  set('[data-latest-title]',latest.title);set('[data-latest-number]','Fragment '+number);set('[data-latest-excerpt]',latest.excerpt);
  const date=document.querySelector('[data-latest-date]');if(date){date.dateTime=latest.date;date.textContent=new Date(latest.date+'T12:00:00Z').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});}
  const read=document.querySelector('[data-latest-read]');if(read){read.href=latest.url;read.textContent='Read';}
- daily.replaceChildren();valid.sort((a,b)=>Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop())).forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;a.append(k,h,t,p);mount(a,x.title,x.url);daily.append(a);});
+ daily.replaceChildren();valid.sort((a,b)=>(daily.dataset.fragmentOrder==='newest'?-1:1)*(Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop()))).forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;a.append(k,h,t,p);mount(a,x.title,x.url);daily.append(a);});
  }).catch(()=>{/* Retain server-rendered archive entries. */});
  if(/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname))fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
  const ordered=items.filter(x=>typeof x.url==='string'&&/^\/blog\/posts\/fragment-\d+\.html$/.test(x.url)).sort((a,b)=>Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop()));
