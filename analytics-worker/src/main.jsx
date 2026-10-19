@@ -545,6 +545,7 @@ function Dashboard() {
           <Metric label="Visits" value={summary.visits} note={`Distinct sessions with a pageview; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
           <Metric label="Engaged visits" value={summary.engaged_visits} note={`Distinct sessions recording 15 active seconds; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
           <Metric label="Conversion actions" value={summary.conversion_actions} note={`Accepted commercial, operating or reader Conversion events; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
+          <Metric label="Returning visitors" value={data.returning_visitors} note={`${returningPercent}% of unique visitors · Anonymous visitors with pageviews in 2+ distinct sessions; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
         </section>
 
         <section className="primary-grid">

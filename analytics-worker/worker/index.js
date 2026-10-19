@@ -417,7 +417,7 @@ async function dashboardData(request, env) {
     `).bind(since),
     prepare(`
       SELECT COUNT(*) AS returning_visitors FROM (
-        SELECT visitor_hash FROM events WHERE received_at >= ?
+        SELECT visitor_hash FROM events WHERE event_type = 'Pageview' AND received_at >= ?
         GROUP BY visitor_hash HAVING COUNT(DISTINCT session_hash) > 1
       )
     `).bind(since),

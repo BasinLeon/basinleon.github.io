@@ -24,3 +24,24 @@ test('complete dashboard SQL keeps repeated counters identical and reads genuine
  }
  db.close();
 });
+
+
+test('returning visitors require pageviews in two distinct sessions inside the selected window',async()=>{
+ const db=new DatabaseSync(':memory:');
+ for(const file of readdirSync(new URL('../migrations/',import.meta.url)).filter(f=>f.endsWith('.sql')).sort())db.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));
+ const add=db.prepare('INSERT INTO events(received_at,event_type,session_hash,visitor_hash,page) VALUES(?,?,?,?,?)');
+ for(const [at,type,session,visitor] of [
+ ['2026-10-16 12:00:00','Pageview','one','returner'],
+ ['2026-10-16 12:01:00','Pageview','two','returner'],
+ ['2026-10-16 12:02:00','Pageview','single','single'],
+ ['2026-10-16 12:03:00','Pageview','single','single'],
+ ['2026-10-16 12:04:00','Engaged Visit','event-one','event-only'],
+ ['2026-10-16 12:05:00','Engaged Visit','event-two','event-only'],
+ ['2026-10-14 12:00:00','Pageview','outside','outside-window'],
+ ['2026-10-16 12:06:00','Pageview','inside','outside-window'],
+ ])add.run(at,type,session,visitor,'/');
+ const env={ADMIN_TOKEN:'fixture-owner',SYSTEM_STATE:{validators:[],sitemap:{missing:[]},releases:[{commit:'latest',at:'2026-10-16T00:00:00Z'},{commit:'prior',at:'2026-10-15T00:00:00Z'}]},DB:{prepare(sql){const q=db.prepare(sql);return {q,args:[],bind(...args){return {q,args}}};},async batch(statements){return statements.map(({q,args})=>({results:q.all(...args)}));}}};
+ const response=await worker.fetch(new Request('https://fixture/v1/dashboard?days=release',{headers:{authorization:'Bearer fixture-owner'}}),env);
+ const data=await response.json();assert.equal(response.status,200);assert.equal(data.returning_visitors,1);assert.equal(data.summary.unique_visitors,3);
+ db.close();
+});
