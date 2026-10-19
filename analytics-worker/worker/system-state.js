@@ -32,7 +32,7 @@ export async function systemState(fetcher=fetch) {
  if(fetcher===fetch&&cached&&cached.expires>Date.now())return cached.value;
  const value={...fallback,releases:fallback.releases||[],error:null};
  try {
-  const published=await get('https://raw.githubusercontent.com/BasinLeon/basinleon.github.io/dashboard-health/system-health.json',fetcher).catch(()=>null);
+  const published=await get('https://raw.githubusercontent.com/BasinLeon/basinleon.github.io/dashboard-health/system-health.json?window='+Math.floor(Date.now()/300000),fetcher).catch(()=>null);
   const fresh=published?.metadata_checked_at && Date.now()-new Date(published.metadata_checked_at).getTime()<60*60*1000 && (published.checked_commit===fallback.checked_commit || published.checked_at>=fallback.checked_at);
   if(fresh && !published.metadata_error && published.validators?.length===2 && published.releases?.length && published.validators.every(v=>v.workflow_status)) {
     Object.assign(value,published,{status_source:'Scheduled GitHub Actions checks (15-minute schedule; runs can be delayed)',fetched_at:new Date().toISOString(),error:null});
