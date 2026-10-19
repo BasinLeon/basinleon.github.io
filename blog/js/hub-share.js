@@ -33,7 +33,8 @@
  const read=document.querySelector('[data-latest-read]');if(read){read.href=latest.url;read.textContent='Read';}
  daily.replaceChildren();valid.sort((a,b)=>(daily.dataset.fragmentOrder==='newest'?-1:1)*(Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop()))).forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;a.append(k,h,t,p);mount(a,x.title,x.url);daily.append(a);});
  }).catch(()=>{/* Retain server-rendered archive entries. */});
- if(/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname))fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
+ // Fragment 10 keeps its authored Previous/All nav, without a derived Next link.
+ if(location.pathname!=='/blog/posts/fragment-10.html' && /^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname))fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
  const ordered=items.filter(x=>typeof x.url==='string'&&/^\/blog\/posts\/fragment-\d+\.html$/.test(x.url)).sort((a,b)=>Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop()));
  const index=ordered.findIndex(x=>x.url===location.pathname);if(index<0)return;
  let nav=document.querySelector('.hub-reading-next');if(!nav){nav=document.createElement('nav');nav.className='hub-reading-next';document.querySelector('article')?.after(nav);}nav.setAttribute('aria-label','Fragment reading order');nav.replaceChildren();
