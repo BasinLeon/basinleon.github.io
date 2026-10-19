@@ -1,4 +1,4 @@
-import { ReleaseComparison, EmailCounts } from './DecisionPanels.jsx';
+import { ReleaseComparison, EmailCounts, PeriodComparison, ReaderCohorts } from './DecisionPanels.jsx';
 import RevenueOperations from './RevenueOperations.jsx';
 import { readOwnerConfirmation, saveOwnerConfirmation } from './owner-confirmation.js';
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -93,11 +93,12 @@ function number(value) {
   return new Intl.NumberFormat("en-US").format(Number(value || 0));
 }
 
-function Metric({ label, value, note }) {
+function Metric({ label, value, note, share }) {
   return (
     <div className="metric">
       <span>{label}</span>
       <strong>{number(value)}</strong>
+      {share && <b className="metric-share">{share}</b>}
       <small>{note}</small>
     </div>
   );
@@ -539,14 +540,17 @@ function Dashboard() {
           </nav>
         </section>
 
-        <p className="coverage-note">Selected window: {days === 'release' ? 'Since last release' : days === 'clean' ? 'clean measurement' : `${days} days`}. Collection began August 9, 2026; earlier dates are not measured. Clean measurement begins August 14 at 21:22 UTC. Dates use UTC. {data.coverage_since && `Available coverage starts ${data.coverage_since} UTC.`}</p>
+        <p className="coverage-note">Selected window: {days === 'release' ? 'Since last release' : days === 'clean' ? 'Clean measurement' : `${days} days`} · {data.coverage_since||'…'} → {data.range_until||'…'} UTC. Collection began August 9, 2026; clean measurement began August 14 at 21:22 UTC.</p>
         <section className="metrics" aria-busy={busy}>
-          <Metric label="Unique visitors" value={summary.unique_visitors} note={`Distinct anonymous visitor hashes with a pageview; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
-          <Metric label="Visits" value={summary.visits} note={`Distinct sessions with a pageview; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
-          <Metric label="Engaged visits" value={summary.engaged_visits} note={`Distinct sessions recording 15 active seconds; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
-          <Metric label="Conversion actions" value={summary.conversion_actions} note={`Accepted commercial, operating or reader Conversion events; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
-          <Metric label="Returning visitors" value={data.returning_visitors} note={`${returningPercent}% of unique visitors · Anonymous visitors with pageviews in 2+ distinct sessions; ${data.coverage_since||'…'} → ${data.range_until||'now'} UTC.`} />
+          <Metric label="Unique visitors" value={summary.unique_visitors} note="Anonymous visitors with a pageview" />
+          <Metric label="Visits" value={summary.visits} note="Sessions with a pageview" />
+          <Metric label="Engaged visits" value={summary.engaged_visits} note="Sessions with 15 active seconds" />
+          <Metric label="Conversion actions" value={summary.conversion_actions} note="Commercial, operating or reader actions" />
+          <Metric label="Returning visitors" value={data.returning_visitors} share={`${returningPercent}% of unique visitors`} note="Visitors with pageviews in 2+ distinct sessions" />
         </section>
+        <details className="metric-definitions"><summary>How these numbers are counted</summary><p>All five cards use the selected UTC window above. Unique visitors use existing anonymous visitor hashes; visits use distinct pageview sessions. Engaged visits record at least 15 active seconds. Conversion actions count accepted Conversion events, not people or verified inquiries. Returning visitors have pageviews in at least two distinct sessions within this window. Existing owner, test, DNT and GPC exclusions apply.</p></details>
+        <PeriodComparison comparison={data.range_comparison} />
+        <ReaderCohorts rows={data.reader_cohorts||[]} />
 
         <section className="primary-grid">
           <section className="trend panel"><h2>Traffic over time</h2><Sparkline data={data.trend} releases={data.system_health?.releases||[]} /><details className="release-legend" open><summary>Release markers (UTC)</summary>{(data.system_health?.releases||[]).filter(r=>!data.trend.length||r.at.slice(0,10)>=data.trend[0].day).map(r=><p key={r.commit}><a href={r.url} target="_blank" rel="noreferrer">{r.commit.slice(0,8)}</a> · {r.at}</p>)}<small>Markers use the latest successful Pages workflow completion per commit; parallel deployment workflows can finish out of commit order.</small></details></section>
@@ -555,7 +559,7 @@ function Dashboard() {
 
 
         <label className="panel">Release baseline <select value={releaseCommit} onChange={e=>{setReleaseCommit(e.target.value);setDays('release');load(token,'release',e.target.value);}}><option value="">Latest successful release</option>{(data.system_health?.releases||[]).slice(0,-1).map(r=><option key={r.commit} value={r.commit}>{r.commit.slice(0,8)} · {r.at}</option>)}</select></label>
-        <ReleaseComparison comparison={data.release_comparison} />
+        <details className="metric-definitions"><summary>Release history comparison (unequal windows)</summary><ReleaseComparison comparison={data.release_comparison} /></details>
         <EmailCounts rows={data.email_ctas||[]} />
         <ActivityReport recent={data.recent_activity} geography={data.geography} generatedAt={data.generated_at} busy={busy} onRefresh={() => load(token, days)} />
 

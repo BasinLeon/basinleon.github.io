@@ -28,3 +28,24 @@ export function compareMetrics(current, previous) {
   return [key,{current:value,previous:prior,delta:value-prior,percent:prior?(value-prior)/prior*100:null}];
  }));
 }
+
+// Adjacent periods of exactly the same duration, bounded by retained coverage.
+export function equalWindow(since, until, coverage='2026-08-09 00:00:00') {
+ const end=new Date(until.replace(' ','T')+'Z'), start=new Date(since.replace(' ','T')+'Z');
+ const prior=new Date(start.getTime()-(end-start));
+ return {current:{since,until},previous:{since:sqlTime(prior),until:since},available:sqlTime(prior)>=coverage};
+}
+export const READER_COHORT_SQL = `WITH bounded AS (
+ SELECT * FROM events WHERE received_at>=? AND received_at<?
+), visitors AS (
+ SELECT visitor_hash,COUNT(DISTINCT session_hash) AS sessions FROM bounded WHERE event_type='Pageview' GROUP BY visitor_hash
+), page_sessions AS (
+ SELECT DISTINCT visitor_hash,session_hash FROM bounded WHERE event_type='Pageview'
+) SELECT CASE WHEN v.sessions>1 THEN 'returning' ELSE 'single' END AS cohort,
+ COUNT(DISTINCT p.visitor_hash) AS visitors,COUNT(DISTINCT p.session_hash) AS visits,
+ COUNT(DISTINCT CASE WHEN e.event_type='Engaged Visit' THEN p.session_hash END) AS engaged,
+ COUNT(DISTINCT CASE WHEN e.event_type='Scroll Depth' AND e.depth>=75 THEN p.session_hash END) AS deep_reads,
+ COUNT(DISTINCT CASE WHEN e.event_type='Scroll Depth' AND e.depth>=100 THEN p.session_hash END) AS completed
+ FROM page_sessions p JOIN visitors v ON v.visitor_hash=p.visitor_hash
+ LEFT JOIN bounded e ON e.visitor_hash=p.visitor_hash AND e.session_hash=p.session_hash
+ GROUP BY cohort`;

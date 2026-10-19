@@ -1,0 +1,34 @@
+name: Refresh dashboard system health
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ['Deploy Hybrid Site', 'pages build and deployment', 'Validate Site Links', 'Validate public safety']
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: dashboard-system-health
+  cancel-in-progress: false
+jobs:
+  publish-status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Check files and read public workflow metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SYSTEM_HEALTH_METADATA: '1'
+        run: python3 scripts/build-system-health.py /tmp/system-health.json
+      - name: Publish sanitized snapshot on dedicated status branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/publish-dashboard-health.py /tmp/system-health.json

@@ -1,4 +1,4 @@
-import { METRICS_SQL, EMAIL_SQL, releasePeriods, sqlTime, compareMetrics } from './decision-metrics.js';
+import { METRICS_SQL, EMAIL_SQL, READER_COHORT_SQL, equalWindow, releasePeriods, sqlTime, compareMetrics } from './decision-metrics.js';
 import { systemState } from './system-state.js';
 import { SESSION_SQL, CAMPAIGN_SQL, normalizeRevenue } from './career-revenue.js';
 import { DISTRIBUTION_SQL } from './distribution.js';
@@ -358,6 +358,7 @@ async function dashboardData(request, env) {
   const days = range.days;
   const since = range.since;
   const until = sqlTime(new Date());
+  const comparisonWindow = equalWindow(since,until);
   // All event readers share one captured upper boundary for this response.
   const prepare = sql => env.DB.prepare(sql.replace(/\b(FROM|JOIN) events\b/g, `$1 (SELECT * FROM events WHERE received_at < '${until}')`));
   const statements = [
@@ -508,6 +509,8 @@ async function dashboardData(request, env) {
   statements.push(prepare(EMAIL_SQL).bind(since,until));
   statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.current.since):since,until));
   statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.previous.since):since,periods?sqlTime(periods.previous.until):since));
+  statements.push(prepare(METRICS_SQL).bind(comparisonWindow.previous.since,comparisonWindow.previous.until));
+  statements.push(prepare(READER_COHORT_SQL).bind(since,until));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -537,6 +540,8 @@ async function dashboardData(request, env) {
     system_health: support,
     release_comparison: periods ? { ...periods, metrics: compareMetrics(rows(27)[0]||{},rows(28)[0]||{}) } : null,
     range_until: until,
+    range_comparison: {...comparisonWindow,metrics:comparisonWindow.available?compareMetrics(rows(25)[0]||{},rows(29)[0]||{}):null},
+    reader_cohorts: rows(30),
     ai_referrals: rows(8),
     revenue_funnel: {
       ...(rows(9)[0] || {}),

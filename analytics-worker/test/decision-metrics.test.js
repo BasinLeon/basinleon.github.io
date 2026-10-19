@@ -50,3 +50,25 @@ test('an older published snapshot can supply recorded releases without replacing
  assert.notEqual(state.checked_commit,'old-source');assert.ok(!state.sitemap.missing.includes('do-not-use-old-check'));
  assert.ok(state.releases.length>0);
 });
+
+test('equal periods have identical durations and reject incomplete collection baselines',async()=>{
+ const {equalWindow}=await import('../worker/decision-metrics.js');
+ const w=equalWindow('2026-10-12 00:00:00','2026-10-19 05:00:00');
+ assert.equal(new Date(w.current.until+'Z')-new Date(w.current.since+'Z'),new Date(w.previous.until+'Z')-new Date(w.previous.since+'Z'));
+ assert.equal(w.previous.until,w.current.since);assert.equal(w.available,true);
+ assert.equal(equalWindow('2026-08-09 00:00:00','2026-10-19 05:00:00').available,false);
+});
+test('reader cohorts deduplicate sessions and preserve engagement and reading-depth rates',async()=>{
+ const {READER_COHORT_SQL}=await import('../worker/decision-metrics.js');
+ const db=database();db.exec('ALTER TABLE events ADD COLUMN depth INTEGER');
+ const add=db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?,?)');
+ for(const [visitor,session,type,depth] of [['a','1','Pageview',null],['a','1','Pageview',null],['a','2','Pageview',null],['a','2','Engaged Visit',null],['a','2','Scroll Depth',100],['b','3','Pageview',null],['b','3','Scroll Depth',75],['c','4','Engaged Visit',null]])add.run('2026-10-16 12:00:00',type,visitor,session,'/','','',depth);
+ const rows=db.prepare(READER_COHORT_SQL).all('2026-10-16','2026-10-17');
+ const r=rows.find(r=>r.cohort==='returning'),s=rows.find(r=>r.cohort==='single');
+ assert.equal(r.visitors,1);assert.equal(r.visits,2);assert.equal(r.engaged,1);assert.equal(r.completed,1);assert.equal(s.deep_reads,1);assert.equal(s.completed,0);db.close();
+});
+test('fresh scheduled public status avoids failing direct GitHub requests without edge credentials',async()=>{
+ const {systemState}=await import('../worker/system-state.js');let calls=0;
+ const state=await systemState(async url=>{calls++;assert.match(url,/raw.githubusercontent.com/);return new Response(JSON.stringify({checked_at:new Date().toISOString(),metadata_checked_at:new Date().toISOString(),checked_commit:'scheduled',validators:[{workflow_status:'success',status:'success',files:[]},{workflow_status:'failure',status:'failure',files:['llms.txt','services/index.html']}],releases:[{commit:'release',at:new Date().toISOString()}],sitemap:{missing:[]}}))});
+ assert.equal(calls,1);assert.equal(state.error,null);assert.match(state.status_source,/Scheduled/);assert.equal(state.sitemap.missing.length,0);
+});
