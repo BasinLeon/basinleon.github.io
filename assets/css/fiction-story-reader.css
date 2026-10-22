@@ -11,7 +11,7 @@ html,body { background:var(--reader-bg); color:var(--reader-ink); }
 .reader-anchor img { display:block; width:100%; height:clamp(150px,23vw,240px); object-fit:cover; }
 .bar { color:var(--reader-muted); width:min(680px,calc(100% - 40px)); letter-spacing:.04em; gap:1rem; }
 .bar a span { color:inherit; }
-.mast { width:min(680px,calc(100% - 40px)); padding:3.5rem 0 2.5rem; }
+.mast { width:min(680px,calc(100% - 40px)); margin:0 auto; padding:3.5rem 0 2.5rem; }
 .kicker { margin:0 0 1.25rem; color:var(--reader-muted); }
 h1 { line-height:1.1; font-size:clamp(2.7rem,6vw,4rem); }
 .dek { color:var(--reader-muted); }
@@ -57,3 +57,18 @@ article p:first-of-type::first-letter { float:none; color:inherit; font-size:inh
   a { text-decoration:none; }
   footer,.close { margin-top:18pt; padding-top:12pt; }
 }
+
+/* Keep injected reading tools on the same centered column as the story. */
+.fiction-story-reader .hub-reading-preferences {
+  width:min(680px,calc(100% - 40px)); max-width:none;
+  margin:1rem auto; color:var(--reader-ink);
+}
+.fiction-story-reader .hub-reading-preferences summary,
+.fiction-story-reader .hub-reader-response a { color:var(--reader-muted); }
+.fiction-story-reader .hub-reading-time { color:var(--reader-muted); }
+.fiction-story-reader .hub-reader-response {
+  width:min(640px,calc(100% - 40px)); margin:2rem auto;
+  display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1rem;
+}
+.fiction-story-reader .hub-reader-response > a { margin-left:0; }
+.fiction-story-reader .hub-reader-response p { flex-basis:100%; margin:0; }
