@@ -15,7 +15,19 @@ if (menuButton && primaryLinks) {
     menuButton.setAttribute("aria-expanded", String(open));
   });
   primaryLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
-  document.addEventListener("keydown", event => { if (event.key === "Escape") closeMenu(); });
+  document.addEventListener("keydown", event => {
+    if (!primaryLinks.classList.contains("open")) return;
+    if (event.key === "Escape") { closeMenu(); menuButton.focus(); }
+    if (event.key === "Tab") {
+      const items = [menuButton, ...primaryLinks.querySelectorAll("a")];
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+  window.matchMedia("(min-width: 761px)").addEventListener("change", event => {
+    if (event.matches) closeMenu();
+  });
 }
 
 const revealItems = document.querySelectorAll(".reveal");

@@ -703,6 +703,8 @@
                 opacity: 0;
                 transform: translateY(-1rem);
                 transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+                overflow-y: auto;
+                padding-bottom: max(3rem, env(safe-area-inset-bottom));
             }
             .nav-links a { width: 100%; padding: 0.7rem 0; font-size: clamp(1.6rem, 7vw, 2.8rem); }
             .nav-links .nav-cta { width: auto; margin-top: 1rem; padding: 0.8rem 1rem; font-size: 0.9rem; }
@@ -1167,7 +1169,19 @@
                     menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
                 });
                 primaryLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-                document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+                document.addEventListener('keydown', event => {
+                    if (!body.classList.contains('menu-open')) return;
+                    if (event.key === 'Escape') { closeMenu(); menuToggle.focus(); }
+                    if (event.key === 'Tab') {
+                        const items = [menuToggle, ...primaryLinks.querySelectorAll('a')];
+                        const first = items[0], last = items[items.length - 1];
+                        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+                    }
+                });
+                window.matchMedia('(min-width: 941px)').addEventListener('change', event => {
+                    if (event.matches) closeMenu();
+                });
             }
 
             const revealItems = document.querySelectorAll('.reveal');
