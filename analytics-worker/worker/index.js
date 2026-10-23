@@ -23,6 +23,7 @@ const EVENT_TYPES = new Set([
 
 const MAX_BODY_BYTES = 16_384;
 const MAX_CONTACT_BODY_BYTES = 12_288;
+const MAX_COMMENT_BODY_BYTES = 12_288;
 const CLEAN_MEASUREMENT_START = "2026-08-14 21:22:00";
 const encoder = new TextEncoder();
 
@@ -88,6 +89,31 @@ export function normalizeContact(input) {
     problem,
     page,
     referrer,
+    campaignSource: cleanText(campaign.source, 100),
+    campaignMedium: cleanText(campaign.medium, 100),
+    campaignName: cleanText(campaign.campaign, 120)
+  };
+}
+
+export function normalizeComment(input) {
+  if (!input || input.v !== 1) return null;
+  if (cleanText(input.website, 120)) return { spam: true };
+
+  const name = cleanText(input.name, 80);
+  const body = cleanText(input.body, 1300);
+  const page = cleanPath(input.page);
+  const conversationId = cleanText(input.conversation_id, 120);
+  const campaign = input.campaign && typeof input.campaign === "object" ? input.campaign : {};
+  const startedAt = Number(input.startedAt || 0);
+
+  if (body.length < 2) return null;
+  if (!Number.isFinite(startedAt) || Date.now() - startedAt < 2_500) return { spam: true };
+
+  return {
+    name,
+    body,
+    page,
+    conversationId,
     campaignSource: cleanText(campaign.source, 100),
     campaignMedium: cleanText(campaign.medium, 100),
     campaignName: cleanText(campaign.campaign, 120)
@@ -278,6 +304,99 @@ async function ingestContact(request, env) {
   }
 
   return json({ accepted: true }, 202, corsHeaders(origin));
+}
+
+async function ingestComment(request, env) {
+  const origin = allowedOrigin(request, env);
+  if (!origin) return json({ error: "origin_not_allowed" }, 403);
+  if (isAutomatedRequest(request)) {
+    return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  }
+  const length = Number(request.headers.get("content-length") || 0);
+  if (length > MAX_COMMENT_BODY_BYTES) return json({ error: "payload_too_large" }, 413, corsHeaders(origin));
+
+  let input;
+  try {
+    input = await request.json();
+  } catch (_) {
+    return json({ error: "invalid_json" }, 400, corsHeaders(origin));
+  }
+
+  const comment = normalizeComment(input);
+  if (comment?.spam) return json({ accepted: true }, 202, corsHeaders(origin));
+  if (!comment) return json({ error: "invalid_comment" }, 422, corsHeaders(origin));
+
+  const recent = await env.DB.prepare(`
+    SELECT id FROM comments
+    WHERE page = ? AND body = ? AND created_at >= datetime('now', '-10 minutes')
+    LIMIT 1
+  `).bind(comment.page, comment.body).first();
+
+  if (!recent) {
+    await env.DB.prepare(`
+      INSERT INTO comments (
+        page, name, body, conversation_id,
+        campaign_source, campaign_medium, campaign_name
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      comment.page,
+      comment.name,
+      comment.body,
+      comment.conversationId,
+      comment.campaignSource,
+      comment.campaignMedium,
+      comment.campaignName
+    ).run();
+  }
+
+  return json({ accepted: true }, 202, corsHeaders(origin));
+}
+
+async function listComments(request, env) {
+  const origin = allowedOrigin(request, env);
+  const headers = origin ? corsHeaders(origin) : {};
+  const page = cleanPath(new URL(request.url).searchParams.get("page") || "/");
+  const result = await env.DB.prepare(`
+    SELECT id, created_at, name, body, reply_body, replied_at
+    FROM comments
+    WHERE page = ? AND status = 'APPROVED'
+    ORDER BY id ASC
+    LIMIT 200
+  `).bind(page).all();
+  return json({ page, comments: result.results || [] }, 200, headers);
+}
+
+async function moderationQueue(request, env) {
+  if (!authorized(request, env)) return json({ error: "unauthorized" }, 401);
+  const result = await env.DB.prepare(`
+    SELECT id, created_at, page, name, body, status
+    FROM comments
+    WHERE status = 'NEW'
+    ORDER BY id ASC
+    LIMIT 100
+  `).all();
+  return json({ comments: result.results || [] });
+}
+
+async function moderateComment(request, env) {
+  if (!authorized(request, env)) return json({ error: "unauthorized" }, 401);
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "invalid" }, 400); }
+  const id = Number(body.id);
+  const status = cleanText(body.status, 20);
+  if (!Number.isSafeInteger(id) || id < 1 || !["APPROVED", "HIDDEN", "NEW"].includes(status)) {
+    return json({ error: "invalid" }, 400);
+  }
+  const reply = cleanText(body.reply_body, 2000);
+  const exists = await env.DB.prepare("SELECT id FROM comments WHERE id = ?").bind(id).first();
+  if (!exists) return json({ error: "not_found" }, 404);
+  if (reply) {
+    await env.DB.prepare("UPDATE comments SET status = ?, reply_body = ?, replied_at = CURRENT_TIMESTAMP WHERE id = ?")
+      .bind(status, reply, id).run();
+  } else {
+    await env.DB.prepare("UPDATE comments SET status = ? WHERE id = ?").bind(status, id).run();
+  }
+  return json({ saved: true });
 }
 
 function timingSafeEqual(left, right) {
@@ -602,12 +721,16 @@ async function workspace(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (request.method === "OPTIONS" && ["/v1/event", "/v1/contact"].includes(url.pathname)) {
+    if (request.method === "OPTIONS" && ["/v1/event", "/v1/contact", "/v1/comments"].includes(url.pathname)) {
       const origin = allowedOrigin(request, env);
       return new Response(null, { status: origin ? 204 : 403, headers: corsHeaders(origin) });
     }
     if (request.method === "POST" && url.pathname === "/v1/event") return ingest(request, env);
     if (request.method === "POST" && url.pathname === "/v1/contact") return ingestContact(request, env);
+    if (request.method === "POST" && url.pathname === "/v1/comments") return ingestComment(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/comments") return listComments(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/comments/moderation") return moderationQueue(request, env);
+    if (request.method === "PUT" && url.pathname === "/v1/comment-moderate") return moderateComment(request, env);
     if (url.pathname === "/v1/workspace") return workspace(request, env);
     if (request.method === "PUT" && url.pathname === "/v1/lead-progress") {
       if (!authorized(request,env)) return json({error:'unauthorized'},401);
