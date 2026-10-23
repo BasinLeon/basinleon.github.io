@@ -80,6 +80,8 @@
     }
   </style>
   <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=5">
+  <link rel="stylesheet" href="/blog/css/hub.css">
+  <script src="/blog/js/reading-preferences.js?v=20261022" defer></script>
 </head>
 <body class="fiction-story-reader">
   <a class="skip" href="#story">Skip to the story</a>
@@ -95,7 +97,6 @@
     <div class="bar">
       <a href="/">Leon <span>Basin</span></a>
       <a href="/blog/fiction/">Fiction</a>
-      <button type="button" class="reader-theme" aria-pressed="false">Dark reading</button>
     </div>
   </header>
   <main>
@@ -149,22 +150,7 @@
       <p class="reader-subscribe">For future stories and essays, <a href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&amp;utm_medium=owned&amp;utm_campaign=fiction&amp;utm_content=vanishing-ending" data-track="Fiction: subscription outbound" target="_blank" rel="noopener noreferrer">subscribe on Substack</a>.</p>
     </section>
   </main>
-  <script>
-    (() => {
-      const button = document.querySelector('.reader-theme');
-      const paint = dark => {
-        document.documentElement.dataset.readingTheme = dark ? 'dark' : 'light';
-        button.setAttribute('aria-pressed', String(dark));
-        button.textContent = dark ? 'Day reading' : 'Night reading';
-      };
-      try { paint(localStorage.getItem('fiction-reading-theme') === 'dark'); } catch (_) { paint(false); }
-      button.addEventListener('click', () => {
-        const dark = document.documentElement.dataset.readingTheme !== 'dark';
-        paint(dark);
-        try { localStorage.setItem('fiction-reading-theme', dark ? 'dark' : 'light'); } catch (_) {}
-      });
-    })();
-  </script>
+
   <script src="/assets/js/story-share.js?v=3" defer></script>
   <script src="/assets/js/insights.js" defer></script>
 </body>

@@ -4,13 +4,19 @@
  const isHub=document.body.classList.contains('writing-hub');
  const isShelf=location.pathname==='/blog/fiction/sam-and-ink/';
  const isPost=/^\/blog\/posts\/[a-z0-9-]+\.html$/.test(location.pathname);
- if(!isHub&&!isPost&&!isShelf)return;
- if(isPost||isShelf)document.body.classList.add('hub-reader');
+ const isStory=document.body.classList.contains('fiction-story-reader');
+ if(!isHub&&!isPost&&!isShelf&&!isStory)return;
+ if(document.querySelector('.hub-reading-preferences'))return;
+ if(isPost||isShelf||isStory)document.body.classList.add('hub-reader');
  const read=key=>{try{return JSON.parse(localStorage.getItem(key));}catch{return null;}};
  const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch{/* Reading works without storage. */}};
  const key='basin-reading-preferences-v1';
- const saved=read(key);let mode=saved?.mode==='paper'?'paper':'dark';let size=['normal','large','larger'].includes(saved?.size)?saved.size:'normal';
- function apply(){root.dataset.readingMode=mode;root.dataset.readingSize=size;}
+ const saved=read(key);
+ let legacy=null;try{legacy=localStorage.getItem('fiction-reading-theme');}catch{/* Optional local preferences. */}
+ let mode=['paper','dark'].includes(saved?.mode)?saved.mode:(isStory&&legacy!=='dark'?'paper':'dark');
+ let size=['normal','large','larger'].includes(saved?.size)?saved.size:'normal';
+ if(isStory&&!saved&&legacy)write(key,{mode,size});
+ function apply(){root.dataset.readingMode=mode;root.dataset.readingSize=size;if(isStory)root.dataset.readingTheme=mode==='dark'?'dark':'light';}
  apply();
  const panel=document.createElement('details');panel.className='hub-reading-preferences';
  const summary=document.createElement('summary');summary.textContent='Reading preferences';panel.append(summary);
