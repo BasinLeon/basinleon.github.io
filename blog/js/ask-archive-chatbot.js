@@ -286,7 +286,7 @@
             
             // Contextual responses based on keywords
             if (lowerQuery.includes('roi') || lowerQuery.includes('savings') || lowerQuery.includes('424k')) {
-                return 'Check out "How I Replaced 10 SDRs" - it covers $424K in annual savings through signal architecture. Link: /blog/posts/how-i-replaced-10-sdrs.html';
+                return 'Read "How I Rebuilt a Manual SDR Workflow with Signal Architecture" for the operating case study. Link: /blog/posts/rebuilt-manual-sdr-workflow.html';
             }
             
             if (lowerQuery.includes('signal') || lowerQuery.includes('architecture')) {
@@ -294,7 +294,7 @@
             }
             
             if (lowerQuery.includes('case study') || lowerQuery.includes('example') || lowerQuery.includes('project')) {
-                return 'I have several case studies. The flagship is the $424K SDR replacement project. Check /case-studies/ for more detailed breakdowns.';
+                return 'Read the manual SDR workflow case study, or visit /case-studies/ for the operating record.';
             }
             
             if (lowerQuery.includes('python') || lowerQuery.includes('code') || lowerQuery.includes('gtm engineering')) {

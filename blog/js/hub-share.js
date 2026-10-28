@@ -26,6 +26,7 @@
  if(daily)fetch('/data/fragments.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
  if(!Array.isArray(items)||!items.length)return;
  const valid=items.filter(x=>typeof x.url==='string' && /^\/blog\/posts\/[a-z0-9-]+\.html$/.test(x.url));if(!valid.length)return;
+ valid.sort((a,b)=>Number(b.slug.split('-').pop())-Number(a.slug.split('-').pop()));
  const latest=valid[0];const number=latest.slug.split('-').pop();
  const set=(selector,value)=>{const node=document.querySelector(selector);if(node)node.textContent=value;};
  set('[data-latest-title]',latest.title);set('[data-latest-number]','Fragment '+number);set('[data-latest-excerpt]',latest.excerpt);

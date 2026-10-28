@@ -120,9 +120,9 @@
     });
 
     var related = document.createElement("div"); related.className = "lb-related";
-    var operating = slug === "how-i-replaced-10-sdrs.html"
+    var operating = slug === "rebuilt-manual-sdr-workflow.html"
       ? { title: "Stop Selling, Start Architecting", url: "/blog/posts/stop-selling-start-architecting-rise-of-gtm-engineer.html" }
-      : { title: "How I Rebuilt a Manual SDR Workflow with Signal Architecture", url: "/blog/posts/how-i-replaced-10-sdrs.html" };
+      : { title: "How I Rebuilt a Manual SDR Workflow with Signal Architecture", url: "/blog/posts/rebuilt-manual-sdr-workflow.html" };
     var human = slug === "what-does-a-moment-become.html"
       ? { title: "The Soul’s Algorithm: The Fallow Year", url: "/blog/posts/the-souls-algorithm-fallow-year.html" }
       : { title: "What Does a Moment Become?", url: "/blog/posts/what-does-a-moment-become.html" };
