@@ -15,9 +15,9 @@ function clickFixture(path,method,{owner=false,automated=false,dnt=false,gpc=fal
  return sent;
 }
 test('non-owner CTA fixtures emit one email click per method; owner, automation and privacy opt-outs emit none',async()=>{
- for(const page of ['/resume.html','/case-studies/'])for(const method of ['email','gmail']){
+ for(const page of ['/','/resume.html','/case-studies/'])for(const method of ['email','gmail']){
   const payloads=await Promise.all(clickFixture(page,method).map(async x=>JSON.parse(typeof x==='string'?x:await x.text())));
   const clicks=payloads.filter(x=>x.type==='Email Click');assert.equal(clicks.length,1);assert.equal(clicks[0].page,page);assert.equal(clicks[0].detail.destination,method);assert.equal(clicks[0].detail.action,method==='gmail'?'hiring-email-gmail':'hiring-email-mailto');
  }
- for(const options of [{owner:true},{automated:true},{dnt:true},{gpc:true}])assert.equal(clickFixture('/resume.html','email',options).length,0);
+ for(const page of ['/','/resume.html','/case-studies/'])for(const options of [{owner:true},{automated:true},{dnt:true},{gpc:true}])assert.equal(clickFixture(page,'email',options).length,0);
 });

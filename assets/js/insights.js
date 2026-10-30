@@ -392,7 +392,7 @@
       return;
     }
     const item = clickDetail(link);
-    if (item.type === 'Email Click' && ['/resume.html', '/case-studies/'].includes(page)) {
+    if (item.type === 'Email Click' && ['/', '/resume.html', '/case-studies/'].includes(page)) {
       item.detail.action = item.detail.destination === 'gmail' ? 'hiring-email-gmail' : 'hiring-email-mailto';
     }
     if (link.hasAttribute("data-lb-engage") && window.lbConversation) {

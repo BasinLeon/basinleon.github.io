@@ -1,5 +1,5 @@
 // Counts use one bounded event window. No new identifiers or personal data.
-export const EMAIL_PREDICATE = `event_type='Email Click' AND page IN ('/resume.html','/case-studies/') AND destination IN ('email','gmail')`;
+export const EMAIL_PREDICATE = `event_type='Email Click' AND page IN ('/','/resume.html','/case-studies/') AND destination IN ('email','gmail')`;
 export const METRICS_SQL = `WITH bounded AS (
  SELECT * FROM events WHERE received_at>=? AND received_at<?
 ) SELECT

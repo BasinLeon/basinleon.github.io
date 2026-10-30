@@ -72,3 +72,10 @@ test('fresh scheduled public status avoids failing direct GitHub requests withou
  const state=await systemState(async url=>{calls++;assert.match(url,/raw.githubusercontent.com/);return new Response(JSON.stringify({checked_at:new Date().toISOString(),metadata_checked_at:new Date().toISOString(),checked_commit:'scheduled',validators:[{workflow_status:'success',status:'success',files:[]},{workflow_status:'failure',status:'failure',files:['llms.txt','services/index.html']}],releases:[{commit:'release',at:new Date().toISOString()}],sitemap:{missing:[]}}))});
  assert.equal(calls,1);assert.equal(state.error,null);assert.match(state.status_source,/Scheduled/);assert.equal(state.sitemap.missing.length,0);
 });
+
+test('homepage hiring emails count once per session and retain route breakdown without counting unrelated pages',()=>{
+ const db=database();const add=db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?)');
+ for(const [type,page,route,session] of [['Email Click','/','email','home'],['Email Click','/','email','home'],['Email Click','/','gmail','home'],['Email Click','/resume.html','email','resume'],['Email Click','/blog/','email','reader'],['Email Click','/','phone','other'],['Hiring Funnel Step','/','email','step-only']])add.run('2026-10-29 12:00:00',type,'fixture',session,page,'',route);
+ assert.equal(db.prepare(METRICS_SQL).get('2026-10-29','2026-10-30').email_actions,2);
+ const routes=db.prepare(EMAIL_SQL).all('2026-10-29','2026-10-30');assert.equal(routes.length,3);assert.equal(routes.find(r=>r.page==='/'&&r.destination==='email').clicks,2);db.close();
+});
