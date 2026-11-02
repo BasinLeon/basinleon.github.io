@@ -13,7 +13,7 @@
  '/blog/posts/sam-ink-note-in-the-other-room.html':'/blog/posts/fragment-08.html',
  '/blog/posts/the-souls-algorithm-fallow-year.html':'/blog/posts/the-silence-architect.html'
  };
- const label=x=>`About ${x.minutes} min read`;
+ const label=x=>Number.isFinite(x.words)&&x.words<225?'Less than a minute':`About ${x.minutes} min read`;
  fetch('/blog/reading-index.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(rows=>{
  const valid=rows.filter(x=>/^\/blog\/posts\/[a-z0-9-]+\.html$/.test(x.url));
  const host=document.querySelector('[data-from-shelves]');
@@ -25,6 +25,6 @@
  if(current&&article){const h=document.querySelector('h1');const time=document.createElement('p');time.className='hub-reading-time';time.textContent=label(current);h?.after(time);
  const preferred=valid.find(x=>x.url===curated[current.url]);
  const related=preferred||valid.filter(x=>x.url!==current.url).map(x=>({item:x,score:(x.tags||[]).filter(t=>(current.tags||[]).includes(t)).length})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score)[0]?.item||valid.find(x=>x.url===shelves[0].url&&x.url!==current.url);
- if(related){const aside=document.createElement('aside');aside.className='hub-read-next';const k=document.createElement('span');k.className='hub-label';k.textContent='Read next';const a=document.createElement('a');a.href=related.url;a.textContent=related.title;const p=document.createElement('p');p.textContent=label(related);aside.append(k,a,p);article.after(aside);}}
+ if(related&&!/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname)){const aside=document.createElement('aside');aside.className='hub-read-next';const k=document.createElement('span');k.className='hub-label';k.textContent='Read next';const a=document.createElement('a');a.href=related.url;a.textContent=related.title;const p=document.createElement('p');p.textContent=label(related);aside.append(k,a,p);article.after(aside);}}
  }).catch(()=>{/* The writing and published navigation remain available. */});
 })();

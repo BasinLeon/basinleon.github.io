@@ -4,6 +4,8 @@
  if(params.get('utm_campaign')!=='sam-ink')return;
  const entrance=document.querySelector('.sam-ink-entrance');if(!entrance)return;
  const wanted=params.get('utm_content')||'';
+ const shelf=document.querySelector('#fragments'),essay=document.querySelector('.hub-ritual-hero');
+ if(shelf&&essay)shelf.after(essay);
  fetch('/data/fragments.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(items=>{
   const published=items.filter(x=>/^fragment-\d+$/.test(x.slug)&&x.url==='/blog/posts/'+x.slug+'.html').sort((a,b)=>Number(b.slug.split('-').pop())-Number(a.slug.split('-').pop()));
   if(!published.length)return;
