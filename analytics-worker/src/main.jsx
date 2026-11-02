@@ -54,6 +54,7 @@ function ActivityReport({ recent = {}, geography = {}, generatedAt, busy, onRefr
 const INTENTS = ["Commercial intent", "Operating interest", "Reader interest"];
 const HIRING_STEPS = [
   { step: "homepage", label: "Homepage" },
+  { step: "gtm-systems", label: "GTM Systems" },
   { step: "resume", label: "Résumé" },
   { step: "case-study", label: "Case study" },
   { step: "email", label: "Email action" }
@@ -436,7 +437,7 @@ function HiringFunnel({ rows }) {
   const homepage = counts.get("homepage") || 0;
   return (
     <section className="panel hiring-panel">
-      <h2>Hiring-manager path</h2>
+      <h2>Hiring-manager path</h2><p>Independent session counts across pages and actions, not a sequential funnel. Percentages use homepage sessions as a reference.</p>
       <div className="table-head"><span>Step</span><span>Sessions</span></div>
       <ol>
         {HIRING_STEPS.map((item, index) => {

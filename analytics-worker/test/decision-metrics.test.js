@@ -79,3 +79,10 @@ test('homepage hiring emails count once per session and retain route breakdown w
  assert.equal(db.prepare(METRICS_SQL).get('2026-10-29','2026-10-30').email_actions,2);
  const routes=db.prepare(EMAIL_SQL).all('2026-10-29','2026-10-30');assert.equal(routes.length,3);assert.equal(routes.find(r=>r.page==='/'&&r.destination==='email').clicks,2);db.close();
 });
+
+test('GTM Systems email routes enter the hiring total once per session and remain page-specific',()=>{
+ const db=database();const add=db.prepare('INSERT INTO events VALUES (?,?,?,?,?,?,?)');
+ for(const route of ['email','gmail'])add.run('2026-10-16 12:00:00','Email Click','v','gtm','/gtm-systems/','',route);
+ add.run('2026-10-16 12:01:00','Email Click','v','blog','/blog/','','email');
+ const rows=db.prepare(EMAIL_SQL).all('2026-10-16','2026-10-17');assert.equal(rows.length,2);assert(rows.every(r=>r.page==='/gtm-systems/'));assert.equal(db.prepare(METRICS_SQL).get('2026-10-16','2026-10-17').email_actions,1);db.close();
+});
