@@ -251,14 +251,14 @@ function RevenueFunnel({ values }) {
     { key: "site_visits", label: "Site visits" },
     { key: "engaged_visits", label: "Engaged 15+ seconds" },
     { key: "offer_visits", label: "Visited working-session page" },
-    { key: "commercial_action_visits", label: "Took a commercial action" },
+    { key: "commercial_action_visits", label: "Sessions with a commercial action" },
     { key: "leads", label: "Sent an inbound note" }
   ];
   const baseline = Number(values.site_visits || 0);
   return (
     <section className="growth-panel revenue-path" aria-labelledby="revenue-path-title">
       <div className="growth-heading"><span>Monetization</span><h2 id="revenue-path-title">Revenue activity</h2></div>
-      <p>Same selected UTC window as Overview. Site visits are sessions with a pageview; working-session visits are sessions with a pageview on /working-session/. These are independent counts, not an ordered funnel.</p>
+      <p>Same selected UTC window as Overview. Site visits are sessions with a pageview; working-session visits are sessions with a pageview on /working-session/. Commercial actions count distinct sessions with at least one commercial Conversion event. These are independent counts, not an ordered funnel.</p>
       <ol>
         {steps.map((step, index) => {
           const value = Number(values[step.key] || 0);
@@ -383,7 +383,8 @@ function IntentPanel({ conversions }) {
   return (
     <section className="panel intent-panel">
       <h2>Conversion intent</h2>
-      <div className="table-head"><span>Intent group</span><span>Actions</span></div>
+      <p>Conversion events in the selected UTC window. Multiple events can come from one session. Percentages are shares of all conversion events.</p>
+      <div className="table-head"><span>Intent group</span><span>Events</span></div>
       <div className="bars">
         {INTENTS.map((label) => {
           const value = counts.get(label) || 0;
