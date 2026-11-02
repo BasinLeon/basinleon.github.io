@@ -27,6 +27,9 @@
     @media(max-width:360px){.topbar{align-items:flex-start;flex-direction:column;gap:0}.case dl>div{grid-template-columns:1fr;gap:.1rem}}
     @supports(padding:max(0px)){body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+      .hero-links{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.25rem}.hero-links .jump{margin:0}
+    details{border:1px solid var(--line);padding:.8rem 1rem}summary{cursor:pointer;color:var(--gold);min-height:44px;padding:.55rem 0;font-weight:600}summary:focus-visible{outline:2px solid var(--gold);outline-offset:4px}details dl{margin:.8rem 0 0;display:grid;gap:.8rem}details dl>div{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:.7rem}.evidence-detail{margin-top:1rem}.flow{color:var(--gold);max-width:75ch;overflow-wrap:anywhere}.steps{gap:.65rem}.walk-step{background:#0d1016}.walk-step dd{overflow-wrap:anywhere}
+    @media(max-width:480px){details dl>div{grid-template-columns:1fr;gap:.15rem}.topbar{flex-wrap:wrap}}
   </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
       <p class="position">I build the system that makes pipeline repeatable, then run it.</p>
       <!-- Claim source: attached Leon-Basin-Resume.pdf, page 1 profile: contributing to more than $50M pipeline and $1M+ closed revenue. -->
       <p class="record">Contributing to more than $50M in pipeline and $1M+ in closed revenue across enterprise SaaS, cybersecurity, and technical markets.</p>
-      <a class="jump" href="#operating-proof">See the operating proof ↓</a>
+      <div class="hero-links"><a class="action primary" href="mailto:lbasin23@gmail.com?subject=GTM%20systems%20role&amp;body=Company%3A%20%0ARole%20or%20mandate%3A%20%0AWhat%20needs%20to%20change%3A%20">Email Leon about a role</a><a class="jump" href="#operating-proof">Operating proof ↓</a><a class="jump" href="#walkthrough">Inspect the system ↓</a></div>
     </div>
     <section aria-labelledby="build-title">
       <h2 id="build-title">What I build</h2>
@@ -54,108 +57,25 @@
         <li>Playbooks productized into templates</li>
       </ul>
     </section>
-    <section id="walkthrough" aria-labelledby="walkthrough-title">
-      <div class="section-head"><h2 id="walkthrough-title">How a signal becomes a decision.</h2><p>The system, step by step.</p></div>
-      <p class="lead">One worked walkthrough, so the judgment is inspectable rather than described. <strong>The account in this walkthrough is a synthetic example, written for this page.</strong> The decision rules are the ones I run; no real account record is shown, because real records would expose private material.</p>
-      <div class="steps">
-        <article class="case" aria-labelledby="step1-title">
-          <p class="eyebrow">Step 1</p><h3 id="step1-title">Account signal</h3>
-          <dl>
-            <div><dt>Input</dt><dd>Public signals: a leadership change, a funding event, a job post naming a problem, a technology already installed. In the synthetic example, a regional bank posts a security role that mentions a privileged-access modernization project.</dd></div>
-            <div><dt>Decision rule</dt><dd>A signal counts only when it names a problem the system actually solves. Activity is not a signal.</dd></div>
-            <div><dt>Output</dt><dd>The account enters the watch list with the signal and its date logged, so the reason for contact is never reconstructed later.</dd></div>
-            <div><dt>If missing</dt><dd>No signal, no outreach. The account stays in a quarterly review instead of being worked on hope.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step2-title">
-          <p class="eyebrow">Step 2</p><h3 id="step2-title">Qualification</h3>
-          <dl>
-            <div><dt>Input</dt><dd>Firmographics, the installed stack, geography, and the signal from step 1.</dd></div>
-            <div><dt>Decision rule</dt><dd>Fit is checked against the ICP before any effort is spent, and disqualification is fast and final for the cycle.</dd></div>
-            <div><dt>Output</dt><dd>A qualified account with one named hypothesis: the problem, the likely owner, and why now.</dd></div>
-            <div><dt>If missing</dt><dd>An account that cannot be qualified is parked with a re-check date. It is never forced through.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step3-title">
-          <p class="eyebrow">Step 3</p><h3 id="step3-title">Enrichment</h3>
-          <dl>
-            <div><dt>Input</dt><dd>The qualified account and its hypothesis.</dd></div>
-            <div><dt>Decision rule</dt><dd>People and contact data are verified against two sources before anything is written. A guessed address is worse than none.</dd></div>
-            <div><dt>Output</dt><dd>Named contacts with roles, verified routes, and the context a first message can honestly use.</dd></div>
-            <div><dt>If missing</dt><dd>Unverified contacts are flagged in the record, not emailed. The gap is visible instead of buried.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step4-title">
-          <p class="eyebrow">Step 4</p><h3 id="step4-title">Scoring</h3>
-          <dl>
-            <div><dt>Input</dt><dd>Signal strength, ICP fit, and timing.</dd></div>
-            <div><dt>Decision rule</dt><dd>The score decides the order of work, not the volume of it. The top of the queue gets same-day attention; the rest waits its turn.</dd></div>
-            <div><dt>Output</dt><dd>A ranked daily queue a person can actually finish.</dd></div>
-            <div><dt>If missing</dt><dd>An unscored account does not jump the queue because someone asked loudly.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step5-title">
-          <p class="eyebrow">Step 5</p><h3 id="step5-title">Routing</h3>
-          <dl>
-            <div><dt>Input</dt><dd>The score and the ownership rules for the territory.</dd></div>
-            <div><dt>Decision rule</dt><dd>Every account has one named owner and one next action. There is no shared maybe.</dd></div>
-            <div><dt>Output</dt><dd>A CRM record with an owner, an action, and a date.</dd></div>
-            <div><dt>If missing</dt><dd>Routing gaps surface in the weekly review, in the open, instead of living in someone's memory.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step6-title">
-          <p class="eyebrow">Step 6</p><h3 id="step6-title">Human review</h3>
-          <dl>
-            <div><dt>Input</dt><dd>The drafted first touch: the message, the sequence, the reason for contact.</dd></div>
-            <div><dt>Decision rule</dt><dd>A person reads every first touch before it leaves. Agents draft; the operator decides.</dd></div>
-            <div><dt>Output</dt><dd>Approved, edited, or killed, with the reason kept.</dd></div>
-            <div><dt>If missing</dt><dd>Nothing sends unreviewed. Ever.</dd></div>
-          </dl>
-        </article>
-        <article class="case" aria-labelledby="step7-title">
-          <p class="eyebrow">Step 7</p><h3 id="step7-title">Next action</h3>
-          <dl>
-            <div><dt>Input</dt><dd>The outcome of the touch: a reply, a meeting, a referral, or silence.</dd></div>
-            <div><dt>Decision rule</dt><dd>Every outcome sets the next dated step before the record closes. Silence is an outcome too, and it gets a date like any other.</dd></div>
-            <div><dt>Output</dt><dd>A pipeline that behaves like a calendar, not a hope list.</dd></div>
-            <div><dt>If missing</dt><dd>The record stays open and ages visibly until someone closes it on purpose.</dd></div>
-          </dl>
-        </article>
-      </div>
-    </section>
     <section id="operating-proof" aria-labelledby="proof-title">
       <div class="section-head"><h2 id="proof-title">The work behind the system.</h2><p>The mandate, the build, and the result.</p></div>
       <div class="cases">
-        <!-- Claim sources: PUBLIC_PROOF Career record, Fudo CONFIRMED ($2M+ pipeline, $1M+ qualified, ~$200K closed across 2-3 deals, onboarding 90 days to 5, first eight GTM hires); attached resume Fudo enrichment bullet ($424K annual operating savings). Figures reported separately; no source ties them causally. -->
+        <!-- Sources: PUBLIC_PROOF confirmed onboarding, first eight hires, $2M+ pipeline; previously audited resume attribution for $424K annual operating savings. -->
         <article class="case wide" aria-labelledby="fudo-title">
           <p class="eyebrow">U.S. GTM and partnerships</p><h3 id="fudo-title">Fudo: make the motion repeatable.</h3>
-          <dl>
-            <div><dt>What I owned</dt><dd>The first U.S. GTM team at Fudo Security. I recruited, ramped, coached, and enabled the first eight GTM hires, and I owned the onboarding, enrichment, and routing workflows they worked from.</dd></div>
-            <div><dt>What changed</dt><dd>SDR onboarding and certification went from <strong>90 days to 5</strong>. A partner motion across the Americas was rebuilt alongside the direct motion.</dd></div>
-            <div><dt>The record</dt><dd><strong>$2M+ pipeline generated.</strong> $1M+ qualified. About $200K closed across two to three deals. The résumé records $424K in annual operating savings from the enrichment and routing workflows.</dd></div>
-            <div><dt>Inspect it</dt><dd>Each figure sits in context on the <a href="https://basinleon.github.io/resume.html">résumé</a>.</dd></div>
-            <div><dt>Unmeasured</dt><dd>No source ties the onboarding change to the pipeline figure. They are reported separately because they were earned separately.</dd></div>
-          </dl>
-        </article>
-        <!-- Claim sources: PUBLIC_PROOF Career record, SurveyMonkey CONFIRMED ($300K+ expansion closed, $300M+ managed portfolio); attached resume ($2.5M qualified pipeline, top 10% of a 90-person BDR organization). -->
+          <dl><div><dt>What I owned</dt><dd>The first U.S. GTM team at Fudo Security. I recruited, ramped, coached, and enabled the first eight GTM hires, and I owned the onboarding, enrichment, and routing workflows they worked from.</dd></div><div><dt>The record</dt><dd><strong>$2M+ pipeline generated.</strong> The résumé records $424K in annual operating savings from the enrichment and routing workflows.</dd></div><div><dt>What changed</dt><dd>SDR onboarding and certification went from <strong>90 days to 5</strong>. A partner motion across the Americas was rebuilt alongside the direct motion.</dd></div></dl><details class="evidence-detail"><summary>Inspect the evidence and limits</summary><dl><div><dt>Inspect it</dt><dd>Read the <a href="/resume.html">public career record</a> and <a href="/case-studies/#fudo">Fudo case study</a>. These are public summaries; internal playbooks and customer records are not published here.</dd></div><div><dt>Unmeasured</dt><dd>No source ties the onboarding change to the pipeline figure. These are separate measures, not evidence that one caused the other.</dd></div></dl></details></article>
+        <!-- Source: PUBLIC_PROOF confirmed $300K+ closed expansion and $300M+ managed portfolio. -->
         <article class="case wide" aria-labelledby="survey-title">
           <p class="eyebrow">Enterprise business development</p><h3 id="survey-title">SurveyMonkey: turn discovery into expansion.</h3>
-          <dl>
-            <div><dt>What I owned</dt><dd>Discovery across a strategic enterprise portfolio, working with account executives and solution engineers to find and advance expansion needs.</dd></div>
-            <div><dt>What changed</dt><dd>Expansion that had been sitting inside existing accounts was surfaced, qualified, and carried to close instead of waiting to be noticed.</dd></div>
-            <div><dt>The record</dt><dd><strong>$300K+ in enterprise expansion closed.</strong> $2.5M in qualified pipeline generated. Ranked in the top 10% of a 90-person BDR organization.</dd></div>
-            <div><dt>Inspect it</dt><dd>The <a href="https://basinleon.github.io/resume.html">résumé</a> carries the portfolio and pipeline figures in context.</dd></div>
-            <div><dt>Unmeasured</dt><dd>The $300M+ portfolio is the book managed. It is scope, not revenue, and it is listed that way.</dd></div>
-          </dl>
-        </article>
-        <!-- Claim sources: PUBLIC_PROOF Career record, Sense $10M+ qualified pipeline is REPORTED; attached resume (contributing to $200K+ closed enterprise revenue; response rates up 125% after the shift to signal-based engagement). Both figures hedged to their sources. -->
+          <dl><div><dt>What I owned</dt><dd>Discovery across a strategic enterprise portfolio, working with account executives and solution engineers to find and advance expansion needs.</dd></div><div><dt>The record</dt><dd><strong>$300K+ in enterprise expansion closed.</strong> Managed a $300M+ enterprise portfolio.</dd></div></dl><details class="evidence-detail"><summary>Inspect the evidence and limits</summary><dl><div><dt>What changed</dt><dd>Discovery connected account needs to expansion opportunities, working with account executives and solution engineers.</dd></div><div><dt>Inspect it</dt><dd>Read the <a href="/resume.html">public career record</a> and <a href="/case-studies/#surveymonkey">SurveyMonkey case study</a>. The synthetic walkthrough below is a design example, not a reconstruction of these accounts.</dd></div><div><dt>Unmeasured</dt><dd>The $300M+ portfolio is the book managed. It is scope, not revenue, and it is listed that way.</dd></div></dl></details></article>
+        <!-- Source: PUBLIC_PROOF Sense $10M+ qualified pipeline is REPORTED; reported strength retained. -->
         <article class="case" aria-labelledby="sense-title">
           <p class="eyebrow">Global business development</p><h3 id="sense-title">Sense: move beyond activity volume.</h3>
           <dl>
             <div><dt>Problem</dt><dd>Shift a global BD motion from volume-first outreach to relevant engagement.</dd></div>
             <div><dt>Constraints</dt><dd>Enterprise accounts and a global business development organization.</dd></div>
             <div><dt>System built</dt><dd>A BDR operating model using account signals and engagement triggers.</dd></div>
-            <div><dt>Result</dt><dd><strong>Leon reports supporting $10M+ in qualified pipeline.</strong> The résumé records a contribution to $200K+ in closed enterprise revenue.</dd></div>
+            <div><dt>Result</dt><dd><strong>Leon reports supporting $10M+ in qualified pipeline.</strong></dd></div>
           </dl>
         </article>
         <article class="case" aria-labelledby="obvio-title">
@@ -169,6 +89,19 @@
         </article>
       </div>
     </section>
+    <section id="walkthrough" aria-labelledby="walkthrough-title">
+      <div class="section-head"><h2 id="walkthrough-title">How a signal becomes a decision.</h2><p>The system, step by step.</p></div>
+      <p class="lead"><strong>Synthetic example, written for this page.</strong> The account, rules and outputs below illustrate a possible design. They are not a client record, a production configuration or a claimed business result.</p>
+      <p class="flow">Account signal → qualification → enrichment → scoring → routing → human review → next action</p>
+      <div class="steps"><details class="walk-step"><summary>Account signal</summary><dl><div><dt>Input</dt><dd>An example company publishes a security role mentioning a privileged-access project.</dd></div><div><dt>Decision rule</dt><dd>Keep the public source and date. Treat the project as a hypothesis to verify, not proof of purchase intent.</dd></div><div><dt>Output</dt><dd>A research record with a source, date and problem hypothesis.</dd></div><div><dt>If missing</dt><dd>Hold the account for research; do not invent a reason for outreach.</dd></div></dl></details>
+<details class="walk-step"><summary>Qualification</summary><dl><div><dt>Input</dt><dd>The signal, geography, company context and an agreed target-account definition.</dd></div><div><dt>Decision rule</dt><dd>Check fit and disqualifying conditions before assigning outreach work.</dd></div><div><dt>Output</dt><dd>A fit decision with its reason and unresolved questions.</dd></div><div><dt>If missing</dt><dd>Mark fit unknown and route to research rather than treating missing data as a pass.</dd></div></dl></details>
+<details class="walk-step"><summary>Enrichment</summary><dl><div><dt>Input</dt><dd>A qualified account and a hypothesis about who might own the problem.</dd></div><div><dt>Decision rule</dt><dd>Distinguish sourced facts from guesses. Keep uncertain contact routes unverified.</dd></div><div><dt>Output</dt><dd>A role hypothesis, supporting sources and contact-verification status.</dd></div><div><dt>If missing</dt><dd>Retain the role gap. Do not fill it with a guessed person or address.</dd></div></dl></details>
+<details class="walk-step"><summary>Scoring</summary><dl><div><dt>Input</dt><dd>Fit, signal relevance, freshness and remaining uncertainty.</dd></div><div><dt>Decision rule</dt><dd>Prioritize records with relevant evidence. Expose the reasons behind priority instead of hiding them in a number.</dd></div><div><dt>Output</dt><dd>A review queue with evidence and confidence visible.</dd></div><div><dt>If missing</dt><dd>Use an explicit review-needed state rather than manufacturing a score.</dd></div></dl></details>
+<details class="walk-step"><summary>Routing</summary><dl><div><dt>Input</dt><dd>The reviewed account, territory coverage and existing ownership.</dd></div><div><dt>Decision rule</dt><dd>Check ownership conflicts before assigning the record.</dd></div><div><dt>Output</dt><dd>A named owner and a dated review action.</dd></div><div><dt>If missing</dt><dd>Hold assignment for a human decision when ownership is ambiguous.</dd></div></dl></details>
+<details class="walk-step"><summary>Human review</summary><dl><div><dt>Input</dt><dd>The account brief, source evidence, uncertainty and proposed next step.</dd></div><div><dt>Decision rule</dt><dd>Review the relevance and factual basis before approving any external message.</dd></div><div><dt>Output</dt><dd>An approved research or contact action, or a documented decision to stop.</dd></div><div><dt>If missing</dt><dd>Keep the draft unsent until a reviewer has decided.</dd></div></dl></details>
+<details class="walk-step"><summary>Next action</summary><dl><div><dt>Input</dt><dd>The review decision and any subsequent response.</dd></div><div><dt>Decision rule</dt><dd>Record what actually happened and set the next action without treating activity as pipeline.</dd></div><div><dt>Output</dt><dd>A dated follow-up, research task or explicit close decision.</dd></div><div><dt>If missing</dt><dd>Show the record as unresolved. Do not infer a meeting or commercial outcome.</dd></div></dl></details>
+</div>
+    </section>
     <section aria-labelledby="approach-title">
       <div class="section-head"><h2 id="approach-title">Build approach.</h2><p>A method, kept outside the case record.</p></div>
       <article class="case approach" aria-labelledby="agents-title">
@@ -176,8 +109,8 @@
         <dl>
           <div><dt>Problem</dt><dd>Connect prospecting, pipeline work, and publishing.</dd></div>
           <div><dt>Constraints</dt><dd>Agent use is a method, not proof of a business result.</dd></div>
-          <div><dt>Build approach</dt><dd>The proposed pattern: agents assist the workflow; the operator reviews the work.</dd></div>
-          <div><dt>Result</dt><dd><strong>No agent-attributed outcome claimed.</strong> This is an approach, not a measured case result.</dd></div>
+          <div><dt>Build approach</dt><dd>A proposed review loop: research input, draft, human decision and a recorded next action. The walkthrough above makes that design inspectable.</dd></div>
+          <div><dt>Result</dt><dd><strong>No agent-attributed outcome claimed.</strong> No independently inspectable agent-run artifact is presented here.</dd></div>
         </dl>
       </article>
     </section>
