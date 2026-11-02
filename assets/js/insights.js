@@ -176,7 +176,7 @@
     try {
       const saved = JSON.parse(sessionStorage.getItem(key) || "null");
       if (saved && Date.now() - saved.at < 30 * 60 * 1000 && saved.at <= Date.now()) {
-        const result = { source: cleanLabel(saved.source), medium: cleanLabel(saved.medium), campaign: cleanLabel(saved.campaign) };
+        const result = { source: cleanLabel(saved.source), medium: cleanLabel(saved.medium), campaign: cleanLabel(saved.campaign), content: cleanLabel(saved.content) };
         window.lbInsightsCampaign = result;
         return result;
       }
