@@ -1,0 +1,144 @@
+.writing-hub {
+    --gutter: max(clamp(1.25rem, 4vw, 4.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
+}
+
+.writing-hub .hub-ritual-hero {
+    min-height: min(720px, 86svh);
+    background: #231a13;
+}
+
+.writing-hub .hub-ritual-hero .hero-art {
+    opacity: 1;
+    filter: none;
+    object-position: 64% 56%;
+}
+
+.writing-hub .hub-ritual-hero::before {
+    background: linear-gradient(90deg, #1f170f 3%, rgba(31, 23, 15, .92) 26%, rgba(31, 23, 15, .48) 60%, transparent),
+        linear-gradient(0deg, rgba(31, 23, 15, .86), transparent 40%, transparent 75%, rgba(31, 23, 15, .72));
+}
+
+.writing-hub .hub-ritual-hero #hero-title {
+    max-width: 11ch;
+    margin: .25rem 0 .9rem;
+    font: 400 clamp(3rem, 8vw, 7rem)/.96 Georgia, serif;
+    letter-spacing: -.045em;
+}
+
+.writing-hub .hub-jumps {
+    gap: .15rem 1.5rem;
+    margin: .25rem 0 1.75rem;
+}
+
+.writing-hub .hub-jumps a {
+    color: #fff0d3;
+    text-decoration-color: #bf9a62;
+    transition: text-underline-offset 180ms ease;
+}
+
+.writing-hub .hub-jumps a:hover {
+    text-underline-offset: 8px;
+}
+
+.coffee-counter {
+    max-width: 30rem;
+    padding-top: 1rem;
+    border-top: 1px solid #9d7f55;
+}
+
+.coffee-counter h2,
+.garden-latest h3 {
+    margin: .4rem 0 .55rem;
+    font: 400 clamp(1.6rem, 3vw, 2.6rem)/1.13 Georgia, serif;
+}
+
+.coffee-counter p {
+    margin-bottom: .35rem;
+}
+
+.coffee-counter a,
+.library-links a,
+.writing-hub [data-continue-reading] a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+}
+
+.coffee-counter a {
+    color: #f1c765;
+}
+
+.library-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.5rem;
+    margin-top: 1.4rem;
+}
+
+.library-shelves {
+    border-bottom: 1px solid #947341;
+}
+
+.writing-hub #garden,
+.writing-hub #fragments {
+    background: #19281f;
+}
+
+.writing-hub #garden {
+    border-bottom-color: #536b53;
+}
+
+.writing-hub #garden .section-shell {
+    padding-block: clamp(2rem, 6vw, 5rem);
+}
+
+.garden-latest {
+    padding-inline-start: 1.5rem;
+    border-inline-start: 1px solid #899874;
+}
+
+.writing-hub #fragments {
+    border-top: 0;
+}
+
+.writing-hub #fragments .hub-entry {
+    background: #202f24;
+    border-color: #708163;
+}
+
+.garden-shelf > summary {
+    cursor: pointer;
+    min-height: 44px;
+    padding-block: .65rem;
+    color: #f1c765;
+}
+
+html[data-reading-mode="paper"] .writing-hub :is(#garden, #fragments, #fragments .hub-entry) {
+    background: #e8ecdf !important;
+    color: #29231c;
+}
+
+html[data-reading-mode="paper"] .writing-hub .garden-shelf > summary {
+    color: #705321;
+}
+
+@media (max-width: 640px) {
+    .writing-hub .hub-ritual-hero {
+        min-height: 0;
+    }
+
+    .writing-hub .hub-ritual-hero::before {
+        background: linear-gradient(90deg, rgba(31, 23, 15, .96), rgba(31, 23, 15, .55)),
+            linear-gradient(0deg, #1f170f, transparent 78%);
+    }
+
+    .writing-hub .hub-jumps {
+        gap: .15rem 1rem;
+    }
+
+    .garden-latest {
+        padding: 1rem 0 0;
+        border-inline-start: 0;
+        border-top: 1px solid #899874;
+    }
+}
