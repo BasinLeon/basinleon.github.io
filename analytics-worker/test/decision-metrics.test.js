@@ -20,9 +20,11 @@ test('email route counts retain page and method while hiring sessions deduplicat
  assert.equal(db.prepare(METRICS_SQL).get('2026-10-16','2026-10-17').email_actions,2);db.close();
 });
 test('attention never calls unavailable states clean and names current file findings',()=>{
- const health={error:'API unavailable',validators:[{name:'Public safety',status:'failure',files:['llms.txt','services/index.html']}],sitemap:{missing:[]}};
+ const health={error:'API unavailable',validators:[{name:'Public safety',status:'failure',workflow_status:'failure',files:['llms.txt','services/index.html']}],sitemap:{missing:[]}};
  const items=healthAttention(health,false);
+ assert.equal(items.filter(i=>i.kind==='validator').length,1);
  assert.equal(items.find(i=>i.kind==='validator').count,2);
+ assert.match(items.find(i=>i.kind==='validator').label,/Workflow: failure/);
  assert.match(items.find(i=>i.kind==='validator').label,/services\/index.html/);
  assert.ok(items.some(i=>i.kind==='unknown'));assert.ok(items.some(i=>i.kind==='owner'));
  assert.ok(!items.some(i=>i.kind==='sitemap'));

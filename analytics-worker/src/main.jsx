@@ -1,4 +1,4 @@
-import { ReleaseComparison, EmailCounts, PeriodComparison, ReaderCohorts } from './DecisionPanels.jsx';
+import { ReleaseComparison, EmailCounts, PeriodComparison, ReaderCohorts, SystemAttention, WritingRelease, WritingLibraryReport } from './DecisionPanels.jsx';
 import RevenueOperations from './RevenueOperations.jsx';
 import { readOwnerConfirmation, saveOwnerConfirmation } from './owner-confirmation.js';
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -473,7 +473,7 @@ function Login({ onUnlock, error, busy }) {
 function Dashboard() {
   const [section,setSection]=useState("Overview");
   const [token, setToken] = useState(() => sessionStorage.getItem("lb:owner-token") || "");
-  const [days, setDays] = useState("clean");
+  const [days, setDays] = useState(7);
   const [releaseCommit,setReleaseCommit] = useState("");
   const [data, setData] = useState(EMPTY);
   const [error, setError] = useState("");
@@ -538,11 +538,16 @@ function Dashboard() {
         <section className="intro">
           <div><h1>Site Traffic</h1><p>Owned, privacy-safe measurement for basinleon.github.io</p></div>
           <nav aria-label="Date range">
-            {["release", "clean", 7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} onClick={() => { setDays(value); load(token, value); }}>{value === "release" ? "Since last release" : value === "clean" ? "Clean" : value === 365 ? "1 year" : `${value} days`}</button>)}
+            {["release", "clean", 7, 30, 90, 365].map((value) => <button className={days === value ? "active" : ""} key={value} disabled={busy} onClick={() => { setReleaseCommit(""); setDays(value); load(token, value, ""); }}>{value === "release" ? "Since latest release" : value === "clean" ? "All clean data" : value === 365 ? "Up to 1 year" : `${value} days`}</button>)}
           </nav>
         </section>
 
-        <p className="coverage-note">Selected window: {days === 'release' ? 'Since last release' : days === 'clean' ? 'Clean measurement' : `${days} days`} · {data.coverage_since||'…'} → {data.range_until||'…'} UTC. Collection began August 9, 2026; clean measurement began August 14 at 21:22 UTC.</p>
+        <WritingRelease release={data.writing_release} until={data.range_until} onSelect={() => {
+          setReleaseCommit(data.writing_release.commit);
+          setDays('release');
+          load(token, 'release', data.writing_release.commit);
+        }} />
+        <p className="coverage-note">Selected window: {data.selected_release ? `Since ${data.selected_release.name || data.selected_release.commit.slice(0, 8)}` : data.range_mode === 'clean' ? 'All clean measurement' : 'Recorded coverage'} · {data.coverage_since||'…'} → {data.range_until||'…'} UTC. Collection began August 9, 2026; clean measurement began August 14 at 21:22 UTC.</p>
         <section className="metrics" aria-busy={busy}>
           <Metric label="Unique visitors" value={summary.unique_visitors} note="Anonymous visitors with a pageview" />
           <Metric label="Visits" value={summary.visits} note="Sessions with a pageview" />
@@ -551,6 +556,7 @@ function Dashboard() {
           <Metric label="Returning visitors" value={data.returning_visitors} share={`${returningPercent}% of unique visitors`} note="Visitors with pageviews in 2+ distinct sessions" />
         </section>
         <details className="metric-definitions"><summary>How these numbers are counted</summary><p>All five cards use the selected UTC window above. Unique visitors use existing anonymous visitor hashes; visits use distinct pageview sessions. Engaged visits record at least 15 active seconds. Conversion actions count accepted Conversion events, not people or verified inquiries. Returning visitors have pageviews in at least two distinct sessions within this window. Existing owner, test, DNT and GPC exclusions apply.</p></details>
+        <WritingLibraryReport report={data.writing_library} />
         <PeriodComparison comparison={data.range_comparison} />
         <ReaderCohorts rows={data.reader_cohorts||[]} />
 
@@ -560,12 +566,11 @@ function Dashboard() {
         </section>
 
 
-        <label className="panel">Release baseline <select value={releaseCommit} onChange={e=>{setReleaseCommit(e.target.value);setDays('release');load(token,'release',e.target.value);}}><option value="">Latest successful release</option>{(data.system_health?.releases||[]).slice(0,-1).map(r=><option key={r.commit} value={r.commit}>{r.commit.slice(0,8)} · {r.at}</option>)}</select></label>
+        <label className="panel">Release baseline <select value={releaseCommit} onChange={e=>{setReleaseCommit(e.target.value);setDays('release');load(token,'release',e.target.value);}}><option value="">Latest successful release</option>{(data.system_health?.releases||[]).slice(1).map(r=><option key={r.commit} value={r.commit}>{r.name || r.commit.slice(0,8)} · {r.at}</option>)}</select></label>
         <details className="metric-definitions"><summary>Release history comparison (unequal windows)</summary><ReleaseComparison comparison={data.release_comparison} /></details>
         <EmailCounts rows={data.email_ctas||[]} />
         <ActivityReport recent={data.recent_activity} geography={data.geography} generatedAt={data.generated_at} busy={busy} onRefresh={() => load(token, days)} />
 
-        <RevenueOperations data={data} token={token} onSaved={() => load()} ownerExcluded={ownerExcluded} />
         <section className="growth-grid" aria-label="Revenue and AI discovery">
           <RevenueFunnel values={data.revenue_funnel || EMPTY.revenue_funnel} />
           <AiDiscovery rows={data.ai_referrals || []} />
@@ -591,8 +596,8 @@ function Dashboard() {
         <div hidden={section!=='Newsletter'}><DraftStudio token={token} kind="newsletter" /></div>
         <div hidden={section!=='Café'}><DraftStudio token={token} kind="offer" /></div>
         <div hidden={section!=='Distribution'}><h1>Distribution desk</h1><p>Prepare a channel link, then follow the reading journey. Published posts remain in their original services.</p><QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} /><DistributionReport key={days} rows={data.distribution} /></div>
-        <div hidden={section!=='Conversations'}><h1>Conversations</h1><ContactInbox rows={data.contact_submissions || []} /></div>
-        <div hidden={section!=='Settings'}><h1>Measurement & privacy</h1><button onClick={excludeOwner}>Verify & exclude my browser</button><DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} /></div>
+        <div hidden={section!=='Conversations'}><h1>Conversations</h1><p className="coverage-note">{data.coverage_since || "…"} → {data.range_until || "…"} UTC · <button type="button" onClick={() => setSection("Overview")}>Change date range</button></p><RevenueOperations data={data} token={token} onSaved={() => load()} ownerExcluded={ownerExcluded} /><ContactInbox rows={data.contact_submissions || []} /></div>
+        <div hidden={section!=='Settings'}><h1>Measurement &amp; privacy</h1><SystemAttention health={data.system_health} ownerExcluded={ownerExcluded} /><button onClick={excludeOwner}>Verify & exclude my browser</button><DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} /></div>
         <footer>No raw IPs · {data.retention_days || 400}-day retention · DNT respected</footer>
       </main>
     </div>

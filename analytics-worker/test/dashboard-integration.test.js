@@ -16,7 +16,7 @@ test('complete dashboard SQL keeps repeated counters identical and reads genuine
  for(let i=0;i<8;i++)conversion.run('commercial-'+(i%6),'commercial-visitor-'+(i%6));
  const env={ADMIN_TOKEN:'fixture-owner',SYSTEM_STATE:{validators:[],sitemap:{missing:[]},releases:[{commit:'latest',at:'2026-10-16T00:00:00Z'},{commit:'prior',at:'2026-10-15T00:00:00Z'}]},DB:{prepare(sql){const q=db.prepare(sql);return {q,args:[],bind(...args){return {q,args}}};},async batch(statements){return statements.map(({q,args})=>({results:q.all(...args)}));}}};
  for(const mode of ['365','release']){
-  const response=await worker.fetch(new Request('https://fixture/v1/dashboard?days='+mode,{headers:{authorization:'Bearer fixture-owner'}}),env);
+  const response=await worker.fetch(new Request('https://fixture/v1/dashboard?days='+mode+'&release=latest',{headers:{authorization:'Bearer fixture-owner'}}),env);
   const data=await response.json();assert.equal(response.status,200);
   assert.equal(data.conversions.find(r=>r.category==='Commercial intent').actions,8);
   assert.equal(data.revenue_funnel.commercial_action_visits,6);
@@ -45,7 +45,7 @@ test('returning visitors require pageviews in two distinct sessions inside the s
  ['2026-10-16 12:06:00','Pageview','inside','outside-window'],
  ])add.run(at,type,session,visitor,'/');
  const env={ADMIN_TOKEN:'fixture-owner',SYSTEM_STATE:{validators:[],sitemap:{missing:[]},releases:[{commit:'latest',at:'2026-10-16T00:00:00Z'},{commit:'prior',at:'2026-10-15T00:00:00Z'}]},DB:{prepare(sql){const q=db.prepare(sql);return {q,args:[],bind(...args){return {q,args}}};},async batch(statements){return statements.map(({q,args})=>({results:q.all(...args)}));}}};
- const response=await worker.fetch(new Request('https://fixture/v1/dashboard?days=release',{headers:{authorization:'Bearer fixture-owner'}}),env);
+ const response=await worker.fetch(new Request('https://fixture/v1/dashboard?days=release&release=latest',{headers:{authorization:'Bearer fixture-owner'}}),env);
  const data=await response.json();assert.equal(response.status,200);assert.equal(data.returning_visitors,1);assert.equal(data.summary.unique_visitors,3);
  db.close();
 });

@@ -295,12 +295,15 @@
   function clickDetail(link) {
     const classification = classifyLink(link);
     const region = link.closest("header, nav, main, article, section, footer");
+    const room = page === "/blog/" && classification.type === "Internal Click" &&
+      classification.destination.startsWith("/blog/posts/") &&
+      link.closest("[data-reading-room]")?.dataset.readingRoom;
     return {
       type: classification.type,
       detail: {
         destination: classification.destination,
         label: cleanLabel(link.dataset.track || link.getAttribute("aria-label") || link.textContent),
-        region: region ? region.tagName.toLowerCase() : "body"
+        region: room || (region ? region.tagName.toLowerCase() : "body")
       }
     };
   }

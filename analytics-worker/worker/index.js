@@ -1,3 +1,4 @@
+import { WRITING_LIBRARY_RELEASE, WRITING_LIBRARY_SQL } from './writing-library.js';
 import { METRICS_SQL, EMAIL_SQL, READER_COHORT_SQL, equalWindow, releasePeriods, sqlTime, compareMetrics } from './decision-metrics.js';
 import { systemState } from './system-state.js';
 import { SESSION_SQL, CAMPAIGN_SQL, normalizeRevenue } from './career-revenue.js';
@@ -455,6 +456,9 @@ export function rangeSelection(url) {
 
   const requestedDays = Number.parseInt(requestedValue, 10);
   const days = [7, 30, 90, 365].includes(requestedDays) ? requestedDays : 30;
+  if (days === 7) {
+    return { mode: "range", days, since: sqlTime(Math.max(Date.now() - 7 * 86400000, Date.parse("2026-08-14T21:22:00Z"))) };
+  }
   const since = new Date();
   since.setUTCHours(0, 0, 0, 0);
   since.setUTCDate(since.getUTCDate() - (days - 1));
@@ -466,18 +470,22 @@ async function dashboardData(request, env) {
   const support = env.SYSTEM_STATE || await systemState();
   const requested = new URL(request.url);
   const selectedCommit = requested.searchParams.get('release');
-  const orderedReleases = support.releases || [];
+  const orderedReleases = [WRITING_LIBRARY_RELEASE, ...(support.releases || []).filter(r => r.commit !== WRITING_LIBRARY_RELEASE.commit)]
+    .sort((a, b) => b.at.localeCompare(a.at));
+  const releaseWindow = requested.searchParams.get('days') === 'release';
+  const selectedRelease = releaseWindow ? orderedReleases.find(r => !selectedCommit || r.commit === selectedCommit) : null;
   const selectedIndex = selectedCommit ? orderedReleases.findIndex(r=>r.commit===selectedCommit) : 0;
   const periods = releasePeriods(selectedIndex>=0?orderedReleases.slice(selectedIndex):[]);
   const range = rangeSelection(requested);
-  if (requested.searchParams.get('days') === 'release' && !periods) return json({error:'Release history unavailable; choose another window or retry later.'},503);
-  if (requested.searchParams.get('days') === 'release' && periods) {
-    range.mode='release'; range.since=sqlTime(periods.current.since);
+  if (releaseWindow && !selectedRelease) return json({error:'Release history unavailable; choose another window or retry later.'},503);
+  if (selectedRelease) {
+    range.mode='release'; range.since=sqlTime(selectedRelease.at);
   }
   const days = range.days;
   const since = range.since;
   const until = sqlTime(new Date());
   const comparisonWindow = equalWindow(since,until);
+  const writingSince = [since, sqlTime(WRITING_LIBRARY_RELEASE.at)].sort().at(-1);
   // All event readers share one captured upper boundary for this response.
   const prepare = sql => env.DB.prepare(sql.replace(/\b(FROM|JOIN) events\b/g, `$1 (SELECT * FROM events WHERE received_at < '${until}')`));
   const statements = [
@@ -623,13 +631,14 @@ async function dashboardData(request, env) {
   statements.push(prepare(`SELECT MAX(received_at) AS last_event,
     SUM(CASE WHEN conversion_action='contact-form-failed' AND received_at>=? THEN 1 ELSE 0 END) AS failed_submissions
     FROM events`).bind(since));
-  statements.push(prepare(`SELECT COUNT(*) AS verified_inquiries FROM contact_submissions WHERE page='/working-session/' AND received_at>=? AND NOT ${TEST_CONTACT_SQL}`).bind(since));
+  statements.push(prepare(`SELECT COUNT(*) AS verified_inquiries FROM contact_submissions WHERE page='/working-session/' AND received_at>=? AND received_at<? AND NOT ${TEST_CONTACT_SQL}`).bind(since,until));
   statements.push(prepare(METRICS_SQL).bind(since,until));
   statements.push(prepare(EMAIL_SQL).bind(since,until));
   statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.current.since):since,until));
   statements.push(prepare(METRICS_SQL).bind(periods?sqlTime(periods.previous.since):since,periods?sqlTime(periods.previous.until):since));
   statements.push(prepare(METRICS_SQL).bind(comparisonWindow.previous.since,comparisonWindow.previous.until));
   statements.push(prepare(READER_COHORT_SQL).bind(since,until));
+  statements.push(env.DB.prepare(WRITING_LIBRARY_SQL).bind(writingSince, until));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -656,7 +665,10 @@ async function dashboardData(request, env) {
     returning_visitors: Number(rows(6)[0]?.returning_visitors || 0),
     hiring_funnel: [...rows(7).filter(r=>r.step!=='email'), {step:'email',actions:Number(rows(25)[0]?.email_actions||0)}],
     email_ctas: rows(26),
-    system_health: support,
+    system_health: { ...support, releases: orderedReleases },
+    writing_release: WRITING_LIBRARY_RELEASE,
+    selected_release: selectedRelease,
+    writing_library: { since: writingSince, until, ...rows(31)[0] },
     release_comparison: periods ? { ...periods, metrics: compareMetrics(rows(27)[0]||{},rows(28)[0]||{}) } : null,
     range_until: until,
     range_comparison: {...comparisonWindow,metrics:comparisonWindow.available?compareMetrics(rows(25)[0]||{},rows(29)[0]||{}):null},

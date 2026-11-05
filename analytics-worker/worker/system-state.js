@@ -21,8 +21,14 @@ export function healthAttention(health,ownerExcluded) {
  if(!health.sitemap || !Array.isArray(health.validators) || health.validators.length!==2)items.push({kind:'unknown',count:1,label:'System checks incomplete; status unknown'});
  if(health.error)items.push({kind:'unknown',count:1,label:`System status unavailable: ${health.error}`});
  for(const v of health.validators||[]) {
-  if(v.status!=='success')items.push({kind:'validator',count:v.files.length||1,label:`${v.name}: ${v.status}; ${v.files.join(', ')||'files unavailable'}`,url:v.url});
-  if(v.workflow_status&&v.workflow_status!=='success')items.push({kind:'workflow',count:1,label:`${v.name} workflow: ${v.workflow_status}${v.workflow_commit!==health.checked_commit?' (different commit from file checks)':''}`,url:v.url});
+  const fileFailure = v.status !== 'success';
+  const workflowIssue = v.workflow_status && v.workflow_status !== 'success';
+  if (fileFailure || workflowIssue) items.push({
+   kind: 'validator',
+   count: fileFailure ? v.files?.length || 0 : 0,
+   label: `${v.name}${fileFailure ? ` file check: ${v.status}; ${v.files?.join(', ') || 'files unavailable'}` : ''}${workflowIssue ? ` · Workflow: ${v.workflow_status}${v.workflow_commit !== health.checked_commit ? ' (different commit from file checks)' : ''}` : ''}`,
+   url: v.url
+  });
  }
  if(health.sitemap?.missing?.length)items.push({kind:'sitemap',count:health.sitemap.missing.length,label:`Published posts absent from sitemap: ${health.sitemap.missing.join(', ')}`});
  if(!ownerExcluded)items.push({kind:'owner',count:1,label:'Owner exclusion: not confirmed in this browser'});

@@ -11,7 +11,7 @@ export function SystemAttention({health={},ownerExcluded,leads=[]}) {
  const pending=leads.filter(l=>l.stage==='inquiry'||l.stage==='payment_pending'||(l.follow_up&&l.follow_up<=new Date().toISOString().slice(0,10)&&l.stage!=='closed'));
  const missing=health.sitemap?.missing;
  return <section className="system-attention"><h3>What needs attention</h3><p>{items.length+pending.length} attention items · {items.filter(i=>i.kind==='validator').reduce((n,i)=>n+i.count,0)} validator file findings · {missing?.length??'Unknown'} published posts missing from sitemap · Owner exclusion: {ownerExcluded?'Yes':'Not confirmed'}</p>
- {items.map((i,n)=><p key={n}><strong>{i.count}</strong> · {i.url?<a href={i.url} target="_blank" rel="noreferrer">{i.label}</a>:i.label}</p>)}
+ {items.map((i,n)=><p key={n}>{i.url?<a href={i.url} target="_blank" rel="noreferrer">{i.label}</a>:i.label}</p>)}
  {pending.map(l=><p key={l.id}>{l.name}: {l.stage} · {l.follow_up} · {l.next_action}</p>)}
  {!items.length&&!pending.length&&<p>Nothing outstanding in validator, sitemap, owner-exclusion and lead checks.</p>}
  <p>Sitemap: {missing?`${missing.length} missing indexable posts (${health.sitemap.published_posts} HTML post files checked)`:'Unknown'}. File checks: {health.checked_at||'Unavailable'} · commit {health.checked_commit?.slice(0,8)||'Unknown'}. Status source: {health.status_source||'Direct public API with recorded fallback'}. Live status refresh attempted {health.fetched_at||'Unavailable'}; recorded workflow evidence {health.metadata_checked_at||'Unavailable'}. Cached up to 5 minutes. Public-safety findings may be deliberate; failures remain visible.</p></section>;
@@ -28,4 +28,41 @@ export function PeriodComparison({comparison}) {
 export function ReaderCohorts({rows=[]}) {
  const percent=(n,d)=>d?`${Math.round(n/d*100)}%`:'—';
  return <section className="panel reader-cohorts"><h2>Reader loyalty &amp; depth</h2><p>Groups use pageview sessions within the selected window. One-session visitors may have visited before this window. Rates below are shares of each group’s visits. Anonymous hashes cannot identify a person across browsers or cleared storage.</p><div className="report-scroll"><table><thead><tr><th>Audience</th><th>Visitors</th><th>Visits</th><th>Engaged 15s</th><th>Deep read ≥75%</th><th>Completed ≥100%</th></tr></thead><tbody>{['single','returning'].map(cohort=>{const r=rows.find(r=>r.cohort===cohort)||{};return <tr key={cohort}><th>{cohort==='single'?'One-session visitors':'Returning visitors'}</th><td>{r.visitors||0}</td><td>{r.visits||0}</td><td>{r.engaged||0} · {percent(r.engaged,r.visits)}</td><td>{r.deep_reads||0} · {percent(r.deep_reads,r.visits)}</td><td>{r.completed||0} · {percent(r.completed,r.visits)}</td></tr>})}</tbody></table></div></section>;
+}
+
+export function WritingRelease({ release, until, onSelect }) {
+  if (!release || !until) return null;
+  const minutes = Math.max(0, Math.floor((Date.parse(until.replace(' ', 'T') + 'Z') - Date.parse(release.at)) / 60000));
+  const elapsed = minutes < 60 ? `${minutes} min` : minutes < 1440 ? `${Math.floor(minutes / 60)} hr` : `${Math.floor(minutes / 1440)} days`;
+  return <section className="panel writing-release">
+    <div>
+      <p className="eyebrow">Writing release</p>
+      <h2>{release.name}</h2>
+      <p>Live for {elapsed} at this snapshot.</p>
+      <p className="coverage-note"><time dateTime={release.at}>{release.at.replace('T', ' ').replace('Z', '')}</time> → {until} UTC · <a href={release.url} target="_blank" rel="noreferrer">Deployment {release.commit.slice(0, 8)}</a></p>
+    </div>
+    <button type="button" onClick={onSelect}>View since this release</button>
+  </section>;
+}
+
+export function WritingLibraryReport({ report }) {
+  if (!report) return null;
+  const rooms = [['Library', 'library'], ['Coffee Shop', 'coffee_shop'], ['Garden', 'garden']];
+  return <section className="panel writing-report">
+    <h2>How readers use the Writing Library</h2>
+    <p className="coverage-note">{report.since} → {report.until} UTC</p>
+    <div className="report-scroll">
+      <table>
+        <thead><tr><th scope="col">Reading path</th><th scope="col">Sessions</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Visited the Writing Library</th><td>{report.hub_visits}</td></tr>
+          {rooms.map(([label, key]) => <tr key={key}><th scope="row">Opened a piece from the {label}</th><td>{report[key]}</td></tr>)}
+          <tr><th scope="row">Opened at least two different pieces after the Library</th><td>{report.second_reads}</td></tr>
+          <tr><th scope="row">Landed on a piece anywhere on the site</th><td>{report.article_landings}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Room counts require a tagged article link and a matching pageview in the same session. A session can appear in more than one room. Visits recorded before room tags went live still count toward Library visits and article landings.</p>
+    <p>Article landings count sessions whose first recorded pageview in this window was a writing post, from any source.</p>
+  </section>;
 }
