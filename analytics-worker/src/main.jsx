@@ -1,4 +1,4 @@
-import { ReleaseComparison, EmailCounts, PeriodComparison, ReaderCohorts, SystemAttention, WritingRelease, WritingLibraryReport } from './DecisionPanels.jsx';
+import { ReleaseComparison, EmailCounts, PeriodComparison, ReaderCohorts, SystemAttention, WritingRelease, WritingLibraryReport, FragmentFollowThrough } from './DecisionPanels.jsx';
 import RevenueOperations from './RevenueOperations.jsx';
 import { readOwnerConfirmation, saveOwnerConfirmation } from './owner-confirmation.js';
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -557,6 +557,7 @@ function Dashboard() {
         </section>
         <details className="metric-definitions"><summary>How these numbers are counted</summary><p>All five cards use the selected UTC window above. Unique visitors use existing anonymous visitor hashes; visits use distinct pageview sessions. Engaged visits record at least 15 active seconds. Conversion actions count accepted Conversion events, not people or verified inquiries. Returning visitors have pageviews in at least two distinct sessions within this window. Existing owner, test, DNT and GPC exclusions apply.</p></details>
         <WritingLibraryReport report={data.writing_library} />
+        <FragmentFollowThrough report={data.fragment_follow_through} />
         <PeriodComparison comparison={data.range_comparison} />
         <ReaderCohorts rows={data.reader_cohorts||[]} />
 

@@ -1,4 +1,4 @@
-import { WRITING_LIBRARY_RELEASE, WRITING_LIBRARY_SQL } from './writing-library.js';
+import { WRITING_LIBRARY_RELEASE, WRITING_LIBRARY_SQL, FRAGMENT_FOLLOW_THROUGH_START, FRAGMENT_FOLLOW_THROUGH_SQL } from './writing-library.js';
 import { METRICS_SQL, EMAIL_SQL, READER_COHORT_SQL, equalWindow, releasePeriods, sqlTime, compareMetrics } from './decision-metrics.js';
 import { systemState } from './system-state.js';
 import { SESSION_SQL, CAMPAIGN_SQL, normalizeRevenue } from './career-revenue.js';
@@ -639,6 +639,8 @@ async function dashboardData(request, env) {
   statements.push(prepare(METRICS_SQL).bind(comparisonWindow.previous.since,comparisonWindow.previous.until));
   statements.push(prepare(READER_COHORT_SQL).bind(since,until));
   statements.push(env.DB.prepare(WRITING_LIBRARY_SQL).bind(writingSince, until));
+  const fragmentSince = since > FRAGMENT_FOLLOW_THROUGH_START ? since : FRAGMENT_FOLLOW_THROUGH_START;
+  statements.push(env.DB.prepare(FRAGMENT_FOLLOW_THROUGH_SQL).bind(fragmentSince, until));
   const results = await env.DB.batch(statements);
   const rows = (index) => results[index].results || [];
   return json({
@@ -669,6 +671,7 @@ async function dashboardData(request, env) {
     writing_release: WRITING_LIBRARY_RELEASE,
     selected_release: selectedRelease,
     writing_library: { since: writingSince, until, ...rows(31)[0] },
+    fragment_follow_through: { since: fragmentSince, until, rows: rows(32) },
     release_comparison: periods ? { ...periods, metrics: compareMetrics(rows(27)[0]||{},rows(28)[0]||{}) } : null,
     range_until: until,
     range_comparison: {...comparisonWindow,metrics:comparisonWindow.available?compareMetrics(rows(25)[0]||{},rows(29)[0]||{}):null},

@@ -33,3 +33,41 @@ SELECT
   (SELECT COUNT(*) FROM room_reads WHERE region='library') AS library,
   (SELECT COUNT(*) FROM room_reads WHERE region='coffee-shop') AS coffee_shop,
   (SELECT COUNT(*) FROM room_reads WHERE region='garden') AS garden`;
+
+// All five recommendations were published by this successful Pages deployment.
+export const FRAGMENT_FOLLOW_THROUGH_START = '2026-11-05 08:14:25';
+
+export const FRAGMENT_FOLLOW_THROUGH_SQL = `WITH recommendations(fragment, destination) AS (
+  VALUES
+    ('/blog/posts/fragment-08.html', '/blog/posts/the-archive-was-empty.html'),
+    ('/blog/posts/fragment-09.html', '/blog/posts/what-does-a-moment-become.html'),
+    ('/blog/posts/fragment-11.html', '/blog/posts/sam-ink-note-in-the-other-room.html'),
+    ('/blog/posts/fragment-13.html', '/blog/posts/fragment-08.html'),
+    ('/blog/posts/fragment-14.html', '/blog/posts/sam-ink-note-in-the-other-room.html')
+), landings AS (
+  SELECT e.id, e.session_hash, r.fragment, r.destination
+  FROM recommendations r JOIN events e ON e.page=r.fragment
+  WHERE e.event_type='Pageview' AND e.received_at>=?1 AND e.received_at<?2
+    AND NOT EXISTS (
+      SELECT 1 FROM events prior
+      WHERE prior.session_hash=e.session_hash AND prior.event_type='Pageview' AND prior.id<e.id
+    )
+), outcomes AS (
+  SELECT l.fragment, l.session_hash,
+    MAX(c.id IS NOT NULL) AS clicked,
+    MAX(EXISTS (
+      SELECT 1 FROM events v
+      WHERE v.session_hash=l.session_hash AND v.event_type='Pageview' AND v.page=l.destination
+        AND v.id>l.id AND v.received_at<?2
+        AND v.received_at>=datetime(c.received_at, '-10 seconds')
+    )) AS opened
+  FROM landings l LEFT JOIN events c ON c.session_hash=l.session_hash
+    AND c.page=l.fragment AND c.destination=l.destination
+    AND c.event_type='Internal Click' AND c.label='Writing: read next'
+    AND c.id>l.id AND c.received_at>=?1 AND c.received_at<?2
+  GROUP BY l.fragment, l.session_hash
+)
+SELECT r.fragment, r.destination, COUNT(o.session_hash) AS landings,
+  COALESCE(SUM(o.clicked),0) AS clicks, COALESCE(SUM(o.opened),0) AS opens
+FROM recommendations r LEFT JOIN outcomes o ON o.fragment=r.fragment
+GROUP BY r.fragment, r.destination ORDER BY r.fragment`;
