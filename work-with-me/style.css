@@ -94,7 +94,7 @@ h1 { max-width: 10ch; margin: 0; font: 400 clamp(4.8rem, 8vw, 8rem)/.86 var(--se
 .brief-preview small { grid-column: 1 / -1; color: var(--ink-soft); font-size: .72rem; line-height: 1.5; }
 
 .contact { padding-block: clamp(5rem, 9vw, 8rem); background: var(--ink); color: var(--paper); }
-.contact-grid { display: grid; grid-template-columns: 1.14fr .86fr; gap: clamp(3rem, 8vw, 8rem); }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr); gap: clamp(3rem, 8vw, 8rem); }
 .contact h2 { max-width: 12ch; margin: 0; font: 400 clamp(3.6rem, 6.4vw, 6.4rem)/.92 var(--serif); letter-spacing: -.055em; }
 .email-link { display: inline-block; max-width: 100%; overflow-wrap: anywhere; border-bottom: 1px solid var(--brass-light); color: var(--brass-light); font: 400 clamp(1.75rem, 3.2vw, 3rem)/1.1 var(--serif); letter-spacing: -.035em; }
 .contact-actions > p { max-width: 500px; margin: 2rem 0; color: #aaa298; font-size: 1rem; line-height: 1.65; }
@@ -110,6 +110,10 @@ h1 { max-width: 10ch; margin: 0; font: 400 clamp(4.8rem, 8vw, 8rem)/.86 var(--se
 .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity 560ms ease, transform 680ms cubic-bezier(.2,.7,.2,1); }
 .js .reveal.is-visible { opacity: 1; transform: none; }
 @media (hover: hover) { .button-brass:hover, .button-brass:focus-visible { border-color: var(--ink); background: var(--ink); color: var(--paper); } .contact .button-brass:hover, .contact .button-brass:focus-visible { border-color: var(--paper); background: var(--paper); color: var(--ink); } .path-row > a:hover, .text-link:hover, .resume-link:hover { color: var(--brass); } .evidence-grid a:hover strong { color: #fff0bc; } .brief-preview { transition: transform 200ms ease, box-shadow 200ms ease; } .brief-preview:hover { transform: rotate(0) translateY(-4px); box-shadow: 18px 26px 36px rgba(17,16,14,.2); } }
+
+@media (max-width: 1100px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
 
 @media (max-width: 960px) {
   .header-inner { min-height: 64px; }
