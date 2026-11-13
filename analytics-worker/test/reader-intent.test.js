@@ -25,3 +25,17 @@ test('emailing Leon remains commercial intent', () => {
 test('reader email shares cannot trigger implicit hiring email steps', () => {
   assert.ok(source.includes('item.type === "Email Click" && conversion?.category === "Commercial intent"'));
 });
+
+test('article replies stay reader interest instead of hiring intent', () => {
+  for (const label of ['Writing: reply', 'Writing: reader reply']) {
+    assert.equal(intent(label).category, 'Reader interest');
+    assert.equal(intent(label).action, 'reader-reply');
+  }
+});
+test('next-piece clicks have a distinct reader action', () => {
+  assert.equal(intent('Writing: read next', 'Internal Click', '/blog/posts/fragment-15.html').action, 'read-next');
+});
+test('resume PDF downloads are distinct from proof-page visits', () => {
+  assert.equal(intent('Resume: public PDF download', 'Download', '/assets/downloads/Leon-Basin-Public-Resume.pdf').action, 'resume-download');
+  assert.equal(intent('Resume: public PDF download', 'Download', '/assets/downloads/Leon-Basin-Public-Resume.pdf').category, 'Commercial intent');
+});

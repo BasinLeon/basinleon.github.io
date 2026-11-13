@@ -317,9 +317,15 @@
     if (label === "writing: support outbound") {
       category = "Reader interest";
       action = "support-outbound";
-    } else if (label === "writing: reader reply") {
+    } else if (["writing: reader reply", "writing: reply"].includes(label)) {
       category = "Reader interest";
       action = "reader-reply";
+    } else if (label === "writing: read next") {
+      category = "Reader interest";
+      action = "read-next";
+    } else if (click.type === "Download" && /resume/i.test(path)) {
+      category = "Commercial intent";
+      action = "resume-download";
     } else if (/^(article|fiction): share/.test(label)) {
       category = "Reader interest";
       action = "share";

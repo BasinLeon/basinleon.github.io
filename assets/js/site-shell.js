@@ -14,9 +14,9 @@
 
   function ensureInsights() {
     if (body.dataset.lbAnalytics === 'off' || window.__lbInsightsLoaded) return;
-    if (document.querySelector('script[src="/assets/js/insights.js"]')) return;
+    if (document.querySelector('script[src^="/assets/js/insights.js"]')) return;
     const script = document.createElement('script');
-    script.src = '/assets/js/insights.js';
+    script.src = '/assets/js/insights.js?v=20261112-journeys';
     script.defer = true;
     document.head.appendChild(script);
   }

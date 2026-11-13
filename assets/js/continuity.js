@@ -1,7 +1,7 @@
 (() => {
-  if (!window.__lbInsightsLoaded && !document.querySelector('script[src="/assets/js/insights.js"]')) {
+  if (!window.__lbInsightsLoaded && !document.querySelector('script[src^="/assets/js/insights.js"]')) {
     const insights = document.createElement("script");
-    insights.src = "/assets/js/insights.js";
+    insights.src = "/assets/js/insights.js?v=20261112-journeys";
     insights.defer = true;
     document.head.appendChild(insights);
   }

@@ -44,7 +44,7 @@ The snapshot is excluded from Git. Copy it to an encrypted private backup locati
 | --- | --- |
 | Commercial intent | Email, phone, availability, résumé and case-study clicks |
 | Operating interest | Basin::Nexus, system and tool clicks |
-| Reader interest | Writing, fiction, archive, essay and subscription clicks |
+| Reader interest | Writing, fiction, archive, essay, next-piece clicks (`read-next`), direct replies (`reader-reply`) and outbound subscription clicks (`subscription-outbound`) |
 
 ## UTM convention
 
@@ -77,3 +77,5 @@ Production requires the D1 database binding plus two Wrangler secrets:
 
 - `ADMIN_TOKEN` protects dashboard data.
 - `HASH_SECRET` HMAC-hashes anonymous identifiers before storage.
+
+Résumé PDF downloads use `resume-download`, separately from generic proof-page visits. Subscription clicks are outbound handoffs, not confirmed subscriptions. Reply clicks open an email composer; they do not prove a message was sent.
