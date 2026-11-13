@@ -25,6 +25,6 @@
  if(current&&article){const h=document.querySelector('h1');const time=document.createElement('p');time.className='hub-reading-time';time.textContent=label(current);h?.after(time);
  const preferred=valid.find(x=>x.url===curated[current.url]);
  const related=preferred||valid.filter(x=>x.url!==current.url).map(x=>({item:x,score:(x.tags||[]).filter(t=>(current.tags||[]).includes(t)).length})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score)[0]?.item||valid.find(x=>x.url===shelves[0].url&&x.url!==current.url);
- if(related&&!/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname)){const aside=document.createElement('aside');aside.className='hub-read-next';const k=document.createElement('span');k.className='hub-label';k.textContent='Read next';const a=document.createElement('a');a.href=related.url;a.textContent=related.title;const p=document.createElement('p');p.textContent=label(related);aside.append(k,a,p);article.after(aside);}}
+ if(related&&!document.querySelector('.read-next, .hub-read-next, .lb-reading-next')&&!/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname)){const aside=document.createElement('aside');aside.className='hub-read-next';const k=document.createElement('span');k.className='hub-label';k.textContent='Read next';const a=document.createElement('a');a.href=related.url;a.textContent=related.title;const p=document.createElement('p');p.textContent=label(related);aside.append(k,a,p);article.after(aside);}}
  }).catch(()=>{/* The writing and published navigation remain available. */});
 })();

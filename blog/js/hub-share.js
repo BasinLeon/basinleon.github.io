@@ -1,7 +1,7 @@
 /* Local share handoffs. No SDK, login token or automatic publishing. */
 (()=>{
  const shelf=document.createElement('script');shelf.src='/blog/js/saved-shelf.js?v=reader-first-20261101';document.head.append(shelf);
- const discovery=document.createElement('script');discovery.src='/blog/js/reading-discovery.js?v=reader-first-20261101';document.head.append(discovery);
+ const discovery=document.createElement('script');discovery.src='/blog/js/reading-discovery.js?v=20261112-endings';document.head.append(discovery);
  const preferences=document.createElement("script");preferences.src="/blog/js/reading-preferences.js?v=20261022";document.head.append(preferences);
  function link(path,channel){const u=new URL(path,location.origin);u.search='';u.hash='';u.searchParams.set('utm_source',channel);u.searchParams.set('utm_medium','social');u.searchParams.set('utm_campaign','writing-hub');return u.href;}
  function mount(host,title,path){
