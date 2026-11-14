@@ -1,33 +1,423 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Signal Architect · Interactive Demo | Leon Basin</title>
-<meta name="description" content="Try a transparent, rule-based GTM scoring demo. Load fictional companies, change a signal, and see why each priority tier changes.">
-<link rel="canonical" href="https://basinleon.github.io/signal-architect/">
-<meta property="og:title" content="Signal Architect · Change a signal. See why the priority moves.">
-<meta property="og:description" content="A browser demo with fictional companies and explainable priority rules. No login or upload required.">
-<meta property="og:url" content="https://basinleon.github.io/signal-architect/">
-<meta property="og:type" content="website">
-<meta name="color-scheme" content="light">
-<link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261112-journeys">
-<link rel="stylesheet" href="./style.css?v=20261113">
-<script type="module" src="./app.js?v=20261113"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Signal Architect | Leon Basin</title>
+  <meta name="description" content="A live, runnable demo of the Basin Signal Architect: the Basin Priority Logic from the open source GTM tool, running in your browser on a synthetic sample list.">
+  <link rel="canonical" href="https://basinleon.github.io/signal-architect/">
+  <meta property="og:title" content="Signal Architect | Leon Basin">
+  <meta property="og:description" content="Run the real Basin Priority Logic in your browser. Load the synthetic sample list, see why each row earned its priority, then change a signal and watch the tier move.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://basinleon.github.io/signal-architect/">
+  <meta name="twitter:card" content="summary">
+  <style>
+    :root{color-scheme:dark;--ink:#06080d;--paper:#f5f0e7;--muted:#bcb8ae;--gold:#d6aa49;--line:#34322c;--card:#0d1016}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:1.5rem}body{margin:0;background:var(--ink);color:var(--paper);font:1rem/1.6 "Inter","Segoe UI",Arial,sans-serif}a{color:var(--gold);text-underline-offset:.25em}a:hover{color:var(--paper)}a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}::selection{background:var(--gold);color:var(--ink)}
+    .skip{position:absolute;top:-6rem;left:1rem;padding:.8rem;background:var(--paper);color:var(--ink);z-index:2}.skip:focus{top:1rem}.wrap{width:min(1160px,100% - 3rem);margin-inline:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1rem;border-bottom:1px solid var(--line)}.brand{display:inline-flex;align-items:center;min-height:44px;font-weight:800;letter-spacing:.07em;color:var(--paper);text-decoration:none;white-space:nowrap}.brand span{color:var(--gold)}nav{display:flex;gap:1.5rem}nav a{display:inline-flex;align-items:center;min-height:44px;font-size:.9rem}
+    .hero{padding-block:clamp(2.5rem,6vw,4.5rem) 2.5rem;max-width:940px}.eyebrow{color:var(--gold);font-size:.76rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin:0 0 1rem}h1{font:500 clamp(3rem,7.5vw,5.8rem)/1 Georgia,serif;letter-spacing:-.04em;margin:0 0 1.25rem}.position{font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.35;max-width:800px;margin:0 0 1.2rem}.record{max-width:800px;color:var(--muted);margin:0 0 1rem}.record strong{color:var(--paper);font-weight:600}
+    section{border-top:1px solid var(--line);padding-block:2rem}h2{font:500 clamp(1.8rem,3vw,2.5rem)/1.15 Georgia,serif;margin:0 0 1rem}h3{font-size:1.25rem;line-height:1.25;margin:0;letter-spacing:-.02em}.lead{color:var(--muted);max-width:840px;margin:0 0 1.25rem}.lead strong{color:var(--paper);font-weight:600}
+    .action{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.7rem 1.2rem;font:inherit;font-weight:700;cursor:pointer;background:transparent;color:var(--paper);border:1px solid var(--gold)}.action.primary{background:var(--gold);color:var(--ink)}.action.primary:hover{background:var(--paper);color:var(--ink)}.action:hover{border-color:var(--paper)}.action[hidden]{display:none}
+    .demo-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:1.25rem}.demo-head .spacer{flex:1}
+    .counts{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 1.5rem}.count{border:1px solid var(--line);background:var(--card);padding:.55rem .9rem;font-size:.9rem;color:var(--muted)}.count b{color:var(--paper);font-size:1.05rem;margin-right:.35rem}.count.p0 b{color:var(--gold)}
+    .empty{border:1px dashed var(--line);padding:2rem;color:var(--muted);max-width:840px}.empty strong{color:var(--paper)}
+    .rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .row-card{border:1px solid var(--line);border-top:2px solid var(--gold);padding:1.3rem;background:var(--card);display:flex;flex-direction:column;gap:.7rem}
+    .row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+    .who{color:var(--muted);font-size:.9rem;margin:.15rem 0 0}.notes{color:var(--muted);font-size:.92rem;margin:0}
+    .badge{flex:none;font-weight:800;letter-spacing:.06em;font-size:.95rem;padding:.4rem .7rem;border:1px solid var(--line);color:var(--muted)}
+    .badge.t-P0{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+    .badge.t-P1{color:var(--gold);border-color:var(--gold)}
+    .badge.t-P2{color:var(--paper);border-color:var(--muted)}
+    .badge.t-P3{color:var(--muted)}
+    .stats{display:flex;flex-wrap:wrap;gap:.45rem .9rem;font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.7rem}
+    .stats b{color:var(--paper);font-weight:600}
+    .why-btn{align-self:flex-start;background:none;border:none;color:var(--gold);font:inherit;font-size:.92rem;font-weight:700;cursor:pointer;padding:.3rem 0;text-decoration:underline;text-underline-offset:.25em}
+    .why{border-top:1px solid var(--line);padding-top:.9rem;display:grid;gap:.9rem}
+    .why[hidden]{display:none}
+    .why h4{margin:0 0 .4rem;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+    .why p{margin:0;color:var(--muted);font-size:.92rem}
+    .kw{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;margin:0;padding:0}
+    .kw li{border:1px solid var(--line);padding:.15rem .55rem;font-size:.82rem;color:var(--paper);background:var(--ink)}
+    .kw li code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.82rem;white-space:pre}
+    .rule{border-left:2px solid var(--gold);padding-left:.9rem}
+    .rule p{color:var(--paper)}
+    .rule p + p{color:var(--muted);margin-top:.35rem}
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem}
+    .chip{font:inherit;font-size:.86rem;cursor:pointer;padding:.45rem .8rem;border:1px solid var(--gold);background:rgba(214,170,73,.12);color:var(--paper)}
+    .chip[aria-pressed="false"]{border-color:var(--line);background:transparent;color:var(--muted);text-decoration:line-through}
+    .steps{display:grid;gap:1rem}
+    .step{border:1px solid var(--line);border-left:2px solid var(--gold);padding:1.4rem;background:#0d1016}
+    .step h3{margin-bottom:.6rem}
+    .step p{color:var(--muted);margin:0 0 .6rem;max-width:860px}
+    .step p strong{color:var(--paper);font-weight:600}
+    .step .kw li{color:var(--muted)}
+    .doors{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-top:.5rem}
+    .doors p{margin:.4rem 0 1rem;color:var(--muted)}
+    .closing{font:500 clamp(1.6rem,3vw,2.2rem)/1.2 Georgia,serif;margin:2rem 0 0}
+    footer{padding-block:1.3rem 2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}footer p{margin:0}
+    @media(max-width:860px){.rows,.doors{grid-template-columns:1fr}}
+    @media(max-width:760px){.wrap{width:calc(100% - 2.25rem)}nav{gap:1rem}h1{font-size:clamp(2.6rem,12vw,4.2rem)}}
+    @media(max-width:360px){.topbar{align-items:flex-start;flex-direction:column;gap:0}}
+    @supports(padding:max(0px)){body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
 </head>
 <body>
-<a class="skip" href="#main">Skip to demo</a>
-<header class="topbar shell"><a class="lb-site-name" href="/">LEON BASIN.</a><nav aria-label="Demo navigation"><a href="/gtm-systems/">GTM Systems</a><a href="https://github.com/BasinLeon/gtm-signal-architect">Python source ↗</a></nav></header>
-<main id="main" class="shell">
-<section class="hero" aria-labelledby="hero-title"><p class="eyebrow">Signal Architect · Interactive prototype</p><h1 id="hero-title">Change a signal. See why the priority moves.</h1><p class="lede">Try three fictional companies. Edit a title or description and inspect every keyword match behind the tier.</p><div class="hero-actions"><button class="button primary" id="load-example" type="button" data-demo-control disabled>Load synthetic example</button><a class="button" href="#rules">Inspect the rules ↓</a></div><p class="note">Inputs stay in this page. No upload, login, or API key. The demo makes no analytics requests and stores no inputs automatically.</p><p class="load-status" id="load-status" role="status"></p></section>
-<noscript><p class="panel">JavaScript enables the editable demo. You can still inspect the starting example and rules below, or <a href="https://github.com/BasinLeon/gtm-signal-architect">run the Python app</a>.</p></noscript>
-<div class="workspace" id="workspace">
-<section class="panel" aria-labelledby="input-heading"><p class="section-label">01 · Fictional input</p><h2 id="input-heading">Start with one account.</h2><label for="example-select">Fictional company</label><select id="example-select" data-demo-control disabled><option value="northstar">Northstar Demo · technical keywords</option><option value="harbor">Harbor Demo · sales keywords</option><option value="meadow">Meadow Demo · neither majority</option></select><h3 id="company">Northstar Demo</h3><p class="person" id="person">Taylor Example · fictional contact</p><label for="title-input">Edit the fictional title</label><input id="title-input" value="CTO and technical founder" maxlength="160" autocomplete="off" data-demo-control disabled><label for="description-input">Edit the fictional description</label><textarea id="description-input" maxlength="1000" autocomplete="off" data-demo-control disabled>Security engineer hiring account executive and SDR for revenue operations.</textarea><p class="note">Try a change:</p><div class="presets"><button class="button" id="remove-signals" type="button" data-demo-control disabled>Remove sales-hiring terms</button><button class="button" id="add-signals" type="button" data-demo-control disabled>Add sales-hiring terms</button></div><button class="button" id="reset-example" type="button" data-demo-control disabled>Reset this example</button><p class="note">The four fields—company, contact name, title, and description—are searched together, as in the public Python prototype.</p></section>
-<section class="panel" aria-labelledby="result-heading"><div class="result-top"><div><p class="section-label">02 · Explainable result</p><h2 id="result-heading">Why this tier?</h2></div><span class="tier" id="priority" data-tier="P0">P0</span></div><p id="reason">At least 3 sales/GTM matches, a technical keyword majority, and rule strength of at least 60.</p><p class="comparison">Starting example <strong id="baseline">P0</strong><span aria-hidden="true">→</span>Current input <strong id="current-tier">P0</strong></p><dl class="metrics"><div><dt>Sales/GTM matches</dt><dd id="friction-count">3 / 7</dd></div><div><dt>Keyword category</dt><dd id="category">Technical</dd></div><div><dt>Rule strength</dt><dd id="strength">80 / 100</dd></div></dl><p class="note" id="strength-reason">Winning keyword count × 20, capped at 100. This is not a probability.</p><h3>Sales/GTM keyword matches</h3><ul class="tokens" id="friction-matches"><li>account executive</li><li>sdr</li><li>revenue</li></ul><div class="matches-grid"><div><h3>Technical keywords (<span id="technical-count">4</span>)</h3><ul class="tokens" id="technical-matches"><li>engineer</li><li>cto</li><li>technical founder</li><li>security</li></ul></div><div><h3>Sales-profile keywords (<span id="sales-count">0</span>)</h3><ul class="tokens" id="sales-matches"><li>No sales-profile keywords matched</li></ul></div></div><p class="note">Matches count distinct keywords, not repetitions. Overlapping phrases can match more than one keyword.</p><button class="button" id="download-result" type="button" data-demo-control disabled>Download this result (JSON)</button><p class="sr-only" id="score-status" role="status" aria-live="polite" aria-atomic="true"></p></section>
-</div>
-<details class="rules" id="rules" open><summary>03 · The rules, in evaluation order</summary><p class="note">The first matching rule wins. Technical and sales keyword counts determine the category; ties are Mixed. The original Python UI calls this category “Company DNA.”</p><ol><li data-rule="P0" class="active-rule"><strong>P0</strong>3+ sales/GTM matches, Technical category, and strength ≥ 60.<br><span class="applied" data-applied>Applied rule</span></li><li data-rule="P1"><strong>P1</strong>2+ sales/GTM matches and Technical category.<br><span class="applied" data-applied hidden>Applied rule</span></li><li data-rule="P2"><strong>P2</strong>2+ sales/GTM matches, or Technical category.<br><span class="applied" data-applied hidden>Applied rule</span></li><li data-rule="P3"><strong>P3</strong>All remaining inputs.<br><span class="applied" data-applied hidden>Applied rule</span></li></ol><p class="note">For Technical or Sales, strength is the winning keyword count × 20, capped at 100. Mixed uses a fixed 50. These formula values reproduce the prototype’s rules; they are not calibrated confidence estimates.</p></details>
-<div class="context"><section aria-labelledby="limits-heading"><h2 id="limits-heading">What the rules can tell you.</h2><p>They expose which words caused a tier. Keyword matches need human verification: a mention of a sales role does not confirm hiring, budget, authority, or purchase intent. Technical words do not verify someone’s background.</p><p>This demo covers scoring. The Python app also creates template drafts and CSV exports. The demo sends no outreach.</p></section><section aria-labelledby="next-heading"><h2 id="next-heading">Inspect the work behind it.</h2><p>This browser port follows the public Python prototype’s keyword and priority rules. The examples are fictional and separate from the career outcomes documented on the site.</p><p><a href="https://github.com/BasinLeon/gtm-signal-architect">Read the Python source and examples ↗</a></p><p><a href="/blog/posts/rebuilt-manual-sdr-workflow.html">Read the operating essay →</a></p><p><a href="/gtm-systems/">See the broader GTM approach →</a></p></section></div>
-</main>
-<footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="lb-site-name" href="/">LEON BASIN.</a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/work-with-me/">Contact</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar wrap"><a class="brand" href="https://basinleon.github.io/">LEON <span>BASIN.</span></a><nav aria-label="Main navigation"><a href="https://basinleon.github.io/gtm-systems/">GTM Systems</a><a href="https://github.com/BasinLeon/gtm-signal-architect">GitHub</a></nav></header>
+  <main id="main" class="wrap">
+    <div class="hero">
+      <p class="eyebrow">GTM Systems / Live demo</p>
+      <h1>Signal Architect.</h1>
+      <p class="position">A raw lead list goes in. A prioritized attack list comes out.</p>
+      <p class="record">This page runs the <strong>real Basin Priority Logic</strong> from the open source Signal Architect tool, ported line for line into your browser. Load the sample list, read exactly why each row earned its priority, then flip a signal off or on and watch the tier move. Nothing is uploaded: the scoring happens on this page.</p>
+      <p class="record"><strong>The sample list is synthetic.</strong> Twelve invented companies, invented people, written to carry the signals the logic reads. No real company or contact appears anywhere in the demo.</p>
+    </div>
+
+    <section id="demo" aria-labelledby="demo-title">
+      <h2 id="demo-title">Run it.</h2>
+      <div class="demo-head">
+        <button class="action primary" id="loadBtn" type="button">Load the sample list</button>
+        <button class="action" id="resetBtn" type="button" hidden>Reset all signals</button>
+        <span class="spacer"></span>
+        <span class="record" style="margin:0">Synthetic data. Real logic.</span>
+      </div>
+      <div class="counts" id="counts" aria-live="polite"></div>
+      <div class="empty" id="emptyState"><strong>No list loaded yet.</strong> Load the sample list and every row is scored on the spot: a Friction score from the Friction Filter, a DNA read from DNA Analysis, and a P0 to P3 priority from the combined rule.</div>
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <section id="logic" aria-labelledby="logic-title">
+      <h2 id="logic-title">How the logic works.</h2>
+      <p class="lead">Three steps, exactly as the tool runs them. The scan is a plain substring match over the full row text (company, contact, title, and notes combined, lowercased). It matches letters, not intent, and each keyword counts once per row no matter how often it appears. That rawness is deliberate: the logic is the filter, and a human still reviews the queue it produces.</p>
+      <div class="steps">
+        <article class="step" aria-labelledby="step1-title">
+          <p class="eyebrow">Step 1</p><h3 id="step1-title">Friction Filter</h3>
+          <p>Counts how many of these hiring keywords appear in the row: <strong>sales</strong>, <strong>account executive</strong>, <strong>ae </strong> (the letters ae followed by a space, catching AE as a standalone title), <strong>sdr</strong>, <strong>bdr</strong>, <strong>business development</strong>, <strong>revenue</strong>. One point per keyword found. A company hiring for sales roles is showing intent to build sales infrastructure, and that friction is the buying signal.</p>
+        </article>
+        <article class="step" aria-labelledby="step2-title">
+          <p class="eyebrow">Step 2</p><h3 id="step2-title">DNA Analysis</h3>
+          <p>Counts two keyword families. Technical: <strong>engineer</strong>, <strong>cto</strong>, <strong>vp engineering</strong>, <strong>developer</strong>, <strong>technical founder</strong>, <strong>phd</strong>, <strong>security</strong>, <strong>infosec</strong>. Sales: <strong>vp sales</strong>, <strong>cro</strong>, <strong>chief revenue</strong>, <strong>sales leader</strong>, <strong>head of sales</strong>. More technical matches means Technical DNA, more sales matches means Sales DNA, and an even count means Mixed DNA. Confidence is the winning count times 20, capped at 100; a tie is always 50.</p>
+        </article>
+        <article class="step" aria-labelledby="step3-title">
+          <p class="eyebrow">Step 3</p><h3 id="step3-title">Priority</h3>
+          <p><strong>P0</strong> when friction is 3 or more, the DNA is Technical, and confidence is 60 or more. <strong>P1</strong> when friction is 2 or more and the DNA is Technical. <strong>P2</strong> when friction is 2 or more, or the DNA is Technical. Everything else is <strong>P3</strong>. The queue is worked top down: P0 first, P3 only when the top of the list is clear.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="inspect" aria-labelledby="inspect-title">
+      <h2 id="inspect-title">Inspect the real thing.</h2>
+      <div class="doors">
+        <div><p class="eyebrow">The code</p><p>The full Python tool, friction filter, DNA analysis, and outreach drafting included, is public on GitHub.</p><a class="action" href="https://github.com/BasinLeon/gtm-signal-architect">Read the code</a></div>
+        <div><p class="eyebrow">The system</p><p>Signal Architect is one build inside a wider GTM operating system: qualification, routing, scoring, and human review.</p><a class="action" href="https://basinleon.github.io/gtm-systems/">See GTM Systems</a></div>
+        <div><p class="eyebrow">The essay</p><p>Why the tool exists: fifteen years of fighting bad data, and the weekend the filter got built instead of bought.</p><a class="action" href="https://basinleon.github.io/blog/posts/signal-engine.html">Read the essay</a></div>
+      </div>
+      <p class="closing">Architecture &gt; Activity.</p>
+    </section>
+  </main>
+  <footer class="wrap"><p>Leon Basin · Founding GTM, partnerships, and the systems underneath them. Demo data is synthetic; the scoring logic is the real Basin Priority Logic.</p></footer>
+
+<script>
+"use strict";
+/* ================= Basin Priority Logic =================
+   Faithful JavaScript port of the three scoring functions in
+   gtm-signal-architect/app.py (analyze_friction, analyze_dna,
+   calculate_priority). Python joins the row values with a single
+   space and lowercases; substring checks use `keyword in text`;
+   each keyword counts at most once per row. */
+/* LOGIC START */
+const HIRING_KEYWORDS = ['sales', 'account executive', 'ae ', 'sdr', 'bdr', 'business development', 'revenue'];
+const TECH_KEYWORDS = ['engineer', 'cto', 'vp engineering', 'developer', 'technical founder', 'phd', 'security', 'infosec'];
+const SALES_KEYWORDS = ['vp sales', 'cro', 'chief revenue', 'sales leader', 'head of sales'];
+
+function rowText(values) {
+  return values.map(function (v) { return String(v).toLowerCase(); }).join(' ');
+}
+
+function analyzeFriction(values) {
+  const text = rowText(values);
+  let score = 0;
+  const signals = [];
+  const matched = [];
+  for (const keyword of HIRING_KEYWORDS) {
+    if (text.includes(keyword)) {
+      score += 1;
+      signals.push('Hiring for ' + keyword);
+      matched.push(keyword);
+    }
+  }
+  return { score: score, signals: signals, matched: matched };
+}
+
+function analyzeDNA(values) {
+  const text = rowText(values);
+  const techMatched = TECH_KEYWORDS.filter(function (k) { return text.includes(k); });
+  const salesMatched = SALES_KEYWORDS.filter(function (k) { return text.includes(k); });
+  let dnaType, confidence;
+  if (techMatched.length > salesMatched.length) {
+    dnaType = 'Technical DNA';
+    confidence = Math.min(techMatched.length * 20, 100);
+  } else if (salesMatched.length > techMatched.length) {
+    dnaType = 'Sales DNA';
+    confidence = Math.min(salesMatched.length * 20, 100);
+  } else {
+    dnaType = 'Mixed DNA';
+    confidence = 50;
+  }
+  return { dnaType: dnaType, confidence: confidence, techMatched: techMatched, salesMatched: salesMatched };
+}
+
+function calculatePriority(frictionScore, dnaType, dnaConfidence) {
+  if (frictionScore >= 3 && dnaType === 'Technical DNA' && dnaConfidence >= 60) { return 'P0'; }
+  if (frictionScore >= 2 && dnaType === 'Technical DNA') { return 'P1'; }
+  if (frictionScore >= 2 || dnaType === 'Technical DNA') { return 'P2'; }
+  return 'P3';
+}
+
+function scoreRow(values) {
+  const friction = analyzeFriction(values);
+  const dna = analyzeDNA(values);
+  const priority = calculatePriority(friction.score, dna.dnaType, dna.confidence);
+  return { friction: friction, dna: dna, priority: priority };
+}
+/* LOGIC END */
+
+/* ================= Synthetic sample list =================
+   Twelve invented companies. Each segment is one signal-bearing
+   fact; the active segments joined with a single space form the
+   Notes field, identical to sample-list.csv when all are on. */
+const SAMPLE = [
+  { company: 'Kestrel Foundry', contact: 'Maya Chen', title: 'Co-founder', segments: [
+    { chip: 'Former CTO founder', text: 'Founded by a former CTO.' },
+    { chip: 'Security platform', text: 'Security platform for industrial control systems.' },
+    { chip: 'Engineering team of fourteen', text: 'Engineering team of fourteen.' },
+    { chip: 'Hiring SDRs', text: 'Now hiring SDRs.' },
+    { chip: 'First account executive', text: 'First account executive starts in January.' },
+    { chip: 'Business development motion', text: 'Building a business development motion.' }
+  ]},
+  { company: 'Vantage Robotics', contact: 'Jonas Weber', title: 'CEO', segments: [
+    { chip: 'Technical founder', text: 'Technical founder, still writes the core code.' },
+    { chip: 'PhD in applied mathematics', text: 'PhD in applied mathematics.' },
+    { chip: 'VP Engineering runs product', text: 'VP Engineering runs product.' },
+    { chip: 'Hiring two BDRs', text: 'Hiring two BDRs this quarter.' },
+    { chip: 'Sales pipeline', text: 'Sales pipeline owned by the founder.' },
+    { chip: 'Revenue target', text: 'New revenue target set by the board.' }
+  ]},
+  { company: 'Harborline Systems', contact: 'Priya Nair', title: 'Co-founder', segments: [
+    { chip: 'CTO and founding engineers', text: 'Led by a CTO and two founding engineers.' },
+    { chip: 'Infosec tooling', text: 'Infosec tooling for hospitals.' },
+    { chip: 'Hiring an SDR and an AE', text: 'Hiring an SDR and an AE this spring.' },
+    { chip: 'Sales hiring page live', text: 'Sales hiring page is live.' },
+    { chip: 'Business development partnerships', text: 'Business development partnerships underway.' }
+  ]},
+  { company: 'Ferrostat Systems', contact: 'Tom Okafor', title: 'Founder', segments: [
+    { chip: 'Software engineer founder', text: 'Founded by a software engineer.' },
+    { chip: 'Hiring its first SDR', text: 'Hiring its first SDR.' },
+    { chip: 'Sales outreach starting', text: 'Sales outreach starts next month.' }
+  ]},
+  { company: 'Lumenfield Labs', contact: 'Alina Petrova', title: 'Co-founder', segments: [
+    { chip: 'Developer tools', text: 'Developer tools for data pipelines.' },
+    { chip: 'CTO leads product', text: 'CTO leads all product decisions.' },
+    { chip: 'Hiring BDRs', text: 'Hiring BDRs for the spring push.' },
+    { chip: 'First sales hire', text: 'First sales hire starts Monday.' },
+    { chip: 'AE team planned', text: 'AE team planned for Q3.' }
+  ]},
+  { company: 'Quietline Systems', contact: 'Dee Kaminski', title: 'CEO', segments: [
+    { chip: 'Security audits', text: 'Security audits are the core product.' },
+    { chip: 'Engineering hires only', text: 'Engineering hires only this year.' },
+    { chip: 'No outbound motion yet', text: 'No outbound motion yet.' }
+  ]},
+  { company: 'Brightpath Training', contact: 'Carla Nunes', title: 'CEO', segments: [
+    { chip: 'VP Sales joined', text: 'VP Sales joined last month.' },
+    { chip: 'Head of Sales is hiring', text: 'Head of Sales is hiring.' },
+    { chip: 'Revenue team of six', text: 'Revenue team of six.' }
+  ]},
+  { company: 'Two Rivers Analytics', contact: 'Ben Osei', title: 'Co-founder', segments: [
+    { chip: 'CTO on the founding team', text: 'CTO on the founding team.' },
+    { chip: 'CRO hired', text: 'CRO hired in October.' },
+    { chip: 'Hiring SDRs', text: 'Hiring SDRs.' },
+    { chip: 'Business development role open', text: 'Business development role open.' }
+  ]},
+  { company: 'Meadowbrook Media', contact: 'Ingrid Halvorsen', title: 'CEO', segments: [
+    { chip: 'Chief Revenue Officer', text: 'Chief Revenue Officer leads growth.' },
+    { chip: 'Brand partnerships', text: 'Brand partnerships are the growth channel.' }
+  ]},
+  { company: 'Fernwood Ceramics', contact: 'Raul Mendoza', title: 'Founder', segments: [
+    { chip: 'Retail partners', text: 'Sells through retail partners.' },
+    { chip: 'Freelance sales rep', text: 'One freelance sales rep helps at trade shows.' },
+    { chip: 'New location opening', text: 'New location opens in spring.' }
+  ]},
+  { company: 'Aldergrove Bakery Group', contact: 'Peter Lindqvist', title: 'Owner', segments: [
+    { chip: 'Family owned', text: 'Family owned for twenty years.' },
+    { chip: 'Wholesale relationships', text: 'Wholesale orders come through long standing relationships.' },
+    { chip: 'Considering a first sales rep', text: 'Considering a first sales rep.' }
+  ]},
+  { company: 'Northfield Compute', contact: 'Sam Whitfield', title: 'Co-founder', segments: [
+    { chip: 'Technical founder with a PhD', text: 'Technical founder with a PhD.' },
+    { chip: 'Former CTO', text: 'Former CTO of an infrastructure company.' },
+    { chip: 'Security and infosec team', text: 'Security and infosec team of nine.' },
+    { chip: 'One BDR opening', text: 'One BDR opening posted.' }
+  ]}
+];
+
+/* ================= Demo state and rendering ================= */
+let state = null; // per row: array of booleans, one per segment
+
+function rowValues(rowIdx) {
+  const row = SAMPLE[rowIdx];
+  const notes = row.segments
+    .filter(function (seg, i) { return state[rowIdx][i]; })
+    .map(function (seg) { return seg.text; })
+    .join(' ');
+  return [row.company, row.contact, row.title, notes];
+}
+
+function ruleText(result) {
+  const f = result.friction.score;
+  const dna = result.dna.dnaType;
+  const c = result.dna.confidence;
+  const lines = [];
+  if (result.priority === 'P0') {
+    lines.push('Friction ' + f + ' + Technical DNA at ' + c + ' confidence meets the P0 rule: friction of 3 or more, Technical DNA, and confidence of 60 or more.');
+  } else if (result.priority === 'P1') {
+    lines.push('Friction ' + f + ' + Technical DNA meets the P1 rule: friction of 2 or more with Technical DNA.');
+    if (f >= 3 && c < 60) {
+      lines.push('P0 was in reach on friction, but confidence ' + c + ' sits under the 60 bar, so the row holds at P1.');
+    }
+  } else if (result.priority === 'P2') {
+    const parts = [];
+    if (f >= 2) { parts.push('friction of ' + f + ' (2 or more, any DNA)'); }
+    if (dna === 'Technical DNA') { parts.push('Technical DNA'); }
+    lines.push('The P2 rule fires on ' + parts.join(' and on ') + '.');
+    if (dna === 'Technical DNA' && f < 2) {
+      lines.push('Friction is only ' + f + ', so P1 stays out of reach until a second hiring signal appears.');
+    }
+  } else {
+    lines.push('No rule above P3 fires: friction is ' + f + ' (under 2) and the DNA is ' + dna + ', not Technical.');
+  }
+  return lines;
+}
+
+function kwList(keywords) {
+  if (!keywords.length) { return '<p>None matched.</p>'; }
+  return '<ul class="kw">' + keywords.map(function (k) { return '<li><code>' + k + '</code></li>'; }).join('') + '</ul>';
+}
+
+function render() {
+  const rowsEl = document.getElementById('rows');
+  const countsEl = document.getElementById('counts');
+  rowsEl.innerHTML = '';
+  const tally = { P0: 0, P1: 0, P2: 0, P3: 0 };
+  const results = [];
+
+  SAMPLE.forEach(function (row, i) {
+    const result = scoreRow(rowValues(i));
+    results.push(result);
+    tally[result.priority] += 1;
+
+    const card = document.createElement('article');
+    card.className = 'row-card';
+    card.setAttribute('data-row', String(i));
+
+    const notes = row.segments
+      .filter(function (seg, j) { return state[i][j]; })
+      .map(function (seg) { return seg.text; })
+      .join(' ');
+
+    let html = '';
+    html += '<div class="row-top"><div><h3>' + row.company + '</h3>';
+    html += '<p class="who">' + row.contact + ' · ' + row.title + '</p></div>';
+    html += '<span class="badge t-' + result.priority + '" data-field="badge">' + result.priority + '</span></div>';
+    html += '<p class="notes" data-field="notes">' + (notes || 'Every signal is off. The row text is the company, contact, and title alone.') + '</p>';
+    html += '<div class="stats"><span>Friction <b data-field="friction">' + result.friction.score + '</b></span>';
+    html += '<span>DNA <b data-field="dna">' + result.dna.dnaType + '</b></span>';
+    html += '<span>Confidence <b data-field="confidence">' + result.dna.confidence + '</b></span></div>';
+
+    html += '<button class="why-btn" type="button" aria-expanded="false" data-why="' + i + '">Why this priority</button>';
+    html += '<div class="why" id="why-' + i + '" hidden>';
+    html += '<div><h4>Friction Filter: matched hiring signals</h4>';
+    html += result.friction.matched.length
+      ? kwList(result.friction.matched) + '<p style="margin-top:.4rem">Friction score ' + result.friction.score + ': one point per matched keyword.</p>'
+      : '<p>No hiring keywords matched in this row.</p>';
+    html += '</div>';
+    html += '<div><h4>DNA Analysis: technical matches (' + result.dna.techMatched.length + ')</h4>' + kwList(result.dna.techMatched) + '</div>';
+    html += '<div><h4>DNA Analysis: sales matches (' + result.dna.salesMatched.length + ')</h4>' + kwList(result.dna.salesMatched) + '</div>';
+    html += '<div class="rule"><h4>The rule that fired</h4>' + ruleText(result).map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+    html += '<div><h4>Change the signals</h4><p style="margin-bottom:.6rem">Each chip is one fact in the row text. Turn one off or on and the row is rescored by the same logic, live.</p><div class="chips">';
+    row.segments.forEach(function (seg, j) {
+      html += '<button class="chip" type="button" data-row="' + i + '" data-seg="' + j + '" aria-pressed="' + state[i][j] + '">' + seg.chip + '</button>';
+    });
+    html += '</div></div></div>';
+
+    card.innerHTML = html;
+    rowsEl.appendChild(card);
+  });
+
+  countsEl.innerHTML =
+    '<span class="count p0"><b>' + tally.P0 + '</b>P0</span>' +
+    '<span class="count"><b>' + tally.P1 + '</b>P1</span>' +
+    '<span class="count"><b>' + tally.P2 + '</b>P2</span>' +
+    '<span class="count"><b>' + tally.P3 + '</b>P3</span>' +
+    '<span class="count"><b>' + SAMPLE.length + '</b>rows scored</span>';
+
+  window.__SA_RESULTS = results.map(function (r, i) {
+    return {
+      company: SAMPLE[i].company,
+      friction: r.friction.score,
+      signals: r.friction.signals,
+      dna: r.dna.dnaType,
+      confidence: r.dna.confidence,
+      priority: r.priority
+    };
+  });
+}
+
+document.getElementById('loadBtn').addEventListener('click', function () {
+  state = SAMPLE.map(function (row) { return row.segments.map(function () { return true; }); });
+  document.getElementById('emptyState').hidden = true;
+  document.getElementById('resetBtn').hidden = false;
+  render();
+  document.getElementById('rows').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('resetBtn').addEventListener('click', function () {
+  state = SAMPLE.map(function (row) { return row.segments.map(function () { return true; }); });
+  render();
+});
+
+document.getElementById('rows').addEventListener('click', function (ev) {
+  const chip = ev.target.closest('.chip');
+  if (chip) {
+    const i = Number(chip.getAttribute('data-row'));
+    const j = Number(chip.getAttribute('data-seg'));
+    const openWhy = {};
+    document.querySelectorAll('.why').forEach(function (w) { openWhy[w.id] = !w.hidden; });
+    state[i][j] = !state[i][j];
+    render();
+    document.querySelectorAll('.why').forEach(function (w) {
+      if (openWhy[w.id]) {
+        w.hidden = false;
+        const btn = document.querySelector('[data-why="' + w.id.replace('why-', '') + '"]');
+        if (btn) { btn.setAttribute('aria-expanded', 'true'); }
+      }
+    });
+    const newChip = document.querySelector('.chip[data-row="' + i + '"][data-seg="' + j + '"]');
+    if (newChip) { newChip.focus(); }
+    return;
+  }
+  const whyBtn = ev.target.closest('[data-why]');
+  if (whyBtn) {
+    const panel = document.getElementById('why-' + whyBtn.getAttribute('data-why'));
+    const open = panel.hidden;
+    panel.hidden = !open;
+    whyBtn.setAttribute('aria-expanded', String(open));
+  }
+});
+
+/* Hooks for the fidelity check: same functions the page renders with. */
+window.__SA = { scoreRow: scoreRow, analyzeFriction: analyzeFriction, analyzeDNA: analyzeDNA, calculatePriority: calculatePriority, SAMPLE: SAMPLE };
+</script>
 </body>
 </html>
