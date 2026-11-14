@@ -16,6 +16,10 @@ The source for [basinleon.github.io](https://basinleon.github.io/): my public op
 | Case studies | Company-level summaries of the problem, ownership, and results |
 | Build Record | A concise career chronology |
 
+## Try an interactive tool
+
+[Signal Architect](https://basinleon.github.io/signal-architect/) lets visitors edit fictional account signals and inspect the keyword rules behind a priority tier. Inputs stay in the browser. [Python prototype](https://github.com/BasinLeon/gtm-signal-architect).
+
 ## Preview locally
 
 Requires Python 3. From the repository root:
