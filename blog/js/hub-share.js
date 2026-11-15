@@ -36,7 +36,7 @@
  }).catch(()=>{/* Retain server-rendered archive entries. */});
  if(/^\/blog\/posts\/fragment-\d+\.html$/.test(location.pathname))fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(items=>{
  const ordered=items.filter(x=>typeof x.url==='string'&&/^\/blog\/posts\/fragment-\d+\.html$/.test(x.url)).sort((a,b)=>Number(a.slug.split('-').pop())-Number(b.slug.split('-').pop()));
- const index=ordered.findIndex(x=>x.url===location.pathname);if(index<0)return;
+ const index=ordered.findIndex(x=>x.url===location.pathname);if(index<0||document.querySelector('.read-next'))return;
  let nav=document.querySelector('.hub-reading-next');if(!nav){nav=document.createElement('nav');nav.className='hub-reading-next';document.querySelector('article')?.after(nav);}nav.setAttribute('aria-label','Fragment reading order');nav.replaceChildren();
  function add(item,label){const a=document.createElement('a');a.href=item.url;a.textContent=label+': '+item.title;a.dataset.track='Sam & Ink: '+label.toLowerCase();nav.append(a);}
  if(index>0)add(ordered[index-1],'Previous');const all=document.createElement('a');all.href='/blog/fiction/sam-and-ink/#fragments';all.textContent='All fragments';all.dataset.track='Sam & Ink: all fragments';nav.append(all);if(index<ordered.length-1)add(ordered[index+1],'Next');
