@@ -1,0 +1,260 @@
+#!/usr/bin/env node
+/**
+ * build-site-infra — deterministic index & discovery sync for basinleon.github.io
+ *
+ * Generates, from the writing catalog alone:
+ *   - sitemap.xml      (core routes + every catalog post + legacy supplement)
+ *   - blog/rss.xml     (full catalog parity: every readable post, newest first)
+ *   - llms.txt         (only the "## Selected Writing" index section is
+ *                       regenerated; all hand-written text is preserved)
+ *
+ * Sources of truth:
+ *   - data/posts.json      (primary catalog, 108 entries)
+ *   - data/fragments.json  (fragment catalog; entries missing from
+ *                           posts.json are merged in — currently
+ *                           fragment-11, fragment-12, fragment-13)
+ *
+ * Deterministic: output depends only on the catalog files, never on the
+ * wall clock. Re-running on an unchanged catalog is byte-identical.
+ * Dates for core routes and feed/llms freshness markers use the newest
+ * catalog post date, never a stale hand-edited date.
+ *
+ * Zero dependencies. Run from the repo root:
+ *   node scripts/build-site-infra
+ */
+
+import fs from "fs";
+import path from "path";
+
+const siteRoot = process.cwd();
+const baseUrl = "https://basinleon.github.io";
+
+// ---------------------------------------------------------------------------
+// Static core routes, in the order they appear in the pre-sync sitemap.xml.
+// lastmod for every core route is the newest catalog post date (see header).
+// ---------------------------------------------------------------------------
+const CORE_ROUTES = [
+  "/",
+  "/blueprint/",
+  "/llms.txt",
+  "/answers/",
+  "/basin-nexus/",
+  "/blog/",
+  "/blog/fiction/",
+  "/blog/fiction/sam-and-ink/",
+  "/case-studies/",
+  "/docs/about/",
+  "/docs/best-of/",
+  "/docs/frameworks/",
+  "/docs/start-here/",
+  "/gtm-architecture-live/",
+  "/library/",
+  "/pipeline-game/",
+  "/play/",
+  "/privacy/",
+  "/resume.html",
+  "/tools/",
+  "/work-with-me/",
+  "/services/",
+  "/assets/downloads/leon-basin-broken-gtm-motion.pdf",
+  "/plays/",
+  "/plays/untitled/",
+  "/gtm-systems/",
+  "/signal-architect/",
+];
+
+// ---------------------------------------------------------------------------
+// Legacy supplement: post files that exist under blog/posts/ and are already
+// in the sitemap, but appear in NEITHER catalog (no title/excerpt metadata
+// anywhere). They are kept in the sitemap with the lastmod they already
+// carry (2026-07-31) so the generated sitemap stays a superset of the old
+// one. They are NOT added to RSS or llms.txt, which are catalog-driven.
+// Flagged for Leon: decide whether to catalog or retire these three.
+// ---------------------------------------------------------------------------
+const SUPPLEMENTAL_POSTS = [
+  { path: "/blog/posts/echoes-divine-sf-reverie.html", date: "2026-07-31" },
+  { path: "/blog/posts/gtm-engineering-landscape.html", date: "2026-07-31" },
+  { path: "/blog/posts/sam-ink-the-signal.html", date: "2026-07-31" },
+];
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+const escapeXml = (value) =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+
+const oneLine = (value) => String(value || "").replace(/\s+/g, " ").trim();
+
+// RFC-822 date at 12:00 UTC on the entry's date (noon avoids TZ day-shift).
+const rfcDate = (isoDate) => {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d, 12, 0, 0)).toUTCString();
+};
+
+const byDateDescThenUrl = (a, b) =>
+  a.date === b.date
+    ? a.path.localeCompare(b.path)
+    : b.date.localeCompare(a.date);
+
+// ---------------------------------------------------------------------------
+// Load and merge the catalogs
+// ---------------------------------------------------------------------------
+const postsJson = JSON.parse(
+  fs.readFileSync(path.join(siteRoot, "data", "posts.json"), "utf8")
+);
+const fragmentsJson = JSON.parse(
+  fs.readFileSync(path.join(siteRoot, "data", "fragments.json"), "utf8")
+);
+
+const catalog = new Map(); // path -> entry
+for (const post of postsJson) {
+  if (!post || !post.url || post.url === "#") continue;
+  const rel = String(post.url).replace(/^\/+/, "");
+  const p = rel.startsWith("blog/") ? `/${rel}` : `/blog/${rel}`;
+  catalog.set(p, {
+    path: p,
+    title: oneLine(post.title || "Untitled"),
+    excerpt: oneLine(post.excerpt || ""),
+    date: post.date,
+    category: oneLine(post.category || "Blog"),
+  });
+}
+
+const fragmentsOnly = [];
+for (const frag of fragmentsJson) {
+  if (!frag || !frag.url) continue;
+  const p = String(frag.url).startsWith("/")
+    ? String(frag.url)
+    : `/${String(frag.url)}`;
+  if (catalog.has(p)) continue; // posts.json is authoritative on overlap
+  catalog.set(p, {
+    path: p,
+    title: oneLine(frag.title || "Untitled"),
+    excerpt: oneLine(frag.excerpt || ""),
+    date: frag.date,
+    category: "Fiction",
+  });
+  fragmentsOnly.push(p);
+}
+
+const posts = [...catalog.values()].sort(byDateDescThenUrl);
+const latestDate = posts.reduce(
+  (max, p) => (p.date > max ? p.date : max),
+  posts[0].date
+);
+
+// ---------------------------------------------------------------------------
+// sitemap.xml — core routes first (listed order), then every post newest
+// first, with the legacy supplement interleaved by its carried date.
+// ---------------------------------------------------------------------------
+const sitemapPosts = [
+  ...posts.map((p) => ({ path: p.path, date: p.date })),
+  ...SUPPLEMENTAL_POSTS,
+].sort(byDateDescThenUrl);
+
+const urlXml = (loc, lastmod) =>
+  `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
+
+const sitemapXml =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  CORE_ROUTES.map((r) => urlXml(`${baseUrl}${r}`, latestDate)).join("\n") +
+  "\n" +
+  sitemapPosts.map((p) => urlXml(`${baseUrl}${p.path}`, p.date)).join("\n") +
+  "\n</urlset>\n";
+
+fs.writeFileSync(path.join(siteRoot, "sitemap.xml"), sitemapXml, "utf8");
+
+// ---------------------------------------------------------------------------
+// blog/rss.xml — full catalog parity. Every catalog entry is a readable
+// post (all files verified on disk), essays and fragments alike.
+// ---------------------------------------------------------------------------
+const rssItems = posts
+  .map((p) => {
+    const url = `${baseUrl}${p.path}`;
+    return (
+      `<item><title>${escapeXml(p.title)}</title>` +
+      `<link>${escapeXml(url)}</link>` +
+      `<guid isPermaLink="true">${escapeXml(url)}</guid>` +
+      `<pubDate>${rfcDate(p.date)}</pubDate>` +
+      `<description>${escapeXml(p.excerpt)}</description></item>`
+    );
+  })
+  .join("\n");
+
+const rssXml =
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  `<?xml-stylesheet type="text/xsl" href="/blog/rss.xsl"?>\n` +
+  `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n` +
+  `  <channel>\n` +
+  `    <title>Leon Basin | The Archive</title>\n` +
+  `    <link>${baseUrl}/blog/</link>\n` +
+  `    <description>Essays, field notes, fiction, and operating records by Leon Basin.</description>\n` +
+  `    <language>en-us</language>\n` +
+  `    <lastBuildDate>${rfcDate(latestDate)}</lastBuildDate>\n` +
+  `    <atom:link href="${baseUrl}/blog/rss.xml" rel="self" type="application/rss+xml"/>\n` +
+  `    <generator>The Archive by Leon Basin</generator>\n` +
+  `    <copyright>Copyright ${latestDate.slice(0, 4)} Leon Basin</copyright>\n` +
+  `    <ttl>60</ttl>\n` +
+  `${rssItems}\n` +
+  `  </channel>\n` +
+  `</rss>\n`;
+
+fs.writeFileSync(path.join(siteRoot, "blog", "rss.xml"), rssXml, "utf8");
+
+// ---------------------------------------------------------------------------
+// llms.txt — regenerate only the "## Selected Writing" index section and
+// the "Last updated:" marker. Everything else is preserved byte for byte.
+// Non-post lines inside the old section (room links) are kept, in order,
+// after the generated post list.
+// ---------------------------------------------------------------------------
+const llmsPath = path.join(siteRoot, "llms.txt");
+const llmsOriginal = fs.readFileSync(llmsPath, "utf8");
+
+const sectionStart = llmsOriginal.indexOf("## Selected Writing");
+if (sectionStart === -1) {
+  throw new Error("llms.txt: '## Selected Writing' section not found");
+}
+const afterStart = llmsOriginal.slice(sectionStart);
+const nextHeading = afterStart.indexOf("\n## ", 1);
+const oldSection =
+  nextHeading === -1 ? afterStart : afterStart.slice(0, nextHeading);
+const tail = nextHeading === -1 ? "" : afterStart.slice(nextHeading);
+
+const keptLines = oldSection
+  .split("\n")
+  .filter((line) => line.startsWith("- ") && !line.includes("/blog/posts/"));
+
+const postLines = posts.map(
+  (p) => `- [${p.title}](${baseUrl}${p.path}): ${p.excerpt}`
+);
+
+const newSection =
+  `## Selected Writing\n` + [...postLines, ...keptLines].join("\n") + "\n";
+
+let llmsNext =
+  llmsOriginal.slice(0, sectionStart) + newSection + tail.replace(/^\n/, "\n");
+llmsNext = llmsNext.replace(
+  /^Last updated: .*$/m,
+  `Last updated: ${latestDate}`
+);
+
+fs.writeFileSync(llmsPath, llmsNext, "utf8");
+
+// ---------------------------------------------------------------------------
+// Report
+// ---------------------------------------------------------------------------
+console.log("build-site-infra: index & discovery sync complete");
+console.log(`  catalog: ${postsJson.length} posts.json + ${fragmentsOnly.length} fragments.json-only = ${posts.length} posts`);
+if (fragmentsOnly.length) {
+  for (const p of fragmentsOnly) console.log(`    merged from fragments.json: ${p}`);
+}
+console.log(`  latest catalog date: ${latestDate}`);
+console.log(`  sitemap.xml: ${CORE_ROUTES.length} core routes + ${sitemapPosts.length} posts (${SUPPLEMENTAL_POSTS.length} legacy supplement) = ${CORE_ROUTES.length + sitemapPosts.length} URLs`);
+console.log(`  blog/rss.xml: ${posts.length} items (full catalog parity)`);
+console.log(`  llms.txt: Selected Writing regenerated with ${posts.length} posts; ${keptLines.length} hand-written non-post lines preserved`);
