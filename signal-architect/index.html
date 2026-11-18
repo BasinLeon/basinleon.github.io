@@ -56,32 +56,84 @@
     .doors p{margin:.4rem 0 1rem;color:var(--muted)}
     .closing{font:500 clamp(1.6rem,3vw,2.2rem)/1.2 Georgia,serif;margin:2rem 0 0}
     footer{padding-block:1.3rem 2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}footer p{margin:0}
-    @media(max-width:860px){.rows,.doors{grid-template-columns:1fr}}
-    @media(max-width:760px){.wrap{width:calc(100% - 2.25rem)}nav{gap:1rem}h1{font-size:clamp(2.6rem,12vw,4.2rem)}}
+    .custom-scorer{border:1px solid var(--gold);background:linear-gradient(180deg,rgba(214,170,73,.07),rgba(13,16,22,.96));padding:1.5rem;margin-bottom:2rem}
+    .custom-scorer__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.75rem;margin-bottom:1rem}
+    .custom-scorer__head h3{font:500 clamp(1.45rem,2.4vw,1.9rem)/1.15 Georgia,serif;margin:0;color:var(--paper)}
+    .custom-presets{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}
+    .custom-preset-btn{font:inherit;font-size:.78rem;font-weight:600;padding:.4rem .75rem;border:1px solid var(--line);background:var(--ink);color:var(--muted);cursor:pointer;min-height:38px}
+    .custom-preset-btn:hover,.custom-preset-btn[aria-pressed="true"]{border-color:var(--gold);color:var(--paper);background:rgba(214,170,73,.14)}
+    .custom-inputs{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem}
+    .custom-field{display:flex;flex-direction:column;gap:.35rem}
+    .custom-field--wide{grid-column:1 / -1}
+    .custom-field label{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+    .custom-field input,.custom-field textarea{width:100%;padding:.7rem .85rem;background:var(--ink);border:1px solid var(--line);color:var(--paper);font:inherit;font-size:16px}
+    .custom-field input:focus,.custom-field textarea:focus{outline:none;border-color:var(--gold)}
+    .custom-result{border-top:1px solid var(--line);padding-top:1.1rem;display:grid;gap:.85rem}
+    .custom-result__top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem}
+    .custom-result__metrics{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;font-size:.9rem;color:var(--muted)}
+    .custom-result__metrics b{color:var(--paper)}
+    .custom-result__matches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem}
+    .custom-result__matches h4{margin:0 0 .35rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+    .custom-result__actions{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;padding-top:.4rem}
+    @media(max-width:860px){.rows,.doors,.custom-inputs,.custom-result__matches{grid-template-columns:1fr}}
+    @media(max-width:760px){.wrap{width:calc(100% - 2.25rem)}nav{gap:.85rem;flex-wrap:wrap}h1{font-size:clamp(2.6rem,12vw,4.2rem)}}
     @media(max-width:360px){.topbar{align-items:flex-start;flex-direction:column;gap:0}}
     @supports(padding:max(0px)){body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
 <link rel="stylesheet" href="/assets/css/continuity.css">
 <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
+<script src="/assets/js/insights.js?v=20261118-unified" defer></script>
 <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
 <meta property="og:site_name" content="Leon Basin">
 <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
 </head>
-<body>
+<body data-lb-section="gtm-systems">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="topbar wrap"><a class="brand" href="https://basinleon.github.io/">LEON <span>BASIN.</span></a><nav aria-label="Main navigation"><a href="https://basinleon.github.io/gtm-systems/">GTM Systems</a><a href="https://github.com/BasinLeon/gtm-signal-architect">GitHub</a></nav></header>
+  <header class="topbar wrap"><a class="brand lb-site-name" href="/">LEON <span>BASIN.</span></a><nav aria-label="Main navigation"><a href="/gtm-systems/">GTM Systems</a><a href="/case-studies/">Work</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/working-session/">Working Session</a><a href="https://github.com/BasinLeon/gtm-signal-architect">GitHub</a></nav></header>
   <main id="main" class="wrap">
     <div class="hero">
       <p class="eyebrow">GTM Systems / Live demo</p>
       <h1>Signal Architect.</h1>
       <p class="position">A raw lead list goes in. A prioritized attack list comes out.</p>
-      <p class="record">This page runs the <strong>real Basin Priority Logic</strong> from the open source Signal Architect tool, ported line for line into your browser. Load the sample list, read exactly why each row earned its priority, then flip a signal off or on and watch the tier move. Nothing is uploaded: the scoring happens on this page.</p>
+      <p class="record">This page runs the <strong>real Basin Priority Logic</strong> from the open source Signal Architect tool, ported line for line into your browser. Score your own account below, or load the synthetic 12-company sample list and watch how flipping any signal changes the tier. Nothing is uploaded: the scoring happens locally in your browser.</p>
       <p class="record"><strong>The sample list is synthetic.</strong> Twelve invented companies, invented people, written to carry the signals the logic reads. No real company or contact appears anywhere in the demo.</p>
     </div>
 
     <section id="demo" aria-labelledby="demo-title">
       <h2 id="demo-title">Run it.</h2>
+
+      <div class="custom-scorer" id="custom-scorer" aria-labelledby="custom-scorer-title">
+        <div class="custom-scorer__head">
+          <div>
+            <p class="eyebrow" style="margin-bottom:.3rem">Interactive Scorer · Paste or type any account</p>
+            <h3 id="custom-scorer-title">Test your own account or buying signal live.</h3>
+          </div>
+          <span class="record" style="margin:0;font-size:.84rem">Scores on every keystroke using the exact Python rules.</span>
+        </div>
+        <div class="custom-presets" role="group" aria-label="Sample signal presets">
+          <button type="button" class="custom-preset-btn" data-custom-preset="p0" aria-pressed="true">Preset: Series A Technical Founder (P0)</button>
+          <button type="button" class="custom-preset-btn" data-custom-preset="p1" aria-pressed="false">Preset: Infosec CTO Hiring SDRs (P1)</button>
+          <button type="button" class="custom-preset-btn" data-custom-preset="p2" aria-pressed="false">Preset: CRO Scaling Sales Org (P2)</button>
+          <button type="button" class="custom-preset-btn" data-custom-preset="p3" aria-pressed="false">Preset: No Active GTM Signal (P3)</button>
+        </div>
+        <div class="custom-inputs">
+          <div class="custom-field">
+            <label for="customCompany">Company / Account</label>
+            <input id="customCompany" type="text" value="Apex Autonomous" placeholder="e.g., Apex Autonomous">
+          </div>
+          <div class="custom-field">
+            <label for="customTitle">Decision Maker &amp; Role</label>
+            <input id="customTitle" type="text" value="Dr. Elena Rostova · CTO &amp; Technical Founder" placeholder="e.g., Jane Doe · CTO &amp; Co-founder">
+          </div>
+          <div class="custom-field custom-field--wide">
+            <label for="customNotes">Live Signals / Job Postings / Account Notes (try adding or removing keywords like sdr, account executive, revenue, cto, security, cro)</label>
+            <textarea id="customNotes" rows="2">Technical founder with a PhD in security. Engineering team of 18. Now hiring 2 SDRs, first account executive, and building a business development revenue motion.</textarea>
+          </div>
+        </div>
+        <div class="custom-result" id="customResult" aria-live="polite"></div>
+      </div>
+
       <div class="demo-head">
         <button class="action primary" id="loadBtn" type="button">Load the sample list</button>
         <button class="action" id="resetBtn" type="button" hidden>Reset all signals</button>
@@ -420,6 +472,100 @@ document.getElementById('rows').addEventListener('click', function (ev) {
     whyBtn.setAttribute('aria-expanded', String(open));
   }
 });
+
+/* ================= Custom Live Scorer ================= */
+const CUSTOM_PRESETS = {
+  p0: {
+    company: 'Apex Autonomous',
+    title: 'Dr. Elena Rostova · CTO & Technical Founder',
+    notes: 'Technical founder with a PhD in security. Engineering team of 18. Now hiring 2 SDRs, first account executive, and building a business development revenue motion.'
+  },
+  p1: {
+    company: 'Bastion Grid Security',
+    title: 'Marcus Vance · VP Engineering & Co-founder',
+    notes: 'Infosec platform built by security engineers. Posting open roles for first SDR and sales pipeline builder.'
+  },
+  p2: {
+    company: 'ScaleFlow Enterprise',
+    title: 'Dana Sterling · Chief Revenue Officer',
+    notes: 'CRO and VP Sales scaling the revenue team. Hiring 4 account executives and 3 BDRs for Q1 expansion.'
+  },
+  p3: {
+    company: 'QuietLab Research',
+    title: 'Noah Lind · Principal Designer',
+    notes: 'Design studio working through referrals. No outbound motion or open commercial roles.'
+  }
+};
+
+function renderCustom() {
+  const compEl = document.getElementById('customCompany');
+  const titleEl = document.getElementById('customTitle');
+  const notesEl = document.getElementById('customNotes');
+  const outEl = document.getElementById('customResult');
+  if (!compEl || !titleEl || !notesEl || !outEl) return;
+
+  const company = compEl.value.trim() || 'Untitled Account';
+  const title = titleEl.value.trim() || 'Operator';
+  const notes = notesEl.value.trim();
+  const res = scoreRow([company, '', title, notes]);
+  const rules = ruleText(res);
+
+  const briefProblem = 'Signal Architect scored "' + company + '" (' + title + ') as ' + res.priority +
+    ' [Friction: ' + res.friction.score + ', DNA: ' + res.dna.dnaType + ' (' + res.dna.confidence + '% confidence)]. ' +
+    'Signals: ' + (notes || 'None entered') + '. We want to operationalize this signal scoring and routing across our target list.';
+  const briefConsequence = 'High-intent P0/P1 accounts continue sitting unworked in static lists while reps spend cycles on P3 rows.';
+  const sessionUrl = '/working-session/?company=' + encodeURIComponent(company) +
+    '&problem=' + encodeURIComponent(briefProblem) +
+    '&consequence=' + encodeURIComponent(briefConsequence) + '#contact';
+
+  let html = '';
+  html += '<div class="custom-result__top">';
+  html += '<div class="custom-result__metrics">';
+  html += '<span>Account: <b>' + company.replace(/[<>&]/g, '') + '</b></span>';
+  html += '<span>Friction: <b>' + res.friction.score + '</b></span>';
+  html += '<span>DNA: <b>' + res.dna.dnaType + '</b></span>';
+  html += '<span>Confidence: <b>' + res.dna.confidence + '</b></span>';
+  html += '</div>';
+  html += '<span class="badge t-' + res.priority + '" style="font-size:1.05rem;padding:.45rem .85rem">Priority: ' + res.priority + '</span>';
+  html += '</div>';
+
+  html += '<div class="rule">' + rules.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+
+  html += '<div class="custom-result__matches">';
+  html += '<div><h4>Matched Hiring Signals (' + res.friction.matched.length + ')</h4>' + kwList(res.friction.matched) + '</div>';
+  html += '<div><h4>Matched Technical DNA (' + res.dna.techMatched.length + ')</h4>' + kwList(res.dna.techMatched) + '</div>';
+  html += '<div><h4>Matched Sales DNA (' + res.dna.salesMatched.length + ')</h4>' + kwList(res.dna.salesMatched) + '</div>';
+  html += '</div>';
+
+  html += '<div class="custom-result__actions">';
+  html += '<a class="action primary" data-track="Signal Architect: send scored brief" href="' + sessionUrl + '">Send this scored brief to Leon ($500 Working Session) →</a>';
+  html += '<a class="action" data-track="Signal Architect: diagnostic tool" href="/diagnostic.html">Run full GTM Motion Diagnostic ↗</a>';
+  html += '</div>';
+
+  outEl.innerHTML = html;
+}
+
+['customCompany', 'customTitle', 'customNotes'].forEach(function (id) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderCustom);
+});
+
+document.querySelectorAll('[data-custom-preset]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    const key = btn.getAttribute('data-custom-preset');
+    const p = CUSTOM_PRESETS[key];
+    if (!p) return;
+    document.querySelectorAll('[data-custom-preset]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+    document.getElementById('customCompany').value = p.company;
+    document.getElementById('customTitle').value = p.title;
+    document.getElementById('customNotes').value = p.notes;
+    renderCustom();
+  });
+});
+
+renderCustom();
 
 /* Hooks for the fidelity check: same functions the page renders with. */
 window.__SA = { scoreRow: scoreRow, analyzeFriction: analyzeFriction, analyzeDNA: analyzeDNA, calculatePriority: calculatePriority, SAMPLE: SAMPLE };

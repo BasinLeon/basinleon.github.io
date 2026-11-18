@@ -124,22 +124,108 @@ body.lb-editorial-post :is(.metrics-box, .highlight-box, .cta-box, .framework-bo
 body.lb-editorial-post footer:not(.lb-site-footer) {
   display: none !important;
 }
-html[data-reading-mode="paper"] body.lb-editorial-post {
+html[data-reading-mode="paper"] body.lb-editorial-post,
+html[data-reading-mode="light"] body.lb-editorial-post {
   background: #f4f1ea !important;
   color: #26211b !important;
 }
-html[data-reading-mode="paper"] body.lb-editorial-post .nav {
+html[data-reading-mode="paper"] body.lb-editorial-post .nav,
+html[data-reading-mode="light"] body.lb-editorial-post .nav {
   background: rgba(244, 241, 234, 0.94) !important;
   border-bottom-color: rgba(38, 33, 27, 0.15) !important;
 }
-html[data-reading-mode="paper"] body.lb-editorial-post :is(h1, h2, h3, strong, .nav-logo, .blog-title) {
+html[data-reading-mode="paper"] body.lb-editorial-post :is(h1, h2, h3, strong, .nav-logo, .blog-title),
+html[data-reading-mode="light"] body.lb-editorial-post :is(h1, h2, h3, strong, .nav-logo, .blog-title) {
   color: #171410 !important;
 }
-html[data-reading-mode="paper"] body.lb-editorial-post :is(p, li, dd, .nav-links a) {
+html[data-reading-mode="paper"] body.lb-editorial-post :is(p, li, dd, .nav-links a),
+html[data-reading-mode="light"] body.lb-editorial-post :is(p, li, dd, .nav-links a) {
   color: #4a4339 !important;
 }
-html[data-reading-mode="paper"] body.lb-editorial-post :is(.metrics-box, .highlight-box, .cta-box, .framework-box, .case-study, .post-content) {
+html[data-reading-mode="paper"] body.lb-editorial-post :is(.metrics-box, .highlight-box, .cta-box, .framework-box, .case-study, .post-content),
+html[data-reading-mode="light"] body.lb-editorial-post :is(.metrics-box, .highlight-box, .cta-box, .framework-box, .case-study, .post-content) {
   background: #ebe4d6 !important;
   border-color: rgba(167, 120, 32, 0.35) !important;
   color: #171410 !important;
+}
+
+.lb-tool-bench-callout {
+  box-sizing: border-box;
+  max-width: 46rem;
+  margin: 2.5rem auto;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid rgba(217, 171, 69, 0.45);
+  border-top: 3px solid #d9ab45;
+  background: rgba(22, 20, 17, 0.06);
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.lb-tool-bench-callout__eyebrow {
+  margin: 0 0 0.35rem !important;
+  font: 600 0.68rem/1.4 "JetBrains Mono", monospace !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b7831f !important;
+}
+html[data-reading-mode="dark"] .lb-tool-bench-callout__eyebrow,
+body.lb-editorial-post .lb-tool-bench-callout__eyebrow {
+  color: #d9ab45 !important;
+}
+.lb-tool-bench-callout h2 {
+  margin: 0 0 0.45rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  font-family: "Instrument Serif", Georgia, serif !important;
+  font-size: clamp(1.65rem, 3vw, 2.2rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.1 !important;
+}
+.lb-tool-bench-callout__lede {
+  margin: 0 0 1rem !important;
+  font-size: 0.94rem !important;
+  line-height: 1.55 !important;
+  opacity: 0.86;
+}
+.lb-tool-bench-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.lb-tool-bench-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(217, 171, 69, 0.32);
+  text-decoration: none !important;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.lb-tool-bench-card:hover,
+.lb-tool-bench-card:focus-visible {
+  border-color: #d9ab45;
+  background: rgba(217, 171, 69, 0.1);
+}
+.lb-tool-bench-card small {
+  font: 600 0.64rem/1.3 "JetBrains Mono", monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b7831f;
+}
+html[data-reading-mode="dark"] .lb-tool-bench-card small,
+body.lb-editorial-post .lb-tool-bench-card small {
+  color: #d9ab45;
+}
+.lb-tool-bench-card strong {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.lb-tool-bench-card span {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  opacity: 0.82;
+}
+@media (max-width: 640px) {
+  .lb-tool-bench-grid {
+    grid-template-columns: 1fr;
+  }
 }

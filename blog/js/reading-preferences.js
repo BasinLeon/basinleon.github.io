@@ -2,9 +2,9 @@
 (()=>{
  const root=document.documentElement;
  const isHub=document.body.classList.contains('writing-hub');
- const isShelf=location.pathname==='/blog/fiction/sam-and-ink/';
+ const isShelf=location.pathname==='/blog/fiction/sam-and-ink/'||location.pathname.startsWith('/answers');
  const isPost=/^\/blog\/posts\/[a-z0-9-]+\.html$/.test(location.pathname);
- const isStory=document.body.classList.contains('fiction-story-reader');
+ const isStory=document.body.classList.contains('fiction-story-reader')||document.body.classList.contains('hub-reader');
  if(!isHub&&!isPost&&!isShelf&&!isStory)return;
  if(document.querySelector('.hub-reading-preferences'))return;
  if(isPost||isShelf||isStory)document.body.classList.add('hub-reader');
@@ -34,5 +34,29 @@
  function save(){write(lastKey,{path:location.pathname,title,progress:Math.min(1,Math.max(0,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)))});}
  if(location.hash==='#resume'&&valid(previous)&&previous.path===location.pathname){requestAnimationFrame(()=>requestAnimationFrame(()=>{scrollTo(0,(Number(previous.progress)||0)*Math.max(0,document.documentElement.scrollHeight-innerHeight));save();}));}else save();
  let timer;addEventListener('scroll',()=>{clearTimeout(timer);timer=setTimeout(save,200);},{passive:true});addEventListener('pagehide',save);
+ const prevLink=document.querySelector('.hub-reading-next a[data-track*="previous"]');
+ const nextLink=document.querySelector('.hub-reading-next a[data-track*="next"]');
+ addEventListener('keydown',ev=>{
+  if(ev.defaultPrevented||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  if(/^(INPUT|TEXTAREA|SELECT|VIDEO)$/.test(document.activeElement?.tagName||''))return;
+  if(ev.key==='ArrowLeft'&&prevLink){ev.preventDefault();prevLink.click();}
+  if(ev.key==='ArrowRight'&&nextLink){ev.preventDefault();nextLink.click();}
+ });
+ const navBar=document.querySelector('.hub-reading-next');
+ const slugMatch=location.pathname.match(/(fragment-\d+)/);
+ if(navBar&&slugMatch&&navigator.clipboard){
+  const copyBtn=document.createElement('button');
+  copyBtn.type='button';
+  copyBtn.textContent='Copy tagged link';
+  copyBtn.style.cssText='background:transparent;border:1px solid currentColor;color:inherit;padding:.35rem .7rem;font:inherit;font-size:.78rem;cursor:pointer;min-height:36px;opacity:.85';
+  copyBtn.addEventListener('click',()=>{
+   const tagged='https://basinleon.github.io'+location.pathname+'?utm_source=social&utm_medium=share&utm_campaign='+slugMatch[1];
+   navigator.clipboard.writeText(tagged).then(()=>{
+    copyBtn.textContent='Copied link ✓';
+    setTimeout(()=>{copyBtn.textContent='Copy tagged link';},2000);
+   }).catch(()=>{});
+  });
+  navBar.append(copyBtn);
+ }
  }
 })();

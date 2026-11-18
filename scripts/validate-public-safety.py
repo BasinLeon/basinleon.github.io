@@ -75,6 +75,14 @@ def main() -> int:
 
         try:
             text = path.read_text(encoding="utf-8")
+        except TimeoutError:
+            text = subprocess.run(
+                ["git", "show", f":{rel}"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout
         except UnicodeDecodeError:
             continue
 

@@ -23,8 +23,10 @@ function setup(intent, response = { ok: true, json: async () => ({ accepted: tru
   });
   return { handlers, events, requests, status, button };
 }
-test('focus alone is not a conversion', () => {
+test('focus alone is not a conversion and preserves human startedAt window for fast autofill', async () => {
   const app = setup('Speaking or writing'); app.handlers.focusin(); assert.equal(app.events.filter(e=>e[0]==='Conversion').length, 0);
+  await app.handlers.submit({ preventDefault() {} });
+  assert.equal(Date.now() - app.requests[0].startedAt >= 2500, true);
 });
 test('writing inquiry is not a hiring step and keeps entry attribution', async () => {
   const app = setup('Speaking or writing'); await app.handlers.submit({ preventDefault() {} });

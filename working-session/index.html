@@ -162,6 +162,26 @@
     #session-form .lb-contact-form__submit{background:#76551c;color:#fffdf8;min-height:48px}
     #session-form .lb-contact-form__status.is-error{color:#a02e21}
     #session-form .lb-contact-form__status.is-success{color:#236c4c}
+    .bottleneck-picker{margin:2rem 0 2.5rem;padding:1.5rem;background:rgba(255,253,248,.04);border:1px solid rgba(217,192,138,.28)}
+    .bottleneck-picker__head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.75rem;margin-bottom:1rem}
+    .bottleneck-picker__title{margin:0;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.55rem,2.6vw,2.1rem);font-weight:400;color:var(--paper)}
+    .bottleneck-picker__hint{margin:0;font-size:.82rem;color:var(--champagne)}
+    .bottleneck-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem}
+    .bottleneck-btn{appearance:none;text-align:left;padding:1rem;background:rgba(18,17,13,.85);border:1px solid rgba(245,242,234,.2);color:var(--paper);font:inherit;cursor:pointer;transition:border-color 160ms ease,background 160ms ease,transform 160ms ease;display:flex;flex-direction:column;gap:.35rem;min-height:108px}
+    .bottleneck-btn:hover,.bottleneck-btn:focus-visible{border-color:var(--champagne);background:rgba(217,192,138,.1)}
+    .bottleneck-btn[aria-pressed="true"]{border-color:var(--champagne);background:rgba(217,192,138,.16);box-shadow:inset 0 0 0 1px var(--champagne)}
+    .bottleneck-btn__num{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--champagne)}
+    .bottleneck-btn__label{font-weight:800;font-size:.92rem;line-height:1.25;color:var(--paper)}
+    .bottleneck-btn__sub{font-size:.78rem;line-height:1.4;color:rgba(245,242,234,.7)}
+    .diagnostic-preview{margin-top:1rem;padding:1.15rem 1.25rem;background:rgba(18,17,13,.95);border-left:3px solid var(--champagne);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+    .diagnostic-preview__item strong{display:block;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--champagne);margin-bottom:.3rem}
+    .diagnostic-preview__item p{margin:0;font-size:.84rem;line-height:1.5;color:rgba(245,242,234,.86)}
+    .prefill-banner{margin:0 0 1rem;padding:.65rem .85rem;background:rgba(138,109,59,.14);border-left:3px solid #76551c;color:#171510;font-size:.82rem;font-weight:600}
+    .prefill-banner[hidden]{display:none}
+    .direct-email-bar{margin-top:1rem;padding-top:.9rem;border-top:1px solid rgba(23,21,16,.15);display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;font-size:.8rem;color:#504737}
+    .direct-email-bar a,.direct-email-bar button{font:inherit;font-weight:700;color:#76551c;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:.2em;min-height:36px;display:inline-flex;align-items:center}
+    @media(max-width:960px){.bottleneck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.diagnostic-preview{grid-template-columns:1fr}}
+    @media(max-width:560px){.bottleneck-grid{grid-template-columns:1fr}}
     @media(max-width:480px){#session-form{padding:1.1rem;scroll-margin-top:92px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
   </style>
@@ -173,8 +193,15 @@
   <a class="skip" href="#main">Skip to the session</a>
   <header class="header">
     <nav class="nav" aria-label="Primary navigation">
-      <a class="brand lb-site-name" href="/">LEON BASIN.</a>
-      <a class="session-nav-cta" data-lb-engage data-track="Working session: header CTA" href="#session-form">Request a session</a>
+      <a class="brand lb-site-name" href="/">LEON <span>BASIN.</span></a>
+      <div class="links" id="primary-links">
+        <a href="/gtm-systems/">GTM Systems</a>
+        <a href="/case-studies/">Work</a>
+        <a href="/basin-nexus/">Nexus</a>
+        <a href="/blog/">Writing</a>
+        <a href="/blog/fiction/">Fiction</a>
+        <a class="session-nav-cta" data-lb-engage data-track="Working session: header CTA" href="#contact">Request a session</a>
+      </div>
     </nav>
   </header>
   <main id="main">
@@ -184,8 +211,11 @@
           <div class="eyebrow">Revenue Working Session · $500 fixed fee</div>
           <h1 class="display" id="title">You're having sales conversations. Revenue still feels unpredictable. Let's find out why.</h1>
           <p class="lede">90 minutes on one revenue problem. Leave knowing what to fix first, who owns it, and what happens next.</p>
-          <a class="button" data-lb-engage data-track="Working session: hero CTA" href="#session-form">Request a session</a>
-          <p class="request-note">Start with a short request. No payment or booking until we confirm fit.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.85rem;align-items:center;margin-top:1.25rem">
+            <a class="button" style="margin-top:0" data-lb-engage data-track="Working session: hero CTA" href="#contact">Pick your bottleneck &amp; request →</a>
+            <a href="/signal-architect/" data-track="Working session: Signal Architect link" style="font-size:.86rem;font-weight:700;color:var(--brass-deep);text-underline-offset:.25em;min-height:44px;display:inline-flex;align-items:center">Or test Signal Architect first ↗</a>
+          </div>
+          <p class="request-note">1-tap bottleneck prefill below. No payment or booking until we confirm fit.</p>
         </div>
         <div class="price-card">
           <div class="fee">$500</div>
@@ -273,11 +303,55 @@
 
     <section id="contact" class="contact" aria-labelledby="contact-title">
       <div class="shell">
-        <div class="eyebrow">Start</div>
+        <div class="eyebrow">Start · 1-Tap Diagnostic Intake</div>
         <h2 class="display" id="contact-title">Tell me what's not working.</h2>
+
+        <div class="bottleneck-picker" id="diagnostic-selector" aria-labelledby="picker-title">
+          <div class="bottleneck-picker__head">
+            <h3 class="bottleneck-picker__title" id="picker-title">Step 1 · Select the closest break to preview the 90-minute plan &amp; pre-fill your brief</h3>
+            <p class="bottleneck-picker__hint">Click any card to pre-fill the form below (you can edit every word).</p>
+          </div>
+          <div class="bottleneck-grid" role="group" aria-label="Common GTM bottlenecks">
+            <button type="button" class="bottleneck-btn" data-bottleneck="signal" aria-pressed="true">
+              <span class="bottleneck-btn__num">01 · Signal &amp; Routing</span>
+              <span class="bottleneck-btn__label">Noisy lists &amp; slow signal routing</span>
+              <span class="bottleneck-btn__sub">Reps work static spreadsheets instead of verified buying triggers.</span>
+            </button>
+            <button type="button" class="bottleneck-btn" data-bottleneck="sdr" aria-pressed="false">
+              <span class="bottleneck-btn__num">02 · Qualification &amp; Ramp</span>
+              <span class="bottleneck-btn__label">SDR ramp &amp; handoff leakage</span>
+              <span class="bottleneck-btn__sub">Meetings don't convert cleanly to stage-1 pipeline; onboarding drags.</span>
+            </button>
+            <button type="button" class="bottleneck-btn" data-bottleneck="ae" aria-pressed="false">
+              <span class="bottleneck-btn__num">03 · Discovery &amp; Close</span>
+              <span class="bottleneck-btn__label">Deals stall after discovery or PoC</span>
+              <span class="bottleneck-btn__sub">Conversations happen, but next-step ownership and exit gates blur.</span>
+            </button>
+            <button type="button" class="bottleneck-btn" data-bottleneck="partner" aria-pressed="false">
+              <span class="bottleneck-btn__num">04 · Partner &amp; Public Sector</span>
+              <span class="bottleneck-btn__label">Partner or municipal territory motion</span>
+              <span class="bottleneck-btn__sub">Channel relationships or public-sector accounts lack a repeatable play.</span>
+            </button>
+          </div>
+          <div class="diagnostic-preview" id="diagnostic-preview" aria-live="polite">
+            <div class="diagnostic-preview__item">
+              <strong>Minutes 0–15 · Evidence we inspect</strong>
+              <p id="preview-inspect">Current account list sources, enrichment fields, and why reps skip or stall on assigned accounts.</p>
+            </div>
+            <div class="diagnostic-preview__item">
+              <strong>Minutes 15–75 · Constraint we rebuild</strong>
+              <p id="preview-constraint">Replace static tiering with a deterministic 3-rule Friction + DNA priority filter (P0–P3) and clear routing ownership.</p>
+            </div>
+            <div class="diagnostic-preview__item">
+              <strong>Within 48 Hours · Written brief you keep</strong>
+              <p id="preview-brief">Documented scoring logic, P0 response SLA, and the exact CRM fields and steps to cut from rep workflow.</p>
+            </div>
+          </div>
+        </div>
+
         <div class="contact-grid">
           <div>
-            <p class="lede">Tell me what's not working. I'll read it myself and tell you whether a working session makes sense.</p>
+            <p class="lede">I read every request myself and reply within two business days to confirm whether a working session makes sense.</p>
             <ol class="booking-steps">
               <li><strong>I review your request.</strong> Expect a reply within two business days. If it is not a fit, I will say so.</li>
               <li><strong>We confirm the terms and time.</strong> If we agree to proceed, payment happens before the session. Cancellation, rescheduling and refund details are confirmed in writing.</li>
@@ -287,17 +361,24 @@
             <p>Sending this form does not book or charge you.</p>
           </div>
           <form id="session-form" class="lb-contact-form" data-lb-contact-form>
+            <p class="prefill-banner" id="prefill-banner" hidden>✓ Diagnostic template loaded — edit any detail below, then enter your name and email.</p>
             <div class="lb-contact-form__grid">
-              <div class="lb-contact-form__field lb-contact-form__field--wide"><label for="contact-problem">What is broken in GTM right now?</label><textarea id="contact-problem" name="problem" minlength="12" maxlength="1300" required></textarea></div>
-              <div class="lb-contact-form__field lb-contact-form__field--wide"><label for="contact-consequence">What happens if it is still broken 90 days from now?</label><textarea id="contact-consequence" name="consequence" minlength="12" maxlength="600" required></textarea></div>
+              <div class="lb-contact-form__field lb-contact-form__field--wide"><label for="contact-problem">What is broken in GTM right now?</label><textarea id="contact-problem" name="problem" minlength="12" maxlength="1300" required placeholder="Select a bottleneck above to pre-fill, or describe where pipeline is stalling..."></textarea></div>
+              <div class="lb-contact-form__field lb-contact-form__field--wide"><label for="contact-consequence">What happens if it is still broken 90 days from now?</label><textarea id="contact-consequence" name="consequence" minlength="12" maxlength="600" required placeholder="e.g., Missed quarterly pipeline target, founder stuck running every follow-up..."></textarea></div>
               <div class="lb-contact-form__field"><label for="contact-name">Name</label><input id="contact-name" name="name" autocomplete="name" required></div>
               <div class="lb-contact-form__field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required></div>
               <div class="lb-contact-form__field"><label for="contact-company">Company</label><input id="contact-company" name="company" autocomplete="organization"></div>
-              <input type="hidden" name="intent" value="Revenue Working Session ($500)">
+              <input type="hidden" name="intent" id="contact-intent" value="Revenue Working Session ($500)">
 
               <div class="lb-contact-form__trap" aria-hidden="true"><label for="contact-website">Website</label><input id="contact-website" name="website" tabindex="-1" autocomplete="off"></div>
             </div>
             <div class="lb-contact-form__footer"><button class="lb-contact-form__submit" type="submit">Request a session</button><p class="lb-contact-form__status" data-lb-contact-status aria-live="polite">No account or email app required.</p></div>
+            <div class="direct-email-bar">
+              <span>Prefer email?</span>
+              <a id="direct-gmail-link" data-track="Working session: open Gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=lbasin23%40gmail.com&amp;su=Revenue%20Working%20Session%20(%24500)" target="_blank" rel="noopener noreferrer">Open in Gmail ↗</a>
+              <a id="direct-mailto-link" data-track="Working session: mailto" href="mailto:lbasin23@gmail.com?subject=Revenue%20Working%20Session%20(%24500)">Open email app</a>
+              <button type="button" id="copy-session-email" data-track="Working session: copy email">Copy lbasin23@gmail.com</button>
+            </div>
             <small class="lb-contact-form__privacy">Sent to Leon&rsquo;s private first-party intake. <a href="/privacy/">Privacy details</a>.</small>
           </form>
         </div>
@@ -308,7 +389,143 @@
   <script src="/assets/js/conversation.js" defer></script>
   <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
   <script src="/assets/js/continuity.js" defer></script>
-  <script src="/assets/js/contact-form.js?v=20261009" defer></script>
+  <script src="/assets/js/contact-form.js?v=20261118" defer></script>
+  <script>
+    (() => {
+      const PRESETS = {
+        signal: {
+          label: "Signal & Routing",
+          inspect: "Current account list sources, enrichment fields, and why reps skip or stall on assigned accounts.",
+          constraint: "Replace static tiering with a deterministic 3-rule Friction + DNA priority filter (P0–P3) and clear routing ownership.",
+          brief: "Documented scoring logic, P0 response SLA, and the exact CRM fields and steps to cut from rep workflow.",
+          problem: "Signal & targeting noise: Our team is working broad lists instead of verified buying signals, and high-fit accounts aren't surfacing or routing fast enough.",
+          consequence: "Another quarter of low outbound conversion, wasted rep touches, and unpredictable pipeline creation."
+        },
+        sdr: {
+          label: "SDR Qualification & Ramp",
+          inspect: "Last 10 SDR-to-AE handoffs, disqualification reasons, and current sequence/call branching.",
+          constraint: "Isolate vague qualification rules and compress playbook branching into 3 verifiable checks (the 90-day to 5-day ramp pattern).",
+          brief: "Qualification scorecard, AE handoff acceptance contract, and a 5-day rep certification checklist.",
+          problem: "SDR qualification & ramp: Reps take too long to get productive, and meetings handed to AEs aren't consistently converting into qualified pipeline.",
+          consequence: "High rep burn, stalled stage-1 opportunities, and founders or AEs pulled back into manual prospecting."
+        },
+        ae: {
+          label: "AE Discovery & Stalled Deals",
+          inspect: "5 active or stalled opportunities, post-discovery follow-up notes, and PoC exit criteria.",
+          constraint: "Fix missing mutual decision steps, SE/AE handoff gaps, and unowned post-call follow-through.",
+          brief: "Deal-stage exit gates, a 7-day stalled-deal recovery play, and named follow-up ownership.",
+          problem: "AE discovery & stalled deals: We are having sales conversations, but opportunities stall after discovery or PoC without clear next-step ownership.",
+          consequence: "Forecast slippage, long sales cycles, and winnable deals dying in 'no decision'."
+        },
+        partner: {
+          label: "Partner & Public-Sector Motion",
+          inspect: "Current partner roster or public-sector territory map, budget/grant calendar alignment, and co-sell flow.",
+          constraint: "Concentrate execution on the 20% of partners or agencies with active buying triggers and define a concrete first-conversation play.",
+          brief: "Territory/partner tiering matrix, co-sell registration rules, and a 30-day operating cadence.",
+          problem: "Partner / public-sector motion: We need a repeatable system for turning channel relationships or municipal/public-sector signals into qualified pipeline.",
+          consequence: "Missed budget or grant windows and partner activity that produces meetings without pipeline."
+        }
+      };
+
+      const form = document.getElementById("session-form");
+      const problemEl = document.getElementById("contact-problem");
+      const consequenceEl = document.getElementById("contact-consequence");
+      const companyEl = document.getElementById("contact-company");
+      const nameEl = document.getElementById("contact-name");
+      const bannerEl = document.getElementById("prefill-banner");
+      const inspectEl = document.getElementById("preview-inspect");
+      const constraintEl = document.getElementById("preview-constraint");
+      const briefEl = document.getElementById("preview-brief");
+      const gmailLink = document.getElementById("direct-gmail-link");
+      const mailtoLink = document.getElementById("direct-mailto-link");
+      const buttons = [...document.querySelectorAll("[data-bottleneck]")];
+
+      function syncDirectLinks() {
+        const subject = "Revenue Working Session ($500)" + (companyEl.value ? " — " + companyEl.value : "");
+        const body = [
+          problemEl.value ? "What is broken in GTM right now:\n" + problemEl.value : "",
+          consequenceEl.value ? "\nWhat happens if it is still broken 90 days from now:\n" + consequenceEl.value : ""
+        ].filter(Boolean).join("\n");
+        if (gmailLink) {
+          gmailLink.href = "https://mail.google.com/mail/?view=cm&fs=1&to=lbasin23%40gmail.com&su=" + encodeURIComponent(subject) + (body ? "&body=" + encodeURIComponent(body) : "");
+        }
+        if (mailtoLink) {
+          mailtoLink.href = "mailto:lbasin23@gmail.com?subject=" + encodeURIComponent(subject) + (body ? "&body=" + encodeURIComponent(body) : "");
+        }
+      }
+
+      function applyPreset(key, focusForm) {
+        const preset = PRESETS[key];
+        if (!preset) return;
+        buttons.forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.bottleneck === key)));
+        if (inspectEl) inspectEl.textContent = preset.inspect;
+        if (constraintEl) constraintEl.textContent = preset.constraint;
+        if (briefEl) briefEl.textContent = preset.brief;
+        if (problemEl) problemEl.value = preset.problem;
+        if (consequenceEl) consequenceEl.value = preset.consequence;
+        if (bannerEl) {
+          bannerEl.hidden = false;
+          bannerEl.textContent = "✓ Loaded \"" + preset.label + "\" diagnostic template — edit any detail below or just add your name & email.";
+        }
+        syncDirectLinks();
+        if (form) form.dispatchEvent(new Event("focusin", { bubbles: true }));
+        if (window.lbInsightsRecord) {
+          window.lbInsightsRecord("Internal Click", {
+            destination: "/working-session/#" + key,
+            label: "Working session preset: " + preset.label,
+            region: "section"
+          });
+        }
+        if (focusForm && nameEl) {
+          nameEl.focus({ preventScroll: false });
+        }
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => applyPreset(btn.dataset.bottleneck, true));
+      });
+
+      [problemEl, consequenceEl, companyEl].forEach(el => {
+        if (el) el.addEventListener("input", syncDirectLinks);
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const urlProblem = params.get("problem");
+      const urlConsequence = params.get("consequence");
+      const urlCompany = params.get("company");
+      const urlBottleneck = params.get("bottleneck");
+      if (urlBottleneck && PRESETS[urlBottleneck]) {
+        applyPreset(urlBottleneck, false);
+      }
+      if (urlProblem && problemEl) {
+        problemEl.value = urlProblem.slice(0, 1300);
+        if (bannerEl) {
+          bannerEl.hidden = false;
+          bannerEl.textContent = "✓ Scored signal brief imported — review below and add your name & email.";
+        }
+      }
+      if (urlConsequence && consequenceEl) {
+        consequenceEl.value = urlConsequence.slice(0, 600);
+      }
+      if (urlCompany && companyEl) {
+        companyEl.value = urlCompany.slice(0, 140);
+      }
+      if (urlProblem || urlConsequence || urlCompany) {
+        syncDirectLinks();
+        if (form) form.dispatchEvent(new Event("focusin", { bubbles: true }));
+      }
+
+      const copyBtn = document.getElementById("copy-session-email");
+      if (copyBtn && navigator.clipboard) {
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText("lbasin23@gmail.com").then(() => {
+            copyBtn.textContent = "Copied lbasin23@gmail.com ✓";
+            setTimeout(() => { copyBtn.textContent = "Copy lbasin23@gmail.com"; }, 2200);
+          }).catch(() => {});
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>

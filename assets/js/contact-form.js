@@ -24,12 +24,12 @@
   forms.forEach(function (form) {
     var status = form.querySelector("[data-lb-contact-status]");
     var submit = form.querySelector("button[type=submit]");
-    var startedAt = Date.now();
+    var startedAt = Date.now() - 3000;
 
     form.addEventListener("focusin", function () {
       if (form.dataset.started === "1") return;
       form.dataset.started = "1";
-      startedAt = Date.now();
+      startedAt = Math.min(startedAt, Date.now() - 3000);
       if(window.lbInsightsRecord) window.lbInsightsRecord("Form Start", {category:"Commercial intent",action:"contact-form-start",destination:location.pathname,label:"Contact form started",region:"section"});
     }, { once: true });
 
