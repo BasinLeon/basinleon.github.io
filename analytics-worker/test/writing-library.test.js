@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
+import readingPaths from '../worker/reading-paths.json' with { type: 'json' };
 import { WRITING_LIBRARY_SQL, FRAGMENT_FOLLOW_THROUGH_SQL } from '../worker/writing-library.js';
 
 test('writing rooms require a matched post view and separate landing and discovery sessions', () => {
@@ -67,7 +68,7 @@ test('fragment follow-through counts direct landing sessions and matches tagged 
   view('boundary', '30', destination);
 
   const rows = db.prepare(FRAGMENT_FOLLOW_THROUGH_SQL).all('2026-11-05 09:00:01', '2026-11-05 09:00:30');
-  assert.equal(rows.length, 12);
+  assert.equal(rows.length, readingPaths.length);
   const row=rows.find(r=>r.fragment===fragment && r.destination===destination);
   assert.deepEqual({fragment:row.fragment,destination:row.destination,landings:row.landings,clicks:row.clicks,opens:row.opens}, { fragment, destination, landings: 5, clicks: 4, opens: 1 });
   assert.equal(rows[1].landings, 0);
