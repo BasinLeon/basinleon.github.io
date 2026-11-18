@@ -19,9 +19,9 @@ for name in ['blog/index.html','blog/fiction/sam-and-ink/index.html']:
  p.write_text(s)
 for i,x in enumerate(ordered):
  p=Path(x['url'].lstrip('/'));s=p.read_text();links=[]
- if i:links.append(f'<a href="{ordered[i-1]["url"]}">Previous: {E(ordered[i-1]["title"])}</a>')
+ if i:links.append(f'<a href="{ordered[i-1]["url"]}" data-track="Sam &amp; Ink: previous">Previous: {E(ordered[i-1]["title"])}</a>')
  links.append('<a href="/blog/fiction/sam-and-ink/#fragments">All fragments</a>')
- if i+1<len(ordered):links.append(f'<a href="{ordered[i+1]["url"]}">Next: {E(ordered[i+1]["title"])}</a>')
+ if i+1<len(ordered):links.append(f'<a href="{ordered[i+1]["url"]}" data-track="Sam &amp; Ink: next">Next: {E(ordered[i+1]["title"])}</a>')
  nav='<nav class="hub-reading-next" aria-label="Fragment reading order">'+''.join(links)+'</nav>'
  s=re.sub(r'<nav class="hub-reading-next".*?</nav>',lambda m:nav,s,flags=re.S) if 'class="hub-reading-next"' in s else s.replace('</article>','</article>'+nav,1);p.write_text(s)
 p=Path('blog/rss.xml');s=p.read_text();s=re.sub(r'<item>.*?</item>',lambda m:'' if re.search(r'/blog/posts/fragment-\d+\.html',m[0]) else m[0],s,flags=re.S);feed=''.join(f'<item><title>{E(x["title"])}</title><link>https://basinleon.github.io{x["url"]}</link><guid isPermaLink="true">https://basinleon.github.io{x["url"]}</guid><pubDate>{email.utils.format_datetime(datetime.datetime.fromisoformat(x["date"]+"T12:00:00+00:00"),usegmt=True)}</pubDate><description>{E(x["excerpt"])}</description></item>' for x in items);p.write_text(chr(10).join(line.rstrip() for line in s.replace('</channel>',feed+'</channel>').splitlines())+chr(10))

@@ -5,6 +5,7 @@
  const fragment=value=>value.match(/(?:^|[^a-z0-9])fragment-(\d+)(?=$|[^a-z0-9])/i)?.[1];
  const wanted=fragment(content)||fragment(campaign);
  const arrival=Boolean(wanted)||campaign==='sam-ink';
+ if(arrival)document.documentElement.classList.add('sam-ink-arrival');
  const entrance=document.querySelector('.sam-ink-entrance');
  const latestCard=document.querySelector('[data-latest-title]');
  if(!entrance&&!latestCard)return;

@@ -152,9 +152,10 @@ const latestDate = posts.reduce(
 // sitemap.xml — core routes first (listed order), then every post newest
 // first, with the legacy supplement interleaved by its carried date.
 // ---------------------------------------------------------------------------
+const activeSupplemental = SUPPLEMENTAL_POSTS.filter((s) => !catalog.has(s.path));
 const sitemapPosts = [
   ...posts.map((p) => ({ path: p.path, date: p.date })),
-  ...SUPPLEMENTAL_POSTS,
+  ...activeSupplemental,
 ].sort(byDateDescThenUrl);
 
 const urlXml = (loc, lastmod) =>
@@ -255,6 +256,6 @@ if (fragmentsOnly.length) {
   for (const p of fragmentsOnly) console.log(`    merged from fragments.json: ${p}`);
 }
 console.log(`  latest catalog date: ${latestDate}`);
-console.log(`  sitemap.xml: ${CORE_ROUTES.length} core routes + ${sitemapPosts.length} posts (${SUPPLEMENTAL_POSTS.length} legacy supplement) = ${CORE_ROUTES.length + sitemapPosts.length} URLs`);
+console.log(`  sitemap.xml: ${CORE_ROUTES.length} core routes + ${sitemapPosts.length} posts (${activeSupplemental.length} legacy supplement) = ${CORE_ROUTES.length + sitemapPosts.length} URLs`);
 console.log(`  blog/rss.xml: ${posts.length} items (full catalog parity)`);
 console.log(`  llms.txt: Selected Writing regenerated with ${posts.length} posts; ${keptLines.length} hand-written non-post lines preserved`);

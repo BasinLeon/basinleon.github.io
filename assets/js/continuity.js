@@ -1,7 +1,7 @@
 (() => {
   if (!window.__lbInsightsLoaded && !document.querySelector('script[src^="/assets/js/insights.js"]')) {
     const insights = document.createElement("script");
-    insights.src = "/assets/js/insights.js?v=20261112-journeys";
+    insights.src = "/assets/js/insights.js?v=20261118-unified";
     insights.defer = true;
     document.head.appendChild(insights);
   }
@@ -296,6 +296,32 @@
     flowTargets.forEach((section) => section.classList.add("lb-flow-visible"));
   }
 
+  const prefetched = new Set();
+  const prefetchLink = (event) => {
+    const link = event.target.closest?.("a[href]");
+    if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
+    let destination;
+    try {
+      destination = new URL(link.href, location.href);
+    } catch (_) {
+      return;
+    }
+    if (destination.origin !== location.origin) return;
+    if (destination.pathname === location.pathname && destination.search === location.search) return;
+    if ( /\.(pdf|zip|mp4|mov)$/i.test(destination.pathname)) return;
+    const key = destination.pathname + destination.search;
+    if (prefetched.has(key)) return;
+    prefetched.add(key);
+    const hint = document.createElement("link");
+    hint.rel = "prefetch";
+    hint.href = key;
+    hint.as = "document";
+    document.head.appendChild(hint);
+  };
+  document.addEventListener("pointerenter", prefetchLink, { capture: true, passive: true });
+  document.addEventListener("touchstart", prefetchLink, { capture: true, passive: true });
+
+  const supportsCrossDocViewTransition = "CSSViewTransitionRule" in window;
   document.addEventListener("click", (event) => {
     if (reducedMotion || event.defaultPrevented || event.button !== 0) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -305,10 +331,11 @@
     if (destination.origin !== location.origin) return;
     if (destination.protocol !== "http:" && destination.protocol !== "https:") return;
     if (destination.pathname === location.pathname && destination.search === location.search) return;
+    if (supportsCrossDocViewTransition) return;
     event.preventDefault();
     route.dataset.destination = (link.textContent || "Continue").replace(/\s+/g, " ").trim().slice(0, 42);
     root.classList.add("lb-route-leaving");
-    window.setTimeout(() => { location.href = destination.href; }, 240);
+    window.setTimeout(() => { location.href = destination.href; }, 120);
   });
 
   window.addEventListener("pageshow", () => root.classList.remove("lb-route-leaving"));

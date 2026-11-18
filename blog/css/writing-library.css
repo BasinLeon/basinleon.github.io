@@ -217,7 +217,52 @@ html[data-reading-mode="paper"] .coffee-feature { background:#ede1cd;color:#2923
 html[data-reading-mode="paper"] .writing-hub .hub-jumps small { color:#514333; }
 
 /* 2026-11-17 hotfix: one warm-dark surface in dark mode. Cream lives in paper mode only. */
-html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) { background:#0e0d0b; }
+html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) {
+    background: #0e0d0b;
+    color: #f4f1ea;
+}
+html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) :is(h2, h3, .start-entry, .start-primary-copy, .catalog-row, .library-links a) {
+    color: #f4f1ea;
+}
+html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) :is(.section-heading p, .start-primary-copy p, .start-entry p, .archive-invite, .catalog-status, .catalog-row p, .subject-guide p, .subject-guide dd) {
+    color: rgba(244, 241, 234, 0.72);
+}
+html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) :is(.section-index, .story-kicker, .start-entry-label, .start-entry::after, .catalog-meta, .catalog-row::after, .search-wrap::before, .subject-guide summary, .subject-guide dt) {
+    color: #d9ab45;
+}
+html:not([data-reading-mode="paper"]) .writing-hub :is(.start-shelf, .start-primary, .start-primary-copy, .start-entry:first-child, .archive-invite, .catalog-tools, .search-wrap, .filters, .filter-button, .catalog-status, .catalog-list, .catalog-row) {
+    border-color: rgba(244, 241, 234, 0.14);
+}
+html:not([data-reading-mode="paper"]) .writing-hub .catalog-tools {
+    background: rgba(18, 16, 13, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+html:not([data-reading-mode="paper"]) .writing-hub .search-input {
+    color: #f4f1ea;
+}
+html:not([data-reading-mode="paper"]) .writing-hub .search-input::placeholder {
+    color: rgba(244, 241, 234, 0.48);
+}
+html:not([data-reading-mode="paper"]) .writing-hub .filter-button {
+    color: rgba(244, 241, 234, 0.72);
+}
+html:not([data-reading-mode="paper"]) .writing-hub .filter-button:hover,
+html:not([data-reading-mode="paper"]) .writing-hub .filter-button:focus-visible,
+html:not([data-reading-mode="paper"]) .writing-hub .filter-button.active {
+    background: #d9ab45;
+    color: #0e0d0b;
+}
+html:not([data-reading-mode="paper"]) .writing-hub .load-more {
+    border-color: rgba(217, 171, 69, 0.65);
+    color: #f4f1ea;
+}
+html:not([data-reading-mode="paper"]) .writing-hub .load-more:hover,
+html:not([data-reading-mode="paper"]) .writing-hub .load-more:focus-visible {
+    background: #d9ab45;
+    border-color: #d9ab45;
+    color: #0e0d0b;
+}
 html:not([data-reading-mode="paper"]) .writing-hub :is(#garden, #fragments) { background:#151310; }
 html:not([data-reading-mode="paper"]) .writing-hub #garden { border-bottom-color:rgba(244,241,234,.1); }
 html:not([data-reading-mode="paper"]) .writing-hub #fragments .hub-entry { background:#1c1915;border-color:rgba(244,241,234,.1); }
@@ -228,9 +273,88 @@ html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-intro
 html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-list p { color:rgba(244,241,234,.72); }
 html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-list article { border-top-color:rgba(244,241,234,.18); }
 
-/* 2026-11-17 hotfix: Instrument Serif on section headings, one tracking. */
-.writing-hub :is(h1, h2, h3) { font-family:'Instrument Serif', Georgia, serif; letter-spacing:-0.01em; }
-.writing-hub .hub-ritual-hero #hero-title { font-family:'Instrument Serif', Georgia, serif; letter-spacing:-0.01em; }
+/* Paper mode contrast fix for hero ghost button & links */
+html[data-reading-mode="paper"] .writing-hub .hero .button-ghost {
+    color: #29231c !important;
+    border-color: rgba(41, 35, 28, 0.45) !important;
+    background: rgba(255, 253, 248, 0.65);
+}
+html[data-reading-mode="paper"] .writing-hub .hub-jumps a {
+    color: #29231c !important;
+    text-decoration-color: #947341;
+}
 
-/* 2026-11-17 hotfix: no blank slab at #start-here while the reveal observer warms up. */
-.js #start-here .reveal, .js #start-here.reveal { opacity:1; transform:none; }
+/* 2026-11-17 hotfix: Instrument Serif on section headings, fluid balance & tracking. */
+.writing-hub :is(h1, h2, h3) {
+    font-family: 'Instrument Serif', Georgia, serif;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+}
+.writing-hub .section-heading h2 {
+    font-size: clamp(2.25rem, 5vw, 4.25rem);
+    font-weight: 400;
+    line-height: 1.06;
+}
+.writing-hub .start-primary-copy h3 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.06;
+}
+.writing-hub .start-primary-visual strong {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(2.25rem, 4.8vw, 4.25rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+}
+.writing-hub .start-entry h3 {
+    font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+    font-weight: 400;
+    line-height: 1.1;
+}
+.writing-hub .catalog-row h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+.writing-hub .hub-ritual-hero #hero-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    letter-spacing: -0.015em;
+    line-height: 0.98;
+}
+
+/* Clean literary Fragment Shelf cards: hide repeated 6-button social bars in grid overview */
+.writing-hub #fragments .hub-entry :is([data-hub-share], .hub-share, .hub-save),
+.writing-hub #fragments > .section-shell > .hub-note {
+    display: none !important;
+}
+
+/* iOS / iPadOS smoothness, 16px input zoom prevention & 120Hz catalog containment */
+.writing-hub .search-input {
+    font-size: max(16px, 1rem);
+}
+.writing-hub .filters {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+.writing-hub .filters::-webkit-scrollbar {
+    display: none;
+}
+.writing-hub .filter-button {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+.writing-hub .catalog-row {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 112px;
+}
+
+/* 2026-11-17 hotfix: no blank slab at #start-here or #catalog while the reveal observer warms up. */
+.js #start-here .reveal, .js #start-here.reveal,
+.js #catalog .reveal, .js #catalog.reveal { opacity:1; transform:none; }
