@@ -21,10 +21,10 @@
  const panel=document.createElement('details');panel.className='hub-reading-preferences';
  const summary=document.createElement('summary');summary.textContent='Reading preferences';panel.append(summary);
  const controls=document.createElement('div');controls.className='hub-reading-controls';
- function select(label,values,current,change){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement('select');input.setAttribute('aria-label',label);values.forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option);});input.value=current;input.addEventListener('change',()=>{change(input.value);apply();write(key,{mode,size});});wrap.append(input);controls.append(wrap);}
+ function select(label,values,current,change){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement('select');input.setAttribute('aria-label',label);values.forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option);});input.value=current;input.addEventListener('change',()=>{change(input.value);if(document.startViewTransition&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){try{const t=document.startViewTransition(()=>apply());if(t?.ready)t.ready.catch(()=>{});if(t?.finished)t.finished.catch(()=>{});}catch{apply();}}else{apply();}write(key,{mode,size});});wrap.append(input);controls.append(wrap);}
  select('Appearance',[['dark','Dark'],['paper','Warm paper']],mode,value=>mode=value);
  select('Text size',[['normal','Standard'],['large','Large'],['larger','Larger']],size,value=>size=value);
- const note=document.createElement('p');note.textContent='Saved on this device. No account needed.';controls.append(note);panel.append(controls);
+ panel.append(controls);
  const target=isHub?document.querySelector('.hero-inner'):document.querySelector('main');if(target)target.prepend(panel);
  const lastKey='basin-last-fragment-v1';const previous=read(lastKey);
  const valid=value=>value&&/^\/blog\/posts\/fragment-\d+\.html$/.test(value.path)&&typeof value.title==='string';

@@ -296,6 +296,26 @@
     flowTargets.forEach((section) => section.classList.add("lb-flow-visible"));
   }
 
+  if (HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules") && !document.querySelector('script[type="speculationrules"]')) {
+    const spec = document.createElement("script");
+    spec.type = "speculationrules";
+    spec.textContent = JSON.stringify({
+      prefetch: [{
+        source: "document",
+        where: {
+          and: [
+            { href_matches: "/*" },
+            { not: { href_matches: "/assets/downloads/*" } },
+            { not: { href_matches: "/assets/video/*" } },
+            { not: { selector_matches: "[download], [target=_blank]" } }
+          ]
+        },
+        eagerness: "moderate"
+      }]
+    });
+    document.head.appendChild(spec);
+  }
+
   const prefetched = new Set();
   const prefetchLink = (event) => {
     const link = event.target.closest?.("a[href]");
@@ -331,7 +351,14 @@
     if (destination.origin !== location.origin) return;
     if (destination.protocol !== "http:" && destination.protocol !== "https:") return;
     if (destination.pathname === location.pathname && destination.search === location.search) return;
-    if (supportsCrossDocViewTransition) return;
+    if (supportsCrossDocViewTransition) {
+      if (destination.pathname.startsWith("/blog/posts/")) {
+        const heading = link.querySelector("h2, h3, strong") || link;
+        document.querySelectorAll('[style*="active-post-title"]').forEach((el) => { el.style.viewTransitionName = ""; });
+        heading.style.viewTransitionName = "active-post-title";
+      }
+      return;
+    }
     event.preventDefault();
     route.dataset.destination = (link.textContent || "Continue").replace(/\s+/g, " ").trim().slice(0, 42);
     root.classList.add("lb-route-leaving");
