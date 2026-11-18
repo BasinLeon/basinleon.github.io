@@ -215,3 +215,22 @@ html[data-reading-mode="paper"] .writing-hub .garden-shelf > summary {
 .library-entry-actions a[href="#start-here"]::after { content:"↓"; }
 html[data-reading-mode="paper"] .coffee-feature { background:#ede1cd;color:#29231c;border-color:#947341; }
 html[data-reading-mode="paper"] .writing-hub .hub-jumps small { color:#514333; }
+
+/* 2026-11-17 hotfix: one warm-dark surface in dark mode. Cream lives in paper mode only. */
+html:not([data-reading-mode="paper"]) .writing-hub :is(#start-here, #catalog) { background:#0e0d0b; }
+html:not([data-reading-mode="paper"]) .writing-hub :is(#garden, #fragments) { background:#151310; }
+html:not([data-reading-mode="paper"]) .writing-hub #garden { border-bottom-color:rgba(244,241,234,.1); }
+html:not([data-reading-mode="paper"]) .writing-hub #fragments .hub-entry { background:#1c1915;border-color:rgba(244,241,234,.1); }
+html:not([data-reading-mode="paper"]) .writing-hub .garden-latest { border-color:rgba(244,241,234,.1); }
+html:not([data-reading-mode="paper"]) .writing-hub .reading-trails { background:#0e0d0b;color:#f4f1ea; }
+html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .hub-label { color:#d9ab45; }
+html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-intro,
+html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-list p { color:rgba(244,241,234,.72); }
+html:not([data-reading-mode="paper"]) .writing-hub .reading-trails .trails-list article { border-top-color:rgba(244,241,234,.18); }
+
+/* 2026-11-17 hotfix: Instrument Serif on section headings, one tracking. */
+.writing-hub :is(h1, h2, h3) { font-family:'Instrument Serif', Georgia, serif; letter-spacing:-0.01em; }
+.writing-hub .hub-ritual-hero #hero-title { font-family:'Instrument Serif', Georgia, serif; letter-spacing:-0.01em; }
+
+/* 2026-11-17 hotfix: no blank slab at #start-here while the reveal observer warms up. */
+.js #start-here .reveal, .js #start-here.reveal { opacity:1; transform:none; }
