@@ -25,7 +25,7 @@
  select('Appearance',[['dark','Dark'],['paper','Warm paper']],mode,value=>mode=value);
  select('Text size',[['normal','Standard'],['large','Large'],['larger','Larger']],size,value=>size=value);
  panel.append(controls);
- const target=isHub?document.querySelector('.hero-inner'):document.querySelector('main');if(target)target.prepend(panel);
+ const target=isHub?document.querySelector('.hero-inner'):document.querySelector('main, article, .post-container, .blog-content');if(target)target.prepend(panel);
  const lastKey='basin-last-fragment-v1';const previous=read(lastKey);
  const valid=value=>value&&/^\/blog\/posts\/fragment-\d+\.html$/.test(value.path)&&typeof value.title==='string';
  const host=document.querySelector('[data-continue-reading]');if(host&&valid(previous)){const a=document.createElement('a');a.href=previous.path+'#resume';a.textContent='Continue where you left off: '+previous.title;host.append(a);host.hidden=false;}
