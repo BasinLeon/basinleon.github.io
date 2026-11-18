@@ -4,7 +4,7 @@ import re,json,html,subprocess,email.utils,datetime
 E=lambda x:html.escape(str(x),quote=True)
 items=[]
 for path in Path('blog/posts').glob('fragment-*.html'):
- s=path.read_text();title=html.unescape(re.search(r'<h1[^>]*>(.*?)</h1>',s,re.S)[1]);date=re.search(r'<time[^>]*datetime="([0-9-]+)"',s)[1];article=re.search(r'<article[^>]*>(.*?)</article>',s,re.S)[1];opening=html.unescape(re.sub('<[^>]+>','',re.search(r'<p[^>]*>(.*?)</p>',article,re.S)[1]));items.append(dict(slug=path.stem,title=title,date=date,url='/'+str(path),excerpt=opening))
+ s=path.read_text();title=html.unescape(re.search(r'<h1[^>]*>(.*?)</h1>',s,re.S)[1]);date=re.search(r'<time[^>]*datetime="([0-9-]+)"',s)[1];article=re.sub(r'<header[^>]*>.*?</header>','',re.search(r'<article[^>]*>(.*?)</article>',s,re.S)[1],flags=re.S);raw_p=re.search(r'<p[^>]*>(.*?)</p>',article,re.S)[1];opening=re.sub(r'\s+',' ',html.unescape(re.sub(r'<[^>]+>',' ',raw_p))).strip();items.append(dict(slug=path.stem,title=title,date=date,url='/'+str(path),excerpt=opening))
 items.sort(key=lambda x:(x['date'],int(x['slug'].split('-')[-1])),reverse=True)
 if not items:raise SystemExit('No published fragments.')
 Path('data/fragments.json').write_text(json.dumps(items,indent=2,ensure_ascii=False)+'\n')
