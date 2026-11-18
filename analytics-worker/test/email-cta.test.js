@@ -45,3 +45,11 @@ test('writing-room links tag existing internal click events and respect owner an
  assert.equal(clicks[0].detail.destination,'/blog/posts/fragment-14.html');
  for(const excluded of [{owner:true},{dnt:true},{gpc:true},{automated:true}])assert.equal(clickFixture('/blog/',null,{room:'garden',...excluded}).length,0);
 });
+
+test('fbclid links without explicit utm_source attribute to facebook social campaign',async()=>{
+ const payloads=await Promise.all(clickFixture('/blog/posts/fragment-16.html?fbclid=IwZXh0bgNhZW0CMTAA','email').map(async x=>JSON.parse(typeof x==='string'?x:await x.text())));
+ assert(payloads.length>0);
+ assert.equal(payloads[0].campaign.source,'facebook');
+ assert.equal(payloads[0].campaign.medium,'social');
+ assert.equal(payloads[0].campaign.campaign,'facebook-share');
+});

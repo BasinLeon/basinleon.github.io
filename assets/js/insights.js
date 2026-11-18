@@ -170,6 +170,11 @@
       campaign: cleanLabel(params.get("utm_campaign")),
       content: cleanLabel(params.get("utm_content"))
     };
+    if (!current.source && params.get("fbclid")) {
+      current.source = "facebook";
+      current.medium = current.medium || "social";
+      current.campaign = current.campaign || "facebook-share";
+    }
     const key = "lb:insights:campaign:v1";
     // Preserve the external entry source across internal pages in this tab.
     // This runs only after production, owner, automation and privacy guards.
