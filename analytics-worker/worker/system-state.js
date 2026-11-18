@@ -47,7 +47,7 @@ export async function systemState(fetcher=fetch) {
   }
   const [snapshot,deploy,links,safety]=await Promise.allSettled([
    get('https://basinleon.github.io/data/system-health.json',fetcher),
-   get(`${API}/actions/runs?status=success&per_page=100&branch=main`,fetcher),
+   get(`${API}/actions/workflows/deploy-hybrid-site.yml/runs?status=success&per_page=100&branch=main`,fetcher),
    get(`${API}/actions/workflows/validate-links.yml/runs?per_page=1&branch=main`,fetcher),
    get(`${API}/actions/workflows/validate-public-safety.yml/runs?per_page=1&branch=main`,fetcher)
   ]);

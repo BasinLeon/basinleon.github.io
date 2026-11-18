@@ -76,20 +76,20 @@ export function FragmentFollowThrough({ report }) {
     <div className="report-scroll">
       <table>
         <thead><tr>
-          <th scope="col">Starting fragment</th>
+          <th scope="col">Starting piece → Recommendation</th>
           <th scope="col">Landing sessions</th>
           <th scope="col">Clicked Read next</th>
           <th scope="col">Opened recommendation</th>
         </tr></thead>
-        <tbody>{report.rows.map(row => <tr key={row.fragment}>
-          <th scope="row"><a href={`https://basinleon.github.io${row.fragment}`} target="_blank" rel="noreferrer">Fragment {row.fragment.match(/(\d+)\.html$/)?.[1]}</a></th>
-          <td>{row.landings}</td>
-          <td>{countAndRate(row.clicks, row.landings)}</td>
-          <td>{countAndRate(row.opens, row.landings)}</td>
+        <tbody>{report.rows.map(row => <tr key={`${row.fragment}:${row.destination}`}>
+          <th scope="row"><a href={`https://basinleon.github.io${row.fragment}`} target="_blank" rel="noreferrer">{row.title || row.fragment}</a><br /><a href={`https://basinleon.github.io${row.destination}`} target="_blank" rel="noreferrer">{row.destination_title || row.destination}</a><br /><small>Coverage from {row.coverage_since} UTC</small></th>
+          <td>{row.coverage_since < report.until ? row.landings : 'Outside coverage'}</td>
+          <td>{row.coverage_since < report.until ? countAndRate(row.clicks, row.landings) : '—'}</td>
+          <td>{row.coverage_since < report.until ? countAndRate(row.opens, row.landings) : '—'}</td>
         </tr>)}</tbody>
       </table>
     </div>
-    <p>A landing is a session whose first recorded pageview was this fragment, from any source. Both rates use landing sessions. Repeat clicks count once.</p>
+    <p>A landing is a session whose first recorded pageview was this piece, from any source. Each row starts at the later of its verified coverage date or the selected window. Both rates use landing sessions. Repeat clicks count once.</p>
     <p>An open requires a matching destination pageview in the same session. The match allows a click event to arrive up to 10 seconds after its destination pageview.</p>
   </section>;
 }

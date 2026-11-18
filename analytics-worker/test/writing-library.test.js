@@ -67,8 +67,28 @@ test('fragment follow-through counts direct landing sessions and matches tagged 
   view('boundary', '30', destination);
 
   const rows = db.prepare(FRAGMENT_FOLLOW_THROUGH_SQL).all('2026-11-05 09:00:01', '2026-11-05 09:00:30');
-  assert.equal(rows.length, 5);
-  assert.deepEqual({ ...rows[0] }, { fragment, destination, landings: 5, clicks: 4, opens: 1 });
+  assert.equal(rows.length, 12);
+  const row=rows.find(r=>r.fragment===fragment && r.destination===destination);
+  assert.deepEqual({fragment:row.fragment,destination:row.destination,landings:row.landings,clicks:row.clicks,opens:row.opens}, { fragment, destination, landings: 5, clicks: 4, opens: 1 });
   assert.equal(rows[1].landings, 0);
   db.close();
+});
+
+test('current essay and fragment paths separate destinations and exclude pre-coverage traffic', () => {
+ const db=new DatabaseSync(':memory:');
+ db.exec('CREATE TABLE events(id INTEGER PRIMARY KEY, received_at TEXT, event_type TEXT, session_hash TEXT, page TEXT, destination TEXT, label TEXT)');
+ const add=db.prepare('INSERT INTO events VALUES(NULL,?,?,?,?,?,?)');
+ const essay='/blog/posts/the-machine-described-me-back-to-myself.html', fragment='/blog/posts/fragment-16.html', previous='/blog/posts/fragment-15.html';
+ const view=(session,page,at='2026-11-18 04:00:00')=>add.run(at,'Pageview',session,page,'','');
+ const click=(session,page,destination)=>add.run('2026-11-18 04:00:01','Internal Click',session,page,destination,'Writing: read next');
+ view('old',fragment,'2026-11-17 04:00:00');
+ view('reader',fragment);click('reader',fragment,essay);click('reader',fragment,essay);view('reader',essay,'2026-11-18 04:00:02');
+ view('secondary',fragment);click('secondary',fragment,previous);view('secondary',previous,'2026-11-18 04:00:02');
+ view('reverse',essay);click('reverse',essay,fragment);view('reverse',fragment,'2026-11-18 04:00:02');
+ const rows=db.prepare(FRAGMENT_FOLLOW_THROUGH_SQL).all('2026-11-17 00:00:00','2026-11-19 00:00:00');
+ const route=(from,to)=>rows.find(r=>r.fragment===from&&r.destination===to);
+ assert.equal(route(fragment,essay).landings,2);assert.equal(route(fragment,essay).clicks,1);assert.equal(route(fragment,essay).opens,1);
+ assert.equal(route(fragment,previous).clicks,1);assert.equal(route(fragment,previous).opens,1);
+ assert.equal(route(essay,fragment).opens,1);assert.equal(route(fragment,essay).coverage_since,'2026-11-18 03:33:11');
+ db.close();
 });

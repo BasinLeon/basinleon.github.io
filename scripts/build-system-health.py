@@ -26,7 +26,7 @@ if os.environ.get('SYSTEM_HEALTH_METADATA') == '1':
         if r.returncode: raise RuntimeError('GitHub metadata request failed')
         return json.loads(r.stdout)
     try:
-        runs=api('actions/runs?status=success&per_page=100&branch=main').get('workflow_runs',[])
+        runs=api('actions/workflows/deploy-hybrid-site.yml/runs?status=success&per_page=100&branch=main').get('workflow_runs',[])
         markers={}
         for run in runs:
             if run.get('name') not in ['Deploy Hybrid Site','pages build and deployment'] or run.get('head_branch')!='main' or run.get('conclusion')!='success': continue

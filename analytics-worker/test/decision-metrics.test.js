@@ -88,3 +88,10 @@ test('GTM Systems email routes enter the hiring total once per session and remai
  add.run('2026-10-16 12:01:00','Email Click','v','blog','/blog/','','email');
  const rows=db.prepare(EMAIL_SQL).all('2026-10-16','2026-10-17');assert.equal(rows.length,2);assert(rows.every(r=>r.page==='/gtm-systems/'));assert.equal(db.prepare(METRICS_SQL).get('2026-10-16','2026-10-17').email_actions,1);db.close();
 });
+
+test('release refresh uses the deployment workflow rather than the noisy all-workflow feed',async()=>{
+ const {systemState}=await import('../worker/system-state.js');const urls=[];
+ await systemState(async url=>{urls.push(url);if(url.includes('raw.githubusercontent'))return new Response('{}');return new Response(JSON.stringify(url.includes('/actions/')?{workflow_runs:[]}:{}));});
+ assert(urls.some(url=>url.includes('/actions/workflows/deploy-hybrid-site.yml/runs?status=success')));
+ assert(!urls.some(url=>url.includes('/actions/runs?')));
+});

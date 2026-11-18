@@ -79,3 +79,9 @@ Production requires the D1 database binding plus two Wrangler secrets:
 - `HASH_SECRET` HMAC-hashes anonymous identifiers before storage.
 
 Résumé PDF downloads use `resume-download`, separately from generic proof-page visits. Subscription clicks are outbound handoffs, not confirmed subscriptions. Reply clicks open an email composer; they do not prove a message was sent.
+Reading-path coverage comes from tracked, published read-next cards. New pairs need an explicit UTC coverage baseline:
+  python3 scripts/sync-reading-paths.py --since "YYYY-MM-DD HH:MM:SS"
+Existing pairs keep their baseline. Commit the manifest with the article update. CI --check refuses mismatches. A conservative new-path baseline excludes earlier traffic rather than treating it as a missed conversion.
+The report counts each source/destination pair separately. A session can be a landing for multiple recommendation rows; do not sum those denominators. Only a tagged click with a matched destination pageview counts as an open.
+The canonical Pages workflow now requires links, public safety, performance, manifest sync, Worker tests/build/packaging before the site build and deploy jobs.
+Release history queries the canonical Pages workflow directly, independent of the volume of other Actions runs.

@@ -16,7 +16,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: analytics-worker/package-lock.json
+      - name: Validate public site and reading paths
+        run: |
+          python3 scripts/validate-blog-links.py
+          python3 scripts/validate-public-safety.py
+          python3 scripts/check-performance-budget.py
+          python3 scripts/sync-reading-paths.py --check
+      - name: Test and build private analytics
+        working-directory: analytics-worker
+        run: |
+          npm ci
+          npm test
+          npm run build
+          npx wrangler deploy --dry-run
   build:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

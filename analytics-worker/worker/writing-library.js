@@ -1,3 +1,4 @@
+import readingPaths from './reading-paths.json' with { type: 'json' };
 export const WRITING_LIBRARY_RELEASE = {
   commit: 'ade162ede6e6ca35849657a72a8c012b7eb81593',
   name: 'The Writing Library',
@@ -34,26 +35,27 @@ SELECT
   (SELECT COUNT(*) FROM room_reads WHERE region='coffee-shop') AS coffee_shop,
   (SELECT COUNT(*) FROM room_reads WHERE region='garden') AS garden`;
 
-// All five recommendations were published by this successful Pages deployment.
+// Earliest verified recommendation coverage; newer paths carry their own cutoff.
 export const FRAGMENT_FOLLOW_THROUGH_START = '2026-11-05 08:14:25';
 
-export const FRAGMENT_FOLLOW_THROUGH_SQL = `WITH recommendations(fragment, destination) AS (
-  VALUES
-    ('/blog/posts/fragment-08.html', '/blog/posts/the-archive-was-empty.html'),
-    ('/blog/posts/fragment-09.html', '/blog/posts/what-does-a-moment-become.html'),
-    ('/blog/posts/fragment-11.html', '/blog/posts/sam-ink-note-in-the-other-room.html'),
-    ('/blog/posts/fragment-13.html', '/blog/posts/fragment-08.html'),
-    ('/blog/posts/fragment-14.html', '/blog/posts/sam-ink-note-in-the-other-room.html')
+// The manifest is checked against the actual published cards before deployment.
+export const FRAGMENT_FOLLOW_THROUGH_SQL = `WITH recommendations AS (
+ SELECT json_extract(value,'$.fragment') AS fragment,
+   json_extract(value,'$.destination') AS destination,
+   json_extract(value,'$.title') AS title,
+   json_extract(value,'$.destination_title') AS destination_title,
+   json_extract(value,'$.since') AS coverage_since
+ FROM json_each('${JSON.stringify(readingPaths).replaceAll("'", "''")}')
 ), landings AS (
   SELECT e.id, e.session_hash, r.fragment, r.destination
   FROM recommendations r JOIN events e ON e.page=r.fragment
-  WHERE e.event_type='Pageview' AND e.received_at>=?1 AND e.received_at<?2
+  WHERE e.event_type='Pageview' AND e.received_at>=?1 AND e.received_at<?2 AND e.received_at>=r.coverage_since
     AND NOT EXISTS (
       SELECT 1 FROM events prior
       WHERE prior.session_hash=e.session_hash AND prior.event_type='Pageview' AND prior.id<e.id
     )
 ), outcomes AS (
-  SELECT l.fragment, l.session_hash,
+  SELECT l.fragment, l.destination, l.session_hash,
     MAX(c.id IS NOT NULL) AS clicked,
     MAX(EXISTS (
       SELECT 1 FROM events v
@@ -65,9 +67,9 @@ export const FRAGMENT_FOLLOW_THROUGH_SQL = `WITH recommendations(fragment, desti
     AND c.page=l.fragment AND c.destination=l.destination
     AND c.event_type='Internal Click' AND c.label='Writing: read next'
     AND c.id>l.id AND c.received_at>=?1 AND c.received_at<?2
-  GROUP BY l.fragment, l.session_hash
+  GROUP BY l.fragment, l.destination, l.session_hash
 )
-SELECT r.fragment, r.destination, COUNT(o.session_hash) AS landings,
+SELECT r.fragment, r.destination, r.title, r.destination_title, MAX(r.coverage_since, ?1) AS coverage_since, COUNT(o.session_hash) AS landings,
   COALESCE(SUM(o.clicked),0) AS clicks, COALESCE(SUM(o.opened),0) AS opens
-FROM recommendations r LEFT JOIN outcomes o ON o.fragment=r.fragment
+FROM recommendations r LEFT JOIN outcomes o ON o.fragment=r.fragment AND o.destination=r.destination
 GROUP BY r.fragment, r.destination ORDER BY r.fragment`;
