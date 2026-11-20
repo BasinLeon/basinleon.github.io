@@ -14,6 +14,7 @@ FILE_BUDGETS = {
     "tools/index.html": 100_000,
     "assets/css/executive-profile.css": 25_000,
     "assets/css/continuity.css": 15_000,
+    "blog/css/writing-library.css": 42_000,
     "assets/img/leon-basin-portrait.png": 160_000,
     "assets/img/leon-basin-portrait.webp": 25_000,
     "assets/img/writing-library-1440.webp": 150_000,
@@ -27,8 +28,15 @@ FILE_BUDGETS = {
     "assets/img/fiction/sam-to-ink-path-v2.webp": 300_000,
     "assets/img/frameworks/signal-refinery-hud-1000.jpg": 140_000,
     "assets/img/frameworks/signal-refinery-hud-1800.jpg": 300_000,
+    "assets/img/frameworks/signal-refinery-hud-1800.webp": 120_000,
     "assets/img/frameworks/gtm-architecture-live-900.jpg": 210_000,
     "assets/img/frameworks/gtm-architecture-live-1600.jpg": 460_000,
+    "assets/img/frameworks/gtm-architecture-live-1600.webp": 160_000,
+    "assets/img/frameworks/gtm-architecture-live-900.webp": 90_000,
+    "assets/img/frameworks/revenue-blueprint.webp": 120_000,
+    "assets/img/frameworks/nexus-dashboard.webp": 90_000,
+    "assets/img/frameworks/basin-nexus-operating-map-v2.webp": 100_000,
+    "pipeline-game/pipeline-game-card.webp": 80_000,
 }
 
 CRITICAL_DOCUMENTS = (
