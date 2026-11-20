@@ -24,6 +24,9 @@ for (const file of files) {
   const pathname = `/blog/posts/${file}`;
   const canonical = `${site}${pathname}`;
   let html = await readFile(absolute, "utf8");
+  if (/http-equiv=["']refresh["']/i.test(html) || /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) {
+    continue;
+  }
   const additions = [];
 
   if (!/<meta[^>]+name=["']robots["']/i.test(html)) {
@@ -80,14 +83,23 @@ for (const file of files) {
 
 const mainRoutes = [
   "/",
+  "/blueprint/",
+  "/llms.txt",
+  "/gtm-systems/",
+  "/signal-architect/",
+  "/services/",
+  "/working-session/",
+  "/diagnostic.html",
+  "/revenue_architecture_simulator.html",
+  "/hazel-demo/",
   "/blog/",
   "/blog/fiction/",
+  "/blog/fiction/sam-and-ink/",
   "/case-studies/",
   "/library/",
   "/tools/",
   "/work-with-me/",
   "/basin-nexus/",
-  "/basin-nexus/career/",
   "/docs/about/",
   "/docs/start-here/",
   "/docs/frameworks/",
@@ -109,6 +121,10 @@ for (const route of mainRoutes) {
       : path.join(root, route);
   try {
     const info = await stat(file);
+    if (file.endsWith(".html")) {
+      const content = await readFile(file, "utf8");
+      if (/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(content)) continue;
+    }
     urls.set(`${site}${route}`, info.mtime.toISOString().slice(0, 10));
   } catch (_) {
     // A curated route can be absent during a branch build.
@@ -116,8 +132,13 @@ for (const route of mainRoutes) {
 }
 
 for (const file of files) {
+  const full = path.join(postsDirectory, file);
+  const content = await readFile(full, "utf8");
+  if (/http-equiv=["']refresh["']/i.test(content) || /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(content)) {
+    continue;
+  }
   const route = `/blog/posts/${file}`;
-  const info = await stat(path.join(postsDirectory, file));
+  const info = await stat(full);
   urls.set(`${site}${route}`, dates.get(route) || info.mtime.toISOString().slice(0, 10));
 }
 
