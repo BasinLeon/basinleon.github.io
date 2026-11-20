@@ -2,26 +2,208 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#f3efe7">
   <title>Page Not Found | Leon Basin</title>
-  <meta name="description" content="The requested page is not here. Return to Leon Basin's work, systems, or writing.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0a09'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+  <meta name="description" content="The requested page is not here. Search or return to Leon Basin's work, systems, tools, or writing.">
   <link rel="stylesheet" href="/assets/css/continuity.css">
+  <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
   <style>
     :root{--paper:#f3efe7;--ink:#11100e;--muted:#5f5a52;--rule:rgba(17,16,14,.22);--gold:#a77820;--serif:Georgia,"Times New Roman",serif;--mono:"SFMono-Regular",Consolas,monospace}
-    *{box-sizing:border-box}body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}.shell{width:min(100%,1360px);margin:auto;padding-inline:clamp(1.25rem,4vw,4.25rem)}a{color:inherit;text-decoration:none}.site-header{border-bottom:1px solid var(--rule)}.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:2rem}.brand{font:800 .78rem var(--mono);letter-spacing:.16em;text-transform:uppercase}.brand span{color:var(--gold)}.links{display:flex;gap:clamp(1rem,2.5vw,2.3rem)}.links a{font:700 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase}.not-found{min-height:calc(100svh - 73px);display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(2rem,8vw,8rem);align-items:center;padding-block:4rem}.code{color:var(--gold);font:400 clamp(8rem,20vw,18rem)/.7 var(--serif);letter-spacing:-.08em}.copy h1{max-width:9ch;margin:0;font:400 clamp(3.8rem,8vw,8rem)/.88 var(--serif);letter-spacing:-.06em}.copy p{max-width:520px;margin:2rem 0;color:var(--muted);font-size:1.08rem;line-height:1.6}.routes{display:flex;flex-wrap:wrap;gap:.8rem}.routes a{min-height:48px;padding:.85rem 1rem;display:inline-flex;align-items:center;border:1px solid var(--ink);font-weight:700}.routes a:first-child{background:var(--ink);color:var(--paper)}@media(max-width:700px){.links{display:none}.not-found{grid-template-columns:1fr;align-content:center}.code{font-size:9rem}.copy h1{font-size:4rem}}
+    *{box-sizing:border-box}
+    body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+    .shell{width:min(100%,1280px);margin:auto;padding-inline:clamp(1.25rem,4vw,4rem)}
+    a{color:inherit;text-decoration:none}
+    :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .site-header{border-bottom:1px solid var(--rule)}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;padding-block:.5rem}
+    .brand{font:800 .78rem var(--mono);letter-spacing:.16em;text-transform:uppercase}
+    .brand span{color:var(--gold)}
+    .links{display:flex;gap:clamp(.9rem,2.4vw,2rem);flex-wrap:wrap}
+    .links a{font:700 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+    .not-found{min-height:calc(100svh - 160px);display:grid;grid-template-columns:.55fr 1.45fr;gap:clamp(2rem,7vw,6rem);align-items:center;padding-block:clamp(2.5rem,6vw,4.5rem)}
+    .code{color:var(--gold);font:400 clamp(6.5rem,18vw,15rem)/.75 var(--serif);letter-spacing:-.08em}
+    .copy h1{max-width:11ch;margin:0;font:400 clamp(2.8rem,7vw,6rem)/.9 var(--serif);letter-spacing:-.04em}
+    .copy p{max-width:560px;margin:1.35rem 0;color:var(--muted);font-size:1.02rem}
+    .path-pill{display:inline-block;padding:.2rem .55rem;border:1px solid var(--rule);font:600 .76rem var(--mono);color:var(--ink);word-break:break-all}
+    .search-box{display:flex;gap:.5rem;max-width:560px;margin:1.25rem 0 1.4rem}
+    .search-box label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+    .search-box input{flex:1;min-width:0;min-height:48px;padding:.7rem .95rem;border:1px solid var(--ink);background:#fffdf8;color:var(--ink);font:500 max(16px,1rem) Arial,Helvetica,sans-serif}
+    .search-box button{min-height:48px;padding:.7rem 1.15rem;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:700 .86rem Arial,Helvetica,sans-serif;cursor:pointer}
+    .suggestions{max-width:560px;margin:0 0 1.6rem;padding:0;list-style:none;border-top:1px solid var(--rule)}
+    .suggestions[hidden]{display:none}
+    .suggestions li{border-bottom:1px solid var(--rule)}
+    .suggestions a{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.75rem .25rem}
+    .suggestions a:hover{color:var(--gold)}
+    .suggestions strong{font-size:.95rem}
+    .suggestions span{font:600 .66rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
+    .suggest-heading{margin:0 0 .5rem;font:700 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+    .routes{display:flex;flex-wrap:wrap;gap:.7rem}
+    .routes a{min-height:46px;padding:.75rem 1rem;display:inline-flex;align-items:center;border:1px solid var(--ink);font-weight:700;font-size:.9rem}
+    .routes a:first-child{background:var(--ink);color:var(--paper)}
+    .routes a:hover{border-color:var(--gold);color:var(--gold)}
+    .routes a:first-child:hover{color:var(--paper);background:#25221d}
+    @media(max-width:760px){.not-found{grid-template-columns:1fr;align-content:start}.code{font-size:6.5rem}.search-box{flex-direction:column}}
   </style>
-<link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
-<meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
-<meta property="og:site_name" content="Leon Basin">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
+  <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+  <meta property="og:site_name" content="Leon Basin">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
 </head>
 <body data-lb-section="404">
-  <header class="site-header"><nav class="shell nav" aria-label="Primary navigation"><a class="brand" href="/">Leon <span>Basin</span></a><div class="links"><a href="/case-studies/">Work</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/work-with-me/">Contact</a></div></nav></header>
-  <main class="shell not-found"><div class="code" aria-hidden="true">404</div><div class="copy"><h1>This route ends here.</h1><p>The page moved, the link broke, or the address was never part of the public site. The operating record and the writing are still intact.</p><div class="routes"><a href="/">Return home</a><a href="/case-studies/">Inspect the work</a><a href="/blog/">Enter the writing</a></div></div></main>
-  <script src="/assets/js/continuity.js" defer></script><script src="/assets/js/insights.js?v=20261118-unified" defer></script>
-<footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="lb-site-name" href="/" aria-label="Leon Basin home">LEON BASIN.</a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/work-with-me/">Contact</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
+  <header class="site-header">
+    <nav class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="/">Leon <span>Basin</span></a>
+      <div class="links">
+        <a href="/case-studies/">Work</a>
+        <a href="/tools/">Tools</a>
+        <a href="/basin-nexus/">Nexus</a>
+        <a href="/blog/">Writing</a>
+        <a href="/blog/fiction/">Fiction</a>
+        <a href="/work-with-me/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="shell not-found">
+    <div class="code" aria-hidden="true">404</div>
+    <div class="copy">
+      <h1>This route ends here.</h1>
+      <p>No public page sits at <span class="path-pill" id="missing-path">/</span>. Search the archive directly or jump to one of the closest matches below.</p>
+
+      <form class="search-box" action="/blog/" method="get" role="search">
+        <label for="nf-search">Search essays, tools, and case studies</label>
+        <input id="nf-search" name="q" type="search" autocomplete="off" placeholder="Search essays, GTM tools, or Sam &amp; Ink…">
+        <button type="submit">Search Archive</button>
+      </form>
+
+      <div id="suggest-wrap" hidden>
+        <p class="suggest-heading" id="suggest-heading">Closest matches</p>
+        <ul class="suggestions" id="suggestions" aria-labelledby="suggest-heading"></ul>
+      </div>
+
+      <div class="routes">
+        <a href="/">Return home</a>
+        <a href="/blog/">Writing Library</a>
+        <a href="/tools/">Tool Bench</a>
+        <a href="/case-studies/">Operating Record</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="lb-site-footer" aria-label="Site footer">
+    <div class="lb-footer-inner">
+      <a class="lb-site-name" href="/" aria-label="Leon Basin home">LEON BASIN.</a>
+      <nav class="lb-footer-nav" aria-label="Footer navigation">
+        <a href="/case-studies/">Work</a>
+        <a href="/tools/">Tools</a>
+        <a href="/resume.html">Résumé</a>
+        <a href="/basin-nexus/">Nexus</a>
+        <a href="/blog/">Writing</a>
+        <a href="/blog/fiction/">Fiction</a>
+        <a href="/work-with-me/">Contact</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+      <p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/continuity.js" defer></script>
+  <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
+  <script>
+    (function () {
+      const rawPath = location.pathname || "/";
+      const pathPill = document.getElementById("missing-path");
+      if (pathPill) pathPill.textContent = rawPath;
+
+      const BASE_ROUTES = [
+        { title: "The Writing Library", url: "/blog/", kind: "Room", keys: "blog writing archive essays articles posts" },
+        { title: "The Tool Bench", url: "/tools/", kind: "Room", keys: "tools instruments calculators bench" },
+        { title: "Signal Architect", url: "/signal-architect/", kind: "Tool", keys: "signal architect scorer priority p0 p1" },
+        { title: "GTM Motion Diagnostic", url: "/diagnostic.html", kind: "Tool", keys: "diagnostic scorecard motion bottleneck audit" },
+        { title: "Revenue Architecture Simulator", url: "/revenue_architecture_simulator.html", kind: "Tool", keys: "revenue simulator model pipeline math" },
+        { title: "Hazel AI Prep", url: "/hazel-demo/", kind: "Tool", keys: "hazel prep interview positioning vocabulary" },
+        { title: "Case Studies & Operating Record", url: "/case-studies/", kind: "Proof", keys: "case studies work proof operating record" },
+        { title: "Basin::Nexus", url: "/basin-nexus/", kind: "System", keys: "basin nexus gtm operating system" },
+        { title: "Sam & Ink — Continuous Room", url: "/blog/fiction/sam-and-ink/", kind: "Fiction", keys: "sam ink fiction fragments stories" },
+        { title: "Operator Q&A", url: "/answers/", kind: "Guide", keys: "answers faq qa questions" },
+        { title: "Working Session ($500)", url: "/working-session/", kind: "Work", keys: "working session consulting advisory book" },
+        { title: "Services ($50 / $150)", url: "/services/", kind: "Work", keys: "services setup diagnostic troubleshooting" },
+        { title: "Work With Me", url: "/work-with-me/", kind: "Work", keys: "contact hire email work with me" },
+        { title: "Executive Résumé", url: "/resume.html", kind: "Proof", keys: "resume cv career background" }
+      ];
+
+      const wrap = document.getElementById("suggest-wrap");
+      const list = document.getElementById("suggestions");
+      const heading = document.getElementById("suggest-heading");
+      const input = document.getElementById("nf-search");
+      let pool = BASE_ROUTES.slice();
+
+      function tokenize(str) {
+        return String(str || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).filter(function (w) { return w.length > 1 && w !== "html" && w !== "index"; });
+      }
+
+      function escapeHtml(s) {
+        return String(s || "").replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]); });
+      }
+
+      function renderFor(query, label) {
+        const tokens = tokenize(query);
+        if (!tokens.length) {
+          wrap.hidden = true;
+          return;
+        }
+        const scored = pool.map(function (item) {
+          const hay = (item.title + " " + item.url + " " + (item.keys || "")).toLowerCase();
+          let score = 0;
+          tokens.forEach(function (t) {
+            if (item.url.toLowerCase().includes(t)) score += 3;
+            if (item.title.toLowerCase().includes(t)) score += 2;
+            else if (hay.includes(t)) score += 1;
+          });
+          return { item: item, score: score };
+        }).filter(function (x) { return x.score > 0; })
+          .sort(function (a, b) { return b.score - a.score; })
+          .slice(0, 5);
+
+        if (!scored.length) {
+          wrap.hidden = true;
+          return;
+        }
+        heading.textContent = label;
+        list.innerHTML = scored.map(function (entry) {
+          return '<li><a href="' + escapeHtml(entry.item.url) + '"><strong>' + escapeHtml(entry.item.title) + '</strong><span>' + escapeHtml(entry.item.kind) + '</span></a></li>';
+        }).join("");
+        wrap.hidden = false;
+      }
+
+      const promise = window.__lbReadingIndexPromise || (window.__lbReadingIndexPromise = fetch("/blog/reading-index.json").then(function (r) { return r.ok ? r.json() : []; }));
+      promise.then(function (rows) {
+        if (Array.isArray(rows)) {
+          rows.forEach(function (row) {
+            if (row && row.url) {
+              pool.push({
+                title: row.title || row.url,
+                url: row.url,
+                kind: (row.tags || []).some(function (t) { return /fiction|sam & ink|fragment/i.test(t); }) ? "Fiction" : "Essay",
+                keys: Array.isArray(row.tags) ? row.tags.join(" ") : ""
+              });
+            }
+          });
+        }
+        renderFor(rawPath, "Closest matches for this URL");
+      }).catch(function () {
+        renderFor(rawPath, "Suggested destinations");
+      });
+
+      input.addEventListener("input", function () {
+        const q = input.value.trim();
+        if (q) renderFor(q, "Live matches");
+        else renderFor(rawPath, "Closest matches for this URL");
+      });
+    })();
+  </script>
 </body>
 </html>

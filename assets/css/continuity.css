@@ -307,3 +307,169 @@ body.essay-page main h1 {
     width: calc(100vw - 1.4rem);
   }
 }
+
+/* Site-wide Cmd+K / Ctrl+K Studio Command Palette (native modal <dialog>) */
+dialog.lb-cmdk {
+  width: min(620px, calc(100vw - 1.5rem));
+  max-height: min(76vh, 620px);
+  margin: min(12vh, 96px) auto auto;
+  padding: 0;
+  border: 1px solid rgba(237, 199, 110, 0.42);
+  border-radius: 12px;
+  background: #100e0c;
+  color: #f4efe4;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+dialog.lb-cmdk[open] {
+  display: flex;
+  flex-direction: column;
+}
+dialog.lb-cmdk:modal {
+  overscroll-behavior: contain;
+}
+dialog.lb-cmdk::backdrop {
+  background: rgba(6, 5, 4, 0.74);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+.lb-cmdk__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 253, 248, 0.12);
+}
+.lb-cmdk__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lb-cmdk__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: #fffdf8;
+  font: 500 max(16px, 0.98rem)/1.4 "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  outline: none;
+}
+.lb-cmdk__input::placeholder {
+  color: #8f8778;
+}
+.lb-cmdk__close {
+  min-width: 40px;
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(255, 253, 248, 0.18);
+  border-radius: 6px;
+  background: transparent;
+  color: #b8b0a1;
+  font: 600 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.lb-cmdk__close:hover,
+.lb-cmdk__close:focus-visible {
+  border-color: var(--lb-continuity-accent-bright);
+  color: #fffdf8;
+}
+.lb-cmdk__list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+}
+.lb-cmdk__item a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem 0.85rem;
+  align-items: center;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  color: #f4efe4;
+  text-decoration: none;
+}
+.lb-cmdk__item a:hover,
+.lb-cmdk__item a[aria-selected="true"] {
+  background: rgba(201, 155, 62, 0.16);
+  color: #fffdf8;
+}
+.lb-cmdk__item strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-cmdk__item small {
+  grid-column: 1;
+  color: #a69e8e;
+  font-size: 0.76rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-cmdk__badge {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  padding: 0.22rem 0.5rem;
+  border: 1px solid rgba(237, 199, 110, 0.35);
+  border-radius: 999px;
+  color: var(--lb-continuity-accent-bright);
+  font: 600 0.62rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lb-cmdk__empty {
+  padding: 1.5rem 1rem;
+  color: #a69e8e;
+  font-size: 0.88rem;
+  text-align: center;
+}
+.lb-cmdk__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid rgba(255, 253, 248, 0.1);
+  color: #8f8778;
+  font: 500 0.66rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.lb-cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgba(201, 155, 62, 0.42);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: 600 0.66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.lb-cmdk-trigger:hover,
+.lb-cmdk-trigger:focus-visible {
+  border-color: var(--lb-continuity-accent-bright);
+  color: var(--lb-continuity-accent-bright);
+}
+@media print {
+  dialog.lb-cmdk,
+  .lb-cmdk-trigger { display: none !important; }
+}

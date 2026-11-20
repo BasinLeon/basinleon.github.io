@@ -82,7 +82,24 @@
   .lb-saved-item a:hover{color:var(--lb-gold);}\
   .lb-saved-item button{background:none;border:0;color:#8b8573;cursor:pointer;font-size:1rem;}\
   .lb-saved-empty{color:#8b8573;font-size:.9rem;}\
-  @media print{.lb-fab,.lb-progress{display:none!important;}}";
+  .lb-read-meta{margin:.55rem 0 1.4rem;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;\
+    letter-spacing:.08em;text-transform:uppercase;color:#a89f8d;}\
+  .lb-read-meta.lb-light{color:#6a6254;}\
+  .lb-toc{margin:1.4rem 0 2rem;padding:.85rem 1.05rem;border:1px solid rgba(212,175,55,.32);border-radius:10px;\
+    background:rgba(212,175,55,.05);font-family:'DM Sans',system-ui,sans-serif;}\
+  .lb-toc summary{cursor:pointer;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.74rem;\
+    letter-spacing:.1em;text-transform:uppercase;color:var(--lb-gold);min-height:36px;display:flex;align-items:center;}\
+  .lb-toc ol{margin:.65rem 0 .2rem;padding-left:1.25rem;display:grid;gap:.35rem;}\
+  .lb-toc a{color:inherit;text-decoration:none;font-size:.92rem;line-height:1.45;}\
+  .lb-toc a:hover,.lb-toc a:focus-visible{color:var(--lb-gold);text-decoration:underline;}\
+  .lb-toc.lb-light{border-color:rgba(154,112,34,.35);background:rgba(183,131,31,.06);color:#1d1a14;}\
+  .lb-toc.lb-light summary{color:#7c5b19;}\
+  .lb-code-wrap{position:relative;}\
+  .lb-code-copy{position:absolute;top:.55rem;right:.55rem;z-index:2;min-height:30px;padding:.25rem .6rem;\
+    border:1px solid rgba(212,175,55,.45);border-radius:6px;background:rgba(12,10,8,.88);color:#f0e6d3;\
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}\
+  .lb-code-copy:hover,.lb-code-copy:focus-visible{background:var(--lb-gold);color:#0d0803;border-color:var(--lb-gold);}\
+  @media print{.lb-fab,.lb-progress,.lb-code-copy{display:none!important;}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   if (isPost) {
@@ -135,16 +152,92 @@
     window.addEventListener("storage", function (ev) { if (ev.key === SHELF_KEY) paint(); });
     paint();
 
+    var isLightSurface = false;
+    var bgMatch = window.getComputedStyle(document.body).backgroundColor.match(/\d+(?:\.\d+)?/g);
+    if (bgMatch && bgMatch.length >= 3) {
+      isLightSurface = (Number(bgMatch[0]) * 299 + Number(bgMatch[1]) * 587 + Number(bgMatch[2]) * 114) / 1000 > 150;
+    }
+
+    // Reader Upgrade: reading-time badge, auto-TOC for long essays (3+ h2s), and code-block Copy buttons
+    var contentRoot = document.querySelector("article") || document.querySelector(".post-content") || document.querySelector("main");
+    if (contentRoot) {
+      var isFragment = /\/fragment-\d+\.html$/i.test(currentUrl);
+      var rawText = (contentRoot.textContent || "").replace(/\s+/g, " ").trim();
+      var wordCount = rawText ? rawText.split(/\s+/).length : 0;
+      if (!isFragment && wordCount >= 180 && h1 && !document.querySelector(".lb-read-meta, .hub-reading-time")) {
+        var mins = Math.max(1, Math.round(wordCount / 225));
+        var metaLine = document.createElement("p");
+        metaLine.className = "lb-read-meta" + (isLightSurface ? " lb-light" : "");
+        metaLine.textContent = mins + " min read · " + wordCount.toLocaleString() + " words";
+        h1.insertAdjacentElement("afterend", metaLine);
+      }
+
+      var headings = Array.from(contentRoot.querySelectorAll("h2")).filter(function (el) {
+        return !el.closest("aside, nav, footer, .lb-endcta, .read-next, .hub-follow, .hub-daily");
+      });
+      if (!isFragment && headings.length >= 3 && !document.querySelector(".lb-toc")) {
+        var usedIds = new Set();
+        var toc = document.createElement("details");
+        toc.className = "lb-toc" + (isLightSurface ? " lb-light" : "");
+        var summary = document.createElement("summary");
+        summary.textContent = "In this essay (" + headings.length + " sections)";
+        toc.appendChild(summary);
+        var ol = document.createElement("ol");
+        headings.forEach(function (heading, idx) {
+          if (!heading.id) {
+            var slug = (heading.textContent || "section-" + (idx + 1))
+              .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || ("section-" + (idx + 1));
+            var unique = slug;
+            var n = 2;
+            while (usedIds.has(unique) || document.getElementById(unique)) { unique = slug + "-" + (n++); }
+            heading.id = unique;
+          }
+          usedIds.add(heading.id);
+          var li = document.createElement("li");
+          var a = document.createElement("a");
+          a.href = "#" + heading.id;
+          a.textContent = (heading.textContent || "").trim();
+          li.appendChild(a);
+          ol.appendChild(li);
+        });
+        toc.appendChild(ol);
+        headings[0].parentNode.insertBefore(toc, headings[0]);
+      }
+
+      contentRoot.querySelectorAll("pre").forEach(function (pre) {
+        if (pre.dataset.lbCopyBound) return;
+        pre.dataset.lbCopyBound = "1";
+        var wrapper = document.createElement("div");
+        wrapper.className = "lb-code-wrap";
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "lb-code-copy";
+        btn.textContent = "Copy";
+        btn.setAttribute("aria-label", "Copy code block");
+        btn.addEventListener("click", function () {
+          var codeText = (pre.querySelector("code") || pre).textContent || "";
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(codeText).then(function () {
+              btn.textContent = "Copied";
+              window.setTimeout(function () { btn.textContent = "Copy"; }, 1800);
+            }).catch(function () {
+              btn.textContent = "Select text";
+              window.setTimeout(function () { btn.textContent = "Copy"; }, 1800);
+            });
+          }
+        });
+        wrapper.appendChild(btn);
+      });
+    }
+
     // Only inject legacy end CTA / related block on standalone posts lacking modern post chrome.
     var hasModernEndings = Boolean(document.querySelector(".lb-reading-next, .read-next, .hub-follow, [data-hiring-note], .hub-post-share, script[src*='hub-share.js']"));
     if (!hasModernEndings) {
       var art = document.querySelector("article") || document.querySelector("main") || document.body;
       var cta = document.createElement("div"); cta.className = "lb-endcta";
-      var bodyColor = window.getComputedStyle(document.body).backgroundColor.match(/\d+(?:\.\d+)?/g);
-      if (bodyColor && bodyColor.length >= 3) {
-        var luminance = (Number(bodyColor[0]) * 299 + Number(bodyColor[1]) * 587 + Number(bodyColor[2]) * 114) / 1000;
-        if (luminance > 150) cta.classList.add("lb-light");
-      }
+      if (isLightSurface) cta.classList.add("lb-light");
       var shareUrl = new URL(location.pathname, location.origin);
       shareUrl.searchParams.set("utm_source", "reader-share");
       shareUrl.searchParams.set("utm_medium", "referral");

@@ -5,6 +5,7 @@ Site link validator for the current portfolio architecture.
 Checks internal links and HTML fragments across the public site.
 """
 
+import json
 import re
 import sys
 import os
@@ -302,6 +303,66 @@ def validate_sitemap(repo_root):
     return issues
 
 
+def validate_site_hygiene(repo_root):
+    issues = []
+
+    # 1. Catch broken/empty placeholder HTML files (e.g. "404: Not Found") and wrong LinkedIn handles
+    for html_file in iter_public_files(repo_root):
+        if html_file.suffix.lower() != '.html':
+            continue
+        rel = html_file.relative_to(repo_root).as_posix()
+        text = html_file.read_text(encoding='utf-8', errors='ignore')
+        stripped = text.strip()
+        if len(stripped) < 120 or stripped.startswith('404: Not Found'):
+            issues.append({
+                'file': rel,
+                'link': rel,
+                'normalized': f'broken or placeholder HTML ({len(stripped)} bytes)',
+            })
+        if 'linkedin.com/in/basinleon' in text:
+            issues.append({
+                'file': rel,
+                'link': 'https://linkedin.com/in/basinleon',
+                'normalized': 'wrong LinkedIn handle (should be /in/leonbasin)',
+            })
+
+    # 2. Catch duplicate URLs or duplicate titles in data/posts.json
+    posts_path = repo_root / 'data' / 'posts.json'
+    if posts_path.exists():
+        posts = json.loads(posts_path.read_text(encoding='utf-8'))
+        seen_urls = set()
+        seen_titles = set()
+        for item in posts:
+            url = (item.get('url') or '').strip()
+            title = re.sub(r'\s+', ' ', (item.get('title') or '').strip().lower())
+            if url in seen_urls:
+                issues.append({'file': 'data/posts.json', 'link': url, 'normalized': 'duplicate post URL'})
+            seen_urls.add(url)
+            if title and title in seen_titles:
+                issues.append({'file': 'data/posts.json', 'link': url, 'normalized': f'duplicate post title: {title}'})
+            seen_titles.add(title)
+
+    # 3. Ensure core studio routes carry canonical and favicon metadata
+    core_routes = (
+        'index.html', 'blog/index.html', 'tools/index.html', 'case-studies/index.html',
+        'basin-nexus/index.html', 'gtm-systems/index.html', 'signal-architect/index.html',
+        'answers/index.html', 'work-with-me/index.html', 'working-session/index.html',
+        'services/index.html', 'blueprint/index.html', 'resume.html',
+        'diagnostic.html', 'revenue_architecture_simulator.html', 'hazel-demo/index.html',
+    )
+    for rel in core_routes:
+        target = repo_root / rel
+        if not target.exists():
+            continue
+        text = target.read_text(encoding='utf-8', errors='ignore')
+        if not re.search(r'rel=["\']canonical["\']', text, re.I):
+            issues.append({'file': rel, 'link': rel, 'normalized': 'missing <link rel="canonical">'})
+        if not re.search(r'rel=["\']icon["\']', text, re.I):
+            issues.append({'file': rel, 'link': rel, 'normalized': 'missing <link rel="icon"> favicon'})
+
+    return issues
+
+
 def main():
     print(f"\n{Colors.BOLD}{Colors.BLUE}╔════════════════════════════════════════╗{Colors.RESET}")
     print(f"{Colors.BOLD}{Colors.BLUE}║   Site Link Validator v2.0            ║{Colors.RESET}")
@@ -316,6 +377,7 @@ def main():
     broken_links = validate_internal_links(repo_root, valid_paths)
     broken_links.extend(validate_fragments(repo_root))
     broken_links.extend(validate_sitemap(repo_root))
+    broken_links.extend(validate_site_hygiene(repo_root))
 
     print(f"\n{Colors.BOLD}Validation Results:{Colors.RESET}\n")
     if not broken_links:
