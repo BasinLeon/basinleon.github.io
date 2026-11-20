@@ -17,6 +17,7 @@
 
  function link(path,channel){const u=new URL(path,location.origin);u.search='';u.hash='';u.searchParams.set('utm_source',channel);u.searchParams.set('utm_medium','social');u.searchParams.set('utm_campaign','writing-hub');return u.href;}
  function mount(host,title,path){
+ if(host.closest('[data-card-tools="off"]'))return;
   if(host.querySelector('.hub-share'))return;
   const wrap=document.createElement('div');wrap.className='hub-share';wrap.setAttribute('aria-label','Share '+title);
   const status=document.createElement('span');status.className='hub-share-status';status.setAttribute('role','status');
@@ -50,7 +51,7 @@
   const expectedUrls=ordered.map(x=>x.url);
   if(existingUrls.length===expectedUrls.length && existingUrls.every((u,i)=>u===expectedUrls[i]))return;
   const frag=document.createDocumentFragment();
-  ordered.forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;a.append(k,h,t,p);mount(a,x.title,x.url);frag.append(a);});
+  ordered.forEach(x=>{const a=document.createElement('article');a.className='hub-entry';const k=document.createElement('span');k.className='hub-label';k.textContent='Sam & Ink · Fragment '+x.slug.split('-').pop();const h=document.createElement('h3'),l=document.createElement('a');l.href=x.url;l.textContent=x.title;h.append(l);const t=document.createElement('time');t.dateTime=x.date;t.textContent='Published here · '+x.date;const p=document.createElement('p');p.textContent=x.excerpt;if(daily.dataset.cardTools==='off'){k.textContent='Fragment '+x.slug.split('-').pop()+' · '+x.date;a.append(k,h,p);}else a.append(k,h,t,p);mount(a,x.title,x.url);frag.append(a);});
   daily.replaceChildren(frag);
  }).catch(()=>{/* Retain server-rendered archive entries. */});
 

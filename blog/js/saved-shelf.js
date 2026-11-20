@@ -80,6 +80,7 @@
  }
 
  function mount(parent,title,url,shouldRender=true){
+  if(parent.closest('[data-card-tools="off"]'))return;
   if(parent.querySelector('.hub-save'))return;
   const b=document.createElement('button');b.type='button';b.className='hub-save';b.dataset.url=url;
   b.addEventListener('click',()=>toggle({title,url}));

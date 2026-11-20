@@ -395,10 +395,7 @@
       }
       return;
     }
-    event.preventDefault();
-    route.dataset.destination = (link.textContent || "Continue").replace(/\s+/g, " ").trim().slice(0, 42);
-    root.classList.add("lb-route-leaving");
-    window.setTimeout(() => { location.href = destination.href; }, 120);
+    // Browsers without cross-document transitions navigate immediately.
   });
 
   window.addEventListener("pageshow", () => {

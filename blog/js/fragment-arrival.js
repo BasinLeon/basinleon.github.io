@@ -6,7 +6,7 @@
  const wanted=fragment(content)||fragment(campaign);
  const arrival=Boolean(wanted)||campaign==='sam-ink';
  if(arrival)document.documentElement.classList.add('sam-ink-arrival');
- const entrance=document.querySelector('.sam-ink-entrance');
+ const entrance=document.querySelector('.sam-ink-entrance');if(entrance)entrance.dataset.arrivalActive=String(arrival);
  const latestCard=document.querySelector('[data-latest-title]');
  if(!entrance&&!latestCard)return;
  if(!window.__lbFragmentsPromise){

@@ -21,7 +21,7 @@
  function apply(){root.dataset.readingMode=mode;root.dataset.readingSize=size;if(isStory)root.dataset.readingTheme=mode==='dark'?'dark':'light';}
  apply();
  const panel=document.createElement('details');panel.className='hub-reading-preferences';
- const summary=document.createElement('summary');summary.textContent='Reading preferences';panel.append(summary);
+ const summary=document.createElement('summary');summary.textContent=isHub?'Aa':'Reading preferences';summary.setAttribute('aria-label','Reading preferences');panel.append(summary);
  const controls=document.createElement('div');controls.className='hub-reading-controls';
  function select(label,values,current,change){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement('select');input.setAttribute('aria-label',label);values.forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option);});input.value=current;input.addEventListener('change',()=>{change(input.value);if(document.startViewTransition&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){try{const t=document.startViewTransition(()=>apply());if(t?.ready)t.ready.catch(()=>{});if(t?.finished)t.finished.catch(()=>{});}catch{apply();}}else{apply();}write(key,{mode,size});});wrap.append(input);controls.append(wrap);}
  select('Appearance',[['dark','Dark'],['paper','Warm paper']],mode,value=>mode=value);
