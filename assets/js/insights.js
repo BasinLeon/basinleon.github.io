@@ -156,9 +156,12 @@
     if (value === "claude.ai") return "claude";
     if (value === "perplexity.ai") return "perplexity";
     if (value === "gemini.google.com") return "gemini";
+    if (["grok.com", "x.ai"].includes(value)) return "grok";
     if (["copilot.microsoft.com", "copilot.cloud.microsoft"].includes(value)) return "copilot";
     if (value === "poe.com") return "poe";
     if (value === "you.com") return "you-com";
+    if (value === "meta.ai") return "meta-ai";
+    if (["deepseek.com", "chat.deepseek.com"].includes(value)) return "deepseek";
     return "";
   }
 

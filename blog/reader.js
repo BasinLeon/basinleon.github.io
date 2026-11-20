@@ -1,22 +1,53 @@
-/* Basin::Nexus reading layer — progress, save-for-later, Substack subscribe.
-   Self-contained. Injected into every post + the archive index. */
+/* Basin::Nexus reading layer — unified save-for-later, quick archive bar, Substack subscribe.
+   Self-contained. Syncs with saved-shelf.js (basin-saved-reading-v1) and defers progress bar to continuity.js. */
 (function () {
+  if (window.__lbReaderLoaded) return;
+  window.__lbReaderLoaded = true;
+
   var SUBSTACK = "https://basinandassociates.substack.com";
-  var KEY = "lb_saved";
+  var SHELF_KEY = "basin-saved-reading-v1";
+  var LEGACY_KEY = "lb_saved";
   var isPost = /\/blog\/posts\//.test(location.pathname);
 
-  function saved() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } }
-  function setSaved(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
+  function readShelf() {
+    var items = [];
+    try { items = JSON.parse(localStorage.getItem(SHELF_KEY) || "[]"); } catch (_) { items = []; }
+    if (!Array.isArray(items)) items = [];
+    try {
+      var legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || "[]");
+      if (Array.isArray(legacy) && legacy.length) {
+        var seen = new Set(items.map(function (x) { return x && x.url; }));
+        var changed = false;
+        legacy.forEach(function (x) {
+          if (x && typeof x.url === "string" && /^\/blog\/posts\/[a-z0-9-]+\.html$/.test(x.url) && !seen.has(x.url)) {
+            items.push({ title: String(x.title || x.slug || "Saved entry"), url: x.url });
+            seen.add(x.url);
+            changed = true;
+          }
+        });
+        if (changed) localStorage.setItem(SHELF_KEY, JSON.stringify(items.slice(0, 100)));
+      }
+    } catch (_) {}
+    return items.filter(function (x) { return x && typeof x.url === "string" && /^\/blog\/posts\/[a-z0-9-]+\.html$/.test(x.url); }).slice(0, 100);
+  }
+
+  function writeShelf(items) {
+    try {
+      localStorage.setItem(SHELF_KEY, JSON.stringify(items.slice(0, 100)));
+      document.dispatchEvent(new CustomEvent("lb-saved-shelf-changed", { detail: { saved: items } }));
+    } catch (_) {}
+  }
 
   var css = "\
   :root{--lb-gold:#D4AF37;--lb-gold-soft:rgba(212,175,55,.14);}\
   .lb-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:9999;\
     background:linear-gradient(90deg,#B8860B,#FFD700);transition:width .1s linear;}\
-  .lb-fab{position:fixed;right:16px;bottom:16px;z-index:9998;display:flex;gap:8px;\
-    flex-wrap:wrap;justify-content:flex-end;max-width:70vw;}\
+  .lb-fab{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:9998;display:flex;gap:8px;\
+    flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 32px);}\
   .lb-fab .lb-btn{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;\
-    letter-spacing:.08em;text-transform:uppercase;padding:.6rem .8rem;border-radius:999px;\
-    border:1px solid rgba(212,175,55,.45);background:rgba(8,6,3,.82);color:#f0e6d3;\
+    letter-spacing:.08em;text-transform:uppercase;padding:.6rem .8rem;border-radius:999px;min-height:40px;\
+    display:inline-flex;align-items:center;\
+    border:1px solid rgba(212,175,55,.45);background:rgba(8,6,3,.86);color:#f0e6d3;\
     text-decoration:none;cursor:pointer;backdrop-filter:blur(6px);transition:.18s;line-height:1;}\
   .lb-fab .lb-btn:hover{background:var(--lb-gold-soft);border-color:var(--lb-gold);}\
   .lb-fab .lb-sub{background:var(--lb-gold);color:#0d0803;border-color:var(--lb-gold);font-weight:700;}\
@@ -50,98 +81,116 @@
   .lb-saved-item a{color:#f0e6d3;text-decoration:none;font-size:.9rem;}\
   .lb-saved-item a:hover{color:var(--lb-gold);}\
   .lb-saved-item button{background:none;border:0;color:#8b8573;cursor:pointer;font-size:1rem;}\
-  .lb-saved-empty{color:#8b8573;font-size:.9rem;}";
+  .lb-saved-empty{color:#8b8573;font-size:.9rem;}\
+  @media print{.lb-fab,.lb-progress{display:none!important;}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   if (isPost) {
-    var slug = location.pathname.split("/").pop();
+    var currentUrl = location.pathname;
     var h1 = document.querySelector("h1");
     var title = (h1 ? h1.textContent : document.title).replace(/\s*\|\s*Leon Basin.*$/, "").trim();
 
-    var prog = document.createElement("div"); prog.className = "lb-progress"; document.body.appendChild(prog);
-    window.addEventListener("scroll", function () {
-      var d = document.documentElement, top = d.scrollTop || document.body.scrollTop;
-      var h = d.scrollHeight - d.clientHeight; prog.style.width = (h > 0 ? (top / h) * 100 : 0) + "%";
-    }, { passive: true });
+    var hasContinuity = Boolean(document.querySelector('.lb-continuity-progress, script[src*="continuity.js"]'));
+    if (!hasContinuity) {
+      var prog = document.createElement("div"); prog.className = "lb-progress"; prog.setAttribute("aria-hidden", "true"); document.body.appendChild(prog);
+      window.addEventListener("scroll", function () {
+        var d = document.documentElement, top = d.scrollTop || document.body.scrollTop;
+        var h = d.scrollHeight - d.clientHeight; prog.style.width = (h > 0 ? (top / h) * 100 : 0) + "%";
+      }, { passive: true });
+    }
 
     var fab = document.createElement("div"); fab.className = "lb-fab";
     fab.innerHTML =
       '<a class="lb-btn" href="/blog/">← Archive</a>' +
-      '<button class="lb-btn lb-save" type="button">☆ Save</button>' +
-      '<a class="lb-btn lb-sub" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener">Subscribe</a>';
+      '<button class="lb-btn lb-save" type="button" aria-pressed="false">☆ Save</button>' +
+      '<a class="lb-btn lb-sub" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener noreferrer">Subscribe</a>';
     document.body.appendChild(fab);
+
     var saveBtn = fab.querySelector(".lb-save");
-    function isSaved() { return saved().some(function (x) { return x.slug === slug; }); }
-    function paint() { var on = isSaved(); saveBtn.classList.toggle("on", on); saveBtn.innerHTML = on ? "★ Saved" : "☆ Save"; }
-    function toggle() {
-      var a = saved(), i = a.findIndex(function (x) { return x.slug === slug; });
-      if (i >= 0) a.splice(i, 1); else a.unshift({ slug: slug, title: title, url: location.pathname, ts: Date.now() });
-      setSaved(a); paint();
-    }
-    saveBtn.addEventListener("click", toggle); paint();
+    var save2 = null;
 
-    var art = document.querySelector("article") || document.querySelector("main") || document.body;
-    var cta = document.createElement("div"); cta.className = "lb-endcta";
-    var bodyColor = window.getComputedStyle(document.body).backgroundColor.match(/\d+(?:\.\d+)?/g);
-    if (bodyColor && bodyColor.length >= 3) {
-      var luminance = (Number(bodyColor[0]) * 299 + Number(bodyColor[1]) * 587 + Number(bodyColor[2]) * 114) / 1000;
-      if (luminance > 150) cta.classList.add("lb-light");
+    function isSaved() {
+      return readShelf().some(function (x) { return x.url === currentUrl; });
     }
-    var shareUrl = new URL(location.pathname, location.origin);
-    shareUrl.searchParams.set("utm_source", "reader-share");
-    shareUrl.searchParams.set("utm_medium", "referral");
-    shareUrl.searchParams.set("utm_campaign", "article-share");
-    var linkedinUrl = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(shareUrl.toString());
-    var emailUrl = "mailto:?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent("I thought you might appreciate this:\n\n" + shareUrl.toString());
-    cta.innerHTML =
-      "<h3>Keep the signal coming.</h3>" +
-      "<p>New field notes by email when they land. Save this one to come back to it.</p>" +
-      '<div class="lb-endcta-actions">' +
-      '<a class="lb-btn lb-sub" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener">Subscribe by email</a>' +
-      '<button class="lb-btn lb-save2" type="button"></button></div>' +
-      '<div class="lb-share-actions">' +
-      '<a class="lb-btn" data-track="Article: share on LinkedIn" href="' + linkedinUrl + '" target="_blank" rel="noopener">Share on LinkedIn</a>' +
-      '<a class="lb-btn" data-track="Article: share by email" href="' + emailUrl + '">Email this</a>' +
-      '<button class="lb-btn lb-copy-link" type="button">Copy link</button></div>';
-    art.appendChild(cta);
-    var save2 = cta.querySelector(".lb-save2");
-    function paint2() { save2.innerHTML = isSaved() ? "★ Saved" : "☆ Save this piece"; }
-    save2.addEventListener("click", function () { toggle(); paint2(); }); paint2();
-    var copyLink = cta.querySelector(".lb-copy-link");
-    copyLink.addEventListener("click", async function () {
-      try { await navigator.clipboard.writeText(shareUrl.toString()); }
-      catch (_) {
-        copyLink.textContent = "Copy unavailable: use your address bar";
-        return;
+    function paint() {
+      var on = isSaved();
+      saveBtn.classList.toggle("on", on);
+      saveBtn.setAttribute("aria-pressed", String(on));
+      saveBtn.textContent = on ? "★ Saved" : "☆ Save";
+      if (save2) {
+        save2.setAttribute("aria-pressed", String(on));
+        save2.textContent = on ? "★ Saved" : "☆ Save this piece";
       }
-      copyLink.textContent = "Copied";
-      window.setTimeout(function () { copyLink.textContent = "Copy link"; }, 1600);
-      if (window.lbInsightsRecord) window.lbInsightsRecord("Conversion", { category: "Reader interest", action: "copy-article-link", destination: location.pathname, label: title, region: "article" });
-    });
+    }
+    function toggle() {
+      var a = readShelf();
+      var i = a.findIndex(function (x) { return x.url === currentUrl; });
+      if (i >= 0) a.splice(i, 1);
+      else a.unshift({ title: title, url: currentUrl });
+      writeShelf(a);
+      paint();
+    }
+    saveBtn.addEventListener("click", toggle);
+    document.addEventListener("lb-saved-shelf-changed", paint);
+    window.addEventListener("storage", function (ev) { if (ev.key === SHELF_KEY) paint(); });
+    paint();
 
-    var related = document.createElement("div"); related.className = "lb-related";
-    var operating = slug === "rebuilt-manual-sdr-workflow.html"
-      ? { title: "Stop Selling, Start Architecting", url: "/blog/posts/stop-selling-start-architecting-rise-of-gtm-engineer.html" }
-      : { title: "How I Rebuilt a Manual SDR Workflow with Signal Architecture", url: "/blog/posts/rebuilt-manual-sdr-workflow.html" };
-    var human = slug === "what-does-a-moment-become.html"
-      ? { title: "The Soul’s Algorithm: The Fallow Year", url: "/blog/posts/the-souls-algorithm-fallow-year.html" }
-      : { title: "What Does a Moment Become?", url: "/blog/posts/what-does-a-moment-become.html" };
-    related.innerHTML = '<a data-track="Related reading: operating" href="' + operating.url + '"><strong>' + operating.title + '</strong><span>Operating</span></a>' +
-      '<a data-track="Related reading: human" href="' + human.url + '"><strong>' + human.title + '</strong><span>Human</span></a>';
-    cta.insertAdjacentElement("afterend", related);
+    // Only inject legacy end CTA / related block on standalone posts lacking modern post chrome.
+    var hasModernEndings = Boolean(document.querySelector(".lb-reading-next, .read-next, .hub-follow, [data-hiring-note], .hub-post-share, script[src*='hub-share.js']"));
+    if (!hasModernEndings) {
+      var art = document.querySelector("article") || document.querySelector("main") || document.body;
+      var cta = document.createElement("div"); cta.className = "lb-endcta";
+      var bodyColor = window.getComputedStyle(document.body).backgroundColor.match(/\d+(?:\.\d+)?/g);
+      if (bodyColor && bodyColor.length >= 3) {
+        var luminance = (Number(bodyColor[0]) * 299 + Number(bodyColor[1]) * 587 + Number(bodyColor[2]) * 114) / 1000;
+        if (luminance > 150) cta.classList.add("lb-light");
+      }
+      var shareUrl = new URL(location.pathname, location.origin);
+      shareUrl.searchParams.set("utm_source", "reader-share");
+      shareUrl.searchParams.set("utm_medium", "referral");
+      shareUrl.searchParams.set("utm_campaign", "article-share");
+      var linkedinUrl = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(shareUrl.toString());
+      var emailUrl = "mailto:?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent("I thought you might appreciate this:\n\n" + shareUrl.toString());
+      cta.innerHTML =
+        "<h3>Keep the signal coming.</h3>" +
+        "<p>New field notes by email when they land. Save this one to come back to it.</p>" +
+        '<div class="lb-endcta-actions">' +
+        '<a class="lb-btn lb-sub" href="' + SUBSTACK + '/subscribe" target="_blank" rel="noopener noreferrer">Subscribe by email</a>' +
+        '<button class="lb-btn lb-save2" type="button"></button></div>' +
+        '<div class="lb-share-actions">' +
+        '<a class="lb-btn" data-track="Article: share on LinkedIn" href="' + linkedinUrl + '" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>' +
+        '<a class="lb-btn" data-track="Article: share by email" href="' + emailUrl + '">Email this</a>' +
+        '<button class="lb-btn lb-copy-link" type="button">Copy link</button></div>';
+      art.appendChild(cta);
+      save2 = cta.querySelector(".lb-save2");
+      save2.addEventListener("click", toggle);
+      paint();
+      var copyLink = cta.querySelector(".lb-copy-link");
+      copyLink.addEventListener("click", async function () {
+        try { await navigator.clipboard.writeText(shareUrl.toString()); }
+        catch (_) {
+          copyLink.textContent = "Copy unavailable: use your address bar";
+          return;
+        }
+        copyLink.textContent = "Copied";
+        window.setTimeout(function () { copyLink.textContent = "Copy link"; }, 1600);
+        if (window.lbInsightsRecord) window.lbInsightsRecord("Conversion", { category: "Reader interest", action: "copy-article-link", destination: location.pathname, label: title, region: "article" });
+      });
+    }
   }
 
   var mount = document.getElementById("lb-saved-mount");
   if (mount) {
     function render() {
-      var a = saved();
+      var a = readShelf();
       if (!a.length) { mount.innerHTML = '<p class="lb-saved-empty">Nothing saved yet. Tap Save on any piece and it waits for you here, on this device.</p>'; return; }
       var w = document.createElement("div"); w.className = "lb-saved-wrap";
       a.forEach(function (x) {
         var row = document.createElement("div"); row.className = "lb-saved-item";
-        row.innerHTML = '<a href="' + x.url + '">' + (x.title || x.slug) + "</a>";
+        var link = document.createElement("a"); link.href = x.url; link.textContent = x.title || x.url;
+        row.appendChild(link);
         var b = document.createElement("button"); b.type = "button"; b.title = "Remove"; b.textContent = "✕";
-        b.addEventListener("click", function () { setSaved(saved().filter(function (y) { return y.slug !== x.slug; })); render(); });
+        b.addEventListener("click", function () { writeShelf(readShelf().filter(function (y) { return y.url !== x.url; })); render(); });
         row.appendChild(b); w.appendChild(row);
       });
       mount.innerHTML = ""; mount.appendChild(w);

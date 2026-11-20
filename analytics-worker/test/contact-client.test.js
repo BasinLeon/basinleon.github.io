@@ -45,3 +45,25 @@ test('HTTP failure or unaccepted response does not record a conversion', async (
     assert.match(app.status.textContent, /Direct route/);
   }
 });
+
+test('problem and consequence preserve paragraph break and tolerate malformed referrer', async () => {
+  const handlers = {}, requests = [];
+  const status = { classList: { add() {} }, appendChild() {} }, button = {};
+  const form = {
+    dataset: {}, querySelector: s => s.startsWith('button') ? button : status,
+    addEventListener: (name, fn) => { handlers[name] = fn; },
+    setAttribute() {}, removeAttribute() {}, reset() {}
+  };
+  const values = { name: 'Test', email: 'test@example.com', intent: 'Revenue Working Session ($500)', problem: 'Outbound stalled', consequence: 'Miss Q2 pipeline' };
+  vm.runInNewContext(source, {
+    document: { querySelectorAll: () => [form], referrer: 'http://[::1', createElement: () => ({textContent:''}) },
+    location: { search: '', pathname: '/working-session/', href: 'https://basinleon.github.io/working-session/' },
+    window: { lbInsightsRecord() {}, lbInsightsCampaign: { source: '' } },
+    URLSearchParams, URL, Date,
+    FormData: class { get(k) { return k in values ? values[k] : ''; } },
+    fetch: async (url, init) => { requests.push(JSON.parse(init.body)); return { ok: true, json: async () => ({ accepted: true }) }; }
+  });
+  await handlers.submit({ preventDefault() {} });
+  assert.match(requests[0].problem, /Outbound stalled\n\nWhat happens if it is still broken 90 days from now: Miss Q2 pipeline/);
+  assert.equal(requests[0].referrer, '');
+});

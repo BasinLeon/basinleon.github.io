@@ -1,5 +1,7 @@
 /* Reading choices and fragment position stay on this device. */
 (()=>{
+ if(window.__lbReadingPreferencesLoaded)return;
+ window.__lbReadingPreferencesLoaded=true;
  const root=document.documentElement;
  const isHub=document.body.classList.contains('writing-hub');
  const isShelf=location.pathname==='/blog/fiction/sam-and-ink/'||location.pathname.startsWith('/answers');

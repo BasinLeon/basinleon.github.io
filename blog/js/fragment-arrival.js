@@ -9,7 +9,10 @@
  const entrance=document.querySelector('.sam-ink-entrance');
  const latestCard=document.querySelector('[data-latest-title]');
  if(!entrance&&!latestCard)return;
- fetch('/data/fragments.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(items=>{
+ if(!window.__lbFragmentsPromise){
+  window.__lbFragmentsPromise=fetch('/data/fragments.json').then(r=>{if(!r.ok)throw Error();return r.json();});
+ }
+ window.__lbFragmentsPromise.then(items=>{
   const published=(Array.isArray(items)?items:[]).filter(x=>typeof x.slug==='string'&&/^fragment-\d+$/.test(x.slug)&&x.url==='/blog/posts/'+x.slug+'.html'&&typeof x.title==='string'&&typeof x.excerpt==='string').sort((a,b)=>Number(b.slug.split('-').pop())-Number(a.slug.split('-').pop()));
   if(!published.length)throw Error();
   const latest=published[0];

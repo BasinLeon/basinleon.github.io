@@ -53,3 +53,15 @@ test('fbclid links without explicit utm_source attribute to facebook social camp
  assert.equal(payloads[0].campaign.medium,'social');
  assert.equal(payloads[0].campaign.campaign,'facebook-share');
 });
+
+test('Grok referrer attributes organic AI referral cleanly',async()=>{
+ const sent=[],storage=new Map();
+ const store={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)};
+ const context={document:{title:'Fixture',body:{dataset:{lbSection:'writing'}},cookie:'',referrer:'https://grok.com/chat',hidden:false,querySelector:()=>null,addEventListener(){},documentElement:{scrollHeight:1000}},location:new URL('https://basinleon.github.io/blog/'),URL,URLSearchParams,crypto:{randomUUID:()=>'fixture-grok-id'},navigator:{webdriver:false,userAgent:'Fixture browser',doNotTrack:'0',globalPrivacyControl:false,sendBeacon:(u,b)=>{sent.push(b);return true;}},localStorage:store,sessionStorage:store,fetch:async(u,o)=>{sent.push(o.body);return {ok:true}},Date,Blob,window:{innerWidth:1280,innerHeight:900,addEventListener(){},setInterval(){}}};
+ vm.runInNewContext(source,context);
+ const payloads=await Promise.all(sent.map(async x=>JSON.parse(typeof x==='string'?x:await x.text())));
+ assert(payloads.length>0);
+ assert.equal(payloads[0].campaign.source,'grok');
+ assert.equal(payloads[0].campaign.medium,'ai-referral');
+ assert.equal(payloads[0].campaign.campaign,'organic-ai-discovery');
+});

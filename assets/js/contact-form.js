@@ -10,6 +10,24 @@
     return String(value || "").replace(/\s+/g, " ").trim().slice(0, max);
   }
 
+  function cleanMultiline(value, max) {
+    return String(value || "")
+      .replace(/\r\n?/g, "\n")
+      .replace(/[ \t]+/g, " ")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim()
+      .slice(0, max);
+  }
+
+  function safeReferrerHost() {
+    if (!document.referrer) return "";
+    try {
+      return new URL(document.referrer, location.href).hostname;
+    } catch (_) {
+      return "";
+    }
+  }
+
   function campaign() {
     if (window.lbInsightsCampaign) return window.lbInsightsCampaign;
     var params = new URLSearchParams(location.search);
@@ -36,20 +54,20 @@
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
       var data = new FormData(form);
-      var problem = clean(data.get("problem"), 1300);
-      if (data.get("consequence") !== null && data.get("consequence") !== "") problem = "What is broken in GTM right now: " + problem + "\n\nWhat happens if it is still broken 90 days from now: " + clean(data.get("consequence"), 600);
+      var problem = cleanMultiline(data.get("problem"), 1300);
+      if (data.get("consequence") !== null && data.get("consequence") !== "") problem = "What is broken in GTM right now: " + problem + "\n\nWhat happens if it is still broken 90 days from now: " + cleanMultiline(data.get("consequence"), 600);
       var payload = {
         v: 1,
         name: clean(data.get("name"), 100),
         email: clean(data.get("email"), 180),
         company: clean(data.get("company"), 140),
         intent: clean(data.get("intent"), 60),
-        problem: clean(problem, 2000),
+        problem: cleanMultiline(problem, 2000),
         website: clean(data.get("website"), 120),
         startedAt: startedAt,
         conversation_id: window.lbConversation ? window.lbConversation.ensure() : "",
         page: location.pathname,
-        referrer: document.referrer ? new URL(document.referrer, location.href).hostname : "",
+        referrer: safeReferrerHost(),
         campaign: campaign()
       };
 
