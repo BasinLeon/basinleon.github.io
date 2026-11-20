@@ -2,6 +2,12 @@
   navigation: auto;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 :root {
   --lb-continuity-accent: #c99b3e;
   --lb-continuity-accent-bright: #edc76e;
@@ -22,6 +28,21 @@
   background: var(--lb-continuity-accent);
   box-shadow: 0 1px 0 rgba(8, 8, 7, 0.42);
   transition: transform 70ms linear;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    @keyframes lb-grow-progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .lb-continuity-progress {
+      transition: none;
+      animation: lb-grow-progress auto linear;
+      animation-timeline: scroll(root);
+    }
+  }
 }
 
 .lb-continuity-route {
@@ -226,7 +247,7 @@
   letter-spacing: 0.03em;
 }
 
-.lb-continuity .lb-flow-ready [data-lb-flow] {
+.lb-continuity.lb-flow-ready [data-lb-flow] {
   opacity: 0;
   transform: translateY(var(--lb-flow-y));
   transition:
@@ -234,7 +255,7 @@
     transform 720ms cubic-bezier(.2,.7,.2,1);
 }
 
-.lb-continuity .lb-flow-ready [data-lb-flow].lb-flow-visible {
+.lb-continuity.lb-flow-ready [data-lb-flow].lb-flow-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -264,11 +285,11 @@ body.essay-page main h1 {
   .lb-continuity-progress,
   .lb-continuity-route,
   .lb-studio-clock,
-  .lb-continuity .lb-flow-ready [data-lb-flow] {
+  .lb-continuity.lb-flow-ready [data-lb-flow] {
     transition: none !important;
   }
 
-  .lb-continuity .lb-flow-ready [data-lb-flow] {
+  .lb-continuity.lb-flow-ready [data-lb-flow] {
     opacity: 1;
     transform: none;
   }

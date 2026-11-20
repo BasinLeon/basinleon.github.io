@@ -22,31 +22,59 @@
   document.body.prepend(route);
   document.body.prepend(progress);
 
-  let scheduled = false;
-  const updateProgress = () => {
-    const available = document.documentElement.scrollHeight - window.innerHeight;
-    const value = available > 0 ? Math.min(1, Math.max(0, window.scrollY / available)) : 0;
-    root.style.setProperty("--lb-scroll-progress", value.toFixed(4));
-    scheduled = false;
-  };
+  const supportsScrollTimeline = !reducedMotion && typeof CSS !== "undefined" && CSS.supports && CSS.supports("animation-timeline", "scroll()");
+  if (!supportsScrollTimeline) {
+    let scheduled = false;
+    const updateProgress = () => {
+      const available = document.documentElement.scrollHeight - window.innerHeight;
+      const value = available > 0 ? Math.min(1, Math.max(0, window.scrollY / available)) : 0;
+      root.style.setProperty("--lb-scroll-progress", value.toFixed(4));
+      scheduled = false;
+    };
 
-  window.addEventListener("scroll", () => {
-    if (scheduled) return;
-    scheduled = true;
-    requestAnimationFrame(updateProgress);
-  }, { passive: true });
-  window.addEventListener("resize", updateProgress, { passive: true });
-  updateProgress();
+    window.addEventListener("scroll", () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(updateProgress);
+    }, { passive: true });
+    window.addEventListener("resize", updateProgress, { passive: true });
+    updateProgress();
+  }
 
-  const path = location.pathname.replace(/\/index\.html$/, "/");
-  document.querySelectorAll("header a[href], nav a[href]").forEach((link) => {
-    const target = new URL(link.href, location.href);
-    if (target.origin !== location.origin) return;
-    const targetPath = target.pathname.replace(/\/index\.html$/, "/");
-    const matchesPath = targetPath === path || (targetPath !== "/" && path.startsWith(targetPath));
-    const matchesHash = !target.hash || target.hash === location.hash;
-    if (matchesPath && matchesHash) {
-      link.setAttribute("aria-current", "page");
+  const path = location.pathname.replace(/\/index\.html$/, "/") || "/";
+  document.querySelectorAll("nav").forEach((nav) => {
+    let bestLink = null;
+    let bestScore = -1;
+    nav.querySelectorAll("a[href]").forEach((link) => {
+      let target;
+      try {
+        target = new URL(link.href, location.href);
+      } catch (_) {
+        return;
+      }
+      if (target.origin !== location.origin) return;
+      const targetPath = target.pathname.replace(/\/index\.html$/, "/") || "/";
+      const matchesHash = !target.hash || target.hash === location.hash;
+      if (!matchesHash) return;
+      let score = -1;
+      if (targetPath === path && !target.hash) {
+        score = targetPath.length + 1000;
+      } else if (targetPath === path && target.hash === location.hash) {
+        score = targetPath.length + 1500;
+      } else if (targetPath !== "/") {
+        const prefix = targetPath.endsWith("/") ? targetPath : `${targetPath}/`;
+        if (path.startsWith(prefix)) score = prefix.length;
+      }
+      if (score > bestScore) {
+        bestScore = score;
+        bestLink = link;
+      }
+    });
+    if (bestLink) {
+      nav.querySelectorAll('a[aria-current="page"]').forEach((el) => {
+        if (el !== bestLink) el.removeAttribute("aria-current");
+      });
+      bestLink.setAttribute("aria-current", "page");
     }
   });
 
@@ -276,9 +304,11 @@
     if (clockRequested) setClockOpen(true);
   }
 
-  const flowTargets = [...document.querySelectorAll("main > section")].filter((section, index) => {
-    if (index === 0) return false;
-    return !section.classList.contains("reveal") && !section.closest("[data-lb-flow-off]");
+  const flowTargets = [...document.querySelectorAll("main > section")].filter((section) => {
+    if (section.classList.contains("reveal") || section.closest("[data-lb-flow-off]")) return false;
+    if (section.offsetParent === null) return false;
+    const rect = section.getBoundingClientRect();
+    return rect.top > window.innerHeight * 0.92;
   });
   flowTargets.forEach((section) => section.setAttribute("data-lb-flow", ""));
 
@@ -290,7 +320,7 @@
         entry.target.classList.add("lb-flow-visible");
         observer.unobserve(entry.target);
       });
-    }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.05, rootMargin: "0px 0px -4% 0px" });
     flowTargets.forEach((section) => observer.observe(section));
   } else {
     flowTargets.forEach((section) => section.classList.add("lb-flow-visible"));
@@ -328,7 +358,7 @@
     }
     if (destination.origin !== location.origin) return;
     if (destination.pathname === location.pathname && destination.search === location.search) return;
-    if ( /\.(pdf|zip|mp4|mov)$/i.test(destination.pathname)) return;
+    if (/\.(pdf|zip|mp4|mov|xml|txt|json)$/i.test(destination.pathname)) return;
     const key = destination.pathname + destination.search;
     if (prefetched.has(key)) return;
     prefetched.add(key);
@@ -341,16 +371,22 @@
   document.addEventListener("pointerenter", prefetchLink, { capture: true, passive: true });
   document.addEventListener("touchstart", prefetchLink, { capture: true, passive: true });
 
-  const supportsCrossDocViewTransition = "CSSViewTransitionRule" in window;
+  const supportsCrossDocViewTransition = "onpagereveal" in window;
   document.addEventListener("click", (event) => {
     if (reducedMotion || event.defaultPrevented || event.button !== 0) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const link = event.target.closest("a[href]");
     if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
-    const destination = new URL(link.href, location.href);
+    let destination;
+    try {
+      destination = new URL(link.href, location.href);
+    } catch (_) {
+      return;
+    }
     if (destination.origin !== location.origin) return;
     if (destination.protocol !== "http:" && destination.protocol !== "https:") return;
     if (destination.pathname === location.pathname && destination.search === location.search) return;
+    if (/\.(pdf|zip|mp4|mov|xml|txt|json)$/i.test(destination.pathname)) return;
     if (supportsCrossDocViewTransition) {
       if (destination.pathname.startsWith("/blog/posts/")) {
         const heading = link.querySelector("h2, h3, strong") || link;
@@ -365,5 +401,8 @@
     window.setTimeout(() => { location.href = destination.href; }, 120);
   });
 
-  window.addEventListener("pageshow", () => root.classList.remove("lb-route-leaving"));
+  window.addEventListener("pageshow", () => {
+    root.classList.remove("lb-route-leaving");
+    document.querySelectorAll('[style*="active-post-title"]').forEach((el) => { el.style.viewTransitionName = ""; });
+  });
 })();

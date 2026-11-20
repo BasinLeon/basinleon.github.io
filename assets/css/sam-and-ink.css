@@ -467,7 +467,12 @@ html[data-reading-mode="paper"] .chapbook-trigger-btn {
   color: var(--paper);
   box-shadow: 0 32px 90px rgba(0, 0, 0, 0.82);
 }
+.chapbook-dialog:modal {
+  overscroll-behavior: contain;
+}
 .chapbook-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
   background: rgba(6, 6, 5, 0.86);
   backdrop-filter: blur(8px);
 }
@@ -535,9 +540,11 @@ html[data-reading-mode="paper"] .chapbook-select {
 .chapbook-stage {
   padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 5vw, 4rem);
   overflow-y: auto;
+  overscroll-behavior: contain;
   font: 400 clamp(1.08rem, 1.5vw, 1.24rem)/1.8 var(--serif);
 }
-.chapbook-stage h1 {
+.chapbook-stage h1,
+.chapbook-stage h2 {
   font: 400 clamp(2.1rem, 4vw, 3.2rem)/1.08 var(--serif);
   margin: .35rem 0 .6rem;
 }

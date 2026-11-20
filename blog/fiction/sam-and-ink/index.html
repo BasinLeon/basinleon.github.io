@@ -21,11 +21,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Libre+Caslon+Text:ital@0;1&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/continuity.css">
+  <link rel="stylesheet" href="/assets/css/continuity.css?v=20261119">
   <link rel="stylesheet" href="/blog/css/hub.css?v=20261118">
-  <link rel="stylesheet" href="/assets/css/sam-and-ink.css?v=20261118-redesign">
+  <link rel="stylesheet" href="/assets/css/sam-and-ink.css?v=20261119">
   <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
-  <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
+  <link rel="preload" as="image" href="/assets/img/fiction/sam-ink-reading-room-v1.webp" imagesrcset="/assets/img/fiction/sam-ink-reading-room-v1-800.webp 800w, /assets/img/fiction/sam-ink-reading-room-v1.webp 1672w" imagesizes="(max-width: 860px) 100vw, 45vw" type="image/webp" fetchpriority="high">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWorkSeries",
+    "name": "Sam & Ink",
+    "url": "https://basinleon.github.io/blog/fiction/sam-and-ink/",
+    "description": "A literary series by Leon Basin about a writer, an intelligence, and the rooms between them.",
+    "author": {"@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/"}
+  }
+  </script>
+  <script src="/assets/js/insights.js?v=20261119" defer></script>
 </head>
 <body class="hub-reader" data-lb-section="fiction">
   <a class="skip" href="#main">Skip to Sam &amp; Ink</a>
@@ -59,7 +70,10 @@
           </div>
         </div>
         <div class="hero-image">
-          <img src="/assets/img/fiction/sam-ink-reading-room-v1.png" alt="Warm lamplight in an upstairs study looking out toward Palo Alto trees at night" width="1536" height="1024" fetchpriority="high" decoding="async">
+          <picture>
+            <source srcset="/assets/img/fiction/sam-ink-reading-room-v1-800.webp 800w, /assets/img/fiction/sam-ink-reading-room-v1.webp 1672w" sizes="(max-width: 860px) 100vw, 45vw" type="image/webp">
+            <img src="/assets/img/fiction/sam-ink-reading-room-v1.png" alt="Warm lamplight in an upstairs study looking out toward Palo Alto trees at night" width="1672" height="941" fetchpriority="high" decoding="async">
+          </picture>
         </div>
       </div>
     </section>
@@ -69,7 +83,10 @@
         <div class="section-head"><p class="eyebrow">Begin here</p><h2>One note changes the room.</h2></div>
         <article class="begin-card">
           <a href="/blog/posts/sam-ink-note-in-the-other-room.html" data-track="Fiction: Sam and Ink featured">
-            <img src="/assets/img/fiction/note-other-room-v1.png" alt="Rainlight falls into a quiet room with a pale mark where a shelf once hung" width="1536" height="1024" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="/assets/img/fiction/note-other-room-v1-800.webp 800w, /assets/img/fiction/note-other-room-v1.webp 1536w" sizes="(max-width: 860px) 100vw, 50vw" type="image/webp">
+              <img src="/assets/img/fiction/note-other-room-v1.png" alt="Rainlight falls into a quiet room with a pale mark where a shelf once hung" width="1536" height="1024" loading="lazy" decoding="async">
+            </picture>
           </a>
           <div>
             <p class="eyebrow">Recommended first story</p>
@@ -122,7 +139,7 @@
     </section>
   </main>
 
-  <dialog id="continuous-room" class="chapbook-dialog" aria-labelledby="chapbook-label">
+  <dialog id="continuous-room" class="chapbook-dialog" closedby="any" aria-labelledby="chapbook-label">
     <div class="chapbook-shell">
       <div class="chapbook-top">
         <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
@@ -164,7 +181,12 @@
           toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         });
         nav.querySelectorAll('a').forEach(link => link.addEventListener('click', close));
-        document.addEventListener('keydown', event => { if (event.key === 'Escape') close(); });
+        document.addEventListener('keydown', event => {
+          if (event.key === 'Escape' && document.body.classList.contains('menu-open')) {
+            close();
+            toggle.focus();
+          }
+        });
       }
 
       const grid = document.querySelector('[data-fragment-shelf]');
@@ -223,19 +245,48 @@
       const cache = new Map();
       let currentIdx = 0;
 
+      let fragmentsList = FRAGMENTS;
+
       if (dialog && selectEl && stageEl) {
-        FRAGMENTS.forEach((f, idx) => {
-          const opt = document.createElement('option');
-          opt.value = String(idx);
-          opt.textContent = 'Fragment ' + f.num + ' · ' + f.title;
-          selectEl.appendChild(opt);
-        });
+        function populateSelect() {
+          selectEl.replaceChildren();
+          fragmentsList.forEach((f, idx) => {
+            const opt = document.createElement('option');
+            opt.value = String(idx);
+            opt.textContent = 'Fragment ' + f.num + ' · ' + f.title;
+            selectEl.appendChild(opt);
+          });
+        }
+        populateSelect();
+
+        fetch('/data/fragments.json')
+          .then(r => r.ok ? r.json() : null)
+          .then(items => {
+            if (!Array.isArray(items) || !items.length) return;
+            const valid = items
+              .filter(x => typeof x.slug === 'string' && /^fragment-\d+$/.test(x.slug) && typeof x.url === 'string')
+              .sort((a, b) => Number(b.slug.split('-').pop()) - Number(a.slug.split('-').pop()))
+              .map(x => ({
+                slug: x.slug,
+                num: x.slug.split('-').pop().padStart(2, '0'),
+                title: x.title,
+                date: x.date,
+                url: x.url,
+                excerpt: x.excerpt || ''
+              }));
+            if (valid.length) {
+              fragmentsList = valid;
+              populateSelect();
+            }
+          })
+          .catch(() => {});
 
         async function loadFragment(idx) {
-          currentIdx = (idx + FRAGMENTS.length) % FRAGMENTS.length;
-          const item = FRAGMENTS[currentIdx];
+          stageEl.querySelectorAll('video').forEach(v => v.pause());
+          currentIdx = (idx + fragmentsList.length) % fragmentsList.length;
+          const item = fragmentsList[currentIdx];
           selectEl.value = String(currentIdx);
-          progressEl.textContent = 'Fragment ' + item.num + ' · ' + (currentIdx + 1) + ' of ' + FRAGMENTS.length + ' (← / →)';
+          progressEl.textContent = 'Fragment ' + item.num + ' · ' + (currentIdx + 1) + ' of ' + fragmentsList.length + ' (← / →)';
           openLinkEl.href = item.url;
 
           if (cache.has(item.url)) {
@@ -244,7 +295,22 @@
             return;
           }
 
-          stageEl.innerHTML = '<header class="essay-header"><p class="essay-kicker">Sam &amp; Ink · Fragment ' + item.num + '</p><h1>' + item.title + '</h1><p class="essay-byline">' + item.date + '</p></header><p>' + item.excerpt + '</p>';
+          stageEl.replaceChildren();
+          const hdr = document.createElement('header');
+          hdr.className = 'essay-header';
+          const kicker = document.createElement('p');
+          kicker.className = 'essay-kicker';
+          kicker.textContent = 'Sam & Ink · Fragment ' + item.num;
+          const heading = document.createElement('h2');
+          heading.textContent = item.title;
+          const byline = document.createElement('p');
+          byline.className = 'essay-byline';
+          byline.textContent = item.date;
+          const bodyP = document.createElement('p');
+          bodyP.textContent = item.excerpt;
+          hdr.append(kicker, heading, byline);
+          stageEl.append(hdr, bodyP);
+
           try {
             const resp = await fetch(item.url);
             if (!resp.ok) return;
@@ -255,7 +321,7 @@
               const cleaned = article.cloneNode(true);
               cleaned.querySelectorAll('.hub-reading-preferences, .hub-reading-next, .read-next, .hub-follow, [data-hiring-note], [data-reader-reply]').forEach(n => n.remove());
               cache.set(item.url, cleaned.innerHTML);
-              if (FRAGMENTS[currentIdx].url === item.url) {
+              if (fragmentsList[currentIdx].url === item.url) {
                 stageEl.innerHTML = cleaned.innerHTML;
                 stageEl.scrollTop = 0;
               }
@@ -263,10 +329,12 @@
           } catch (_) {}
         }
 
+        const pauseMedia = () => stageEl.querySelectorAll('video').forEach(v => v.pause());
+
         document.querySelectorAll('[data-open-chapbook]').forEach(btn => {
           btn.addEventListener('click', () => {
             const slug = btn.getAttribute('data-open-chapbook');
-            const idx = Math.max(0, FRAGMENTS.findIndex(f => f.slug === slug));
+            const idx = Math.max(0, fragmentsList.findIndex(f => f.slug === slug));
             if (typeof dialog.showModal === 'function') dialog.showModal();
             else dialog.setAttribute('open', '');
             loadFragment(idx);
@@ -277,21 +345,28 @@
         prevBtn.addEventListener('click', () => loadFragment(currentIdx - 1));
         nextBtn.addEventListener('click', () => loadFragment(currentIdx + 1));
         closeBtn.addEventListener('click', () => {
-          stageEl.querySelectorAll('video').forEach(v => v.pause());
           if (typeof dialog.close === 'function') dialog.close();
-          else dialog.removeAttribute('open');
+          else { pauseMedia(); dialog.removeAttribute('open'); }
         });
-        dialog.addEventListener('click', ev => {
-          if (ev.target === dialog) closeBtn.click();
-        });
+        dialog.addEventListener('close', pauseMedia);
+        if (!('closedBy' in HTMLDialogElement.prototype)) {
+          dialog.addEventListener('click', ev => {
+            if (ev.target !== dialog) return;
+            const rect = dialog.getBoundingClientRect();
+            const inside = rect.top <= ev.clientY && ev.clientY <= rect.top + rect.height &&
+              rect.left <= ev.clientX && ev.clientX <= rect.left + rect.width;
+            if (!inside && typeof dialog.close === 'function') dialog.close();
+          });
+        }
         document.addEventListener('keydown', ev => {
           if (!dialog.open) return;
+          if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')) return;
           if (ev.key === 'ArrowLeft') { ev.preventDefault(); loadFragment(currentIdx - 1); }
           if (ev.key === 'ArrowRight') { ev.preventDefault(); loadFragment(currentIdx + 1); }
         });
         if (copyBtn && navigator.clipboard) {
           copyBtn.addEventListener('click', () => {
-            const item = FRAGMENTS[currentIdx];
+            const item = fragmentsList[currentIdx];
             const tagged = 'https://basinleon.github.io' + item.url + '?utm_source=social&utm_medium=share&utm_campaign=' + item.slug;
             navigator.clipboard.writeText(tagged).then(() => {
               copyBtn.textContent = 'Copied Tagged Link ✓';
