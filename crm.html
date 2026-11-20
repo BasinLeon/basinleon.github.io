@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BASIN::NEXUS // REVENUE COMMAND CENTER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BASIN::NEXUS // REVENUE COMMAND CENTER | Leon Basin</title>
+    <meta name="description" content="Interactive Basin::Nexus Revenue Command Center prototype demonstrating signal feed triage, ops vault filtering, daily cadence, and pipeline governance.">
+    <link rel="canonical" href="https://basinleon.github.io/crm.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0a09'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+    <meta property="og:title" content="BASIN::NEXUS // Revenue Command Center | Leon Basin">
+    <meta property="og:description" content="Interactive local-first CRM & signal command center prototype from Basin::Nexus.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basinleon.github.io/crm.html">
+    <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+    <meta property="og:site_name" content="Leon Basin">
+    <link rel="stylesheet" href="/assets/css/continuity.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -221,15 +231,39 @@
     .sig-btn:hover { border-color:var(--accent); color:#fff; background:rgba(129,140,248,.1); }
     .sig-btn.primary { border-color:var(--green); color:var(--green); }
     .sig-btn.primary:hover { background:rgba(52,211,153,.1); }
+    .studio-back { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--border); font-family:'JetBrains Mono',monospace; font-size:.66rem; text-transform:uppercase; letter-spacing:.08em; }
+    .studio-back a { color:var(--gold); text-decoration:none; }
+    .studio-back a:hover, .studio-back a:focus-visible { text-decoration:underline; }
+    @media (max-width: 1024px) {
+      html, body { height:auto; overflow:auto; }
+      .app-window { display:block; height:auto; }
+      .workspace-sidebar { position:static; width:100%; border-right:0; border-bottom:1px solid var(--border); padding:18px 16px; max-height:none; }
+      .workspace-sidebar .logo { margin-bottom:16px; }
+      .workspace-header { padding:14px 16px; flex-wrap:wrap; height:auto; gap:10px; }
+      .search-wrap { max-width:none; width:100%; }
+      .tel-group { flex-wrap:wrap; width:100%; }
+      .clock-block { border-left:0; padding-left:0; text-align:left; }
+      .decision-strip { grid-template-columns:1fr; padding:12px 16px; }
+      .workspace-main { overflow:visible; }
+      #opsPanel, #panel-2, #panel-3, #velocityPanel { padding:16px !important; overflow:visible !important; }
+      .lead-row { grid-template-columns:1fr 1fr; gap:8px 12px; padding:12px; }
+      .kanban { grid-template-columns:1fr; }
+      .radar-grid { grid-template-columns:1fr; }
+    }
     </style>
+  <script src="/assets/js/continuity.js" defer></script>
   <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
 </head>
-<body>
+<body data-lb-section="tools">
 <div id="securityAlert">⚠ NX_SECURITY: NON-LOCAL TRAFFIC DETECTED // PRIVATE VAULT EXPOSED</div>
 <div id="toast"></div>
 
 <div class="app-window">
     <aside class="workspace-sidebar">
+        <div class="studio-back">
+            <a href="/tools/">&larr; Tool Bench</a>
+            <a href="/">Leon Basin</a>
+        </div>
         <div class="logo">
             <div class="logo-icon"></div>
             BASIN::NEXUS

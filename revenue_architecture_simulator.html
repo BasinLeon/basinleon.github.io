@@ -1,616 +1,975 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basin::Nexus | Revenue Architecture Simulator</title>
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0a0a0c;
-            --accent-blue: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.5);
-            --text-main: #e2e8f0;
-            --text-dim: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Revenue Architecture Simulator | Leon Basin</title>
+  <meta name="description" content="Interactive B2B Revenue Architecture Simulator by Leon Basin. Adjust ICP account coverage, ACV, rep capacity, signal conversion lift, and cycle length to compare Signal Architecture against traditional cold outbound.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://basinleon.github.io/revenue_architecture_simulator.html">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0a09'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#0b0a09">
+  <meta property="og:title" content="Revenue Architecture Simulator | Leon Basin">
+  <meta property="og:description" content="Model ICP coverage, signal conversion lift, sales cycle compression, and rep capacity in real time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://basinleon.github.io/revenue_architecture_simulator.html">
+  <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+  <meta property="og:site_name" content="Leon Basin">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Revenue Architecture Simulator | Leon Basin">
+  <meta name="twitter:description" content="Pressure-test GTM pipeline math before adding headcount or buying more outbound tools.">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Revenue Architecture Simulator",
+    "url": "https://basinleon.github.io/revenue_architecture_simulator.html",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "description": "Interactive browser model comparing Signal-Driven Revenue Architecture against traditional cold outbound across opportunities, pipeline yield, cycle velocity, and SDR cost leverage.",
+    "author": {
+      "@type": "Person",
+      "name": "Leon Basin",
+      "url": "https://basinleon.github.io/"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-        body {
-            background: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/continuity.css">
+  <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
+  <style>
+    :root {
+      --bg: #0b0a09;
+      --surface: #141210;
+      --surface-2: #1c1915;
+      --paper: #f3efe6;
+      --paper-ink: #151310;
+      --gold: #d9ab45;
+      --gold-bright: #ecc568;
+      --gold-soft: rgba(217, 171, 69, 0.14);
+      --gold-line: rgba(217, 171, 69, 0.42);
+      --text: #f7f4ec;
+      --muted: #b0a899;
+      --line: rgba(255, 253, 248, 0.12);
+      --ok: #5ec28b;
+      --warn: #e5a93c;
+      --risk: #e06b5c;
+      --max: 1220px;
+      --gutter: clamp(1.1rem, 4vw, 3.25rem);
+      color-scheme: dark;
+    }
 
-        .simulator-container {
-            display: grid;
-            grid-template-columns: 280px 1fr 320px;
-            grid-template-rows: 80px 1fr;
-            height: 100vh;
-            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent);
-        }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-        /* Header */
-        header {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            border-bottom: 1px solid var(--glass-border);
-            background: rgba(10, 10, 12, 0.8);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-        }
+    .skip-link {
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 300;
+      padding: 0.7rem 1rem;
+      background: var(--paper);
+      color: var(--paper-ink);
+      font-weight: 700;
+      text-decoration: none;
+      transform: translateY(-160%);
+      transition: transform 180ms ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
 
-        .logo {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #fff, var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .shell {
+      width: min(100%, calc(var(--max) + var(--gutter) * 2));
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
 
-        .mode-toggle {
-            display: flex;
-            background: rgba(0,0,0,0.4);
-            padding: 4px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-        }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(11, 10, 9, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-bar {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      padding-block: 0.6rem;
+    }
+    .brand {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .brand span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.9rem, 2.2vw, 1.8rem);
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .nav-links a:hover,
+    .nav-links a:focus-visible { color: var(--text); }
+    .nav-links .nav-cta {
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--gold-line);
+      color: var(--text);
+    }
+    .nav-links .nav-cta:hover { background: var(--gold); color: var(--paper-ink); }
 
-        .mode-btn {
-            padding: 8px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .hero {
+      padding: clamp(2.6rem, 5.5vw, 4.4rem) 0 clamp(1.8rem, 3.5vw, 2.6rem);
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(90% 80% at 90% 0%, rgba(217, 171, 69, 0.12), transparent 60%);
+    }
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      margin: 0 0 0.65rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    h1 {
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 5.8vw, 4.6rem);
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+    }
+    .lede {
+      margin: 1rem 0 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(0.96rem, 1.35vw, 1.1rem);
+    }
+    .scenario-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.4rem;
+      align-items: center;
+    }
+    .scenario-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 0.25rem;
+    }
+    .chip-btn {
+      padding: 0.45rem 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+    }
+    .chip-btn:hover,
+    .chip-btn:focus-visible { border-color: var(--gold); color: var(--text); }
+    .chip-btn[aria-pressed="true"] {
+      background: var(--gold-soft);
+      border-color: var(--gold);
+      color: var(--text);
+    }
 
-        .mode-btn.active {
-            background: var(--accent-blue);
-            color: white;
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
+    .sim-grid {
+      padding: clamp(2rem, 4vw, 3rem) 0 clamp(3.5rem, 7vw, 5.5rem);
+      display: grid;
+      grid-template-columns: minmax(290px, 0.92fr) minmax(0, 1.38fr);
+      gap: clamp(1.5rem, 3.2vw, 2.5rem);
+      align-items: start;
+    }
 
-        /* Sidebar - Data Rail */
-        .sidebar {
-            padding: 24px;
-            border-right: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: clamp(1.25rem, 2.4vw, 1.75rem);
+    }
+    .panel-title {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .panel-sub {
+      margin: 0 0 1.35rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
 
-        .nav-item {
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: 0.2s;
-            cursor: pointer;
-            position: relative;
-        }
+    .controls-stack {
+      display: grid;
+      gap: 1.1rem;
+    }
+    .control {
+      display: grid;
+      gap: 0.25rem;
+    }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .control label {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .control output {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gold-bright);
+    }
+    .control-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
 
-        .nav-item:hover {
-            color: var(--text-main);
-            background: rgba(255,255,255,0.05);
-        }
+    /* Native range slider styled cross-browser with separate vendor blocks */
+    input[type="range"].sim-range {
+      --slider-track-size: 6px;
+      --slider-thumb-size: 20px;
+      --slider-track-color: rgba(255, 255, 255, 0.16);
+      --slider-fill-color: var(--gold);
+      --slider-thumb-color: var(--gold-bright);
+      --attr-min: 0;
+      --attr-max: 100;
+      --control-value: 50;
+      --slider-progress: calc((var(--control-value) - var(--attr-min)) / (var(--attr-max) - var(--attr-min)) * 100%);
+      -webkit-appearance: none;
+      appearance: none;
+      inline-size: 100%;
+      block-size: 2.25rem;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type="range"].sim-range:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+    }
+    input[type="range"].sim-range::-webkit-slider-runnable-track {
+      block-size: var(--slider-track-size);
+      border-radius: 999px;
+      background: linear-gradient(
+        to right,
+        var(--slider-fill-color) var(--slider-progress),
+        var(--slider-track-color) var(--slider-progress)
+      );
+    }
+    input[type="range"].sim-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      inline-size: var(--slider-thumb-size);
+      block-size: var(--slider-thumb-size);
+      margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2);
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: var(--slider-thumb-color);
+    }
+    input[type="range"].sim-range::-moz-range-track {
+      block-size: var(--slider-track-size);
+      border-radius: 999px;
+      background: var(--slider-track-color);
+    }
+    input[type="range"].sim-range::-moz-range-progress {
+      block-size: var(--slider-track-size);
+      border-radius: 999px;
+      background: var(--slider-fill-color);
+    }
+    input[type="range"].sim-range::-moz-range-thumb {
+      inline-size: var(--slider-thumb-size);
+      block-size: var(--slider-thumb-size);
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: var(--slider-thumb-color);
+    }
 
-        .nav-item.active {
-            background: var(--glass);
-            color: var(--text-main);
-            border: 1px solid var(--glass-border);
-        }
+    .results-col {
+      display: grid;
+      gap: 1.25rem;
+    }
 
-        /* Restricted Tooltip */
-        .restricted-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(10, 10, 12, 0.95);
-            border: 1px solid var(--danger);
-            padding: 30px;
-            border-radius: 20px;
-            z-index: 1000;
-            display: none;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(239, 68, 68, 0.2);
-            backdrop-filter: blur(10px);
-            min-width: 300px;
-        }
+    .mode-switch {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 4px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      padding: 0.5rem 0.9rem;
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .mode-btn[aria-pressed="true"] {
+      background: var(--gold);
+      color: var(--paper-ink);
+      font-weight: 700;
+    }
 
-        .restricted-overlay i {
-            font-size: 2rem;
-            color: var(--danger);
-            margin-bottom: 15px;
-            display: block;
-        }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-top: 2px solid var(--gold);
+      padding: 1.15rem 1.25rem;
+    }
+    .kpi-label {
+      margin: 0;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .kpi-value {
+      margin: 0.35rem 0 0.25rem;
+      font-size: clamp(1.65rem, 2.6vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    .kpi-delta {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--ok);
+      font-weight: 600;
+    }
+    .kpi-delta.is-legacy { color: var(--warn); }
 
-        .restricted-overlay h3 {
-            font-family: 'Outfit', sans-serif;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
+    .pipeline-flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .flow-stage {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: 0.9rem;
+      position: relative;
+    }
+    .flow-stage span {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+    .flow-stage strong {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .flow-stage small {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
 
-        .restricted-overlay p {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-        }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 0.7rem 0.6rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    .compare-table th {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .compare-table td.num,
+    .compare-table th.num {
+      text-align: right;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .compare-table td.sig { color: var(--gold-bright); font-weight: 700; }
+    .compare-table td.delta { color: var(--ok); font-weight: 700; }
 
-        .restricted-overlay .close-btn {
-            background: var(--danger);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
+    .note-box {
+      padding: 1rem 1.15rem;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--gold);
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+    .note-box strong { color: var(--text); }
 
-        .blur-bg {
-            filter: blur(5px);
-            pointer-events: none;
-        }
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      min-height: 44px;
+      padding: 0.7rem 1.1rem;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+    .btn-primary { background: var(--gold); color: var(--paper-ink); }
+    .btn-primary:hover,
+    .btn-primary:focus-visible { background: var(--gold-bright); }
+    .btn-secondary { background: transparent; border-color: var(--line); color: var(--text); }
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible { border-color: var(--gold); color: var(--gold); }
+    .copy-status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--ok);
+    }
 
-        /* Main View - The Canvas */
-        .main-view {
-            padding: 40px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            overflow-y: auto;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 24px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: 800;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .stat-card.glow-blue::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--accent-blue);
-            box-shadow: 0 0 10px var(--accent-blue);
-        }
-
-        /* Visual Model Area */
-        .visual-model {
-            height: 400px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nodes-container {
-            display: flex;
-            gap: 60px;
-            align-items: center;
-            z-index: 5;
-        }
-
-        .node {
-            width: 120px;
-            height: 120px;
-            border-radius: 20px;
-            background: var(--glass);
-            border: 2px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-dim);
-            position: relative;
-            transition: all 0.5s;
-        }
-
-        .node i {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            color: var(--accent-blue);
-        }
-
-        .pulse {
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-
-        .flow-line {
-            height: 2px;
-            width: 60px;
-            background: var(--glass-border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .flow-particle {
-            position: absolute;
-            height: 100%;
-            width: 20%;
-            background: var(--accent-blue);
-            left: -20%;
-            animation: flow 1.5s infinite linear;
-        }
-
-        @keyframes flow {
-            0% { left: -20%; }
-            100% { left: 100%; }
-        }
-
-        /* Logic Panel (Right) */
-        .logic-panel {
-            background: rgba(10, 10, 12, 0.5);
-            border-left: 1px solid var(--glass-border);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-        }
-
-        .agent-log {
-            font-family: 'Inter', monospace;
-            font-size: 0.75rem;
-            background: rgba(0,0,0,0.4);
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .log-entry { margin-bottom: 8px; border-left: 2px solid var(--accent-blue); padding-left: 8px; }
-        .log-time { color: var(--accent-blue); opacity: 0.7; }
-        .log-msg { color: var(--text-main); }
-
-        .cta-btn {
-            margin-top: auto;
-            background: var(--accent-blue);
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-            transition: 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
-        }
-
-        /* Comparison Toggle Styles */
-        body.training-mode { --accent-blue: #f59e0b; }
-        body.training-mode .node { opacity: 0.5; filter: grayscale(1); }
-        body.training-mode .visual-model::after {
-            content: "SKILL DECAY DETECTED";
-            position: absolute;
-            bottom: 20px;
-            color: var(--danger);
-            font-weight: 800;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
-
-    </style>
+    @media (max-width: 960px) {
+      .sim-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .pipeline-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 440px) {
+      .pipeline-flow { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .site-header, .scenario-bar, .mode-switch, .action-row, .lb-site-footer, .skip-link { display: none !important; }
+      .panel, .kpi-card, .flow-stage, .note-box { background: #fff; color: #111; border-color: #bbb; }
+      .lede, .panel-sub, .control-hint, .kpi-label, .flow-stage small, .compare-table th { color: #444; }
+      .eyebrow, .control output, .flow-stage span, .compare-table td.sig, .compare-table td.delta, .kpi-delta { color: #111; }
+    }
+  </style>
+  <script src="/assets/js/continuity.js" defer></script>
   <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
 </head>
-<body class="architecture-mode">
-    <div class="simulator-container">
-        <!-- Header -->
-        <header>
-            <div class="logo">BASIN::NEXUS</div>
-            <div class="mode-toggle" role="group" aria-label="Simulator Mode Selection">
-                <div class="mode-btn" id="btn-training" role="button" tabindex="0" onclick="setMode('training')">TRADITIONAL TRAINING</div>
-                <div class="mode-btn active" id="btn-architecture" role="button" tabindex="0" onclick="setMode('architecture')">REVENUE ARCHITECTURE</div>
-            </div>
-            <div class="user-meta" style="font-size: 0.8rem; font-weight: 600;">USE CASE: NBC UNIVERSAL</div>
-        </header>
+<body data-lb-section="tools">
+  <a class="skip-link" href="#main">Skip to simulator</a>
 
-        <!-- Data Rail -->
-        <aside class="sidebar" aria-label="Navigation Rail">
-            <div class="nav-item active"><i>◈</i> Signal Refinery</div>
-            <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('Intent Dashboard')"><i>◎</i> Intent Dashboard</div>
-            <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('Logic Audit')"><i>◨</i> Logic Audit</div>
-            <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('Strike Actuator')"><i>⚡</i> Strike Actuator</div>
-            
-            <div style="margin-top: 40px;">
-                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;">Active Agent Skills</p>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('signal-scout-pro')"><i>🔍</i> signal-scout-pro</div>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('diagnostic-led-outreach')"><i>📧</i> diagnostic-led-outreach</div>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('voice-calibration-lab')"><i>🎙️</i> voice-calibration-lab</div>
-            </div>
+  <header class="site-header">
+    <nav class="shell nav-bar" aria-label="Primary navigation">
+      <a class="brand" href="/">Leon <span>Basin.</span></a>
+      <div class="nav-links">
+        <a href="/tools/">Tool Bench</a>
+        <a href="/signal-architect/">Signal Architect</a>
+        <a href="/diagnostic.html">Diagnostic</a>
+        <a href="/case-studies/">Work</a>
+        <a href="/blog/">Writing</a>
+        <a class="nav-cta" href="/working-session/#diagnostic-selector">Working Session</a>
+      </div>
+    </nav>
+  </header>
 
-            <div style="margin-top: 20px;">
-                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;">Neural Integration</p>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('neuro-instinct-guard')"><i>🛡️</i> neuro-instinct-guard</div>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('neuro-limbic-resonator')"><i>❤️</i> neuro-limbic-resonator</div>
-                <div class="nav-item" role="button" tabindex="0" onclick="showRestricted('neuro-logic-validator')"><i>⚖️</i> neuro-logic-validator</div>
-            </div>
-        </aside>
+  <main id="main">
+    <section class="hero" aria-labelledby="sim-title">
+      <div class="shell">
+        <div class="hero-top">
+          <div>
+            <p class="eyebrow">Instrument 02 / Revenue Architecture Simulator</p>
+            <h1 id="sim-title">Test the pipeline math before buying more outbound.</h1>
+            <p class="lede">Adjust ICP account coverage, deal size, win rate, and signal-routing lift to compare a deterministic Signal Architecture against brute-force cold activity. Illustrative planning model—runs 100% client-side.</p>
+          </div>
+        </div>
+        <div class="scenario-bar" role="group" aria-label="Operating presets">
+          <span class="scenario-label">Scenarios:</span>
+          <button type="button" class="chip-btn" data-scenario="seed" aria-pressed="false">Seed Founder-Led</button>
+          <button type="button" class="chip-btn" data-scenario="seriesA" aria-pressed="true">Series A B2B SaaS</button>
+          <button type="button" class="chip-btn" data-scenario="cyber" aria-pressed="false">Enterprise Cybersecurity</button>
+          <button type="button" class="chip-btn" data-scenario="govtech" aria-pressed="false">Public-Sector / GovTech</button>
+        </div>
+      </div>
+    </section>
 
-        <div id="restricted-overlay" class="restricted-overlay">
-            <i>🔒</i>
-            <h3 id="restricted-title">Access Restricted</h3>
-            <p id="restricted-msg">This module requires an active <b>Revenue Architecture Deployment</b> for this workspace. Currently outside of tactical jurisdiction.</p>
-            <div class="close-btn" role="button" tabindex="0" onclick="hideRestricted()">ACKNOWLEDGE</div>
+    <section class="shell sim-grid" aria-label="Interactive revenue model">
+      <div class="panel">
+        <h2 class="panel-title">Operating Assumptions</h2>
+        <p class="panel-sub">Move any lever to inspect quarterly pipeline, revenue yield, cycle compression, and rep leverage.</p>
+
+        <div class="controls-stack">
+          <div class="control">
+            <div class="control-head">
+              <label for="in-accounts">Target ICP Accounts / Quarter</label>
+              <output id="out-accounts" for="in-accounts">500</output>
+            </div>
+            <input class="sim-range" id="in-accounts" type="range" min="100" max="2000" step="50" value="500">
+            <span class="control-hint">Named accounts actively worked each quarter.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-acv">Average Contract Value (ACV)</label>
+              <output id="out-acv" for="in-acv">$45,000</output>
+            </div>
+            <input class="sim-range" id="in-acv" type="range" min="10000" max="250000" step="5000" value="45000">
+            <span class="control-hint">Annualized new business deal value.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-reps">Active Quota-Carrying Reps</label>
+              <output id="out-reps" for="in-reps">4 reps</output>
+            </div>
+            <input class="sim-range" id="in-reps" type="range" min="1" max="20" step="1" value="4">
+            <span class="control-hint">AEs or founder-sellers carrying pipeline.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-cold-conv">Cold Outbound → Qualified Opp Rate</label>
+              <output id="out-cold-conv" for="in-cold-conv">2.0%</output>
+            </div>
+            <input class="sim-range" id="in-cold-conv" type="range" min="0.5" max="6.0" step="0.5" value="2.0">
+            <span class="control-hint">Baseline conversion on untimed cold sequences.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-signal-lift">Signal Qualification Lift</label>
+              <output id="out-signal-lift" for="in-signal-lift">2.8×</output>
+            </div>
+            <input class="sim-range" id="in-signal-lift" type="range" min="1.4" max="4.5" step="0.1" value="2.8">
+            <span class="control-hint">Conversion multiplier when outreach fires on verified P0/P1 buying triggers.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-win-rate">Opp-to-Close Win Rate</label>
+              <output id="out-win-rate" for="in-win-rate">24%</output>
+            </div>
+            <input class="sim-range" id="in-win-rate" type="range" min="10" max="45" step="1" value="24">
+            <span class="control-hint">Baseline close rate on qualified discovery opportunities.</span>
+          </div>
+
+          <div class="control">
+            <div class="control-head">
+              <label for="in-cycle">Baseline Sales Cycle</label>
+              <output id="out-cycle" for="in-cycle">75 days</output>
+            </div>
+            <input class="sim-range" id="in-cycle" type="range" min="20" max="180" step="5" value="75">
+            <span class="control-hint">Signal-timed entry reduces early education friction (~28% faster).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-col" aria-live="polite">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+          <div class="mode-switch" role="group" aria-label="View mode">
+            <button type="button" class="mode-btn" data-mode="signal" aria-pressed="true">Signal Architecture</button>
+            <button type="button" class="mode-btn" data-mode="legacy" aria-pressed="false">Traditional Cold</button>
+          </div>
+          <span class="control-hint" id="mode-caption">Showing Signal Architecture outputs + delta vs. cold baseline</span>
         </div>
 
-        <!-- Canvas -->
-        <main class="main-view">
-            <div class="hero-stats">
-                <div class="stat-card glow-blue">
-                    <div class="label" id="label-1">Qualified Opps / Month</div>
-                    <div class="value" id="val-1">84</div>
-                </div>
-                <div class="stat-card glow-blue">
-                    <div class="label" id="label-2">Digital Deal Velocity</div>
-                    <div class="value" id="val-2">12 Days</div>
-                </div>
-                <div class="stat-card glow-blue">
-                    <div class="label" id="label-3">Estimated Q2 Yield</div>
-                    <div class="value" id="val-3">$840K</div>
-                </div>
-            </div>
+        <div class="kpi-grid">
+          <article class="kpi-card">
+            <p class="kpi-label">Qualified Opps / Quarter</p>
+            <p class="kpi-value" id="kpi-opps">28</p>
+            <p class="kpi-delta" id="kpi-opps-delta">+18 vs. traditional cold</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Qualified Pipeline / Quarter</p>
+            <p class="kpi-value" id="kpi-pipeline">$1.26M</p>
+            <p class="kpi-delta" id="kpi-pipeline-delta">+$810K pipeline delta</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Expected Quarterly Closed Won</p>
+            <p class="kpi-value" id="kpi-revenue">$347K</p>
+            <p class="kpi-delta" id="kpi-revenue-delta">+$239K revenue lift</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Effective Sales Cycle</p>
+            <p class="kpi-value" id="kpi-cycle">54 days</p>
+            <p class="kpi-delta" id="kpi-cycle-delta">21 days faster velocity</p>
+          </article>
+        </div>
 
-            <div class="visual-model" id="model-canvas">
-                <div class="nodes-container">
-                    <div class="node pulse" id="n1">
-                        <i>📡</i>
-                        <span id="n1-txt">RAW SIGNALS</span>
-                    </div>
-                    <div class="flow-line"><div class="flow-particle"></div></div>
-                    <div class="node" id="n2">
-                        <i>⚙️</i>
-                        <span id="n2-txt">REFINERY ENGINE</span>
-                    </div>
-                    <div class="flow-line"><div class="flow-particle"></div></div>
-                    <div class="node" id="n3">
-                        <i>🧠</i>
-                        <span id="n3-txt">STRATEGIC DISCOVERY</span>
-                    </div>
-                    <div class="flow-line"><div class="flow-particle"></div></div>
-                    <div class="node" id="n4">
-                        <i>💰</i>
-                        <span id="n4-txt">$50K DEAL</span>
-                    </div>
-                </div>
+        <div class="panel">
+          <h2 class="panel-title">System Flow Trace</h2>
+          <p class="panel-sub" id="flow-sub">How named accounts filter through deterministic P0–P3 scoring into closed revenue.</p>
+          <div class="pipeline-flow">
+            <div class="flow-stage">
+              <span>01 / Coverage</span>
+              <strong id="stage-accounts">500</strong>
+              <small>Target ICP accounts monitored</small>
             </div>
-
-            <div class="description-area" style="background: var(--glass); padding: 24px; border-radius: 20px; border: 1px solid var(--glass-border);">
-                <h2 id="view-title" font-family="'Outfit'">Revenue Architecture Simulation</h2>
-                <p id="view-desc" style="color: var(--text-dim); margin-top: 12px; line-height: 1.6;">
-                    A functional simulation of the Signal Refinery. We aren't just training the AEs; we are building the infrastructure that identifies digital intent, scores it against ICP match, and generates high-status discovery routes. The revenue yield is decoupled from human burnout.
-                </p>
+            <div class="flow-stage">
+              <span>02 / Prioritized</span>
+              <strong id="stage-signals">160</strong>
+              <small id="stage-signals-note">P0/P1 trigger accounts routed</small>
             </div>
-        </main>
-
-        <!-- Logic Panel -->
-        <aside class="logic-panel" aria-label="Operator Feedback Loop">
-            <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Operator Feedback Loop</p>
-            <div class="agent-log" id="log">
-                <div class="log-entry">
-                    <span class="log-time">[22:15:01]</span>
-                    <span class="log-msg">Agent [signal-scout-pro] scanning NBC sector...</span>
-                </div>
-                <div class="log-entry">
-                    <span class="log-time">[22:15:04]</span>
-                    <span class="log-msg">Detected digital logic-leak in LA sales motion.</span>
-                </div>
-                <div class="log-entry">
-                    <span class="log-time">[22:15:08]</span>
-                    <span class="log-msg">Deploying [revenue-architect-audit] briefing...</span>
-                </div>
+            <div class="flow-stage">
+              <span>03 / Qualified</span>
+              <strong id="stage-opps">28</strong>
+              <small id="stage-opps-note">Discovery opps (7.0 / rep)</small>
             </div>
-
-            <div style="background: var(--glass); padding: 16px; border-radius: 12px; border: 1px solid var(--glass-border);">
-                <p style="font-size: 0.65rem; color: var(--text-dim);">LATEST DIAGNOSTIC</p>
-                <p style="font-size: 0.85rem; font-weight: 600; margin-top: 4px;">NBC is losing $50k/month in legacy friction.</p>
+            <div class="flow-stage">
+              <span>04 / Won</span>
+              <strong id="stage-won">7.7</strong>
+              <small id="stage-won-note">Projected deals / quarter</small>
             </div>
+          </div>
+        </div>
 
-            <div class="cta-btn" role="button" tabindex="0" onclick="shipBrief()">SHIP DIAGNOSTIC BRIEF</div>
-        </aside>
+        <div class="panel">
+          <h2 class="panel-title">Side-by-Side Comparison</h2>
+          <p class="panel-sub">Comparing untimed cold volume against signal-routed architecture on the exact same TAM and rep count.</p>
+          <div style="overflow-x:auto;">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th class="num">Traditional Cold</th>
+                  <th class="num">Signal Architecture</th>
+                  <th class="num">Delta</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Qualified Opps / Qtr</td>
+                  <td class="num" id="cmp-cold-opps">10</td>
+                  <td class="num sig" id="cmp-sig-opps">28</td>
+                  <td class="num delta" id="cmp-diff-opps">+18</td>
+                </tr>
+                <tr>
+                  <td>Quarterly Pipeline</td>
+                  <td class="num" id="cmp-cold-pipe">$450K</td>
+                  <td class="num sig" id="cmp-sig-pipe">$1.26M</td>
+                  <td class="num delta" id="cmp-diff-pipe">+$810K</td>
+                </tr>
+                <tr>
+                  <td>Expected Closed Won / Qtr</td>
+                  <td class="num" id="cmp-cold-rev">$108K</td>
+                  <td class="num sig" id="cmp-sig-rev">$347K</td>
+                  <td class="num delta" id="cmp-diff-rev">+$239K</td>
+                </tr>
+                <tr>
+                  <td>Sales Cycle Length</td>
+                  <td class="num" id="cmp-cold-cyc">75d</td>
+                  <td class="num sig" id="cmp-sig-cyc">54d</td>
+                  <td class="num delta" id="cmp-diff-cyc">-21d</td>
+                </tr>
+                <tr>
+                  <td>Equiv. SDR Headcount Needed for Same Opps</td>
+                  <td class="num" id="cmp-cold-sdr">2.8× reps</td>
+                  <td class="num sig">1.0× + system</td>
+                  <td class="num delta" id="cmp-diff-opex">$180K/yr saved</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="note-box" id="architecture-note">
+          <strong>Operator takeaway:</strong> Adding headcount onto a 2.0% cold baseline scales cost linearly. Routing reps exclusively to verified P0/P1 triggers captures the same upside without multiplying SDR burn.
+        </div>
+
+        <div class="action-row">
+          <a class="btn-primary" data-track="Simulator: book working session" href="/working-session/#diagnostic-selector">Pressure-test this in a $500 Working Session</a>
+          <a class="btn-secondary" href="/diagnostic.html">Run GTM Diagnostic</a>
+          <button type="button" class="btn-secondary" id="copy-model">Copy Model Summary</button>
+          <button type="button" class="btn-secondary" id="print-model">Print Brief</button>
+          <span class="copy-status" id="copy-status" role="status"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lb-site-footer" aria-label="Site footer">
+    <div class="lb-footer-inner">
+      <a class="lb-site-name" href="/" aria-label="Leon Basin home">LEON BASIN.</a>
+      <nav class="lb-footer-nav" aria-label="Footer navigation">
+        <a href="/case-studies/">Work</a>
+        <a href="/tools/">Tools</a>
+        <a href="/basin-nexus/">Nexus</a>
+        <a href="/blog/">Writing</a>
+        <a href="/answers/">Q&amp;A</a>
+        <a href="/work-with-me/">Contact</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+      <p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p>
     </div>
+  </footer>
 
-    <script>
-        let isArchitecture = true;
+  <script>
+    (function () {
+      const SCENARIOS = {
+        seed: { accounts: 250, acv: 25000, reps: 2, coldConv: 2.5, lift: 2.6, winRate: 28, cycle: 45 },
+        seriesA: { accounts: 500, acv: 45000, reps: 4, coldConv: 2.0, lift: 2.8, winRate: 24, cycle: 75 },
+        cyber: { accounts: 400, acv: 95000, reps: 5, coldConv: 1.5, lift: 3.1, winRate: 22, cycle: 110 },
+        govtech: { accounts: 300, acv: 120000, reps: 3, coldConv: 1.5, lift: 3.4, winRate: 26, cycle: 135 }
+      };
 
-        // Unified mode setter to fix previous turn's errors
-        function setMode(mode) {
-            isArchitecture = (mode === 'architecture');
-            const body = document.body;
-            const btnT = document.getElementById('btn-training');
-            const btnA = document.getElementById('btn-architecture');
-            const title = document.getElementById('view-title');
-            const desc = document.getElementById('view-desc');
-            const log = document.getElementById('log');
+      const el = {
+        accounts: document.getElementById('in-accounts'),
+        acv: document.getElementById('in-acv'),
+        reps: document.getElementById('in-reps'),
+        coldConv: document.getElementById('in-cold-conv'),
+        lift: document.getElementById('in-signal-lift'),
+        winRate: document.getElementById('in-win-rate'),
+        cycle: document.getElementById('in-cycle')
+      };
 
-            if (isArchitecture) {
-                body.className = 'architecture-mode';
-                btnA.classList.add('active');
-                btnT.classList.remove('active');
-                title.innerText = "Revenue Architecture Simulation";
-                desc.innerText = "A functional simulation of the Signal Refinery. We aren't just training the AEs; we are building the infrastructure that identifies digital intent, scores it against ICP match, and generates high-status discovery routes. The revenue yield is decoupled from human burnout.";
-            
-                // Credible Architecture Metrics
-                document.getElementById('val-1').innerText = "84";
-                document.getElementById('val-1').style.color = "var(--text-main)";
-                document.getElementById('val-2').innerText = "12 Days";
-                document.getElementById('val-3').innerText = "$840K";
+      let viewMode = 'signal';
+      let latestSummary = '';
 
-                // Visual Intake emphasis
-                document.getElementById('n1-txt').innerHTML = "RAW MARKET SIGNALS<br><span style='font-size:0.55rem; opacity:0.7;'>(Search intent, hiring spikes, funding, partner activity)</span>";
-                document.getElementById('n2-txt').innerText = "REFINERY ENGINE";
-                document.getElementById('n3-txt').innerText = "STRATEGIC DISCOVERY";
-                document.getElementById('n4-txt').innerText = "$50K DEAL";
+      function fmtMoney(n) {
+        if (n >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'M';
+        if (n >= 1000) return '$' + Math.round(n / 1000).toLocaleString() + 'K';
+        return '$' + Math.round(n).toLocaleString();
+      }
 
-                log.innerHTML = `
-                    <div class="log-entry">
-                        <span class="log-time">[22:15:01]</span>
-                        <span class="log-msg">Agent [signal-scout-pro] scanning NBC sector...</span>
-                    </div>
-                    <div class="log-entry">
-                        <span class="log-time">[22:15:04]</span>
-                        <span class="log-msg">Detected digital logic-leak in LA sales motion.</span>
-                    </div>
-                    <div class="log-entry" style="border-left-color: var(--success)">
-                        <span class="log-time">[SCORE]</span>
-                        <span class="log-msg">ICP match: 94%. Urgency: High (Job Spikes).</span>
-                    </div>
-                    <div class="log-entry">
-                        <span class="log-time">[22:15:08]</span>
-                        <span class="log-msg">Deploying [revenue-architect-audit] briefing...</span>
-                    </div>
-                    <div class="log-entry" style="border-left-color: #a78bfa">
-                        <span class="log-time">[NEURO]</span>
-                        <span class="log-msg">Agent [neuro-instinct-guard] killing CXO defenses.</span>
-                    </div>
-                `;
-            } else {
-                body.className = 'training-mode';
-                btnT.classList.add('active');
-                btnA.classList.remove('active');
-                title.innerText = "Human-Only Sales Model";
-                desc.innerText = "Legacy personnel-centric approach. Revenue is strictly tied to individual rep motivation, manual research, and repetitive coaching. Skill decay is the primary friction point.";
-                
-                // Legacy Metrics
-                document.getElementById('val-1').innerText = "12";
-                document.getElementById('val-1').style.color = "var(--danger)";
-                document.getElementById('val-2').innerText = "42 Days";
-                document.getElementById('val-3').innerText = "$120K";
-                
-                // Legacy Nodes
-                document.getElementById('n1-txt').innerText = "COLD OUTREACH";
-                document.getElementById('n2-txt').innerText = "MANUAL LOGS";
-                document.getElementById('n3-txt').innerText = "MOTIVATION CALLS";
-                document.getElementById('n4-txt').innerText = "SMALL DEAL";
+      function syncSliderStyle(input, formatted) {
+        input.style.setProperty('--attr-min', input.min || 0);
+        input.style.setProperty('--attr-max', input.max || 100);
+        input.style.setProperty('--control-value', input.value);
+        input.setAttribute('aria-valuetext', formatted);
+      }
 
-                log.innerHTML = `
-                    <div class="log-entry" style="border-left-color: var(--danger)">
-                        <span class="log-time">[ERR]</span>
-                        <span class="log-msg">Manual outreach threshold exceeded.</span>
-                    </div>
-                    <div class="log-entry" style="border-left-color: var(--warning)">
-                        <span class="log-time">[WRN]</span>
-                        <span class="log-msg">Skill decay detected in 21 AEs.</span>
-                    </div>
-                    <div class="log-entry">
-                        <span class="log-time">[11:30:44]</span>
-                        <span class="log-msg">Requesting emergency coaching session...</span>
-                    </div>
-                `;
-            }
+      function compute() {
+        const accounts = Number(el.accounts.value);
+        const acv = Number(el.acv.value);
+        const reps = Number(el.reps.value);
+        const coldConv = Number(el.coldConv.value);
+        const lift = Number(el.lift.value);
+        const winRate = Number(el.winRate.value);
+        const cycle = Number(el.cycle.value);
+
+        const accountsFmt = accounts.toLocaleString();
+        const acvFmt = '$' + acv.toLocaleString();
+        const repsFmt = reps + (reps === 1 ? ' rep' : ' reps');
+        const coldFmt = coldConv.toFixed(1) + '%';
+        const liftFmt = lift.toFixed(1) + '×';
+        const winFmt = winRate + '%';
+        const cycFmt = cycle + ' days';
+
+        document.getElementById('out-accounts').textContent = accountsFmt;
+        document.getElementById('out-acv').textContent = acvFmt;
+        document.getElementById('out-reps').textContent = repsFmt;
+        document.getElementById('out-cold-conv').textContent = coldFmt;
+        document.getElementById('out-signal-lift').textContent = liftFmt;
+        document.getElementById('out-win-rate').textContent = winFmt;
+        document.getElementById('out-cycle').textContent = cycFmt;
+
+        syncSliderStyle(el.accounts, accountsFmt + ' accounts');
+        syncSliderStyle(el.acv, acvFmt + ' ACV');
+        syncSliderStyle(el.reps, repsFmt);
+        syncSliderStyle(el.coldConv, coldFmt);
+        syncSliderStyle(el.lift, liftFmt + ' lift');
+        syncSliderStyle(el.winRate, winFmt + ' win rate');
+        syncSliderStyle(el.cycle, cycFmt);
+
+        const coldOpps = Math.max(1, Math.round(accounts * (coldConv / 100)));
+        const sigOpps = Math.max(coldOpps + 1, Math.round(accounts * (coldConv / 100) * lift));
+        const coldPipe = coldOpps * acv;
+        const sigPipe = sigOpps * acv;
+
+        const sigWinRate = Math.min(55, winRate + 3.5);
+        const coldDeals = coldOpps * (winRate / 100);
+        const sigDeals = sigOpps * (sigWinRate / 100);
+        const coldRev = coldDeals * acv;
+        const sigRev = sigDeals * acv;
+
+        const sigCycle = Math.max(14, Math.round(cycle * 0.72));
+        const cycleSaved = cycle - sigCycle;
+
+        const prioritized = Math.round(accounts * 0.32);
+        const extraSdrsAvoided = Math.max(1, Math.round(((sigOpps - coldOpps) / Math.max(1, coldOpps)) * Math.max(1, Math.ceil(reps * 0.5))));
+        const annualOpexSaved = extraSdrsAvoided * 95000;
+
+        const isSig = viewMode === 'signal';
+        document.getElementById('mode-caption').textContent = isSig
+          ? 'Showing Signal Architecture outputs + delta vs. cold baseline'
+          : 'Showing Traditional Cold baseline (switch back to inspect signal lift)';
+
+        document.getElementById('kpi-opps').textContent = isSig ? sigOpps : coldOpps;
+        const oppsDelta = document.getElementById('kpi-opps-delta');
+        oppsDelta.textContent = isSig ? ('+' + (sigOpps - coldOpps) + ' vs. traditional cold') : ('Needs ' + lift.toFixed(1) + '× more outreach to match signal');
+        oppsDelta.classList.toggle('is-legacy', !isSig);
+
+        document.getElementById('kpi-pipeline').textContent = fmtMoney(isSig ? sigPipe : coldPipe);
+        const pipeDelta = document.getElementById('kpi-pipeline-delta');
+        pipeDelta.textContent = isSig ? ('+' + fmtMoney(sigPipe - coldPipe) + ' pipeline delta') : (fmtMoney(coldPipe / reps) + ' pipeline / rep');
+        pipeDelta.classList.toggle('is-legacy', !isSig);
+
+        document.getElementById('kpi-revenue').textContent = fmtMoney(isSig ? sigRev : coldRev);
+        const revDelta = document.getElementById('kpi-revenue-delta');
+        revDelta.textContent = isSig ? ('+' + fmtMoney(sigRev - coldRev) + ' revenue lift / qtr') : (winRate + '% close rate on cold opps');
+        revDelta.classList.toggle('is-legacy', !isSig);
+
+        document.getElementById('kpi-cycle').textContent = (isSig ? sigCycle : cycle) + ' days';
+        const cycDelta = document.getElementById('kpi-cycle-delta');
+        cycDelta.textContent = isSig ? (cycleSaved + ' days faster velocity') : 'Unprimed buyer education drag';
+        cycDelta.classList.toggle('is-legacy', !isSig);
+
+        document.getElementById('stage-accounts').textContent = accountsFmt;
+        document.getElementById('stage-signals').textContent = isSig ? prioritized.toLocaleString() : accountsFmt;
+        document.getElementById('stage-signals-note').textContent = isSig ? 'P0/P1 trigger accounts routed' : 'Untimed list blasted manually';
+        document.getElementById('stage-opps').textContent = isSig ? sigOpps : coldOpps;
+        document.getElementById('stage-opps-note').textContent = 'Discovery opps (' + ((isSig ? sigOpps : coldOpps) / reps).toFixed(1) + ' / rep)';
+        document.getElementById('stage-won').textContent = (isSig ? sigDeals : coldDeals).toFixed(1);
+        document.getElementById('stage-won-note').textContent = (isSig ? sigWinRate.toFixed(1) : winRate) + '% modeled close rate';
+
+        document.getElementById('cmp-cold-opps').textContent = coldOpps;
+        document.getElementById('cmp-sig-opps').textContent = sigOpps;
+        document.getElementById('cmp-diff-opps').textContent = '+' + (sigOpps - coldOpps);
+
+        document.getElementById('cmp-cold-pipe').textContent = fmtMoney(coldPipe);
+        document.getElementById('cmp-sig-pipe').textContent = fmtMoney(sigPipe);
+        document.getElementById('cmp-diff-pipe').textContent = '+' + fmtMoney(sigPipe - coldPipe);
+
+        document.getElementById('cmp-cold-rev').textContent = fmtMoney(coldRev);
+        document.getElementById('cmp-sig-rev').textContent = fmtMoney(sigRev);
+        document.getElementById('cmp-diff-rev').textContent = '+' + fmtMoney(sigRev - coldRev);
+
+        document.getElementById('cmp-cold-cyc').textContent = cycle + 'd';
+        document.getElementById('cmp-sig-cyc').textContent = sigCycle + 'd';
+        document.getElementById('cmp-diff-cyc').textContent = '-' + cycleSaved + 'd';
+
+        document.getElementById('cmp-cold-sdr').textContent = lift.toFixed(1) + '× headcount';
+        document.getElementById('cmp-diff-opex').textContent = fmtMoney(annualOpexSaved) + '/yr avoided';
+
+        document.getElementById('architecture-note').innerHTML =
+          '<strong>Operator takeaway:</strong> Across ' + accountsFmt + ' ICP accounts and ' + repsFmt +
+          ', routing outreach to verified P0/P1 signals adds <strong>' + fmtMoney(sigPipe - coldPipe) +
+          '</strong> in quarterly qualified pipeline and saves ~<strong>' + cycleSaved + ' days</strong> per deal cycle—without scaling SDR headcount by ' +
+          lift.toFixed(1) + '×.';
+
+        latestSummary = [
+          'Revenue Architecture Simulation (basinleon.github.io/revenue_architecture_simulator.html)',
+          'Assumptions: ' + accountsFmt + ' ICP accounts/qtr | ' + acvFmt + ' ACV | ' + repsFmt + ' | ' + coldFmt + ' cold baseline | ' + liftFmt + ' signal lift | ' + winFmt + ' win rate | ' + cycFmt + ' cycle',
+          'Traditional Cold: ' + coldOpps + ' opps | ' + fmtMoney(coldPipe) + ' pipeline | ' + fmtMoney(coldRev) + ' expected won | ' + cycle + 'd cycle',
+          'Signal Architecture: ' + sigOpps + ' opps | ' + fmtMoney(sigPipe) + ' pipeline | ' + fmtMoney(sigRev) + ' expected won | ' + sigCycle + 'd cycle',
+          'Net Quarterly Delta: +' + (sigOpps - coldOpps) + ' opps | +' + fmtMoney(sigPipe - coldPipe) + ' pipeline | +' + fmtMoney(sigRev - coldRev) + ' revenue | -' + cycleSaved + 'd cycle'
+        ].join('\n');
+      }
+
+      Object.values(el).forEach(function (input) {
+        input.addEventListener('input', function () {
+          document.querySelectorAll('[data-scenario]').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+          compute();
+        });
+      });
+
+      document.querySelectorAll('[data-scenario]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const s = SCENARIOS[btn.dataset.scenario];
+          if (!s) return;
+          el.accounts.value = s.accounts;
+          el.acv.value = s.acv;
+          el.reps.value = s.reps;
+          el.coldConv.value = s.coldConv;
+          el.lift.value = s.lift;
+          el.winRate.value = s.winRate;
+          el.cycle.value = s.cycle;
+          document.querySelectorAll('[data-scenario]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+          compute();
+        });
+      });
+
+      document.querySelectorAll('[data-mode]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          viewMode = btn.dataset.mode;
+          document.querySelectorAll('[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+          compute();
+        });
+      });
+
+      const copyStatus = document.getElementById('copy-status');
+      document.getElementById('copy-model').addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(latestSummary).then(function () {
+            copyStatus.textContent = 'Model summary copied.';
+            window.setTimeout(function () { copyStatus.textContent = ''; }, 3000);
+          }).catch(function () {
+            copyStatus.textContent = 'Clipboard unavailable — use Print Brief.';
+          });
         }
-
-        function showRestricted(moduleName) {
-            const overlay = document.getElementById('restricted-overlay');
-            const msg = document.getElementById('restricted-msg');
-            overlay.style.display = 'flex';
-            document.getElementById('restricted-title').innerText = moduleName + " Restricted";
-            
-            // Translate internal module names into functional descriptions as per feedback
-            const descriptions = {
-                'Signal Refinery': '<b>Signal Refinery:</b> Identifies and scores real buying intent across accounts using behavioral data spikes (search intent, hiring, funding).',
-                'Intent Dashboard': '<b>Intent Dashboard:</b> Surfaces high-probability opportunities by correlating cross-platform decision signals for immediate action.',
-                'Logic Audit': '<b>Logic Audit:</b> Detects structural friction and "Digital Logic Leaks" where your current funnel is dropping high-value accounts.',
-                'Strike Actuator': '<b>Strike Actuator:</b> Triggers targeted outreach sequences at the exact moment of decision velocity (the "window of impact").',
-                'neuro-instinct-guard': '<b>Layer 1 (Reptilian):</b> Kills the "Vendor Guard" and establishes peer-status before the first touchpoint.',
-                'neuro-limbic-resonator': '<b>Layer 2 (Limbic):</b> Maps the future-state imagination to ensure "Imagination-Led Action" across long cycles.',
-                'neuro-logic-validator': '<b>Layer 3 (Neocortex):</b> Rules out analytical objections with deterministic ROI benchmarks and industry-scraped stats.'
-            };
-
-            const defaultMsg = "This module requires an active <b>Revenue Architecture Deployment</b>. Currently outside of tactical jurisdiction.";
-            msg.innerHTML = descriptions[moduleName] || defaultMsg;
-            document.querySelector('.simulator-container').classList.add('blur-bg');
-        }
-
-        function hideRestricted() {
-            document.getElementById('restricted-overlay').style.display = 'none';
-            document.querySelector('.simulator-container').classList.remove('blur-bg');
-        }
-
-        function shipBrief() {
-            const btn = document.querySelector('.cta-btn');
-            btn.innerText = "GENERATING REVENUE DIAGNOSTIC...";
-            btn.style.background = "#10b981";
-            
-            setTimeout(() => {
-                alert("NBC Digital Revenue Architecture Brief has been successfully deployed to the leadership team.");
-                btn.innerText = "DIAGNOSTIC ARCHIVED";
-                btn.style.background = "var(--accent-blue)";
-            }, 1800);
-        }
-        // Initialize
-        console.log("BASIN::NEXUS Simulator Loaded (v1.12)");
-        window.onload = () => setMode('architecture');
-    </script>
+      });
+      document.getElementById('print-model').addEventListener('click', function () { window.print(); });
+      compute();
+    })();
+  </script>
 </body>
 </html>
