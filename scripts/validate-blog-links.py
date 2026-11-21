@@ -7,6 +7,7 @@ Checks internal links and HTML fragments across the public site.
 
 import json
 import re
+import subprocess
 import sys
 import os
 import xml.etree.ElementTree as ET
@@ -17,10 +18,42 @@ IGNORED_DIRS = {'.git', 'node_modules', 'publishing', 'analytics-worker'}
 
 
 def iter_public_files(repo_root):
-    for current, directories, filenames in os.walk(repo_root):
-        directories[:] = [name for name in directories if name not in IGNORED_DIRS]
-        for filename in filenames:
-            yield Path(current) / filename
+    """Iterate tracked public repository files so local untracked folders are ignored."""
+    proc = subprocess.run(
+        ['git', 'ls-files'],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    seen = set()
+    for rel in proc.stdout.splitlines():
+        if not rel:
+            continue
+        parts = Path(rel).parts
+        if any(part in IGNORED_DIRS for part in parts):
+            continue
+        path = repo_root / rel
+        if path.is_file():
+            seen.add(path)
+            yield path
+    # Also include newly created allowlisted files in core public directories not yet staged
+    untracked = subprocess.run(
+        ['git', 'ls-files', '--others', '--exclude-standard'],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    for rel in untracked.stdout.splitlines():
+        if not rel:
+            continue
+        parts = Path(rel).parts
+        if any(part in IGNORED_DIRS for part in parts):
+            continue
+        path = repo_root / rel
+        if path.is_file() and path not in seen:
+            yield path
 
 
 class Colors:
@@ -379,10 +412,13 @@ def validate_site_hygiene(repo_root):
     core_routes = (
         'index.html', 'blog/index.html', 'tools/index.html', 'case-studies/index.html',
         'basin-nexus/index.html', 'gtm-systems/index.html', 'signal-architect/index.html',
-        'answers/index.html', 'work-with-me/index.html', 'working-session/index.html',
-        'services/index.html', 'blueprint/index.html', 'resume.html',
-        'diagnostic.html', 'revenue_architecture_simulator.html', 'hazel-demo/index.html',
+        'signal/index.html', 'answers/index.html', 'work-with-me/index.html',
+        'working-session/index.html', 'services/index.html', 'blueprint/index.html',
+        'resume.html', 'diagnostic.html', 'diagnostic/index.html',
+        'revenue_architecture_simulator.html', 'hazel-demo/index.html',
         'plays/index.html', 'plays/untitled/index.html', 'build-record/index.html',
+        'blog/fiction/sam-and-ink/index.html', 'fiction/the-vanishing-archive/index.html',
+        'play/index.html', 'pipeline-game/index.html',
         'vciso-framework.html', 'gtm-execution-proof.html',
     )
     for rel in core_routes:

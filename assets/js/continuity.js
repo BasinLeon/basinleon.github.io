@@ -426,7 +426,17 @@
       { title: "Services ($50 Diagnostic / $150 Setup)", url: "/services/", type: "Work", meta: "Hands-on remote setup for creators & small businesses" },
       { title: "Work With Me / Contact", url: "/work-with-me/", type: "Work", meta: "Current offers, fit criteria & private contact form" },
       { title: "Executive Résumé", url: "/resume.html", type: "Proof", meta: "Interactive operating record & role-by-role evidence" },
-      { title: "The Working Library", url: "/library/", type: "Room", meta: "Complete public catalog of models, proof & field notes" }
+      { title: "The Working Library", url: "/library/", type: "Room", meta: "Complete public catalog of models, proof & field notes" },
+      { title: "The Build Record", url: "/build-record/", type: "Proof", meta: "Company-by-company record of GTM systems built from zero" },
+      { title: "Plays — Dramatic Work", url: "/plays/", type: "Plays", meta: "Plays from the human side of the machine" },
+      { title: "Untitled: Three Windows, One Table", url: "/plays/untitled/", type: "Plays", meta: "Illustrated opening scene of a play in progress" },
+      { title: "The Vanishing Archive (Sam & Ink)", url: "/fiction/the-vanishing-archive/", type: "Fiction", meta: "A cleaner draft, a daughter in the doorway" },
+      { title: "Signal — Live Field Surface", url: "/signal/", type: "System", meta: "Field signals from revenue, markets, machines & work" },
+      { title: "Signal-to-Action Diagnostic (8 Questions)", url: "/diagnostic/", type: "Tool", meta: "Eight-question GTM motion scorecard, no email required" },
+      { title: "THE PIPELINE GAME", url: "/pipeline-game/", type: "Tool", meta: "Playable Basin::Nexus GTM field pressure simulator" },
+      { title: "THE GAME (Operator Simulation)", url: "/play/", type: "Tool", meta: "Layered operator decision simulation" },
+      { title: "GTM Execution Proof", url: "/gtm-execution-proof.html", type: "Proof", meta: "Audited 4.6x pipeline yield & real-time signal extraction" },
+      { title: "vCISO Compact Async Framework", url: "/vciso-framework.html", type: "Guide", meta: "Decision-grade control mapping & evidence continuity" }
     ];
 
     let cmdkItems = STUDIO_ROUTES.slice();
@@ -446,7 +456,7 @@
         '<form method="dialog"><button class="lb-cmdk__close" value="close" aria-label="Close quick jump">Esc</button></form>' +
       '</div>' +
       '<ul class="lb-cmdk__list" id="lb-cmdk-list" role="listbox" aria-label="Search results"></ul>' +
-      '<div class="lb-cmdk__foot"><span>↑↓ Move · Enter Open</span><span id="lb-cmdk-count">21 routes</span></div>';
+      '<div class="lb-cmdk__foot"><span>↑↓ Move · Enter Open</span><span id="lb-cmdk-count">' + STUDIO_ROUTES.length + ' routes</span></div>';
     document.body.appendChild(dialog);
 
     const input = dialog.querySelector("#lb-cmdk-input");

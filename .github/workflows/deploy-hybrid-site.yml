@@ -35,6 +35,7 @@ jobs:
           python3 scripts/check-performance-budget.py
           python3 scripts/sync-reading-paths.py --check
           python3 scripts/sync-latest-fragment.py --check
+          python3 scripts/test-fragment-publishing.py
       - name: Test and build private analytics
         working-directory: analytics-worker
         run: |
@@ -69,8 +70,22 @@ jobs:
 
       - name: Build Root Site (Static)
         run: |
-          # Sync all root files to _site, excluding the docs source, .git, and _site itself
-          rsync -av --exclude='.git' --exclude='.github' --exclude='docs' --exclude='_site' --exclude='node_modules' --exclude='analytics-worker' ./ ./_site/
+          # Sync public root files to _site, excluding internal tooling, docs source, .git, and _site itself
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='.gitattributes' \
+            --exclude='.cursorrules' \
+            --exclude='docs' \
+            --exclude='_site' \
+            --exclude='node_modules' \
+            --exclude='analytics-worker' \
+            --exclude='scripts' \
+            --exclude='README.md' \
+            --exclude='canon.md' \
+            --exclude='release-*.command' \
+            ./ ./_site/
 
       - name: Generate sanitized system health
         run: |

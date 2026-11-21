@@ -330,6 +330,19 @@
                 renderCatalog();
             });
 
+            // Auto-open the Sam & Ink fragment shelf when jumping to #fragments
+            const gardenShelf = document.querySelector('#fragments details.garden-shelf');
+            if (gardenShelf) {
+                const openFragmentsShelf = () => {
+                    if (location.hash === '#fragments') gardenShelf.open = true;
+                };
+                openFragmentsShelf();
+                window.addEventListener('hashchange', openFragmentsShelf);
+                document.querySelectorAll('a[href="#fragments"]').forEach(link => {
+                    link.addEventListener('click', () => { gardenShelf.open = true; });
+                });
+            }
+
             // Restore initial state from URL query params (?lane=, ?q=, ?topic=, ?sort=)
             const initParams = new URLSearchParams(location.search);
             const initLane = initParams.get('lane');
