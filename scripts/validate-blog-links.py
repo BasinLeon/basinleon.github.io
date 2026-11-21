@@ -303,10 +303,21 @@ def validate_sitemap(repo_root):
     return issues
 
 
+def extract_meta_content(html, attr_name, attr_value):
+    for tag in re.findall(r'<meta\b[^>]*>', html, re.I):
+        if not re.search(rf'\b{attr_name}\s*=\s*(["\']){re.escape(attr_value)}\1', tag, re.I):
+            continue
+        match = re.search(r'\bcontent\s*=\s*(["\'])([\s\S]*?)\1', tag, re.I)
+        if match:
+            return re.sub(r'\s+', ' ', match.group(2)).strip()
+    return ''
+
+
 def validate_site_hygiene(repo_root):
     issues = []
 
-    # 1. Catch broken/empty placeholder HTML files (e.g. "404: Not Found") and wrong LinkedIn handles
+    # 1. Catch broken/empty placeholder HTML, wrong LinkedIn handles, escaped script quotes,
+    #    duplicate stacked footers, and truncated og:description tags.
     for html_file in iter_public_files(repo_root):
         if html_file.suffix.lower() != '.html':
             continue
@@ -325,6 +336,28 @@ def validate_site_hygiene(repo_root):
                 'link': 'https://linkedin.com/in/basinleon',
                 'normalized': 'wrong LinkedIn handle (should be /in/leonbasin)',
             })
+        if 'src=\\"' in text:
+            issues.append({
+                'file': rel,
+                'link': rel,
+                'normalized': 'escaped quote in src=\\" attribute (broken script/asset tag)',
+            })
+        text_no_scripts = re.sub(r'<script\b[\s\S]*?</script>', '', text, flags=re.I)
+        footer_count = len(re.findall(r'<footer\b', text_no_scripts, re.I))
+        if 'lb-site-footer' in text_no_scripts and footer_count > 1:
+            issues.append({
+                'file': rel,
+                'link': rel,
+                'normalized': f'duplicate stacked <footer> landmarks ({footer_count} found alongside lb-site-footer)',
+            })
+        meta_desc = extract_meta_content(text, 'name', 'description')
+        og_desc = extract_meta_content(text, 'property', 'og:description')
+        if len(meta_desc) > 25 and og_desc and len(og_desc) < 12:
+            issues.append({
+                'file': rel,
+                'link': og_desc,
+                'normalized': f'truncated og:description ({len(og_desc)} chars vs {len(meta_desc)}-char meta description)',
+            })
 
     # 2. Catch duplicate URLs or duplicate titles in data/posts.json
     posts_path = repo_root / 'data' / 'posts.json'
@@ -342,13 +375,15 @@ def validate_site_hygiene(repo_root):
                 issues.append({'file': 'data/posts.json', 'link': url, 'normalized': f'duplicate post title: {title}'})
             seen_titles.add(title)
 
-    # 3. Ensure core studio routes carry canonical and favicon metadata
+    # 3. Ensure core studio routes carry canonical, favicon, and og:image metadata
     core_routes = (
         'index.html', 'blog/index.html', 'tools/index.html', 'case-studies/index.html',
         'basin-nexus/index.html', 'gtm-systems/index.html', 'signal-architect/index.html',
         'answers/index.html', 'work-with-me/index.html', 'working-session/index.html',
         'services/index.html', 'blueprint/index.html', 'resume.html',
         'diagnostic.html', 'revenue_architecture_simulator.html', 'hazel-demo/index.html',
+        'plays/index.html', 'plays/untitled/index.html', 'build-record/index.html',
+        'vciso-framework.html', 'gtm-execution-proof.html',
     )
     for rel in core_routes:
         target = repo_root / rel
@@ -359,6 +394,8 @@ def validate_site_hygiene(repo_root):
             issues.append({'file': rel, 'link': rel, 'normalized': 'missing <link rel="canonical">'})
         if not re.search(r'rel=["\']icon["\']', text, re.I):
             issues.append({'file': rel, 'link': rel, 'normalized': 'missing <link rel="icon"> favicon'})
+        if not extract_meta_content(text, 'property', 'og:image'):
+            issues.append({'file': rel, 'link': rel, 'normalized': 'missing <meta property="og:image">'})
 
     return issues
 

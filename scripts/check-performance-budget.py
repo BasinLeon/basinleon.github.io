@@ -36,7 +36,11 @@ FILE_BUDGETS = {
     "assets/img/frameworks/revenue-blueprint.webp": 120_000,
     "assets/img/frameworks/nexus-dashboard.webp": 90_000,
     "assets/img/frameworks/basin-nexus-operating-map-v2.webp": 100_000,
+    "assets/img/plays/untitled-painting-v2.webp": 200_000,
+    "assets/img/plays/untitled-visual-interludes.webp": 150_000,
     "pipeline-game/pipeline-game-card.webp": 80_000,
+    "favicon.ico": 30_000,
+    "apple-touch-icon.png": 30_000,
 }
 
 CRITICAL_DOCUMENTS = (
