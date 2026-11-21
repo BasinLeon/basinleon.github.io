@@ -746,7 +746,7 @@
         </div>
 
         <div class="action-row">
-          <a class="btn-primary" data-track="Simulator: book working session" href="/working-session/#diagnostic-selector">Pressure-test this in a $500 Working Session</a>
+          <a class="btn-primary" id="sim-session-cta" data-track="Simulator: book working session" href="/working-session/#diagnostic-selector">Pressure-test this in a $500 Working Session</a>
           <a class="btn-secondary" href="/diagnostic.html">Run GTM Diagnostic</a>
           <button type="button" class="btn-secondary" id="copy-model">Copy Model Summary</button>
           <button type="button" class="btn-secondary" id="print-model">Print Brief</button>
@@ -923,6 +923,15 @@
           'Signal Architecture: ' + sigOpps + ' opps | ' + fmtMoney(sigPipe) + ' pipeline | ' + fmtMoney(sigRev) + ' expected won | ' + sigCycle + 'd cycle',
           'Net Quarterly Delta: +' + (sigOpps - coldOpps) + ' opps | +' + fmtMoney(sigPipe - coldPipe) + ' pipeline | +' + fmtMoney(sigRev - coldRev) + ' revenue | -' + cycleSaved + 'd cycle'
         ].join('\n');
+
+        const simCta = document.getElementById('sim-session-cta');
+        if (simCta) {
+          const qs = new URLSearchParams();
+          qs.set('bottleneck', 'signal');
+          qs.set('problem', 'Revenue Simulator model: ' + accountsFmt + ' ICP accounts/qtr, ' + acvFmt + ' ACV, ' + repsFmt + ', ' + coldFmt + ' cold baseline vs. ' + liftFmt + ' signal lift (+' + fmtMoney(sigPipe - coldPipe) + ' pipeline/qtr, -' + cycleSaved + 'd cycle).');
+          qs.set('consequence', 'Leaving an estimated ' + fmtMoney(sigRev - coldRev) + '/quarter in modeled closed revenue and ~' + fmtMoney(annualOpexSaved) + '/yr in avoidable SDR burn on the table.');
+          simCta.href = '/working-session/?' + qs.toString() + '#contact';
+        }
       }
 
       Object.values(el).forEach(function (input) {

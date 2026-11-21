@@ -42,8 +42,7 @@ for (const file of files) {
     const title = extract(html, /<title[^>]*>([\s\S]*?)<\/title>/i)
       .replace(/\s*[|–—-]\s*Leon Basin.*$/i, "")
       .trim() || file.replace(/\.html$/, "").replace(/-/g, " ");
-    const description = extract(html, /<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)["']/i)
-      || extract(html, /<meta[^>]+content=["']([^"']*)["'][^>]+name=["']description["']/i);
+    const description = extractMeta(html, "name", "description");
     const date = dates.get(pathname) || (await stat(absolute)).mtime.toISOString().slice(0, 10);
     const schema = {
       "@context": "https://schema.org",
@@ -95,6 +94,9 @@ const mainRoutes = [
   "/blog/",
   "/blog/fiction/",
   "/blog/fiction/sam-and-ink/",
+  "/plays/",
+  "/plays/untitled/",
+  "/build-record/",
   "/case-studies/",
   "/library/",
   "/tools/",
@@ -162,6 +164,17 @@ console.log(`Strengthened ${files.length} articles and wrote ${urls.size} unique
 
 function extract(value, expression) {
   return value.match(expression)?.[1]?.replace(/\s+/g, " ").trim() || "";
+}
+
+function extractMeta(html, attrName, attrValue) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  const nameRe = new RegExp(`\\b${attrName}\\s*=\\s*(["'])${attrValue}\\1`, "i");
+  for (const tag of tags) {
+    if (!nameRe.test(tag)) continue;
+    const contentMatch = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+    if (contentMatch) return contentMatch[2].replace(/\s+/g, " ").trim();
+  }
+  return "";
 }
 
 function decode(value) {

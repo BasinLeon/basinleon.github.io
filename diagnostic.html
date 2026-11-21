@@ -901,29 +901,37 @@
       const PILLARS = {
         rhythm: {
           label: 'Operating Rhythm',
+          bottleneck: 'ae',
           fields: ['r1', 'r2', 'r3'],
           prescription: 'Pipeline visibility and weekly inspection are breaking down. Establish non-negotiable stage exit criteria and a single weekly decision brief before adding campaigns.',
+          consequence: 'Forecast slippage, long sales cycles, and weekly leadership reviews spent reconciling spreadsheets instead of advancing deals.',
           linkText: 'Read: Why I Replaced Friday Status Updates',
           linkHref: '/blog/posts/the-artifact.html'
         },
         symmetry: {
           label: 'System Symmetry',
+          bottleneck: 'signal',
           fields: ['s1', 's2', 's3'],
           prescription: 'Your team is serving the CRM instead of the system routing verified intent. Wire deterministic signal scoring and clean handoffs before buying more tools.',
+          consequence: 'High-intent buying triggers get missed while reps burn selling hours on manual CRM logging and untimed outreach.',
           linkText: 'Test live rules in Signal Architect',
           linkHref: '/signal-architect/'
         },
         friction: {
           label: 'Friction Mapping',
+          bottleneck: 'sdr',
           fields: ['f1', 'f2', 'f3'],
           prescription: 'High-value selling effort is stalling in slow handoffs, approvals, and ramp lag. Instrument 24-hour P0 response SLAs and compress onboarding into a repeatable playbook.',
+          consequence: 'Slow response to warm signals, stalled late-stage deals, and new reps taking months to ramp.',
           linkText: 'Case Study: Rebuilding SDR Ramp (90 Days → 5)',
           linkHref: '/blog/posts/rebuilt-manual-sdr-workflow.html'
         },
         integrity: {
           label: 'Revenue Integrity',
+          bottleneck: 'signal',
           fields: ['i1', 'i2', 'i3'],
           prescription: 'Forecasts rely on optimism rather than deterministic ICP scoring and multi-threaded buyer evidence. Define explicit P0–P3 priority rules and wire win/loss notes back into targeting.',
+          consequence: 'Unpredictable pipeline quality, single-threaded deals dying in no-decision, and repeated targeting mistakes.',
           linkText: 'Model pipeline impact in Revenue Simulator',
           linkHref: '/revenue_architecture_simulator.html'
         }
@@ -1026,6 +1034,15 @@
           '',
           'Recommended Focus: ' + bottleneckCopy.textContent
         ].join('\n');
+
+        const sessionCta = document.getElementById('session-cta');
+        if (sessionCta) {
+          const qs = new URLSearchParams();
+          qs.set('bottleneck', weakest.bottleneck);
+          qs.set('problem', 'GTM Diagnostic Score: ' + score10.toFixed(1) + '/10 (' + grade + '). Primary bottleneck: ' + weakest.label + '. Breakdown: ' + breakdown.join(' | ') + '.');
+          qs.set('consequence', weakest.consequence);
+          sessionCta.href = '/working-session/?' + qs.toString() + '#contact';
+        }
       }
 
       form.addEventListener('change', function () {
