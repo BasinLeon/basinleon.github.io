@@ -57,8 +57,28 @@
                 return raw.startsWith('/') ? raw : `/blog/${raw.replace(/^\/+/, '')}`;
             }
 
+            function readSavedUrls() {
+                const urls = new Set();
+                try {
+                    const saved = JSON.parse(localStorage.getItem('basin-saved-reading-v1') || '[]');
+                    if (Array.isArray(saved)) {
+                        saved.forEach(item => {
+                            if (item && typeof item.url === 'string') urls.add(item.url);
+                        });
+                    }
+                    const legacy = JSON.parse(localStorage.getItem('lb_saved') || '[]');
+                    if (Array.isArray(legacy)) {
+                        legacy.forEach(item => {
+                            if (item && typeof item.url === 'string') urls.add(item.url);
+                        });
+                    }
+                } catch (_) {}
+                return urls;
+            }
+
             function matchesLane(post, lane) {
                 if (lane === 'all') return true;
+                if (lane === 'saved') return readSavedUrls().has(postPath(post));
                 if (lane === 'essential') return essentialUrls.has(String(post.url).replace(/^\/blog\//, ''));
                 if (lane === 'fiction' && String(post.category).toLowerCase() === 'fiction') return true;
                 const text = postText(post);
@@ -134,7 +154,12 @@
                 const excerpt = document.createElement('p');
                 excerpt.textContent = post.excerpt || 'Open the entry.';
 
-                link.append(meta, title, excerpt);
+                const arrow = document.createElement('span');
+                arrow.className = 'catalog-row__arrow';
+                arrow.setAttribute('aria-hidden', 'true');
+                arrow.textContent = '→';
+
+                link.append(meta, title, excerpt, arrow);
                 return link;
             }
 
@@ -158,10 +183,20 @@
                 catalogList.replaceChildren(...visible.map(createPostRow));
                 const isEmpty = filtered.length === 0;
                 catalogList.hidden = isEmpty;
-                if (catalogEmpty) catalogEmpty.hidden = !isEmpty;
+                if (catalogEmpty) {
+                    catalogEmpty.hidden = !isEmpty;
+                    const emptyMsg = catalogEmpty.querySelector('p');
+                    if (emptyMsg) {
+                        const savedEmpty = currentFilter === 'saved' && !query.trim() && !activeTopic && readSavedUrls().size === 0;
+                        emptyMsg.textContent = savedEmpty
+                            ? 'Nothing saved yet. Tap Save on any essay to keep it here on this device.'
+                            : 'No matching pieces.';
+                        if (catalogReset) catalogReset.textContent = savedEmpty ? 'Browse all entries' : 'Reset filters';
+                    }
+                }
                 const scopeNote = (query.trim() || activeTopic) && currentFilter === 'essential' ? ' across all rooms' : '';
                 catalogCount.textContent = isEmpty
-                    ? '0 matching entries'
+                    ? (currentFilter === 'saved' && !query.trim() && !activeTopic ? '0 saved entries on this device' : '0 matching entries')
                     : `Showing ${visible.length} of ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}${scopeNote}`;
                 loadMoreButton.hidden = visible.length >= filtered.length;
                 if (searchClear) searchClear.hidden = !query.length;
@@ -343,10 +378,21 @@
                 });
             }
 
+            // Keep Saved count & list synced with reader.js and cross-tab storage
+            const refreshSaved = () => {
+                if (!allPosts.length) return;
+                updateLaneCounts();
+                if (currentFilter === 'saved') renderCatalog();
+            };
+            document.addEventListener('lb-saved-shelf-changed', refreshSaved);
+            window.addEventListener('storage', event => {
+                if (event.key === 'basin-saved-reading-v1' || event.key === 'lb_saved') refreshSaved();
+            });
+
             // Restore initial state from URL query params (?lane=, ?q=, ?topic=, ?sort=)
             const initParams = new URLSearchParams(location.search);
             const initLane = initParams.get('lane');
-            if (initLane && ['essential', 'all', 'operator', 'builder', 'human', 'fiction'].includes(initLane)) {
+            if (initLane && ['essential', 'all', 'operator', 'builder', 'human', 'fiction', 'saved'].includes(initLane)) {
                 currentFilter = initLane;
             }
             const initQuery = initParams.get('q');

@@ -56,7 +56,7 @@
   if(grid)new MutationObserver(()=>grid.querySelectorAll('.hub-entry').forEach(markCard)).observe(grid,{childList:true});
   const current=byUrl.get(location.pathname);const article=document.querySelector('article');
   if(current&&article){
-   if(!document.querySelector('article .hub-reading-time')){
+   if(!document.querySelector('.hub-reading-time, .lb-read-meta')){
     const h=document.querySelector('h1');const time=document.createElement('p');time.className='hub-reading-time';time.textContent=label(current);h?.after(time);
    }
    const preferred=byUrl.get(curated[current.url]);

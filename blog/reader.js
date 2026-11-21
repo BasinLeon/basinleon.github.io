@@ -99,6 +99,7 @@
     border:1px solid rgba(212,175,55,.45);border-radius:6px;background:rgba(12,10,8,.88);color:#f0e6d3;\
     font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}\
   .lb-code-copy:hover,.lb-code-copy:focus-visible{background:var(--lb-gold);color:#0d0803;border-color:var(--lb-gold);}\
+  @media(max-width:760px){body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}}\
   @media print{.lb-fab,.lb-progress,.lb-code-copy{display:none!important;}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 

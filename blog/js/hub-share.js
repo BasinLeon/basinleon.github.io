@@ -5,7 +5,7 @@
   const s=document.createElement('script');s.src=src;s.defer=true;document.head.append(s);
  };
  ensureScript('/blog/js/saved-shelf.js','/blog/js/saved-shelf.js?v=20261119');
- ensureScript('/blog/js/reading-discovery.js','/blog/js/reading-discovery.js?v=20261119');
+ ensureScript('/blog/js/reading-discovery.js','/blog/js/reading-discovery.js?v=20261121-muse');
  ensureScript('/blog/js/reading-preferences.js','/blog/js/reading-preferences.js?v=20261119');
 
  function loadFragments(){

@@ -20,6 +20,7 @@
   set('[data-latest-title]',latest.title);set('[data-latest-number]','Fragment '+Number(latest.slug.split('-').pop()));set('[data-latest-excerpt]',latest.excerpt);
   const date=document.querySelector('[data-latest-date]');if(date&&/^\d{4}-\d{2}-\d{2}$/.test(latest.date)){date.dateTime=latest.date;date.textContent=new Date(latest.date+'T12:00:00Z').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});}
   const latestRead=document.querySelector('[data-latest-read]');if(latestRead)latestRead.href=latest.url;
+  const latestPlate=document.querySelector('[data-latest-plate]');if(latestPlate)latestPlate.href=latest.url;
   if(!entrance)return;
   const requested=wanted?published.find(x=>Number(x.slug.split('-').pop())===Number(wanted)):null,chosen=requested||latest;
   const read=entrance.querySelector('[data-arrival-read]');if(read){read.href=chosen.url;read.textContent='Read Fragment '+Number(chosen.slug.split('-').pop())+': '+chosen.title;}
