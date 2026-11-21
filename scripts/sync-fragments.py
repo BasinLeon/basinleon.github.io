@@ -15,7 +15,7 @@ def fragment_card(x):
 for name in ['blog/index.html','blog/fiction/sam-and-ink/index.html']:
  p=Path(name);s=p.read_text();s=re.sub(r'(<div class="hub-grid"[^>]*>).*?(?<=</article>)(</div>)',lambda m:m[1]+''.join(fragment_card(x) for x in (reversed(ordered) if 'data-fragment-order="newest"' in m[1] else ordered))+m[2],s,count=1,flags=re.S)
  if name=='blog/index.html':
-  x=items[0];s=re.sub(r'(data-latest-title>).*?(</h3>)',lambda m:m[1]+E(x['title'])+m[2],s);s=re.sub(r'(data-latest-number>).*?(</span>)',lambda m:m[1]+'Fragment '+x['slug'].split('-')[-1]+m[2],s);s=re.sub(r'(data-latest-excerpt>).*?(</p>)',lambda m:m[1]+E(x['excerpt'])+m[2],s);s=re.sub(r'data-latest-read href="[^"]+"','data-latest-read href="'+x['url']+'"',s);date=datetime.date.fromisoformat(x['date']);s=re.sub(r'<time data-latest-date.*?</time>',f'<time data-latest-date datetime="{x["date"]}">{date.strftime("%B")} {date.day}, {date.year}</time>',s)
+  x=items[0];s=re.sub(r'(data-latest-title>).*?(</h[23]>)',lambda m:m[1]+E(x['title'])+m[2],s);s=re.sub(r'(data-latest-number>).*?(</span>)',lambda m:m[1]+'Fragment '+x['slug'].split('-')[-1]+m[2],s);s=re.sub(r'(data-latest-excerpt>).*?(</p>)',lambda m:m[1]+E(x['excerpt'])+m[2],s);s=re.sub(r'data-latest-read href="[^"]+"','data-latest-read href="'+x['url']+'"',s);date=datetime.date.fromisoformat(x['date']);s=re.sub(r'<time data-latest-date.*?</time>',f'<time data-latest-date datetime="{x["date"]}">{date.strftime("%B")} {date.day}, {date.year}</time>',s)
  p.write_text(s)
 for i,x in enumerate(ordered):
  p=Path(x['url'].lstrip('/'));s=p.read_text();links=[]
