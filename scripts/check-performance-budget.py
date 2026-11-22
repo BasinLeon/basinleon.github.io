@@ -58,6 +58,7 @@ FILE_BUDGETS = {
     "assets/img/og/og-case-studies.jpg": 120_000,
     "assets/img/og/og-basin-nexus.jpg": 120_000,
     "assets/img/og/og-resume.jpg": 120_000,
+    "assets/img/og/og-answers.jpg": 120_000,
     "assets/img/og/og-working-session.jpg": 120_000,
     "assets/img/og/og-services.jpg": 120_000,
     "assets/img/og/og-tools.jpg": 120_000,
