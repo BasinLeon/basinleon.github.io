@@ -47,7 +47,7 @@ FILE_BUDGETS = {
     "assets/img/articles/the-machine-described-me-back-to-myself.webp": 100_000,
     "assets/img/articles/the-machine-described-me-back-to-myself-800.webp": 45_000,
     "assets/img/articles/the-machine-described-me-back-to-myself-og.jpg": 120_000,
-    "assets/img/articles/unlock-storytelling-book-cover.webp": 40_000,
+    "assets/img/articles/unlock-storytelling-book-cover.webp": 90_000,
     "assets/img/fiction/ink-at-the-desk.webp": 160_000,
     "assets/img/fiction/ink-at-the-desk-720.webp": 80_000,
     "assets/img/fiction/sam-and-ink-book-cover.webp": 100_000,
