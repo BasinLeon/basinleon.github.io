@@ -27,6 +27,55 @@
     window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) close(); });
   }
 
+  /* Two-state color-scheme toggle backed by <meta name="color-scheme"> and localStorage */
+  const themeBtn = document.getElementById('theme-toggle');
+  const schemeMeta = document.querySelector('meta[name="color-scheme"]');
+  if (themeBtn && schemeMeta) {
+    const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+    const readStored = () => {
+      try {
+        const val = localStorage.getItem('color-scheme');
+        return (val === 'light' || val === 'dark') ? val : null;
+      } catch (_) { return null; }
+    };
+    const applyScheme = (val, animate) => {
+      const next = (val === 'light' || val === 'dark') ? val : 'light dark';
+      const commit = () => { schemeMeta.content = next; };
+      if (animate && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        try {
+          const t = document.startViewTransition(commit);
+          if (t && t.ready) t.ready.catch(() => {});
+          if (t && t.finished) t.finished.catch(() => {});
+          return;
+        } catch (_) {}
+      }
+      commit();
+    };
+    themeBtn.addEventListener('click', () => {
+      const system = darkMedia.matches ? 'dark' : 'light';
+      const current = (schemeMeta.content === 'dark' || schemeMeta.content === 'light')
+        ? schemeMeta.content
+        : system;
+      const target = current === 'dark' ? 'light' : 'dark';
+      let persisted = null;
+      try {
+        if (target === system) {
+          localStorage.removeItem('color-scheme');
+          persisted = null;
+        } else {
+          localStorage.setItem('color-scheme', target);
+          persisted = target;
+        }
+      } catch (_) {
+        persisted = target === system ? null : target;
+      }
+      applyScheme(persisted, true);
+    });
+    window.addEventListener('storage', event => {
+      if (event.key === 'color-scheme') applyScheme(readStored(), false);
+    });
+  }
+
   const intentSelect = document.getElementById('home-contact-intent');
   const problemField = document.getElementById('home-contact-problem');
   const intentButtons = [...document.querySelectorAll('[data-contact-intent]')];
