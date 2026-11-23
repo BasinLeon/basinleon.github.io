@@ -1,21 +1,21 @@
 :root {
-  --paper: #f3efe7;
-  --paper-deep: #e8e0d3;
+  --paper: #f4f1ea;
+  --paper-deep: #eeebe3;
   --ink: #11100e;
-  --ink-soft: #5f5a52;
-  --rule: rgba(17, 16, 14, .22);
-  --rule-strong: rgba(17, 16, 14, .48);
-  --brass: #a77820;
-  --brass-light: #d8b45f;
+  --ink-soft: #6b6256;
+  --rule: #ccc4b5;
+  --rule-strong: rgba(41, 37, 30, .42);
+  --brass: #805d27;
+  --brass-light: #d9ab45;
   --shell: 1240px;
   --gutter: clamp(1.25rem, 4vw, 4.25rem);
-  --serif: Georgia, "Times New Roman", serif;
-  --sans: Arial, Helvetica, sans-serif;
-  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
 body.menu-open { overflow: hidden; }
 a { color: inherit; text-decoration: none; }
@@ -93,7 +93,30 @@ h1 { max-width: 10ch; margin: 0; font: 400 clamp(4.8rem, 8vw, 8rem)/.86 var(--se
 .brief-rule { grid-column: 1 / -1; width: 3rem; height: 2px; margin-bottom: 1.1rem; background: var(--brass); }
 .brief-preview small { grid-column: 1 / -1; color: var(--ink-soft); font-size: .72rem; line-height: 1.5; }
 
-.contact { padding-block: clamp(5rem, 9vw, 8rem); background: var(--ink); color: var(--paper); }
+.contact { padding-block: clamp(5rem, 9vw, 8rem); background: var(--ink); color: var(--paper); scroll-margin-top: 96px; }
+.contact .lb-contact-form { color-scheme: dark; }
+.contact .lb-contact-form__field label { color: var(--brass-light); }
+.contact .lb-contact-form__field input,
+.contact .lb-contact-form__field textarea,
+.contact .lb-contact-form__field select {
+  background: #181613;
+  color: #eee9de;
+  border: 1px solid #403a30;
+}
+.contact .lb-contact-form__field input:focus,
+.contact .lb-contact-form__field textarea:focus,
+.contact .lb-contact-form__field select:focus {
+  border-color: var(--brass-light);
+  outline: none;
+}
+.contact .lb-contact-form__submit {
+  background: var(--brass-light);
+  color: #11100e;
+  border-color: var(--brass-light);
+}
+.contact .lb-contact-form__status,
+.contact .lb-contact-form__privacy { color: #bcb3a2; }
+.contact .lb-contact-form__privacy a { color: var(--brass-light); }
 .contact-grid { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr); gap: clamp(3rem, 8vw, 8rem); }
 .contact h2 { max-width: 12ch; margin: 0; font: 400 clamp(3.6rem, 6.4vw, 6.4rem)/.92 var(--serif); letter-spacing: -.055em; }
 .email-link { display: inline-block; max-width: 100%; overflow-wrap: anywhere; border-bottom: 1px solid var(--brass-light); color: var(--brass-light); font: 400 clamp(1.75rem, 3.2vw, 3rem)/1.1 var(--serif); letter-spacing: -.035em; }
@@ -109,8 +132,11 @@ h1 { max-width: 10ch; margin: 0; font: 400 clamp(4.8rem, 8vw, 8rem)/.86 var(--se
 .reveal { opacity: 1; transform: none; }
 .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity 560ms ease, transform 680ms cubic-bezier(.2,.7,.2,1); }
 .js .reveal.is-visible,
+.js .hero .reveal,
 .js .entry-paths .reveal,
+.js .fit-check .reveal,
 .js .operator-brief .reveal,
+.js .contact .reveal,
 .entry-paths[data-lb-flow],
 .operator-brief[data-lb-flow] { opacity: 1 !important; transform: none !important; }
 @media (hover: hover) { .button-brass:hover, .button-brass:focus-visible { border-color: var(--ink); background: var(--ink); color: var(--paper); } .contact .button-brass:hover, .contact .button-brass:focus-visible { border-color: var(--paper); background: var(--paper); color: var(--ink); } .path-row > a:hover, .text-link:hover, .resume-link:hover { color: var(--brass); } .evidence-grid a:hover strong { color: #fff0bc; } .brief-preview { transition: transform 200ms ease, box-shadow 200ms ease; } .brief-preview:hover { transform: rotate(0) translateY(-4px); box-shadow: 18px 26px 36px rgba(17,16,14,.2); } }
