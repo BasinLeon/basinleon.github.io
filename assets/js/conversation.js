@@ -6,7 +6,7 @@
  * session CTA, or submitting the contact intake. It is NOT created for
  * passive pageviews.
  *
- * The id is the join key between site analytics and Basin::Nexus. It lets
+ * The id is the join key between site analytics and Flow::Nexus. It lets
  * Leon answer: "which piece of my work created this relationship, and what
  * did that relationship become?"
  *

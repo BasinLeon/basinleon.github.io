@@ -416,7 +416,7 @@
       { title: "Hazel AI Prep", url: "/hazel-demo/", type: "Tool", meta: "Positioning & signal vocabulary workbench for commercial roles" },
       { title: "NEXUS::CRM Command Center", url: "/crm.html", type: "Tool", meta: "Local-first signal & pipeline command center prototype" },
       { title: "Case Studies & Operating Record", url: "/case-studies/", type: "Proof", meta: "Measured outcomes across enterprise & public-sector GTM" },
-      { title: "Basin::Nexus System Portfolio", url: "/basin-nexus/", type: "System", meta: "Signal-to-action revenue architecture portfolio" },
+      { title: "Flow::Nexus System Portfolio", url: "/basin-nexus/", type: "System", meta: "Signal-to-action revenue architecture portfolio" },
       { title: "GTM Systems", url: "/gtm-systems/", type: "System", meta: "How signal routing, enablement & CRM governance connect" },
       { title: "Operator Q&A (Answer Index)", url: "/answers/", type: "Guide", meta: "Direct answers on revenue architecture, P0 scoring & SDR ramp" },
       { title: "Sam & Ink — Continuous Room", url: "/blog/fiction/sam-and-ink/", type: "Fiction", meta: "Literary series of fragments, readings & companion video" },
@@ -433,7 +433,7 @@
       { title: "The Vanishing Archive (Sam & Ink)", url: "/fiction/the-vanishing-archive/", type: "Fiction", meta: "A cleaner draft, a daughter in the doorway" },
       { title: "Signal — Live Field Surface", url: "/signal/", type: "System", meta: "Field signals from revenue, markets, machines & work" },
       { title: "Signal-to-Action Diagnostic (8 Questions)", url: "/diagnostic/", type: "Tool", meta: "Eight-question GTM motion scorecard, no email required" },
-      { title: "THE PIPELINE GAME", url: "/pipeline-game/", type: "Tool", meta: "Playable Basin::Nexus GTM field pressure simulator" },
+      { title: "THE PIPELINE GAME", url: "/pipeline-game/", type: "Tool", meta: "Playable Flow::Nexus GTM field pressure simulator" },
       { title: "THE GAME (Operator Simulation)", url: "/play/", type: "Tool", meta: "Layered operator decision simulation" },
       { title: "GTM Execution Proof", url: "/gtm-execution-proof.html", type: "Proof", meta: "Audited 4.6x pipeline yield & real-time signal extraction" },
       { title: "vCISO Compact Async Framework", url: "/vciso-framework.html", type: "Guide", meta: "Decision-grade control mapping & evidence continuity" }

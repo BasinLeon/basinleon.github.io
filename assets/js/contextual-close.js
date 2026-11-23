@@ -7,7 +7,7 @@
  *
  * Variants:
  *   session:   "Working on this problem? Bring me the motion." → /working-session/
- *   nexus:     "Want the operating model? Inspect Basin::Nexus." → /basin-nexus/
+ *   nexus:     "Want the operating model? Inspect Flow::Nexus." → /basin-nexus/
  *   subscribe: "Want the next piece? Subscribe." → Substack (UTM-tagged)
  */
 (function () {
@@ -24,9 +24,9 @@
     },
     nexus: {
       eyebrow: "The operating model",
-      title: "Want the operating model? Inspect Basin::Nexus.",
+      title: "Want the operating model? Inspect Flow::Nexus.",
       text: "The experiments, models, and methods behind the work: how signals become systems, and systems become proof.",
-      cta: "Inspect Basin::Nexus",
+      cta: "Inspect Flow::Nexus",
       href: "/basin-nexus/",
       track: "Contextual close: nexus"
     },

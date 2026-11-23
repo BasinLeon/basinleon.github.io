@@ -1,5 +1,5 @@
 /**
- * BASIN::NEXUS Archive Engine
+ * FLOW::NEXUS Archive Engine
  * Handles dynamic fetching, rendering, and filtering of blog posts.
  * "Stories as code. Archives as memory."
  */

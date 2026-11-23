@@ -43,7 +43,7 @@ The snapshot is excluded from Git. Copy it to an encrypted private backup locati
 | Category | Current signals |
 | --- | --- |
 | Commercial intent | Email, phone, availability, résumé and case-study clicks |
-| Operating interest | Basin::Nexus, system and tool clicks |
+| Operating interest | Flow::Nexus, system and tool clicks |
 | Reader interest | Writing, fiction, archive, essay, next-piece clicks (`read-next`), direct replies (`reader-reply`) and outbound subscription clicks (`subscription-outbound`) |
 
 ## UTM convention

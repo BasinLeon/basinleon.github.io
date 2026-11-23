@@ -1,4 +1,4 @@
-# conversation_id: the bridge between site analytics and Basin::Nexus
+# conversation_id: the bridge between site analytics and Flow::Nexus
 
 ## What it is
 
@@ -48,7 +48,7 @@ Example: `conv-20260910-a3f9k2`
 
 The edge collector persists the top-level `conversation` field as **blob 18** in `writeDataPoint` (`analytics/edge-collector/src/index.js`; blobs 1–17 unchanged, Analytics Engine allows 20). Empty string until engagement; cleaned to 32 chars max like every other blob. A conversation-journey query (`WHERE blob18 = ... ORDER BY timestamp ASC`) is in `analytics/edge-collector/queries.sql`.
 
-Remaining follow-up: extend the worker dashboard with a "conversation journey" view. Manual stages (qualified opportunity, revenue) are annotated in the dashboard or in Basin::Nexus against the same id.
+Remaining follow-up: extend the worker dashboard with a "conversation journey" view. Manual stages (qualified opportunity, revenue) are annotated in the dashboard or in Flow::Nexus against the same id.
 
 ## The question it answers
 

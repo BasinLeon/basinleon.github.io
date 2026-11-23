@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>BASIN::NEXUS // REVENUE COMMAND CENTER | Leon Basin</title>
-    <meta name="description" content="Interactive Basin::Nexus Revenue Command Center prototype demonstrating signal feed triage, ops vault filtering, daily cadence, and pipeline governance.">
+    <title>FLOW::NEXUS // REVENUE COMMAND CENTER | Leon Basin</title>
+    <meta name="description" content="Interactive Flow::Nexus Revenue Command Center prototype demonstrating signal feed triage, ops vault filtering, daily cadence, and pipeline governance.">
     <link rel="canonical" href="https://basinleon.github.io/crm.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0a09'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
-    <meta property="og:title" content="BASIN::NEXUS // Revenue Command Center | Leon Basin">
-    <meta property="og:description" content="Interactive local-first CRM & signal command center prototype from Basin::Nexus.">
+    <meta property="og:title" content="FLOW::NEXUS // Revenue Command Center | Leon Basin">
+    <meta property="og:description" content="Interactive local-first CRM & signal command center prototype from Flow::Nexus.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://basinleon.github.io/crm.html">
     <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
@@ -266,7 +266,7 @@
         </div>
         <div class="logo">
             <div class="logo-icon"></div>
-            BASIN::NEXUS
+            FLOW::NEXUS
         </div>
 
         <div class="sidebar-label">Operations</div>
@@ -639,7 +639,7 @@ async function loadVault() {
         vectorsReady = allNodes.filter(n=>n.embedding?.some(v=>v!==0)).length;
         updateUI();
         showToast(`🧬 ${allNodes.length.toLocaleString()} Nodes · ${vectorsReady.toLocaleString()} Vectors · READY`);
-        console.log('%c🔥 BASIN::NEXUS VECTOR RADAR ONLINE — type anything to feel the intelligence','color:#34d399;font-size:14px;font-weight:bold;');
+        console.log('%c🔥 FLOW::NEXUS VECTOR RADAR ONLINE — type anything to feel the intelligence','color:#34d399;font-size:14px;font-weight:bold;');
         buildVelocityFlow();
     } catch(e) {
         console.warn('Vault not found, using demo data');
@@ -1258,7 +1258,7 @@ async function classifyWithOllama(sig) {
             method: 'POST',
             body: JSON.stringify({
                 model: 'llama3.1:8b',
-                prompt: `BASIN::NEXUS Signal Classifier. Output JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":string,"summary":"2-sentence","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","signalType":"Funding"|"Hiring"|"Product"|"Competitor"|"News","relatedCompany":string|null,"intentScore":0-100}\nHIGH ALPHA=funding/major hire/competitor pivot`,
+                prompt: `FLOW::NEXUS Signal Classifier. Output JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":string,"summary":"2-sentence","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","signalType":"Funding"|"Hiring"|"Product"|"Competitor"|"News","relatedCompany":string|null,"intentScore":0-100}\nHIGH ALPHA=funding/major hire/competitor pivot`,
                 stream: false, format: 'json'
             })
         });
@@ -1275,7 +1275,7 @@ async function classifyJobWithOllama(sig) {
             method: 'POST',
             body: JSON.stringify({
                 model: 'llama3.1:8b',
-                prompt: `Classify job posting as BASIN::NEXUS signal. JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":"title","company":"company","location":"city/remote/unknown","seniority":"VP"|"Head"|"Director"|"Manager"|null,"roleType":"RevOps"|"CS"|"GTM"|"vCISO"|"Other","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","score":0-100,"summary":"2-sentence"}`,
+                prompt: `Classify job posting as FLOW::NEXUS signal. JSON only:\nInput: ${sig.title} - ${sig.desc}\n{"title":"title","company":"company","location":"city/remote/unknown","seniority":"VP"|"Head"|"Director"|"Manager"|null,"roleType":"RevOps"|"CS"|"GTM"|"vCISO"|"Other","priority":"HIGH ALPHA"|"MEDIUM"|"LOW","score":0-100,"summary":"2-sentence"}`,
                 stream: false, format: 'json'
             })
         });

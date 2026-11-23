@@ -12,7 +12,7 @@ The source for [basinleon.github.io](https://basinleon.github.io/): Founding GTM
 | --- | --- |
 | [GTM Systems](https://basinleon.github.io/gtm-systems/) | How I build and run a repeatable commercial motion, including the First-90-Days blueprint |
 | [Case Studies](https://basinleon.github.io/case-studies/) | Operating records across Fudo Security ($2M+ partner pipeline), Sense ($10M+ qualified pipeline), SurveyMonkey ($300K+ expansion), and Obvio.ai |
-| [Basin::Nexus](https://basinleon.github.io/basin-nexus/) | Walkthrough of signal capture, judgment, commercial action, and learning loop |
+| [Flow::Nexus](https://basinleon.github.io/basin-nexus/) | Walkthrough of signal capture, judgment, commercial action, and learning loop |
 | [The Tool Bench](https://basinleon.github.io/tools/) | Browser-runnable Signal Architect, GTM Motion Diagnostic, Revenue Architecture Simulator, and NEXUS::CRM |
 | [Operator Q&A](https://basinleon.github.io/answers/) | 12 direct answers on revenue architecture, P0–P3 priority logic, and SDR ramp compression |
 | [Writing Library](https://basinleon.github.io/blog/) | 102 essays, field notes, curated reading paths, Plays, and Sam & Ink fiction |

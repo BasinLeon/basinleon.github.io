@@ -1,4 +1,4 @@
-/* Basin::Nexus reading layer — unified save-for-later, quick archive bar, Substack subscribe.
+/* Flow::Nexus reading layer — unified save-for-later, quick archive bar, Substack subscribe.
    Self-contained. Syncs with saved-shelf.js (basin-saved-reading-v1) and defers progress bar to continuity.js. */
 (function () {
   if (window.__lbReaderLoaded) return;
