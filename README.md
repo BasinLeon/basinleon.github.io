@@ -1,8 +1,8 @@
-# Leon Basin · Website and Writing Library
+# Leon Basin · Founding GTM Dossier & Writing Library
 
-The source for [basinleon.github.io](https://basinleon.github.io/): my public operating record, selected GTM systems, essays, and fiction.
+The source for [basinleon.github.io](https://basinleon.github.io/): Founding GTM operating record, GTM systems, interactive instruments, essays, and fiction.
 
-[Visit the site](https://basinleon.github.io/) · [Writing Library](https://basinleon.github.io/blog/) · [GTM Systems](https://basinleon.github.io/gtm-systems/) · [Résumé](https://basinleon.github.io/resume.html)
+[Visit the site](https://basinleon.github.io/) · [GTM Systems](https://basinleon.github.io/gtm-systems/) · [Case Studies](https://basinleon.github.io/case-studies/) · [Tool Bench](https://basinleon.github.io/tools/) · [Writing Library](https://basinleon.github.io/blog/) · [Résumé](https://basinleon.github.io/resume.html) · [Contact](https://basinleon.github.io/#contact)
 
 ![The Writing Library with two reading choices](assets/img/github-writing-library.jpg)
 
@@ -10,11 +10,12 @@ The source for [basinleon.github.io](https://basinleon.github.io/): my public op
 
 | Destination | What you will find |
 | --- | --- |
-| Writing Library | Essays, field notes, curated reading paths, and Sam & Ink fiction |
-| GTM Systems | How I build and run a commercial motion |
-| Basin::Nexus | A walkthrough of signal, judgment, and commercial action |
-| Case studies | Company-level summaries of the problem, ownership, and results |
-| Build Record | A concise career chronology |
+| [GTM Systems](https://basinleon.github.io/gtm-systems/) | How I build and run a repeatable commercial motion, including the First-90-Days blueprint |
+| [Case Studies](https://basinleon.github.io/case-studies/) | Operating records across Fudo Security ($2M+ partner pipeline), Sense ($10M+ qualified pipeline), SurveyMonkey ($300K+ expansion), and Obvio.ai |
+| [Basin::Nexus](https://basinleon.github.io/basin-nexus/) | Walkthrough of signal capture, judgment, commercial action, and learning loop |
+| [The Tool Bench](https://basinleon.github.io/tools/) | Browser-runnable Signal Architect, GTM Motion Diagnostic, Revenue Architecture Simulator, and NEXUS::CRM |
+| [Operator Q&A](https://basinleon.github.io/answers/) | 12 direct answers on revenue architecture, P0–P3 priority logic, and SDR ramp compression |
+| [Writing Library](https://basinleon.github.io/blog/) | 102 essays, field notes, curated reading paths, Plays, and Sam & Ink fiction |
 
 ## Try an interactive tool
 
