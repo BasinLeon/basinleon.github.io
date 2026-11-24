@@ -105,6 +105,53 @@ function Metric({ label, value, note, share }) {
   );
 }
 
+function DistributionCoach({ data }) {
+  const [channel, setChannel] = useState('linkedin-dm');
+  const [dest, setDest] = useState('/gtm-systems/');
+  const [campaign, setCampaign] = useState('2026-11-founding-gtm');
+  const [status, setStatus] = useState('');
+  const sources = data?.sources || [];
+  const totalVisits = Number(data?.summary?.visits || 0);
+  const liVisits = sources.filter(s => /linkedin/i.test(s.source || '')).reduce((sum, s) => sum + Number(s.visits || 0), 0);
+  const gtmVisits = Number((data?.hiringPath || []).find(r => /gtm systems/i.test(r.label || ''))?.sessions || 0);
+  const emailSessions = Number((data?.hiringPath || []).find(r => /email/i.test(r.label || ''))?.sessions || 0);
+  const channelMap = {
+    'linkedin-dm': { source: 'linkedin', medium: 'dm' },
+    'linkedin-post': { source: 'linkedin', medium: 'social' },
+    'recruiter-email': { source: 'email', medium: 'outreach' },
+    'substack': { source: 'substack', medium: 'newsletter' },
+    'x': { source: 'x', medium: 'social' },
+  };
+  const chosen = channelMap[channel] || channelMap['linkedin-dm'];
+  const built = trackedLink({ source: chosen.source, medium: chosen.medium, campaign: campaign.trim() || '2026-11-founding-gtm' }, dest);
+  const tips = [];
+  if (totalVisits > 0 && liVisits / totalVisits < 0.05) {
+    tips.push(`LinkedIn is ${liVisits} of ${totalVisits} visits (<5%). Send 5 warm 1st-degree DMs with a tracked /gtm-systems/ link to shift traffic from crawlers to hiring managers.`);
+  }
+  if (gtmVisits < 20) {
+    tips.push(`GTM Systems has ${gtmVisits} sessions in this window. Put your tracked /gtm-systems/ link in your LinkedIn About section and top DM follow-ups.`);
+  }
+  if (emailSessions === 0) {
+    tips.push('0 Email CTA clicks recorded yet. Pair every warm DM with one concrete artifact (/gtm-systems/ or /basin-nexus/#worked-example) and a single low-friction ask.');
+  }
+  if (!tips.length) {
+    tips.push('LinkedIn and GTM Systems traffic are active. Double down on the highest-converting campaign row in the table below.');
+  }
+  return <section className="panel distribution-coach">
+    <h2>Distribution coach &amp; outreach link builder</h2>
+    <p>Turn passive traffic into tracked hiring-manager conversations. Copy a tagged link below before sending any DM or post.</p>
+    <ul>{tips.map((tip, i) => <li key={i}>{tip}</li>)}</ul>
+    <div className="ai-link-builder">
+      <label>Channel<select value={channel} onChange={e => setChannel(e.target.value)}><option value="linkedin-dm">LinkedIn 1st-Degree DM</option><option value="linkedin-post">LinkedIn Post / Comment</option><option value="recruiter-email">Recruiter Email</option><option value="substack">Substack Dispatch</option><option value="x">X / Twitter</option></select></label>
+      <label>Destination<select value={dest} onChange={e => setDest(e.target.value)}><option value="/gtm-systems/">GTM Systems (First-90-Days)</option><option value="/basin-nexus/#worked-example">Flow::Nexus Interactive Inspector</option><option value="/battle-map/">SCU GTM Battle Map</option><option value="/resume.html">Résumé</option><option value="/blog/">Writing Library</option></select></label>
+      <label>Campaign tag<input value={campaign} onChange={e => setCampaign(e.target.value)} placeholder="2026-11-founding-gtm" /></label>
+      <label>Tracked outreach link<input readOnly value={built} /></label>
+      <button type="button" onClick={async () => { const ok = await copyText(built); setStatus(ok ? 'Tracked link copied' : 'Select and copy the link above'); }}>Copy outreach link</button>
+      <p role="status">{status}</p>
+    </div>
+  </section>;
+}
+
 function DistributionReport({ rows }) {
   const [filter, setFilter] = useState('all');
   const [spend, setSpend] = useState('');
@@ -596,7 +643,7 @@ function Dashboard() {
         <div hidden={section!=='Library'}><Library /></div>
         <div hidden={section!=='Newsletter'}><DraftStudio token={token} kind="newsletter" /></div>
         <div hidden={section!=='Café'}><DraftStudio token={token} kind="offer" /></div>
-        <div hidden={section!=='Distribution'}><h1>Distribution desk</h1><p>Prepare a channel link, then follow the reading journey. Published posts remain in their original services.</p><QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} /><DistributionReport key={days} rows={data.distribution} /></div>
+        <div hidden={section!=='Distribution'}><h1>Distribution desk</h1><p>Prepare a channel link, then follow the reading journey. Published posts remain in their original services.</p><DistributionCoach data={data} /><QuickActions ownerExcluded={ownerExcluded} onExcludeOwner={excludeOwner} /><DistributionReport key={days} rows={data.distribution} /></div>
         <div hidden={section!=='Conversations'}><h1>Conversations</h1><p className="coverage-note">{data.coverage_since || "…"} → {data.range_until || "…"} UTC · <button type="button" onClick={() => setSection("Overview")}>Change date range</button></p><RevenueOperations data={data} token={token} onSaved={() => load()} ownerExcluded={ownerExcluded} /><ContactInbox rows={data.contact_submissions || []} /></div>
         <div hidden={section!=='Settings'}><h1>Measurement &amp; privacy</h1><SystemAttention health={data.system_health} ownerExcluded={ownerExcluded} /><button onClick={excludeOwner}>Verify & exclude my browser</button><DataIntegrity integrity={data.integrity || EMPTY.integrity} retentionDays={data.retention_days} ownerExcluded={ownerExcluded} /></div>
         <footer>No raw IPs · {data.retention_days || 400}-day retention · DNT respected</footer>

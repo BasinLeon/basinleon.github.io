@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The GTM Battle Map: Signal, Logic, and Latency | Leon Basin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2311100e'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+  <meta name="description" content="Interactive MBA guest lecture syllabus and operator workshop by Leon Basin: moving from SaaS sprawl to signal-driven revenue architecture.">
+  <link rel="canonical" href="https://basinleon.github.io/battle-map/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The GTM Battle Map: Signal, Logic, and Latency | Leon Basin">
+  <meta property="og:description" content="0% theory, 100% execution. Interactive 3-part MBA curriculum on Signal Refineries, API-driven GTM stacks, and closing the founder-to-scale chasm.">
+  <meta property="og:url" content="https://basinleon.github.io/battle-map/">
+  <meta property="og:image" content="https://basinleon.github.io/assets/img/og/og-gtm-systems.jpg">
+  <meta property="og:site_name" content="Leon Basin">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Manrope:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/continuity.css?v=20261120-editorial">
+  <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261120-editorial">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #11100e;
+      --card: #181613;
+      --paper: #eee9de;
+      --muted: #bcb3a2;
+      --gold: #d9ab45;
+      --line: #403a30;
+      --serif: "Instrument Serif", Georgia, serif;
+      --sans: "Manrope", system-ui, -apple-system, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; accent-color: var(--gold); }
+    body { margin: 0; background: var(--ink); color: var(--paper); font: 1rem/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: var(--gold); text-underline-offset: .25em; }
+    a:hover { color: var(--paper); }
+    .skip { position: absolute; top: -6rem; left: 1rem; padding: .8rem; background: var(--paper); color: var(--ink); z-index: 5; }
+    .skip:focus { top: 1rem; }
+    .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .brand { display: inline-flex; align-items: center; min-height: 44px; font-weight: 800; letter-spacing: .07em; color: var(--paper); text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
+    nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: .88rem; color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--paper); text-decoration: underline; }
+    .hero { padding-block: clamp(2.5rem, 6vw, 4.75rem) 2.5rem; max-width: 860px; }
+    .eyebrow { color: var(--gold); font: 500 .72rem/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 1rem; }
+    h1 { font: 400 clamp(3rem, 7.2vw, 5.6rem)/1.02 var(--serif); letter-spacing: -.015em; margin: 0 0 1.1rem; }
+    h2 { font: 400 clamp(1.9rem, 3.6vw, 2.7rem)/1.12 var(--serif); letter-spacing: -.012em; margin: 0 0 .85rem; }
+    h3 { font: 400 1.5rem/1.2 var(--serif); margin: 0 0 .6rem; }
+    .hook { font: 400 clamp(1.2rem, 2.2vw, 1.55rem)/1.45 var(--sans); color: var(--paper); margin: 0 0 1rem; max-width: 62ch; }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; font: 400 .78rem/1.5 var(--mono); color: var(--muted); padding-top: 1rem; border-top: 1px solid var(--line); }
+    section { border-top: 1px solid var(--line); padding-block: 2.5rem; }
+    .module-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1.25rem 0 1.5rem; }
+    .module-tab { text-align: left; padding: 1.1rem 1.2rem; background: var(--card); border: 1px solid var(--line); color: var(--muted); cursor: pointer; transition: border-color .15s, background .15s; }
+    .module-tab:hover { border-color: var(--gold); color: var(--paper); }
+    .module-tab[aria-pressed="true"] { border-color: var(--gold); border-top: 2px solid var(--gold); background: rgba(217, 171, 69, .09); color: var(--paper); }
+    .module-tab span { display: block; font: 500 .68rem/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .35rem; }
+    .module-tab strong { font: 400 1.35rem/1.2 var(--serif); color: var(--paper); }
+    .module-panel { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--gold); padding: clamp(1.25rem, 3vw, 2rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 2rem; }
+    .module-panel dt { font: 600 .7rem/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .35rem; }
+    .module-panel dd { margin: 0; color: var(--muted); font-size: .96rem; line-height: 1.65; }
+    .module-panel dd strong { color: var(--paper); }
+    .dragon-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .dragon-card { background: var(--card); border: 1px solid var(--line); padding: 1.25rem 1.35rem; }
+    .dragon-card summary { cursor: pointer; font: 400 1.3rem/1.28 var(--serif); color: var(--paper); list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; min-height: 44px; }
+    .dragon-card summary::after { content: "+"; font: 500 1rem/1 var(--mono); color: var(--gold); flex-shrink: 0; }
+    .dragon-card[open] summary::after { content: "−"; }
+    .dragon-card p { margin: .85rem 0 0; padding-top: .85rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .94rem; line-height: 1.65; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; align-items: center; }
+    .btn { display: inline-flex; align-items: center; min-height: 46px; padding: .7rem 1.2rem; font: 700 .86rem/1 var(--sans); text-decoration: none; border: 1px solid var(--gold); }
+    .btn-primary { background: var(--gold); color: var(--ink); }
+    .btn-primary:hover { background: var(--paper); color: var(--ink); }
+    .btn-ghost { background: transparent; color: var(--gold); }
+    @media (max-width: 780px) {
+      .wrap { width: calc(100% - 2.25rem); }
+      .module-tabs, .module-panel, .dragon-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "The GTM Battle Map: Signal, Logic, and Latency",
+    "description": "MBA guest lecture syllabus and interactive operator workshop on signal-driven GTM architecture by Leon Basin.",
+    "provider": { "@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/" }
+  }
+  </script>
+</head>
+<body data-lb-section="tools">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar wrap">
+    <a class="brand lb-site-name" href="/">LEON BASIN.</a>
+    <nav aria-label="Primary navigation">
+      <a href="/gtm-systems/">GTM Systems</a>
+      <a href="/basin-nexus/">Flow::Nexus</a>
+      <a href="/tools/">Tools</a>
+      <a href="/case-studies/">Work</a>
+      <a href="/blog/">Writing</a>
+      <a href="/work-with-me/">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="hero">
+      <p class="eyebrow">MBA Guest Lecture Syllabus · Santa Clara University (MKTG 359)</p>
+      <h1>Signal, Logic, and Latency.</h1>
+      <p class="hook">Textbooks teach the 4 Ps. Modern GTM runs on signal quality, routing logic, and response latency. If your signal is weak or your latency is high, you lose before the first call.</p>
+      <div class="meta-strip">
+        <span>Format: 90-minute live workshop</span>
+        <span>Thesis: 0% theory · 100% execution</span>
+        <span>Built by Leon Basin · Founding GTM</span>
+      </div>
+    </div>
+
+    <section aria-labelledby="syllabus-title">
+      <p class="eyebrow">Interactive 3-Part Syllabus</p>
+      <h2 id="syllabus-title">Inspect each 30-minute block.</h2>
+      <div class="module-tabs" role="group" aria-label="Select workshop module">
+        <button type="button" class="module-tab" data-mod="0" aria-pressed="true"><span>Part 01 · 30 min</span><strong>The Signal Refinery</strong></button>
+        <button type="button" class="module-tab" data-mod="1" aria-pressed="false"><span>Part 02 · 30 min</span><strong>The New GTM Stack</strong></button>
+        <button type="button" class="module-tab" data-mod="2" aria-pressed="false"><span>Part 03 · 30 min</span><strong>Closing the Chasm</strong></button>
+      </div>
+      <dl class="module-panel" id="battle-panel" aria-live="polite">
+        <div><dt>The Problem</dt><dd data-bm="problem">Generic intent feeds (G2 clicks, broad funding alerts, static lead lists) flood reps with noise and zero order of work.</dd></div>
+        <div><dt>The Fix</dt><dd data-bm="fix">Mine verifiable public signals using Python and LLMs: hiring friction, municipal council agendas, RFP calendars, and technical stack shifts.</dd></div>
+        <div><dt>Live Artifact</dt><dd data-bm="demo">Walk through <strong>Signal Architect</strong> scoring raw company descriptions into transparent P0–P3 queues with inspectable rules.</dd></div>
+        <div><dt>Operator Takeaway</dt><dd data-bm="outcome">Identify which accounts deserve the next unit of human attention before competitors even notice the account moved.</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby="dragon-title">
+      <p class="eyebrow">Executive Pressure-Test</p>
+      <h2 id="dragon-title">Dragon Questions for GTM Builders.</h2>
+      <p style="color:var(--muted);max-width:64ch;margin:0">Click any question from the workshop Q&amp;A to inspect the operator answer.</p>
+      <div class="dragon-grid">
+        <details class="dragon-card">
+          <summary>Why do most AI outbound stacks fail within 60 days?</summary>
+          <p>They automate volume instead of judgment. Sending 10x more generic AI emails destroys domain reputation and buyer trust. Agents should own research, CRM hygiene, and first-pass briefs — never unreviewed external sends.</p>
+        </details>
+        <details class="dragon-card">
+          <summary>How did you cut SDR technical ramp from 90 days to 5?</summary>
+          <p>Replaced passive slide decks with just-in-time certification and automated account briefs. Reps did not memorize 200 features before dialing; the system handed them verified buyer context and exact technical proof at the moment of outreach.</p>
+        </details>
+        <details class="dragon-card">
+          <summary>What is the difference between a CRM and Flow::Nexus?</summary>
+          <p>A CRM is a database of past history. Flow::Nexus is the decision layer above it: capturing a public signal, checking the premise, verifying ownership, enforcing a human gate, and logging whether the call actually moved pipeline.</p>
+        </details>
+        <details class="dragon-card">
+          <summary>How do you measure a GTM system without lying to yourself?</summary>
+          <p>Measure stage velocity, not call volume. Apply a 7-day kill-or-promote rule to stalled deals so zombie opportunities do not inflate forecasts, and verify live CRM state rather than trusting automated activity counts.</p>
+        </details>
+      </div>
+    </section>
+
+    <section aria-labelledby="next-title">
+      <p class="eyebrow">Try the Live Builds</p>
+      <h2 id="next-title">Inspect the working systems behind the lecture.</h2>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/basin-nexus/#worked-example" data-track="Battle Map: Nexus Inspector">Open Flow::Nexus Inspector →</a>
+        <a class="btn btn-ghost" href="/signal-architect/" data-track="Battle Map: Signal Architect">Run Signal Architect ↗</a>
+        <a class="btn btn-ghost" href="/gtm-systems/" data-track="Battle Map: GTM Systems">Read First-90-Days Plan ↗</a>
+        <a class="btn btn-ghost" href="/work-with-me/" data-track="Battle Map: Speaking">Invite Leon to speak ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="lb-site-name" href="/" aria-label="Leon Basin home">LEON BASIN.</a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/basin-nexus/">Nexus</a><a href="/tools/">Tools</a><a href="/blog/">Writing</a><a href="/work-with-me/">Contact</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
+  <script src="/assets/js/insights.js?v=20261120-editorial" defer></script>
+  <script src="/assets/js/continuity.js?v=20261120-editorial" defer></script>
+  <script>
+  (function(){
+    const MODS = [
+      {
+        problem: "Generic intent feeds (G2 clicks, broad funding alerts, static lead lists) flood reps with noise and zero order of work.",
+        fix: "Mine verifiable public signals using Python and LLMs: hiring friction, municipal council agendas, RFP calendars, and technical stack shifts.",
+        demo: "Walk through <strong>Signal Architect</strong> scoring raw company descriptions into transparent P0–P3 queues with inspectable rules.",
+        outcome: "Identify which accounts deserve the next unit of human attention before competitors even notice the account moved."
+      },
+      {
+        problem: "Teams buy 12 point tools, bury reps in tabs, and spend Friday meetings reciting stale CRM history instead of unblocking deals.",
+        fix: "Move from manual CRM data entry to orchestrated APIs: HubSpot as system of record, Python enrichment/routing, and human-gated AI briefs.",
+        demo: "Fudo Security case study: automating enrichment and routing saved <strong>$424K/yr</strong> while compressing SDR technical ramp from <strong>90 days to 5</strong>.",
+        outcome: "Every rep starts the morning with verified context, explicit account ownership, and zero manual list-building tax."
+      },
+      {
+        problem: "Founder-led sales stalls when the first 5–10 hires cannot replicate the founder's intuition or technical credibility.",
+        fix: "Productize the founder's judgment into inspectable decision rules, 1-page technical proof artifacts, and a weekly velocity audit.",
+        demo: "Live walkthrough of <strong>Flow::Nexus</strong> across GovTech, Cybersecurity Partner Co-Sell, and Enterprise AI midbound motions.",
+        outcome: "Position yourself as a Founding GTM builder who designs repeatable revenue infrastructure rather than watching dashboards."
+      }
+    ];
+    const tabs = [...document.querySelectorAll("[data-mod]")];
+    const panel = document.getElementById("battle-panel");
+    tabs.forEach(t => t.addEventListener("click", () => {
+      const idx = Number(t.getAttribute("data-mod"));
+      tabs.forEach(x => x.setAttribute("aria-pressed", x === t ? "true" : "false"));
+      const m = MODS[idx];
+      panel.querySelector('[data-bm="problem"]').innerHTML = m.problem;
+      panel.querySelector('[data-bm="fix"]').innerHTML = m.fix;
+      panel.querySelector('[data-bm="demo"]').innerHTML = m.demo;
+      panel.querySelector('[data-bm="outcome"]').innerHTML = m.outcome;
+      try { if (window.lbTrack) window.lbTrack("Battle Map: Part " + (idx + 1)); } catch(e){}
+    }));
+  })();
+  </script>
+</body>
+</html>
