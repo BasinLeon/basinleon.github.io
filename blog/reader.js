@@ -88,12 +88,13 @@
   .lb-read-meta{margin:.55rem 0 1.4rem;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;\
     letter-spacing:.08em;text-transform:uppercase;color:#bcb3a2;}\
   .lb-read-meta.lb-light{color:#6b6256;}\
-  .lb-toc{margin:1.4rem 0 2rem;padding:.95rem 1.15rem;border:1px solid #403a30;border-left:2px solid var(--lb-gold);border-radius:0;\
+  .lb-toc{margin:1rem 0 1.35rem;padding:.6rem 1rem;border:1px solid #403a30;border-left:2px solid var(--lb-gold);border-radius:0;\
     background:#181613;font-family:'Manrope',-apple-system,sans-serif;}\
   .lb-toc summary{cursor:pointer;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;\
-    letter-spacing:.12em;text-transform:uppercase;color:var(--lb-gold);min-height:36px;display:flex;align-items:center;}\
-  .lb-toc ol{margin:.65rem 0 .2rem;padding-left:1.25rem;display:grid;gap:.35rem;}\
-  .lb-toc a{color:inherit;text-decoration:none;font-size:.92rem;line-height:1.45;}\
+    letter-spacing:.12em;text-transform:uppercase;color:var(--lb-gold);min-height:32px;display:flex;align-items:center;}\
+  .lb-toc ol{margin:.5rem 0 .1rem!important;padding-left:1.25rem!important;display:grid;gap:.25rem;}\
+  .lb-toc li{margin:0!important;}\
+  .lb-toc a{color:inherit;text-decoration:none;font-size:.9rem;line-height:1.4;min-height:auto!important;}\
   .lb-toc a:hover,.lb-toc a:focus-visible{color:var(--lb-gold);text-decoration:underline;}\
   .lb-toc.lb-light{border-color:#ccc4b5;border-left-color:var(--lb-bronze);background:#eeebe3;color:#29251e;}\
   .lb-toc.lb-light summary{color:var(--lb-bronze);}\
@@ -180,7 +181,7 @@
       var headings = Array.from(contentRoot.querySelectorAll("h2")).filter(function (el) {
         return !el.closest("aside, nav, footer, .lb-endcta, .read-next, .hub-follow, .hub-daily");
       });
-      if (!isFragment && headings.length >= 3 && !document.querySelector(".lb-toc")) {
+      if (!isFragment && wordCount >= 900 && headings.length >= 3 && !document.querySelector(".lb-toc")) {
         var usedIds = new Set();
         var toc = document.createElement("details");
         toc.className = "lb-toc" + (isLightSurface ? " lb-light" : "");
