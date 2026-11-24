@@ -79,7 +79,7 @@ const DISTRIBUTION_DESTINATIONS = [
   { label: "Fiction reading room", path: "/blog/fiction/" },
   { label: "Homepage", path: "/" },
   { label: "Operating proof", path: "/case-studies/" },
-  { label: "Basin::Nexus", path: "/basin-nexus/" },
+  { label: "Flow::Nexus", path: "/basin-nexus/" },
   { label: "Writing", path: "/blog/" },
   { label: "What Does a Moment Become?", path: "/blog/posts/what-does-a-moment-become.html" },
   { label: "Work with Leon", path: "/work-with-me/" }
