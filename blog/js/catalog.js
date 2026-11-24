@@ -26,15 +26,17 @@
             const essentialUrls = new Set([
                 'posts/the-machine-described-me-back-to-myself.html',
                 'posts/the-builders-advantage.html',
+                'posts/a-second-brain-still-needs-judgment.html',
                 'posts/sam-ink-note-in-the-other-room.html',
                 'posts/the-souls-algorithm-fallow-year.html',
-                'posts/rebuilt-manual-sdr-workflow.html',
                 'posts/the-archive-was-empty.html',
+                'posts/arr-doubled-i-still-dont-know-which-post-did-it.html',
                 'posts/architecture-of-the-inward-machine.html',
+                'posts/the-end-of-saas-sprawl.html',
                 'posts/the-silence-architect.html',
                 'posts/stop-selling-start-architecting-rise-of-gtm-engineer.html',
-                'posts/gtm-systemization-framework.html',
-                'posts/architecture-of-revenue.html',
+                'posts/rebuilt-manual-sdr-workflow.html',
+                'posts/death-of-the-status-update.html',
                 'posts/system-finds-the-role.html',
             ]);
 

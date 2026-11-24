@@ -1252,6 +1252,87 @@
     h2, h3, .worked-step h3, .audience-row h3 {
       line-height: 1.15 !important;
     }
+    /* Calm archival paper cards (remove pitch-black SaaS pricing-table cliché & tighten stack card whitespace) */
+    .offer-card.featured {
+      background: var(--panel) !important;
+      color: var(--ink) !important;
+      border-color: var(--line) !important;
+      border-top: 2px solid var(--gold) !important;
+    }
+    .offer-card.featured p,
+    .offer-card.featured li { color: var(--muted) !important; }
+    .offer-card.featured .kicker,
+    .offer-card.featured .price { color: var(--gold) !important; }
+    .stack-card {
+      min-height: auto !important;
+      gap: 20px !important;
+    }
+    /* Interactive Flow::Nexus Decision Inspector */
+    .nexus-scenario-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 22px;
+    }
+    .nexus-scenario-btn {
+      min-height: 40px;
+      padding: 8px 14px;
+      background: transparent;
+      border: 1px solid rgba(244, 241, 234, 0.22);
+      color: #bcb3a2;
+      font: 500 11px/1.3 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .nexus-scenario-btn:hover { border-color: #d9ab45; color: #eee9de; }
+    .nexus-scenario-btn[aria-pressed="true"] {
+      background: #d9ab45;
+      border-color: #d9ab45;
+      color: #11100e;
+      font-weight: 700;
+    }
+    .worked-step {
+      cursor: pointer;
+      text-align: left;
+      transition: background .15s, border-color .15s;
+    }
+    .worked-step:hover { background: rgba(217, 171, 69, 0.06); }
+    .worked-step[data-active="true"] {
+      background: rgba(217, 171, 69, 0.11);
+      box-shadow: inset 0 2px 0 #d9ab45;
+    }
+    .worked-step[data-active="true"] h3 { color: #d9ab45; }
+    .nexus-inspector {
+      margin-top: 20px;
+      padding: 18px 20px;
+      background: #181613;
+      border: 1px solid #403a30;
+      border-left: 3px solid #d9ab45;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .nexus-inspector dt {
+      font: 600 10.5px/1.4 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d9ab45;
+      margin-bottom: 6px;
+    }
+    .nexus-inspector dd {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #eee9de;
+    }
+    @media (max-width: 820px) {
+      .nexus-inspector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .nexus-inspector { grid-template-columns: 1fr; }
+    }
   </style>
 <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
 <meta property="og:site_name" content="Leon Basin">
@@ -1329,19 +1410,30 @@
       <div class="worked-example">
         <div class="worked-example-head">
           <div>
-            <div class="eyebrow">One anonymized record</div>
+            <div class="eyebrow">Interactive decision inspector</div>
             <h2 id="worked-example-title">See the decision move through the system.</h2>
           </div>
-          <p>A public-safe account journey showing the evidence, judgment, ownership, and observable commercial result.</p>
+          <p>Switch scenarios or click any stage to inspect the input, harness gate, human call, and learning loop.</p>
         </div>
-        <div class="worked-flow" aria-label="Signal to outcome account journey">
-          <article class="worked-step"><span class="worked-step-no">01 / Signal</span><h3>A stalled account moved.</h3><p>A reply reopened a stalled conversation.</p></article>
-          <article class="worked-step"><span class="worked-step-no">02 / Evidence</span><h3>The premise was checked.</h3><p>Local planning data and community-safety reports established relevant account context before discovery.</p></article>
-          <article class="worked-step"><span class="worked-step-no">03 / Hypothesis</span><h3>Timing had changed.</h3><p>The response and local evidence suggested a live safety priority, not a generic reason to follow up.</p></article>
-          <article class="worked-step"><span class="worked-step-no">04 / Contact</span><h3>The buyer was known.</h3><p>The team verified who to speak with and what to ask.</p></article>
-          <article class="worked-step"><span class="worked-step-no">05 / Action</span><h3>Ownership became explicit.</h3><p>The seller, account executive, discovery agenda, and timing were aligned before the next touch.</p></article>
-          <article class="worked-step"><span class="worked-step-no">06 / Outcome</span><h3>A meeting was confirmed.</h3><p>A discovery meeting was scheduled.</p></article>
+        <div class="nexus-scenario-bar" role="group" aria-label="Select GTM scenario">
+          <button type="button" class="nexus-scenario-btn" data-nexus-scenario="govtech" aria-pressed="true">GovTech · Public Sector</button>
+          <button type="button" class="nexus-scenario-btn" data-nexus-scenario="cyber" aria-pressed="false">Cybersecurity · Partner Co-Sell</button>
+          <button type="button" class="nexus-scenario-btn" data-nexus-scenario="ai" aria-pressed="false">AI · Enterprise Midbound</button>
         </div>
+        <div class="worked-flow" id="nexus-worked-flow" aria-label="Signal to outcome account journey">
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="0" data-active="true"><span class="worked-step-no">01 / Signal</span><h3>A stalled account moved.</h3><p>A reply reopened a stalled conversation.</p></article>
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="1" data-active="false"><span class="worked-step-no">02 / Evidence</span><h3>The premise was checked.</h3><p>Local planning data and community-safety reports established relevant account context before discovery.</p></article>
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="2" data-active="false"><span class="worked-step-no">03 / Hypothesis</span><h3>Timing had changed.</h3><p>The response and local evidence suggested a live safety priority, not a generic reason to follow up.</p></article>
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="3" data-active="false"><span class="worked-step-no">04 / Contact</span><h3>The buyer was known.</h3><p>The team verified who to speak with and what to ask.</p></article>
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="4" data-active="false"><span class="worked-step-no">05 / Action</span><h3>Ownership became explicit.</h3><p>The seller, account executive, discovery agenda, and timing were aligned before the next touch.</p></article>
+          <article class="worked-step" tabindex="0" role="button" data-step-idx="5" data-active="false"><span class="worked-step-no">06 / Outcome</span><h3>A meeting was confirmed.</h3><p>A discovery meeting was scheduled.</p></article>
+        </div>
+        <dl class="nexus-inspector" id="nexus-inspector" aria-live="polite">
+          <div><dt>Input</dt><dd data-ins="input">Inbound reply from a previously quiet municipal contact plus same-week council traffic agenda.</dd></div>
+          <div><dt>Harness Gate</dt><dd data-ins="gate">Verify live CRM history, open RFP window, and no active rep collision before drafting.</dd></div>
+          <div><dt>Human Call</dt><dd data-ins="human">Operator holds automated sequence and routes a custom 1-page intersection brief for review.</dd></div>
+          <div><dt>Learning Loop</dt><dd data-ins="loop">Council safety agenda + dormant reply promoted to P0 trigger weight for similar cities.</dd></div>
+        </dl>
         <p class="worked-note">Anonymized for public use. No customer credentials, private messages, or internal screenshots shown.</p>
       </div>
     </section>
@@ -1490,10 +1582,10 @@
         <article class="stack-card">
           <div>
             <div class="kicker">Reasoning and build</div>
-            <h3>Multi-model AI layer</h3>
-            <p>Claude, Gemini, ChatGPT, Codex, and local Gemma support research, synthesis, roleplay, drafting, verification, automation, and software work.</p>
+            <h3>Gemini + Claude + Local Ollama</h3>
+            <p>Gemini, Claude, ChatGPT, and local Ollama models (Mistral Small, Phi-4, DeepSeek-R1) handle research, synthesis, red-team audits, drafting, and Python tooling — always behind a human gate.</p>
           </div>
-          <div class="stack-role">LLMs / agents / skills / implementation</div>
+          <div class="stack-role">LLMs / agents / local RAG / human-gated harness</div>
         </article>
         <article class="stack-card">
           <div>
@@ -1516,7 +1608,7 @@
         <p class="section-copy">The right entry point depends on the mandate, access, and outcome that must change.</p>
       </div>
       <div class="offer-grid">
-        <article class="offer-card">
+        <article class="offer-card featured">
           <div class="kicker">01 / Senior operating mandate</div>
           <h3>Sell it. Build it. Own it.</h3>
           <div class="price">Full ownership</div>
@@ -1527,7 +1619,7 @@
             <li>Pipeline architecture and execution</li>
           </ul>
         </article>
-        <article class="offer-card featured">
+        <article class="offer-card">
           <div class="kicker">02 / Diagnostic or fractional build</div>
           <h3>Find the break. Build the system.</h3>
           <div class="price">Focused build</div>
@@ -1601,5 +1693,67 @@
   <script src="/assets/js/continuity.js?v=20261120-editorial" defer></script>
   <script src="/assets/js/insights.js?v=20261120-editorial" defer></script>
   <script src="/assets/js/email-actions.js?v=20260814b" defer></script>
+<script>
+(function(){
+  const SCENARIOS = {
+    govtech: [
+      { t: "A stalled account moved.", p: "A reply reopened a stalled conversation.", i: "Inbound reply from a quiet municipal contact plus same-week council traffic agenda.", g: "Verify live CRM history, open procurement window, and zero rep collision.", h: "Operator pauses automated cadence and approves a custom intersection brief.", l: "Council safety agenda + dormant reply promoted to P0 weight for peer cities." },
+      { t: "The premise was checked.", p: "Local planning data and community-safety reports established relevant account context.", i: "Public works minutes, crash-corridor notes, and prior email thread.", g: "Every factual claim must link to a dated public record before entering a draft.", h: "Confirm public works director is the real sponsor, not generic IT.", l: "Added municipal agenda verification as mandatory step before discovery." },
+      { t: "Timing had changed.", p: "The response and local evidence suggested a live safety priority.", i: "Budget cycle date + named intersections flagged in council discussion.", g: "Distinguish active funded priority from exploratory curiosity.", h: "Tag account as active-quarter opportunity with specific agenda anchor.", l: "Updated timing score rule: agenda-backed replies convert 3x faster." },
+      { t: "The buyer was known.", p: "The team verified who to speak with and what to ask.", i: "Org map across traffic engineer, public works director, and city manager.", g: "Never guess contact titles or auto-enrich unverified municipal emails.", h: "Confirm two-person discovery invite and council-ready proof questions.", l: "Saved stakeholder map template for California Tier-2 municipalities." },
+      { t: "Ownership became explicit.", p: "The seller, AE, discovery agenda, and timing were aligned before outreach.", i: "Approved brief, named owner, and 3-line human-edited reply.", g: "Zero sends without explicit human tap and logged CRM task state.", h: "Leon approves final wording and confirms calendar handoff with AE.", l: "Handoff checklist prevented repeat discovery questions on the live call." },
+      { t: "A meeting was confirmed.", p: "A discovery meeting was scheduled.", i: "Confirmed calendar invite and attendee acceptance.", g: "Log real calendar confirmation, never count a sent email as pipeline.", h: "Attach pre-call brief to HubSpot deal record and prep council-defense proof.", l: "Playbook promoted to repeatable California territory standard." }
+    ],
+    cyber: [
+      { t: "Security hiring spike detected.", p: "Target enterprise posted two Privileged Access Management roles.", i: "Public job req naming PAM rollout + existing regional VAR partner overlap.", g: "Verify account is not already active in direct or partner pipeline.", h: "Flag as P0 co-sell candidate instead of cold-blasting the CISO.", l: "PAM hiring + VAR overlap locked as top Americas channel trigger." },
+      { t: "Partner path verified.", p: "Checked which regional reseller already held MSA paper with the account.", i: "Partner territory ledger + LinkedIn 1st-degree connector check.", g: "Confirm partner registration rules before any direct outreach.", h: "Select warm VAR intro path over cold outbound.", l: "Partner-first routing preserved channel trust and cut cycle time." },
+      { t: "Technical wedge framed.", p: "Mapped deployment speed and audit pain before asking for time.", i: "CISO compliance deadline + legacy bastion friction notes.", g: "Strip generic vendor fluff; tie every claim to verifiable Fudo proof.", h: "Draft 1-page architecture brief for partner AE to forward.", l: "Technical 1-pager outperformed generic deck in enterprise replies." },
+      { t: "Champion & CISO aligned.", p: "Verified both security architect and budget owner roles.", i: "Confirmed LinkedIn titles + partner intro confirmation.", g: "Keep unverified contacts out of sequence; route only confirmed buyers.", h: "Approve joint discovery agenda with partner SE.", l: "Multi-threading architect + CISO early doubled POC conversion." },
+      { t: "Co-sell motion owned.", p: "Named internal SE, partner rep, and 7-day follow-up owner.", i: "Shared CRM deal stage + dated next action in HubSpot.", g: "Log every touch and verify live CRM stage rather than trusting summaries.", h: "Run 5-day technical ramp brief so rep speaks buyer language.", l: "Structured handoff compressed enterprise POC scoping." },
+      { t: "Six-figure POC launched.", p: "Enterprise proof-of-concept kicked off with clear exit criteria.", i: "Signed POC success criteria + executive sponsor check-in date.", g: "Track stage velocity (7-day kill-or-promote rule), not call volume.", h: "Review weekly velocity brief with engineering and partner lead.", l: "Closed learnings fed back into next quarter's ICP scoring weights." }
+    ],
+    ai: [
+      { t: "Champion moved accounts.", p: "Former power user joined a Series B AI company as VP Ops.", i: "Job-change signal + company hiring GTM engineers.", g: "Verify new company ICP fit and confirm no existing open opp.", h: "Route to warm-intro queue instead of automated sequence.", l: "Champion job-change weighted as highest-intent midbound signal." },
+      { t: "Stack & gap audited.", p: "Public job descriptions revealed manual CRM routing bottlenecks.", i: "Careers page tooling list + Signal Architect P0 friction score.", g: "Cite exact public wording; never fabricate internal pain.", h: "Approve 4-line permission note offering a short 90-day teardown.", l: "Permission-based 4-line note lifted positive reply rate." },
+      { t: "Value framed in 90 days.", p: "Mapped concrete Days 1-30 / 31-60 / 61-90 milestones.", i: "Role mandate + analogous Fudo 90-to-5-day ramp proof.", g: "Every number checked against verified public career record.", h: "Human-edit brief so voice stays plain, direct, and zero-slop.", l: "Concrete 90-day artifacts beat generic capability pitches." },
+      { t: "Buying committee mapped.", p: "Identified GTM Tech lead, Head of Recruiting, and VP Sales.", i: "1st-degree LinkedIn map + mutual connector check.", g: "Confirm connector relationship strength before requesting intro.", h: "Ask one specific warm connector with a forwardable 4-line blurb.", l: "Single-ask forwardable intro tripled warm response speed." },
+      { t: "Human-gated send.", p: "Operator reviewed evidence, edited copy, and logged the touch.", i: "Final human-approved DM + dated 5-day follow-up task.", g: "No agent sends externally; every run logged with live state check.", h: "Send manually from personal account and record timestamp.", l: "Zero spam, zero brand risk, 100% inspectable audit trail." },
+      { t: "Executive conversation set.", p: "Working session booked with hiring leader.", i: "Confirmed 30-minute architecture walkthrough on calendar.", g: "Attach custom teardown link before call; measure real conversion.", h: "Log buyer objections after call to sharpen next account brief.", l: "Every conversation updates the scoring rules for the next ten." }
+    ]
+  };
+  const flow = document.getElementById("nexus-worked-flow");
+  const ins = document.getElementById("nexus-inspector");
+  if (!flow || !ins) return;
+  let curScenario = "govtech", curIdx = 0;
+  const cards = [...flow.querySelectorAll(".worked-step")];
+  const btns = [...document.querySelectorAll("[data-nexus-scenario]")];
+  function track(label){ try { if (window.lbTrack) window.lbTrack(label); } catch(e){} }
+  function render(){
+    const list = SCENARIOS[curScenario];
+    cards.forEach((c, i) => {
+      c.querySelector("h3").textContent = list[i].t;
+      c.querySelector("p").textContent = list[i].p;
+      c.setAttribute("data-active", i === curIdx ? "true" : "false");
+    });
+    const d = list[curIdx];
+    ins.querySelector('[data-ins="input"]').textContent = d.i;
+    ins.querySelector('[data-ins="gate"]').textContent = d.g;
+    ins.querySelector('[data-ins="human"]').textContent = d.h;
+    ins.querySelector('[data-ins="loop"]').textContent = d.l;
+  }
+  btns.forEach(b => b.addEventListener("click", () => {
+    curScenario = b.getAttribute("data-nexus-scenario");
+    curIdx = 0;
+    btns.forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    render();
+    track("Nexus Inspector: " + curScenario);
+  }));
+  cards.forEach((c, i) => {
+    const pick = () => { curIdx = i; render(); track("Nexus Inspector: " + curScenario + " step " + (i+1)); };
+    c.addEventListener("click", pick);
+    c.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+  });
+})();
+</script>
 </body>
 </html>
