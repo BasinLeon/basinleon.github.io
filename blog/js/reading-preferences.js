@@ -8,7 +8,8 @@
  const isPost=/^\/blog\/posts\/[a-z0-9-]+\.html$/.test(location.pathname);
  const isStory=document.body.classList.contains('fiction-story-reader')||document.body.classList.contains('hub-reader');
  if(!isHub&&!isPost&&!isShelf&&!isStory)return;
- if(document.querySelector('.hub-reading-preferences'))return;
+ if(document.querySelector('.hub-reading-preferences .hub-reading-controls'))return;
+ const existingPanel=document.querySelector('.hub-reading-preferences');
  if(isPost||isShelf||isStory)document.body.classList.add('hub-reader');
  const read=key=>{try{return JSON.parse(localStorage.getItem(key));}catch{return null;}};
  const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch{/* Reading works without storage. */}};
@@ -20,14 +21,14 @@
  if(isStory&&!saved&&legacy)write(key,{mode,size});
  function apply(){root.dataset.readingMode=mode;root.dataset.readingSize=size;if(isStory)root.dataset.readingTheme=mode==='dark'?'dark':'light';}
  apply();
- const panel=document.createElement('details');panel.className='hub-reading-preferences';
- const summary=document.createElement('summary');summary.textContent=isHub?'Aa':'Reading preferences';summary.setAttribute('aria-label','Reading preferences');panel.append(summary);
+ const panel=existingPanel||document.createElement('details');panel.className='hub-reading-preferences';
+ if(!existingPanel){const summary=document.createElement('summary');summary.textContent=isHub?'Aa':'Reading preferences';summary.setAttribute('aria-label','Reading preferences');panel.append(summary);}
  const controls=document.createElement('div');controls.className='hub-reading-controls';
  function select(label,values,current,change){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement('select');input.setAttribute('aria-label',label);values.forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option);});input.value=current;input.addEventListener('change',()=>{change(input.value);if(document.startViewTransition&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){try{const t=document.startViewTransition(()=>apply());if(t?.ready)t.ready.catch(()=>{});if(t?.finished)t.finished.catch(()=>{});}catch{apply();}}else{apply();}write(key,{mode,size});});wrap.append(input);controls.append(wrap);}
  select('Appearance',[['dark','Dark'],['paper','Warm paper']],mode,value=>mode=value);
  select('Text size',[['normal','Standard'],['large','Large'],['larger','Larger']],size,value=>size=value);
  panel.append(controls);
- const target=isHub?document.querySelector('.hero-inner'):document.querySelector('main, article, .post-container, .blog-content');if(target)target.prepend(panel);
+ if(!existingPanel){const target=isHub?document.querySelector('.hero-inner'):document.querySelector('main, article, .post-container, .blog-content');if(target)target.prepend(panel);}
  const lastKey='basin-last-fragment-v1';const previous=read(lastKey);
  const valid=value=>value&&/^\/blog\/posts\/fragment-\d+\.html$/.test(value.path)&&typeof value.title==='string';
  const host=document.querySelector('[data-continue-reading]');if(host&&valid(previous)){const a=document.createElement('a');a.href=previous.path+'#resume';a.textContent='Continue where you left off: '+previous.title;host.append(a);host.hidden=false;}
