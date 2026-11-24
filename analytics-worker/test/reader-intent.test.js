@@ -35,7 +35,7 @@ test('article replies stay reader interest instead of hiring intent', () => {
 test('next-piece clicks have a distinct reader action', () => {
   assert.equal(intent('Writing: read next', 'Internal Click', '/blog/posts/fragment-15.html').action, 'read-next');
   assert.equal(intent('Sam & Ink: next', 'Internal Click', '/blog/posts/fragment-15.html').action, 'read-next');
-  assert.equal(intent('Next: I Fed the Machine', 'Internal Click', '/blog/posts/fragment-15.html').action, 'read-next');
+  assert.equal(intent('Next: i fed the machine', 'Internal Click', '/blog/posts/fragment-15.html').action, 'read-next');
 });
 test('resume PDF downloads are distinct from proof-page visits', () => {
   assert.equal(intent('Resume: public PDF download', 'Download', '/assets/downloads/Leon-Basin-Public-Resume.pdf').action, 'resume-download');
