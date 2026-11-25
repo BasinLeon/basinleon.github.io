@@ -274,4 +274,86 @@
 
     render();
   }
+
+  /* Interactive First-90-Days Founding GTM Selector + The Dial */
+  const plan90 = document.getElementById('plan90-output');
+  if (plan90) {
+    const PLANS = {
+      'seed:pipeline': {
+        d30: ['Audit founder-led wins & public triggers', 'Extract the exact buyer phrasing, trigger events, and disqualifiers from your first 3–5 real customers before buying outbound tools.'],
+        d60: ['Ship 1 high-signal play on 20 accounts', 'Run a tightly scoped P0–P3 public-trigger play with 90-word notes; measure response quality and signal-to-touch latency.'],
+        d90: ['Lock the first repeatable pipeline engine', 'Codify the winning play into a 1-page handoff spec so your first GTM hire can generate qualified pipeline in week two.'],
+        dial: ['Public trigger watches, enrichment hygiene, and call-note structuring.', 'Every first-touch note, discovery framing, and ICP qualification decision.', 'Mass cold blasts that burn a small TAM before product-market fit.']
+      },
+      'seed:handoff': {
+        d30: ['Extract what lives only in the founder\'s head', 'Shadow live calls, log exact objection patterns, and separate repeatable discovery steps from founder charisma.'],
+        d60: ['Build the 5-day onboarding & handoff spec', 'Turn winning calls into a runnable playbook with explicit stage-exit criteria and clear buyer-language briefs.'],
+        d90: ['Prove a second operator matches conversion', 'Run side-by-side 10-account cohorts until the play holds without founder rescue on every call.'],
+        dial: ['Call transcription, CRM field hygiene, and pre-call account briefs.', 'Discovery question paths, qualification calls, and handoff sign-off.', 'Scaling headcount before a single play survives a second rep.']
+      },
+      'seed:stalled': {
+        d30: ['Autopsy every stalled opportunity', 'Separate polite "no on timing" from missing economic buyer or unverified pain across the last 20 active deals.'],
+        d60: ['Install mutual action plans & re-entry triggers', 'Tie every proposal to an agreed decision path and watch public triggers to re-open dormant accounts with fresh evidence.'],
+        d90: ['Raise proposal-to-close velocity', 'Eliminate unowned follow-ups and turn loss notes into sharper upstream qualification rules.'],
+        dial: ['Account news monitoring, renewal date tracking, and deal-stage alerts.', 'Executive alignment notes, pricing framing, and commercial next steps.', 'Generic "just bumping this to the top of your inbox" follow-ups.']
+      },
+      'seriesA:pipeline': {
+        d30: ['Cut activity theater, score true signal', 'Audit existing outbound sequences against actual reply quality; park low-intent segments and isolate P0 triggers.'],
+        d60: ['Launch multi-channel signal + warm-intro loop', 'Combine public triggers with mapped investor, advisor, and customer warm-intro paths to cut cold-outreach friction.'],
+        d90: ['Compound territory coverage across reps', 'Standardize weekly reply autopsies so winning signals propagate across every AE and SDR automatically.'],
+        dial: ['Signal ingestion, warm-network overlap mapping, and CRM routing.', 'Account prioritization calls, bespoke executive notes, and AE handoffs.', 'Volume quotas that reward sent emails over qualified conversations.']
+      },
+      'seriesA:handoff': {
+        d30: ['Diagnose where ramp and conversion break', 'Measure days-to-first-meeting and trace where new reps drift from top-performer discovery and qualification.'],
+        d60: ['Deploy Flow::Nexus briefs & 90→5 day ramp kit', 'Equip every rep with verified pre-call context, priority logic, and explicit seller-to-AE handoff contracts.'],
+        d90: ['Turn hero-rep wins into team baseline', 'Verify consistent conversion across new hires and lock continuous feedback from closed-won/lost deals.'],
+        dial: ['Pre-call context assembly, trigger scoring, and pipeline hygiene checks.', 'Live discovery coaching, deal reviews, and stage-progression gates.', 'Throwing more SDRs at an undocumented sales motion.']
+      },
+      'seriesA:stalled': {
+        d30: ['Expose late-stage qualification leaks', 'Audit every deal stuck >30 days for single-threaded champions, missing budget owners, or vague POC exit criteria.'],
+        d60: ['Enforce multi-threading & crisp POC gates', 'Pair technical proofs with named business outcomes, executive sponsors, and fixed 7-day follow-up ownership.'],
+        d90: ['Predictable quarter-over-quarter close rates', 'Feed every late-stage objection back into top-of-funnel qualification so bad-fit deals disqualify early.'],
+        dial: ['Deal-age alerts, stakeholder change tracking, and mutual-plan reminders.', 'Executive sponsor outreach, POC exit criteria, and commercial negotiation.', 'Sending proposals before decision criteria are confirmed.']
+      },
+      'enterprise:pipeline': {
+        d30: ['Map public agendas, RFPs & partner overlap', 'Identify the public triggers (council agendas, hiring spikes, compliance deadlines) and regional resellers holding live MSA paper.'],
+        d60: ['Stand up direct + partner co-sell motion', 'Route P0 accounts through verified channel partners and bespoke 1-page briefs written in the buyer\'s institutional language.'],
+        d90: ['Build a compounding multi-quarter pipeline', 'Track timing-no / problem-yes accounts with budget-cycle dates so territories compound instead of resetting every quarter.'],
+        dial: ['Public agenda scraping, procurement calendars, and partner territory mapping.', 'Co-sell alignment with VARs/SEs, executive briefings, and discovery framing.', 'Cold-blasting CISOs or municipal leaders with generic SaaS copy.']
+      },
+      'enterprise:handoff': {
+        d30: ['Standardize account briefs across AE, SE & Partner', 'Eliminate tribal knowledge by documenting exact buying committees, compliance gates, and partner roles per target account.'],
+        d60: ['Install explicit commercial ownership rules', 'Define who owns the trigger brief, technical wedge, partner intro, and 7-day post-meeting follow-through.'],
+        d90: ['Scale regional expansion cleanly', 'Replicate the first U.S. or multi-state territory model across new regions without losing deal rigor.'],
+        dial: ['Account dossier updates, partner conflict checks, and CRM logging.', 'Technical scoping, partner co-sell calls, and executive sponsorship.', 'Unowned leads bouncing between marketing, BDRs, and channel partners.']
+      },
+      'enterprise:stalled': {
+        d30: ['Unstick procurement & multi-stakeholder stalls', 'Map every missing signer (security, legal, procurement, budget owner) and verify whether a live trigger still anchors urgency.'],
+        d60: ['Re-anchor deals around concrete operational risk', 'Deliver tight executive baselines and partner-backed deployment paths that shrink implementation fear.'],
+        d90: ['Compress enterprise & public-sector cycles', 'Turn every procurement lesson into an upfront checklist that prevents stalls two quarters earlier.'],
+        dial: ['Contract/budget cycle reminders and public stakeholder monitoring.', 'Executive alignment sessions, security/compliance framing, and closing.', 'Discounting early before uncovering the real implementation risk.']
+      }
+    };
+
+    let stage = 'seed';
+    let issue = 'pipeline';
+    const stageBtns = [...document.querySelectorAll('.plan90-stage-btn')];
+    const issueBtns = [...document.querySelectorAll('.plan90-issue-btn')];
+
+    const renderPlan = () => {
+      const p = PLANS[`${stage}:${issue}`];
+      if (!p) return;
+      stageBtns.forEach(b => b.setAttribute('aria-selected', String(b.dataset.p90Stage === stage)));
+      issueBtns.forEach(b => b.setAttribute('aria-selected', String(b.dataset.p90Issue === issue)));
+      const set = (k, v) => { const el = document.querySelector(`[data-p90="${k}"]`); if (el) el.textContent = v; };
+      set('d30-title', p.d30[0]); set('d30-body', p.d30[1]);
+      set('d60-title', p.d60[0]); set('d60-body', p.d60[1]);
+      set('d90-title', p.d90[0]); set('d90-body', p.d90[1]);
+      set('dial-auto', p.dial[0]); set('dial-gate', p.dial[1]); set('dial-never', p.dial[2]);
+    };
+
+    stageBtns.forEach(b => b.addEventListener('click', () => { stage = b.dataset.p90Stage; renderPlan(); }));
+    issueBtns.forEach(b => b.addEventListener('click', () => { issue = b.dataset.p90Issue; renderPlan(); }));
+    renderPlan();
+  }
 })();
