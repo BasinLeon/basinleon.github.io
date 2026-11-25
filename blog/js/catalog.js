@@ -128,9 +128,8 @@
                         const mb = readingMinutes.get(postPath(b))?.minutes ?? 99;
                         return ma !== mb ? ma - mb : new Date(b.date || 0) - new Date(a.date || 0);
                     });
-                } else if (laneToUse === 'essential') {
-                    const rank = post => { const i = essentialPins.indexOf(String(post.url).replace(/^\/blog\//, '')); return i < 0 ? essentialPins.length : i; };
-                    result.sort((a, b) => rank(a) - rank(b));
+                } else {
+                    result.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
                 }
                 return result;
             }

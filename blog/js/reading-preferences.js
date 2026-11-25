@@ -16,7 +16,7 @@
  const key='basin-reading-preferences-v1';
  const saved=read(key);
  let legacy=null;try{legacy=localStorage.getItem('fiction-reading-theme');}catch{/* Optional local preferences. */}
- let mode=['paper','dark'].includes(saved?.mode)?saved.mode:(isStory&&legacy!=='dark'?'paper':'dark');
+ let mode=['paper','dark'].includes(saved?.mode)?saved.mode:(legacy==='dark'?'dark':'paper');
  let size=['normal','large','larger'].includes(saved?.size)?saved.size:'normal';
  if(isStory&&!saved&&legacy)write(key,{mode,size});
  function apply(){root.dataset.readingMode=mode;root.dataset.readingSize=size;if(isStory)root.dataset.readingTheme=mode==='dark'?'dark':'light';}
