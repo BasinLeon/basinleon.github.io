@@ -24,6 +24,7 @@
             let visibleCount = 12;
 
             const essentialUrls = new Set([
+                'posts/one-win-is-not-a-system.html',
                 'posts/the-machine-described-me-back-to-myself.html',
                 'posts/the-builders-advantage.html',
                 'posts/a-second-brain-still-needs-judgment.html',
