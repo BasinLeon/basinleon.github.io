@@ -13,11 +13,41 @@
   const totalWords = blocks.reduce((sum, el) => sum + (el.innerText || '').trim().split(/\s+/).length, 0);
   const mins = Math.max(1, Math.round(totalWords / 185));
 
+  const PREFERRED_VOICES = [
+    /Google US English/i,
+    /Natural/i,
+    /Online \(Natural\)/i,
+    /Ava.*(Premium|Enhanced)/i,
+    /Samantha.*(Premium|Enhanced)/i,
+    /Allison.*(Premium|Enhanced)/i,
+    /Daniel.*(Premium|Enhanced)/i,
+    /Serena/i,
+    /Moira/i,
+    /Samantha/i,
+    /Alex/i
+  ];
+  const ROBOT_BLOCKLIST = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Fred|Good News|Jester|Junior|Organ|Ralph|Superstar|Trinoids|Whisper|Wobble|Zarvox|eSpeak/i;
+
+  const pickBestVoice = () => {
+    const voices = window.speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang) && !ROBOT_BLOCKLIST.test(v.name));
+    if (!voices.length) return null;
+    for (const pattern of PREFERRED_VOICES) {
+      const match = voices.find(v => pattern.test(v.name));
+      if (match) return match;
+    }
+    return voices.find(v => !v.localService) || voices[0];
+  };
+
+  let bestVoice = pickBestVoice();
+  if (typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
+    window.speechSynthesis.onvoiceschanged = () => { bestVoice = pickBestVoice(); };
+  }
+
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'lb-listen-trigger';
   trigger.setAttribute('aria-expanded', 'false');
-  trigger.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span>Listen · ${mins} min</span>`;
+  trigger.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span>Listen · ${mins} min</span>`;
   header.appendChild(trigger);
 
   const bar = document.createElement('div');
@@ -43,7 +73,8 @@
   const stepEl = bar.querySelector('[data-lb-step]');
   const fillEl = bar.querySelector('[data-lb-fill]');
 
-  const speeds = [1, 1.25, 1.5];
+  const speeds = [0.95, 1.15, 1.35];
+  const speedLabels = ['1×', '1.2×', '1.4×'];
   let speedIdx = 0;
   let idx = 0;
   let playing = false;
@@ -52,7 +83,7 @@
 
   const updateUI = () => {
     playBtn.textContent = playing ? 'Pause' : 'Play';
-    speedBtn.textContent = `${speeds[speedIdx]}×`;
+    speedBtn.textContent = speedLabels[speedIdx];
     stepEl.textContent = `${Math.min(idx + 1, blocks.length)} / ${blocks.length}`;
     fillEl.style.width = `${Math.round(((idx + (playing ? 1 : 0)) / blocks.length) * 100)}%`;
     statusEl.textContent = playing ? 'Listening' : (idx >= blocks.length ? 'Finished' : `Paused · ${mins} min`);
@@ -72,7 +103,10 @@
     el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
 
     const utter = new SpeechSynthesisUtterance((el.innerText || '').trim());
+    if (!bestVoice) bestVoice = pickBestVoice();
+    if (bestVoice) utter.voice = bestVoice;
     utter.rate = speeds[speedIdx];
+    utter.pitch = 0.98;
     utter.onend = () => {
       if (!playing) return;
       idx += 1;
