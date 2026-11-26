@@ -1,404 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <title>Echoes of the Divine: A San Francisco Reverie | Leon Basin</title>
- <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Karla:wght@300;400;500&display=swap" rel="stylesheet"/>
- <style>
-    :root {
-      --ink: #1a1714;
-      --fog: #f5f2ed;
-      --gold: #b8960c;
-      --rust: #8b3a2a;
-      --mist: #c8c4bc;
-      --paper: #faf8f4;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Karla', sans-serif;
-      font-weight: 300;
-      font-size: 17px;
-      line-height: 1.85;
-      min-height: 100vh;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    header {
-      position: relative;
-      z-index: 1;
-      padding: 80px 0 60px;
-      text-align: center;
-      border-bottom: 1px solid var(--mist);
-    }
-
-    .byline-tag {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rust);
-      font-weight: 500;
-      margin-bottom: 24px;
-    }
-
-    h1 {
-      font-family: 'IM Fell English', serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 400;
-      line-height: 1.2;
-      color: var(--ink);
-      max-width: 720px;
-      margin: 0 auto 20px;
-      padding: 0 24px;
-    }
-
-    .subtitle {
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--rust);
-      margin-bottom: 32px;
-    }
-
-    .meta {
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--mist);
-    }
-
-    .hero-image {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 48px 24px 0;
-      display: block;
-    }
-
-    .hero-image img {
-      width: 100%;
-      display: block;
-      border: 1px solid var(--mist);
-      filter: sepia(15%) contrast(1.05);
-    }
-
-    .image-caption {
-      text-align: center;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mist);
-      margin-top: 12px;
-    }
-
-    article {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 64px 24px 100px;
-    }
-
-    .opening-block {
-      font-family: 'IM Fell English', serif;
-      font-size: 1.2rem;
-      line-height: 1.9;
-      color: #2c2825;
-      border-left: 2px solid var(--gold);
-      padding-left: 24px;
-      margin-bottom: 52px;
-    }
-
-    .chapter-marker {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 56px 0 28px;
-    }
-
-    .chapter-number {
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rust);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .chapter-rule {
-      flex: 1;
-      height: 1px;
-      background: var(--mist);
-    }
-
-    h2 {
-      font-family: 'IM Fell English', serif;
-      font-size: 1.7rem;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 24px;
-      line-height: 1.3;
-    }
-
-    p {
-      margin-bottom: 22px;
-      color: #2a2620;
-    }
-
-    .tweet-block {
-      background: var(--fog);
-      border: 1px solid var(--mist);
-      border-left: 3px solid var(--gold);
-      padding: 20px 24px;
-      margin: 32px 0;
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: var(--ink);
-    }
-
-    .tweet-block .tweet-source {
-      display: block;
-      margin-top: 12px;
-      font-family: 'Karla', sans-serif;
-      font-style: normal;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--mist);
-    }
-
-    .pullquote {
-      margin: 48px -32px;
-      padding: 32px;
-      text-align: center;
-      font-family: 'IM Fell English', serif;
-      font-size: 1.5rem;
-      font-style: italic;
-      line-height: 1.5;
-      color: var(--rust);
-      border-top: 1px solid var(--mist);
-      border-bottom: 1px solid var(--mist);
-    }
-
-    .closing-note {
-      margin-top: 64px;
-      padding-top: 40px;
-      border-top: 1px solid var(--mist);
-      font-size: 13px;
-      letter-spacing: 0.06em;
-      color: var(--mist);
-      text-align: center;
-    }
-
-    .closing-note a {
-      color: var(--rust);
-      text-decoration: none;
-    }
-
-    .share-row {
-      margin-top: 48px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .share-btn {
-      display: inline-block;
-      padding: 10px 22px;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-family: 'Karla', sans-serif;
-      font-weight: 500;
-      border: 1px solid var(--ink);
-      color: var(--ink);
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .share-btn:hover {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    header, article { animation: fadeUp 0.9s ease both; }
-    article { animation-delay: 0.15s; }
-  </style>
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Echoes of the Divine: A San Francisco Reverie | Leon Basin</title>
+  <meta name="description" content="A city read like a text. A text read like a city. Field notes from inside the San Francisco fog.">
   <link rel="canonical" href="https://basinleon.github.io/blog/posts/echoes-divine-sf-reverie.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Echoes of the Divine: A San Francisco Reverie">
+  <meta property="og:description" content="A city read like a text. A text read like a city.">
+  <meta property="og:url" content="https://basinleon.github.io/blog/posts/echoes-divine-sf-reverie.html">
+  <meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
+  <meta property="og:site_name" content="Leon Basin">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Echoes of the Divine: A San Francisco Reverie">
+  <meta name="twitter:description" content="A city read like a text. A text read like a city.">
+  <meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <link rel="alternate" type="application/rss+xml" title="The Archive RSS" href="https://basinleon.github.io/blog/rss.xml">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Libre+Caslon+Text:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    try {
+      document.documentElement.dataset.readingTheme = localStorage.getItem('fiction-reading-theme') === 'dark' ? 'dark' : 'light';
+      const sz = localStorage.getItem('fiction-reading-size');
+      if (sz === 'large' || sz === 'larger') document.documentElement.dataset.readingSize = sz;
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=6">
+  <link rel="stylesheet" href="/assets/css/essay-audio-reader.css?v=2">
+  <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Echoes of the Divine: A San Francisco Reverie",
-    "description": "",
+    "description": "A city read like a text. A text read like a city.",
     "datePublished": "2026-07-17",
     "dateModified": "2026-07-17",
-    "author": {
-      "@type": "Person",
-      "name": "Leon Basin",
-      "url": "https://basinleon.github.io/"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "Leon Basin",
-      "url": "https://basinleon.github.io/"
-    },
+    "author": {"@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/"},
+    "publisher": {"@type": "Person", "name": "Leon Basin", "url": "https://basinleon.github.io/"},
     "mainEntityOfPage": "https://basinleon.github.io/blog/posts/echoes-divine-sf-reverie.html",
-    "isPartOf": {
-      "@type": "Blog",
-      "name": "The Archive",
-      "url": "https://basinleon.github.io/blog/"
-    }
+    "isPartOf": {"@type": "Blog", "name": "The Archive", "url": "https://basinleon.github.io/blog/"}
   }
   </script>
-  <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
-<link rel="stylesheet" href="/blog/css/hub.css">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Echoes of the Divine: A San Francisco Reverie">
-<meta property="og:description" content="Echoes of the Divine: A San Francisco Reverie">
-<meta property="og:url" content="https://basinleon.github.io/blog/posts/echoes-divine-sf-reverie.html">
-<meta property="og:image" content="https://basinleon.github.io/assets/og-image.png">
-<meta property="og:site_name" content="Leon Basin">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Echoes of the Divine: A San Francisco Reverie">
-<meta name="twitter:description" content="Echoes of the Divine: A San Francisco Reverie">
-<meta name="twitter:image" content="https://basinleon.github.io/assets/og-image.png">
-<link rel="stylesheet" href="/assets/css/continuity.css">
-<link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
 </head>
-<body>
+<body class="fiction-story-reader">
+  <div class="progress" id="progress"></div>
+  <header class="head">
+    <div class="shell">
+      <a class="brand" href="/" aria-label="Leon Basin home">Leon Basin<span>.</span></a>
+      <div class="story-controls">
+        <a class="back" href="/blog/fiction/">← Fiction Room</a>
+        <button class="reader-size-btn" type="button" id="reader-size-btn" aria-label="Change text size">Aa</button>
+        <div class="reading-controls" aria-label="Reading appearance"></div>
+      </div>
+    </div>
+  </header>
 
-<header>
- <div class="byline-tag">Leon Basin &nbsp;·&nbsp; @ArtLb23 &nbsp;·&nbsp; Prose + Image</div>
- <h1>Echoes of the Divine: A San Francisco Reverie</h1>
- <div class="subtitle">A city read like a text. A text read like a city.</div>
- <div class="meta">Originally published on X &nbsp;·&nbsp; November 2023 &nbsp;·&nbsp; 2K Views</div>
-</header>
+  <main>
+    <section class="mast">
+      <div class="shell">
+        <p class="story-series">San Francisco Reverie · Story 05</p>
+        <h1>Echoes of the Divine</h1>
+        <p class="standfirst">A city read like a text. A text read like a city.</p>
+        <div class="story-byline">
+          <span>Leon Basin</span>
+          <span>·</span>
+          <span>5 min read</span>
+          <span>·</span>
+          <span>Originally published Nov 2023</span>
+        </div>
+      </div>
+    </section>
 
-<div class="hero-image">
- <img src="https://placehold.co/800x500/1a1714/b8960c?text=Echoes+of+the+Divine" alt="AI-generated: San Francisco Reverie featuring the Golden Gate, Transamerica Pyramid, cable car, and the Golden State Warriors logo floating in a dreamlike sky" />
- <p class="image-caption">AI Image by @ArtLb23 &nbsp;·&nbsp; Golden Gate, Pyramid, Cable Car &nbsp;·&nbsp; Nov 25, 2023</p>
-</div>
+    <article class="story-body">
+      <div class="opening-block">
+        San Francisco doesn't hold still long enough to be described. It has to be caught in motion. That's what these tweets were: field notes from inside the fog. Dispatches. A city refusing to settle into a single image.
+      </div>
 
-<article>
+      <div class="chapter-marker">
+        <span class="chapter-number">Chapter I</span>
+        <div class="chapter-rule"></div>
+      </div>
+      <h2>The City's Heartbeat</h2>
 
- <div class="opening-block">
- San Francisco doesn't hold still long enough to be described. It has to be caught in motion. That's what these tweets were: field notes from inside the fog. Dispatches. A city refusing to settle into a single image.
- </div>
+      <p>The Fillmore doesn't announce itself. It arrives as a feeling: a low register in the chest, the memory of music that hasn't played in years. Walk it long enough and you stop being a visitor. You become something the street has already accounted for.</p>
 
- <div class="chapter-marker">
- <span class="chapter-number">Chapter I</span>
- <div class="chapter-rule"></div>
- </div>
- <h2>The City's Heartbeat</h2>
+      <p>Glen Park holds its breath like a child pretending to be asleep. Quiet streets with specific trees. The Bay Bridge in the distance, bolted to the light like a fact that refuses revision.</p>
 
- <p>The Fillmore doesn't announce itself. It arrives as a feeling: a low register in the chest, the memory of music that hasn't played in years. Walk it long enough and you stop being a visitor. You become something the street has already accounted for.</p>
+      <div class="tweet-block">
+        "Standing at Yerba Buena, the sound of water against stone is the city's oldest sentence. The architecture says permanence. The people inside it say otherwise."
+        <span class="tweet-source">@ArtLb23 · Nov 2023</span>
+      </div>
 
- <p>Glen Park holds its breath like a child pretending to be asleep. Quiet streets with specific trees. The Bay Bridge in the distance, bolted to the light like a fact that refuses revision.</p>
+      <p>Cities of a certain age carry their dead architecture alongside the living. San Francisco does this without grief. Old Victorians beside glass towers. Both looking straight ahead.</p>
 
- <div class="tweet-block">
- "Standing at Yerba Buena, the sound of water against stone is the city's oldest sentence. The architecture says permanence. The people inside it say otherwise."
- <span class="tweet-source">@ArtLb23 &nbsp;·&nbsp; Nov 2023</span>
- </div>
+      <div class="chapter-marker">
+        <span class="chapter-number">Chapter II</span>
+        <div class="chapter-rule"></div>
+      </div>
+      <h2>The Urban Symphony</h2>
 
- <p>Cities of a certain age carry their dead architecture alongside the living. San Francisco does this without grief. Old Victorians beside glass towers. Both looking straight ahead.</p>
+      <p>The Muni doesn't run on time. It runs on faith and municipal momentum. Somewhere between the Tenderloin and Bernal Heights, the route becomes less a transit line and more a cross-section of the city's actual biography.</p>
 
- <div class="chapter-marker">
- <span class="chapter-number">Chapter II</span>
- <div class="chapter-rule"></div>
- </div>
- <h2>The Urban Symphony</h2>
+      <p>The Tenderloin asks something of you that other neighborhoods don't. It asks you to stay present. There is no way to be distracted there. The street requires your attention the way a page of Talmud does: everything is happening at once, and none of it is incidental.</p>
 
- <p>The Muni doesn't run on time. It runs on faith and municipal momentum. Somewhere between the Tenderloin and Bernal Heights, the route becomes less a transit line and more a cross-section of the city's actual biography.</p>
+      <div class="tweet-block">
+        "A Sunset kitchen, Saturday morning. The fog hasn't lifted. Someone is making tea the way their grandmother made tea. A thousand miles from here and thirty years ago, this same motion. Cities are just time running sideways."
+        <span class="tweet-source">@ArtLb23 · Nov 2023</span>
+      </div>
 
- <p>The Tenderloin asks something of you that other neighborhoods don't. It asks you to stay present. There is no way to be distracted there. The street requires your attention the way a page of Talmud does: everything is happening at once, and none of it is incidental.</p>
+      <p>The Japanese Tea Garden in the park holds silence like a jar holds water. You notice how much noise you'd been carrying only after you stop.</p>
 
- <div class="tweet-block">
- "A Sunset kitchen, Saturday morning. The fog hasn't lifted. Someone is making tea the way their grandmother made tea. A thousand miles from here and thirty years ago, this same motion. Cities are just time running sideways."
- <span class="tweet-source">@ArtLb23 &nbsp;·&nbsp; Nov 2023</span>
- </div>
+      <div class="pullquote">
+        Cities are just time running sideways.
+      </div>
 
- <p>The Japanese Tea Garden in the park holds silence like a jar holds water. You notice how much noise you'd been carrying only after you stop.</p>
+      <div class="chapter-marker">
+        <span class="chapter-number">Chapter III</span>
+        <div class="chapter-rule"></div>
+      </div>
+      <h2>Reflections and Dreams</h2>
 
- <div class="pullquote">
- Cities are just time running sideways.
- </div>
+      <p>At night, the city loses its argument. The daytime version of San Francisco is loud about what it is. At two in the morning, the question opens back up. The Bay Bridge cables catch the dark and hold it differently than the light.</p>
 
- <div class="chapter-marker">
- <span class="chapter-number">Chapter III</span>
- <div class="chapter-rule"></div>
- </div>
- <h2>Reflections and Dreams</h2>
+      <p>The ferry from the Ferry Building at dusk is a kind of confession. You're leaving but you're watching. The water makes no distinction between what was built and what was dreamed. It reflects both the same way.</p>
 
- <p>At night, the city loses its argument. The daytime version of San Francisco is loud about what it is. At two in the morning, the question opens back up. The Bay Bridge cables catch the dark and hold it differently than the light.</p>
+      <div class="tweet-block">
+        "From the ferry, looking back, the city looks like it was drawn first and built second. Like someone's thumbnail sketch that became load-bearing. Maybe that's what every city is. Maybe that's what every life is."
+        <span class="tweet-source">@ArtLb23 · Nov 2023</span>
+      </div>
 
- <p>The ferry from the Ferry Building at dusk is a kind of confession. You're leaving but you're watching. The water makes no distinction between what was built and what was dreamed. It reflects both the same way.</p>
+      <p>The image I made for this post came out of a session trying to hold all of that at once. Golden Gate bridge. Cable car. The Transamerica tower. A Warriors logo floating in the sky like a constellation the city invented for itself. AI-generated, yes. But the source material is mine. The feeling of trying to hold a city in one frame, knowing the frame can't hold it, making it anyway.</p>
 
- <div class="tweet-block">
- "From the ferry, looking back, the city looks like it was drawn first and built second. Like someone's thumbnail sketch that became load-bearing. Maybe that's what every city is. Maybe that's what every life is."
- <span class="tweet-source">@ArtLb23 &nbsp;·&nbsp; Nov 2023</span>
- </div>
+      <div class="chapter-marker">
+        <span class="chapter-number">Chapter IV</span>
+        <div class="chapter-rule"></div>
+      </div>
+      <h2>A New Beginning</h2>
 
- <p>The image I made for this post came out of a session trying to hold all of that at once. Golden Gate bridge. Cable car. The Transamerica tower. A Warriors logo floating in the sky like a constellation the city invented for itself. AI-generated, yes. But the source material is mine. The feeling of trying to hold a city in one frame, knowing the frame can't hold it, making it anyway.</p>
+      <p>The story of this city ends the same way every story ends: mid-sentence. Someone gets off the bus and the route keeps moving. The Zohar says each soul is a letter in a larger word. Remove it and the word becomes unreadable. San Francisco seems to understand this. It holds every version of itself simultaneously without resolving the contradiction.</p>
 
- <div class="chapter-marker">
- <span class="chapter-number">Chapter IV</span>
- <div class="chapter-rule"></div>
- </div>
- <h2>A New Beginning</h2>
+      <p>The art was made to catch an echo. Not a reproduction of the city, an echo of it. The divine part is not the image. The divine part is that a city this broken and this beautiful keeps producing people who want to make things about it.</p>
 
- <p>The story of this city ends the same way every story ends: mid-sentence. Someone gets off the bus and the route keeps moving. The Zohar says each soul is a letter in a larger word. Remove it and the word becomes unreadable. San Francisco seems to understand this. It holds every version of itself simultaneously without resolving the contradiction.</p>
+      <div class="tweet-block">
+        "Echoes of the divine are everywhere if you know what an echo sounds like. This city, this fog, this light on the water at the end of a day that won't repeat. Every image is a receipt. Evidence that you were here."
+        <span class="tweet-source">@ArtLb23 · Nov 2023</span>
+      </div>
 
- <p>The art was made to catch an echo. Not a reproduction of the city, an echo of it. The divine part is not the image. The divine part is that a city this broken and this beautiful keeps producing people who want to make things about it.</p>
+      <hr class="break">
+    </article>
 
- <div class="tweet-block">
- "Echoes of the divine are everywhere if you know what an echo sounds like. This city, this fog, this light on the water at the end of a day that won't repeat. Every image is a receipt. Evidence that you were here."
- <span class="tweet-source">@ArtLb23 &nbsp;·&nbsp; Nov 2023</span>
- </div>
+    <aside class="story-continuation" aria-label="Continue reading">
+      <p class="story-continuation-label">Featured Short Story</p>
+      <a class="story-continuation-next" href="/fiction/the-vanishing-archive/" data-track="Fiction: next story">
+        <h2>The Vanishing Archive →</h2>
+        <p>Sam asks Ink for a cleaner draft. His daughter waits with a book.</p>
+      </a>
+      <div class="story-continuation-actions">
+        <a class="story-cta-primary" href="/fiction/the-vanishing-archive/">Read The Vanishing Archive →</a>
+        <a class="story-cta-link" href="/blog/fiction/">Back to Fiction Room</a>
+        <a class="story-cta-link" href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&utm_medium=owned&utm_campaign=fiction&utm_content=story-echoes-divine" target="_blank" rel="noopener noreferrer">Receive the next story ↗</a>
+        <a class="story-cta-link" href="mailto:lbasin23@gmail.com?subject=On%20Echoes%20of%20the%20Divine">Write to Leon</a>
+      </div>
+    </aside>
+  </main>
 
- <div class="closing-note">
- <p>Written and published by Leon Basin &nbsp;·&nbsp; <a href="https://basinleon.github.io/blog/">basinleon.github.io/blog</a></p>
- <p style="margin-top:8px;">AI art by @ArtLb23</p>
+  <footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="brand lb-site-name" href="/" aria-label="Leon Basin home">Leon Basin<span>.</span></a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/flow-nexus/">Nexus</a><a href="/tools/">Tools</a><a href="/answers/">Q&amp;A</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/#contact">Contact</a><a href="/llms.txt">Agent view (llms.txt)</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
 
- <div class="share-row">
- <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://basinleon.github.io/blog/posts/echoes-divine-sf-reverie.html" class="share-btn" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
- <a href="https://basinleon.github.io/blog/" class="share-btn" target="_blank">Back to Blog</a>
- </div>
- </div>
+  <script>
+    const bar = document.getElementById("progress");
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + "%";
+    };
+    addEventListener("scroll", update, { passive: true });
+    update();
 
-</article>
-
-<script src="../reader.js" defer></script>
-<script src="/blog/js/hub-share.js" defer></script>
-<aside data-hiring-note aria-label="Hiring conversations" style="max-width:46rem;margin:2rem auto;padding:1.25rem 1.5rem;border:1px solid rgba(212,175,55,.45);background:rgba(16,16,15,.04);font-size:.95rem;line-height:1.65"><p style="margin:0 0 .4rem;font:600 .7rem/1.4 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#d9ab45">Live GTM Architecture · Operating Proof</p><p style="margin:0 0 .75rem">Hiring for founding GTM or fixing a broken pipeline motion? <a href="/gtm-systems/" data-hiring-step="gtm-systems" data-track="Writing: GTM Systems proof" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:underline;text-underline-offset:.2em">See the systems I build and run →</a></p><div style="display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;font-size:.86rem"><a href="/signal-architect/#custom-scorer" data-track="GTM Systems: Signal Architect demo" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:.2em">Score an account live (Signal Architect) ↗</a><a href="/tools/" data-track="Writing: Tool Bench" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:.2em">Open the Tool Bench (8 simulators) ↗</a><a href="/case-studies/" data-hiring-step="case-study" data-track="Writing: Case Studies proof" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:.2em">Operating proof ($2M+ / 90→5d SDR ramp) ↗</a><a href="/answers/" data-track="Writing: Operator Q&A" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:.2em">Operator Q&amp;A ↗</a><a href="/work-with-me/" data-track="Advisory: essay CTA" style="color:inherit;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:.2em">Advisory &amp; working sessions ↗</a></div></aside>
-<footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="lb-site-name" href="/" aria-label="Leon Basin home">LEON BASIN.</a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/basin-nexus/">Nexus</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/work-with-me/">Contact</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
-<script src="/assets/js/continuity.js" defer></script>
+    const sizeBtn = document.getElementById("reader-size-btn");
+    const sizes = ["standard", "large", "larger"];
+    const labels = { standard: "Aa", large: "Aa+", larger: "Aa++" };
+    const applySize = (s) => {
+      if (s === "standard") delete document.documentElement.dataset.readingSize;
+      else document.documentElement.dataset.readingSize = s;
+      sizeBtn.textContent = labels[s];
+      sizeBtn.setAttribute("aria-label", "Text size: " + s);
+    };
+    let currentSize = document.documentElement.dataset.readingSize || "standard";
+    applySize(currentSize);
+    sizeBtn.addEventListener("click", () => {
+      currentSize = sizes[(sizes.indexOf(currentSize) + 1) % sizes.length];
+      applySize(currentSize);
+      try { localStorage.setItem("fiction-reading-size", currentSize); } catch (_) {}
+    });
+  </script>
+  <script src="/assets/js/fiction-reading-theme.js?v=4" defer></script>
+  <script src="/assets/js/essay-audio-reader.js?v=2" defer></script>
+  <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
+  <script src="/assets/js/continuity.js" defer></script>
 </body>
 </html>
