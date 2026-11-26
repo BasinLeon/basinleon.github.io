@@ -235,11 +235,18 @@
       </div>
       <div class="book-spine-list"></div>
       <div class="book-spine-foot">
-        <a href="/blog/fiction/">Open full Fiction Room →</a>
+        <div class="book-spine-foot-row">
+          <a href="/blog/fiction/">Open full Fiction Room →</a>
+          <button type="button" class="book-spine-print" data-book-print>Print / Save PDF</button>
+        </div>
         <p class="book-spine-keys">Shortcuts: <strong>← / →</strong> chapters · <strong>F</strong> focus</p>
       </div>
     `;
     drawer.querySelector('.book-spine-close').addEventListener('click', () => setDrawer(false));
+    drawer.querySelector('[data-book-print]').addEventListener('click', () => {
+      setDrawer(false);
+      setTimeout(() => window.print(), 180);
+    });
     document.body.append(backdrop, drawer);
   }
 
