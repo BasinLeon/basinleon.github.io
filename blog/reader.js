@@ -276,6 +276,19 @@
         if (window.lbInsightsRecord) window.lbInsightsRecord("Conversion", { category: "Reader interest", action: "copy-article-link", destination: location.pathname, label: title, region: "article" });
       });
     }
+
+    if (!window.__lbAudioReaderLoaded && !document.querySelector('script[src*="essay-audio-reader.js"]')) {
+      if (!document.querySelector('link[href*="essay-audio-reader.css"]')) {
+        var audioCss = document.createElement("link");
+        audioCss.rel = "stylesheet";
+        audioCss.href = "/assets/css/essay-audio-reader.css?v=3";
+        document.head.appendChild(audioCss);
+      }
+      var audioJs = document.createElement("script");
+      audioJs.src = "/assets/js/essay-audio-reader.js?v=3";
+      audioJs.defer = true;
+      document.body.appendChild(audioJs);
+    }
   }
 
   var mount = document.getElementById("lb-saved-mount");

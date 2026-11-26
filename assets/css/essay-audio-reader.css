@@ -1,39 +1,68 @@
-/* Clean editorial Listen · N min floating audio reader (Warm Obsidian + Gold) */
+/* Literary Audiobook-Style Floating Voice Reader (Warm Obsidian + Gold) */
 .lb-listen-trigger{
   display:inline-flex;align-items:center;gap:8px;margin-top:14px;min-height:40px;padding:8px 14px;
-  border:1px solid var(--line, #ccc4b5);background:transparent;color:inherit;
+  border:1px solid var(--reader-line, var(--line, #ccc4b5));background:transparent;color:inherit;
   font-family:'Manrope',system-ui,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;
   transition:border-color 160ms cubic-bezier(0.22,1,0.36,1),color 160ms cubic-bezier(0.22,1,0.36,1),background-color 160ms cubic-bezier(0.22,1,0.36,1);
 }
-.lb-listen-trigger:hover,.lb-listen-trigger:focus-visible{border-color:#805d27;color:#805d27}
-.lb-listen-trigger[aria-expanded="true"]{border-color:#805d27;background:rgba(128,93,39,0.08);color:#805d27}
+.lb-listen-trigger:hover,.lb-listen-trigger:focus-visible{border-color:var(--reader-accent, #805d27);color:var(--reader-accent, #805d27)}
+.lb-listen-trigger[aria-expanded="true"]{border-color:var(--reader-accent, #805d27);background:rgba(128,93,39,0.09);color:var(--reader-accent, #805d27)}
 
 .lb-audio-bar{
   position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translateX(-50%);
-  z-index:200;display:flex;align-items:center;gap:12px;
-  width:min(520px,calc(100vw - 28px));padding:10px 14px;border-radius:999px;
+  z-index:200;display:flex;align-items:center;gap:10px;
+  width:min(660px,calc(100vw - 24px));padding:10px 14px;border-radius:999px;
   background:#11100e!important;color:#eee9de!important;border:1px solid #3a342b!important;
-  box-shadow:0 16px 40px rgba(0,0,0,0.45);
+  box-shadow:0 18px 44px rgba(0,0,0,0.48);
   font-family:'Manrope',system-ui,sans-serif;font-size:13px;
 }
 .lb-audio-bar[hidden]{display:none!important}
+.lb-audio-controls{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
 .lb-audio-btn{
-  display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 10px;
+  display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 10px;
   border-radius:999px;border:1px solid #3a342b!important;background:#1b1915!important;color:#eee9de!important;
-  font:600 12.5px/1 'Manrope',system-ui,sans-serif;cursor:pointer;
-  transition:border-color 160ms ease,background-color 160ms ease,color 160ms ease;
+  font:600 12.5px/1 'Manrope',system-ui,sans-serif;cursor:pointer;flex-shrink:0;
+  transition:border-color 160ms ease,background-color 160ms ease,color 160ms ease,opacity 160ms ease;
 }
+.lb-audio-btn--icon{width:34px;padding:0;font-size:15px}
 .lb-audio-btn--play{background:#d9ab45!important;border-color:#d9ab45!important;color:#11100e!important;font-weight:700;padding:0 16px}
-.lb-audio-btn:hover,.lb-audio-btn:focus-visible{border-color:#d9ab45!important;color:#d9ab45!important}
+.lb-audio-btn:hover:not(:disabled),.lb-audio-btn:focus-visible{border-color:#d9ab45!important;color:#d9ab45!important}
 .lb-audio-btn--play:hover,.lb-audio-btn--play:focus-visible{background:#eee9de!important;border-color:#eee9de!important;color:#11100e!important}
-.lb-audio-progress{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
-.lb-audio-meta,.lb-audio-meta span{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#eee9de!important;font-variant-numeric:tabular-nums;line-height:1.2}
+.lb-audio-btn:disabled{opacity:.35;cursor:not-allowed}
+
+.lb-audio-progress{flex:1;display:flex;flex-direction:column;gap:5px;min-width:110px}
+.lb-audio-meta,.lb-audio-meta span{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:600;color:#eee9de!important;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
 .lb-audio-meta span:last-child{color:#bcb3a2!important}
-.lb-audio-track{width:100%;height:4px;background:#2f2a23;border-radius:999px;overflow:hidden}
+.lb-audio-track{width:100%;height:6px;background:#2f2a23;border-radius:999px;overflow:hidden;cursor:pointer}
 .lb-audio-fill{height:100%;width:0;background:#d9ab45;transition:width 180ms ease}
+
+.lb-audio-voice{
+  max-width:138px;height:34px;padding:0 26px 0 11px;border-radius:999px;
+  border:1px solid #3a342b!important;background-color:#1b1915!important;color:#eee9de!important;
+  font:500 12px/32px 'Manrope',system-ui,sans-serif;cursor:pointer;flex-shrink:0;
+  appearance:none!important;-webkit-appearance:none!important;-moz-appearance:none!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d9ab45' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;
+}
+.lb-audio-voice:hover,.lb-audio-voice:focus-visible{border-color:#d9ab45!important;outline:none}
+.lb-audio-voice[hidden]{display:none!important}
+
+/* Quiet editorial highlight on active spoken paragraph */
 .lb-reading-active{
-  background:rgba(217,171,69,0.11);
-  border-radius:3px;
+  background:rgba(217,171,69,0.10);
+  box-shadow:-3px 0 0 0 var(--reader-accent, #d9ab45);
+  padding-left:10px;
+  margin-left:-10px;
+  border-radius:2px;
   transition:background-color 180ms ease;
+}
+body.lb-audio-open article p,
+body.lb-audio-open article h2,
+body.lb-audio-open article h3,
+body.lb-audio-open article blockquote{cursor:pointer}
+
+@media(max-width:640px){
+  .lb-audio-bar{flex-wrap:wrap;border-radius:18px;padding:10px 12px;gap:8px}
+  .lb-audio-voice{max-width:120px}
 }
 @media(prefers-reduced-motion:reduce){.lb-listen-trigger,.lb-audio-btn,.lb-audio-fill,.lb-reading-active{transition:none}}
