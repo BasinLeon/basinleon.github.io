@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Vanishing Archive | Sam & Ink | Leon Basin</title>
+  <title>The Vanishing Archive | Sam &amp; Ink | Leon Basin</title>
   <meta name="description" content="Sam asks Ink for a cleaner draft. His daughter waits in the doorway with a book.">
   <link rel="canonical" href="https://basinleon.github.io/fiction/the-vanishing-archive/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070605'/%3E%3Cpath d='M18 18h10v28H18zM30 18h16v8H38v20h-8z' fill='%23d9ab45'/%3E%3C/svg%3E">
@@ -20,147 +20,129 @@
   <meta name="twitter:title" content="The Vanishing Archive | Sam &amp; Ink | Leon Basin">
   <meta name="twitter:description" content="Sam asks Ink for a cleaner draft. His daughter waits in the doorway with a book.">
   <meta name="twitter:image" content="https://basinleon.github.io/assets/img/fiction/vanishing-archive-v1.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;1,400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --paper:#f0eadf;
-      --ink:#f3eee6;
-      --quiet:#b7b0a4;
-      --amber:#c4843a;
-      --serif:"Libre Caslon Text",Georgia,serif;
-      --sans:"Instrument Sans",system-ui,sans-serif;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:#070706;color:var(--ink)}
-    body{min-height:100vh}
-    a{color:inherit}
-    .skip{position:fixed;top:8px;left:8px;z-index:10;padding:12px;background:#070706;transform:translateY(-150%)}
-    .skip:focus{transform:none}
-    a:focus-visible{outline:2px solid var(--amber);outline-offset:6px}
-    @media(prefers-reduced-motion:reduce){.cursor{animation:none}.layer,.say{transition:none}}
-    .world{position:fixed;inset:0;z-index:0;pointer-events:none}
-    .layer{position:absolute;inset:0;opacity:0;transition:opacity 700ms ease}
-    .layer.on{opacity:1}
-    .library{background:
-      radial-gradient(ellipse at 20% 10%,rgba(120,70,20,.18),transparent 42%),
-      linear-gradient(180deg,#1a140e 0%,#0b0a08 55%,#070706 100%);
-      opacity:.9}
-    .library:before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,transparent 0 28px,rgba(196,132,58,.05) 28px 30px);opacity:.35}
-    .garden{background:
-      radial-gradient(ellipse at 70% 80%,rgba(40,70,30,.28),transparent 46%),
-      linear-gradient(180deg,#0e1610,#0a0c09 70%)}
-    .cafe{background:
-      radial-gradient(circle at 58% 60%,rgba(214,150,70,.38),transparent 36%),
-      radial-gradient(circle at 58% 62%,rgba(196,132,58,.2),transparent 52%),
-      linear-gradient(180deg,#1a140e,#0b0907)}
-    .glass{background:
-      radial-gradient(ellipse at 50% 40%,rgba(80,100,120,.18),transparent 50%),
-      linear-gradient(180deg,#0a0d12,#070706)}
-    .desk{background:
-      radial-gradient(ellipse at 58% 58%,rgba(214,150,70,.34),transparent 34%),
-      radial-gradient(ellipse at 20% 18%,rgba(40,55,38,.18),transparent 42%),
-      linear-gradient(180deg,#14100c,#070706)}
-    .progress{position:fixed;inset:0 auto auto 0;z-index:5;width:0;height:2px;background:var(--amber)}
-    header,main{position:relative;z-index:2}
-    header{height:78px}
-    .bar{width:min(720px,calc(100% - 48px));margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;font:500 .7rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--quiet)}
-    header a{text-decoration:none}
-    header a span{color:var(--amber)}
-    .mast{width:min(720px,calc(100% - 48px));margin:0 auto;padding:18vh 0 8vh}
-    .cursor-line{min-height:2.4rem;font:400 1.4rem/1 var(--serif);color:var(--amber)}
-    .cursor{display:inline-block;width:.55ch;height:1.05em;background:var(--amber);animation:blink 1.1s steps(1) infinite;vertical-align:-.12em}
-    .say{margin:.8rem 0 0;color:var(--quiet);font:italic 400 1rem/1.5 var(--serif);opacity:0;transform:translateY(.4rem);transition:opacity 900ms ease, transform 900ms ease}
-    .say.show{opacity:1;transform:none}
-    .kicker{margin:4rem 0 1rem;font:500 .7rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--amber)}
-    h1{margin:0 0 1rem;font:400 clamp(2.6rem,7vw,4.4rem)/.98 var(--serif)}
-    .dek{margin:0;color:var(--quiet);font:italic 400 1.1rem/1.55 var(--serif)}
-    article{width:min(720px,calc(100% - 48px));margin:0 auto;padding:0 0 18vh}
-    article p{margin:0 0 1.25rem;font:400 1.2rem/1.9 var(--serif);text-shadow:0 0 28px rgba(7,7,6,.88),0 1px 0 rgba(7,7,6,.5)}
-    article p.scene{margin:0 0 1.75rem}
-    article p.turn{margin-top:1.9rem}
-    .close{margin-top:3.5rem;padding-top:1.8rem;border-top:1px solid rgba(238,233,223,.14)}
-    .close .name{margin:0 0 .9rem;font:400 1.05rem/1.5 var(--serif)}
-    .close a{font:500 .7rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--quiet);text-decoration:none;border-bottom:1px solid var(--amber)}
-    @keyframes blink{50%{opacity:0}}
-    @media(max-width:640px){
-      .bar,.mast,article{width:calc(100% - 32px)}
-      article p{font-size:1.12rem}
-    }
-  </style>
-  <link rel="stylesheet" href="/assets/css/continuity.css">
-  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=5">
-  <link rel="stylesheet" href="/blog/css/hub.css">
-  <script src="/blog/js/reading-preferences.js?v=20261022" defer></script>
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Libre+Caslon+Text:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    try {
+      document.documentElement.dataset.readingTheme = localStorage.getItem('fiction-reading-theme') === 'dark' ? 'dark' : 'light';
+      const sz = localStorage.getItem('fiction-reading-size');
+      if (sz === 'large' || sz === 'larger') document.documentElement.dataset.readingSize = sz;
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=6">
+  <link rel="stylesheet" href="/assets/css/essay-audio-reader.css?v=2">
+  <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
 </head>
 <body class="fiction-story-reader">
-  <a class="skip" href="#story">Skip to the story</a>
-  <div class="world" aria-hidden="true">
-    <div class="layer library on" data-layer="library"></div>
-    <div class="layer garden" data-layer="garden"></div>
-    <div class="layer cafe" data-layer="cafe"></div>
-    <div class="layer glass" data-layer="glass"></div>
-    <div class="layer desk" data-layer="desk"></div>
-  </div>
   <div class="progress" id="progress"></div>
-  <header>
-    <div class="bar">
-      <a href="/">Leon <span>Basin</span></a>
-      <a href="/blog/fiction/">Fiction</a>
+  <header class="head">
+    <div class="shell">
+      <a class="brand" href="/" aria-label="Leon Basin home">Leon Basin<span>.</span></a>
+      <div class="story-controls">
+        <a class="back" href="/blog/fiction/">← Fiction Room</a>
+        <button class="reader-size-btn" type="button" id="reader-size-btn" aria-label="Change text size">Aa</button>
+        <div class="reading-controls" aria-label="Reading appearance"></div>
+      </div>
     </div>
   </header>
+
   <main>
-    <div class="mast">
-      <div class="cursor-line" aria-hidden="true"><span class="cursor"></span></div>
-      <p class="say" id="say">Say something.</p>
-      <p class="kicker">Sam & Ink</p>
-      <h1>The Vanishing Archive</h1>
-      <p class="dek">A cleaner draft. A daughter in the doorway.</p>
-      <figure class="reader-anchor"><picture><source srcset="/assets/img/fiction/vanishing-archive-v1.webp" type="image/webp"><img src="/assets/img/fiction/vanishing-archive-v1.jpg" alt="A handwritten draft and a child's open book beside a laptop" width="1536" height="1024" fetchpriority="high" decoding="async"></picture></figure>
-    </div>
-    <article id="story" aria-label="The Vanishing Archive">
-      <p class="scene">Sam opened a blank page. Ink was already there.</p>
+    <section class="mast">
+      <div class="shell">
+        <p class="story-series">Sam &amp; Ink · Featured Short Story</p>
+        <h1>The Vanishing Archive</h1>
+        <p class="standfirst">A cleaner draft. A daughter in the doorway.</p>
+        <div class="story-byline">
+          <span>Leon Basin</span>
+          <span>·</span>
+          <span>2 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <figure class="story-image">
+      <picture>
+        <source srcset="/assets/img/fiction/vanishing-archive-v1.webp" type="image/webp">
+        <img src="/assets/img/fiction/vanishing-archive-v1.jpg" alt="A handwritten draft and a child's open book beside a laptop" width="1536" height="1024" fetchpriority="high" decoding="async">
+      </picture>
+    </figure>
+
+    <article class="story-body" id="story" aria-label="The Vanishing Archive">
+      <p>Sam opened a blank page. Ink was already there.</p>
       <p>Beside the laptop lay last night’s handwritten draft. His thumb had dragged ink across the final line.</p>
       <p>“Who’s doing the writing today?”</p>
-      <p>“You are.”</p>
+      <p class="voice">“You are.”</p>
       <p>“Then what are you doing?”</p>
-      <p>“Waiting for you to blame me.”</p>
-      <p class="scene turn">Beyond the window, headlights moved along the highway. Sam lowered the brightness of his screen.</p>
-      <p>“I could copy last night clean,” Ink said.</p>
+      <p class="voice">“Waiting for you to blame me.”</p>
+      <p>Beyond the window, headlights moved along the highway. Sam lowered the brightness of his screen.</p>
+      <p class="voice">“I could copy last night clean,” Ink said.</p>
       <p>“You already did. It came back nicer than I remembered.”</p>
-      <p>“Then keep the nice one.”</p>
+      <p class="voice">“Then keep the nice one.”</p>
       <p>Sam looked at the handwritten page. “You took out the part where I stopped.”</p>
-      <p>“You have asked me fourteen times to make it sound more human.”</p>
+      <p class="voice">“You have asked me fourteen times to make it sound more human.”</p>
       <p>“Again.”</p>
-      <p>“Sam, at some point this becomes insulting to both of us.”</p>
-      <p class="scene turn">He set the draft beside the keyboard.</p>
-      <p class="scene">His daughter stood in the doorway, holding a book open with one finger.</p>
+      <p class="voice">“Sam, at some point this becomes insulting to both of us.”</p>
+      <p>He set the draft beside the keyboard.</p>
+      <p>His daughter stood in the doorway, holding a book open with one finger.</p>
       <p>“Dad.”</p>
       <p>“One second.”</p>
       <p>“That’s what you said before.”</p>
       <p>She put the book beside his draft and went back down the hall.</p>
-      <p class="scene turn">The screen dimmed. In the window Sam could see his own face above the reflection of the laptop.</p>
+      <p>The screen dimmed. In the window Sam could see his own face above the reflection of the laptop.</p>
       <p>He reached for her book. It had fallen shut. He opened it near the middle, then turned back a few pages. He did not know where she had been reading.</p>
-      <p class="scene turn">There was light under his daughter’s door. He picked up her book.</p>
+      <p>There was light under his daughter’s door. He picked up her book.</p>
       <p>His draft stayed on the table.</p>
       <p>He left the smear.</p>
-      <div class="close">
-        <p class="name">Leon Basin</p>
-        <a href="/blog/fiction/">Fiction</a>
-        <button type="button" class="story-share" aria-expanded="false" aria-controls="story-share-options">Share this story ↗</button>
-        <div id="story-share-options" class="story-share-options" hidden></div>
-        <span class="share-status" role="status"></span>
-      </div>
+      <hr class="break">
     </article>
-    <section class="reader-next" aria-label="Read another story">
-      <p>Another story about listening</p>
-      <h2><a href="/blog/posts/sam-ink-note-in-the-other-room.html" data-track="Fiction: next story">The Note in the Other Room</a></h2>
-      <p>Sam hears a piano note in a house where there is no piano.</p>
-      <a href="/blog/fiction/">Browse all stories</a>
-      <p class="reader-subscribe">For future stories and essays, <a href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&amp;utm_medium=owned&amp;utm_campaign=fiction&amp;utm_content=vanishing-ending" data-track="Fiction: subscription outbound" target="_blank" rel="noopener noreferrer">subscribe on Substack</a>.</p>
-    </section>
+
+    <aside class="story-continuation" aria-label="Continue reading Sam &amp; Ink">
+      <p class="story-continuation-label">Next in Sam &amp; Ink · Story 01</p>
+      <a class="story-continuation-next" href="/blog/posts/sam-ink-note-in-the-other-room.html" data-track="Fiction: next story">
+        <h2>The Note in the Other Room →</h2>
+        <p>Sam hears a piano note in a house where there is no piano.</p>
+      </a>
+      <div class="story-continuation-actions">
+        <a class="story-cta-primary" href="/blog/posts/sam-ink-note-in-the-other-room.html">Read Story 01 →</a>
+        <a class="story-cta-link" href="/blog/fiction/">Back to Fiction Room</a>
+        <a class="story-cta-link" href="https://basinandassociates.substack.com/subscribe?utm_source=basinleon.github.io&amp;utm_medium=owned&amp;utm_campaign=fiction&amp;utm_content=vanishing-ending" data-track="Fiction: subscription outbound" target="_blank" rel="noopener noreferrer">Receive the next story ↗</a>
+        <a class="story-cta-link" href="mailto:lbasin23@gmail.com?subject=On%20The%20Vanishing%20Archive">Write to Leon</a>
+      </div>
+    </aside>
   </main>
 
-  <script src="/assets/js/story-share.js?v=3" defer></script>
+  <footer class="lb-site-footer" aria-label="Site footer"><div class="lb-footer-inner"><a class="brand lb-site-name" href="/" aria-label="Leon Basin home">Leon Basin<span>.</span></a><nav class="lb-footer-nav" aria-label="Footer navigation"><a href="/case-studies/">Work</a><a href="/resume.html">Résumé</a><a href="/flow-nexus/">Nexus</a><a href="/tools/">Tools</a><a href="/answers/">Q&amp;A</a><a href="/blog/">Writing</a><a href="/blog/fiction/">Fiction</a><a href="/#contact">Contact</a><a href="/llms.txt">Agent view (llms.txt)</a><a href="/privacy/">Privacy</a></nav><p class="lb-footer-meta">© 2026 Leon Basin · San Francisco Bay Area</p></div></footer>
+
+  <script>
+    const bar = document.getElementById("progress");
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + "%";
+    };
+    addEventListener("scroll", update, { passive: true });
+    update();
+
+    const sizeBtn = document.getElementById("reader-size-btn");
+    const sizes = ["standard", "large", "larger"];
+    const labels = { standard: "Aa", large: "Aa+", larger: "Aa++" };
+    const applySize = (s) => {
+      if (s === "standard") delete document.documentElement.dataset.readingSize;
+      else document.documentElement.dataset.readingSize = s;
+      sizeBtn.textContent = labels[s];
+      sizeBtn.setAttribute("aria-label", "Text size: " + s);
+    };
+    let currentSize = document.documentElement.dataset.readingSize || "standard";
+    applySize(currentSize);
+    sizeBtn.addEventListener("click", () => {
+      currentSize = sizes[(sizes.indexOf(currentSize) + 1) % sizes.length];
+      applySize(currentSize);
+      try { localStorage.setItem("fiction-reading-size", currentSize); } catch (_) {}
+    });
+  </script>
+  <script src="/assets/js/fiction-reading-theme.js?v=4" defer></script>
+  <script src="/assets/js/essay-audio-reader.js?v=2" defer></script>
   <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
   <script src="/assets/js/continuity.js" defer></script>
 </body>
