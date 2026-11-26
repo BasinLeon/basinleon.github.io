@@ -13,6 +13,16 @@
   --reader-font-scale: 1;
 }
 
+html[data-reading-theme="sepia"] {
+  color-scheme: light;
+  --reader-bg: #efe4d0;
+  --reader-card: #e6d8be;
+  --reader-ink: #2d2418;
+  --reader-muted: #6e5c45;
+  --reader-accent: #82531f;
+  --reader-line: rgba(45, 36, 24, 0.16);
+}
+
 html[data-reading-theme="dark"] {
   color-scheme: dark;
   --reader-bg: #11100e;
@@ -412,6 +422,183 @@ html[data-reading-theme="dark"] .story-cta-primary {
 .fiction-story-reader .lb-reading-next,
 .fiction-story-reader .lb-reader-reply {
   display: none !important;
+}
+
+/* Focus Mode */
+body.focus-reading .head {
+  opacity: .12;
+  transition: opacity 220ms ease;
+}
+body.focus-reading .head:hover,
+body.focus-reading .head:focus-within {
+  opacity: 1;
+}
+body.focus-reading .lb-site-footer,
+body.focus-reading .story-continuation {
+  opacity: .22;
+  transition: opacity 220ms ease;
+}
+body.focus-reading .story-continuation:hover,
+body.focus-reading .lb-site-footer:hover {
+  opacity: 1;
+}
+
+/* Slide-Out Book Spine Drawer */
+.book-spine-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(10, 9, 8, 0.45);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+.book-spine-backdrop.is-open { opacity: 1; }
+
+.book-spine-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  width: min(390px, 92vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--reader-bg);
+  color: var(--reader-ink);
+  border-left: 1px solid var(--reader-line);
+  box-shadow: -12px 0 36px rgba(0, 0, 0, 0.24);
+  transform: translateX(100%);
+  transition: transform 220ms cubic-bezier(.22, 1, .36, 1);
+}
+.book-spine-drawer.is-open { transform: translateX(0); }
+
+.book-spine-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 1.5rem 1.1rem;
+  border-bottom: 1px solid var(--reader-line);
+}
+.book-spine-kicker {
+  margin: 0 0 .25rem;
+  font: 600 .72rem/1.3 var(--reader-sans);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--reader-accent);
+}
+.book-spine-head h2 {
+  margin: 0;
+  font: 400 1.6rem/1.1 var(--reader-display);
+  color: var(--reader-ink);
+}
+.book-spine-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--reader-line);
+  background: transparent;
+  color: var(--reader-ink);
+  font-size: .95rem;
+  cursor: pointer;
+}
+.book-spine-close:hover { border-color: var(--reader-accent); color: var(--reader-accent); }
+
+.book-spine-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem 1.5rem;
+}
+.book-spine-part {
+  margin: 1.25rem 0 .5rem;
+  font: 600 .72rem/1.3 var(--reader-sans);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--reader-accent);
+}
+.book-spine-part:first-child { margin-top: .25rem; }
+
+.book-spine-item {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr auto;
+  align-items: baseline;
+  gap: .65rem;
+  padding: .7rem .5rem;
+  border-bottom: 1px solid var(--reader-line);
+  text-decoration: none;
+  color: var(--reader-ink);
+  transition: background 140ms ease;
+}
+.book-spine-item:hover { background: var(--reader-card); }
+.book-spine-item.is-current {
+  background: var(--reader-card);
+  border-left: 2.5px solid var(--reader-accent);
+  padding-left: .65rem;
+}
+.book-spine-num {
+  font: 600 .76rem/1 var(--reader-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--reader-accent);
+}
+.book-spine-title {
+  font: 400 1.02rem/1.3 var(--reader-display);
+}
+.book-spine-meta {
+  font: 500 .75rem/1 var(--reader-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--reader-muted);
+  white-space: nowrap;
+}
+
+.book-spine-foot {
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid var(--reader-line);
+  background: var(--reader-card);
+}
+.book-spine-foot a {
+  display: inline-block;
+  margin-bottom: .45rem;
+  font: 600 .86rem/1.3 var(--reader-sans);
+  color: var(--reader-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--reader-accent);
+}
+.book-spine-keys {
+  margin: 0;
+  font: 400 .76rem/1.4 var(--reader-sans);
+  color: var(--reader-muted);
+}
+
+/* Resume Reading Floating Pill */
+.reader-resume-pill {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  padding: .65rem 1.2rem;
+  border: 1px solid var(--reader-accent);
+  background: var(--reader-ink);
+  color: var(--reader-bg);
+  font: 600 .82rem/1 var(--reader-sans);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* Select-to-Quote Floating Pill */
+.reader-quote-pill {
+  position: absolute;
+  z-index: 75;
+  padding: .45rem .9rem;
+  border: 1px solid var(--reader-accent);
+  background: #11100e;
+  color: #f4f1ea;
+  font: 600 .78rem/1 var(--reader-sans);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+html[data-reading-theme="dark"] .reader-quote-pill {
+  background: #d9ab45;
+  color: #11100e;
 }
 
 /* Unified footer wordmark & search pill styling on story pages */

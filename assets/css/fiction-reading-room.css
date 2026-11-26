@@ -10,6 +10,17 @@
   --line: rgba(41, 37, 30, 0.14);
 }
 
+:root[data-reading-theme="sepia"] {
+  color-scheme: light;
+  --ink: #efe4d0;
+  --ink-soft: #e6d8be;
+  --paper: #2d2418;
+  --muted: #6e5c45;
+  --quiet: #7c6950;
+  --bronze: #82531f;
+  --line: rgba(45, 36, 24, 0.16);
+}
+
 :root[data-reading-theme="dark"] {
   color-scheme: dark;
   --ink: #11100e;
@@ -133,7 +144,62 @@ h1 {
 }
 .story-row .story-meta::after { content: "  ↗"; }
 
-.earlier-fragments { margin-top: 2rem; }
+.anthology-progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem 1.5rem;
+  padding: .95rem 1.25rem;
+  margin-bottom: 2.25rem;
+  border: 1px solid var(--line);
+  border-left: 2.5px solid var(--bronze);
+  background: var(--ink-soft);
+  font: 500 .88rem/1.4 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+.anthology-progress-text { color: var(--muted); }
+.anthology-resume-link {
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid var(--bronze);
+}
+.anthology-part-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2.75rem 0 .85rem;
+}
+.anthology-part-head:first-of-type { margin-top: 0; }
+.anthology-part-head h3 {
+  margin: 0;
+  font: 400 clamp(1.55rem, 2.5vw, 2.05rem)/1.12 var(--serif);
+  color: var(--paper);
+}
+.anthology-part-head span {
+  font: 600 .76rem/1 var(--sans);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.story-status-badge {
+  display: inline-block;
+  margin-right: .55rem;
+  padding: .18rem .48rem;
+  border: 1px solid var(--bronze);
+  font-style: normal;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--paper);
+}
+.story-status-badge.is-read {
+  background: var(--bronze);
+  color: var(--ink);
+}
+
+.earlier-fragments { margin-top: 2.25rem; }
 .earlier-fragments summary {
   padding: .9rem 0;
   cursor: pointer;

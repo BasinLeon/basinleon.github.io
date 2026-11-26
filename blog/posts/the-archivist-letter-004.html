@@ -24,12 +24,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Libre+Caslon+Text:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     try {
-      document.documentElement.dataset.readingTheme = localStorage.getItem('fiction-reading-theme') === 'dark' ? 'dark' : 'light';
+      const rt = localStorage.getItem('fiction-reading-theme'); document.documentElement.dataset.readingTheme = (rt === 'dark' || rt === 'sepia') ? rt : 'light';
       const sz = localStorage.getItem('fiction-reading-size');
       if (sz === 'large' || sz === 'larger') document.documentElement.dataset.readingSize = sz;
     } catch (_) {}
   </script>
-  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=6">
+  <link rel="stylesheet" href="/assets/css/fiction-story-reader.css?v=7">
   <link rel="stylesheet" href="/assets/css/essay-audio-reader.css?v=2">
   <link rel="stylesheet" href="/assets/css/site-chrome.css?v=20261118">
   <script type="application/ld+json">
@@ -213,7 +213,7 @@
       try { localStorage.setItem("fiction-reading-size", currentSize); } catch (_) {}
     });
   </script>
-  <script src="/assets/js/fiction-reading-theme.js?v=4" defer></script>
+  <script src="/assets/js/fiction-reading-theme.js?v=5" defer></script>
   <script src="/assets/js/essay-audio-reader.js?v=2" defer></script>
   <script src="/assets/js/insights.js?v=20261118-unified" defer></script>
   <script src="/assets/js/continuity.js" defer></script>
