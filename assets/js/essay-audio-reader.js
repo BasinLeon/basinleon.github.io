@@ -1,7 +1,7 @@
 (() => {
   if (!('speechSynthesis' in window)) return;
   const article = document.getElementById('article') || document.querySelector('article');
-  const header = document.querySelector('.essay-header') || document.querySelector('header h1')?.parentElement;
+  const header = document.querySelector('.essay-header, .mast .shell') || document.querySelector('header h1')?.parentElement;
   if (!article || !header) return;
 
   const blocks = [...article.querySelectorAll('p, h2, h3, blockquote')].filter(el => {
