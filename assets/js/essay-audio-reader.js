@@ -1,29 +1,16 @@
 (() => {
   if (window.__lbAudioReaderLoaded) return;
   window.__lbAudioReaderLoaded = true;
-  if (!('speechSynthesis' in window)) return;
 
   const VOICE_KEY = 'lb-audio-voice';
   const SPEED_KEY = 'lb-audio-speed';
+  const studioSrc = document.body?.dataset?.audioSrc || '';
 
   const article = document.getElementById('article')
     || document.querySelector('article.story-body')
     || document.querySelector('article');
   if (!article) return;
 
-  /* Exclude non-narrative asides/footers inside article */
-  const blocks = [...article.querySelectorAll('p, h2, h3, blockquote, .opening-block, .tweet-block, .pullquote')].filter((el) => {
-    if (el.closest('blockquote, .note, .catalog, .end, .closing-note, .close, aside')) return false;
-    if (el.tagName === 'P' && el.closest('.tweet-block, .opening-block')) return false;
-    const txt = (el.innerText || '').trim();
-    return txt.length > 0;
-  });
-  if (!blocks.length) return;
-
-  const totalWords = blocks.reduce((sum, el) => sum + (el.innerText || '').trim().split(/\s+/).length, 0);
-  const mins = Math.max(1, Math.round(totalWords / 175));
-
-  /* Find the cleanest editorial anchor for the Listen button */
   const mountListenTrigger = (btn) => {
     const mastShell = document.querySelector('.mast .shell');
     if (mastShell) { mastShell.appendChild(btn); return true; }
@@ -40,7 +27,168 @@
     return true;
   };
 
-  /* Strict natural-voice ranking & robot blocklist */
+  const speeds = [0.9, 1.0, 1.15, 1.35];
+  const speedLabels = ['0.9×', '1×', '1.15×', '1.35×'];
+  let speedIdx = 1;
+  try {
+    const savedSpeed = parseInt(localStorage.getItem(SPEED_KEY) || '', 10);
+    if (!Number.isNaN(savedSpeed) && savedSpeed >= 0 && savedSpeed < speeds.length) speedIdx = savedSpeed;
+  } catch (_) {}
+
+  /* =====================================================================
+     MODE A: STUDIO NEURAL AUDIOBOOK (.mp3) PLAYBACK
+     ===================================================================== */
+  if (studioSrc) {
+    const fmt = (sec) => {
+      if (!Number.isFinite(sec) || sec < 0) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2, '0')}`;
+    };
+
+    const audio = new Audio();
+    audio.preload = 'metadata';
+    audio.src = studioSrc;
+    audio.playbackRate = speeds[speedIdx];
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'lb-listen-trigger';
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span data-lb-trigger-label>Listen · Studio Audio</span>`;
+    mountListenTrigger(trigger);
+
+    const bar = document.createElement('div');
+    bar.className = 'lb-audio-bar';
+    bar.hidden = true;
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Studio audiobook player');
+    bar.innerHTML = `
+      <div class="lb-audio-controls">
+        <button type="button" class="lb-audio-btn" data-lb-back aria-label="Rewind 10 seconds" title="Back 10s">-10s</button>
+        <button type="button" class="lb-audio-btn lb-audio-btn--play" data-lb-play>Play</button>
+        <button type="button" class="lb-audio-btn" data-lb-fwd aria-label="Forward 10 seconds" title="Forward 10s">+10s</button>
+      </div>
+      <div class="lb-audio-progress">
+        <div class="lb-audio-meta">
+          <span data-lb-status>Studio narration</span>
+          <span data-lb-time>0:00 / --:--</span>
+        </div>
+        <div class="lb-audio-track" data-lb-track role="slider" aria-label="Audio timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+          <div class="lb-audio-fill" data-lb-fill></div>
+        </div>
+      </div>
+      <button type="button" class="lb-audio-btn" data-lb-speed aria-label="Playback speed" title="Playback speed">${speedLabels[speedIdx]}</button>
+      <button type="button" class="lb-audio-btn lb-audio-btn--icon" data-lb-close aria-label="Close audio player" title="Close">✕</button>
+    `;
+    document.body.appendChild(bar);
+
+    const backBtn = bar.querySelector('[data-lb-back]');
+    const playBtn = bar.querySelector('[data-lb-play]');
+    const fwdBtn = bar.querySelector('[data-lb-fwd]');
+    const speedBtn = bar.querySelector('[data-lb-speed]');
+    const closeBtn = bar.querySelector('[data-lb-close]');
+    const statusEl = bar.querySelector('[data-lb-status]');
+    const timeEl = bar.querySelector('[data-lb-time]');
+    const fillEl = bar.querySelector('[data-lb-fill]');
+    const trackEl = bar.querySelector('[data-lb-track]');
+    const triggerLabel = trigger.querySelector('[data-lb-trigger-label]');
+
+    const paint = () => {
+      const dur = audio.duration || 0;
+      const cur = audio.currentTime || 0;
+      const pct = dur > 0 ? Math.min(100, (cur / dur) * 100) : 0;
+      playBtn.textContent = audio.paused ? 'Play' : 'Pause';
+      speedBtn.textContent = speedLabels[speedIdx];
+      fillEl.style.width = `${pct.toFixed(1)}%`;
+      trackEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      timeEl.textContent = `${fmt(cur)} / ${dur > 0 ? fmt(dur) : '--:--'}`;
+      statusEl.textContent = audio.ended ? 'Finished' : (audio.paused ? 'Paused · Studio' : 'Listening · Studio');
+    };
+
+    audio.addEventListener('loadedmetadata', () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        triggerLabel.textContent = `Listen · ${fmt(audio.duration)}`;
+      }
+      paint();
+    });
+    audio.addEventListener('timeupdate', paint);
+    audio.addEventListener('play', paint);
+    audio.addEventListener('pause', paint);
+    audio.addEventListener('ended', paint);
+
+    const togglePlay = () => {
+      if (audio.paused) {
+        audio.playbackRate = speeds[speedIdx];
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+    };
+
+    trigger.addEventListener('click', () => {
+      bar.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      if (audio.paused) togglePlay();
+    });
+
+    playBtn.addEventListener('click', togglePlay);
+    backBtn.addEventListener('click', () => {
+      audio.currentTime = Math.max(0, (audio.currentTime || 0) - 10);
+      paint();
+    });
+    fwdBtn.addEventListener('click', () => {
+      const dur = audio.duration || 0;
+      audio.currentTime = Math.min(dur || (audio.currentTime + 10), (audio.currentTime || 0) + 10);
+      paint();
+    });
+    trackEl.addEventListener('click', (e) => {
+      if (!audio.duration) return;
+      const rect = trackEl.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = ratio * audio.duration;
+      paint();
+    });
+    speedBtn.addEventListener('click', () => {
+      speedIdx = (speedIdx + 1) % speeds.length;
+      audio.playbackRate = speeds[speedIdx];
+      try { localStorage.setItem(SPEED_KEY, String(speedIdx)); } catch (_) {}
+      paint();
+    });
+    closeBtn.addEventListener('click', () => {
+      audio.pause();
+      bar.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      paint();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (bar.hidden || e.code !== 'Space') return;
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON' || e.target?.isContentEditable) return;
+      e.preventDefault();
+      togglePlay();
+    });
+
+    paint();
+    return;
+  }
+
+  /* =====================================================================
+     MODE B: WEB SPEECH FALLBACK (FOR ESSAYS WITHOUT STUDIO MP3)
+     ===================================================================== */
+  if (!('speechSynthesis' in window)) return;
+
+  const blocks = [...article.querySelectorAll('p, h2, h3, blockquote, .opening-block, .tweet-block, .pullquote')].filter((el) => {
+    if (el.closest('blockquote, .note, .catalog, .end, .closing-note, .close, aside')) return false;
+    if (el.tagName === 'P' && el.closest('.tweet-block, .opening-block')) return false;
+    const txt = (el.innerText || '').trim();
+    return txt.length > 0;
+  });
+  if (!blocks.length) return;
+
+  const totalWords = blocks.reduce((sum, el) => sum + (el.innerText || '').trim().split(/\s+/).length, 0);
+  const mins = Math.max(1, Math.round(totalWords / 175));
+
   const ROBOT_BLOCKLIST = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Compact|Eddy|Flo|Fred|Good News|Grandma|Grandpa|Jester|Junior|Organ|Ralph|Reed|Rocko|Sandy|Shelley|Superstar|Trinoids|Whisper|Wobble|Zarvox|eSpeak/i;
 
   const VOICE_TIERS = [
@@ -74,14 +222,12 @@
       .sort((a, b) => scoreVoice(b) - scoreVoice(a));
   };
 
-  /* Normalize text for natural audiobook speech (fixes ALL-CAPS & symbols) */
   const normalizeForSpeech = (rawText) => {
     let t = (rawText || '').replace(/\s+/g, ' ').trim();
     t = t.replace(/\s*→\s*/g, ' to ').replace(/[↗↘↖↙]/g, '');
     t = t.replace(/\b(\d+)\s*TB\b/gi, '$1 terabytes');
     t = t.replace(/\b(\d+)\s*GB\b/gi, '$1 gigabytes');
     t = t.replace(/\s+>\s+/g, ' over ');
-    /* If a line is mostly ALL CAPS (e.g. Lucid terminal voice), convert to sentence case so TTS doesn't spell acronyms */
     const letters = t.replace(/[^a-zA-Z]/g, '');
     const uppers = t.replace(/[^A-Z]/g, '');
     if (letters.length >= 10 && uppers.length / letters.length > 0.78) {
@@ -91,7 +237,6 @@
     return t;
   };
 
-  /* Build Listen trigger button */
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'lb-listen-trigger';
@@ -99,7 +244,6 @@
   trigger.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span>Listen · ${mins} min</span>`;
   mountListenTrigger(trigger);
 
-  /* Build floating audiobook player bar */
   const bar = document.createElement('div');
   bar.className = 'lb-audio-bar';
   bar.hidden = true;
@@ -121,7 +265,7 @@
       </div>
     </div>
     <select class="lb-audio-voice" data-lb-voice aria-label="Narrator voice" title="Choose narrator voice"></select>
-    <button type="button" class="lb-audio-btn" data-lb-speed aria-label="Playback speed" title="Playback speed">1×</button>
+    <button type="button" class="lb-audio-btn" data-lb-speed aria-label="Playback speed" title="Playback speed">${speedLabels[speedIdx]}</button>
     <button type="button" class="lb-audio-btn lb-audio-btn--icon" data-lb-close aria-label="Close audio reader" title="Close">✕</button>
   `;
   document.body.appendChild(bar);
@@ -136,14 +280,6 @@
   const stepEl = bar.querySelector('[data-lb-step]');
   const fillEl = bar.querySelector('[data-lb-fill]');
   const trackEl = bar.querySelector('[data-lb-track]');
-
-  const speeds = [0.88, 0.96, 1.12, 1.32];
-  const speedLabels = ['0.9×', '1×', '1.15×', '1.35×'];
-  let speedIdx = 1;
-  try {
-    const savedSpeed = parseInt(localStorage.getItem(SPEED_KEY) || '', 10);
-    if (!Number.isNaN(savedSpeed) && savedSpeed >= 0 && savedSpeed < speeds.length) speedIdx = savedSpeed;
-  } catch (_) {}
 
   let voices = [];
   let selectedVoice = null;
@@ -162,10 +298,7 @@
 
   const populateVoices = () => {
     voices = getRankedVoices();
-    if (!voices.length) {
-      voiceSelect.hidden = true;
-      return;
-    }
+    if (!voices.length) { voiceSelect.hidden = true; return; }
     voiceSelect.hidden = false;
     let savedName = '';
     try { savedName = localStorage.getItem(VOICE_KEY) || ''; } catch (_) {}
@@ -242,11 +375,7 @@
     });
 
     const text = normalizeForSpeech(el.innerText || '');
-    if (!text) {
-      idx += 1;
-      speakCurrent();
-      return;
-    }
+    if (!text) { idx += 1; speakCurrent(); return; }
 
     const utter = new SpeechSynthesisUtterance(text);
     if (!selectedVoice) populateVoices();
@@ -289,7 +418,6 @@
     }
   };
 
-  /* Click any paragraph while player is open to listen from there */
   blocks.forEach((b, i) => {
     b.addEventListener('click', () => {
       if (bar.hidden) return;
@@ -309,7 +437,6 @@
   });
 
   playBtn.addEventListener('click', togglePlay);
-
   prevBtn.addEventListener('click', () => {
     idx = Math.max(0, Math.min(idx, blocks.length - 1) - 1);
     if (playing) speakCurrent();
@@ -320,7 +447,6 @@
       updateUI();
     }
   });
-
   nextBtn.addEventListener('click', () => {
     idx = Math.min(blocks.length - 1, idx + 1);
     if (playing) speakCurrent();
@@ -331,7 +457,6 @@
       updateUI();
     }
   });
-
   trackEl.addEventListener('click', (e) => {
     const rect = trackEl.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
@@ -343,14 +468,12 @@
       updateUI();
     }
   });
-
   speedBtn.addEventListener('click', () => {
     speedIdx = (speedIdx + 1) % speeds.length;
     try { localStorage.setItem(SPEED_KEY, String(speedIdx)); } catch (_) {}
     if (playing) speakCurrent();
     else updateUI();
   });
-
   closeBtn.addEventListener('click', () => {
     playing = false;
     stopSpeech();
@@ -360,8 +483,6 @@
     trigger.setAttribute('aria-expanded', 'false');
     updateUI();
   });
-
-  /* Spacebar play/pause when audio bar is open */
   document.addEventListener('keydown', (e) => {
     if (bar.hidden || e.code !== 'Space') return;
     const tag = (e.target && e.target.tagName) || '';

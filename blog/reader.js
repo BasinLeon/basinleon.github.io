@@ -285,7 +285,7 @@
         document.head.appendChild(audioCss);
       }
       var audioJs = document.createElement("script");
-      audioJs.src = "/assets/js/essay-audio-reader.js?v=3";
+      audioJs.src = "/assets/js/essay-audio-reader.js?v=4";
       audioJs.defer = true;
       document.body.appendChild(audioJs);
     }
