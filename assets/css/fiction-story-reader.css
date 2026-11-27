@@ -96,7 +96,12 @@ html, body {
 .story-controls {
   display: flex;
   align-items: center;
-  gap: .65rem;
+  gap: .55rem;
+}
+.story-controls .reading-controls {
+  margin-left: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
 .head .back {
@@ -424,24 +429,48 @@ html[data-reading-theme="dark"] .story-cta-primary {
   display: none !important;
 }
 
-/* Focus Mode */
-body.focus-reading .head {
-  opacity: .12;
-  transition: opacity 220ms ease;
+/* True Distraction-Free Focus Mode */
+.head {
+  transition: transform 240ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease;
 }
-body.focus-reading .head:hover,
-body.focus-reading .head:focus-within {
-  opacity: 1;
+body.focus-reading .head {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 body.focus-reading .lb-site-footer,
 body.focus-reading .story-continuation {
-  opacity: .22;
+  opacity: .14;
   transition: opacity 220ms ease;
 }
 body.focus-reading .story-continuation:hover,
 body.focus-reading .lb-site-footer:hover {
   opacity: 1;
 }
+.reader-focus-exit {
+  position: fixed;
+  top: 16px;
+  right: 18px;
+  z-index: 75;
+  min-height: 36px;
+  padding: .4rem .85rem;
+  border: 1px solid var(--reader-line);
+  background: color-mix(in srgb, var(--reader-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--reader-muted);
+  font: 600 .78rem/1 var(--reader-sans);
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.reader-focus-exit:hover,
+.reader-focus-exit:focus-visible {
+  opacity: 1;
+  border-color: var(--reader-accent);
+  color: var(--reader-accent);
+}
+.reader-focus-exit[hidden] { display: none !important; }
 
 /* Slide-Out Book Spine Drawer */
 .book-spine-backdrop {

@@ -127,17 +127,28 @@
 
   const controls = document.querySelector('.story-controls');
 
-  /* 3a. Focus Mode (F key + subtle button) */
+  /* 3a. Focus Mode (F key + subtle button + floating Exit Focus pill) */
+  let focusBtn = null;
+  const focusExitBtn = document.createElement('button');
+  focusExitBtn.type = 'button';
+  focusExitBtn.className = 'reader-focus-exit';
+  focusExitBtn.textContent = 'Exit focus (Esc)';
+  focusExitBtn.hidden = true;
+  document.body.append(focusExitBtn);
+
   const toggleFocus = (force) => {
     const on = typeof force === 'boolean' ? force : !document.body.classList.contains('focus-reading');
     document.body.classList.toggle('focus-reading', on);
+    focusExitBtn.hidden = !on;
     if (focusBtn) {
       focusBtn.setAttribute('aria-pressed', String(on));
       focusBtn.textContent = on ? 'Exit focus' : 'Focus';
+      if (on) focusBtn.blur();
     }
   };
 
-  let focusBtn = null;
+  focusExitBtn.addEventListener('click', () => toggleFocus(false));
+
   if (controls) {
     focusBtn = document.createElement('button');
     focusBtn.type = 'button';
