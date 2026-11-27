@@ -304,37 +304,38 @@
       });
     }
 
-    // Context-aware Blog-to-Fiction Routing Engine + Reader-Signal Learning (non-fiction posts only)
-    var isFictionPost = document.body.classList.contains("fiction-story-reader") ||
-      /\/(sam-ink-|the-archivist-letter-004|echoes-divine|the-night-the-code-asked|fragment-\d+)/i.test(currentUrl);
-    if (!isFictionPost && !document.querySelector(".lb-fiction-bridge")) {
+    // Context-aware Blog-to-Fiction Routing Engine + Reader-Signal Learning (all non-fiction essays AND Sam & Ink fragments)
+    var isFictionStory = document.body.classList.contains("fiction-story-reader") ||
+      /\/(sam-ink-|the-archivist-letter-004|echoes-divine|the-night-the-code-asked)/i.test(currentUrl);
+    if (!isFictionStory && !document.querySelector(".lb-fiction-bridge")) {
+      var isFragmentPage = /\/fragment-\d+\.html$/i.test(currentUrl);
       var corpus = (title + " " + (document.querySelector('meta[name="description"]')?.content || "")).toLowerCase();
       var route = {
-        lane: "human",
-        kicker: "After the essay · Fiction Room · 2 min · Studio audio",
+        lane: isFragmentPage ? "fragment" : "human",
+        kicker: isFragmentPage ? "Continue the story · Fiction Room · 2 min · Studio audio" : "After the essay · Fiction Room · 2 min · Studio audio",
         title: "The Vanishing Archive",
         excerpt: "Sam asks Ink for a cleaner draft. His daughter waits in the doorway with a book.",
-        href: "/fiction/the-vanishing-archive/?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=human-to-vanishing",
+        href: "/fiction/the-vanishing-archive/?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=" + (isFragmentPage ? "fragment-to-vanishing" : "human-to-vanishing"),
         img: "/assets/img/fiction/vanishing-archive-v1.jpg",
         alt: "A handwritten draft and a child's open book beside a laptop"
       };
-      if (/\b(gtm|pipeline|revenue|arr|sdr|sales|saas|founder|operator|playbook|funnel|system|quarter|outbound|deal|crm)\b/.test(corpus)) {
+      if (/\/fragment-15\.html$/i.test(currentUrl) || /\b(gtm|pipeline|revenue|arr|sdr|sales|saas|founder|operator|playbook|funnel|system|quarter|outbound|deal|crm|fed the machine)\b/.test(corpus)) {
         route = {
-          lane: "operator",
-          kicker: "After the work · Fiction Room · 4 min · Studio audio",
+          lane: isFragmentPage ? "fragment-operator" : "operator",
+          kicker: isFragmentPage ? "Read the full story · Fiction Room · 4 min · Studio audio" : "After the work · Fiction Room · 4 min · Studio audio",
           title: "The Typewriter",
           excerpt: "Mountain View, 1:17 a.m. \"I fed the machine all quarter. It got bigger. I got tired.\"",
-          href: "/blog/posts/sam-ink-the-typewriter.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=operator-to-typewriter",
+          href: "/blog/posts/sam-ink-the-typewriter.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=" + (isFragmentPage ? "fragment-to-typewriter" : "operator-to-typewriter"),
           img: "/assets/img/fiction/the-typewriter-v1.jpg",
           alt: "A vintage black mechanical typewriter beside a half-closed laptop on a garage table"
         };
-      } else if (/\b(signal|silence|ai|machine|noise|attention|quiet|focus|agent|workflow|brain|llm|outage)\b/.test(corpus)) {
+      } else if (/\/fragment-(14|17)\.html$/i.test(currentUrl) || /\b(signal|silence|ai|machine|noise|attention|quiet|focus|agent|workflow|brain|llm|outage|neutral)\b/.test(corpus)) {
         route = {
-          lane: "signal",
-          kicker: "After the essay · Fiction Room · 4 min · Studio audio",
+          lane: isFragmentPage ? "fragment-signal" : "signal",
+          kicker: isFragmentPage ? "Step into the story · Fiction Room · 4 min · Studio audio" : "After the essay · Fiction Room · 4 min · Studio audio",
           title: "The Outage",
           excerpt: "The power fails across Castro Street. Ink disappears. Sam writes by lamplight and hears his own voice again.",
-          href: "/blog/posts/sam-ink-the-outage.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=signal-to-outage",
+          href: "/blog/posts/sam-ink-the-outage.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=" + (isFragmentPage ? "fragment-to-outage" : "signal-to-outage"),
           img: "/assets/img/fiction/the-outage-v1.jpg",
           alt: "A brass camping lantern glowing beside a closed laptop and black typewriter during a blackout"
         };
