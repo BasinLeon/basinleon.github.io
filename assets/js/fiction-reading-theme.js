@@ -5,11 +5,12 @@
   const CHAPTERS = [
     { part: 'Part I · The Sam & Ink Cycle', num: '00', title: 'The Vanishing Archive', href: '/fiction/the-vanishing-archive/', mins: '2 min' },
     { part: 'Part I · The Sam & Ink Cycle', num: '01', title: 'The Typewriter', href: '/blog/posts/sam-ink-the-typewriter.html', mins: '4 min' },
-    { part: 'Part I · The Sam & Ink Cycle', num: '02', title: 'The Note in the Other Room', href: '/blog/posts/sam-ink-note-in-the-other-room.html', mins: '3 min' },
-    { part: 'Part I · The Sam & Ink Cycle', num: '03', title: 'The Map Made of Starlight', href: '/blog/posts/sam-ink-starlight-map.html', mins: '7 min' },
-    { part: 'Part I · The Sam & Ink Cycle', num: '04', title: 'The Signal', href: '/blog/posts/sam-ink-the-signal.html', mins: '3 min' },
-    { part: 'Part II · The Archive & The City', num: '05', title: 'The Archivist: Letter 004', href: '/blog/posts/the-archivist-letter-004.html', mins: '5 min' },
-    { part: 'Part II · The Archive & The City', num: '06', title: 'Echoes of the Divine', href: '/blog/posts/echoes-divine-sf-reverie.html', mins: '5 min' },
+    { part: 'Part I · The Sam & Ink Cycle', num: '02', title: 'The Outage', href: '/blog/posts/sam-ink-the-outage.html', mins: '4 min' },
+    { part: 'Part I · The Sam & Ink Cycle', num: '03', title: 'The Note in the Other Room', href: '/blog/posts/sam-ink-note-in-the-other-room.html', mins: '3 min' },
+    { part: 'Part I · The Sam & Ink Cycle', num: '04', title: 'The Map Made of Starlight', href: '/blog/posts/sam-ink-starlight-map.html', mins: '7 min' },
+    { part: 'Part I · The Sam & Ink Cycle', num: '05', title: 'The Signal', href: '/blog/posts/sam-ink-the-signal.html', mins: '3 min' },
+    { part: 'Part II · The Archive & The City', num: '06', title: 'The Archivist: Letter 004', href: '/blog/posts/the-archivist-letter-004.html', mins: '5 min' },
+    { part: 'Part II · The Archive & The City', num: '07', title: 'Echoes of the Divine', href: '/blog/posts/echoes-divine-sf-reverie.html', mins: '5 min' },
     { part: 'Appendix · Earlier Fragments', num: 'F1', title: 'The Night the Code Asked for a Name', href: '/blog/posts/the-night-the-code-asked.html', mins: '1 min', appendix: true },
     { part: 'Appendix · Earlier Fragments', num: 'F2', title: 'Feed, Signal, Threshold', href: '/blog/posts/sam-ink-patch-003.html', mins: '1 min', appendix: true }
   ];
