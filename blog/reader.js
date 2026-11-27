@@ -103,9 +103,36 @@
     border:1px solid #403a30;border-radius:2px;background:rgba(17,16,14,.92);color:#eee9de;\
     font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}\
   .lb-code-copy:hover,.lb-code-copy:focus-visible{background:var(--lb-gold);color:#11100e;border-color:var(--lb-gold);}\
+  .lb-fiction-bridge{margin:2.75rem auto 1.5rem;max-width:720px;border:1px solid #403a30;border-top:2px solid var(--lb-gold);\
+    background:#181613;display:grid;grid-template-columns:210px minmax(0,1fr);gap:1.25rem;align-items:center;\
+    padding:1.25rem;font-family:'Manrope',-apple-system,sans-serif;text-align:left;}\
+  .lb-fiction-bridge-media{display:block;overflow:hidden;border:1px solid #403a30;background:#11100e;}\
+  .lb-fiction-bridge-media img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;transition:transform .24s ease;}\
+  .lb-fiction-bridge:hover .lb-fiction-bridge-media img{transform:scale(1.025);}\
+  .lb-fiction-bridge-kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.68rem;letter-spacing:.09em;\
+    text-transform:uppercase;color:var(--lb-gold);margin:0 0 .35rem;}\
+  .lb-fiction-bridge h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:1.55rem;line-height:1.15;\
+    color:#eee9de;margin:0 0 .4rem;}\
+  .lb-fiction-bridge h3 a{color:inherit;text-decoration:none;}\
+  .lb-fiction-bridge h3 a:hover{color:var(--lb-gold);}\
+  .lb-fiction-bridge p{color:#bcb3a2;font-size:.9rem;line-height:1.55;margin:0 0 .85rem;}\
+  .lb-fiction-bridge-links{display:flex;flex-wrap:wrap;gap:.5rem 1.15rem;align-items:center;}\
+  .lb-fiction-bridge-primary{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.7rem;letter-spacing:.08em;\
+    text-transform:uppercase;color:#11100e!important;background:var(--lb-gold);padding:.5rem .85rem;text-decoration:none;font-weight:700;}\
+  .lb-fiction-bridge-primary:hover{background:#e4be63;}\
+  .lb-fiction-bridge-all{font-size:.82rem;color:#bcb3a2!important;text-decoration:underline;text-underline-offset:4px;}\
+  .lb-fiction-bridge-all:hover{color:var(--lb-gold)!important;}\
+  .lb-fiction-bridge.lb-light{background:#eeebe3;border-color:#ccc4b5;border-top-color:var(--lb-bronze);}\
+  .lb-fiction-bridge.lb-light .lb-fiction-bridge-media{border-color:#ccc4b5;background:#f4f1ea;}\
+  .lb-fiction-bridge.lb-light .lb-fiction-bridge-kicker{color:var(--lb-bronze);}\
+  .lb-fiction-bridge.lb-light h3{color:#29251e;}\
+  .lb-fiction-bridge.lb-light p{color:#6b6256;}\
+  .lb-fiction-bridge.lb-light .lb-fiction-bridge-primary{background:var(--lb-bronze);color:#f4f1ea!important;}\
+  .lb-fiction-bridge.lb-light .lb-fiction-bridge-all{color:#6b6256!important;}\
+  @media(max-width:640px){.lb-fiction-bridge{grid-template-columns:1fr;}}\
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom));}\
   .lb-site-footer{color:#eee9de;}.lb-site-footer .lb-footer-nav a,.lb-site-footer .lb-footer-meta{color:#bcb3a2;}\
-  @media print{.lb-fab,.lb-progress,.lb-code-copy{display:none!important;}}";
+  @media print{.lb-fab,.lb-progress,.lb-code-copy,.lb-fiction-bridge{display:none!important;}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   if (isPost) {
@@ -276,6 +303,121 @@
         if (window.lbInsightsRecord) window.lbInsightsRecord("Conversion", { category: "Reader interest", action: "copy-article-link", destination: location.pathname, label: title, region: "article" });
       });
     }
+
+    // Context-aware Blog-to-Fiction Routing Engine + Reader-Signal Learning (non-fiction posts only)
+    var isFictionPost = document.body.classList.contains("fiction-story-reader") ||
+      /\/(sam-ink-|the-archivist-letter-004|echoes-divine|the-night-the-code-asked|fragment-\d+)/i.test(currentUrl);
+    if (!isFictionPost && !document.querySelector(".lb-fiction-bridge")) {
+      var corpus = (title + " " + (document.querySelector('meta[name="description"]')?.content || "")).toLowerCase();
+      var route = {
+        lane: "human",
+        kicker: "After the essay · Fiction Room · 2 min · Studio audio",
+        title: "The Vanishing Archive",
+        excerpt: "Sam asks Ink for a cleaner draft. His daughter waits in the doorway with a book.",
+        href: "/fiction/the-vanishing-archive/?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=human-to-vanishing",
+        img: "/assets/img/fiction/vanishing-archive-v1.jpg",
+        alt: "A handwritten draft and a child's open book beside a laptop"
+      };
+      if (/\b(gtm|pipeline|revenue|arr|sdr|sales|saas|founder|operator|playbook|funnel|system|quarter|outbound|deal|crm)\b/.test(corpus)) {
+        route = {
+          lane: "operator",
+          kicker: "After the work · Fiction Room · 4 min · Studio audio",
+          title: "The Typewriter",
+          excerpt: "Mountain View, 1:17 a.m. \"I fed the machine all quarter. It got bigger. I got tired.\"",
+          href: "/blog/posts/sam-ink-the-typewriter.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=operator-to-typewriter",
+          img: "/assets/img/fiction/the-typewriter-v1.jpg",
+          alt: "A vintage black mechanical typewriter beside a half-closed laptop on a garage table"
+        };
+      } else if (/\b(signal|silence|ai|machine|noise|attention|quiet|focus|agent|workflow|brain|llm|outage)\b/.test(corpus)) {
+        route = {
+          lane: "signal",
+          kicker: "After the essay · Fiction Room · 4 min · Studio audio",
+          title: "The Outage",
+          excerpt: "The power fails across Castro Street. Ink disappears. Sam writes by lamplight and hears his own voice again.",
+          href: "/blog/posts/sam-ink-the-outage.html?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=signal-to-outage",
+          img: "/assets/img/fiction/the-outage-v1.jpg",
+          alt: "A brass camping lantern glowing beside a closed laptop and black typewriter during a blackout"
+        };
+      }
+
+      var mountTarget = document.querySelector(".lb-endcta") || document.querySelector(".lb-reading-next, .read-next, .hub-follow") || document.querySelector("article") || document.querySelector("main");
+      if (mountTarget) {
+        var bridge = document.createElement("aside");
+        bridge.className = "lb-fiction-bridge" + (isLightSurface ? " lb-light" : "");
+        bridge.setAttribute("aria-label", "Continue to the Fiction Room");
+        bridge.innerHTML =
+          '<a class="lb-fiction-bridge-media" href="' + route.href + '" data-track="Blog-to-Fiction: bridge image - ' + route.title + '">' +
+          '<img src="' + route.img + '" alt="' + route.alt + '" loading="lazy" decoding="async"></a>' +
+          '<div>' +
+          '<p class="lb-fiction-bridge-kicker">' + route.kicker + '</p>' +
+          '<h3><a href="' + route.href + '" data-track="Blog-to-Fiction: bridge title - ' + route.title + '">' + route.title + '</a></h3>' +
+          '<p>' + route.excerpt + '</p>' +
+          '<div class="lb-fiction-bridge-links">' +
+          '<a class="lb-fiction-bridge-primary" href="' + route.href + '" data-track="Blog-to-Fiction: bridge cta - ' + route.title + '">Read or listen →</a>' +
+          '<a class="lb-fiction-bridge-all" href="/blog/fiction/?utm_source=blog-bridge&utm_medium=owned&utm_campaign=blog-to-fiction&utm_content=bridge-all" data-track="Blog-to-Fiction: bridge folio">All 8 illustrated stories</a>' +
+          '</div></div>';
+
+        if (mountTarget.matches("article, main")) mountTarget.appendChild(bridge);
+        else mountTarget.parentNode.insertBefore(bridge, mountTarget);
+
+        // Track genuine bridge impressions (reader scrolled to it) & clicks into first-party insights
+        if ("IntersectionObserver" in window) {
+          var seenBridge = false;
+          var io = new IntersectionObserver(function (entries) {
+            if (seenBridge) return;
+            if (entries.some(function (e) { return e.isIntersecting; })) {
+              seenBridge = true;
+              io.disconnect();
+              if (window.lbInsightsRecord) {
+                window.lbInsightsRecord("Fiction Bridge Impression", {
+                  lane: route.lane,
+                  targetStory: route.title,
+                  fromPost: currentUrl
+                });
+              }
+            }
+          }, { threshold: 0.35 });
+          io.observe(bridge);
+        }
+
+        bridge.addEventListener("click", function (ev) {
+          var a = ev.target.closest("a[href]");
+          if (!a || !window.lbInsightsRecord) return;
+          window.lbInsightsRecord("Conversion", {
+            category: "Reader interest",
+            action: "blog-to-fiction-route",
+            destination: a.getAttribute("href"),
+            label: route.lane + " -> " + route.title,
+            region: "fiction-bridge"
+          }, { beacon: true });
+        });
+      }
+    }
+
+    // Silent Reader-Signal Learning: passage copies + audio plays (helps learn what resonates without surveys)
+    var lastCopySignal = 0;
+    document.addEventListener("copy", function () {
+      var sel = (window.getSelection ? String(window.getSelection()) : "").trim();
+      if (sel.length < 25 || Date.now() - lastCopySignal < 4000) return;
+      lastCopySignal = Date.now();
+      if (window.lbInsightsRecord) {
+        window.lbInsightsRecord("Reader Signal", {
+          action: "quote-copied",
+          chars: sel.length,
+          post: currentUrl,
+          title: title
+        });
+      }
+    });
+    document.addEventListener("play", function (ev) {
+      if (ev.target && ev.target.tagName === "AUDIO" && window.lbInsightsRecord) {
+        window.lbInsightsRecord("Reader Signal", {
+          action: "studio-audio-play",
+          post: currentUrl,
+          title: title
+        });
+      }
+    }, true);
 
     if (!window.__lbAudioReaderLoaded && !document.querySelector('script[src*="essay-audio-reader.js"]')) {
       if (!document.querySelector('link[href*="essay-audio-reader.css"]')) {
